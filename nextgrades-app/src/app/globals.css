@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+:root {
+  --color-deep-navy: #0D1B2A;
+  --color-gold: #D4AF37;
+  --color-gold-light: #F5A623;
+  --color-orange: #FFA500;
+  --color-white: #FFFFFF;
+  --color-accent-blue: #4DA3FF;
+  --color-gray-light: #F5F5F5;
+  --color-gray-very-light: #FAFAFA;
+  --color-gray-dark: #111827;
+  --color-green: #22C55E;
+  --color-orange-badge: #F97316;
+  --color-gray-border: #E5E7EB;
+  
+  --background: #FFFFFF;
+  --foreground: #0D1B2A;
+}
+
+@theme inline {
+  --color-deep-navy: var(--color-deep-navy);
+  --color-gold: var(--color-gold);
+  --color-gold-light: var(--color-gold-light);
+  --color-orange: var(--color-orange);
+  --color-white: var(--color-white);
+  --color-accent-blue: var(--color-accent-blue);
+  --color-gray-light: var(--color-gray-light);
+  --color-gray-very-light: var(--color-gray-very-light);
+  --color-gray-dark: var(--color-gray-dark);
+  --color-green: var(--color-green);
+  --color-orange-badge: var(--color-orange-badge);
+  --color-gray-border: var(--color-gray-border);
+  
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+.gradient-gold {
+  background: linear-gradient(135deg, #D4AF37 0%, #F5A623 100%);
+}
+
+.gradient-navy {
+  background: linear-gradient(135deg, #0D1B2A 0%, #1A2F42 100%);
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.glass-dark {
+  background: rgba(13, 27, 42, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float 6s ease-in-out infinite;
+  animation-delay: -3s;
+}
+
+
