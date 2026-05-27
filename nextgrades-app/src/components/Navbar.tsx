@@ -3,14 +3,16 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Menu, X, ChevronRight } from "lucide-react";
+import { Menu, X, Sun, Moon } from "lucide-react";
 import { Button } from "./ui/Button";
 import { motion, AnimatePresence } from "framer-motion";
 import { LanguageSwitcher } from "./LanguageSwitcher";
+import { useTheme } from "@/context/ThemeContext";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -47,6 +49,16 @@ export default function Navbar() {
 
           <div className="hidden md:flex items-center gap-4">
             <LanguageSwitcher />
+            <button
+              onClick={toggleTheme}
+              className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center hover:bg-[#D4AF37] hover:text-[#0D1B2A] transition-all duration-300"
+            >
+              {theme === "dark" ? (
+                <Sun className="w-5 h-5" />
+              ) : (
+                <Moon className="w-5 h-5" />
+              )}
+            </button>
             <Link href="/login" className="text-white font-medium hover:text-[#D4AF37] transition-colors">
               Login
             </Link>
@@ -116,25 +128,43 @@ export default function Navbar() {
                 Contact
               </Link>
               <div className="pt-4 border-t border-white/10 space-y-3">
-                <div className="py-2">
-                  <LanguageSwitcher />
-                </div>
-                <Link
-                  href="/login"
-                  className="block w-full text-center py-3 border border-white text-white rounded-lg font-medium"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Login
-                </Link>
-                <Button
-                  variant="gold"
-                  size="md"
-                  className="w-full"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Book Free Consultation
-                </Button>
-              </div>
+            <div className="py-2">
+              <LanguageSwitcher />
+            </div>
+            <div className="py-2">
+              <button
+                onClick={toggleTheme}
+                className="w-full flex items-center justify-center gap-2 py-3 border border-white text-white rounded-lg font-medium hover:bg-white/10 transition-all"
+              >
+                {theme === "dark" ? (
+                  <>
+                    <Sun className="w-5 h-5" />
+                    Light Mode
+                  </>
+                ) : (
+                  <>
+                    <Moon className="w-5 h-5" />
+                    Dark Mode
+                  </>
+                )}
+              </button>
+            </div>
+            <Link
+              href="/login"
+              className="block w-full text-center py-3 border border-white text-white rounded-lg font-medium"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Login
+            </Link>
+            <Button
+              variant="gold"
+              size="md"
+              className="w-full"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Book Free Consultation
+            </Button>
+          </div>
             </div>
           </motion.div>
         )}
