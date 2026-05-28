@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Target, BookOpen, Star, Users, GraduationCap, TrendingUp, Heart, Calendar, ChevronRight, ArrowRight } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Image from "next/image";
 
 export default function AboutPage() {
   const principles = [
@@ -108,11 +109,13 @@ export default function AboutPage() {
                 transition={{ duration: 0.8, delay: 0.2 }}
                 className="relative"
               >
-                <div className="rounded-2xl overflow-hidden">
-                  <img
-                    src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&h=600&fit=crop"
+                <div className="rounded-2xl overflow-hidden relative aspect-[4/3]">
+                  <Image
+                    src="https://picsum.photos/seed/students-studying/800/600"
                     alt="Students studying together"
-                    className="w-full h-auto"
+                    fill
+                    className="object-cover"
+                    priority
                   />
                 </div>
                 <div className="absolute bottom-6 left-6 bg-[#0D1B2A] text-white p-5 rounded-xl max-w-xs">
