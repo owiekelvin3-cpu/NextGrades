@@ -110,7 +110,7 @@ export default function AboutPage() {
               >
                 <div className="rounded-2xl overflow-hidden">
                   <img
-                    src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&h=600&fit=crop"
+                    src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&h=600&fit=crop"
                     alt="Students studying together"
                     className="w-full h-auto"
                   />
