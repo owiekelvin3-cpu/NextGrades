@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Target, BookOpen, Star, Users, GraduationCap, TrendingUp, Heart, Calendar, ChevronRight, ArrowRight, CheckCircle2, Lightbulb, Rocket, Globe, Zap } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -115,19 +115,28 @@ export default function AboutPage() {
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className="mt-12"
               >
-                <div className="rounded-3xl overflow-hidden shadow-2xl max-w-4xl mx-auto border-4 border-white/10">
+                <div className="rounded-3xl overflow-hidden shadow-2xl max-w-4xl mx-auto border-4 border-white/10 relative">
                   <div className="aspect-[16/9] relative bg-black">
-                    <video
-                      ref={videoRef}
-                      key={currentVideoIndex}
-                      src={videos[currentVideoIndex]}
-                      autoPlay
-                      muted
-                      playsInline
-                      loop={false}
-                      onEnded={handleVideoEnd}
-                      className="w-full h-full object-cover"
-                    />
+                    <AnimatePresence mode="wait">
+                      <motion.div
+                        key={currentVideoIndex}
+                        initial={{ opacity: 0, scale: 1.05 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.95 }}
+                        transition={{ duration: 0.8, ease: "easeInOut" }}
+                        className="absolute inset-0"
+                      >
+                        <video
+                          src={videos[currentVideoIndex]}
+                          autoPlay
+                          muted
+                          playsInline
+                          loop={false}
+                          onEnded={handleVideoEnd}
+                          className="w-full h-full object-cover"
+                        />
+                      </motion.div>
+                    </AnimatePresence>
                   </div>
                 </div>
               </motion.div>
