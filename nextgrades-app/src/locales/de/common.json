@@ -1,0 +1,258 @@
+{
+  "common": {
+    "brand": "NextGrades",
+    "login": "Login",
+    "signup": "Registrieren",
+    "freeConsultation": "Kostenloses Erstgespräch",
+    "home": "Startseite",
+    "about": "Über uns",
+    "programs": "Programme",
+    "subjects": "Fächer",
+    "pricing": "Preise",
+    "resources": "Ressourcen",
+    "contact": "Kontakt",
+    "careers": "Karriere",
+    "help": "Hilfe",
+    "aiGenerator": "KI-Generator",
+    "dashboard": "Dashboard",
+    "logout": "Abmelden"
+  },
+  "navbar": {
+    "login": "Login",
+    "freeConsultation": "Kostenloses Erstgespräch"
+  },
+  "footer": {
+    "programs": "Programme",
+    "program1": "1:1 Nachhilfe",
+    "program2": "Kleine Lerngruppen",
+    "program3": "Mathe Excellence Programm",
+    "program4": "Prüfungsvorbereitung",
+    "resources": "Ressourcen",
+    "resource1": "Lernmaterialien",
+    "resource2": "Übungsblätter",
+    "resource3": "Erklärvideos",
+    "resource4": "Prüfungsvorbereitung",
+    "company": "Unternehmen",
+    "legal": "Rechtliches",
+    "terms": "AGB",
+    "privacy": "Datenschutz",
+    "imprint": "Impressum",
+    "madeInGermany": "Mit ♥ in Deutschland",
+    "copyright": "© 2026 NextGrades. Alle Rechte vorbehalten."
+  },
+  "home": {
+    "heroTitle1": "Nachhilfe neu gedacht.",
+    "heroTitle2": "Dein Erfolg beginnt hier.",
+    "heroSubtitle": "Individuelle 1:1 Betreuung, strukturierte Lernsysteme und moderne Digitaltools für nachhaltige Ergebnisse.",
+    "getStarted": "Loslegen",
+    "learnMore": "Mehr erfahren",
+    "featuresStrip": {
+      "feature1": "Strukturierte Lernsysteme",
+      "feature2": "Erfahrene Lehrer:innen",
+      "feature3": "Flexible Termine",
+      "feature4": "Erfolge messbar"
+    },
+    "programs": {
+      "title": "Unsere Programme",
+      "subtitle": "Für jede Lernziel die passende Unterstützung"
+    },
+    "statsBar": {
+      "stat1": "200+",
+      "stat2": "glückliche Schüler:innen",
+      "stat3": "25+",
+      "stat4": "erfahrene Lehrer:innen",
+      "stat5": "4.9/5",
+      "stat6": "Bewertungen",
+      "stat7": "100%",
+      "stat8": "online & flexibel"
+    },
+    "platformPreview": {
+      "title": "ALLES AN EINEM ORT",
+      "subtitle": "Deine komplette Lernplattform"
+    },
+    "testimonials": {
+      "title": "Das sagen Schüler:innen & Eltern"
+    },
+    "cta": {
+      "title": "Bereit, deinen Erfolg zu starten?",
+      "subtitle": "Buche jetzt dein kostenloses Erstgespräch"
+    }
+  },
+  "contact": {
+    "title": "Komm mit uns in Kontakt.",
+    "subtitle": "Oder schreibe uns direkt an",
+    "firstName": "Vorname",
+    "lastName": "Nachname",
+    "emailAddress": "E-Mail Adresse",
+    "phoneNumber": "Telefonnummer",
+    "message": "Nachricht",
+    "enterFirstName": "Gib deinen Vornamen ein...",
+    "enterLastName": "Gib deinen Nachnamen ein...",
+    "enterEmail": "Gib deine E-Mail Adresse ein...",
+    "enterPhone": "+49 (000) 000-0000",
+    "enterMessage": "Gib deine Nachricht hier ein...",
+    "submitForm": "Formular absenden"
+  },
+  "login": {
+    "welcomeBack": "Willkommen zurück",
+    "createAccount": "Ein Konto erstellen",
+    "loginDescription": "Melde dich in dein NextGrades Konto an",
+    "signupDescription": "Registriere dich und erhalte Premium Nachhilfe",
+    "iAmLoggingInAs": "Ich melde mich an als...",
+    "iAmA": "Ich bin ein/e...",
+    "student": "Schüler:in",
+    "studentLogin": "Schüler:in Login",
+    "iWantToLearn": "Ich möchte lernen",
+    "teacher": "Lehrer:in",
+    "teacherLogin": "Lehrer:in Login",
+    "iWantToTeach": "Ich möchte unterrichten",
+    "fullName": "Vollständiger Name",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "forgot": "Passwort vergessen?",
+    "loginNow": "Jetzt anmelden",
+    "createAccountNow": "Jetzt registrieren",
+    "loading": "Laden...",
+    "orContinueWith": "oder weiter mit",
+    "apple": "Apple",
+    "google": "Google",
+    "alreadyHaveAccount": "Du hast bereits ein Konto?",
+    "dontHaveAccount": "Du hast noch kein Konto?",
+    "signIn": "Anmelden",
+    "signUp": "Registrieren",
+    "terms": "AGB",
+    "smartLearning": "Smart Learning, Better Results.",
+    "dailyMeeting": "Tägliche Besprechung",
+    "supabaseNotConfigured": "Supabase-Anmeldedaten sind nicht konfiguriert. Bitte setze NEXT_PUBLIC_SUPABASE_URL und NEXT_PUBLIC_SUPABASE_ANON_KEY in .env.local."
+  },
+  "about": {
+    "heroTitle": "Mehr als Nachhilfe.",
+    "heroTitle2": "Eine neue Vision für Bildung.",
+    "heroSubtitle": "Wir haben uns die Aufgabe gemacht, um Schüler:innen eine moderne, strukturierte und motivierende Lernumgebung zu bieten – online, flexibel und auf höchstem Niveau.",
+    "heroFeature1": "Hochwertige Inhalte",
+    "heroFeature1Desc": "Von erfahrenen Lehrer:innen erstellt.",
+    "heroFeature2": "Kostenlos & hilfreich",
+    "heroFeature2Desc": "Fürs Lernen entwickelt.",
+    "heroFeature3": "Für alle Fächer",
+    "heroFeature3Desc": "Materialien für alle wichtigen Schulfächer.",
+    "storyTitle": "Wie alles begann",
+    "principlesTitle": "Unsere Prinzipien für deinen Erfolg",
+    "teamTitle": "Die Menschen hinter NextGrades",
+    "teamSubtitle": "Ein Team aus leidenschaftlichen Lehrer:innen, Lernexpert:innen und Visionär:innen.",
+    "milestonesTitle": "Meilensteine",
+    "ctaTitle": "Noch mehr exklusive Inhalte freischalten",
+    "ctaSubtitle": "Entdecke Zugriff auf alle Premium-Materialien, Lernvideos, Dutzende Mini-Kurse und vieles mehr.",
+    "ctaButton": "Jetzt Mitglied werden"
+  },
+  "resources": {
+    "heroTitle": "Wissen, das dich weiterbringt.",
+    "heroSubtitle": "Entdecke kostenlose Materialien, nützliche Guides und wertvolle Tipps, die dich beim Lernen unterstützen.",
+    "heroFeature1": "Hochwertige Inhalte",
+    "heroFeature1Desc": "Von erfahrenen Lehrer:innen erstellt.",
+    "heroFeature2": "Kostenlos & hilfreich",
+    "heroFeature2Desc": "Fürs Lernen entwickelt.",
+    "heroFeature3": "Für alle Fächer",
+    "heroFeature3Desc": "Materialien für alle wichtigen Schulfächer.",
+    "topBarResults": "Ergebnisse",
+    "searchPlaceholder": "Materialien durchsuchen...",
+    "sortBy": "Sortieren nach:",
+    "sortNewest": "Neuste zuerst",
+    "sortOldest": "Alteste zuerst",
+    "sortPopular": "Beliebteste",
+    "freeTitle": "Kostenlose Inhalte",
+    "freeSubtitle": "Für alle verfügbar",
+    "freeShowAll": "Alle anzeigen",
+    "premiumTitle": "PREMIUM Inhalte",
+    "premiumSubtitle": "Nur für Mitglieder",
+    "premiumShowAll": "Alle anzeigen",
+    "resourcesBySubject": "Ressourcen nach Fach",
+    "explore": "Entdecken →",
+    "ctaTitle": "Noch mehr exklusive Inhalte freischalten",
+    "ctaSubtitle": "Entdecke Zugriff auf alle Premium-Materialien, Lernvideos, Dutzende Mini-Kurse und vieles mehr.",
+    "ctaButton": "Jetzt Mitglied werden",
+    "features": {
+      "feature1Title": "Strukturiert nach Lehrplan",
+      "feature1Desc": "Lerninhalte passend zum Lehrplan.",
+      "feature2Title": "Regelmäßig aktualisiert",
+      "feature2Desc": "Stets aktuelle Inhalte.",
+      "feature3Title": "Von Experten erstellt",
+      "feature3Desc": "Von Pädagogen und Lehrkräften erstellt.",
+      "feature4Title": "Sicher & gut",
+      "feature4Desc": "Für Schüler:innen optimal aufbereitet."
+    },
+    "filters": {
+      "title": "Filter",
+      "subject": "Fach",
+      "grade": "Klasse",
+      "semester": "Semester",
+      "materialType": "Material-Typ",
+      "access": "Zugriff",
+      "accessAll": "Alle Inhalte",
+      "accessFree": "Kostenlose Inhalte",
+      "accessPremium": "Premium-Inhalte",
+      "reset": "Filter zurücksetzen"
+    }
+  },
+  "dashboard": {
+    "student": {
+      "welcomeBack": "Willkommen zurück!",
+      "overview": "Übersicht",
+      "myCourses": "Meine Kurse",
+      "myGrades": "Meine Noten",
+      "upcomingLessons": "Nächste Unterrichtsstunden",
+      "learningMaterials": "Lernmaterialien",
+      "settings": "Einstellungen"
+    },
+    "teacher": {
+      "welcomeBack": "Willkommen zurück!",
+      "overview": "Übersicht",
+      "myStudents": "Meine Schüler:innen",
+      "mySchedule": "Mein Stundenplan",
+      "materials": "Materialien",
+      "settings": "Einstellungen"
+    }
+  },
+  "admin": {
+    "title": "Admin Dashboard",
+    "users": "Benutzer",
+    "courses": "Kurse",
+    "analytics": "Analysen",
+    "settings": "Einstellungen"
+  },
+  "pricing": {
+    "title": "Preise",
+    "subtitle": "Wähle das passende Paket für dich"
+  },
+  "programs": {
+    "title": "Unsere Programme",
+    "subtitle": "Für jede Lernziel die passende Unterstützung"
+  },
+  "subjects": {
+    "title": "Unsere Fächer",
+    "subtitle": "Wähle dein Fach"
+  },
+  "careers": {
+    "title": "Karriere bei NextGrades",
+    "subtitle": "Werde Teil unseres Teams"
+  },
+  "help": {
+    "title": "Hilfe & Support",
+    "subtitle": "Finde Antworten auf deine Fragen"
+  },
+  "aiGenerator": {
+    "title": "KI-Generator",
+    "subtitle": "Erstelle Lernmaterialien mit KI"
+  },
+  "consultation": {
+    "title": "Kostenloses Erstgespräch",
+    "subtitle": "Buche dein kostenloses Erstgespräch jetzt"
+  },
+  "privacy": {
+    "title": "Datenschutz",
+    "subtitle": "Wie wir deine Daten schützen"
+  },
+  "terms": {
+    "title": "AGB",
+    "subtitle": "Unsere Allgemeinen Geschäftsbedingungen"
+  }
+}

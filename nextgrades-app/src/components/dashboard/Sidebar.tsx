@@ -4,6 +4,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useTheme } from "@/context/ThemeContext";
 import {
   Home,
   BookOpen,
@@ -27,6 +28,7 @@ interface SidebarProps {
 
 export function Sidebar({ role }: SidebarProps) {
   const pathname = usePathname();
+  const { theme } = useTheme();
 
   const studentLinks = [
     { href: "/dashboard/student", icon: LayoutDashboard, label: "Dashboard" },
@@ -61,11 +63,11 @@ export function Sidebar({ role }: SidebarProps) {
   const links = role === "student" ? studentLinks : role === "teacher" ? teacherLinks : adminLinks;
 
   return (
-    <aside className="w-64 bg-deep-navy min-h-screen text-white p-6 flex flex-col">
+    <aside className={`w-64 min-h-screen p-6 flex flex-col ${theme === "dark" ? "bg-[#0D1B2A] text-white" : "bg-white text-[#0D1B2A] border-r border-gray-100"}`}>
       <div className="mb-10">
         <Link href="/" className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl gradient-gold flex items-center justify-center">
-            <span className="text-deep-navy font-bold text-xl">NG</span>
+          <div className="w-10 h-10 rounded-xl bg-[#D4AF37] flex items-center justify-center">
+            <span className="text-[#0D1B2A] font-bold text-xl">NG</span>
           </div>
           <span className="text-xl font-bold">NextGrades</span>
         </Link>
@@ -81,8 +83,10 @@ export function Sidebar({ role }: SidebarProps) {
               className={cn(
                 "flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200",
                 isActive
-                  ? "bg-soft-gold text-deep-navy font-semibold"
-                  : "text-gray-300 hover:bg-white/10 hover:text-white"
+                  ? "bg-[#D4AF37] text-[#0D1B2A] font-semibold"
+                  : theme === "dark"
+                  ? "text-gray-300 hover:bg-white/10 hover:text-white"
+                  : "text-gray-600 hover:bg-gray-50 hover:text-[#0D1B2A]"
               )}
             >
               <link.icon className="w-5 h-5" />
@@ -92,10 +96,15 @@ export function Sidebar({ role }: SidebarProps) {
         })}
       </nav>
 
-      <div className="pt-6 border-t border-white/10">
+      <div className={`pt-6 border-t ${theme === "dark" ? "border-white/10" : "border-gray-100"}`}>
         <Link
           href="/"
-          className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 hover:text-white transition-all"
+          className={cn(
+            "flex items-center gap-3 px-4 py-3 rounded-xl transition-all",
+            theme === "dark"
+              ? "text-gray-300 hover:bg-white/10 hover:text-white"
+              : "text-gray-600 hover:bg-gray-50 hover:text-[#0D1B2A]"
+          )}
         >
           <LogOut className="w-5 h-5" />
           <span>Logout</span>

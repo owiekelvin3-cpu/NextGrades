@@ -8,6 +8,7 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
+import { useTheme } from "@/context/ThemeContext";
 import {
   ArrowRight,
   Users,
@@ -32,13 +33,14 @@ import {
 } from "lucide-react";
 
 export default function Home() {
+  const { theme } = useTheme();
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
       
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="pt-28 pb-16 bg-[#0D1B2A] text-white relative overflow-hidden">
+        <section className={`pt-28 pb-16 ${theme === "dark" ? "bg-[#0D1B2A] text-white" : "bg-[#FAFAFA] text-[#0D1B2A]"} relative overflow-hidden`}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-16 items-center">
               <motion.div
@@ -52,14 +54,20 @@ export default function Home() {
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
                   Smarter lernen. <span className="text-[#D4AF37]">Bessere Ergebnisse.</span>
                 </h1>
-                <p className="text-gray-300 text-lg mb-8 leading-relaxed">
+                <p className={`text-lg mb-8 leading-relaxed ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>
                   Premium Online-Nachhilfe, moderne Lernsysteme und strukturierte Lernbegleitung für ambitionierte Schüler:innen.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 mb-10">
                   <Button variant="gold" size="md" className="px-8">
                     Kostenloses Erstgespräch
                   </Button>
-                  <Button variant="outline" size="md" className="border-white text-white hover:bg-white hover:text-[#0D1B2A]">
+                  <Button 
+                    variant="outline" 
+                    size="md" 
+                    className={`${theme === "dark" 
+                      ? "border-white text-white hover:bg-white hover:text-[#0D1B2A]" 
+                      : "border-[#0D1B2A] text-[#0D1B2A] hover:bg-[#0D1B2A] hover:text-white"}`}
+                  >
                     Programme entdecken →
                   </Button>
                 </div>
@@ -129,7 +137,7 @@ export default function Home() {
         </section>
 
         {/* Features Strip */}
-        <section className="py-12 bg-[#FAFAFA]">
+        <section className={`py-12 ${theme === "dark" ? "bg-[#112240]" : "bg-[#FAFAFA]"}`}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid md:grid-cols-5 gap-8">
               {[
@@ -150,8 +158,8 @@ export default function Home() {
                   <div className="w-12 h-12 rounded-lg bg-[#D4AF37]/20 flex items-center justify-center mx-auto mb-4">
                     <feature.icon className="w-6 h-6 text-[#D4AF37]" />
                   </div>
-                  <h3 className="text-base font-semibold text-[#0D1B2A] mb-2">{feature.title}</h3>
-                  <p className="text-sm text-gray-600">{feature.desc}</p>
+                  <h3 className={`text-base font-semibold mb-2 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>{feature.title}</h3>
+                  <p className={`text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>{feature.desc}</p>
                 </motion.div>
               ))}
             </div>
@@ -159,7 +167,7 @@ export default function Home() {
         </section>
 
         {/* Programs Section */}
-        <section className="py-20 bg-white">
+        <section className={`py-20 ${theme === "dark" ? "bg-[#0D1B2A]" : "bg-white"}`}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -167,10 +175,10 @@ export default function Home() {
               viewport={{ once: true }}
               className="text-center mb-12"
             >
-              <h2 className="text-3xl font-bold text-[#0D1B2A] mb-3">
+              <h2 className={`text-3xl font-bold mb-3 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
                 Unsere Programme
               </h2>
-              <p className="text-gray-600">
+              <p className={`${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
                 Wähle das Programm, das am besten zu dir passt.
               </p>
             </motion.div>
@@ -226,7 +234,7 @@ export default function Home() {
                     </div>
                     
                     <div className="p-6 flex flex-col flex-1">
-                      <h3 className="text-xl font-bold text-[#0D1B2A] mb-4">
+                      <h3 className={`text-xl font-bold mb-4 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
                         {program.title}
                       </h3>
                       
@@ -234,13 +242,13 @@ export default function Home() {
                         {program.features.map((feature, i) => (
                           <li key={i} className="flex items-start gap-2">
                             <CheckCircle2 className="w-4 h-4 text-[#D4AF37] flex-shrink-0 mt-0.5" />
-                            <span className="text-gray-700 text-sm">{feature}</span>
+                            <span className={`text-sm ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>{feature}</span>
                           </li>
                         ))}
                       </ul>
                       
                       <Link href="/programs" className={`font-semibold flex items-center gap-2 ${
-                        program.featured ? "text-[#D4AF37]" : "text-[#0D1B2A]"
+                        program.featured ? "text-[#D4AF37]" : (theme === "dark" ? "text-white" : "text-[#0D1B2A]")
                       }`}>
                         Mehr erfahren →
                       </Link>
@@ -253,7 +261,7 @@ export default function Home() {
         </section>
 
         {/* Stats Bar */}
-        <section className="py-14 bg-[#0D1B2A] text-white">
+        <section className={`py-14 ${theme === "dark" ? "bg-[#112240] text-white" : "bg-[#FAFAFA] text-[#0D1B2A]"}`}>
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid md:grid-cols-4 gap-8 text-center">
               {[
@@ -269,11 +277,11 @@ export default function Home() {
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
                 >
-                  <div className="w-12 h-12 rounded-lg bg-white/10 flex items-center justify-center mx-auto mb-4">
+                  <div className={`w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-4 ${theme === "dark" ? "bg-white/10" : "bg-[#D4AF37]/20"}`}>
                     <stat.icon className="w-6 h-6 text-[#D4AF37]" />
                   </div>
-                  <p className="text-3xl font-bold text-white mb-2">{stat.number}</p>
-                  <p className="text-sm text-gray-300">{stat.label}</p>
+                  <p className={`text-3xl font-bold mb-2 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>{stat.number}</p>
+                  <p className={`text-sm ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>{stat.label}</p>
                 </motion.div>
               ))}
             </div>
@@ -281,78 +289,113 @@ export default function Home() {
         </section>
 
         {/* Platform Preview Section */}
-        <section className="py-20 bg-white">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid lg:grid-cols-2 gap-16 items-center">
-              <motion.div
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-              >
-                <p className="text-[#D4AF37] uppercase tracking-[0.2em] text-sm font-semibold mb-4">
-                  ALLES AN EINEM ORT
-                </p>
-                <h2 className="text-3xl md:text-4xl font-bold text-[#0D1B2A] mb-6">
-                  Deine komplette Lernplattform
-                </h2>
-                <p className="text-gray-600 text-lg mb-8">
-                  Unsere moderne Plattform unterstützt dich bei jedem Schritt deines Lernwegs.
-                </p>
+        <section className={`py-12 ${theme === "dark" ? "bg-[#112240]" : "bg-[#FAFAFA]"}`}>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="relative rounded-3xl overflow-hidden shadow-2xl">
+              {/* Hero Image Background */}
+              <div className="relative">
+                <img
+                  src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=1200&h=600&fit=crop"
+                  alt="Modern learning"
+                  className="w-full h-[500px] object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#0D1B2A]/80 via-[#0D1B2A]/40 to-transparent" />
                 
-                <ul className="space-y-4 mb-10">
-                  {[
-                    "Fortschrittsverfolgung im Blick",
-                    "Lernbibliothek",
-                    "Zugriff auf alle Materialien & Videos",
-                    "Termine",
-                    "Erinnerungen für deine Ziele",
-                    "Aufgaben & Übungen",
-                    "Interaktive Übungen mit Lösungen"
-                  ].map((item, index) => (
-                    <li key={index} className="flex items-start gap-3">
-                      <CheckCircle2 className="w-5 h-5 text-[#D4AF37] flex-shrink-0 mt-0.5" />
-                      <span className="text-gray-700">{item}</span>
-                    </li>
-                  ))}
-                </ul>
-                
-                <Button variant="gold" size="md">
-                  Plattform entdecken
-                </Button>
-              </motion.div>
-              
-              <motion.div
-                initial={{ opacity: 0, x: 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                className="relative"
-              >
-                {/* Laptop mockup placeholder */}
-                <div className="bg-[#0D1B2A] rounded-3xl p-4 shadow-2xl">
-                  <div className="bg-[#1F2937] rounded-2xl p-6">
-                    <div className="h-80 rounded-xl bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center">
-                      <div className="text-center text-gray-400">
-                        <div className="text-6xl mb-4">📊</div>
-                        <p className="text-lg">Dashboard Preview</p>
-                      </div>
+                {/* Content Overlay */}
+                <div className="absolute inset-0 flex items-center">
+                  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+                    <div className="grid lg:grid-cols-2 gap-12 items-center">
+                      <motion.div
+                        initial={{ opacity: 0, x: -50 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                      >
+                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight">
+                          Deine komplette Lernplattform
+                        </h1>
+                        <p className="text-gray-200 text-lg mb-8">
+                          Unsere moderne Plattform unterstützt dich bei jedem Schritt deines Lernwegs.
+                        </p>
+                        <div className="flex flex-col sm:flex-row gap-4">
+                          <Button variant="gold" size="md">
+                            Plattform entdecken
+                          </Button>
+                          <Button variant="outline" size="md" className="border-white text-white hover:bg-white hover:text-[#0D1B2A]">
+                            Mehr erfahren
+                          </Button>
+                        </div>
+                      </motion.div>
+                      
+                      <motion.div
+                        initial={{ opacity: 0, x: 50 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        className="relative"
+                      >
+                        <div className="space-y-4">
+                          {/* Info Cards */}
+                          <div className="bg-white rounded-2xl p-6 shadow-xl">
+                            <h3 className="text-[#0D1B2A] font-semibold text-sm mb-2">
+                              Fortschritt verfolgen
+                            </h3>
+                            <div className="flex gap-4">
+                              <img
+                                src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=100&h=100&fit=crop"
+                                alt="Learning"
+                                className="w-16 h-16 rounded-xl object-cover"
+                              />
+                              <div className="flex-1">
+                                <p className="text-gray-600 text-sm">
+                                  Track your progress, complete lessons, and stay motivated!
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div className="grid grid-cols-2 gap-4">
+                            <div className="bg-white rounded-2xl p-4 shadow-xl">
+                              <div className="text-3xl font-bold text-[#0D1B2A]">27/4</div>
+                              <div className="text-sm text-gray-500">Wochen lang</div>
+                            </div>
+                            <div className="bg-white rounded-2xl p-4 shadow-xl">
+                              <div className="text-3xl font-bold text-[#0D1B2A]">120K+</div>
+                              <div className="text-sm text-gray-500">Lernmaterialien</div>
+                            </div>
+                          </div>
+                        </div>
+                      </motion.div>
                     </div>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             </div>
           </div>
         </section>
 
         {/* Testimonials Section */}
-        <section className="py-20 bg-[#FAFAFA]">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="py-20 relative overflow-hidden">
+          {/* Video Background */}
+          <div className="absolute inset-0 z-0">
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="w-full h-full object-cover"
+            >
+              <source src="/germany-uni.mp4" type="video/mp4" />
+            </video>
+            <div className="absolute inset-0 bg-gradient-to-r from-[#0D1B2A]/90 via-[#0D1B2A]/70 to-[#0D1B2A]/90" />
+          </div>
+          
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               className="text-center mb-12"
             >
-              <h2 className="text-3xl font-bold text-[#0D1B2A]">
+              <h2 className="text-3xl font-bold text-white">
                 Das sagen Schüler:innen & Eltern
               </h2>
             </motion.div>
@@ -380,22 +423,22 @@ export default function Home() {
                     viewport={{ once: true }}
                     transition={{ delay: index * 0.1 }}
                   >
-                    <Card className="p-8 h-full border border-gray-100">
+                    <Card className="p-8 h-full bg-white/10 backdrop-blur-xl border border-white/20">
                       <div className="flex items-center gap-1 mb-6">
                         {[1, 2, 3, 4, 5].map((star) => (
                           <Star key={star} className="w-5 h-5 fill-[#D4AF37] text-[#D4AF37]" />
                         ))}
                       </div>
-                      <p className="text-gray-700 mb-6 leading-relaxed">
+                      <p className="mb-6 leading-relaxed text-white">
                         "{testimonial.quote}"
                       </p>
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-[#D4AF37]/20 flex items-center justify-center">
+                        <div className="w-10 h-10 rounded-full bg-[#D4AF37]/30 flex items-center justify-center">
                           <span className="text-[#D4AF37] font-bold text-sm">
                             {testimonial.name.charAt(0)}
                           </span>
                         </div>
-                        <p className="text-sm text-gray-600">{testimonial.name}</p>
+                        <p className="text-sm text-gray-200">{testimonial.name}</p>
                       </div>
                     </Card>
                   </motion.div>
@@ -406,7 +449,7 @@ export default function Home() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-16 bg-[#0D1B2A] text-white">
+        <section className={`py-16 ${theme === "dark" ? "bg-[#112240] text-white" : "bg-[#FAFAFA] text-[#0D1B2A]"}`}>
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -415,14 +458,14 @@ export default function Home() {
               className="flex flex-col md:flex-row items-center justify-between gap-8"
             >
               <div className="flex items-center gap-4">
-                <div className="w-14 h-14 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0">
+                <div className={`w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0 ${theme === "dark" ? "bg-white/10" : "bg-[#D4AF37]/20"}`}>
                   <Calendar className="w-7 h-7 text-[#D4AF37]" />
                 </div>
                 <div>
                   <h3 className="text-2xl font-bold mb-2">
                     Bereit für den nächsten Schritt?
                   </h3>
-                  <p className="text-gray-300">
+                  <p className={`${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>
                     Buche jetzt dein kostenloses Erstgespräch und finde heraus, welches Programm am besten zu dir passt.
                   </p>
                 </div>

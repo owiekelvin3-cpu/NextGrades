@@ -1,0 +1,258 @@
+{
+  "common": {
+    "brand": "NextGrades",
+    "login": "Login",
+    "signup": "Sign up",
+    "freeConsultation": "Free Consultation",
+    "home": "Home",
+    "about": "About Us",
+    "programs": "Programs",
+    "subjects": "Subjects",
+    "pricing": "Pricing",
+    "resources": "Resources",
+    "contact": "Contact",
+    "careers": "Careers",
+    "help": "Help",
+    "aiGenerator": "AI Generator",
+    "dashboard": "Dashboard",
+    "logout": "Logout"
+  },
+  "navbar": {
+    "login": "Login",
+    "freeConsultation": "Free Consultation"
+  },
+  "footer": {
+    "programs": "Programs",
+    "program1": "1:1 Tutoring",
+    "program2": "Small Group Learning",
+    "program3": "Math Excellence Program",
+    "program4": "Exam Preparation",
+    "resources": "Resources",
+    "resource1": "Study Materials",
+    "resource2": "Worksheets",
+    "resource3": "Explainer Videos",
+    "resource4": "Exam Prep",
+    "company": "Company",
+    "legal": "Legal",
+    "terms": "Terms & Conditions",
+    "privacy": "Privacy Policy",
+    "imprint": "Imprint",
+    "madeInGermany": "Made with ♥ in Germany",
+    "copyright": "© 2026 NextGrades. All rights reserved."
+  },
+  "home": {
+    "heroTitle1": "Tutoring reimagined.",
+    "heroTitle2": "Your success starts here.",
+    "heroSubtitle": "Individual 1:1 support, structured learning systems, and modern digital tools for sustainable results.",
+    "getStarted": "Get Started",
+    "learnMore": "Learn More",
+    "featuresStrip": {
+      "feature1": "Structured Learning Systems",
+      "feature2": "Experienced Teachers",
+      "feature3": "Flexible Appointments",
+      "feature4": "Measurable Success"
+    },
+    "programs": {
+      "title": "Our Programs",
+      "subtitle": "The right support for every learning goal"
+    },
+    "statsBar": {
+      "stat1": "200+",
+      "stat2": "happy students",
+      "stat3": "25+",
+      "stat4": "experienced teachers",
+      "stat5": "4.9/5",
+      "stat6": "ratings",
+      "stat7": "100%",
+      "stat8": "online & flexible"
+    },
+    "platformPreview": {
+      "title": "ALL IN ONE PLACE",
+      "subtitle": "Your complete learning platform"
+    },
+    "testimonials": {
+      "title": "What Students and Parents Say"
+    },
+    "cta": {
+      "title": "Ready to start your success?",
+      "subtitle": "Book your free consultation now"
+    }
+  },
+  "contact": {
+    "title": "Let's Get In Touch.",
+    "subtitle": "Or just reach out manually to",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "emailAddress": "Email Address",
+    "phoneNumber": "Phone Number",
+    "message": "Message",
+    "enterFirstName": "Enter your first name...",
+    "enterLastName": "Enter your last name...",
+    "enterEmail": "Enter your email address...",
+    "enterPhone": "+49 (000) 000-0000",
+    "enterMessage": "Enter your message here...",
+    "submitForm": "Submit Form"
+  },
+  "login": {
+    "welcomeBack": "Welcome back",
+    "createAccount": "Create an account",
+    "loginDescription": "Login to your NextGrades account",
+    "signupDescription": "Sign up and get premium tutoring",
+    "iAmLoggingInAs": "I am logging in as...",
+    "iAmA": "I am a...",
+    "student": "Student",
+    "studentLogin": "Student login",
+    "iWantToLearn": "I want to learn",
+    "teacher": "Teacher",
+    "teacherLogin": "Teacher login",
+    "iWantToTeach": "I want to teach",
+    "fullName": "Full name",
+    "email": "Email",
+    "password": "Password",
+    "forgot": "Forgot?",
+    "loginNow": "Login now",
+    "createAccountNow": "Create account",
+    "loading": "Loading...",
+    "orContinueWith": "or continue with",
+    "apple": "Apple",
+    "google": "Google",
+    "alreadyHaveAccount": "Already have an account?",
+    "dontHaveAccount": "Don't have an account?",
+    "signIn": "Sign in",
+    "signUp": "Sign up",
+    "terms": "Terms & Conditions",
+    "smartLearning": "Smart Learning, Better Results.",
+    "dailyMeeting": "Daily Meeting",
+    "supabaseNotConfigured": "Supabase credentials are not configured. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in .env.local."
+  },
+  "about": {
+    "heroTitle": "More than tutoring.",
+    "heroTitle2": "A new vision for education.",
+    "heroSubtitle": "We have set ourselves the task of providing students with a modern, structured and motivating learning environment – online, flexible and at the highest level.",
+    "heroFeature1": "High-quality content",
+    "heroFeature1Desc": "Created by experienced teachers.",
+    "heroFeature2": "Free & helpful",
+    "heroFeature2Desc": "Developed for learning.",
+    "heroFeature3": "For all subjects",
+    "heroFeature3Desc": "Materials for all important school subjects.",
+    "storyTitle": "How it all began",
+    "principlesTitle": "Our Principles for Your Success",
+    "teamTitle": "The People Behind NextGrades",
+    "teamSubtitle": "A team of passionate teachers, learning experts and visionaries.",
+    "milestonesTitle": "Milestones",
+    "ctaTitle": "Unlock even more exclusive content",
+    "ctaSubtitle": "Discover access to all premium materials, learning videos, dozens of mini-courses and much more.",
+    "ctaButton": "Become a member now"
+  },
+  "resources": {
+    "heroTitle": "Knowledge that helps you progress.",
+    "heroSubtitle": "Discover free materials, useful guides and valuable tips to support your learning.",
+    "heroFeature1": "High-quality content",
+    "heroFeature1Desc": "Created by experienced teachers.",
+    "heroFeature2": "Free & helpful",
+    "heroFeature2Desc": "Developed for learning.",
+    "heroFeature3": "For all subjects",
+    "heroFeature3Desc": "Materials for all important school subjects.",
+    "topBarResults": "Results",
+    "searchPlaceholder": "Search materials...",
+    "sortBy": "Sort by:",
+    "sortNewest": "Newest first",
+    "sortOldest": "Oldest first",
+    "sortPopular": "Most popular",
+    "freeTitle": "Free Content",
+    "freeSubtitle": "Available for everyone",
+    "freeShowAll": "Show all",
+    "premiumTitle": "PREMIUM Content",
+    "premiumSubtitle": "Members only",
+    "premiumShowAll": "Show all",
+    "resourcesBySubject": "Resources by Subject",
+    "explore": "Explore →",
+    "ctaTitle": "Unlock even more exclusive content",
+    "ctaSubtitle": "Discover access to all premium materials, learning videos, dozens of mini-courses and much more.",
+    "ctaButton": "Become a member now",
+    "features": {
+      "feature1Title": "Structured by curriculum",
+      "feature1Desc": "Learning content tailored to the curriculum.",
+      "feature2Title": "Regularly updated",
+      "feature2Desc": "Always up-to-date content.",
+      "feature3Title": "Created by experts",
+      "feature3Desc": "Created by educators and teachers.",
+      "feature4Title": "Safe & good",
+      "feature4Desc": "Optimally prepared for students."
+    },
+    "filters": {
+      "title": "Filters",
+      "subject": "Subject",
+      "grade": "Grade",
+      "semester": "Semester",
+      "materialType": "Material Type",
+      "access": "Access",
+      "accessAll": "All Content",
+      "accessFree": "Free Content",
+      "accessPremium": "Premium Content",
+      "reset": "Reset filters"
+    }
+  },
+  "dashboard": {
+    "student": {
+      "welcomeBack": "Welcome back!",
+      "overview": "Overview",
+      "myCourses": "My Courses",
+      "myGrades": "My Grades",
+      "upcomingLessons": "Upcoming Lessons",
+      "learningMaterials": "Learning Materials",
+      "settings": "Settings"
+    },
+    "teacher": {
+      "welcomeBack": "Welcome back!",
+      "overview": "Overview",
+      "myStudents": "My Students",
+      "mySchedule": "My Schedule",
+      "materials": "Materials",
+      "settings": "Settings"
+    }
+  },
+  "admin": {
+    "title": "Admin Dashboard",
+    "users": "Users",
+    "courses": "Courses",
+    "analytics": "Analytics",
+    "settings": "Settings"
+  },
+  "pricing": {
+    "title": "Pricing",
+    "subtitle": "Choose the right package for you"
+  },
+  "programs": {
+    "title": "Our Programs",
+    "subtitle": "The right support for every learning goal"
+  },
+  "subjects": {
+    "title": "Our Subjects",
+    "subtitle": "Choose your subject"
+  },
+  "careers": {
+    "title": "Careers at NextGrades",
+    "subtitle": "Become part of our team"
+  },
+  "help": {
+    "title": "Help & Support",
+    "subtitle": "Find answers to your questions"
+  },
+  "aiGenerator": {
+    "title": "AI Generator",
+    "subtitle": "Create learning materials with AI"
+  },
+  "consultation": {
+    "title": "Free Consultation",
+    "subtitle": "Book your free consultation now"
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "subtitle": "How we protect your data"
+  },
+  "terms": {
+    "title": "Terms & Conditions",
+    "subtitle": "Our General Terms and Conditions"
+  }
+}

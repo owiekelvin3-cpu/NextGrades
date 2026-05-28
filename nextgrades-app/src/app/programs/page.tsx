@@ -37,7 +37,7 @@ export default function ProgramsPage() {
         "Flexible Termine!",
         "Maßnahme erfahren & Fokus"
       ],
-      image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&h=400&fit=crop",
+      image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=600&h=400&fit=crop",
       featured: false,
       price: "ab 45€ / Stunde"
     },
@@ -52,7 +52,7 @@ export default function ProgramsPage() {
         "Günstiger als 1:1 Nachhilfe",
         "Gemeinsame Fortschritte"
       ],
-      image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=600&h=400&fit=crop",
+      image: "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=600&h=400&fit=crop",
       featured: false,
       price: "ab 30€ / Schüler:in"
     },
@@ -67,7 +67,7 @@ export default function ProgramsPage() {
         "Matura-Vorbereitung & Strategien",
         "Support zwischen den Sessions"
       ],
-      image: "https://images.unsplash.com/photo-1498243691581-b145c3f54a5a?w=600&h=400&fit=crop",
+      image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&h=400&fit=crop",
       featured: true,
       price: "ab 99€ / Monat"
     }

@@ -9,7 +9,7 @@ import Footer from "@/components/Footer";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
-import { CheckCircle2, X, ArrowRight } from "lucide-react";
+import { CheckCircle2, ArrowRight } from "lucide-react";
 
 export default function PricingPage() {
   const [isYearly, setIsYearly] = useState(false);
@@ -64,7 +64,7 @@ export default function PricingPage() {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       
-      <main className="flex-1 pt-32 pb-24 bg-gray-50">
+      <main className="flex-1 pt-32 pb-24 bg-[#FAFAFA]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -74,7 +74,7 @@ export default function PricingPage() {
             <Badge variant="gold" className="mb-4">
               💎 Premium-Pläne
             </Badge>
-            <h1 className="text-4xl md:text-5xl font-bold text-deep-navy mb-6">
+            <h1 className="text-4xl md:text-5xl font-bold text-[#0D1B2A] mb-6">
               Wähle deinen perfekten Plan
             </h1>
             <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
@@ -86,7 +86,7 @@ export default function PricingPage() {
               <button
                 onClick={() => setIsYearly(false)}
                 className={`px-6 py-2 rounded-lg font-medium transition-all ${
-                  !isYearly ? "bg-deep-navy text-white" : "text-gray-600"
+                  !isYearly ? "bg-[#0D1B2A] text-white" : "text-gray-600"
                 }`}
               >
                 Monatlich
@@ -94,7 +94,7 @@ export default function PricingPage() {
               <button
                 onClick={() => setIsYearly(true)}
                 className={`px-6 py-2 rounded-lg font-medium transition-all ${
-                  isYearly ? "bg-soft-gold text-deep-navy" : "text-gray-600"
+                  isYearly ? "bg-[#D4AF37] text-[#0D1B2A]" : "text-gray-600"
                 }`}
               >
                 Jährlich <span className="text-sm ml-2">(2 Monate kostenlos)</span>
@@ -112,7 +112,7 @@ export default function PricingPage() {
               >
                 <Card
                   className={`p-8 h-full flex flex-col relative overflow-hidden ${
-                    plan.highlighted ? "border-2 border-soft-gold shadow-xl scale-105 z-10" : ""
+                    plan.highlighted ? "border-2 border-[#D4AF37] shadow-xl scale-105 z-10" : ""
                   }`}
                 >
                   {plan.highlighted && (
@@ -124,7 +124,7 @@ export default function PricingPage() {
                   )}
                   
                   <div className="mb-8">
-                    <h3 className="text-2xl font-bold text-deep-navy mb-2">
+                    <h3 className="text-2xl font-bold text-[#0D1B2A] mb-2">
                       {plan.name}
                     </h3>
                     <p className="text-gray-600">{plan.description}</p>
@@ -132,7 +132,7 @@ export default function PricingPage() {
 
                   <div className="mb-8">
                     <div className="flex items-baseline gap-1">
-                      <span className="text-4xl font-bold text-deep-navy">
+                      <span className="text-4xl font-bold text-[#0D1B2A]">
                         €{isYearly ? plan.yearlyPrice : plan.monthlyPrice}
                       </span>
                       <span className="text-gray-500">
@@ -145,7 +145,7 @@ export default function PricingPage() {
                     <ul className="space-y-4">
                       {plan.features.map((feature, i) => (
                         <li key={i} className="flex items-start gap-3">
-                          <CheckCircle2 className="w-5 h-5 text-soft-gold flex-shrink-0 mt-0.5" />
+                          <CheckCircle2 className="w-5 h-5 text-[#D4AF37] flex-shrink-0 mt-0.5" />
                           <span className="text-gray-700">{feature}</span>
                         </li>
                       ))}
@@ -154,7 +154,7 @@ export default function PricingPage() {
 
                   <Link href="/consultation">
                     <Button
-                      variant={plan.highlighted ? "gold" : "primary"}
+                      variant={plan.highlighted ? "gold" : "dark"}
                       size="xl"
                       className="w-full"
                     >
@@ -173,7 +173,7 @@ export default function PricingPage() {
             className="mt-16 text-center"
           >
             <Card className="p-8 max-w-3xl mx-auto">
-              <h2 className="text-2xl font-bold text-deep-navy mb-4">
+              <h2 className="text-2xl font-bold text-[#0D1B2A] mb-4">
                 Nicht sicher, welcher Plan der richtige ist?
               </h2>
               <p className="text-gray-600 mb-6">

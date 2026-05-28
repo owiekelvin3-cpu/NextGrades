@@ -16,6 +16,47 @@
   
   --background: #FFFFFF;
   --foreground: #0D1B2A;
+  
+  --card-background: #FFFFFF;
+  --card-foreground: #0D1B2A;
+  --card-border: #E5E7EB;
+  --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  
+  --input-background: #FFFFFF;
+  --input-foreground: #0D1B2A;
+  --input-border: #E5E7EB;
+  --input-placeholder: #9CA3AF;
+  
+  --button-primary-background: #D4AF37;
+  --button-primary-foreground: #0D1B2A;
+  --button-secondary-background: #0D1B2A;
+  --button-secondary-foreground: #FFFFFF;
+  --button-outline-background: transparent;
+  --button-outline-foreground: #0D1B2A;
+  --button-outline-border: #0D1B2A;
+}
+
+.dark {
+  --background: #0D1B2A;
+  --foreground: #FFFFFF;
+  
+  --card-background: #112240;
+  --card-foreground: #FFFFFF;
+  --card-border: rgba(255, 255, 255, 0.1);
+  --card-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 40px rgba(212, 175, 55, 0.1);
+  
+  --input-background: #0D1B2A;
+  --input-foreground: #FFFFFF;
+  --input-border: rgba(255, 255, 255, 0.15);
+  --input-placeholder: #64748B;
+  
+  --button-primary-background: linear-gradient(135deg, #D4AF37 0%, #F5A623 100%);
+  --button-primary-foreground: #0D1B2A;
+  --button-secondary-background: linear-gradient(135deg, #1E3A5F 0%, #0D1B2A 100%);
+  --button-secondary-foreground: #FFFFFF;
+  --button-outline-background: transparent;
+  --button-outline-foreground: #FFFFFF;
+  --button-outline-border: rgba(255, 255, 255, 0.3);
 }
 
 @theme inline {
@@ -34,6 +75,14 @@
   
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-card-background: var(--card-background);
+  --color-card-foreground: var(--card-foreground);
+  --color-card-border: var(--card-border);
+  --color-input-background: var(--input-background);
+  --color-input-foreground: var(--input-foreground);
+  --color-input-border: var(--input-border);
+  --color-input-placeholder: var(--input-placeholder);
+  
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -46,6 +95,7 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 .gradient-gold {
@@ -82,4 +132,11 @@ body {
   animation-delay: -3s;
 }
 
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(212, 175, 55, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(212, 175, 55, 0.6); }
+}
 
+.animate-glow {
+  animation: glow 3s ease-in-out infinite;
+}

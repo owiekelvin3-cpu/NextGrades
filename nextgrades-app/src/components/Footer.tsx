@@ -1,68 +1,86 @@
 
+"use client";
+
 import Link from "next/link";
-import { Button } from "./ui/Button";
+import { useTheme } from "@/context/ThemeContext";
+import { useTranslation } from "react-i18next";
 
 export default function Footer() {
+  const { theme } = useTheme();
+  const { t } = useTranslation();
+
   return (
-    <footer className="bg-[#0D1B2A] text-white pt-16 pb-8">
+    <footer className={`pt-16 pb-8 ${theme === "dark" ? "bg-[#0D1B2A] text-white" : "bg-white text-[#0D1B2A] border-t border-gray-100"}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-10 mb-12">
           <div className="lg:col-span-2">
             <div className="flex items-center gap-2 mb-4">
               <img
-                src="/logo.png"
+                src={theme === "dark" ? "/logo-dark.png" : "/logo-light.png"}
                 alt="NextGrades Logo"
                 className="h-12 w-auto"
               />
             </div>
-            <p className="text-gray-400 mb-4 max-w-md">
-              Smarter Learning. Better Results.
+            <p className={`mb-4 max-w-md ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+              {t("login.smartLearning")}
             </p>
+            <div className="flex items-center gap-3">
+              <video
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="h-8 w-auto rounded shadow-md object-cover"
+              >
+                <source src="/germany-flag.mp4" type="video/mp4" />
+              </video>
+              <p className={`text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>{t("footer.madeInGermany")}</p>
+            </div>
           </div>
 
           <div>
-            <h4 className="text-lg font-semibold mb-5 text-white">Programs</h4>
+            <h4 className={`text-lg font-semibold mb-5 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>{t("footer.programs")}</h4>
             <ul className="space-y-3">
-              <FooterLink href="/programs">1:1 Tutoring</FooterLink>
-              <FooterLink href="/programs">Small Group Learning</FooterLink>
-              <FooterLink href="/programs">Math Excellence Program</FooterLink>
-              <FooterLink href="/programs">Exam Preparation</FooterLink>
+              <FooterLink href="/programs" theme={theme}>{t("footer.program1")}</FooterLink>
+              <FooterLink href="/programs" theme={theme}>{t("footer.program2")}</FooterLink>
+              <FooterLink href="/programs" theme={theme}>{t("footer.program3")}</FooterLink>
+              <FooterLink href="/programs" theme={theme}>{t("footer.program4")}</FooterLink>
             </ul>
           </div>
 
           <div>
-            <h4 className="text-lg font-semibold mb-5 text-white">Resources</h4>
+            <h4 className={`text-lg font-semibold mb-5 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>{t("footer.resources")}</h4>
             <ul className="space-y-3">
-              <FooterLink href="/resources">Study Materials</FooterLink>
-              <FooterLink href="/resources">Worksheets</FooterLink>
-              <FooterLink href="/resources">Explainer Videos</FooterLink>
-              <FooterLink href="/resources">Exam Prep</FooterLink>
+              <FooterLink href="/resources" theme={theme}>{t("footer.resource1")}</FooterLink>
+              <FooterLink href="/resources" theme={theme}>{t("footer.resource2")}</FooterLink>
+              <FooterLink href="/resources" theme={theme}>{t("footer.resource3")}</FooterLink>
+              <FooterLink href="/resources" theme={theme}>{t("footer.resource4")}</FooterLink>
             </ul>
           </div>
 
           <div>
-            <h4 className="text-lg font-semibold mb-5 text-white">Company</h4>
+            <h4 className={`text-lg font-semibold mb-5 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>{t("footer.company")}</h4>
             <ul className="space-y-3">
-              <FooterLink href="/about">About Us</FooterLink>
-              <FooterLink href="/careers">Careers</FooterLink>
-              <FooterLink href="/contact">Contact</FooterLink>
-              <FooterLink href="/help">Help Center</FooterLink>
+              <FooterLink href="/about" theme={theme}>{t("common.about")}</FooterLink>
+              <FooterLink href="/careers" theme={theme}>{t("common.careers")}</FooterLink>
+              <FooterLink href="/contact" theme={theme}>{t("common.contact")}</FooterLink>
+              <FooterLink href="/help" theme={theme}>{t("common.help")}</FooterLink>
             </ul>
           </div>
 
           <div>
-            <h4 className="text-lg font-semibold mb-5 text-white">Legal</h4>
+            <h4 className={`text-lg font-semibold mb-5 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>{t("footer.legal")}</h4>
             <ul className="space-y-3">
-              <FooterLink href="/privacy">Privacy Policy</FooterLink>
-              <FooterLink href="/terms">Terms of Service</FooterLink>
-              <FooterLink href="/contact">Imprint</FooterLink>
+              <FooterLink href="/privacy" theme={theme}>{t("footer.privacy")}</FooterLink>
+              <FooterLink href="/terms" theme={theme}>{t("footer.terms")}</FooterLink>
+              <FooterLink href="/contact" theme={theme}>{t("footer.imprint")}</FooterLink>
             </ul>
           </div>
         </div>
 
-        <div className="border-t border-white/10 pt-8">
-          <p className="text-gray-500 text-sm text-center">
-            &copy; 2026 NextGrades. All rights reserved.
+        <div className={`border-t pt-8 ${theme === "dark" ? "border-white/10" : "border-gray-100"}`}>
+          <p className={`text-sm text-center ${theme === "dark" ? "text-gray-500" : "text-gray-500"}`}>
+            {t("footer.copyright")}
           </p>
         </div>
       </div>
@@ -70,9 +88,16 @@ export default function Footer() {
   );
 }
 
-function FooterLink({ href, children }: { href: string; children: React.ReactNode }) {
+function FooterLink({ href, children, theme }: { href: string; children: React.ReactNode; theme: "dark" | "light" }) {
   return (
-    <Link href={href} className="text-gray-400 hover:text-[#D4AF37] transition-colors text-sm">
+    <Link 
+      href={href} 
+      className={`transition-colors text-sm ${
+        theme === "dark" 
+          ? "text-gray-400 hover:text-[#D4AF37]" 
+          : "text-gray-600 hover:text-[#D4AF37]"
+      }`}
+    >
       {children}
     </Link>
   );

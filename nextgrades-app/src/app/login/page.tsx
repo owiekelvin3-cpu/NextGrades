@@ -2,40 +2,87 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useTheme } from "@/context/ThemeContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/Button";
-import { Eye, EyeOff, CheckCircle2, X, User, Mail, Lock } from "lucide-react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faEye,
+  faEyeSlash,
+  faCheckCircle,
+  faXmark,
+  faUser,
+  faEnvelope,
+  faLock,
+} from "@fortawesome/free-solid-svg-icons";
+import {
+  faApple,
+  faGoogle,
+} from "@fortawesome/free-brands-svg-icons";
+import { useTranslation } from "react-i18next";
 
 export default function LoginPage() {
   const [isSignup, setIsSignup] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [selectedRole, setSelectedRole] = useState<"student" | "teacher">("student");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const { theme } = useTheme();
+  const router = useRouter();
+  const { t } = useTranslation();
+
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    try {
+      router.push(`/dashboard/${selectedRole}`);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
 
-      <main className="flex-1 flex items-center justify-center py-24 px-4 bg-gradient-to-br from-[#0D1B2A] to-[#112240]">
+      <main className="flex-1 flex items-center justify-center py-24 px-4">
         <div className="w-full max-w-6xl">
           {/* Main Card */}
-          <div className="bg-gradient-to-br from-white/90 to-[#D4AF37]/10 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 overflow-hidden">
+          <div className={`bg-gradient-to-br ${theme === "dark" ? "from-white/10 to-[#D4AF37]/10" : "from-white/90 to-[#D4AF37]/10"} backdrop-blur-xl rounded-3xl shadow-2xl border ${theme === "dark" ? "border-white/20" : "border-white/20"} overflow-hidden`}>
             <div className="grid lg:grid-cols-2">
               {/* Left Side - Form */}
               <div className="p-8 sm:p-12 lg:p-16">
                 <div className="max-w-md mx-auto">
-                  <h1 className="text-3xl font-bold text-[#0D1B2A] mb-2">
-                    {isSignup ? "Create an account" : "Welcome back"}
+                  <h1 className={`text-3xl font-bold mb-2 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
+                    {isSignup ? t("login.createAccount") : t("login.welcomeBack")}
                   </h1>
-                  <p className="text-gray-600 mb-8">
-                    {isSignup ? "Sign up and get premium tutoring" : "Login to your NextGrades account"}
+                  <p className={`mb-8 ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>
+                    {isSignup ? t("login.signupDescription") : t("login.loginDescription")}
                   </p>
+
+                  {error && (
+                    <div className={`mb-6 p-4 rounded-2xl text-sm ${theme === "dark" ? "bg-red-900/20 border border-red-500/30 text-red-400" : "bg-red-50 border border-red-200 text-red-700"}`}>
+                      {error}
+                    </div>
+                  )}
 
                   {/* Role Selection (for both) */}
                   {!isSignup && (
                     <div className="space-y-2 mb-7">
-                      <label className="text-sm font-semibold text-gray-700">I am logging in as...</label>
+                      <label className={`text-sm font-semibold ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>{t("login.iAmLoggingInAs")}</label>
                       <div className="grid grid-cols-2 gap-4">
                         <button
                           type="button"
@@ -43,14 +90,16 @@ export default function LoginPage() {
                           className={`p-5 rounded-2xl border-2 transition-all text-left ${
                             selectedRole === "student"
                               ? "border-[#D4AF37] bg-[#D4AF37]/10"
+                              : theme === "dark"
+                              ? "border-white/10 bg-[#112240] hover:border-[#D4AF37]/40"
                               : "border-gray-200 bg-white hover:border-[#D4AF37]/40"
                           }`}
                         >
-                          <div className="w-12 h-12 rounded-full bg-[#0D1B2A]/10 flex items-center justify-center mb-3">
-                            <User className="w-6 h-6 text-[#0D1B2A]" />
+                          <div className="w-12 h-12 rounded-full bg-[#0D1B2A]/10 dark:bg-white/10 flex items-center justify-center mb-3">
+                            <FontAwesomeIcon icon={faUser} className={`w-6 h-6 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`} />
                           </div>
-                          <h3 className="font-bold text-[#0D1B2A]">Student</h3>
-                          <p className="text-xs text-gray-500 mt-1">Student login</p>
+                          <h3 className={`font-bold ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>{t("login.student")}</h3>
+                          <p className={`text-xs mt-1 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>{t("login.studentLogin")}</p>
                         </button>
 
                         <button
@@ -59,39 +108,47 @@ export default function LoginPage() {
                           className={`p-5 rounded-2xl border-2 transition-all text-left ${
                             selectedRole === "teacher"
                               ? "border-[#D4AF37] bg-[#D4AF37]/10"
+                              : theme === "dark"
+                              ? "border-white/10 bg-[#112240] hover:border-[#D4AF37]/40"
                               : "border-gray-200 bg-white hover:border-[#D4AF37]/40"
                           }`}
                         >
-                          <div className="w-12 h-12 rounded-full bg-[#0D1B2A]/10 flex items-center justify-center mb-3">
-                            <User className="w-6 h-6 text-[#0D1B2A]" />
+                          <div className="w-12 h-12 rounded-full bg-[#0D1B2A]/10 dark:bg-white/10 flex items-center justify-center mb-3">
+                            <FontAwesomeIcon icon={faUser} className={`w-6 h-6 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`} />
                           </div>
-                          <h3 className="font-bold text-[#0D1B2A]">Teacher</h3>
-                          <p className="text-xs text-gray-500 mt-1">Teacher login</p>
+                          <h3 className={`font-bold ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>{t("login.teacher")}</h3>
+                          <p className={`text-xs mt-1 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>{t("login.teacherLogin")}</p>
                         </button>
                       </div>
                     </div>
                   )}
 
                   {/* Form */}
-                  <form className="space-y-5">
+                  <form className="space-y-5" onSubmit={handleSubmit}>
                     {isSignup && (
                       <>
                         <div className="space-y-1">
-                          <label className="text-sm font-semibold text-gray-700">Full name</label>
+                          <label className={`text-sm font-semibold ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>{t("login.fullName")}</label>
                           <div className="relative">
                             <div className="absolute left-4 top-1/2 -translate-y-1/2">
-                              <User className="w-5 h-5 text-gray-400" />
+                              <FontAwesomeIcon icon={faUser} className="w-5 h-5 text-gray-400" />
                             </div>
                             <input
                               type="text"
                               placeholder="Lisa Schmidt"
-                              className="w-full pl-12 pr-5 py-4 rounded-2xl border border-gray-200 bg-white focus:outline-none focus:border-[#D4AF37] focus:ring-4 focus:ring-[#D4AF37]/10 transition-all text-[#0D1B2A]"
+                              value={formData.name}
+                              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                              className={`w-full pl-12 pr-5 py-4 rounded-2xl border transition-all ${
+                                theme === "dark"
+                                  ? "border-white/10 bg-[#112240] text-white placeholder:text-gray-400"
+                                  : "border-gray-200 bg-white text-[#0D1B2A] placeholder:text-gray-400"
+                              } focus:outline-none focus:border-[#D4AF37] focus:ring-4 focus:ring-[#D4AF37]/10`}
                             />
                           </div>
                         </div>
 
                         <div className="space-y-2">
-                          <label className="text-sm font-semibold text-gray-700">I am a...</label>
+                          <label className={`text-sm font-semibold ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>{t("login.iAmA")}</label>
                           <div className="grid grid-cols-2 gap-4">
                             <button
                               type="button"
@@ -99,14 +156,16 @@ export default function LoginPage() {
                               className={`p-5 rounded-2xl border-2 transition-all text-left ${
                                 selectedRole === "student"
                                   ? "border-[#D4AF37] bg-[#D4AF37]/10"
+                                  : theme === "dark"
+                                  ? "border-white/10 bg-[#112240] hover:border-[#D4AF37]/40"
                                   : "border-gray-200 bg-white hover:border-[#D4AF37]/40"
                               }`}
                             >
-                              <div className="w-12 h-12 rounded-full bg-[#0D1B2A]/10 flex items-center justify-center mb-3">
-                                <User className="w-6 h-6 text-[#0D1B2A]" />
+                              <div className="w-12 h-12 rounded-full bg-[#0D1B2A]/10 dark:bg-white/10 flex items-center justify-center mb-3">
+                                <FontAwesomeIcon icon={faUser} className={`w-6 h-6 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`} />
                               </div>
-                              <h3 className="font-bold text-[#0D1B2A]">Student</h3>
-                              <p className="text-xs text-gray-500 mt-1">I want to learn</p>
+                              <h3 className={`font-bold ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>{t("login.student")}</h3>
+                              <p className={`text-xs mt-1 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>{t("login.iWantToLearn")}</p>
                             </button>
 
                             <button
@@ -115,14 +174,16 @@ export default function LoginPage() {
                               className={`p-5 rounded-2xl border-2 transition-all text-left ${
                                 selectedRole === "teacher"
                                   ? "border-[#D4AF37] bg-[#D4AF37]/10"
+                                  : theme === "dark"
+                                  ? "border-white/10 bg-[#112240] hover:border-[#D4AF37]/40"
                                   : "border-gray-200 bg-white hover:border-[#D4AF37]/40"
                               }`}
                             >
-                              <div className="w-12 h-12 rounded-full bg-[#0D1B2A]/10 flex items-center justify-center mb-3">
-                                <User className="w-6 h-6 text-[#0D1B2A]" />
+                              <div className="w-12 h-12 rounded-full bg-[#0D1B2A]/10 dark:bg-white/10 flex items-center justify-center mb-3">
+                                <FontAwesomeIcon icon={faUser} className={`w-6 h-6 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`} />
                               </div>
-                              <h3 className="font-bold text-[#0D1B2A]">Teacher</h3>
-                              <p className="text-xs text-gray-500 mt-1">I want to teach</p>
+                              <h3 className={`font-bold ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>{t("login.teacher")}</h3>
+                              <p className={`text-xs mt-1 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>{t("login.iWantToTeach")}</p>
                             </button>
                           </div>
                         </div>
@@ -130,46 +191,61 @@ export default function LoginPage() {
                     )}
 
                     <div className="space-y-1">
-                      <label className="text-sm font-semibold text-gray-700">Email</label>
+                      <label className={`text-sm font-semibold ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>{t("login.email")}</label>
                       <div className="relative">
                         <div className="absolute left-4 top-1/2 -translate-y-1/2">
-                          <Mail className="w-5 h-5 text-gray-400" />
+                          <FontAwesomeIcon icon={faEnvelope} className="w-5 h-5 text-gray-400" />
                         </div>
                         <input
                           type="email"
                           placeholder="lisa.schmidt@example.com"
-                          className="w-full pl-12 pr-5 py-4 rounded-2xl border border-gray-200 bg-white focus:outline-none focus:border-[#D4AF37] focus:ring-4 focus:ring-[#D4AF37]/10 transition-all text-[#0D1B2A]"
+                          value={formData.email}
+                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                          className={`w-full pl-12 pr-5 py-4 rounded-2xl border transition-all ${
+                            theme === "dark"
+                              ? "border-white/10 bg-[#112240] text-white placeholder:text-gray-400"
+                              : "border-gray-200 bg-white text-[#0D1B2A] placeholder:text-gray-400"
+                          } focus:outline-none focus:border-[#D4AF37] focus:ring-4 focus:ring-[#D4AF37]/10`}
                         />
                       </div>
                     </div>
 
                     <div className="space-y-1">
                       <div className="flex justify-between items-center">
-                        <label className="text-sm font-semibold text-gray-700">Password</label>
+                        <label className={`text-sm font-semibold ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>{t("login.password")}</label>
                         {!isSignup && (
                           <Link
                             href="/forgot-password"
                             className="text-sm font-semibold text-[#D4AF37] hover:text-[#b8900f] transition-colors"
                           >
-                            Forgot?
+                            {t("login.forgot")}
                           </Link>
                         )}
                       </div>
                       <div className="relative">
                         <div className="absolute left-4 top-1/2 -translate-y-1/2">
-                          <Lock className="w-5 h-5 text-gray-400" />
+                          <FontAwesomeIcon icon={faLock} className="w-5 h-5 text-gray-400" />
                         </div>
                         <input
                           type={showPassword ? "text" : "password"}
                           placeholder="••••••••"
-                          className="w-full pl-12 pr-14 py-4 rounded-2xl border border-gray-200 bg-white focus:outline-none focus:border-[#D4AF37] focus:ring-4 focus:ring-[#D4AF37]/10 transition-all text-[#0D1B2A]"
+                          value={formData.password}
+                          onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                          className={`w-full pl-12 pr-14 py-4 rounded-2xl border transition-all ${
+                            theme === "dark"
+                              ? "border-white/10 bg-[#112240] text-white placeholder:text-gray-400"
+                              : "border-gray-200 bg-white text-[#0D1B2A] placeholder:text-gray-400"
+                          } focus:outline-none focus:border-[#D4AF37] focus:ring-4 focus:ring-[#D4AF37]/10`}
                         />
                         <button
                           type="button"
                           onClick={() => setShowPassword(!showPassword)}
                           className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#D4AF37] transition-colors"
                         >
-                          {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                          <FontAwesomeIcon
+                            icon={showPassword ? faEyeSlash : faEye}
+                            className="w-5 h-5"
+                          />
                         </button>
                       </div>
                     </div>
@@ -178,18 +254,19 @@ export default function LoginPage() {
                       variant="gold"
                       size="xl"
                       className="w-full !rounded-2xl mt-7"
+                      disabled={loading}
                     >
-                      {isSignup ? "Create account" : "Login now"}
+                      {loading ? t("login.loading") : isSignup ? t("login.createAccountNow") : t("login.loginNow")}
                     </Button>
 
                     {/* Divider */}
                     <div className="relative my-8">
                       <div className="absolute inset-0 flex items-center">
-                        <div className="w-full border-t border-gray-200" />
+                        <div className={`w-full border-t ${theme === "dark" ? "border-white/10" : "border-gray-200"}`} />
                       </div>
                       <div className="relative flex justify-center text-sm">
-                        <span className="px-4 bg-white text-gray-500 font-medium">
-                          or continue with
+                        <span className={`px-4 ${theme === "dark" ? "bg-[#0D1B2A] text-gray-400" : "bg-white text-gray-500"} font-medium`}>
+                          {t("login.orContinueWith")}
                         </span>
                       </div>
                     </div>
@@ -198,47 +275,45 @@ export default function LoginPage() {
                     <div className="grid grid-cols-2 gap-4">
                       <button
                         type="button"
-                        className="flex items-center justify-center gap-3 py-4 px-6 rounded-2xl border border-gray-200 bg-white hover:border-[#D4AF37]/30 hover:bg-[#D4AF37]/5 transition-all"
+                        className={`flex items-center justify-center gap-3 py-4 px-6 rounded-2xl border transition-all ${
+                          theme === "dark"
+                            ? "border-white/10 bg-[#112240] hover:border-[#D4AF37]/30 hover:bg-[#D4AF37]/5 text-white"
+                            : "border-gray-200 bg-white hover:border-[#D4AF37]/30 hover:bg-[#D4AF37]/5 text-gray-700"
+                        }`}
                       >
-                        <svg className="w-5 h-5" viewBox="0 0 24 24">
-                          <path
-                            fill="#000000"
-                            d="M12.152 6.348c0 .006 0 .012 0 .018 0 .733-.258 1.427-.742 1.959-.484.532-1.164.859-1.929.859-.765 0-1.445-.327-1.929-.859-.484-.532-.742-1.226-.742-1.959 0-.733.258-1.427.742-1.959.484-.532 1.164-.859 1.929-.859.765 0 1.445.327 1.929.859.484.532.742 1.226.742 1.959 0 .006 0 .012 0 .018z"
-                          />
-                        </svg>
-                        <span className="text-sm font-semibold text-gray-700">Apple</span>
+                        <FontAwesomeIcon icon={faApple} className="w-5 h-5" />
+                        <span className="text-sm font-semibold">{t("login.apple")}</span>
                       </button>
                       <button
                         type="button"
-                        className="flex items-center justify-center gap-3 py-4 px-6 rounded-2xl border border-gray-200 bg-white hover:border-[#D4AF37]/30 hover:bg-[#D4AF37]/5 transition-all"
+                        className={`flex items-center justify-center gap-3 py-4 px-6 rounded-2xl border transition-all ${
+                          theme === "dark"
+                            ? "border-white/10 bg-[#112240] hover:border-[#D4AF37]/30 hover:bg-[#D4AF37]/5 text-white"
+                            : "border-gray-200 bg-white hover:border-[#D4AF37]/30 hover:bg-[#D4AF37]/5 text-gray-700"
+                        }`}
                       >
-                        <svg className="w-5 h-5" viewBox="0 0 24 24">
-                          <path
-                          fill="#000000"
-                          d="M21.35 10.042c0-7.667-6.235-13.822-13.904-13.822-7.669 0-13.904 6.155-13.904 13.822 0 6.691 5.349 12.322 12.773 13.618v-9.638H8.116v-3.982h3.19V9.88c0-3.162 1.879-4.903 4.757-4.903 1.374 0 2.816.245 2.816.245v3.107H16.1c-1.56 0-2.045.972-2.045 1.963v2.371h3.474l-.554 3.982h-2.92v9.638c7.424-1.296 12.903-6.927 12.903-13.618z"
-                          />
-                        </svg>
-                        <span className="text-sm font-semibold text-gray-700">Google</span>
+                        <FontAwesomeIcon icon={faGoogle} className="w-5 h-5" />
+                        <span className="text-sm font-semibold">{t("login.google")}</span>
                       </button>
                     </div>
                   </form>
 
                   <div className="mt-16 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm">
-                    <p className="text-gray-500">
-                      {isSignup ? "Already have an account?" : "Don't have an account?"}
+                    <p className={`${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>
+                      {isSignup ? t("login.alreadyHaveAccount") : t("login.dontHaveAccount")}
                       <button
                         onClick={() => setIsSignup(!isSignup)}
                         className="ml-2 font-bold text-[#D4AF37] hover:text-[#b8900f] transition-colors"
                       >
-                        {isSignup ? "Sign in" : "Sign up"}
+                        {isSignup ? t("login.signIn") : t("login.signUp")}
                       </button>
                     </p>
 
                     <Link
                       href="/terms"
-                      className="text-gray-500 hover:text-[#D4AF37] transition-colors font-semibold underline underline-offset-2"
+                      className={`${theme === "dark" ? "text-gray-400 hover:text-[#D4AF37]" : "text-gray-500 hover:text-[#D4AF37]"} transition-colors font-semibold underline underline-offset-2`}
                     >
-                      Terms & Conditions
+                      {t("login.terms")}
                     </Link>
                   </div>
                 </div>
@@ -259,7 +334,7 @@ export default function LoginPage() {
                   {/* Decorative Elements */}
                   <div className="absolute top-8 right-8">
                     <button className="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center shadow-xl">
-                      <X className="w-5 h-5 text-[#0D1B2A]" />
+                      <FontAwesomeIcon icon={faXmark} className="w-5 h-5 text-[#0D1B2A]" />
                     </button>
                   </div>
 
@@ -267,7 +342,7 @@ export default function LoginPage() {
                   <div className="absolute top-16 left-8 right-24">
                     <div className="bg-[#D4AF37] rounded-2xl p-4 shadow-2xl">
                       <p className="text-sm font-semibold text-[#0D1B2A]">
-                        Smart Learning, Better Results.
+                        {t("login.smartLearning")}
                       </p>
                       <p className="text-xs text-[#0D1B2A]/70">
                         09:30 AM - 10:00 AM
@@ -278,9 +353,9 @@ export default function LoginPage() {
                   <div className="absolute bottom-40 left-16 right-32">
                     <div className="bg-white rounded-2xl p-5 shadow-2xl">
                       <div className="flex items-center gap-2 mb-3">
-                        <CheckCircle2 className="w-5 h-5 text-[#D4AF37]" />
+                        <FontAwesomeIcon icon={faCheckCircle} className="w-5 h-5 text-[#D4AF37]" />
                         <p className="font-semibold text-[#0D1B2A]">
-                          Daily Meeting
+                          {t("login.dailyMeeting")}
                         </p>
                       </div>
                       <p className="text-xs text-gray-600">
