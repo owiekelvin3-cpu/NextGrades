@@ -6,8 +6,24 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Image from "next/image";
 import Link from "next/link";
+import { useState, useRef, useEffect } from "react";
 
 export default function AboutPage() {
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const videos = [
+    "/about-videos/268230_tiny.mp4",
+    "/about-videos/91744-636709154_small.mp4",
+    "/about-videos/27091-361827476_medium.mp4",
+    "/about-videos/137186-765701394_medium.mp4"
+  ];
+
+  const handleVideoEnd = () => {
+    const nextIndex = (currentVideoIndex + 1) % videos.length;
+    setCurrentVideoIndex(nextIndex);
+  };
+
   const team = [
     { name: "Adrian H.", role: "Gründer & CEO", bio: "Lernwissenschaft & Bildung", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face" },
     { name: "Lea Maria", role: "Lernin Pädagogik", bio: "Expertin für Lernmethoden", image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop&crop=face" },
@@ -100,13 +116,17 @@ export default function AboutPage() {
                 className="mt-12"
               >
                 <div className="rounded-3xl overflow-hidden shadow-2xl max-w-4xl mx-auto border-4 border-white/10">
-                  <div className="aspect-[16/9] relative">
-                    <Image
-                      src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1200&h=675&fit=crop"
-                      alt="Students studying together"
-                      fill
-                      className="object-cover"
-                      priority
+                  <div className="aspect-[16/9] relative bg-black">
+                    <video
+                      ref={videoRef}
+                      key={currentVideoIndex}
+                      src={videos[currentVideoIndex]}
+                      autoPlay
+                      muted
+                      playsInline
+                      loop={false}
+                      onEnded={handleVideoEnd}
+                      className="w-full h-full object-cover"
                     />
                   </div>
                 </div>
