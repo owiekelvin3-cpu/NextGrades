@@ -64,7 +64,9 @@ export const LEGACY_TYPE_MAP: Record<ContentType, string> = {
   other: "other",
 };
 
-export const DEFAULT_THUMBNAIL = "/img-001.png";
+import { HERO_STUDY_IMAGE } from "@/lib/marketing-images";
+
+export const DEFAULT_THUMBNAIL = HERO_STUDY_IMAGE;
 
 export function contentTypeLabel(value: string): string {
   return CONTENT_TYPES.find((c) => c.value === value)?.label ?? value.replace(/_/g, " ");

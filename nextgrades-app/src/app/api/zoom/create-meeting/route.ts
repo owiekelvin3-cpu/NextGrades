@@ -34,6 +34,14 @@ export async function POST(request: Request) {
 
     if (error) throw error;
 
+    const { notifyLiveClassScheduled } = await import("@/lib/notifications/triggers");
+    void notifyLiveClassScheduled({
+      lessonId: lesson.id,
+      studentId,
+      teacherId,
+      startTime,
+    });
+
     return NextResponse.json(lesson);
   } catch (error: unknown) {
     console.error("Zoom meeting creation error:", error);

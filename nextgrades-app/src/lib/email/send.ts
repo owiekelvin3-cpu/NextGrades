@@ -34,7 +34,12 @@ export async function sendEmail(options: SendEmailOptions): Promise<SendEmailRes
 
     if (error) {
       console.error("[email] Resend error:", error);
-      return { success: false, error: error.message };
+      const msg = error.message || "Failed to send email";
+      const sandboxHint =
+        msg.toLowerCase().includes("only send") || msg.toLowerCase().includes("testing")
+          ? " Resend test mode (onboarding@resend.dev) only delivers to your Resend account email until you verify a domain."
+          : "";
+      return { success: false, error: msg + sandboxHint };
     }
 
     return { success: true, id: data?.id };

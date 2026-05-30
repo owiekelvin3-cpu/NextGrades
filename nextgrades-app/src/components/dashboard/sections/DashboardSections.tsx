@@ -413,8 +413,8 @@ export function TeacherScheduleSection() {
         title={t("teacherDashboard.noAppointments")}
         description={t("teacherDashboard.planWithStudents")}
         action={
-          <Button variant="gold" href="/dashboard/teacher/students">
-            {t("teacherDashboard.newAppointment")}
+          <Button variant="gold" href="/dashboard/teacher/schedule">
+            {t("teacherDashboard.viewSchedule", { defaultValue: "View schedule" })}
           </Button>
         }
       />
@@ -425,21 +425,74 @@ export function TeacherScheduleSection() {
 }
 
 export function TeacherResourcesSection() {
+  const { theme } = useTheme();
   const { t } = useTranslation();
+  const [resources, setResources] = useState<
+    Array<{ id: string; title: string; status: string; view_count: number; thumbnail_url: string | null }>
+  >([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    void fetch("/api/teacher/resources?limit=6&sortBy=created_at&sortOrder=desc")
+      .then((r) => (r.ok ? r.json() : { resources: [] }))
+      .then((data) => setResources(data.resources || []))
+      .finally(() => setLoading(false));
+  }, []);
+
+  if (loading) return <LoadingBlock />;
+
   return (
-    <div className="space-y-4">
-      <Card className="p-8 text-center border-2 border-dashed border-[#D4AF37]/40">
-        <Upload className="w-12 h-12 text-[#D4AF37] mx-auto mb-4" />
-        <p className="mb-4 font-medium">{t("teacherDashboard.uploadMaterial")}</p>
-        <div className="flex flex-wrap justify-center gap-3">
+    <div className="space-y-6">
+      <div className="flex flex-wrap justify-end gap-3">
+        <Button variant="gold" href="/dashboard/teacher/upload">
+          {t("teacherDashboard.uploadMaterial")}
+        </Button>
+        <Button variant="outline" href="/dashboard/teacher/content">
+          {t("teacherDashboard.manageContent", { defaultValue: "Manage all content" })}
+        </Button>
+      </div>
+
+      {resources.length === 0 ? (
+        <Card className="border-2 border-dashed border-[#D4AF37]/40 p-8 text-center">
+          <Upload className="mx-auto mb-4 h-12 w-12 text-[#D4AF37]" />
+          <p className="mb-4 font-medium">{t("teacherDashboard.uploadMaterial")}</p>
           <Button variant="gold" href="/dashboard/teacher/upload">
-            {t("teacherDashboard.uploadMaterial")}
+            {t("teacherDashboard.uploadFirst", { defaultValue: "Upload your first resource" })}
           </Button>
-          <Button variant="outline" href="/dashboard/teacher/content">
-            {t("dashboardNav.teacher.6.label", { defaultValue: "Content library" })}
-          </Button>
+        </Card>
+      ) : (
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {resources.map((resource) => (
+            <Card key={resource.id} className={`overflow-hidden ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
+              <div className="relative flex h-32 items-center justify-center bg-gradient-to-br from-[#D4AF37]/20 to-[#4DA3FF]/20">
+                {resource.thumbnail_url ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={resource.thumbnail_url} alt="" className="h-full w-full object-cover" />
+                ) : (
+                  <FileText className="h-10 w-10 text-[#D4AF37]" />
+                )}
+              </div>
+              <div className="p-4">
+                <h3 className={`line-clamp-2 font-semibold ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
+                  {resource.title}
+                </h3>
+                <p className="mt-1 text-xs capitalize text-gray-500">{resource.status.replace("_", " ")}</p>
+                <p className="mt-2 text-sm text-gray-500">
+                  {resource.view_count} {t("teacherDashboard.views", { defaultValue: "views" })}
+                </p>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="mt-3 w-full"
+                  href={`/dashboard/teacher/content/${resource.id}/edit`}
+                >
+                  {t("teacherDashboard.editResource", { defaultValue: "Edit" })}
+                </Button>
+              </div>
+            </Card>
+          ))}
         </div>
-      </Card>
+      )}
     </div>
   );
 }
@@ -463,7 +516,7 @@ export function TeacherEarningsSection() {
   const items = stats
     ? [
         { label: t("teacherDashboard.earningsMonth"), value: `€${stats.earnings_month.toLocaleString()}` },
-        { label: t("teacherDashboard.hoursThisWeek"), value: String(stats.lessons_week) },
+        { label: t("teacherDashboard.lessonsThisWeek", { defaultValue: "Lessons this week" }), value: String(stats.lessons_week) },
         { label: t("teacherDashboard.assignedStudents"), value: String(stats.total_students) },
       ]
     : [];

@@ -52,6 +52,7 @@ export default function ConsultationPage() {
   const grades = useLocalizedContent<string[]>("consultation.grades");
   const subjects = useLocalizedContent<string[]>("consultation.subjects");
   const times = useLocalizedContent<string[]>("consultation.times");
+  const calendlyUrl = process.env.NEXT_PUBLIC_CALENDLY_URL;
 
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [submitted, setSubmitted] = useState(false);
@@ -336,6 +337,24 @@ export default function ConsultationPage() {
                     </li>
                   ))}
                 </ul>
+
+                {calendlyUrl && (
+                  <Card className={`mt-8 overflow-hidden ${cardBg}`}>
+                    <div className="p-4 border-b border-black/5 dark:border-white/10">
+                      <h3 className={`font-bold ${textPrimary}`}>
+                        {t("consultation.calendlyTitle", { defaultValue: "Book instantly with Calendly" })}
+                      </h3>
+                      <p className={`text-sm mt-1 ${textMuted}`}>
+                        {t("consultation.calendlySubtitle", { defaultValue: "Pick a time that works for you." })}
+                      </p>
+                    </div>
+                    <iframe
+                      title="Calendly scheduling"
+                      src={`${calendlyUrl}?hide_gdpr_banner=1`}
+                      className="w-full h-[520px] border-0"
+                    />
+                  </Card>
+                )}
               </div>
 
               <Card className={`lg:col-span-3 p-8 sm:p-10 ${cardBg}`}>

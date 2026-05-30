@@ -8,6 +8,7 @@ export type DashboardLesson = {
   zoom_link?: string | null;
   status: string;
   notes?: string | null;
+  student_id?: string | null;
   teacher_name?: string;
   student_name?: string;
   subject_name?: string;
@@ -326,20 +327,39 @@ export async function fetchTeacherStudents(teacherId: string, locale: string): P
 
   if (error || !lessons?.length) return [];
 
-  const byStudent = new Map<string, { subject_id: string; start_time: string }>();
+  const now = new Date();
+  const studentIds = new Set<string>();
+  const nextByStudent = new Map<string, { subject_id: string; start_time: string }>();
+  const latestByStudent = new Map<string, { subject_id: string }>();
+
   for (const l of lessons) {
     if (!l.student_id) continue;
-    const existing = byStudent.get(l.student_id);
-    if (!existing || new Date(l.start_time) < new Date(existing.start_time)) {
-      byStudent.set(l.student_id, { subject_id: l.subject_id, start_time: l.start_time });
+    studentIds.add(l.student_id);
+    latestByStudent.set(l.student_id, { subject_id: l.subject_id });
+
+    if (l.status === "cancelled" || l.status === "completed") continue;
+    const startTime = new Date(l.start_time);
+    if (startTime < now) continue;
+
+    const existing = nextByStudent.get(l.student_id);
+    if (!existing || startTime < new Date(existing.start_time)) {
+      nextByStudent.set(l.student_id, { subject_id: l.subject_id, start_time: l.start_time });
     }
   }
 
-  const studentIds = [...byStudent.keys()];
-  const subjectIds = [...new Set([...byStudent.values()].map((v) => v.subject_id).filter(Boolean))];
+  if (!studentIds.size) return [];
+
+  const ids = [...studentIds];
+  const subjectIds = [
+    ...new Set(
+      [...nextByStudent.values(), ...latestByStudent.values()]
+        .map((v) => v.subject_id)
+        .filter(Boolean)
+    ),
+  ] as string[];
 
   const [profilesRes, subjectsRes] = await Promise.all([
-    supabase.from("profiles").select("id, full_name").in("id", studentIds),
+    supabase.from("profiles").select("id, full_name").in("id", ids),
     subjectIds.length
       ? supabase.from("subjects").select("id, name").in("id", subjectIds)
       : Promise.resolve({ data: [] }),
@@ -357,19 +377,23 @@ export async function fetchTeacherStudents(teacherId: string, locale: string): P
 
   const dateLocale = locale.startsWith("de") ? "de-DE" : "en-US";
 
-  return studentIds.map((id) => {
-    const info = byStudent.get(id)!;
-    const nextDate = new Date(info.start_time);
-    const formatted = nextDate.toLocaleString(dateLocale, {
-      weekday: "short",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
+  return ids.map((id) => {
+    const upcoming = nextByStudent.get(id);
+    const fallback = latestByStudent.get(id);
+    const subjectId = upcoming?.subject_id ?? fallback?.subject_id;
+    const nextLesson = upcoming
+      ? new Date(upcoming.start_time).toLocaleString(dateLocale, {
+          weekday: "short",
+          hour: "2-digit",
+          minute: "2-digit",
+        })
+      : "—";
+
     return {
       id,
       name: nameMap.get(id) ?? "Student",
-      subject: subjectMap.get(info.subject_id) ?? "—",
-      next_lesson: formatted,
+      subject: subjectId ? (subjectMap.get(subjectId) ?? "—") : "—",
+      next_lesson: nextLesson,
     };
   });
 }

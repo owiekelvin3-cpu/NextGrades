@@ -54,6 +54,13 @@ export async function PATCH(
 
     if (teacher_status === "approved" && userEmail) {
       void sendTeacherApprovedEmail(userEmail, userName ?? undefined);
+      const { notifyTeacherApproved } = await import("@/lib/notifications/triggers");
+      void notifyTeacherApproved(id, true);
+    }
+
+    if (teacher_status === "rejected") {
+      const { notifyTeacherApproved } = await import("@/lib/notifications/triggers");
+      void notifyTeacherApproved(id, false);
     }
 
     // Log the action

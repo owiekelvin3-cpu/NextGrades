@@ -41,6 +41,25 @@ export async function PUT(
 
     if (error) throw error;
 
+    const { notifyModerationResult, notifyResourcePublished } = await import("@/lib/notifications/triggers");
+    if (data?.created_by) {
+      void notifyModerationResult({
+        teacherId: data.created_by,
+        materialId: id,
+        title: data.title ?? "Material",
+        approved: moderation_status === "approved",
+      });
+      if (moderation_status === "approved") {
+        void notifyResourcePublished({
+          materialId: id,
+          title: data.title ?? "Material",
+          teacherId: data.created_by,
+          subjectId: data.subject_id,
+          isPublished: true,
+        });
+      }
+    }
+
     return NextResponse.json(data);
   } catch (error: any) {
     console.error("Error updating moderation status:", error);

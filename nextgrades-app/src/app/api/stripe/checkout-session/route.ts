@@ -13,7 +13,16 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
-    const { priceId: rawPriceId, productType, planId, billing } = body;
+    const {
+      priceId: rawPriceId,
+      productType,
+      planId,
+      billing,
+      subjectId,
+      classId,
+      semester,
+      courseName,
+    } = body;
 
     const priceId =
       rawPriceId && String(rawPriceId).startsWith("price_")
@@ -40,6 +49,12 @@ export async function POST(request: Request) {
         productType: productType || "",
         planId: planId || "",
         billing: billing || "",
+        subjectId: subjectId || "",
+        classId: classId || "",
+        semester: semester ? String(semester) : "",
+        courseName: courseName || "",
+        planName: planId === "resource" ? "Resource Membership" : planId || "Premium",
+        billingCycle: billing === "yearly" ? "Yearly" : "Monthly",
       },
     });
 

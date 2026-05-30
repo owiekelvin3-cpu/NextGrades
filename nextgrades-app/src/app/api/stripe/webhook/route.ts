@@ -40,12 +40,19 @@ export async function POST(request: Request) {
         const session = event.data.object as Stripe.Checkout.Session;
         const userId = session.metadata?.userId;
         const productType = session.metadata?.productType;
+        const planId = session.metadata?.planId;
         const courseName = session.metadata?.courseName || "NextGrades Course";
+        const subjectId = session.metadata?.subjectId;
+        const classId = session.metadata?.classId;
+        const semesterRaw = session.metadata?.semester;
+        const semester =
+          semesterRaw === "1" || semesterRaw === "2" ? parseInt(semesterRaw, 10) : null;
         const amount = (session.amount_total ?? 0) / 100;
         const currency = (session.currency || "eur").toUpperCase();
 
         if (userId && admin) {
-          if (productType === "subscription") {
+          const isSubscription = productType === "subscription" || planId === "resource" || planId === "group" || planId === "premium";
+          if (isSubscription) {
             await admin.from("profiles").update({ subscription_status: "active" }).eq("id", userId);
           } else {
             const { data: userUnits } = await admin.from("user_units").select("*").eq("student_id", userId).single();
@@ -54,6 +61,32 @@ export async function POST(request: Request) {
                 .from("user_units")
                 .update({ remaining_units: userUnits.remaining_units + 10 })
                 .eq("student_id", userId);
+            }
+          }
+
+          if (subjectId && classId) {
+            const { data: existingEnrollment } = await admin
+              .from("enrollments")
+              .select("id")
+              .eq("student_id", userId)
+              .eq("subject_id", subjectId)
+              .eq("class_id", classId)
+              .maybeSingle();
+
+            if (existingEnrollment) {
+              await admin
+                .from("enrollments")
+                .update({ status: "active", semester, start_date: new Date().toISOString() })
+                .eq("id", existingEnrollment.id);
+            } else {
+              await admin.from("enrollments").insert({
+                student_id: userId,
+                subject_id: subjectId,
+                class_id: classId,
+                semester,
+                status: "active",
+                start_date: new Date().toISOString(),
+              });
             }
           }
 
@@ -83,6 +116,16 @@ export async function POST(request: Request) {
             `${name || "A user"} completed a ${productType || "purchase"} for ${formatCurrency(amount, currency)}.`,
             `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/admin/payments`
           );
+
+          const { notifyPaymentReceived, notifyEnrollment } = await import("@/lib/notifications/triggers");
+          void notifyPaymentReceived({
+            userId,
+            amount: formatCurrency(amount, currency),
+            description: productType === "subscription" ? "Subscription activated" : `Purchase: ${courseName}`,
+          });
+          if (subjectId && classId) {
+            void notifyEnrollment({ studentId: userId, subjectName: courseName });
+          }
         }
         break;
       }

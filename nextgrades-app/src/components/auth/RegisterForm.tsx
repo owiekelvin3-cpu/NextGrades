@@ -46,6 +46,7 @@ export function RegisterForm({
   const [error, setError] = useState<string | null>(null);
   const [duplicateEmail, setDuplicateEmail] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
   const inputClass = cn(
@@ -97,7 +98,25 @@ export function RegisterForm({
           role,
         }),
       });
-      const data = await res.json();
+
+      const contentType = res.headers.get("content-type") || "";
+      const raw = await res.text();
+      let data: Record<string, unknown> = {};
+      if (contentType.includes("application/json")) {
+        try {
+          data = JSON.parse(raw) as Record<string, unknown>;
+        } catch {
+          throw new Error("Invalid response from server. Please try again.");
+        }
+      } else if (raw.trimStart().startsWith("<!DOCTYPE") || raw.trimStart().startsWith("<html")) {
+        throw new Error(
+          res.status === 404
+            ? "Registration API is unavailable. Restart the dev server and try again."
+            : "Server returned an unexpected page instead of JSON. Restart the dev server and try again."
+        );
+      } else {
+        throw new Error(raw || "Registration failed");
+      }
 
       if (res.status === 409 || data.code === "EMAIL_EXISTS") {
         setError("An account with this email already exists. Please sign in to continue.");
@@ -106,9 +125,16 @@ export function RegisterForm({
       }
 
       if (!res.ok) {
-        throw new Error(data.error || "Registration failed");
+        throw new Error(
+          (typeof data.error === "string" && data.error) ||
+            (typeof data.details === "string" && data.details) ||
+            "Registration failed"
+        );
       }
 
+      setSuccessMessage(
+        typeof data.message === "string" ? data.message : "Account created! You can sign in now."
+      );
       setSuccess(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Registration failed");
@@ -130,17 +156,16 @@ export function RegisterForm({
       >
         <div className="flex items-start gap-3">
           <FontAwesomeIcon icon={faCheckCircle} className="mt-0.5 h-5 w-5 shrink-0" />
-          <div>
-            <p className="font-semibold">Check your email</p>
-            <p className="mt-1 opacity-90">
-              We sent a verification link to <strong>{email}</strong>. Click the link to activate your account and go to
-              your dashboard.
-            </p>
+          <div className="space-y-3">
+            <div>
+              <p className="font-semibold">Account created</p>
+              <p className="mt-1 opacity-90">{successMessage}</p>
+            </div>
             <Link
-              href="/login"
-              className="mt-4 inline-flex items-center gap-2 rounded-lg bg-[#D4AF37] px-4 py-2 text-sm font-semibold text-[#0D1B2A] hover:opacity-90"
+              href={redirectTo ? `/login?redirect=${encodeURIComponent(redirectTo)}&email=${encodeURIComponent(email)}` : `/login?email=${encodeURIComponent(email)}`}
+              className="inline-flex items-center gap-2 rounded-lg bg-[#D4AF37] px-4 py-2 text-sm font-semibold text-[#0D1B2A] hover:opacity-90"
             >
-              Go to Login
+              Sign in now <FontAwesomeIcon icon={faArrowRight} className="h-3 w-3" />
             </Link>
           </div>
         </div>

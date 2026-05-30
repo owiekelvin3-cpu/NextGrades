@@ -13,7 +13,6 @@ import {
   faEyeSlash,
   faCheckCircle,
   faXmark,
-  faUser,
   faEnvelope,
   faLock,
   faExclamationCircle,
@@ -26,8 +25,7 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import { useTranslation } from "react-i18next";
 import { supabase } from "@/lib/supabase/client";
-import { sanitizeRedirect } from "@/lib/auth/redirect";
-import { resolveUserRole } from "@/lib/auth/roles";
+import { sanitizeRedirect, fetchProfileRole, resolvePostAuthRedirect } from "@/lib/auth/redirect";
 import { useToast } from "@/context/ToastContext";
 import { syncPreferencesAfterAuth } from "@/lib/preferences";
 import { changeAppLanguage } from "@/components/I18nProvider";
@@ -37,7 +35,6 @@ import { RegisterForm } from "@/components/auth/RegisterForm";
 function LoginContent() {
   const [isSignup, setIsSignup] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [selectedRole, setSelectedRole] = useState<"student" | "teacher">("student");
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -126,17 +123,15 @@ function LoginContent() {
     }
   }, [searchParams]);
 
-  const navigateAfterAuth = async (userId: string, fallbackRole: "student" | "teacher") => {
+  const navigateAfterAuth = async (userId: string) => {
     await syncPreferencesAfterAuth((lang) => changeAppLanguage(lang));
-    if (redirectTo) {
-      router.push(redirectTo);
+    const role = await fetchProfileRole(userId);
+    if (!role) {
+      router.push("/choose-role");
       router.refresh();
       return;
     }
-    const { data: { user } } = await supabase.auth.getUser();
-    const { data: profile } = await supabase.from("profiles").select("role").eq("id", userId).maybeSingle();
-    const role = resolveUserRole(profile?.role, user?.user_metadata) || fallbackRole;
-    router.push(`/dashboard/${role}`);
+    router.push(resolvePostAuthRedirect(role, redirectTo));
     router.refresh();
   };
 
@@ -144,15 +139,11 @@ function LoginContent() {
     const checkUser = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (session) {
-        if (redirectTo) {
-          router.push(redirectTo);
+        const role = await fetchProfileRole(session.user.id);
+        if (!role) {
+          router.push("/choose-role");
         } else {
-          const { data: profile } = await supabase
-            .from("profiles")
-            .select("role")
-            .eq("id", session.user.id)
-            .single();
-          router.push(`/dashboard/${profile?.role || "student"}`);
+          router.push(resolvePostAuthRedirect(role, redirectTo));
         }
         router.refresh();
       }
@@ -183,21 +174,23 @@ function LoginContent() {
     }
 
     try {
+      await fetch("/api/auth/confirm-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: formData.email.trim().toLowerCase() }),
+      });
+
       const result = await supabase.auth.signInWithPassword({
         email: formData.email,
         password: formData.password,
       });
 
       if (result.error) {
-        const msg = result.error.message.toLowerCase();
-        if (msg.includes("email not confirmed") || msg.includes("not verified")) {
-          throw new Error("Please verify your email before signing in. Check your inbox for the verification link.");
-        }
         throw new Error(result.error.message);
       }
 
       toast.success(t("login.welcomeBack", { defaultValue: "Welcome back!" }));
-      await navigateAfterAuth(result.data.user!.id, selectedRole);
+      await navigateAfterAuth(result.data.user!.id);
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Authentication failed";
       setError(message);
@@ -304,58 +297,10 @@ function LoginContent() {
                     </div>
                   )}
 
-                  {success && (
-                    <div className={`mb-6 p-4 rounded-xl text-sm border-l-4 flex items-start gap-3 animate-in fade-in slide-in-from-top-2 ${
-                      theme === "dark"
-                        ? "bg-green-500/10 border-green-500 text-green-300"
-                        : "bg-green-50 border-green-500 text-green-700"
-                    }`}>
-                      <FontAwesomeIcon icon={faCheckCircle} className="w-5 h-5 mt-0.5 flex-shrink-0" />
-                      <div>
-                        <div className="font-semibold">Email confirmation sent!</div>
-                        <div className="text-xs opacity-75">Check your inbox to verify your email address</div>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Role Selection (for login) */}
-                  {!isSignup && (
-                    <div className="space-y-3 mb-8 animate-in fade-in slide-in-from-left-2">
-                      <label className={`text-sm font-semibold ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>I'm logging in as</label>
-                      <div className="grid grid-cols-2 gap-3">
-                        {["student", "teacher"].map((role) => (
-                          <button
-                            key={role}
-                            type="button"
-                            onClick={() => setSelectedRole(role as "student" | "teacher")}
-                            className={`p-4 rounded-xl border-2 transition-all duration-200 text-left transform hover:scale-105 ${
-                              selectedRole === role
-                                ? `border-[#D4AF37] ${theme === "dark" ? "bg-[#D4AF37]/15" : "bg-[#D4AF37]/10"}`
-                                : theme === "dark"
-                                ? "border-white/10 bg-[#112240]/50 hover:border-[#D4AF37]/40"
-                                : "border-gray-200 bg-white hover:border-[#D4AF37]/40"
-                            }`}
-                          >
-                            <div className="w-10 h-10 rounded-full bg-[#D4AF37]/20 flex items-center justify-center mb-2">
-                              <FontAwesomeIcon icon={faUser} className={`w-5 h-5 ${theme === "dark" ? "text-[#D4AF37]" : "text-[#0D1B2A]"}`} />
-                            </div>
-                            <h3 className={`font-bold text-sm ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
-                              {role.charAt(0).toUpperCase() + role.slice(1)}
-                            </h3>
-                            <p className={`text-xs mt-1 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>
-                              {role === "student" ? "Learn & grow" : "Teach & inspire"}
-                            </p>
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
                   {/* Form */}
                   {isSignup ? (
                     <RegisterForm
                       compact
-                      defaultRole={selectedRole}
                       redirectTo={redirectTo}
                       onSwitchToLogin={() => {
                         setIsSignup(false);
@@ -556,9 +501,9 @@ function LoginContent() {
                         >
                           <img
                             src={`https://images.unsplash.com/photo-${
-                              i === 1 ? "1494790109226-7f0e5a5f1599" :
-                              i === 2 ? "1528899613728-333" :
-                              "1507003211169-0a1dd7228f2d"
+                              i === 1 ? "1494790108377-be9c29b29330" :
+                              i === 2 ? "1507003211169-0a1dd7228f2d" :
+                              "1500648767791-00dcc994a43e"
                             }?w=100&h=100&fit=crop&crop=face`}
                             alt={`Student ${i}`}
                             className="w-full h-full rounded-full object-cover"

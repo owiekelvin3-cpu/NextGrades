@@ -1,8 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { LoadingBlock } from "@/components/dashboard/LoadingBlock";
@@ -17,22 +19,32 @@ import {
   AGE_RANGES,
   LANGUAGES,
 } from "@/lib/resources/constants";
+import { buildLoginUrl } from "@/lib/auth/redirect";
 import { Search, Filter, ChevronRight, FileText } from "lucide-react";
 
 type Category = { id: string; name: string };
+type CatalogSubject = { id: string; name: string; slug?: string | null };
+type CatalogClass = { id: string; name: string; level: number };
 
 export function ResourcesExperience() {
   const { theme } = useTheme();
   const { t } = useTranslation();
   const toast = useToast();
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const { toggle, isBookmarked, bookmarks } = useBookmarks();
 
   const [resources, setResources] = useState<LearningResource[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [catalogSubjects, setCatalogSubjects] = useState<CatalogSubject[]>([]);
+  const [catalogClasses, setCatalogClasses] = useState<CatalogClass[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [contentType, setContentType] = useState("");
   const [categoryId, setCategoryId] = useState("");
+  const [subjectSlug, setSubjectSlug] = useState("");
+  const [classLevel, setClassLevel] = useState("");
+  const [semester, setSemester] = useState("");
   const [ageRange, setAgeRange] = useState("");
   const [difficulty, setDifficulty] = useState("");
   const [accessFilter, setAccessFilter] = useState<"all" | "free" | "premium">("all");
@@ -41,11 +53,20 @@ export function ResourcesExperience() {
   const [sort, setSort] = useState<"recent" | "popular" | "downloads">("recent");
 
   useEffect(() => {
-    void fetch("/api/teacher/categories")
-      .then((r) => r.json())
-      .then((data) => {
-        if (Array.isArray(data)) setCategories(data);
-      });
+    setSubjectSlug(searchParams.get("subject") || "");
+    setClassLevel(searchParams.get("class") || "");
+    setSemester(searchParams.get("semester") || "");
+  }, [searchParams]);
+
+  useEffect(() => {
+    void Promise.all([
+      fetch("/api/teacher/categories").then((r) => r.json()),
+      fetch("/api/catalog").then((r) => r.json()),
+    ]).then(([cats, catalog]) => {
+      if (Array.isArray(cats)) setCategories(cats);
+      if (catalog?.subjects) setCatalogSubjects(catalog.subjects);
+      if (catalog?.classes) setCatalogClasses(catalog.classes);
+    });
   }, []);
 
   const loadResources = useCallback(async () => {
@@ -55,6 +76,9 @@ export function ResourcesExperience() {
       if (search.trim()) params.set("search", search.trim());
       if (contentType) params.set("contentType", contentType);
       if (categoryId) params.set("category", categoryId);
+      if (subjectSlug) params.set("subject", subjectSlug);
+      if (classLevel) params.set("class", classLevel);
+      if (semester) params.set("semester", semester);
       if (ageRange) params.set("ageRange", ageRange);
       if (difficulty) params.set("difficulty", difficulty);
       if (accessFilter !== "all") params.set("access", accessFilter);
@@ -70,7 +94,20 @@ export function ResourcesExperience() {
     } finally {
       setLoading(false);
     }
-  }, [search, contentType, categoryId, ageRange, difficulty, accessFilter, teacherId, language, sort]);
+  }, [
+    search,
+    contentType,
+    categoryId,
+    subjectSlug,
+    classLevel,
+    semester,
+    ageRange,
+    difficulty,
+    accessFilter,
+    teacherId,
+    language,
+    sort,
+  ]);
 
   useEffect(() => {
     const timer = setTimeout(() => void loadResources(), 250);
@@ -90,6 +127,9 @@ export function ResourcesExperience() {
   const resetFilters = () => {
     setContentType("");
     setCategoryId("");
+    setSubjectSlug("");
+    setClassLevel("");
+    setSemester("");
     setAgeRange("");
     setDifficulty("");
     setAccessFilter("all");
@@ -112,15 +152,32 @@ export function ResourcesExperience() {
   };
 
   const handleOpen = async (resource: LearningResource) => {
-    const access = resource.access_type === "premium" || resource.is_premium ? "premium" : "free";
-    if (access === "premium") {
-      toast.info(t("resources.premiumRequired", { defaultValue: "Premium membership required." }));
+    if (resource.locked) {
+      toast.info(t("resources.premiumRequired", { defaultValue: "Premium membership or enrollment required." }));
       return;
     }
-    if (resource.url) {
+
+    try {
+      const res = await fetch(`/api/resources/${resource.id}/access`);
+      const data = await res.json();
+
+      if (res.status === 401) {
+        router.push(buildLoginUrl(`/resources`));
+        return;
+      }
+
+      if (!res.ok || !data.url) {
+        toast.info(
+          t("resources.premiumRequired", { defaultValue: "Premium membership or enrollment required." })
+        );
+        return;
+      }
+
       void trackAction(resource.id, "download");
-      window.open(resource.url, "_blank", "noopener,noreferrer");
+      window.open(data.url, "_blank", "noopener,noreferrer");
       toast.success(t("resources.downloadStarted", { defaultValue: `Opening "${resource.title}"…` }));
+    } catch {
+      toast.error(t("misc.errorGeneric", { defaultValue: "Something went wrong. Please try again." }));
     }
   };
 
@@ -155,6 +212,42 @@ export function ResourcesExperience() {
                 </button>
               </div>
               <div className="space-y-4 text-sm">
+                {catalogSubjects.length > 0 && (
+                  <div>
+                    <p className={`font-medium mb-2 ${muted}`}>
+                      {t("resources.filters.subject", { defaultValue: "Subject" })}
+                    </p>
+                    <select value={subjectSlug} onChange={(e) => setSubjectSlug(e.target.value)} className={selectCls}>
+                      <option value="">{t("resources.filters.allSubjects", { defaultValue: "All subjects" })}</option>
+                      {catalogSubjects.map((s) => (
+                        <option key={s.id} value={s.slug || s.id}>{s.name}</option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+                {catalogClasses.length > 0 && (
+                  <div>
+                    <p className={`font-medium mb-2 ${muted}`}>
+                      {t("resources.filters.grade", { defaultValue: "Grade" })}
+                    </p>
+                    <select value={classLevel} onChange={(e) => setClassLevel(e.target.value)} className={selectCls}>
+                      <option value="">{t("resources.filters.allGrades", { defaultValue: "All grades" })}</option>
+                      {catalogClasses.map((c) => (
+                        <option key={c.id} value={String(c.level)}>{c.name}</option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+                <div>
+                  <p className={`font-medium mb-2 ${muted}`}>
+                    {t("resources.filters.semester", { defaultValue: "Semester" })}
+                  </p>
+                  <select value={semester} onChange={(e) => setSemester(e.target.value)} className={selectCls}>
+                    <option value="">{t("resources.filters.allSemesters", { defaultValue: "All semesters" })}</option>
+                    <option value="1">{t("resources.filters.semester1", { defaultValue: "Semester 1" })}</option>
+                    <option value="2">{t("resources.filters.semester2", { defaultValue: "Semester 2" })}</option>
+                  </select>
+                </div>
                 <div>
                   <p className={`font-medium mb-2 ${muted}`}>Content Type</p>
                   <select value={contentType} onChange={(e) => setContentType(e.target.value)} className={selectCls}>

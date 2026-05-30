@@ -23,6 +23,8 @@ import {
   Sparkles,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { TeacherSidebarNav } from "@/components/dashboard/teacher/TeacherSidebarNav";
+import { useNotificationsOptional } from "@/context/NotificationContext";
 import { supabase } from "@/lib/supabase/client";
 import { getTeacherFirstName } from "@/lib/dashboard/teacher-overview";
 
@@ -30,6 +32,7 @@ interface SidebarProps {
   role: "student" | "teacher" | "admin";
   studentName?: string;
   teacherName?: string;
+  teacherAvatarUrl?: string | null;
   unreadNotifications?: number;
 }
 
@@ -38,6 +41,7 @@ interface SidebarContentProps {
   setIsMobileMenuOpen?: (open: boolean) => void;
   studentName?: string;
   teacherName?: string;
+  teacherAvatarUrl?: string | null;
   unreadNotifications?: number;
 }
 
@@ -48,7 +52,8 @@ const studentConfig = [
   { href: "/dashboard/student/resources", icon: FileText },
   { href: "/dashboard/student/quizzes", icon: ListChecks },
   { href: "/dashboard/student/progress", icon: TrendingUp },
-  { href: "/dashboard/chat", icon: Sparkles, badge: "notifications" as const },
+  { href: "/dashboard/notifications", icon: Sparkles, badge: "notifications" as const },
+  { href: "/dashboard/chat", icon: Sparkles },
   { href: "/dashboard/student/settings", icon: Settings },
 ];
 
@@ -71,6 +76,7 @@ const adminConfig = [
   { href: "/dashboard/admin/students", icon: Users },
   { href: "/dashboard/admin/teachers", icon: Users },
   { href: "/dashboard/admin/users", icon: Shield },
+  { href: "/dashboard/admin/notifications", icon: Sparkles, badge: "notifications" as const },
   { href: "/dashboard/admin/quiz-monitor", icon: ListChecks },
   { href: "/dashboard/admin/moderation", icon: Shield },
   { href: "/dashboard/admin/memberships", icon: Shield },
@@ -85,9 +91,12 @@ function SidebarContent({
   setIsMobileMenuOpen,
   studentName,
   teacherName,
+  teacherAvatarUrl,
   unreadNotifications = 0,
   darkSidebar = false,
 }: SidebarContentProps & { darkSidebar?: boolean }) {
+  const notifCtx = useNotificationsOptional();
+  const badgeCount = notifCtx?.unreadCount ?? unreadNotifications;
   const pathname = usePathname();
   const router = useRouter();
   const { t } = useTranslation();
@@ -131,27 +140,38 @@ function SidebarContent({
 
   return (
     <>
-      <div className="mb-6">
-        <Link href="/" className="flex items-center gap-3" onClick={() => setIsMobileMenuOpen?.(false)}>
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#D4AF37]">
-            <span className="text-xl font-bold text-[#0D1B2A]">NG</span>
+      <div className="mb-8">
+        <Link href="/" className="flex items-center gap-2.5" onClick={() => setIsMobileMenuOpen?.(false)}>
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#D4AF37]">
+            <span className="text-base font-bold text-[#0D1B2A]">NG</span>
           </div>
-          <span className={cn("text-xl font-bold", darkSidebar ? "text-white" : "text-[#0D1B2A]")}>{t("common.brand")}</span>
+          <span className={cn("text-base font-semibold tracking-tight", darkSidebar ? "text-white" : "text-[#0D1B2A]")}>
+            {t("common.brand")}
+          </span>
         </Link>
       </div>
 
       {isTeacher && (
-        <div className="mb-6 flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 p-3">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#D4AF37]/20 text-sm font-bold text-[#D4AF37]">
-            {teacherDisplay ? teacherDisplay.charAt(0).toUpperCase() : "T"}
-          </div>
+        <div className="mb-5 flex items-center gap-3 px-1">
+          {teacherAvatarUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={teacherAvatarUrl}
+              alt=""
+              className="h-11 w-11 shrink-0 rounded-full object-cover ring-2 ring-white/10"
+            />
+          ) : (
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#D4AF37]/20 text-sm font-bold text-[#D4AF37]">
+              {(teacherDisplay || "T").charAt(0).toUpperCase()}
+            </div>
+          )}
           <div className="min-w-0">
-            <p className="truncate text-sm font-semibold text-white">
+            <p className="truncate text-sm font-medium text-white">
               {teacherDisplay
                 ? t("teacherDashboard.sidebarHello", { name: teacherDisplay })
                 : t("teacherDashboard.sidebarGuest")}
             </p>
-            <p className="text-xs text-gray-400">{t("teacherDashboard.sidebarRole")}</p>
+            <p className="text-xs text-gray-500">{t("teacherDashboard.sidebarRole")}</p>
           </div>
         </div>
       )}
@@ -172,37 +192,44 @@ function SidebarContent({
         </div>
       )}
 
-      <nav className="flex-1 space-y-1">
-        {links.map((link, index) => {
-          const isActive = isLinkActive(link.href);
-          const showBadge = "badge" in link && link.badge === "notifications" && unreadNotifications > 0;
-          return (
-            <Link
-              key={`${link.href}-${index}`}
-              href={link.href}
-              onClick={() => setIsMobileMenuOpen?.(false)}
-              className={cn(
-                "flex items-center gap-3 rounded-xl px-4 py-3 text-sm transition-all duration-200",
-                isActive
-                  ? darkSidebar
-                    ? "bg-[#D4AF37]/15 font-semibold text-[#D4AF37] ring-1 ring-[#D4AF37]/30"
-                    : "bg-[#D4AF37] font-semibold text-[#0D1B2A]"
-                  : darkSidebar
-                    ? "text-gray-300 hover:bg-white/10 hover:text-white"
-                    : "text-gray-600 hover:bg-gray-50 hover:text-[#0D1B2A]"
-              )}
-            >
-              <link.icon className={cn("h-5 w-5 shrink-0", isActive && "text-[#D4AF37]")} />
-              <span className="flex-1">{link.label}</span>
-              {showBadge && (
-                <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-[#D4AF37] px-1.5 text-[10px] font-bold text-[#0D1B2A]">
-                  {unreadNotifications > 9 ? "9+" : unreadNotifications}
-                </span>
-              )}
-            </Link>
-          );
-        })}
-      </nav>
+      {isTeacher ? (
+        <TeacherSidebarNav
+          unreadNotifications={badgeCount}
+          onNavigate={() => setIsMobileMenuOpen?.(false)}
+        />
+      ) : (
+        <nav className="flex-1 space-y-1 overflow-y-auto">
+          {links.map((link, index) => {
+            const isActive = isLinkActive(link.href);
+            const showBadge = "badge" in link && link.badge === "notifications" && badgeCount > 0;
+            return (
+              <Link
+                key={`${link.href}-${index}`}
+                href={link.href}
+                onClick={() => setIsMobileMenuOpen?.(false)}
+                className={cn(
+                  "flex items-center gap-3 rounded-xl px-4 py-3 text-sm transition-all duration-200",
+                  isActive
+                    ? darkSidebar
+                      ? "bg-[#D4AF37]/15 font-semibold text-[#D4AF37] ring-1 ring-[#D4AF37]/30"
+                      : "bg-[#D4AF37] font-semibold text-[#0D1B2A]"
+                    : darkSidebar
+                      ? "text-gray-300 hover:bg-white/10 hover:text-white"
+                      : "text-gray-600 hover:bg-gray-50 hover:text-[#0D1B2A]"
+                )}
+              >
+                <link.icon className={cn("h-5 w-5 shrink-0", isActive && "text-[#D4AF37]")} />
+                <span className="flex-1">{link.label}</span>
+                {showBadge && (
+                  <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-[#D4AF37] px-1.5 text-[10px] font-bold text-[#0D1B2A]">
+                    {badgeCount > 9 ? "9+" : badgeCount}
+                  </span>
+                )}
+              </Link>
+            );
+          })}
+        </nav>
+      )}
 
       <div className={cn("pt-4", darkSidebar ? "border-t border-white/10" : "border-t border-gray-100")}>
         <button
@@ -227,6 +254,7 @@ export function Sidebar({
   role,
   studentName,
   teacherName,
+  teacherAvatarUrl,
   unreadNotifications = 0,
 }: SidebarProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -273,12 +301,13 @@ export function Sidebar({
         {isMobileMenuOpen && (
           <>
             <div className="fixed inset-0 z-40 bg-black/50" onClick={() => setIsMobileMenuOpen(false)} />
-            <aside className={cn("fixed left-0 top-0 z-50 flex min-h-screen w-64 flex-col p-6", sidebarClass)}>
+            <aside className={cn("fixed left-0 top-0 z-50 flex max-h-screen w-[260px] flex-col overflow-hidden px-4 py-6", sidebarClass)}>
               <SidebarContent
                 role={role}
                 setIsMobileMenuOpen={setIsMobileMenuOpen}
                 studentName={studentName}
                 teacherName={teacherName}
+                teacherAvatarUrl={teacherAvatarUrl}
                 unreadNotifications={unreadNotifications}
                 darkSidebar={isDashboardShell}
               />
@@ -290,11 +319,12 @@ export function Sidebar({
   }
 
   return (
-    <aside className={cn("flex min-h-screen w-64 shrink-0 flex-col p-6", sidebarClass)}>
+    <aside className={cn("flex max-h-screen w-[240px] shrink-0 flex-col overflow-hidden px-4 py-6", sidebarClass)}>
       <SidebarContent
         role={role}
         studentName={studentName}
         teacherName={teacherName}
+        teacherAvatarUrl={teacherAvatarUrl}
         unreadNotifications={unreadNotifications}
         darkSidebar={isDashboardShell}
       />

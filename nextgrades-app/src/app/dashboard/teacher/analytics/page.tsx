@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Sidebar } from "@/components/dashboard/Sidebar";
+import { TeacherDashboardLayout } from "@/components/dashboard/teacher/TeacherDashboardLayout";
+import { EmptyState } from "@/components/dashboard/EmptyState";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import {
@@ -13,7 +14,6 @@ import {
   Users,
   DollarSign,
   Calendar,
-  ArrowLeft,
 } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
 
@@ -54,18 +54,25 @@ export default function TeacherAnalyticsPage() {
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
   const [loading, setLoading] = useState(true);
   const [period, setPeriod] = useState("30");
+  const [fetchError, setFetchError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetchAnalytics();
+    void fetchAnalytics();
   }, [period]);
 
   const fetchAnalytics = async () => {
     try {
+      setLoading(true);
+      setFetchError(null);
       const response = await fetch(`/api/teacher/analytics?period=${period}`);
       const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to load analytics");
+      }
       setAnalytics(data);
     } catch (error) {
-      console.error("Error fetching analytics:", error);
+      setAnalytics(null);
+      setFetchError(error instanceof Error ? error.message : "Failed to load analytics");
     } finally {
       setLoading(false);
     }
@@ -92,32 +99,12 @@ export default function TeacherAnalyticsPage() {
   );
 
   return (
-    <div className={`flex min-h-screen ${theme === "dark" ? "bg-[#0D1B2A]" : "bg-[#FAFAFA]"}`}>
-      <Sidebar role="teacher" />
-      
-      <main className="flex-1 p-4 sm:p-6 lg:p-8 pt-20 md:pt-8">
-        <div className="max-w-7xl mx-auto">
-          {/* Header */}
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
-            <div className="flex items-center gap-4">
-              <Button
-                variant="outline"
-                size="sm"
-                href="/dashboard/teacher"
-                className={theme === "dark" ? "border-white/20 text-white hover:bg-white/10" : "border-gray-200 text-gray-700 hover:bg-gray-50"}
-              >
-                <ArrowLeft className="w-4 h-4 mr-1" />
-                Back
-              </Button>
-              <div>
-                <h1 className={`text-2xl md:text-3xl font-bold ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
-                  Analytics
-                </h1>
-                <p className={`mt-1 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
-                  Track your content performance
-                </p>
-              </div>
-            </div>
+    <TeacherDashboardLayout title="Analytics">
+      <div className="mx-auto max-w-7xl">
+          <div className="mb-8 flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
+            <p className={theme === "dark" ? "text-gray-400" : "text-gray-600"}>
+              Track your content performance
+            </p>
             <div className="flex gap-2">
               {["7", "30", "90"].map((days) => (
                 <Button
@@ -406,9 +393,15 @@ export default function TeacherAnalyticsPage() {
                 </Card>
               </motion.div>
             </>
-          ) : null}
+          ) : fetchError ? (
+            <EmptyState title="Analytics unavailable" description={fetchError} />
+          ) : (
+            <EmptyState
+              title="No analytics yet"
+              description="Publish content to start tracking views and downloads."
+            />
+          )}
         </div>
-      </main>
-    </div>
+    </TeacherDashboardLayout>
   );
 }

@@ -49,6 +49,9 @@ type FormState = {
   full_description: string;
   content_type: string;
   category_id: string;
+  subject_id: string;
+  class_id: string;
+  semester: string;
   tag_ids: string[];
   difficulty_level: string;
   age_range: string;
@@ -66,6 +69,9 @@ const defaultForm: FormState = {
   full_description: "",
   content_type: "learning_material",
   category_id: "",
+  subject_id: "",
+  class_id: "",
+  semester: "",
   tag_ids: [],
   difficulty_level: "beginner",
   age_range: "all_ages",
@@ -89,6 +95,8 @@ export function PublishContentForm({ resourceId, initialData }: PublishContentFo
   const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
   const [tags, setTags] = useState<Tag[]>([]);
+  const [catalogSubjects, setCatalogSubjects] = useState<Array<{ id: string; name: string }>>([]);
+  const [catalogClasses, setCatalogClasses] = useState<Array<{ id: string; name: string }>>([]);
   const [form, setForm] = useState<FormState>({ ...defaultForm, ...initialData });
   const fileRef = useRef<HTMLInputElement>(null);
   const thumbRef = useRef<HTMLInputElement>(null);
@@ -97,9 +105,12 @@ export function PublishContentForm({ resourceId, initialData }: PublishContentFo
     void Promise.all([
       fetch("/api/teacher/categories").then((r) => r.json()),
       fetch("/api/teacher/tags").then((r) => r.json()),
-    ]).then(([cats, tgs]) => {
+      fetch("/api/catalog").then((r) => r.json()),
+    ]).then(([cats, tgs, catalog]) => {
       if (Array.isArray(cats)) setCategories(cats);
       if (Array.isArray(tgs)) setTags(tgs);
+      if (Array.isArray(catalog?.subjects)) setCatalogSubjects(catalog.subjects);
+      if (Array.isArray(catalog?.classes)) setCatalogClasses(catalog.classes);
     });
   }, []);
 
@@ -147,6 +158,9 @@ export function PublishContentForm({ resourceId, initialData }: PublishContentFo
       fd.append("full_description", form.full_description.trim());
       fd.append("content_type", form.content_type);
       if (form.category_id) fd.append("category_id", form.category_id);
+      if (form.subject_id) fd.append("subject_id", form.subject_id);
+      if (form.class_id) fd.append("class_id", form.class_id);
+      if (form.semester) fd.append("semester", form.semester);
       fd.append("tag_ids", JSON.stringify(form.tag_ids));
       fd.append("difficulty_level", form.difficulty_level);
       fd.append("age_range", form.age_range);
@@ -309,6 +323,30 @@ export function PublishContentForm({ resourceId, initialData }: PublishContentFo
                 <option value="">Select category</option>
                 {categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
               </select>
+            </div>
+            <div className="grid sm:grid-cols-3 gap-4">
+              <div>
+                <label className={labelCls}>Subject</label>
+                <select value={form.subject_id} onChange={(e) => setForm({ ...form, subject_id: e.target.value })} className={inputCls}>
+                  <option value="">Any subject</option>
+                  {catalogSubjects.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
+                </select>
+              </div>
+              <div>
+                <label className={labelCls}>Grade</label>
+                <select value={form.class_id} onChange={(e) => setForm({ ...form, class_id: e.target.value })} className={inputCls}>
+                  <option value="">Any grade</option>
+                  {catalogClasses.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
+                </select>
+              </div>
+              <div>
+                <label className={labelCls}>Semester</label>
+                <select value={form.semester} onChange={(e) => setForm({ ...form, semester: e.target.value })} className={inputCls}>
+                  <option value="">Any semester</option>
+                  <option value="1">Semester 1</option>
+                  <option value="2">Semester 2</option>
+                </select>
+              </div>
             </div>
             <div>
               <label className={labelCls}>Tags</label>

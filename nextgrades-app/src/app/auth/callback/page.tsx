@@ -10,8 +10,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { syncPreferencesAfterAuth } from "@/lib/preferences";
 import { changeAppLanguage } from "@/components/I18nProvider";
-import { sendWelcomeEmail } from "@/lib/email";
-import { resolveUserRole } from "@/lib/auth/roles";
+import { fetchProfileRole, resolvePostAuthRedirect } from "@/lib/auth/redirect";
 
 export default function AuthCallbackPage() {
   const [isLoading, setIsLoading] = useState(true);
@@ -52,50 +51,21 @@ export default function AuthCallbackPage() {
         }
 
         const user = session.user;
-        const meta = user.user_metadata;
-        const fullName = meta.full_name || meta.name || "User";
-        const role = resolveUserRole(null, meta) || "student";
-
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("role, full_name, email_verified")
-          .eq("id", user.id)
-          .maybeSingle();
-
-        if (!profile) {
-          await supabase.from("profiles").insert({
-            id: user.id,
-            email: user.email,
-            full_name: fullName,
-            role,
-            email_verified: Boolean(user.email_confirmed_at),
-          });
-        } else {
-          await supabase
-            .from("profiles")
-            .update({
-              full_name: profile.full_name || fullName,
-              email_verified: Boolean(user.email_confirmed_at),
-              email_verified_at: user.email_confirmed_at ?? new Date().toISOString(),
-              updated_at: new Date().toISOString(),
-            })
-            .eq("id", user.id);
-        }
 
         if (user.email && user.email_confirmed_at) {
-          void sendWelcomeEmail(user.email, fullName, role === "teacher" ? "teacher" : "student");
+          void fetch("/api/auth/welcome", { method: "POST" });
         }
 
         await syncPreferencesAfterAuth((lang) => changeAppLanguage(lang));
 
-        const { data: updatedProfile } = await supabase
-          .from("profiles")
-          .select("role")
-          .eq("id", user.id)
-          .maybeSingle();
+        const dashboardRole = await fetchProfileRole(user.id);
+        if (!dashboardRole) {
+          router.replace("/choose-role");
+          router.refresh();
+          return;
+        }
 
-        const dashboardRole = resolveUserRole(updatedProfile?.role, meta) || role;
-        router.replace(`/dashboard/${dashboardRole}`);
+        router.replace(resolvePostAuthRedirect(dashboardRole, null));
         router.refresh();
       } catch (err) {
         setError(err instanceof Error ? err.message : "Authentication failed");

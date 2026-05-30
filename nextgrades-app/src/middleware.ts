@@ -1,6 +1,7 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { resolveUserRole, type AppRole } from "@/lib/auth/roles";
+import { resolvePostAuthRedirect } from "@/lib/auth/redirect";
 import { isSupabaseEnvConfigured, isSupabaseServiceRoleConfigured } from "@/lib/supabase/env";
 import { createAdminClient } from "@/lib/supabase/admin";
 
@@ -91,8 +92,13 @@ export async function middleware(request: NextRequest) {
 
     if (!userRole) {
       const redirectUrl = request.nextUrl.clone();
-      redirectUrl.pathname = "/login";
-      redirectUrl.searchParams.set("error", "profile_incomplete");
+      redirectUrl.pathname = "/choose-role";
+      return NextResponse.redirect(redirectUrl);
+    }
+
+    if (requestedPath === "/dashboard" || requestedPath === "/dashboard/") {
+      const redirectUrl = request.nextUrl.clone();
+      redirectUrl.pathname = `/dashboard/${userRole}`;
       return NextResponse.redirect(redirectUrl);
     }
 
@@ -125,9 +131,30 @@ export async function middleware(request: NextRequest) {
     }
   }
 
+  if (requestedPath === "/choose-role") {
+    if (!user) {
+      const redirectUrl = request.nextUrl.clone();
+      redirectUrl.pathname = "/login";
+      return NextResponse.redirect(redirectUrl);
+    }
+    if (userRole) {
+      const redirectUrl = request.nextUrl.clone();
+      redirectUrl.pathname = `/dashboard/${userRole}`;
+      return NextResponse.redirect(redirectUrl);
+    }
+    return response;
+  }
+
   if (user && (requestedPath === "/login" || requestedPath === "/register")) {
     const redirectUrl = request.nextUrl.clone();
-    redirectUrl.pathname = userRole ? `/dashboard/${userRole}` : "/login";
+    if (userRole) {
+      const redirectParam = request.nextUrl.searchParams.get("redirect");
+      redirectUrl.pathname = resolvePostAuthRedirect(userRole, redirectParam);
+      redirectUrl.search = "";
+    } else {
+      redirectUrl.pathname = "/choose-role";
+      redirectUrl.search = "";
+    }
     return NextResponse.redirect(redirectUrl);
   }
 
@@ -135,5 +162,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/admin/:path*", "/login", "/register", "/admin-access"],
+  matcher: ["/dashboard/:path*", "/admin/:path*", "/login", "/register", "/admin-access", "/choose-role"],
 };

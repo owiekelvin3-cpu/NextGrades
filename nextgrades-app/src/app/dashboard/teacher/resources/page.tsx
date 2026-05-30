@@ -1,16 +1,5 @@
-"use client";
-
-import { DashboardPage } from "@/components/dashboard/DashboardPage";
-import { TeacherResourcesSection } from "@/components/dashboard/sections/DashboardSections";
+import { redirect } from "next/navigation";
 
 export default function TeacherResourcesPage() {
-  return (
-    <DashboardPage
-      role="teacher"
-      titleKey="dashboardPages.teacher.resources.title"
-      descriptionKey="dashboardPages.teacher.resources.description"
-    >
-      <TeacherResourcesSection />
-    </DashboardPage>
-  );
+  redirect("/dashboard/teacher/content");
 }

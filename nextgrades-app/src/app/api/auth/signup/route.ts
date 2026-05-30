@@ -8,22 +8,18 @@ import {
   validateSimpleRegistration,
   type SimpleRegistrationPayload,
 } from "@/lib/auth/registration";
-import { sendVerificationEmail, isResendConfigured } from "@/lib/email";
-
-function getAppUrl() {
-  return (process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000").replace(/\/$/, "");
-}
+import { generateAuthLink, getAuthCallbackUrl, getAuthConfigError } from "@/lib/auth/auth-links";
+import { isEmailVerificationRequired } from "@/lib/auth/config";
+import { ensureRoleProfile } from "@/lib/auth/profile-setup";
+import { sendVerificationEmail, sendWelcomeEmail, isResendConfigured } from "@/lib/email";
 
 export async function POST(request: Request) {
-  if (!isSupabaseServiceRoleConfigured()) {
-    return NextResponse.json({ error: "Registration service unavailable" }, { status: 503 });
-  }
-
   try {
     const body = (await request.json()) as SimpleRegistrationPayload;
     const email = normalizeEmail(body.email || "");
     const role = body.role === "teacher" ? "teacher" : "student";
     const fullName = body.fullName?.trim() || "";
+    const verificationRequired = isEmailVerificationRequired();
 
     const validationError = validateSimpleRegistration({ ...body, email, role });
     if (validationError) {
@@ -42,26 +38,109 @@ export async function POST(request: Request) {
       );
     }
 
-    const admin = createAdminClient();
-    const redirectTo = `${getAppUrl()}/auth/callback`;
+    // No verification: create active account immediately (no domain / Resend needed)
+    if (!verificationRequired && isSupabaseServiceRoleConfigured()) {
+      const admin = createAdminClient();
+      const { data, error } = await admin.auth.admin.createUser({
+        email,
+        password: body.password,
+        email_confirm: true,
+        user_metadata: { full_name: fullName, role },
+      });
 
-    const { data, error } = await admin.auth.admin.generateLink({
+      if (error) {
+        const msg = error.message.toLowerCase();
+        if (msg.includes("already") || msg.includes("exists") || msg.includes("registered")) {
+          await logRegistrationAttempt(email, "signup", false, error.message, {}, request);
+          return NextResponse.json(
+            {
+              error: "An account with this email already exists. Please sign in to continue.",
+              code: "EMAIL_EXISTS",
+            },
+            { status: 409 }
+          );
+        }
+        await logRegistrationAttempt(email, "signup", false, error.message, {}, request);
+        return NextResponse.json({ error: error.message }, { status: 500 });
+      }
+
+      const userId = data.user?.id;
+      if (userId) {
+        await ensureRoleProfile(admin, userId, role, {
+          fullName,
+          email,
+          verified: true,
+        });
+      }
+
+      if (isResendConfigured()) {
+        void sendWelcomeEmail(email, fullName, role);
+      }
+
+      await logRegistrationAttempt(email, "signup", true, undefined, { userId, role, verificationSkipped: true }, request);
+
+      if (userId) {
+        const { notifyAdminNewRegistration, notifyAccountVerification } = await import("@/lib/notifications/triggers");
+        void notifyAdminNewRegistration({ userId, role, name: fullName });
+        void notifyAccountVerification(userId);
+      }
+
+      return NextResponse.json({
+        success: true,
+        message: "Account created! You can sign in now.",
+        emailSent: false,
+        verificationRequired: false,
+      });
+    }
+
+    if (!verificationRequired && !isSupabaseServiceRoleConfigured()) {
+      const configError = getAuthConfigError();
+      return NextResponse.json(
+        {
+          error: "Registration service unavailable.",
+          code: "SERVICE_ROLE_MISSING",
+          details: configError,
+        },
+        { status: 503 }
+      );
+    }
+
+    // Verification enabled: require Resend + generate link flow
+    if (!isResendConfigured()) {
+      return NextResponse.json(
+        {
+          error: "Email service is not configured. Set RESEND_API_KEY in .env.local.",
+          code: "RESEND_MISSING",
+        },
+        { status: 503 }
+      );
+    }
+
+    if (!isSupabaseServiceRoleConfigured()) {
+      const configError = getAuthConfigError();
+      return NextResponse.json(
+        {
+          error: "Registration service unavailable.",
+          code: "SERVICE_ROLE_MISSING",
+          details: configError,
+        },
+        { status: 503 }
+      );
+    }
+
+    const redirectTo = getAuthCallbackUrl();
+    const { actionLink: verifyUrl, userId, error: linkError } = await generateAuthLink({
       type: "signup",
       email,
       password: body.password,
-      options: {
-        data: {
-          full_name: fullName,
-          role,
-        },
-        redirectTo,
-      },
+      metadata: { full_name: fullName, role },
+      redirectTo,
     });
 
-    if (error) {
-      const msg = error.message.toLowerCase();
+    if (linkError) {
+      const msg = linkError.toLowerCase();
       if (msg.includes("already") || msg.includes("exists") || msg.includes("registered")) {
-        await logRegistrationAttempt(email, "signup", false, error.message, {}, request);
+        await logRegistrationAttempt(email, "signup", false, linkError, {}, request);
         return NextResponse.json(
           {
             error: "An account with this email already exists. Please sign in to continue.",
@@ -70,37 +149,50 @@ export async function POST(request: Request) {
           { status: 409 }
         );
       }
-      await logRegistrationAttempt(email, "signup", false, error.message, {}, request);
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      await logRegistrationAttempt(email, "signup", false, linkError, {}, request);
+      return NextResponse.json({ error: linkError }, { status: 500 });
     }
 
-    const userId = data.user?.id;
     if (userId) {
-      await admin
-        .from("profiles")
-        .update({
-          full_name: fullName,
-          email,
-          role,
-          email_verified: false,
-          updated_at: new Date().toISOString(),
-        })
-        .eq("id", userId);
+      const admin = createAdminClient();
+      await ensureRoleProfile(admin, userId, role, {
+        fullName,
+        email,
+        verified: false,
+      });
     }
 
-    const verifyUrl = data.properties?.action_link;
-    if (verifyUrl && isResendConfigured()) {
-      await sendVerificationEmail(email, verifyUrl, fullName);
+    if (!verifyUrl) {
+      await logRegistrationAttempt(email, "signup", false, "Missing verification link", {}, request);
+      return NextResponse.json({ error: "Failed to generate verification link" }, { status: 500 });
+    }
+
+    const emailResult = await sendVerificationEmail(email, verifyUrl, fullName);
+    if (!emailResult.success) {
+      await logRegistrationAttempt(
+        email,
+        "signup",
+        true,
+        emailResult.error || "Email send failed",
+        { userId, role, emailSent: false },
+        request
+      );
+      return NextResponse.json({
+        success: true,
+        message: "Account created! We could not deliver the verification email yet.",
+        emailSent: false,
+        emailError: emailResult.error,
+        warning: true,
+        verificationRequired: true,
+      });
     }
 
     await logRegistrationAttempt(email, "signup", true, undefined, { userId, role }, request);
-
     return NextResponse.json({
       success: true,
-      message: isResendConfigured()
-        ? "Account created! Check your email to verify your address and access your dashboard."
-        : "Account created! Please check your email to verify your address.",
-      emailSent: Boolean(verifyUrl && isResendConfigured()),
+      message: "Account created! Check your email to verify your address.",
+      emailSent: true,
+      verificationRequired: true,
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Registration failed";

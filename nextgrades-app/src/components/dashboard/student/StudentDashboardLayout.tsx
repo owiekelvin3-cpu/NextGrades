@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Bell, ChevronDown, Sparkles } from "lucide-react";
+import { ChevronDown, Sparkles } from "lucide-react";
+import { NotificationBell } from "@/components/notifications/NotificationBell";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { useTheme } from "@/context/ThemeContext";
 import { fetchProfileSettings } from "@/lib/dashboard/profile-settings";
@@ -19,7 +20,6 @@ export function StudentDashboardLayout({ title, children, headerAction }: Studen
   const { theme } = useTheme();
   const [profileName, setProfileName] = useState("");
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
-  const [unreadCount, setUnreadCount] = useState(0);
 
   useEffect(() => {
     fetchProfileSettings().then((data) => {
@@ -43,7 +43,7 @@ export function StudentDashboardLayout({ title, children, headerAction }: Studen
 
   return (
     <div className={cn("flex min-h-screen", theme === "dark" ? "bg-[#0D1B2A]" : "bg-[#F0F2F5]")}>
-      <Sidebar role="student" unreadNotifications={unreadCount} studentName={profileName} />
+      <Sidebar role="student" studentName={profileName} />
 
       <div className="flex min-w-0 flex-1 flex-col pt-16 md:pt-0">
         <header
@@ -66,23 +66,7 @@ export function StudentDashboardLayout({ title, children, headerAction }: Studen
               <Sparkles className="h-4 w-4" />
               <span className="hidden sm:inline">NextGrades AI</span>
             </Link>
-            <Link
-              href="/dashboard/chat"
-              className={cn(
-                "relative rounded-xl p-2.5 transition-colors",
-                theme === "dark"
-                  ? "text-gray-400 hover:bg-white/10 hover:text-white"
-                  : "text-gray-500 hover:bg-gray-100 hover:text-[#0D1B2A]"
-              )}
-              aria-label="Notifications"
-            >
-              <Bell className="h-5 w-5" />
-              {unreadCount > 0 && (
-                <span className="absolute right-1.5 top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white">
-                  {unreadCount > 9 ? "9+" : unreadCount}
-                </span>
-              )}
-            </Link>
+            <NotificationBell variant={theme === "dark" ? "light" : "dark"} />
             <Link
               href="/dashboard/student/settings"
               className={cn(

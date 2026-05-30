@@ -35,6 +35,7 @@ export type TeacherOverviewData = {
     todayUpcoming: number;
     todayCompleted: number;
     weekPlanned: number;
+    weekHours: number;
     weekCompleted: number;
     weekPending: number;
     earningsMonth: number;
@@ -118,6 +119,7 @@ async function fetchTeacherAllLessons(teacherId: string): Promise<DashboardLesso
     duration: r.duration ?? 60,
     zoom_link: r.zoom_link,
     status: r.status ?? "scheduled",
+    student_id: r.student_id,
     teacher_name: undefined,
     student_name: r.student_id ? (studentMap.get(r.student_id) as string | undefined) : undefined,
     subject_name: r.subject_id ? (subjectMap.get(r.subject_id) as string | undefined) : undefined,
@@ -126,12 +128,16 @@ async function fetchTeacherAllLessons(teacherId: string): Promise<DashboardLesso
 }
 
 function buildStudentList(lessons: DashboardLesson[]): TeacherStudentOverview[] {
-  const byStudent = new Map<string, { subject: string; count: number; minutes: number }>();
+  const byStudent = new Map<
+    string,
+    { id: string; name: string; subject: string; count: number; minutes: number }
+  >();
 
   for (const lesson of lessons) {
-    const key = lesson.student_name || "unknown";
-    if (!lesson.student_name) continue;
-    const existing = byStudent.get(lesson.student_name) || {
+    if (!lesson.student_id || !lesson.student_name) continue;
+    const existing = byStudent.get(lesson.student_id) || {
+      id: lesson.student_id,
+      name: lesson.student_name,
       subject: lesson.subject_name || "—",
       count: 0,
       minutes: 0,
@@ -139,12 +145,12 @@ function buildStudentList(lessons: DashboardLesson[]): TeacherStudentOverview[] 
     existing.count += 1;
     existing.minutes += lesson.duration;
     if (lesson.subject_name) existing.subject = lesson.subject_name;
-    byStudent.set(lesson.student_name, existing);
+    byStudent.set(lesson.student_id, existing);
   }
 
-  return [...byStudent.entries()].map(([name, info]) => ({
-    id: name,
-    name,
+  return [...byStudent.values()].map((info) => ({
+    id: info.id,
+    name: info.name,
     subject: info.subject,
     lessonCount: info.count,
     totalHours: Math.round((info.minutes / 60) * 10) / 10,
@@ -236,6 +242,8 @@ export async function fetchTeacherOverviewData(): Promise<TeacherOverviewData | 
   const bonusCurrent = BONUS_GOALS[Math.min(level - 1, BONUS_GOALS.length - 1)] * (bonusProgress / 100);
   const bonusNextGoal = BONUS_GOALS[Math.min(level, BONUS_GOALS.length - 1)];
 
+  const weekHours = Math.round((weekLessons.reduce((s, l) => s + l.duration, 0) / 60) * 10) / 10;
+
   const earningsMonth = baseStats.earnings_month;
   const earningsGross = Math.round(earningsMonth * 1.19 * 100) / 100;
   const earningsPending = Math.max(0, Math.round((earningsGross - earningsMonth) * 100) / 100);
@@ -251,6 +259,7 @@ export async function fetchTeacherOverviewData(): Promise<TeacherOverviewData | 
       todayUpcoming,
       todayCompleted,
       weekPlanned: weekLessons.length,
+      weekHours,
       weekCompleted,
       weekPending,
       earningsMonth,

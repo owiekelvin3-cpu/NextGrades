@@ -35,12 +35,17 @@ import {
   removeProfileAvatar,
   changePassword,
   saveChatLanguage,
-  loadNotificationPrefs,
-  saveNotificationPrefs,
   TIMEZONE_OPTIONS,
   type UserProfileSettings,
-  type NotificationPrefs,
 } from "@/lib/dashboard/profile-settings";
+import { useNotificationsOptional } from "@/context/NotificationContext";
+import { subscribeToPush, unsubscribeFromPush } from "@/lib/notifications/push-client";
+import {
+  DEFAULT_NOTIFICATION_PREFERENCES,
+  NOTIFICATION_CATEGORIES,
+  type NotificationPreferences,
+} from "@/lib/notifications/types";
+import { categoryLabel } from "@/lib/notifications/format";
 import { sendPasswordChangedEmail } from "@/lib/email";
 import { SUPPORTED_LANGUAGES, LANGUAGE_LABELS, normalizeLanguage } from "@/lib/i18n/locales";
 import { changeAppLanguage } from "@/components/I18nProvider";
@@ -81,7 +86,8 @@ export function StudentSettingsPanel({ role = "student" }: StudentSettingsPanelP
   const [timezone, setTimezone] = useState("Europe/Berlin");
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [aiLanguage, setAiLanguage] = useState<ChatResponseLanguage>("de");
-  const [notifs, setNotifs] = useState<NotificationPrefs>(loadNotificationPrefs());
+  const notifCtx = useNotificationsOptional();
+  const [notifs, setNotifs] = useState<NotificationPreferences>(DEFAULT_NOTIFICATION_PREFERENCES);
 
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -108,9 +114,17 @@ export function StudentSettingsPanel({ role = "student" }: StudentSettingsPanelP
     } catch {
       /* ignore */
     }
-    setNotifs(loadNotificationPrefs());
+    setNotifs(notifCtx?.preferences ?? DEFAULT_NOTIFICATION_PREFERENCES);
+    if (!notifCtx?.preferences) {
+      fetch("/api/user/notification-preferences")
+        .then((r) => (r.ok ? r.json() : null))
+        .then((json) => {
+          if (json?.preferences) setNotifs(json.preferences);
+        })
+        .catch(() => {});
+    }
     setLoading(false);
-  }, []);
+  }, [notifCtx?.preferences]);
 
   useEffect(() => {
     void load();
@@ -153,9 +167,33 @@ export function StudentSettingsPanel({ role = "student" }: StudentSettingsPanelP
     else toast.success(t("settings.saved", { defaultValue: "Settings saved" }));
   };
 
-  const handleSaveNotifications = () => {
-    saveNotificationPrefs(notifs);
-    toast.success(t("settings.saved", { defaultValue: "Settings saved" }));
+  const handleSaveNotifications = async () => {
+    setSaving(true);
+    try {
+      const res = await fetch("/api/user/notification-preferences", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(notifs),
+      });
+      if (!res.ok) {
+        toast.error(t("settings.saveFailed", { defaultValue: "Could not save settings" }));
+        return;
+      }
+      if (notifCtx) await notifCtx.updatePreferences(notifs);
+      toast.success(t("settings.saved", { defaultValue: "Settings saved" }));
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleTogglePush = async (enabled: boolean) => {
+    setNotifs((p) => ({ ...p, pushEnabled: enabled }));
+    if (enabled) {
+      const ok = await subscribeToPush();
+      if (!ok) toast.error(t("notifications.pushDenied", { defaultValue: "Push notifications were not enabled." }));
+    } else {
+      await unsubscribeFromPush();
+    }
   };
 
   const handlePasswordChange = async () => {
@@ -415,6 +453,24 @@ export function StudentSettingsPanel({ role = "student" }: StudentSettingsPanelP
           <SettingsCard title={t("settings.notificationsTitle", { defaultValue: "Notifications" })} icon={Bell}>
             <div className="space-y-3">
               <SettingsToggle
+                label={t("notifications.prefs.push", { defaultValue: "Push notifications" })}
+                description={t("notifications.prefs.pushDesc", { defaultValue: "Browser alerts when you're away" })}
+                checked={notifs.pushEnabled}
+                onChange={(v) => void handleTogglePush(v)}
+              />
+              <SettingsToggle
+                label={t("notifications.prefs.sound", { defaultValue: "Notification sounds" })}
+                description={t("notifications.prefs.soundDesc", { defaultValue: "Play a subtle sound for new alerts" })}
+                checked={notifs.soundEnabled}
+                onChange={(v) => setNotifs((p) => ({ ...p, soundEnabled: v }))}
+              />
+              <SettingsToggle
+                label={t("notifications.prefs.email", { defaultValue: "Email notifications" })}
+                description={t("notifications.prefs.emailDesc", { defaultValue: "Receive important updates by email" })}
+                checked={notifs.emailEnabled}
+                onChange={(v) => setNotifs((p) => ({ ...p, emailEnabled: v }))}
+              />
+              <SettingsToggle
                 label={t("settings.notifLessons", { defaultValue: "Lesson reminders" })}
                 description={t("settings.notifLessonsDesc", { defaultValue: "Email before upcoming appointments" })}
                 checked={notifs.emailLessons}
@@ -433,7 +489,27 @@ export function StudentSettingsPanel({ role = "student" }: StudentSettingsPanelP
                 onChange={(v) => setNotifs((p) => ({ ...p, emailMarketing: v }))}
               />
             </div>
-            <SettingsSaveBar saving={false} onSave={handleSaveNotifications} />
+            <div className="mt-6 border-t border-gray-100 pt-4 dark:border-white/10">
+              <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-gray-500">
+                {t("notifications.prefs.categories", { defaultValue: "Categories" })}
+              </p>
+              <div className="grid gap-2 sm:grid-cols-2">
+                {NOTIFICATION_CATEGORIES.map((cat) => (
+                  <SettingsToggle
+                    key={cat}
+                    label={categoryLabel(cat, i18n.language)}
+                    checked={notifs.categories[cat]}
+                    onChange={(v) =>
+                      setNotifs((p) => ({
+                        ...p,
+                        categories: { ...p.categories, [cat]: v },
+                      }))
+                    }
+                  />
+                ))}
+              </div>
+            </div>
+            <SettingsSaveBar saving={saving} onSave={() => void handleSaveNotifications()} />
           </SettingsCard>
         )}
 

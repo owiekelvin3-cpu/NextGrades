@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -73,7 +74,9 @@ export default function ResourcesPage() {
           </div>
         </section>
 
-        <ResourcesExperience />
+        <Suspense fallback={null}>
+          <ResourcesExperience />
+        </Suspense>
       </main>
 
       <Footer />

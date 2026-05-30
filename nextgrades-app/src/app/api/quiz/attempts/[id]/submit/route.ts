@@ -87,6 +87,20 @@ export async function POST(
 
     if (updateError) throw updateError;
 
+    const quizTitle =
+      (updated as { generated_quizzes?: { title?: string } })?.generated_quizzes?.title ?? "Quiz";
+    const { notifyQuizSubmitted, notifyGradeReleased } = await import("@/lib/notifications/triggers");
+    void notifyQuizSubmitted({
+      studentId: attempt.student_id,
+      quizTitle,
+      attemptId,
+    });
+    void notifyGradeReleased({
+      studentId: attempt.student_id,
+      title: quizTitle,
+      score: `${scorePercent}%`,
+    });
+
     const { data: fullQuestions } = await supabase
       .from("quiz_questions")
       .select("*")

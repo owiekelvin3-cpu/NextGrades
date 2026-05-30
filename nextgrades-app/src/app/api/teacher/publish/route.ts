@@ -40,6 +40,11 @@ export async function POST(request: Request) {
     const accessType = String(formData.get("access_type") || "free");
     const price = accessType === "premium" ? parseFloat(String(formData.get("price") || "0")) : 0;
     const externalUrl = String(formData.get("external_url") || "").trim();
+    const subjectId = formData.get("subject_id") ? String(formData.get("subject_id")) : null;
+    const classId = formData.get("class_id") ? String(formData.get("class_id")) : null;
+    const semesterRaw = formData.get("semester");
+    const semester =
+      semesterRaw === "1" || semesterRaw === "2" ? parseInt(String(semesterRaw), 10) : null;
     const file = formData.get("file") as File | null;
     const thumbnail = formData.get("thumbnail") as File | null;
     const resourceId = formData.get("resource_id") ? String(formData.get("resource_id")) : null;
@@ -99,8 +104,7 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: `File upload failed: ${uploadError.message}` }, { status: 500 });
       }
 
-      const { data: urlData } = supabase.storage.from("resources").getPublicUrl(storagePath);
-      fileUrl = urlData.publicUrl;
+      fileUrl = "";
     }
 
     let thumbnailUrl: string | null = null;
@@ -136,6 +140,9 @@ export async function POST(request: Request) {
       file_size: fileSize,
       file_name: fileName,
       storage_path: storagePath,
+      subject_id: subjectId,
+      class_id: classId,
+      semester,
       category_id: categoryId,
       difficulty_level: difficultyLevel,
       age_range: ageRange,
@@ -164,10 +171,9 @@ export async function POST(request: Request) {
 
       const updatePayload: Record<string, unknown> = { ...payload };
       if (!thumbnailUrl) updatePayload.thumbnail_url = existing.thumbnail_url;
-      if (!fileUrl || fileUrl === DEFAULT_THUMBNAIL) {
+      if (!storagePath && !externalUrl) {
         updatePayload.url = existing.url;
         updatePayload.storage_path = existing.storage_path;
-        updatePayload.file_name = fileName ?? undefined;
       }
 
       const { data, error } = await supabase
@@ -201,6 +207,28 @@ export async function POST(request: Request) {
       await supabase.from("resource_tag_relations").insert(
         tagIds.map((tagId) => ({ resource_id: resource.id, tag_id: tagId }))
       );
+    }
+
+    if (isPublished) {
+      const { notifyResourcePublished, notifyAssignmentAssigned, notifyExamPublished } = await import(
+        "@/lib/notifications/triggers"
+      );
+      const studentIds = await import("@/lib/notifications/server").then((m) =>
+        m.getStudentIdsForEnrollment(subjectId)
+      );
+      void notifyResourcePublished({
+        materialId: resource.id,
+        title,
+        teacherId: auth.user.id,
+        subjectId,
+        isPublished: true,
+      });
+      if (contentType === "assignment") {
+        void notifyAssignmentAssigned({ studentIds, title, materialId: resource.id });
+      }
+      if (contentType === "exam_preparation" || contentType === "practice_questions") {
+        void notifyExamPublished({ studentIds, title, materialId: resource.id });
+      }
     }
 
     return NextResponse.json(resource, { status: resourceId ? 200 : 201 });

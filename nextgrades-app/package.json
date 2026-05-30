@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "db:setup": "node scripts/apply-migrations.mjs"
+    "db:setup": "node scripts/apply-migrations.mjs",
+    "db:apply-pdf": "node scripts/run-sql.mjs supabase/migrations/00017_pdf_alignment.sql supabase/migrations/00018_backfill_storage_paths.sql",
+    "db:backfill-storage": "node scripts/backfill-storage-paths.mjs"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^7.2.0",
@@ -38,7 +40,8 @@
     "remark-gfm": "^4.0.1",
     "resend": "^6.12.4",
     "stripe": "^22.2.0",
-    "tailwind-merge": "^3.6.0"
+    "tailwind-merge": "^3.6.0",
+    "web-push": "^3.6.7"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
@@ -46,6 +49,7 @@
     "@types/pdf-parse": "^1.1.5",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/web-push": "^3.6.4",
     "eslint": "^9",
     "eslint-config-next": "16.2.6",
     "pg": "^8.21.0",

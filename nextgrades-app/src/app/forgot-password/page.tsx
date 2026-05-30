@@ -14,11 +14,11 @@ import {
   faExclamationCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
-import { supabase } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
+  const [submittedEmail, setSubmittedEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -43,14 +43,18 @@ export default function ForgotPasswordPage() {
     setSuccess(false);
 
     try {
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/reset-password`,
+      const res = await fetch("/api/auth/forgot-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
       });
+      const data = await res.json();
 
-      if (error) {
-        throw new Error(error.message);
+      if (!res.ok) {
+        throw new Error(data.error || data.details || "Failed to send reset email");
       }
 
+      setSubmittedEmail(email);
       setSuccess(true);
       setEmail("");
     } catch (err: any) {
@@ -146,7 +150,7 @@ export default function ForgotPasswordPage() {
                         ? "text-gray-300"
                         : "text-gray-600"
                     }`}>
-                      We've sent a password reset link to <strong>{email}</strong>. 
+                      We've sent a password reset link to <strong>{submittedEmail}</strong>.
                       Click the link in the email to reset your password.
                     </p>
                     <p className={`text-xs ${

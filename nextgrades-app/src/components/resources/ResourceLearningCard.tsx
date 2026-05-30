@@ -12,7 +12,6 @@ import {
   BookmarkCheck,
   Clock,
   Download,
-  Eye,
   Lock,
   User,
 } from "lucide-react";
@@ -24,10 +23,12 @@ export type LearningResource = {
   short_description?: string | null;
   type?: string;
   content_type?: string;
-  url: string;
+  url?: string | null;
   thumbnail_url?: string | null;
   access_type?: string;
   is_premium?: boolean;
+  canAccess?: boolean;
+  locked?: boolean;
   download_count?: number | null;
   view_count?: number | null;
   difficulty_level?: string;
@@ -35,6 +36,9 @@ export type LearningResource = {
   estimated_minutes?: number | null;
   language?: string;
   created_at?: string;
+  semester?: number | null;
+  subject?: { id: string; name: string; slug?: string | null } | null;
+  class?: { id: string; name: string; level?: number } | null;
   category?: { id: string; name: string; icon?: string } | null;
   author?: { id: string; full_name: string; avatar_url?: string | null } | null;
 };
@@ -70,6 +74,7 @@ export function ResourceLearningCard({
 }: Props) {
   const { theme } = useTheme();
   const access = resourceAccess(resource);
+  const locked = resource.locked ?? (access === "premium" && resource.canAccess === false);
   const text = theme === "dark" ? "text-white" : "text-[#0D1B2A]";
   const muted = theme === "dark" ? "text-gray-400" : "text-gray-600";
   const panel = theme === "dark" ? "bg-[#112240] border-white/10" : "bg-white border-gray-200";
@@ -130,6 +135,15 @@ export function ResourceLearningCard({
         <p className={`text-sm mb-4 flex-1 line-clamp-2 ${muted}`}>{summary}</p>
 
         <div className={`flex flex-wrap items-center gap-3 text-xs mb-4 ${muted}`}>
+          {resource.subject?.name && (
+            <span className="inline-flex items-center gap-1 capitalize">{resource.subject.name}</span>
+          )}
+          {resource.class?.name && (
+            <span className="inline-flex items-center gap-1">{resource.class.name}</span>
+          )}
+          {resource.semester != null && (
+            <span className="inline-flex items-center gap-1">Semester {resource.semester}</span>
+          )}
           {resource.author?.full_name && (
             <span className="inline-flex items-center gap-1">
               <User className="w-3.5 h-3.5" />
@@ -145,15 +159,11 @@ export function ResourceLearningCard({
           <span className="inline-flex items-center gap-1 capitalize">
             {resource.difficulty_level || "beginner"}
           </span>
-          <span className="inline-flex items-center gap-1">
-            <Eye className="w-3.5 h-3.5" />
-            {resource.view_count ?? 0}
-          </span>
         </div>
 
         <div className="flex items-center justify-between mt-auto pt-2 border-t border-black/5 dark:border-white/10">
           <span className={`text-xs ${muted}`}>{resource.download_count ?? 0} downloads</span>
-          {access === "premium" ? (
+          {locked ? (
             <Link href="/pricing" onClick={onView}>
               <Button variant="gold" size="sm">
                 <Lock className="w-4 h-4 mr-1" />
@@ -163,7 +173,7 @@ export function ResourceLearningCard({
           ) : (
             <Button variant="outline" size="sm" onClick={onDownload}>
               <Download className="w-4 h-4 mr-1" />
-              {freeCta}
+              {access === "premium" ? premiumCta : freeCta}
             </Button>
           )}
         </div>

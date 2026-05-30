@@ -7,6 +7,7 @@ import { PreferencesSync } from "@/components/PreferencesSync";
 import { PREFERENCES_BOOTSTRAP_SCRIPT } from "@/lib/preferences";
 import { CmsProvider } from "@/context/CmsContext";
 import { ToastProvider } from "@/context/ToastContext";
+import { NotificationProvider } from "@/context/NotificationContext";
 import PageTransition from "@/components/PageTransition";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
@@ -55,7 +56,9 @@ export default function RootLayout({
             <PreferencesSync />
             <CmsProvider>
               <ToastProvider>
-                <PageTransition>{children}</PageTransition>
+                <NotificationProvider>
+                  <PageTransition>{children}</PageTransition>
+                </NotificationProvider>
               </ToastProvider>
             </CmsProvider>
           </I18nProvider>

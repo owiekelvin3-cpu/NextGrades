@@ -1,15 +1,15 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { requireAuth } from "@/lib/auth/auth-utils";
+import { requireTeacherOrAdmin } from "@/lib/auth/auth-utils";
 
 // GET - Fetch analytics data for the current teacher
 export async function GET(request: Request) {
   try {
     const supabase = await createClient();
-    const auth = await requireAuth(supabase);
+    const auth = await requireTeacherOrAdmin(supabase);
     
     if (!auth.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: auth.error || "Unauthorized" }, { status: auth.error === "Forbidden" ? 403 : 401 });
     }
 
     const { searchParams } = new URL(request.url);

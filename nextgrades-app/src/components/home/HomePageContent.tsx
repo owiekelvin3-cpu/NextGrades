@@ -29,13 +29,7 @@ import {
   ListChecks,
 } from "lucide-react";
 
-const HERO_IMAGE =
-  "https://images.unsplash.com/photo-1434030214721-280a115c6dbc?auto=format&fit=crop&w=1920&q=80";
-const PROGRAM_IMAGES = [
-  "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1635070041078-e43d6c9a0a5f?auto=format&fit=crop&w=800&q=80",
-];
+import { HERO_STUDY_IMAGE, PROGRAM_CARD_IMAGES } from "@/lib/marketing-images";
 
 const featureIcons = [Users, Users, Video, Target, Clock];
 const statIcons = [GraduationCap, Users, BookOpen, Star];
@@ -108,7 +102,7 @@ export function HomePageContent() {
       {/* Hero — full-bleed background */}
       <section className="relative min-h-[92vh] flex items-center overflow-hidden">
         <Image
-          src={HERO_IMAGE}
+          src={HERO_STUDY_IMAGE}
           alt=""
           fill
           priority
@@ -253,7 +247,7 @@ export function HomePageContent() {
                       </span>
                     )}
                     <img
-                      src={PROGRAM_IMAGES[index]}
+                      src={PROGRAM_CARD_IMAGES[index]}
                       alt=""
                       className={`h-full w-full object-cover transition-transform duration-500 hover:scale-105 ${
                         featured ? "opacity-90" : ""

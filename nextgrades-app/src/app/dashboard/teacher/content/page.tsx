@@ -1,21 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
-import { Sidebar } from "@/components/dashboard/Sidebar";
+import { TeacherDashboardLayout } from "@/components/dashboard/teacher/TeacherDashboardLayout";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import {
   Search,
-  Filter,
   Plus,
-  MoreVertical,
   Edit,
   Trash2,
   Eye,
   Download,
-  Copy,
   Archive,
   FileText,
   Video,
@@ -25,6 +22,12 @@ import {
 } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
 import { useToast } from "@/context/ToastContext";
+import { useTranslation } from "react-i18next";
+
+interface Category {
+  id: string;
+  name: string;
+}
 
 interface Resource {
   id: string;
@@ -52,6 +55,7 @@ interface Resource {
 
 export default function TeacherContentPage() {
   const { theme } = useTheme();
+  const { t } = useTranslation();
   const { success, error: toastError } = useToast();
   const [resources, setResources] = useState<Resource[]>([]);
   const [loading, setLoading] = useState(true);
@@ -60,15 +64,13 @@ export default function TeacherContentPage() {
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [sortBy, setSortBy] = useState("created_at");
   const [sortOrder, setSortOrder] = useState("desc");
-  const [selectedResources, setSelectedResources] = useState<string[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [fetchError, setFetchError] = useState<string | null>(null);
 
-  useEffect(() => {
-    fetchResources();
-  }, [statusFilter, categoryFilter, sortBy, sortOrder]);
-
-  const fetchResources = async () => {
+  const fetchResources = useCallback(async () => {
     try {
       setLoading(true);
+      setFetchError(null);
       const params = new URLSearchParams({
         status: statusFilter,
         category: categoryFilter,
@@ -77,13 +79,28 @@ export default function TeacherContentPage() {
       });
       const response = await fetch(`/api/teacher/resources?${params}`);
       const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to load resources");
+      }
       setResources(data.resources || []);
     } catch (error) {
-      console.error("Error fetching resources:", error);
+      const message = error instanceof Error ? error.message : "Failed to load resources";
+      setFetchError(message);
+      setResources([]);
     } finally {
       setLoading(false);
     }
-  };
+  }, [statusFilter, categoryFilter, sortBy, sortOrder]);
+
+  useEffect(() => {
+    void fetch("/api/teacher/categories")
+      .then((r) => (r.ok ? r.json() : []))
+      .then((data) => setCategories(Array.isArray(data) ? data : []));
+  }, []);
+
+  useEffect(() => {
+    void fetchResources();
+  }, [fetchResources]);
 
   const handleDelete = async (id: string) => {
     if (!confirm("Are you sure you want to delete this resource?")) return;
@@ -154,26 +171,24 @@ export default function TeacherContentPage() {
   };
 
   return (
-    <div className={`flex min-h-screen ${theme === "dark" ? "bg-[#0D1B2A]" : "bg-[#FAFAFA]"}`}>
-      <Sidebar role="teacher" />
-      
-      <main className="flex-1 p-4 sm:p-6 lg:p-8 pt-20 md:pt-8">
-        <div className="max-w-7xl mx-auto">
-          {/* Header */}
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
-            <div>
-              <h1 className={`text-2xl md:text-3xl font-bold ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
-                My Resources
-              </h1>
-              <p className={`mt-1 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
-                View, edit, and manage your published learning content
-              </p>
-            </div>
-            <Button variant="gold" size="md" href="/dashboard/teacher/upload">
-              <Plus className="w-5 h-5 mr-2" />
-              Publish Content
-            </Button>
-          </div>
+    <TeacherDashboardLayout
+      title={t("teacherDashboard.nav.myMaterials", { defaultValue: "My materials" })}
+      description={t("teacherDashboard.contentPageDesc", {
+        defaultValue: "View, edit, and manage your published learning content.",
+      })}
+      headerAction={
+        <Button variant="gold" size="md" href="/dashboard/teacher/upload">
+          <Plus className="mr-2 h-5 w-5" />
+          {t("teacherDashboard.nav.publish", { defaultValue: "Publish" })}
+        </Button>
+      }
+    >
+      <div className="mx-auto max-w-7xl">
+          {fetchError && (
+            <Card className={`mb-6 border-l-4 border-red-500 p-4 ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
+              <p className="text-sm text-red-600">{fetchError}</p>
+            </Card>
+          )}
 
           {/* Filters */}
           <Card className={`p-4 mb-6 ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
@@ -228,13 +243,11 @@ export default function TeacherContentPage() {
                   } focus:outline-none focus:ring-2 focus:ring-[#D4AF37]`}
                 >
                   <option value="all">All Categories</option>
-                  <option value="worksheets">Worksheets</option>
-                  <option value="videos">Videos</option>
-                  <option value="notes">Notes</option>
-                  <option value="quizzes">Quizzes</option>
-                  <option value="past_papers">Past Papers</option>
-                  <option value="assignments">Assignments</option>
-                  <option value="courses">Courses</option>
+                  {categories.map((cat) => (
+                    <option key={cat.id} value={cat.id}>
+                      {cat.name}
+                    </option>
+                  ))}
                 </select>
                 <ChevronDown className={`absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`} />
               </div>
@@ -408,7 +421,6 @@ export default function TeacherContentPage() {
             </div>
           )}
         </div>
-      </main>
-    </div>
+    </TeacherDashboardLayout>
   );
 }

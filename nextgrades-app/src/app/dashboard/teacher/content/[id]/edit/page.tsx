@@ -2,16 +2,17 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Sidebar } from "@/components/dashboard/Sidebar";
+import { TeacherDashboardLayout } from "@/components/dashboard/teacher/TeacherDashboardLayout";
 import { PublishContentForm } from "@/components/teacher/PublishContentForm";
 import { LoadingBlock } from "@/components/dashboard/LoadingBlock";
 import { Button } from "@/components/ui/Button";
 import { useTheme } from "@/context/ThemeContext";
+import { useToast } from "@/context/ToastContext";
 import { useParams } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
 
 export default function EditResourcePage() {
   const { theme } = useTheme();
+  const { error: toastError } = useToast();
   const params = useParams();
   const id = params.id as string;
   const [loading, setLoading] = useState(true);
@@ -19,7 +20,11 @@ export default function EditResourcePage() {
 
   useEffect(() => {
     void fetch(`/api/teacher/resources/${id}`)
-      .then((r) => r.json())
+      .then(async (r) => {
+        const data = await r.json();
+        if (!r.ok) throw new Error(data.error || "Resource not found");
+        return data;
+      })
       .then((data) => {
         if (data?.id) {
           const tagIds =
@@ -42,26 +47,25 @@ export default function EditResourcePage() {
           });
         }
       })
+      .catch((err) => {
+        toastError(err instanceof Error ? err.message : "Failed to load resource");
+      })
       .finally(() => setLoading(false));
-  }, [id]);
+  }, [id, toastError]);
 
   return (
-    <div className={`flex min-h-screen ${theme === "dark" ? "bg-[#0D1B2A]" : "bg-[#FAFAFA]"}`}>
-      <Sidebar role="teacher" />
-      <main className="flex-1 p-4 sm:p-6 lg:p-8 pt-20 md:pt-8">
-        <div className="mb-6 flex items-center gap-4">
-          <Button variant="outline" size="sm" href="/dashboard/teacher/content">
-            <ArrowLeft className="w-4 h-4 mr-1" /> Back
-          </Button>
-          <div>
-            <h1 className={`text-2xl font-bold ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
-              Edit Resource
-            </h1>
-            <p className={`text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
-              Update details, thumbnail, or pricing
-            </p>
-          </div>
-        </div>
+    <TeacherDashboardLayout
+      title="Edit Resource"
+      headerAction={
+        <Button variant="outline" size="sm" href="/dashboard/teacher/content">
+          Back to library
+        </Button>
+      }
+    >
+      <div className="mx-auto max-w-4xl">
+        <p className={`mb-6 text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+          Update details, thumbnail, or pricing
+        </p>
         {loading ? (
           <LoadingBlock />
         ) : initialData ? (
@@ -74,7 +78,7 @@ export default function EditResourcePage() {
             </Link>
           </p>
         )}
-      </main>
-    </div>
+      </div>
+    </TeacherDashboardLayout>
   );
 }
