@@ -1,14 +1,17 @@
-
 "use client";
 
+import { useMemo } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { useTheme } from "@/context/ThemeContext";
+import { useTranslation } from "react-i18next";
+import { HOME_HERO_STUDENT_IMAGE } from "@/lib/marketing-images";
 import {
   ArrowRight,
   Users,
@@ -20,7 +23,7 @@ import {
   CheckCircle2,
   PlayCircle,
   Shield,
-  Award,
+  Trophy,
   Calendar,
   Book,
   Zap,
@@ -32,101 +35,128 @@ import {
   ChevronRight
 } from "lucide-react";
 
+const featureIcons = [Users, Users, Video, Target, Clock];
+const statIcons = [GraduationCap, Users, FileText, Star];
+
 export default function Home() {
   const { theme } = useTheme();
+  const { t, i18n } = useTranslation();
+
+  const features = useMemo(
+    () => t("home.features", { returnObjects: true }) as { title: string; desc: string }[],
+    [t, i18n.language]
+  );
+  const programs = useMemo(
+    () =>
+      t("home.programsSection.items", { returnObjects: true }) as {
+        title: string;
+        features: string[];
+      }[],
+    [t, i18n.language]
+  );
+  const stats = useMemo(
+    () => t("home.stats", { returnObjects: true }) as { number: string; label: string }[],
+    [t, i18n.language]
+  );
+  const testimonials = useMemo(
+    () => t("home.testimonials.items", { returnObjects: true }) as { quote: string; name: string }[],
+    [t, i18n.language]
+  );
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
       
       <main className="flex-1">
         {/* Hero Section */}
-        <section className={`pt-28 pb-16 ${theme === "dark" ? "bg-[#0D1B2A] text-white" : "bg-[#FAFAFA] text-[#0D1B2A]"} relative overflow-hidden`}>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid lg:grid-cols-2 gap-16 items-center">
+        <section className="relative overflow-hidden bg-[#0D1B2A] pt-28 pb-20 text-white">
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(212,175,55,0.08)_0%,_transparent_55%)]" />
+          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
               <motion.div
-                initial={{ opacity: 0, x: -50 }}
+                initial={{ opacity: 0, x: -40 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8 }}
+                transition={{ duration: 0.7 }}
               >
-                <p className="text-[#D4AF37] uppercase tracking-[0.2em] text-sm font-semibold mb-4">
-                  DIE ZUKUNFT DES LERNENS BEGINNT HIER.
+                <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-[#D4AF37] sm:text-sm">
+                  {t("home.heroEyebrow")}
                 </p>
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                  Smarter lernen. <span className="text-[#D4AF37]">Bessere Ergebnisse.</span>
+                <h1 className="mb-6 text-4xl font-bold leading-[1.08] md:text-5xl lg:text-[3.25rem]">
+                  {t("home.heroTitle")}{" "}
+                  <span className="text-[#D4AF37]">{t("home.heroTitleHighlight")}</span>
                 </h1>
-                <p className={`text-lg mb-8 leading-relaxed ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>
-                  Premium Online-Nachhilfe, moderne Lernsysteme und strukturierte Lernbegleitung für ambitionierte Schüler:innen.
+                <p className="mb-8 max-w-xl text-base leading-relaxed text-gray-300 sm:text-lg">
+                  {t("home.heroSubtitle")}
                 </p>
-                <div className="flex flex-col sm:flex-row gap-4 mb-10">
-                  <Button variant="gold" size="md" className="px-8">
-                    Kostenloses Erstgespräch
+                <div className="mb-10 flex flex-col gap-4 sm:flex-row">
+                  <Button variant="gold" size="md" className="px-8" href="/consultation">
+                    {t("home.freeConsultation")}
                   </Button>
-                  <Button 
-                    variant="outline" 
-                    size="md" 
-                    className={`${theme === "dark" 
-                      ? "border-white text-white hover:bg-white hover:text-[#0D1B2A]" 
-                      : "border-[#0D1B2A] text-[#0D1B2A] hover:bg-[#0D1B2A] hover:text-white"}`}
+                  <Link
+                    href="/programs"
+                    className="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-white/80 px-6 py-3 text-base font-semibold text-white transition-colors hover:bg-white hover:text-[#0D1B2A]"
                   >
-                    Programme entdecken →
-                  </Button>
+                    {t("home.explorePrograms")}
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
                 </div>
-                
-                {/* Social Proof */}
-                <div className="flex items-center gap-6">
+
+                <div className="flex flex-wrap items-center gap-5">
                   <div className="flex -space-x-3">
-                    {[1, 2, 3, 4, 5].map((i) => (
+                    {[1, 2, 3, 4].map((i) => (
                       <div
                         key={i}
-                        className="w-10 h-10 rounded-full bg-gradient-to-br from-[#D4AF37] to-[#F5A623] border-2 border-[#0D1B2A] flex items-center justify-center text-white font-bold text-sm"
+                        className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#0D1B2A] bg-gradient-to-br from-[#D4AF37] to-[#F5A623] text-sm font-bold text-white"
                       >
                         {String.fromCharCode(64 + i)}
                       </div>
                     ))}
                   </div>
-                  <div className="flex flex-col">
-                    <div className="flex items-center gap-2 mb-1">
+                  <div>
+                    <div className="mb-1 flex items-center gap-1">
                       {[1, 2, 3, 4, 5].map((star) => (
-                        <Star key={star} className="w-4 h-4 fill-[#D4AF37] text-[#D4AF37]" />
+                        <Star key={star} className="h-4 w-4 fill-[#D4AF37] text-[#D4AF37]" />
                       ))}
-                      <span className="text-white font-semibold ml-1">4,9/5</span>
+                      <span className="ml-2 font-semibold text-white">{t("home.rating")}</span>
                     </div>
-                    <p className="text-sm text-gray-400">aus 200+ Bewertungen</p>
+                    <p className="text-sm text-gray-400">{t("home.reviewsFrom")}</p>
                   </div>
                 </div>
               </motion.div>
-              
+
               <motion.div
-                initial={{ opacity: 0, x: 50 }}
+                initial={{ opacity: 0, x: 40 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                className="relative"
+                transition={{ duration: 0.7, delay: 0.15 }}
+                className="relative mx-auto w-full max-w-lg lg:max-w-none"
               >
-                {/* Hero student image */}
-                <div className="rounded-2xl h-[450px] relative overflow-hidden">
-                  <img
-                    src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800&h=600&fit=crop"
-                    alt="Student studying"
-                    className="w-full h-full object-cover"
+                <div className="relative aspect-[4/5] max-h-[520px] overflow-hidden rounded-2xl shadow-2xl ring-1 ring-white/10 sm:aspect-[5/6] lg:aspect-auto lg:h-[480px]">
+                  <Image
+                    src={HOME_HERO_STUDENT_IMAGE}
+                    alt={t("images.studentStudying")}
+                    fill
+                    priority
+                    className="object-cover object-[center_20%]"
+                    sizes="(max-width: 1024px) 90vw, 560px"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0D1B2A]/70 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0D1B2A]/80 via-[#0D1B2A]/10 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-[#0D1B2A]/20" />
                 </div>
-                
-                {/* Floating Card */}
+
                 <motion.div
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5 }}
-                  className="absolute -bottom-6 -left-6"
+                  transition={{ delay: 0.45 }}
+                  className="absolute -bottom-5 right-2 z-10 max-w-[280px] sm:right-4 lg:-bottom-6 lg:right-6"
                 >
-                  <Card className="p-5 bg-[#0D1B2A] border border-[#D4AF37]/30">
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-lg bg-[#D4AF37]/20 flex items-center justify-center flex-shrink-0">
-                        <Award className="w-6 h-6 text-[#D4AF37]" />
+                  <Card className="border border-[#D4AF37]/30 bg-[#0D1B2A]/95 p-4 shadow-xl backdrop-blur-sm sm:p-5">
+                    <div className="flex items-start gap-3">
+                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-[#D4AF37]/20">
+                        <Trophy className="h-5 w-5 text-[#D4AF37]" />
                       </div>
                       <div>
-                        <p className="text-white font-semibold mb-1">Individuelle Betreuung.</p>
-                        <p className="text-sm text-gray-400">Echte Ergebnisse.</p>
+                        <p className="font-semibold text-white">{t("home.floatingCardTitle")}</p>
+                        <p className="text-sm text-gray-400">{t("home.floatingCardDesc")}</p>
                       </div>
                     </div>
                   </Card>
@@ -140,13 +170,7 @@ export default function Home() {
         <section className={`py-12 ${theme === "dark" ? "bg-[#112240]" : "bg-[#FAFAFA]"}`}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid md:grid-cols-5 gap-8">
-              {[
-                { icon: Users, title: "Premium Lehrer:innen", desc: "Sorgfältig ausgewählte, erfahrene Pädagogen mit Fokus auf Erfolg." },
-                { icon: Users, title: "Kleine Lerngruppen", desc: "Max. 3-5 Schüler:innen pro Gruppe für intensives Lernen." },
-                { icon: Video, title: "Moderne Lernplattform", desc: "Videos, Übungen, PDFs und mehr - alles an einem Ort." },
-                { icon: Target, title: "Strukturierte Lernsysteme", desc: "Klarer Lernpfad, Fortschrittstracking & systematische Vorbereitung." },
-                { icon: Clock, title: "Flexibel & Online", desc: "Lerne wo du willst, wann du willst, zu deinen Zeiten." },
-              ].map((feature, index) => (
+              {features.map((feature, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 20 }}
@@ -156,7 +180,10 @@ export default function Home() {
                   className="text-center"
                 >
                   <div className="w-12 h-12 rounded-lg bg-[#D4AF37]/20 flex items-center justify-center mx-auto mb-4">
-                    <feature.icon className="w-6 h-6 text-[#D4AF37]" />
+                    {(() => {
+                      const Icon = featureIcons[index];
+                      return <Icon className="w-6 h-6 text-[#D4AF37]" />;
+                    })()}
                   </div>
                   <h3 className={`text-base font-semibold mb-2 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>{feature.title}</h3>
                   <p className={`text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>{feature.desc}</p>
@@ -176,45 +203,33 @@ export default function Home() {
               className="text-center mb-12"
             >
               <h2 className={`text-3xl font-bold mb-3 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
-                Unsere Programme
+                {t("home.programsSection.title")}
               </h2>
               <p className={`${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
-                Wähle das Programm, das am besten zu dir passt.
+                {t("home.programsSection.subtitle")}
               </p>
             </motion.div>
 
             <div className="grid md:grid-cols-3 gap-8">
-              {[
-                {
-                  title: "1:1 Premium Tutoring",
-                  features: ["Individuell, Persönlich, Effizient.", "Persönliche 1:1 Betreuung", "Flexible Termine", "Maßgeschneidertes Lernkonzept"],
-                  featured: false
-                },
-                {
-                  title: "Small Group Learning",
-                  features: ["Gemeinsam lernen, mit Freunden.", "Max. 3-5 Schüler:innen", "Interaktiver Austausch", "Motivation durch die Gruppe"],
-                  featured: false
-                },
-                {
-                  title: "Math Excellence Program",
-                  features: ["Unser Flagship-Programm für Mathe.", "Wöchentliche Live Sessions", "Premium Lernmaterialien", "Matura-/Abitur-Vorbereitung", "Dozent:innen aus Uni & Sessions"],
-                  featured: true
-                }
-              ].map((program, index) => (
+              {programs.map((program, index) => {
+                const featured = index === 2;
+                return (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
+                  whileHover={{ y: -8 }}
+                  className="h-full"
                 >
-                  <Card className={`p-0 h-full flex flex-col relative overflow-hidden ${
-                    program.featured ? "border-2 border-[#D4AF37] shadow-xl" : "border border-gray-100"
+                  <Card className={`p-0 h-full flex flex-col relative overflow-hidden transition-all duration-300 ${
+                    featured ? "border-2 border-[#D4AF37] shadow-xl" : "border border-gray-100"
                   }`}>
-                    {program.featured && (
+                    {featured && (
                       <div className="absolute top-4 right-4 z-10">
                         <Badge className="bg-[#D4AF37] text-[#0D1B2A] px-3 py-1 text-xs font-semibold uppercase">
-                          Beliebtestes Programm
+                          {t("home.mostPopular")}
                         </Badge>
                       </div>
                     )}
@@ -222,14 +237,14 @@ export default function Home() {
                     {/* Program images */}
                     <div className="h-44 relative overflow-hidden">
                       <img
-                        src={program.featured 
+                        src={featured 
                           ? "https://images.unsplash.com/photo-1498243691581-b145c3f54a5a?w=600&h=400&fit=crop"
                           : index === 0 
                             ? "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&h=400&fit=crop"
                             : "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=600&h=400&fit=crop"
                         }
                         alt={program.title}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
                       />
                     </div>
                     
@@ -247,15 +262,17 @@ export default function Home() {
                         ))}
                       </ul>
                       
-                      <Link href="/programs" className={`font-semibold flex items-center gap-2 ${
-                        program.featured ? "text-[#D4AF37]" : (theme === "dark" ? "text-white" : "text-[#0D1B2A]")
+                      <Link href="/programs" className={`font-semibold flex items-center gap-2 transition-all group ${
+                        featured ? "text-[#D4AF37]" : (theme === "dark" ? "text-white" : "text-[#0D1B2A]")
                       }`}>
-                        Mehr erfahren →
+                        {t("home.learnMore")}
+                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                       </Link>
                     </div>
                   </Card>
                 </motion.div>
-              ))}
+              );
+              })}
             </div>
           </div>
         </section>
@@ -264,12 +281,7 @@ export default function Home() {
         <section className={`py-14 ${theme === "dark" ? "bg-[#112240] text-white" : "bg-[#FAFAFA] text-[#0D1B2A]"}`}>
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid md:grid-cols-4 gap-8 text-center">
-              {[
-                { icon: GraduationCap, number: "200+", label: "glückliche Schüler:innen" },
-                { icon: Users, number: "25+", label: "Top Lehrer:innen" },
-                { icon: FileText, number: "1,000+", label: "Lernmaterialien" },
-                { icon: Star, number: "4,9/5", label: "Bewertung von Eltern & Schüler:innen" },
-              ].map((stat, index) => (
+              {stats.map((stat, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 20 }}
@@ -278,7 +290,10 @@ export default function Home() {
                   transition={{ delay: index * 0.1 }}
                 >
                   <div className={`w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-4 ${theme === "dark" ? "bg-white/10" : "bg-[#D4AF37]/20"}`}>
-                    <stat.icon className="w-6 h-6 text-[#D4AF37]" />
+                    {(() => {
+                      const Icon = statIcons[index];
+                      return <Icon className="w-6 h-6 text-[#D4AF37]" />;
+                    })()}
                   </div>
                   <p className={`text-3xl font-bold mb-2 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>{stat.number}</p>
                   <p className={`text-sm ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>{stat.label}</p>
@@ -296,7 +311,7 @@ export default function Home() {
               <div className="relative">
                 <img
                   src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=1200&h=600&fit=crop"
-                  alt="Modern learning"
+                  alt={t("images.modernLearning")}
                   className="w-full h-[500px] object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-[#0D1B2A]/80 via-[#0D1B2A]/40 to-transparent" />
@@ -311,17 +326,17 @@ export default function Home() {
                         viewport={{ once: true }}
                       >
                         <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight">
-                          Deine komplette Lernplattform
+                          {t("home.platform.title")}
                         </h1>
                         <p className="text-gray-200 text-lg mb-8">
-                          Unsere moderne Plattform unterstützt dich bei jedem Schritt deines Lernwegs.
+                          {t("home.platform.subtitle")}
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4">
-                          <Button variant="gold" size="md">
-                            Plattform entdecken
+                          <Button variant="gold" size="md" href="/resources">
+                            {t("home.platform.discover")}
                           </Button>
-                          <Button variant="outline" size="md" className="border-white text-white hover:bg-white hover:text-[#0D1B2A]">
-                            Mehr erfahren
+                          <Button variant="outline" size="md" href="/about" className="border-white text-white hover:bg-white hover:text-[#0D1B2A]">
+                            {t("home.platform.learnMore")}
                           </Button>
                         </div>
                       </motion.div>
@@ -336,17 +351,17 @@ export default function Home() {
                           {/* Info Cards */}
                           <div className="bg-white rounded-2xl p-6 shadow-xl">
                             <h3 className="text-[#0D1B2A] font-semibold text-sm mb-2">
-                              Fortschritt verfolgen
+                              {t("home.platform.trackProgress")}
                             </h3>
                             <div className="flex gap-4">
                               <img
                                 src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=100&h=100&fit=crop"
-                                alt="Learning"
+                                alt={t("images.studentStudying")}
                                 className="w-16 h-16 rounded-xl object-cover"
                               />
                               <div className="flex-1">
                                 <p className="text-gray-600 text-sm">
-                                  Track your progress, complete lessons, and stay motivated!
+                                  {t("home.platform.trackProgressDesc")}
                                 </p>
                               </div>
                             </div>
@@ -355,11 +370,11 @@ export default function Home() {
                           <div className="grid grid-cols-2 gap-4">
                             <div className="bg-white rounded-2xl p-4 shadow-xl">
                               <div className="text-3xl font-bold text-[#0D1B2A]">27/4</div>
-                              <div className="text-sm text-gray-500">Wochen lang</div>
+                              <div className="text-sm text-gray-500">{t("home.platform.weeks")}</div>
                             </div>
                             <div className="bg-white rounded-2xl p-4 shadow-xl">
                               <div className="text-3xl font-bold text-[#0D1B2A]">120K+</div>
-                              <div className="text-sm text-gray-500">Lernmaterialien</div>
+                              <div className="text-sm text-gray-500">{t("home.platform.materials")}</div>
                             </div>
                           </div>
                         </div>
@@ -396,26 +411,13 @@ export default function Home() {
               className="text-center mb-12"
             >
               <h2 className="text-3xl font-bold text-white">
-                Das sagen Schüler:innen & Eltern
+                {t("home.testimonials.title")}
               </h2>
             </motion.div>
 
             <div className="relative">
               <div className="grid md:grid-cols-3 gap-8">
-                {[
-                  {
-                    quote: "Dank NextGrades habe ich meine Mathe-Note von 3 auf 1 verbessert! Die Erklärungen sind einfach super und man versteht sofort!",
-                    name: "Lena, 10. Klasse"
-                  },
-                  {
-                    quote: "Die kleine Lerngruppe hat meinem Sohn sehr gut getan! Er ist motivierter geworden und versteht endlich Mathe.",
-                    name: "Peter M., Vater"
-                  },
-                  {
-                    quote: "Die Plattform ist super intuitiv und die Materialien stehen hierfür perfekt für die Matura-Vorbereitung!",
-                    name: "Julia, 12. Klasse"
-                  }
-                ].map((testimonial, index) => (
+                {testimonials.map((testimonial, index) => (
                   <motion.div
                     key={index}
                     initial={{ opacity: 0, y: 20 }}
@@ -463,20 +465,20 @@ export default function Home() {
                 </div>
                 <div>
                   <h3 className="text-2xl font-bold mb-2">
-                    Bereit für den nächsten Schritt?
+                    {t("home.cta.title")}
                   </h3>
                   <p className={`${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>
-                    Buche jetzt dein kostenloses Erstgespräch und finde heraus, welches Programm am besten zu dir passt.
+                    {t("home.cta.subtitle")}
                   </p>
                 </div>
               </div>
-              <Button variant="gold" size="lg">
-                Kostenloses Erstgespräch buchen
+              <Button variant="gold" size="lg" href="/consultation">
+                {t("home.cta.button")}
               </Button>
             </motion.div>
           </div>
         </section>
-      </main>
+        </main>
 
       <Footer />
     </div>

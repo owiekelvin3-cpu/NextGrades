@@ -1,0 +1,669 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { Card } from "@/components/ui/Card";
+import { Button } from "@/components/ui/Button";
+import { Badge } from "@/components/ui/Badge";
+import { EmptyState } from "@/components/dashboard/EmptyState";
+import { LoadingBlock } from "@/components/dashboard/LoadingBlock";
+import { useTheme } from "@/context/ThemeContext";
+import { useTranslation } from "react-i18next";
+import { getDateLocale } from "@/lib/i18n/locales";
+import {
+  fetchStudentLessons,
+  fetchTeacherLessons,
+  fetchTeacherStudents,
+  fetchTeacherStats,
+  fetchStudentEnrollments,
+  fetchCompletedLessonsCount,
+  fetchMaterials,
+  fetchProfilesByRole,
+  fetchAdminStats,
+  fetchCurrentProfile,
+  updateProfile,
+  computeEnrollmentProgress,
+  getSessionUserId,
+  type DashboardLesson,
+  type DashboardProfile,
+  type TeacherStudentRow,
+} from "@/lib/dashboard/data";
+import {
+  Calendar,
+  Clock,
+  FileText,
+  Upload,
+  TrendingUp,
+  CreditCard,
+  Settings,
+  Video,
+  BookOpen,
+  ExternalLink,
+} from "lucide-react";
+import { useToast } from "@/context/ToastContext";
+import { StudentQuizHub } from "@/components/quiz/StudentQuizHub";
+
+function SectionGrid({ children }: { children: React.ReactNode }) {
+  return <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">{children}</div>;
+}
+
+function LessonCards({
+  lessons,
+  locale,
+  showStudent,
+}: {
+  lessons: DashboardLesson[];
+  locale: string;
+  showStudent?: boolean;
+}) {
+  const { theme } = useTheme();
+  const { t } = useTranslation();
+  const muted = theme === "dark" ? "text-gray-400" : "text-gray-600";
+  const text = theme === "dark" ? "text-white" : "text-[#0D1B2A]";
+  const dateLocale = getDateLocale(locale);
+
+  const formatDate = (iso: string) =>
+    new Date(iso).toLocaleDateString(dateLocale, { weekday: "long", day: "numeric", month: "long" });
+  const formatTime = (iso: string) =>
+    new Date(iso).toLocaleTimeString(dateLocale, { hour: "2-digit", minute: "2-digit" });
+
+  return (
+    <SectionGrid>
+      {lessons.map((lesson) => (
+        <Card key={lesson.id} className={`p-6 ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
+          <Badge variant="gold" className="mb-3">
+            {lesson.status}
+          </Badge>
+          <h3 className={`font-bold text-lg mb-1 ${text}`}>{lesson.subject_name ?? "—"}</h3>
+          <p className={`text-sm mb-2 ${muted}`}>
+            <Clock className="w-4 h-4 inline mr-1" />
+            {formatDate(lesson.start_time)} · {formatTime(lesson.start_time)}
+          </p>
+          <p className={`text-sm ${muted}`}>
+            {t("dashboardCommon.with", { defaultValue: "with" })}{" "}
+            {showStudent ? lesson.student_name : lesson.teacher_name ?? "—"}
+          </p>
+          {lesson.zoom_link ? (
+            <Button
+              variant="gold"
+              size="sm"
+              className="mt-4 w-full"
+              onClick={() => window.open(lesson.zoom_link!, "_blank")}
+            >
+              <Video className="w-4 h-4 mr-2" />
+              {t("dashboardCommon.joinZoom")}
+              <ExternalLink className="w-3 h-3 ml-1" />
+            </Button>
+          ) : null}
+        </Card>
+      ))}
+    </SectionGrid>
+  );
+}
+
+export function StudentAppointmentsSection() {
+  const { t, i18n } = useTranslation();
+  const [lessons, setLessons] = useState<DashboardLesson[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      const uid = await getSessionUserId();
+      if (uid) setLessons(await fetchStudentLessons(uid));
+      setLoading(false);
+    })();
+  }, []);
+
+  return (
+    <div className="space-y-6">
+      <div className="flex flex-wrap gap-3">
+        <Button variant="gold" href="/consultation">
+          <Calendar className="w-4 h-4 mr-2" />
+          {t("consultation.bookNow")}
+        </Button>
+        <Button variant="outline" href="/dashboard/student">
+          {t("dashboardCommon.showAll", { defaultValue: "Back to dashboard" })}
+        </Button>
+      </div>
+      {loading ? (
+        <LoadingBlock />
+      ) : lessons.length === 0 ? (
+        <EmptyState
+          title={t("studentDashboard.noAppointments")}
+          description={t("studentDashboard.bookWithTeacher")}
+          action={
+            <Button variant="gold" href="/consultation">
+              {t("consultation.bookNow")}
+            </Button>
+          }
+        />
+      ) : (
+        <LessonCards lessons={lessons} locale={i18n.language} />
+      )}
+    </div>
+  );
+}
+
+export function StudentCoursesSection() {
+  const { theme } = useTheme();
+  const { t } = useTranslation();
+  const [enrollments, setEnrollments] = useState<Awaited<ReturnType<typeof fetchStudentEnrollments>>>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      const uid = await getSessionUserId();
+      if (uid) setEnrollments(await fetchStudentEnrollments(uid));
+      setLoading(false);
+    })();
+  }, []);
+
+  if (loading) return <LoadingBlock />;
+
+  if (!enrollments.length) {
+    return (
+      <EmptyState
+        title={t("dashboardPages.student.courses.title")}
+        description={t("programsPage.sectionDesc")}
+        action={
+          <Button variant="gold" href="/programs">
+            {t("home.explorePrograms", { defaultValue: "Explore programs" })}
+          </Button>
+        }
+      />
+    );
+  }
+
+  return (
+    <SectionGrid>
+      {enrollments.map((e) => {
+        const progress = e.status === "completed" ? 100 : e.status === "active" ? 50 : 25;
+        return (
+          <Card key={e.id} className={`p-6 ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
+            <BookOpen className="w-8 h-8 text-[#D4AF37] mb-3" />
+            <h3 className={`font-bold mb-1 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
+              {e.subject_name ?? "—"}
+            </h3>
+            <p className="text-sm text-gray-500 mb-4">
+              {e.class_name ?? ""}
+              {e.semester ? ` · ${t("resources.filters.semester")} ${e.semester}` : ""}
+            </p>
+            <Badge variant={e.status === "active" ? "success" : "gold"}>{e.status}</Badge>
+            <div className="h-2 bg-gray-200 dark:bg-white/10 rounded-full overflow-hidden mt-4">
+              <div className="h-full bg-[#D4AF37] rounded-full" style={{ width: `${progress}%` }} />
+            </div>
+          </Card>
+        );
+      })}
+    </SectionGrid>
+  );
+}
+
+export function StudentResourcesSection() {
+  const { t } = useTranslation();
+  const [materials, setMaterials] = useState<Awaited<ReturnType<typeof fetchMaterials>>>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      setMaterials(await fetchMaterials({ limit: 6 }));
+      setLoading(false);
+    })();
+  }, []);
+
+  if (loading) return <LoadingBlock />;
+
+  return (
+    <div className="space-y-4">
+      <Button variant="gold" href="/resources">
+        {t("studentDashboard.allMaterials")}
+      </Button>
+      {!materials.length ? (
+        <EmptyState title={t("studentDashboard.newMaterials")} description={t("resources.heroSubtitle")} />
+      ) : (
+        <SectionGrid>
+          {materials.map((m) => (
+            <Card key={m.id} className="p-6">
+              <FileText className="w-8 h-8 text-[#D4AF37] mb-3" />
+              <h3 className="font-bold">{m.title}</h3>
+              <p className="text-sm text-gray-500 mt-1 line-clamp-2">{m.description}</p>
+              <Button
+                variant="outline"
+                size="sm"
+                className="mt-4"
+                onClick={() => m.url && window.open(m.url, "_blank", "noopener,noreferrer")}
+              >
+                {t("dashboardCommon.download")}
+              </Button>
+            </Card>
+          ))}
+        </SectionGrid>
+      )}
+    </div>
+  );
+}
+
+export function StudentQuizzesSection() {
+  return <StudentQuizHub />;
+}
+
+export function StudentProgressSection() {
+  const { theme } = useTheme();
+  const { t } = useTranslation();
+  const [progress, setProgress] = useState(0);
+  const [completed, setCompleted] = useState(0);
+  const [materialCount, setMaterialCount] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      const uid = await getSessionUserId();
+      if (uid) {
+        const [enrollments, done, materials] = await Promise.all([
+          fetchStudentEnrollments(uid),
+          fetchCompletedLessonsCount(uid),
+          fetchMaterials({ limit: 100 }),
+        ]);
+        setProgress(computeEnrollmentProgress(enrollments));
+        setCompleted(done);
+        setMaterialCount(materials.length);
+      }
+      setLoading(false);
+    })();
+  }, []);
+
+  if (loading) return <LoadingBlock />;
+
+  const stats = [
+    { label: t("studentDashboard.learningProgress"), value: `${progress}%` },
+    { label: t("dashboardPages.student.appointments.title"), value: String(completed) },
+    { label: t("studentDashboard.newMaterials"), value: String(materialCount) },
+  ];
+
+  return (
+    <SectionGrid>
+      {stats.map((s) => (
+        <Card key={s.label} className={`p-6 ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
+          <TrendingUp className="w-8 h-8 text-[#D4AF37] mb-3" />
+          <p className={`text-3xl font-bold ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>{s.value}</p>
+          <p className="text-gray-500">{s.label}</p>
+        </Card>
+      ))}
+    </SectionGrid>
+  );
+}
+
+export function StudentSettingsSection() {
+  const { theme } = useTheme();
+  const { t } = useTranslation();
+  const toast = useToast();
+  const [fullName, setFullName] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      const profile = await fetchCurrentProfile();
+      setFullName(profile?.full_name ?? "");
+      setLoading(false);
+    })();
+  }, []);
+
+  const handleSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSaving(true);
+    const { error } = await updateProfile(fullName);
+    setSaving(false);
+    if (error) toast.error(error);
+    else toast.success(t("dashboardCommon.saved", { defaultValue: "Settings saved" }));
+  };
+
+  if (loading) return <LoadingBlock />;
+
+  return (
+    <Card className={`p-8 max-w-xl ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
+      <h3 className={`font-bold mb-6 flex items-center gap-2 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
+        <Settings className="w-5 h-5" /> {t("dashboardPages.student.settings.title")}
+      </h3>
+      <form className="space-y-4" onSubmit={handleSave}>
+        <input
+          className={`w-full rounded-xl border px-4 py-3 ${
+            theme === "dark" ? "bg-[#0D1B2A] border-white/15 text-white" : "border-gray-200"
+          }`}
+          placeholder={t("login.fullName")}
+          value={fullName}
+          onChange={(e) => setFullName(e.target.value)}
+        />
+        <Button variant="gold" type="submit" disabled={saving}>
+          {saving ? t("login.loading") : t("dashboardCommon.save", { defaultValue: "Save changes" })}
+        </Button>
+      </form>
+    </Card>
+  );
+}
+
+export function TeacherStudentsSection() {
+  const { theme } = useTheme();
+  const { t, i18n } = useTranslation();
+  const [students, setStudents] = useState<TeacherStudentRow[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      const uid = await getSessionUserId();
+      if (uid) setStudents(await fetchTeacherStudents(uid, i18n.language));
+      setLoading(false);
+    })();
+  }, [i18n.language]);
+
+  if (loading) return <LoadingBlock />;
+
+  if (!students.length) {
+    return (
+      <EmptyState
+        title={t("teacherDashboard.myStudents")}
+        description={t("teacherDashboard.planWithStudents")}
+      />
+    );
+  }
+
+  return (
+    <Card className={`overflow-hidden ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm">
+          <thead className={theme === "dark" ? "bg-[#0D1B2A]" : "bg-gray-50"}>
+            <tr>
+              <th className="px-6 py-4 text-left">{t("dashboardPages.teacher.students.title")}</th>
+              <th className="px-6 py-4 text-left">{t("resources.filters.subject")}</th>
+              <th className="px-6 py-4 text-left">{t("teacherDashboard.nextLesson")}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {students.map((s) => (
+              <tr key={s.id} className="border-t border-gray-100 dark:border-white/10">
+                <td className="px-6 py-4 font-medium">{s.name}</td>
+                <td className="px-6 py-4">{s.subject}</td>
+                <td className="px-6 py-4">{s.next_lesson}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </Card>
+  );
+}
+
+export function TeacherScheduleSection() {
+  const { t, i18n } = useTranslation();
+  const [lessons, setLessons] = useState<DashboardLesson[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      const uid = await getSessionUserId();
+      if (uid) setLessons(await fetchTeacherLessons(uid));
+      setLoading(false);
+    })();
+  }, []);
+
+  if (loading) return <LoadingBlock />;
+
+  if (!lessons.length) {
+    return (
+      <EmptyState
+        title={t("teacherDashboard.noAppointments")}
+        description={t("teacherDashboard.planWithStudents")}
+        action={
+          <Button variant="gold" href="/dashboard/teacher/students">
+            {t("teacherDashboard.newAppointment")}
+          </Button>
+        }
+      />
+    );
+  }
+
+  return <LessonCards lessons={lessons} locale={i18n.language} showStudent />;
+}
+
+export function TeacherResourcesSection() {
+  const { t } = useTranslation();
+  return (
+    <div className="space-y-4">
+      <Card className="p-8 text-center border-2 border-dashed border-[#D4AF37]/40">
+        <Upload className="w-12 h-12 text-[#D4AF37] mx-auto mb-4" />
+        <p className="mb-4 font-medium">{t("teacherDashboard.uploadMaterial")}</p>
+        <div className="flex flex-wrap justify-center gap-3">
+          <Button variant="gold" href="/dashboard/teacher/upload">
+            {t("teacherDashboard.uploadMaterial")}
+          </Button>
+          <Button variant="outline" href="/dashboard/teacher/content">
+            {t("dashboardNav.teacher.6.label", { defaultValue: "Content library" })}
+          </Button>
+        </div>
+      </Card>
+    </div>
+  );
+}
+
+export function TeacherEarningsSection() {
+  const { theme } = useTheme();
+  const { t } = useTranslation();
+  const [stats, setStats] = useState<Awaited<ReturnType<typeof fetchTeacherStats>> | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      const uid = await getSessionUserId();
+      if (uid) setStats(await fetchTeacherStats(uid));
+      setLoading(false);
+    })();
+  }, []);
+
+  if (loading) return <LoadingBlock />;
+
+  const items = stats
+    ? [
+        { label: t("teacherDashboard.earningsMonth"), value: `€${stats.earnings_month.toLocaleString()}` },
+        { label: t("teacherDashboard.hoursThisWeek"), value: String(stats.lessons_week) },
+        { label: t("teacherDashboard.assignedStudents"), value: String(stats.total_students) },
+      ]
+    : [];
+
+  return (
+    <SectionGrid>
+      {items.map((s) => (
+        <Card key={s.label} className={`p-6 ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
+          <CreditCard className="w-8 h-8 text-[#D4AF37] mb-3" />
+          <p className={`text-2xl font-bold ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>{s.value}</p>
+          <p className="text-gray-500">{s.label}</p>
+        </Card>
+      ))}
+    </SectionGrid>
+  );
+}
+
+export function TeacherSettingsSection() {
+  return <StudentSettingsSection />;
+}
+
+export function AdminProfilesTable({ role }: { role: "student" | "teacher" }) {
+  const { theme } = useTheme();
+  const { t } = useTranslation();
+  const [profiles, setProfiles] = useState<DashboardProfile[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      setProfiles(await fetchProfilesByRole(role));
+      setLoading(false);
+    })();
+  }, [role]);
+
+  const title =
+    role === "student" ? t("dashboardPages.admin.students.title") : t("dashboardPages.admin.teachers.title");
+
+  if (loading) return <LoadingBlock />;
+
+  if (!profiles.length) {
+    return <EmptyState title={title} description={t("adminDashboard.subtitle")} />;
+  }
+
+  return (
+    <Card className={`p-6 ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
+      <h3 className={`font-bold mb-4 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>{title}</h3>
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className={`text-left border-b ${theme === "dark" ? "border-white/10" : "border-gray-200"}`}>
+              <th className="py-2">{t("login.fullName")}</th>
+              <th className="py-2">{t("login.iAmA")}</th>
+              <th className="py-2">{t("dashboardCommon.joined", { defaultValue: "Joined" })}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {profiles.map((u) => (
+              <tr key={u.id} className={`border-b ${theme === "dark" ? "border-white/5" : "border-gray-100"}`}>
+                <td className="py-3">{u.full_name ?? "—"}</td>
+                <td className="py-3">
+                  <Badge variant="gold">{u.role}</Badge>
+                </td>
+                <td className="py-3 text-gray-500">
+                  {u.created_at ? new Date(u.created_at).toLocaleDateString() : "—"}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </Card>
+  );
+}
+
+export function AdminTableSection({ type }: { type: "students" | "teachers" | "payments" }) {
+  if (type === "payments") {
+    return <AdminEnrollmentsSection />;
+  }
+  const role = type === "students" ? "student" : "teacher";
+  return <AdminProfilesTable role={role} />;
+}
+
+function AdminEnrollmentsSection() {
+  const { theme } = useTheme();
+  const { t } = useTranslation();
+  const [rows, setRows] = useState<{ id: string; status: string; student_name: string; subject_name: string }[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      const { supabase } = await import("@/lib/supabase/client");
+      const { data } = await supabase
+        .from("enrollments")
+        .select("id, status, student_id, subject_id")
+        .limit(50);
+      type EnrollmentRow = { id: string; status: string; student_id: string; subject_id: string };
+      const rows = (data || []) as EnrollmentRow[];
+      if (rows.length) {
+        const studentIds = [...new Set(rows.map((e) => e.student_id))];
+        const subjectIds = [...new Set(rows.map((e) => e.subject_id).filter(Boolean))];
+        const [profiles, subjects] = await Promise.all([
+          supabase.from("profiles").select("id, full_name").in("id", studentIds),
+          subjectIds.length
+            ? supabase.from("subjects").select("id, name").in("id", subjectIds)
+            : Promise.resolve({ data: [] }),
+        ]);
+        const nameMap = new Map<string, string>(
+          (profiles.data || []).map((p: { id: string; full_name: string | null }) => [
+            p.id,
+            p.full_name ?? "—",
+          ])
+        );
+        const subjectMap = new Map<string, string>(
+          (subjects.data || []).map((s: { id: string; name: string }) => [s.id, s.name])
+        );
+        setRows(
+          rows.map((e) => ({
+            id: e.id,
+            status: e.status,
+            student_name: nameMap.get(e.student_id) ?? "—",
+            subject_name: subjectMap.get(e.subject_id) ?? "—",
+          }))
+        );
+      }
+      setLoading(false);
+    })();
+  }, []);
+
+  if (loading) return <LoadingBlock />;
+
+  if (!rows.length) {
+    return <EmptyState title={t("dashboardPages.admin.memberships.title")} />;
+  }
+
+  return (
+    <Card className={`p-6 ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className={`text-left border-b ${theme === "dark" ? "border-white/10" : "border-gray-200"}`}>
+              <th className="py-2">{t("login.fullName")}</th>
+              <th className="py-2">{t("resources.filters.subject")}</th>
+              <th className="py-2">{t("dashboardCommon.status", { defaultValue: "Status" })}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((r) => (
+              <tr key={r.id} className={`border-b ${theme === "dark" ? "border-white/5" : "border-gray-100"}`}>
+                <td className="py-3">{r.student_name}</td>
+                <td className="py-3">{r.subject_name}</td>
+                <td className="py-3">
+                  <Badge variant={r.status === "active" ? "success" : "gold"}>{r.status}</Badge>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </Card>
+  );
+}
+
+export function AdminAnalyticsSection() {
+  const { theme } = useTheme();
+  const { t } = useTranslation();
+  const [stats, setStats] = useState<Awaited<ReturnType<typeof fetchAdminStats>> | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      setStats(await fetchAdminStats());
+      setLoading(false);
+    })();
+  }, []);
+
+  if (loading) return <LoadingBlock />;
+
+  const items = stats
+    ? [
+        { label: t("adminDashboard.students"), value: String(stats.total_students) },
+        { label: t("adminDashboard.teachers"), value: String(stats.total_teachers) },
+        {
+          label: t("adminDashboard.activeCourses"),
+          value: String(stats.active_enrollments),
+        },
+        {
+          label: t("adminDashboard.totalRevenue"),
+          value: `€${stats.total_earnings.toLocaleString()}`,
+        },
+      ]
+    : [];
+
+  return (
+    <SectionGrid>
+      {items.map((s) => (
+        <Card key={s.label} className={`p-6 ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
+          <p className={`text-3xl font-bold ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>{s.value}</p>
+          <p className="text-gray-500">{s.label}</p>
+        </Card>
+      ))}
+    </SectionGrid>
+  );
+}

@@ -1,20 +1,29 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Poppins, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { I18nProvider } from "@/components/I18nProvider";
+import { PreferencesSync } from "@/components/PreferencesSync";
+import { PREFERENCES_BOOTSTRAP_SCRIPT } from "@/lib/preferences";
+import { CmsProvider } from "@/context/CmsContext";
+import { ToastProvider } from "@/context/ToastContext";
+import PageTransition from "@/components/PageTransition";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 config.autoAddCss = false;
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const poppins = Poppins({
+  variable: "--font-poppins",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const playfairDisplay = Playfair_Display({
+  variable: "--font-playfair-display",
   subsets: ["latin"],
+  weight: ["400", "600", "700"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -29,13 +38,27 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="de"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      lang="en"
+      className={`${poppins.variable} ${playfairDisplay.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col">
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: PREFERENCES_BOOTSTRAP_SCRIPT,
+          }}
+        />
+      </head>
+      <body className="min-h-full flex flex-col bg-background text-foreground">
         <ThemeProvider>
-          <I18nProvider>{children}</I18nProvider>
+          <I18nProvider>
+            <PreferencesSync />
+            <CmsProvider>
+              <ToastProvider>
+                <PageTransition>{children}</PageTransition>
+              </ToastProvider>
+            </CmsProvider>
+          </I18nProvider>
         </ThemeProvider>
       </body>
     </html>

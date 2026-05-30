@@ -1,40 +1,66 @@
-
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
-
-type Theme = "dark" | "light";
+import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
+import {
+  type UiTheme,
+  getStoredTheme,
+  setAppTheme,
+  THEME_CHANGED_EVENT,
+  THEME_STORAGE_KEY,
+} from "@/lib/preferences";
 
 interface ThemeContextType {
-  theme: Theme;
+  theme: UiTheme;
+  isReady: boolean;
   toggleTheme: () => void;
+  setTheme: (theme: UiTheme) => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("dark");
+  const [theme, setThemeState] = useState<UiTheme>("dark");
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") as Theme | null;
-    if (savedTheme) {
-      setTheme(savedTheme);
-      document.documentElement.classList.toggle("dark", savedTheme === "dark");
-    } else {
-      setTheme("dark");
-      document.documentElement.classList.add("dark");
-    }
+    const stored = getStoredTheme();
+    setThemeState(stored);
+    setIsReady(true);
+
+    const onThemeChanged = (event: Event) => {
+      const next = (event as CustomEvent<UiTheme>).detail;
+      if (next === "light" || next === "dark") setThemeState(next);
+    };
+
+    const onStorage = (event: StorageEvent) => {
+      if (event.key === THEME_STORAGE_KEY) {
+        setThemeState(getStoredTheme());
+      }
+    };
+
+    window.addEventListener(THEME_CHANGED_EVENT, onThemeChanged);
+    window.addEventListener("storage", onStorage);
+    return () => {
+      window.removeEventListener(THEME_CHANGED_EVENT, onThemeChanged);
+      window.removeEventListener("storage", onStorage);
+    };
   }, []);
 
-  const toggleTheme = () => {
-    const newTheme = theme === "dark" ? "light" : "dark";
-    setTheme(newTheme);
-    localStorage.setItem("theme", newTheme);
-    document.documentElement.classList.toggle("dark", newTheme === "dark");
-  };
+  const toggleTheme = useCallback(() => {
+    setThemeState((prev) => {
+      const next: UiTheme = prev === "dark" ? "light" : "dark";
+      setAppTheme(next);
+      return next;
+    });
+  }, []);
+
+  const setThemeExplicit = useCallback((next: UiTheme) => {
+    setThemeState(next);
+    setAppTheme(next);
+  }, []);
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, isReady, toggleTheme, setTheme: setThemeExplicit }}>
       {children}
     </ThemeContext.Provider>
   );
@@ -47,4 +73,3 @@ export function useTheme() {
   }
   return context;
 }
-

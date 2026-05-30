@@ -1,14 +1,16 @@
 
 import { cn } from "@/lib/utils";
 import { forwardRef } from "react";
+import Link from "next/link";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "secondary" | "gold" | "outline" | "dark";
   size?: "sm" | "md" | "lg" | "xl";
+  href?: string;
 }
 
-const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = "gold", size = "md", ...props }, ref) => {
+const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(
+  ({ className, variant = "gold", size = "md", href, ...props }, ref) => {
     const variants = {
       primary: "bg-white dark:bg-gradient-to-br dark:from-[#1E3A5F] dark:to-[#0D1B2A] text-[#0D1B2A] dark:text-white hover:bg-gray-100 dark:hover:from-[#2A4A70] dark:hover:to-[#112240] transition-all duration-300 border border-gray-200 dark:border-white/10 shadow-md dark:shadow-2xl",
       secondary: "bg-white dark:bg-gradient-to-br dark:from-[#1E3A5F] dark:to-[#0D1B2A] text-[#0D1B2A] dark:text-white hover:bg-gray-50 dark:hover:from-[#2A4A70] dark:hover:to-[#112240] transition-all duration-300 border border-gray-200 dark:border-white/10 shadow-md dark:shadow-2xl",
@@ -24,15 +26,28 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       xl: "px-10 py-5 text-xl rounded-xl",
     };
 
+    const classes = cn(
+      "inline-flex items-center justify-center gap-2 font-medium focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed",
+      variants[variant],
+      sizes[size],
+      className
+    );
+
+    if (href) {
+      return (
+        <Link
+          href={href}
+          className={classes}
+          ref={ref as React.ForwardedRef<HTMLAnchorElement>}
+          {...(props as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
+        />
+      );
+    }
+
     return (
       <button
-        ref={ref}
-        className={cn(
-          "inline-flex items-center justify-center gap-2 font-medium focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed",
-          variants[variant],
-          sizes[size],
-          className
-        )}
+        ref={ref as React.ForwardedRef<HTMLButtonElement>}
+        className={classes}
         {...props}
       />
     );

@@ -15,7 +15,9 @@
     "help": "Help",
     "aiGenerator": "AI Generator",
     "dashboard": "Dashboard",
-    "logout": "Logout"
+    "logout": "Logout",
+    "lightMode": "Light Mode",
+    "darkMode": "Dark Mode"
   },
   "navbar": {
     "login": "Login",
@@ -41,41 +43,77 @@
     "copyright": "© 2026 NextGrades. All rights reserved."
   },
   "home": {
-    "heroTitle1": "Tutoring reimagined.",
-    "heroTitle2": "Your success starts here.",
-    "heroSubtitle": "Individual 1:1 support, structured learning systems, and modern digital tools for sustainable results.",
-    "getStarted": "Get Started",
-    "learnMore": "Learn More",
-    "featuresStrip": {
-      "feature1": "Structured Learning Systems",
-      "feature2": "Experienced Teachers",
-      "feature3": "Flexible Appointments",
-      "feature4": "Measurable Success"
-    },
-    "programs": {
+    "heroEyebrow": "THE FUTURE OF LEARNING STARTS HERE.",
+    "heroTitle": "Learn smarter.",
+    "heroTitleHighlight": "Better results.",
+    "heroSubtitle": "Premium online tutoring, modern learning systems, and structured learning support for ambitious students.",
+    "freeConsultation": "Free Consultation",
+    "explorePrograms": "Explore programs →",
+    "rating": "4.9/5",
+    "reviewsFrom": "from 200+ reviews by students & parents",
+    "floatingCardTitle": "Individual support.",
+    "floatingCardDesc": "Real results.",
+    "learnMore": "Learn more",
+    "mostPopular": "Most popular program",
+    "mostPopularBadge": "MOST POPULAR PROGRAM",
+    "features": [
+      { "title": "Premium teachers", "desc": "Carefully selected, experienced educators focused on success." },
+      { "title": "Small learning groups", "desc": "Max. 3–5 students per group for intensive learning." },
+      { "title": "Modern learning platform", "desc": "Videos, exercises, PDFs and more — all in one place." },
+      { "title": "Structured learning systems", "desc": "Clear learning path, progress tracking & systematic preparation." },
+      { "title": "Flexible & online", "desc": "Learn where you want, when you want, on your schedule." }
+    ],
+    "programsSection": {
       "title": "Our Programs",
-      "subtitle": "The right support for every learning goal"
+      "subtitle": "Choose the program that best matches your goals.",
+      "items": [
+        {
+          "title": "1:1 Premium Tutoring",
+          "tagline": "Individual, personal, efficient.",
+          "features": ["Personal 1:1 support", "Individual learning plans", "Targeted exam preparation", "Flexible scheduling"]
+        },
+        {
+          "title": "Small Group Learning",
+          "tagline": "Learn together with friends.",
+          "features": ["Max. 3–5 students", "Motivating learning atmosphere", "Exchange & teamwork", "More affordable than 1:1 tutoring"]
+        },
+        {
+          "title": "Math Excellence Program",
+          "tagline": "Our flagship program for mathematics.",
+          "features": ["Weekly live sessions", "Premium learning materials", "Worksheets & videos", "Graduation exam prep & strategies", "Support between sessions"]
+        }
+      ]
     },
-    "statsBar": {
-      "stat1": "200+",
-      "stat2": "happy students",
-      "stat3": "25+",
-      "stat4": "experienced teachers",
-      "stat5": "4.9/5",
-      "stat6": "ratings",
-      "stat7": "100%",
-      "stat8": "online & flexible"
-    },
-    "platformPreview": {
-      "title": "ALL IN ONE PLACE",
-      "subtitle": "Your complete learning platform"
+    "stats": [
+      { "number": "200+", "label": "happy students" },
+      { "number": "25+", "label": "top teachers" },
+      { "number": "1,000+", "label": "learning materials" },
+      { "number": "4.9/5", "label": "rating from parents & students" }
+    ],
+    "platform": {
+      "eyebrow": "EVERYTHING IN ONE PLACE",
+      "title": "Your complete learning platform",
+      "subtitle": "Our modern platform supports you at every step of your learning journey.",
+      "discover": "Discover platform",
+      "features": [
+        { "title": "Progress overview", "desc": "Keep track of your development." },
+        { "title": "Learning library", "desc": "Access all materials & videos." },
+        { "title": "Learning plans", "desc": "Individual plans for your goals." },
+        { "title": "Tasks & exercises", "desc": "Interactive exercises with solutions." }
+      ]
     },
     "testimonials": {
-      "title": "What Students and Parents Say"
+      "title": "What students & parents say",
+      "items": [
+        { "quote": "Thanks to NextGrades I improved my math grade from C to A! The explanations are great and you understand right away!", "name": "Lena", "role": "Age 16" },
+        { "quote": "The small learning group has really helped my son! He is more motivated and finally understands math.", "name": "Mr. M.", "role": "Father" },
+        { "quote": "The platform is super intuitive and the materials are perfect for graduation exam preparation!", "name": "Julia", "role": "Age 18" }
+      ]
     },
     "cta": {
-      "title": "Ready to start your success?",
-      "subtitle": "Book your free consultation now"
+      "title": "Ready for the next step?",
+      "subtitle": "Book your free consultation now and find out which program fits you best.",
+      "button": "Book free consultation"
     }
   },
   "contact": {
@@ -91,7 +129,8 @@
     "enterEmail": "Enter your email address...",
     "enterPhone": "+49 (000) 000-0000",
     "enterMessage": "Enter your message here...",
-    "submitForm": "Submit Form"
+    "submitForm": "Submit Form",
+    "submitting": "Sending..."
   },
   "login": {
     "welcomeBack": "Welcome back",
@@ -161,6 +200,7 @@
     "sortPopular": "Most popular",
     "freeTitle": "Free Content",
     "freeSubtitle": "Available for everyone",
+    "freeButton": "Free",
     "freeShowAll": "Show all",
     "premiumTitle": "PREMIUM Content",
     "premiumSubtitle": "Members only",
@@ -221,38 +261,196 @@
   },
   "pricing": {
     "title": "Pricing",
-    "subtitle": "Choose the right package for you"
+    "subtitle": "Choose the right package for you",
+    "badge": "Premium Plans",
+    "heroTitle": "Choose your perfect plan",
+    "heroSubtitle": "Whether you just need resources or full 1:1 support — we have the right plan for you.",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "yearlyDiscount": "(2 months free)",
+    "perMonth": "month",
+    "perYear": "year",
+    "mostPopular": "Most Popular",
+    "getStarted": "Get Started",
+    "faqTitle": "Frequently Asked Questions"
   },
   "programs": {
-    "title": "Our Programs",
-    "subtitle": "The right support for every learning goal"
+    "title": "Our Programs.",
+    "subtitle": "For every learning goal."
   },
   "subjects": {
     "title": "Our Subjects",
-    "subtitle": "Choose your subject"
+    "subtitle": "Choose your subject",
+    "eyebrow": "OUR SUBJECTS",
+    "heroTitle": "All subjects.",
+    "heroTitleHighlight": "One goal: Your success.",
+    "heroSubtitle": "Whatever the subject — we support you with structured learning systems, experienced teachers, and high-quality materials on your path to better grades.",
+    "ratingBadge": "4.9/5 stars rated by parents & students"
   },
   "careers": {
     "title": "Careers at NextGrades",
     "subtitle": "Become part of our team"
   },
   "help": {
-    "title": "Help & Support",
-    "subtitle": "Find answers to your questions"
+    "title": "Help Center",
+    "subtitle": "Find answers to frequently asked questions",
+    "faqs": [
+      { "question": "How does registration work?", "answer": "You can easily sign up or log in through our login page." },
+      { "question": "How can I book a program?", "answer": "Contact us or book a free consultation to learn more." },
+      { "question": "What payment methods are available?", "answer": "We accept credit cards, PayPal, and bank transfers via Stripe." }
+    ]
   },
   "aiGenerator": {
     "title": "AI Generator",
     "subtitle": "Create learning materials with AI"
   },
   "consultation": {
+    "breadcrumb": "Consultation",
     "title": "Free Consultation",
-    "subtitle": "Book your free consultation now"
+    "titleHighlight": "Your learning plan starts here.",
+    "subtitle": "Speak with our education advisors and discover the right tutoring path — tailored to your goals, schedule, and budget.",
+    "heroDesc": "No commitment. No pressure. Just clear guidance from experts who understand German school systems and university preparation.",
+    "bookNow": "Request consultation",
+    "viewPrograms": "Explore programs",
+    "cardTitle": "Book your free consultation",
+    "cardSubtitle": "Tell us about your goals — we respond within one business day.",
+    "trustBadges": ["100% free", "No obligation", "30-minute session"],
+    "stats": [
+      { "value": "< 24h", "label": "Response time" },
+      { "value": "30 min", "label": "Consultation length" },
+      { "value": "1:1", "label": "Personal advisor" },
+      { "value": "DE", "label": "Germany-focused expertise" }
+    ],
+    "processTitle": "How your consultation works",
+    "processSubtitle": "A simple, structured process designed to give you clarity — not a sales pitch.",
+    "steps": [
+      {
+        "title": "Share your situation",
+        "description": "Tell us about grade level, subjects, upcoming exams, and what you want to improve."
+      },
+      {
+        "title": "Meet your advisor",
+        "description": "In a relaxed 30-minute call or video session, we listen and ask the right questions."
+      },
+      {
+        "title": "Receive a learning plan",
+        "description": "We recommend the best format — 1:1, group, or exam prep — with transparent next steps."
+      },
+      {
+        "title": "Start when you're ready",
+        "description": "Enroll only if it feels right. You can also explore materials and programs first."
+      }
+    ],
+    "benefitsTitle": "What you'll get from this session",
+    "benefitsSubtitle": "Every consultation is focused on outcomes — not generic advice.",
+    "benefits": [
+      {
+        "title": "Personalized assessment",
+        "description": "We identify strengths, gaps, and the fastest path to better grades."
+      },
+      {
+        "title": "Program matching",
+        "description": "Compare 1:1 tutoring, small groups, and subject-specific tracks side by side."
+      },
+      {
+        "title": "Clear pricing overview",
+        "description": "Understand plans, units, and value before you commit to anything."
+      },
+      {
+        "title": "Exam & university guidance",
+        "description": "Abitur, university prep, and STEM pathways explained in plain language."
+      },
+      {
+        "title": "Flexible scheduling options",
+        "description": "Find session times that fit school, work, and family calendars."
+      },
+      {
+        "title": "Trusted German educators",
+        "description": "Work with qualified tutors who know local curricula and expectations."
+      }
+    ],
+    "audienceTitle": "Who this is for",
+    "audiences": [
+      {
+        "title": "Students",
+        "description": "From middle school to university prep — build confidence and consistent results."
+      },
+      {
+        "title": "Parents",
+        "description": "Get transparency on progress, scheduling, and the right level of support."
+      },
+      {
+        "title": "Career changers",
+        "description": "Refresh math, languages, or business skills for studies and applications."
+      }
+    ],
+    "formTitle": "Request your free consultation",
+    "formSubtitle": "Complete the form below and our team will contact you to schedule your session.",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email address",
+    "phone": "Phone number",
+    "gradeLevel": "Grade / level",
+    "gradePlaceholder": "Select level",
+    "grades": ["Grade 5–7", "Grade 8–10", "Abitur / Oberstufe", "University / adult learner"],
+    "subject": "Subject of interest",
+    "subjectPlaceholder": "Select subject",
+    "subjects": ["Mathematics", "English", "German", "Physics", "Chemistry", "Business / Economics", "Computer science", "Other"],
+    "preferredTime": "Preferred contact time",
+    "timePlaceholder": "Select preference",
+    "times": ["Morning (8–12)", "Afternoon (12–17)", "Evening (17–20)", "Weekend", "Flexible"],
+    "goals": "Your goals (optional)",
+    "goalsPlaceholder": "e.g. Improve math grade before exams, prepare for Abitur, build study habits…",
+    "privacyNote": "By submitting, you agree that we may contact you about your consultation request. We never share your data with third parties.",
+    "submit": "Send consultation request",
+    "submitting": "Sending…",
+    "successTitle": "Request received!",
+    "successMessage": "Thank you — we'll reach out shortly to schedule your free consultation.",
+    "faqTitle": "Frequently asked questions",
+    "faqs": [
+      {
+        "question": "Is the consultation really free?",
+        "answer": "Yes. The initial consultation is completely free and comes with no obligation to enroll."
+      },
+      {
+        "question": "How long does the session take?",
+        "answer": "Most consultations last about 30 minutes — enough time to understand your needs and recommend a path."
+      },
+      {
+        "question": "Online or in person?",
+        "answer": "We primarily offer online sessions via video call for flexibility. In-person options may be available depending on location."
+      },
+      {
+        "question": "Do parents need to attend?",
+        "answer": "For students under 16, we recommend a parent or guardian joins. Older students may attend alone if they prefer."
+      },
+      {
+        "question": "What should I prepare?",
+        "answer": "Bring recent grades, exam dates, and a short list of goals. That helps us tailor recommendations immediately."
+      }
+    ],
+    "ctaTitle": "Ready to take the next step?",
+    "ctaDesc": "Explore our programs and pricing, or speak with us first — whichever works best for you.",
+    "ctaPrograms": "View programs",
+    "ctaPricing": "See pricing"
   },
   "privacy": {
     "title": "Privacy Policy",
-    "subtitle": "How we protect your data"
+    "subtitle": "Information about data protection",
+    "body": "You will find our privacy policy here."
   },
   "terms": {
     "title": "Terms & Conditions",
-    "subtitle": "Our General Terms and Conditions"
+    "subtitle": "General Terms and Conditions",
+    "body": "You will find our General Terms and Conditions here."
+  },
+  "careersPage": {
+    "title": "Careers",
+    "subtitle": "Join our team!",
+    "applyNow": "Apply now",
+    "jobs": [
+      { "title": "Math Tutor", "description": "We are looking for dedicated math tutors." },
+      { "title": "English Tutor", "description": "We are looking for dedicated English tutors." }
+    ]
   }
 }

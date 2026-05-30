@@ -1,34 +1,59 @@
+"use client";
 
-import Header from "@/components/Header";
+import { useMemo } from "react";
+import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { Card } from "@/components/ui/Card";
+import { Button } from "@/components/ui/Button";
+import { useTheme } from "@/context/ThemeContext";
+import { Users, BookOpen } from "lucide-react";
+import { useTranslation } from "react-i18next";
+
+const jobIcons = [BookOpen, Users];
 
 export default function CareersPage() {
+  const { theme } = useTheme();
+  const { t, i18n } = useTranslation();
+
+  const jobs = useMemo(
+    () => t("careersPage.jobs", { returnObjects: true }) as { title: string; description: string }[],
+    [t, i18n.language]
+  );
+
   return (
     <div className="min-h-screen flex flex-col">
-      <Header />
-      <main className="flex-1 py-16">
+      <Navbar />
+      <main className="flex-1 pt-28 pb-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl font-bold text-center mb-4 text-deep-navy">Karriere</h1>
-          <p className="text-xl text-gray-600 text-center mb-12">
-            Werde Teil unseres Teams!
+          <h1 className={`text-4xl font-bold text-center mb-4 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
+            {t("careersPage.title")}
+          </h1>
+          <p className={`text-xl text-center mb-12 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+            {t("careersPage.subtitle")}
           </p>
-          
+
           <div className="space-y-6">
-            <div className="border border-gray-200 rounded-xl p-6">
-              <h2 className="text-2xl font-bold mb-2 text-deep-navy">Tutor:in Mathematik</h2>
-              <p className="text-gray-600 mb-4">Wir suchen engagierte Tutor:innen für Mathematik.</p>
-              <button className="px-4 py-2 bg-soft-gold text-deep-navy rounded-lg hover:bg-yellow-500 transition-colors font-medium">
-                Jetzt bewerben
-              </button>
-            </div>
-            
-            <div className="border border-gray-200 rounded-xl p-6">
-              <h2 className="text-2xl font-bold mb-2 text-deep-navy">Tutor:in Englisch</h2>
-              <p className="text-gray-600 mb-4">Wir suchen engagierte Tutor:innen für Englisch.</p>
-              <button className="px-4 py-2 bg-soft-gold text-deep-navy rounded-lg hover:bg-yellow-500 transition-colors font-medium">
-                Jetzt bewerben
-              </button>
-            </div>
+            {jobs.map((job, index) => {
+              const Icon = jobIcons[index] ?? BookOpen;
+              return (
+                <Card key={index} className="p-6">
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-[#D4AF37]/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <Icon className="w-6 h-6 text-[#D4AF37]" />
+                    </div>
+                    <div className="flex-1">
+                      <h2 className={`text-2xl font-bold mb-2 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
+                        {job.title}
+                      </h2>
+                      <p className="text-gray-600 dark:text-gray-400 mb-4">{job.description}</p>
+                      <Button variant="gold" size="md" href={`/contact?role=${encodeURIComponent(job.title)}`}>
+                        {t("careersPage.applyNow")}
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
+              );
+            })}
           </div>
         </div>
       </main>

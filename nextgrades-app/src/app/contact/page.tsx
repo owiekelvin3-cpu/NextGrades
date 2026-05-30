@@ -8,12 +8,14 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faEnvelope, faPhone, faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faEnvelope, faPhone, faArrowRight, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
+import { useToast } from "@/context/ToastContext";
 
 export default function ContactPage() {
   const { theme } = useTheme();
   const { t } = useTranslation();
+  const toast = useToast();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -21,6 +23,38 @@ export default function ContactPage() {
     phone: "",
     message: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: `${formData.firstName} ${formData.lastName}`.trim(),
+          email: formData.email,
+          phone: formData.phone,
+          message: formData.message,
+          subject: "Contact form",
+        }),
+      });
+      const data = await response.json().catch(() => ({}));
+      if (response.ok) {
+        setSubmitted(true);
+        toast.success(t("contact.success", { defaultValue: "Message sent successfully!" }));
+      } else {
+        toast.error(data.error || t("misc.errorGeneric", { defaultValue: "Something went wrong." }));
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error(t("misc.errorGeneric", { defaultValue: "Something went wrong." }));
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -39,7 +73,7 @@ export default function ContactPage() {
             >
               <img
                 src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=900&h=1000&fit=crop"
-                alt="Modern German building"
+                alt={t("images.germanBuilding")}
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-br from-[#0D1B2A]/20 to-[#D4AF37]/30" />
@@ -79,7 +113,24 @@ export default function ContactPage() {
                 </p>
               </div>
 
-              <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
+              {submitted ? (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="text-center py-16"
+                >
+                  <div className="w-20 h-20 rounded-full bg-[#22C55E]/20 flex items-center justify-center mx-auto mb-6">
+                    <FontAwesomeIcon icon={faCheckCircle} className="w-10 h-10 text-[#22C55E]" />
+                  </div>
+                  <h2 className={`text-2xl font-bold mb-4 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
+                    Vielen Dank!
+                  </h2>
+                  <p className={`${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>
+                    Wir haben deine Nachricht erhalten und melden uns bald bei dir!
+                  </p>
+                </motion.div>
+              ) : (
+                <form className="space-y-5" onSubmit={handleSubmit}>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div className="space-y-2">
                     <label className={`text-sm font-semibold ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>
@@ -156,7 +207,7 @@ export default function ContactPage() {
                     <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
                       <img
                         src="https://upload.wikimedia.org/wikipedia/en/thumb/b/ba/Flag_of_Germany.svg/1200px-Flag_of_Germany.svg.png"
-                        alt="Germany flag"
+                        alt={t("images.germanyFlag")}
                         className="w-5 h-4 object-cover rounded-sm"
                       />
                       <FontAwesomeIcon icon={faPhone} className="w-4 h-4 text-gray-400" />
@@ -202,10 +253,16 @@ export default function ContactPage() {
                   variant="gold"
                   size="xl"
                   className="w-full !rounded-full mt-2"
+                  disabled={isSubmitting}
                 >
-                  {t("contact.submitForm")} <FontAwesomeIcon icon={faArrowRight} className="w-4 h-4 ml-2" />
+                  {isSubmitting ? t("contact.submitting") : (
+                    <>
+                      {t("contact.submitForm")} <FontAwesomeIcon icon={faArrowRight} className="w-4 h-4 ml-2" />
+                    </>
+                  )}
                 </Button>
               </form>
+              )}
             </motion.div>
           </div>
         </div>
