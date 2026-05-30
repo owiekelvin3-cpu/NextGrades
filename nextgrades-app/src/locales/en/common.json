@@ -50,12 +50,11 @@
     "freeConsultation": "Free Consultation",
     "explorePrograms": "Explore programs →",
     "rating": "4.9/5",
-    "reviewsFrom": "from 200+ reviews by students & parents",
+    "reviewsFrom": "from 200+ reviews",
     "floatingCardTitle": "Individual support.",
     "floatingCardDesc": "Real results.",
     "learnMore": "Learn more",
     "mostPopular": "Most popular program",
-    "mostPopularBadge": "MOST POPULAR PROGRAM",
     "features": [
       { "title": "Premium teachers", "desc": "Carefully selected, experienced educators focused on success." },
       { "title": "Small learning groups", "desc": "Max. 3–5 students per group for intensive learning." },
@@ -65,22 +64,19 @@
     ],
     "programsSection": {
       "title": "Our Programs",
-      "subtitle": "Choose the program that best matches your goals.",
+      "subtitle": "Choose the program that fits you best.",
       "items": [
         {
           "title": "1:1 Premium Tutoring",
-          "tagline": "Individual, personal, efficient.",
-          "features": ["Personal 1:1 support", "Individual learning plans", "Targeted exam preparation", "Flexible scheduling"]
+          "features": ["Individual, personal, efficient.", "Personal 1:1 support", "Flexible appointments", "Tailored learning plan"]
         },
         {
           "title": "Small Group Learning",
-          "tagline": "Learn together with friends.",
-          "features": ["Max. 3–5 students", "Motivating learning atmosphere", "Exchange & teamwork", "More affordable than 1:1 tutoring"]
+          "features": ["Learn together with friends.", "Max. 3–5 students", "Interactive exchange", "Motivation through the group"]
         },
         {
           "title": "Math Excellence Program",
-          "tagline": "Our flagship program for mathematics.",
-          "features": ["Weekly live sessions", "Premium learning materials", "Worksheets & videos", "Graduation exam prep & strategies", "Support between sessions"]
+          "features": ["Our flagship program for math.", "Weekly live sessions", "Premium learning materials", "Graduation exam preparation", "Instructors from university & sessions"]
         }
       ]
     },
@@ -91,23 +87,22 @@
       { "number": "4.9/5", "label": "rating from parents & students" }
     ],
     "platform": {
-      "eyebrow": "EVERYTHING IN ONE PLACE",
       "title": "Your complete learning platform",
       "subtitle": "Our modern platform supports you at every step of your learning journey.",
       "discover": "Discover platform",
-      "features": [
-        { "title": "Progress overview", "desc": "Keep track of your development." },
-        { "title": "Learning library", "desc": "Access all materials & videos." },
-        { "title": "Learning plans", "desc": "Individual plans for your goals." },
-        { "title": "Tasks & exercises", "desc": "Interactive exercises with solutions." }
-      ]
+      "learnMore": "Learn more",
+      "trackProgress": "Track progress",
+      "trackProgressDesc": "Track your progress, complete lessons, and stay motivated!",
+      "availability": "24/7",
+      "availabilityLabel": "Support available",
+      "materials": "learning materials"
     },
     "testimonials": {
-      "title": "What students & parents say",
+      "title": "What students and parents say",
       "items": [
-        { "quote": "Thanks to NextGrades I improved my math grade from C to A! The explanations are great and you understand right away!", "name": "Lena", "role": "Age 16" },
-        { "quote": "The small learning group has really helped my son! He is more motivated and finally understands math.", "name": "Mr. M.", "role": "Father" },
-        { "quote": "The platform is super intuitive and the materials are perfect for graduation exam preparation!", "name": "Julia", "role": "Age 18" }
+        { "quote": "Thanks to NextGrades I improved my math grade from C to A! The explanations are great and you understand right away!", "name": "Lena, Grade 10" },
+        { "quote": "The small learning group has really helped my son! He is more motivated and finally understands math.", "name": "Peter M., Father" },
+        { "quote": "The platform is super intuitive and the materials are perfect for graduation exam preparation!", "name": "Julia, Grade 12" }
       ]
     },
     "cta": {
@@ -130,7 +125,11 @@
     "enterPhone": "+49 (000) 000-0000",
     "enterMessage": "Enter your message here...",
     "submitForm": "Submit Form",
-    "submitting": "Sending..."
+    "submitting": "Sending...",
+    "successTitle": "Thank you!",
+    "successMessage": "We received your message and will get back to you soon.",
+    "validationRequired": "Please fill in all required fields.",
+    "validationEmail": "Please enter a valid email address."
   },
   "login": {
     "welcomeBack": "Welcome back",
@@ -275,17 +274,16 @@
     "faqTitle": "Frequently Asked Questions"
   },
   "programs": {
-    "title": "Our Programs.",
-    "subtitle": "For every learning goal."
+    "title": "Our Programs",
+    "subtitle": "The right support for every learning goal"
   },
   "subjects": {
     "title": "Our Subjects",
     "subtitle": "Choose your subject",
     "eyebrow": "OUR SUBJECTS",
-    "heroTitle": "All subjects.",
-    "heroTitleHighlight": "One goal: Your success.",
-    "heroSubtitle": "Whatever the subject — we support you with structured learning systems, experienced teachers, and high-quality materials on your path to better grades.",
-    "ratingBadge": "4.9/5 stars rated by parents & students"
+    "heroTitle": "All subjects. One goal:",
+    "heroTitleHighlight": "Your success.",
+    "heroSubtitle": "We offer tutoring in all relevant school subjects — individual, structured, and with real results."
   },
   "careers": {
     "title": "Careers at NextGrades",

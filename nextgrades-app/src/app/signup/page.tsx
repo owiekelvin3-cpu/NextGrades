@@ -6,7 +6,7 @@ export default async function SignupPage({
   searchParams: Promise<{ redirect?: string }>;
 }) {
   const params = await searchParams;
-  const q = new URLSearchParams({ mode: "signup" });
+  const q = new URLSearchParams();
   if (params.redirect) q.set("redirect", params.redirect);
-  redirect(`/login?${q.toString()}`);
+  redirect(`/register${q.toString() ? `?${q}` : ""}`);
 }

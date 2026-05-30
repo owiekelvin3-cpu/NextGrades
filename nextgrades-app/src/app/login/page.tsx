@@ -32,7 +32,7 @@ import { useToast } from "@/context/ToastContext";
 import { syncPreferencesAfterAuth } from "@/lib/preferences";
 import { changeAppLanguage } from "@/components/I18nProvider";
 import { cn } from "@/lib/utils";
-import { sendWelcomeEmail } from "@/lib/email";
+import { RegisterForm } from "@/components/auth/RegisterForm";
 
 function LoginContent() {
   const [isSignup, setIsSignup] = useState(false);
@@ -113,6 +113,8 @@ function LoginContent() {
 
   useEffect(() => {
     if (searchParams.get("mode") === "signup") setIsSignup(true);
+    const emailParam = searchParams.get("email");
+    if (emailParam) setFormData((prev) => ({ ...prev, email: emailParam }));
   }, [searchParams]);
 
   useEffect(() => {
@@ -160,6 +162,8 @@ function LoginContent() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isSignup) return;
+
     setLoading(true);
     setError(null);
     setSuccess(null);
@@ -178,85 +182,22 @@ function LoginContent() {
       return;
     }
 
-    if (isSignup) {
-      if (selectedRole === "student") {
-        router.push("/register");
-        setLoading(false);
-        return;
-      }
-      if (!formData.name || formData.name.length < 2) {
-        setError("Please enter your full name");
-        setLoading(false);
-        return;
-      }
-      if (formData.password.length < 8) {
-        setError("Password must be at least 8 characters");
-        setLoading(false);
-        return;
-      }
-
-      const checkRes = await fetch("/api/auth/check-email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: formData.email.trim().toLowerCase() }),
-      });
-      const checkData = await checkRes.json();
-      if (checkData.exists) {
-        setError("An account with this email already exists. Please sign in to continue.");
-        setDuplicateEmail(true);
-        setLoading(false);
-        return;
-      }
-    }
-
     try {
-      let result;
-      if (isSignup) {
-        // Sign up
-        result = await supabase.auth.signUp({
-          email: formData.email,
-          password: formData.password,
-          options: {
-            data: {
-              full_name: formData.name,
-              role: selectedRole,
-            },
-          },
-        });
-        if (!result.error) {
-          setSuccess(t("loginPage.emailConfirm"));
-          setFormData({ name: "", email: "", password: "" });
-        }
-      } else {
-        // Sign in
-        result = await supabase.auth.signInWithPassword({
-          email: formData.email,
-          password: formData.password,
-        });
-      }
+      const result = await supabase.auth.signInWithPassword({
+        email: formData.email,
+        password: formData.password,
+      });
 
       if (result.error) {
         const msg = result.error.message.toLowerCase();
-        if (msg.includes("already registered") || msg.includes("already exists") || msg.includes("user already")) {
-          setDuplicateEmail(true);
-          throw new Error("An account with this email already exists. Please sign in to continue.");
+        if (msg.includes("email not confirmed") || msg.includes("not verified")) {
+          throw new Error("Please verify your email before signing in. Check your inbox for the verification link.");
         }
         throw new Error(result.error.message);
       }
 
-      if (isSignup && result.data.user && result.data.session) {
-        await supabase
-          .from("profiles")
-          .update({ role: selectedRole, full_name: formData.name })
-          .eq("id", result.data.user.id);
-
-        void sendWelcomeEmail(formData.email, formData.name, selectedRole);
-      }
-
-      if (!isSignup || result.data.session) {
-        toast.success(isSignup ? t("loginPage.emailConfirm") : t("login.welcomeBack", { defaultValue: "Welcome back!" }));
-        await navigateAfterAuth(result.data.user!.id, selectedRole);
-      }
+      toast.success(t("login.welcomeBack", { defaultValue: "Welcome back!" }));
+      await navigateAfterAuth(result.data.user!.id, selectedRole);
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Authentication failed";
       setError(message);
@@ -411,81 +352,19 @@ function LoginContent() {
                   )}
 
                   {/* Form */}
+                  {isSignup ? (
+                    <RegisterForm
+                      compact
+                      defaultRole={selectedRole}
+                      redirectTo={redirectTo}
+                      onSwitchToLogin={() => {
+                        setIsSignup(false);
+                        setError(null);
+                        setSuccess(null);
+                      }}
+                    />
+                  ) : (
                   <form className="space-y-5" onSubmit={handleSubmit}>
-                    {isSignup && (
-                      <>
-                        <div className="space-y-3 animate-in fade-in slide-in-from-left-2">
-                          <label className={`text-sm font-semibold ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>Full Name</label>
-                          <div className="relative">
-                            <FontAwesomeIcon icon={faUser} className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                            <input
-                              type="text"
-                              placeholder="Enter your full name"
-                              value={formData.name}
-                              onChange={(e) => handleInputChange("name", e.target.value)}
-                              className={`w-full pl-12 pr-4 py-3 rounded-xl border-2 transition-all duration-200 ${
-                                formValidation.name
-                                  ? theme === "dark"
-                                    ? "border-red-500 bg-red-500/5"
-                                    : "border-red-200 bg-red-50"
-                                  : theme === "dark"
-                                  ? "border-white/10 bg-[#112240]/50"
-                                  : "border-gray-200 bg-white"
-                              } ${theme === "dark" ? "text-white placeholder:text-gray-500" : "text-[#0D1B2A] placeholder:text-gray-400"} focus:outline-none focus:border-[#D4AF37] focus:ring-2 focus:ring-[#D4AF37]/20 focus:bg-white dark:focus:bg-[#1a2e4a]`}
-                            />
-                          </div>
-                          {formValidation.name && <p className="text-xs text-red-500">{formValidation.name}</p>}
-                        </div>
-
-                        {/* Role Selection (for signup) */}
-                        <div className="space-y-3 animate-in fade-in slide-in-from-left-2">
-                          <label className={`text-sm font-semibold ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>I'm a</label>
-                          <div className="grid grid-cols-2 gap-3">
-                            {["student", "teacher"].map((role) => (
-                              <button
-                                key={role}
-                                type="button"
-                                onClick={() => setSelectedRole(role as "student" | "teacher")}
-                                className={`p-4 rounded-xl border-2 transition-all duration-200 text-left transform hover:scale-105 ${
-                                  selectedRole === role
-                                    ? `border-[#D4AF37] ${theme === "dark" ? "bg-[#D4AF37]/15" : "bg-[#D4AF37]/10"}`
-                                    : theme === "dark"
-                                    ? "border-white/10 bg-[#112240]/50 hover:border-[#D4AF37]/40"
-                                    : "border-gray-200 bg-white hover:border-[#D4AF37]/40"
-                                }`}
-                              >
-                                <div className="w-10 h-10 rounded-full bg-[#D4AF37]/20 flex items-center justify-center mb-2">
-                                  <FontAwesomeIcon icon={faUser} className={`w-5 h-5 ${theme === "dark" ? "text-[#D4AF37]" : "text-[#0D1B2A]"}`} />
-                                </div>
-                                <h3 className={`font-bold text-sm ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
-                                  {role.charAt(0).toUpperCase() + role.slice(1)}
-                                </h3>
-                                <p className={`text-xs mt-1 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>
-                                  {role === "student" ? "I want to learn" : "I want to teach"}
-                                </p>
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-
-                        {selectedRole === "student" && (
-                          <div className={`rounded-xl border p-4 text-sm ${theme === "dark" ? "border-[#D4AF37]/30 bg-[#D4AF37]/10 text-gray-200" : "border-[#D4AF37]/40 bg-[#D4AF37]/5 text-gray-700"}`}>
-                            <p className="font-semibold mb-2">Student registration</p>
-                            <p className="mb-3 opacity-90">Use our guided registration form with email verification to create your student account.</p>
-                            <Link
-                              href="/register"
-                              className="inline-flex items-center gap-2 rounded-lg bg-[#D4AF37] px-4 py-2 text-sm font-semibold text-[#0D1B2A] hover:opacity-90"
-                            >
-                              Continue to Registration <FontAwesomeIcon icon={faArrowRight} className="w-3 h-3" />
-                            </Link>
-                          </div>
-                        )}
-                      </>
-                    )}
-
-                    {!(isSignup && selectedRole === "student") && (
-                      <>
-                    {/* Email Field */}
                     <div className="space-y-2 animate-in fade-in slide-in-from-left-2">
                       <label className={`text-sm font-semibold ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>Email Address</label>
                       <div className="relative">
@@ -513,14 +392,12 @@ function LoginContent() {
                     <div className="space-y-2 animate-in fade-in slide-in-from-left-2">
                       <div className="flex justify-between items-center">
                         <label className={`text-sm font-semibold ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>Password</label>
-                        {!isSignup && (
-                          <Link
-                            href="/forgot-password"
-                            className="text-xs font-semibold text-[#D4AF37] hover:text-[#e5c158] transition-colors"
-                          >
-                            Forgot?
-                          </Link>
-                        )}
+                        <Link
+                          href="/forgot-password"
+                          className="text-xs font-semibold text-[#D4AF37] hover:text-[#e5c158] transition-colors"
+                        >
+                          Forgot?
+                        </Link>
                       </div>
                       <div className="relative">
                         <FontAwesomeIcon icon={faLock} className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -548,22 +425,8 @@ function LoginContent() {
                         </button>
                       </div>
                       {formValidation.password && <p className="text-xs text-red-500">{formValidation.password}</p>}
-                      {isSignup && formData.password && (
-                        <div className="space-y-2 mt-2">
-                          <div className="flex items-center justify-between">
-                            <span className="text-xs font-semibold text-gray-500">Strength:</span>
-                            <span className={`text-xs font-bold ${passwordStrength < 33 ? "text-red-500" : passwordStrength < 66 ? "text-yellow-500" : "text-green-500"}`}>
-                              {getPasswordStrengthText(passwordStrength)}
-                            </span>
-                          </div>
-                          <div className={`h-2 rounded-full bg-gray-200 overflow-hidden ${theme === "dark" ? "bg-gray-700" : ""}`}>
-                            <div className={`h-full transition-all duration-300 ${getPasswordStrengthColor(passwordStrength)}`} style={{ width: `${passwordStrength}%` }} />
-                          </div>
-                        </div>
-                      )}
                     </div>
 
-                    {/* Submit Button */}
                     <Button
                       variant="gold"
                       size="xl"
@@ -573,11 +436,11 @@ function LoginContent() {
                       {loading ? (
                         <>
                           <div className="w-5 h-5 border-2 border-[#0D1B2A] border-t-transparent rounded-full animate-spin" />
-                          {isSignup ? "Creating Account..." : "Signing In..."}
+                          Signing In...
                         </>
                       ) : (
                         <>
-                          {isSignup ? "Create Account" : "Sign In"}
+                          Sign In
                           <FontAwesomeIcon icon={faArrowRight} className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                         </>
                       )}
@@ -613,9 +476,8 @@ function LoginContent() {
                       )}
                       <span className="font-semibold">Continue with Google</span>
                     </button>
-                      </>
-                    )}
                   </form>
+                  )}
 
                   {/* Footer */}
                   <div className="mt-12 space-y-4">

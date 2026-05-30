@@ -28,6 +28,14 @@ export default function ContactPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formData.firstName.trim() || !formData.lastName.trim() || !formData.email.trim() || !formData.message.trim()) {
+      toast.error(t("contact.validationRequired"));
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
+      toast.error(t("contact.validationEmail"));
+      return;
+    }
     setIsSubmitting(true);
     try {
       const response = await fetch("/api/contact", {
@@ -57,7 +65,7 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className={`min-h-screen flex flex-col ${theme === "dark" ? "bg-[#0D1B2A]" : "bg-[#FAFAFA]"}`}>
       <Navbar />
 
       <main className="flex-1 pt-24 pb-16 relative overflow-hidden">
@@ -123,10 +131,10 @@ export default function ContactPage() {
                     <FontAwesomeIcon icon={faCheckCircle} className="w-10 h-10 text-[#22C55E]" />
                   </div>
                   <h2 className={`text-2xl font-bold mb-4 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
-                    Vielen Dank!
+                    {t("contact.successTitle")}
                   </h2>
                   <p className={`${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>
-                    Wir haben deine Nachricht erhalten und melden uns bald bei dir!
+                    {t("contact.successMessage")}
                   </p>
                 </motion.div>
               ) : (
@@ -142,6 +150,7 @@ export default function ContactPage() {
                       </div>
                       <input
                         type="text"
+                        required
                         value={formData.firstName}
                         onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
                         placeholder={t("contact.enterFirstName")}
@@ -164,6 +173,7 @@ export default function ContactPage() {
                       </div>
                       <input
                         type="text"
+                        required
                         value={formData.lastName}
                         onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
                         placeholder={t("contact.enterLastName")}
@@ -187,6 +197,7 @@ export default function ContactPage() {
                     </div>
                     <input
                       type="email"
+                      required
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       placeholder={t("contact.enterEmail")}
@@ -232,6 +243,7 @@ export default function ContactPage() {
                   </label>
                   <div className="relative">
                     <textarea
+                      required
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       placeholder={t("contact.enterMessage")}
@@ -250,6 +262,7 @@ export default function ContactPage() {
                 </div>
 
                 <Button
+                  type="submit"
                   variant="gold"
                   size="xl"
                   className="w-full !rounded-full mt-2"

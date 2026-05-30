@@ -1,33 +1,34 @@
 "use client";
 
-import Link from "next/link";
-import Image from "next/image";
 import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
+import { Badge } from "@/components/ui/Badge";
 import {
   Users,
+  Zap,
+  Calendar,
+  Award,
   Star,
   CheckCircle2,
   ArrowRight,
-  Calendar,
-  GraduationCap,
-  Award,
   Clock,
-  BookOpen,
-  Target,
-  ChevronRight,
+  GraduationCap,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useLocalizedContent } from "@/hooks/useLocalizedContent";
+import { useTheme } from "@/context/ThemeContext";
 
-import { HERO_STUDY_IMAGE, PROGRAM_CARD_IMAGES } from "@/lib/marketing-images";
-import { useMarketingTheme } from "@/lib/marketing-theme";
+const programImages = [
+  "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=600&h=400&fit=crop",
+  "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=600&h=400&fit=crop",
+  "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&h=400&fit=crop",
+];
 
 const statIcons = [GraduationCap, Users, Star];
-const heroFeatureIcons = [Award, Target, Clock];
-const compareRowIcons = [Users, Target, Calendar, BookOpen, GraduationCap, Star];
+const heroFeatureIcons = [Award, Zap, Clock];
 
 type ProgramItem = {
   type: string;
@@ -44,319 +45,355 @@ type CompareRow = {
   c3: string | boolean;
 };
 
-function CompareCell({ value, highlight }: { value: string | boolean; highlight?: boolean }) {
-  const mt = useMarketingTheme();
+function CompareCell({ value }: { value: string | boolean }) {
   if (value === true) {
-    return <CheckCircle2 className="mx-auto h-5 w-5 text-[#D4AF37]" strokeWidth={2} />;
+    return <CheckCircle2 className="w-5 h-5 text-[#D4AF37] mx-auto" />;
   }
-  return (
-    <span className={`text-sm ${highlight ? `font-medium ${mt.heading}` : mt.body}`}>
-      {value}
-    </span>
-  );
+  return <span className="text-sm text-gray-600 dark:text-gray-300">{value}</span>;
 }
 
 export default function ProgramsPage() {
+  const { theme } = useTheme();
   const { t } = useTranslation();
-  const mt = useMarketingTheme();
   const heroFeatures = useLocalizedContent<{ title: string; desc: string }[]>("programsPage.heroFeatures");
   const stats = useLocalizedContent<{ number: string; label: string }[]>("programsPage.stats");
   const programs = useLocalizedContent<ProgramItem[]>("programsPage.items");
   const compareRows = useLocalizedContent<CompareRow[]>("programsPage.compareRows");
   const ctaTags = useLocalizedContent<string[]>("programsPage.ctaTags");
-  const compareHeaders = useLocalizedContent<{
+  const compareHeadersRaw = useLocalizedContent<{
     features: string;
     oneOnOne: string;
     group: string;
     math: string;
   }>("programsPage.compareHeaders");
+  const compareHeaders =
+    compareHeadersRaw && typeof compareHeadersRaw === "object" && "features" in compareHeadersRaw
+      ? compareHeadersRaw
+      : { features: "Features", oneOnOne: "1:1", group: "Group", math: "Math Program" };
+
+  const safePrograms = Array.isArray(programs) ? programs : [];
+  const safeStats = Array.isArray(stats) ? stats : [];
+  const safeHeroFeatures = Array.isArray(heroFeatures) ? heroFeatures : [];
+  const safeCompareRows = Array.isArray(compareRows) ? compareRows : [];
+  const safeCtaTags = Array.isArray(ctaTags) ? ctaTags : [];
 
   return (
-    <div className={`flex min-h-screen flex-col ${mt.page}`}>
+    <div
+      className={`min-h-screen flex flex-col ${
+        theme === "dark" ? "bg-[#0D1B2A]" : "bg-[#FAFAFA]"
+      }`}
+    >
       <Navbar />
 
       <main className="flex-1">
-        {/* Hero — text left, image right */}
-        <section className="relative overflow-hidden bg-[#0D1B2A]">
-          {/* Mobile / tablet: image at top */}
-          <div className="relative h-56 w-full sm:h-72 lg:hidden">
-            <Image
-              src={HERO_STUDY_IMAGE}
-              alt={t("images.studentStudying", { defaultValue: "Student studying" })}
-              fill
-              priority
-              className="object-cover object-center"
-              sizes="100vw"
-            />
-            <div className="absolute inset-0 bg-gradient-to-b from-[#0D1B2A]/10 to-[#0D1B2A]/50" />
+        <section
+          className={`pt-32 pb-12 relative overflow-hidden ${
+            theme === "dark" ? "bg-[#0D1B2A] text-white" : "bg-white text-[#0D1B2A]"
+          }`}
+        >
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }}>
+                <div
+                  className={`uppercase tracking-[0.2em] text-sm font-semibold mb-4 ${
+                    theme === "dark" ? "text-gray-400" : "text-gray-500"
+                  }`}
+                >
+                  {t("programsPage.breadcrumb")}
+                </div>
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+                  {t("programs.title")}
+                  <br />
+                  <span className="text-[#D4AF37]">{t("programs.subtitle")}</span>
+                </h1>
+                <p
+                  className={`text-lg mb-8 ${
+                    theme === "dark" ? "text-gray-300" : "text-gray-600"
+                  }`}
+                >
+                  {t("home.programsSection.subtitle")}
+                </p>
+                <div className="flex flex-wrap gap-6 mb-10">
+                  {safeHeroFeatures.map((feature, index) => {
+                    const Icon = heroFeatureIcons[index];
+                    return (
+                      <div key={index} className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full border-2 border-[#D4AF37]/50 flex items-center justify-center">
+                          <Icon className="w-5 h-5 text-[#D4AF37]" />
+                        </div>
+                        <div>
+                          <p className="font-semibold">{feature.title}</p>
+                          <p
+                            className={`text-xs ${
+                              theme === "dark" ? "text-gray-400" : "text-gray-500"
+                            }`}
+                          >
+                            {feature.desc}
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+                <Button variant="gold" size="lg" href="/consultation">
+                  {t("programsPage.freeConsultation")} <ArrowRight className="w-5 h-5 ml-2" />
+                </Button>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+              >
+                <div className="rounded-2xl h-[450px] overflow-hidden">
+                  <img
+                    src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800&h=600&fit=crop"
+                    alt={t("images.studentStudying")}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </motion.div>
+            </div>
           </div>
+        </section>
 
-          <div className="mx-auto grid max-w-7xl lg:grid-cols-2 lg:items-stretch">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7 }}
-              className="relative z-10 px-4 pb-20 pt-10 sm:px-6 lg:px-8 lg:pb-28 lg:pt-32"
-            >
-              <nav className="mb-6 flex items-center gap-2 text-sm text-gray-300">
-                <Link href="/" className="transition-colors hover:text-[#D4AF37]">
-                  {t("common.home", { defaultValue: "Startseite" })}
-                </Link>
-                <ChevronRight className="h-4 w-4 text-gray-500" />
-                <span className="text-white">{t("common.programs")}</span>
-              </nav>
-
-              <h1 className="mb-5 text-4xl font-bold leading-[1.1] text-white sm:text-5xl lg:text-[3.25rem]">
-                {t("programs.title")}{" "}
-                <span className="text-[#D4AF37]">{t("programs.subtitle")}</span>
-              </h1>
-
-              <p className="mb-10 max-w-xl text-base leading-relaxed text-gray-200 sm:text-lg">
-                {t("programsPage.sectionDesc")}
-              </p>
-
-              <div className="grid gap-6 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
-                {heroFeatures.map((feature, index) => {
-                  const Icon = heroFeatureIcons[index] ?? Award;
+        <section className="py-6 -mt-6">
+          <div className="max-w-4xl mx-auto px-4">
+            <Card className="p-6 shadow-xl border-0">
+              <div className="grid md:grid-cols-3 gap-8">
+                {safeStats.map((stat, index) => {
+                  const Icon = statIcons[index];
                   return (
-                    <div key={feature.title} className="flex items-start gap-3">
-                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[#D4AF37]/40 bg-[#D4AF37]/10">
-                        <Icon className="h-5 w-5 text-[#D4AF37]" strokeWidth={1.5} />
+                    <div key={index} className="flex items-center gap-4">
+                      <div
+                        className={`w-12 h-12 rounded-full flex items-center justify-center ${
+                          theme === "dark" ? "bg-white/10" : "bg-[#0D1B2A]/10"
+                        }`}
+                      >
+                        <Icon
+                          className={`w-6 h-6 ${
+                            theme === "dark" ? "text-[#D4AF37]" : "text-[#0D1B2A]"
+                          }`}
+                        />
                       </div>
                       <div>
-                        <p className="text-sm font-semibold text-white">{feature.title}</p>
-                        <p className="text-xs leading-relaxed text-gray-400">{feature.desc}</p>
+                        <p
+                          className={`text-3xl font-bold ${
+                            theme === "dark" ? "text-white" : "text-[#0D1B2A]"
+                          }`}
+                        >
+                          {stat.number}
+                        </p>
+                        <p
+                          className={`text-sm ${
+                            theme === "dark" ? "text-gray-400" : "text-gray-600"
+                          }`}
+                        >
+                          {stat.label}
+                        </p>
                       </div>
                     </div>
                   );
                 })}
               </div>
-            </motion.div>
-
-            {/* Desktop hero image */}
-            <motion.div
-              initial={{ opacity: 0, x: 24 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.7, delay: 0.15 }}
-              className="relative hidden min-h-[520px] lg:block"
-            >
-              <Image
-                src={HERO_STUDY_IMAGE}
-                alt={t("images.studentStudying", { defaultValue: "Student studying at desk" })}
-                fill
-                priority
-                className="object-cover object-center"
-                sizes="50vw"
-              />
-              <div className="absolute inset-0 bg-gradient-to-l from-transparent via-[#0D1B2A]/5 to-[#0D1B2A]/40" />
-            </motion.div>
+            </Card>
           </div>
         </section>
 
-        {/* Floating stats bar */}
-        <section className="relative z-20 -mt-14 px-4 sm:px-6 lg:px-8">
-          <div className={`mx-auto max-w-4xl rounded-2xl px-6 py-8 shadow-xl sm:px-10 ${mt.card}`}>
-            <div className="grid gap-8 sm:grid-cols-3">
-              {stats.map((stat, index) => {
-                const Icon = statIcons[index] ?? Star;
-                return (
-                  <div key={stat.label} className="flex items-center gap-4">
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#D4AF37]/10">
-                      <Icon className="h-6 w-6 text-[#D4AF37]" strokeWidth={1.5} />
-                    </div>
-                    <div>
-                      <p className={`text-2xl font-bold sm:text-3xl ${mt.heading}`}>{stat.number}</p>
-                      <p className={`text-xs sm:text-sm ${mt.body}`}>{stat.label}</p>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        {/* Program cards */}
-        <section className={`py-24 ${mt.section}`}>
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="mb-14 text-center"
-            >
-              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#D4AF37]">
+        <section className={`py-20 ${theme === "dark" ? "bg-[#112240]" : "bg-[#FAFAFA]"}`}>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <p className="text-[#D4AF37] uppercase tracking-[0.2em] text-sm font-semibold mb-4">
                 {t("programsPage.sectionEyebrow")}
               </p>
-              <h2 className={`mb-4 text-3xl font-bold md:text-4xl ${mt.heading}`}>
+              <h2
+                className={`text-3xl md:text-4xl font-bold mb-3 ${
+                  theme === "dark" ? "text-white" : "text-[#0D1B2A]"
+                }`}
+              >
                 {t("programsPage.sectionTitle")}
               </h2>
-              <p className={`mx-auto max-w-2xl ${mt.body}`}>{t("programsPage.sectionDesc")}</p>
-            </motion.div>
-
-            <div className="grid gap-8 md:grid-cols-3">
-              {programs.map((program, index) => {
+              <p className={theme === "dark" ? "text-gray-400" : "text-gray-600"}>
+                {t("programsPage.sectionDesc")}
+              </p>
+            </div>
+            <div className="grid md:grid-cols-3 gap-8">
+              {safePrograms.map((program, index) => {
                 const featured = index === 2;
                 return (
-                  <motion.article
+                  <Card
                     key={program.title}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.08 }}
-                    whileHover={{ y: -6 }}
-                    className={`flex h-full flex-col overflow-hidden rounded-2xl transition-shadow hover:shadow-xl ${mt.card} ${
-                      featured ? "ring-2 ring-[#D4AF37]" : ""
+                    className={`relative p-0 h-full flex flex-col overflow-hidden ${
+                      featured
+                        ? "border-2 border-[#D4AF37] shadow-2xl scale-[1.02]"
+                        : theme === "dark"
+                          ? "border border-white/10"
+                          : "border border-gray-200"
                     }`}
                   >
-                    <div className="relative h-52 overflow-hidden">
-                      <span
-                        className={`absolute left-4 top-4 z-10 rounded-md px-3 py-1 text-xs font-bold uppercase tracking-wide ${
-                          featured
-                            ? "bg-[#0D1B2A] text-white"
-                            : mt.isDark
-                              ? "bg-[#112240]/95 text-white shadow-sm"
-                              : "bg-white/95 text-[#0D1B2A] shadow-sm"
+                    {featured && (
+                      <div className="absolute top-4 right-4 z-10">
+                        <Badge className="bg-[#D4AF37] text-[#0D1B2A] px-3 py-1 text-xs font-bold uppercase">
+                          {t("programsPage.mostPopular")}
+                        </Badge>
+                      </div>
+                    )}
+                    <div className="h-48 relative overflow-hidden">
+                      <Badge className="absolute top-4 left-4 z-10 bg-[#0D1B2A] text-white px-3 py-1 text-xs">
+                        {program.type}
+                      </Badge>
+                      <img
+                        src={programImages[index]}
+                        alt={program.title}
+                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                      />
+                    </div>
+                    <div className="p-6 flex flex-col flex-1">
+                      <h3
+                        className={`text-xl font-bold mb-3 ${
+                          theme === "dark" ? "text-white" : "text-[#0D1B2A]"
                         }`}
                       >
-                        {program.type}
-                      </span>
-                      <Image
-                        src={PROGRAM_CARD_IMAGES[index]}
-                        alt={program.title}
-                        fill
-                        className="object-cover transition-transform duration-500 hover:scale-105"
-                        sizes="(max-width: 768px) 100vw, 33vw"
-                      />
-                      {featured && (
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#0D1B2A]/70 to-transparent" />
-                      )}
-                    </div>
-
-                    <div className={`flex flex-1 flex-col p-6 ${mt.cardInner}`}>
-                      <h3 className={`mb-2 text-xl font-bold ${mt.heading}`}>{program.title}</h3>
-                      <p className={`mb-5 text-sm ${mt.body}`}>{program.description}</p>
-                      <ul className="mb-8 flex-1 space-y-2.5">
-                        {program.features.map((feature) => (
-                          <li key={feature} className={`flex items-start gap-2.5 text-sm ${mt.body}`}>
-                            <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#D4AF37]" />
-                            {feature}
+                        {program.title}
+                      </h3>
+                      <p className={`mb-2 text-sm font-semibold text-[#D4AF37] ${theme === "dark" ? "" : ""}`}>
+                        {program.price}
+                      </p>
+                      <p className={`mb-6 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                        {program.description}
+                      </p>
+                      <ul className="flex-1 space-y-3 mb-8">
+                        {program.features.map((feature, i) => (
+                          <li key={i} className="flex items-start gap-3">
+                            <CheckCircle2 className="w-5 h-5 text-[#D4AF37] flex-shrink-0 mt-0.5" />
+                            <span
+                              className={`text-sm ${
+                                theme === "dark" ? "text-gray-300" : "text-gray-700"
+                              }`}
+                            >
+                              {feature}
+                            </span>
                           </li>
                         ))}
                       </ul>
-                      <Link
-                        href="/consultation"
-                        className={`inline-flex w-full items-center justify-center gap-2 rounded-xl px-6 py-3.5 text-sm font-semibold transition-all ${
-                          featured
-                            ? "bg-gradient-to-r from-[#D4AF37] to-[#F5A623] text-[#0D1B2A] shadow-lg hover:shadow-xl"
-                            : "bg-[#0D1B2A] text-white hover:bg-[#1a2e4a]"
-                        }`}
-                      >
-                        {t("programsPage.learnMore")}
-                        <ArrowRight className="h-4 w-4" />
-                      </Link>
+                      <Button variant={featured ? "gold" : "dark"} size="lg" className="w-full" href="/pricing">
+                        {t("programsPage.learnMore")} <ArrowRight className="w-5 h-5 ml-2" />
+                      </Button>
                     </div>
-                  </motion.article>
+                  </Card>
                 );
               })}
             </div>
           </div>
         </section>
 
-        {/* Comparison table */}
-        <section className={`py-20 ${mt.sectionAlt}`}>
-          <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-            <h2 className={`mb-10 text-center text-3xl font-bold ${mt.heading}`}>
+        <section className={`py-20 ${theme === "dark" ? "bg-[#0D1B2A]" : "bg-white"}`}>
+          <div className="max-w-5xl mx-auto px-4">
+            <h2
+              className={`text-3xl font-bold mb-12 text-center ${
+                theme === "dark" ? "text-white" : "text-[#0D1B2A]"
+              }`}
+            >
               {t("programsPage.compareTitle")}
             </h2>
-
-            <div className={`overflow-hidden rounded-2xl shadow-sm ${mt.tableWrap}`}>
-              <div className="overflow-x-auto">
-                <table className="w-full min-w-[640px]">
-                  <thead>
-                    <tr className={`border-b ${mt.isDark ? "border-white/10" : "border-gray-100"} ${mt.tableHead}`}>
-                      <th className="px-5 py-4 text-left text-sm font-semibold">
-                        {compareHeaders.features}
-                      </th>
-                      <th className="px-4 py-4 text-center text-xs font-semibold sm:text-sm">
-                        {compareHeaders.oneOnOne}
-                      </th>
-                      <th className="px-4 py-4 text-center text-xs font-semibold sm:text-sm">
-                        {compareHeaders.group}
-                      </th>
-                      <th className="bg-[#D4AF37]/10 px-4 py-4 text-center text-xs font-semibold sm:text-sm">
-                        {compareHeaders.math}
-                      </th>
+            <div
+              className={`overflow-hidden rounded-xl border ${
+                theme === "dark" ? "border-white/10" : "border-gray-200"
+              }`}
+            >
+              <table className="w-full">
+                <thead className={theme === "dark" ? "bg-[#112240]" : "bg-gray-50"}>
+                  <tr>
+                    <th className="px-6 py-4 text-left text-sm font-semibold">{compareHeaders.features}</th>
+                    <th className="px-6 py-4 text-center text-sm font-semibold">{compareHeaders.oneOnOne}</th>
+                    <th className="px-6 py-4 text-center text-sm font-semibold">{compareHeaders.group}</th>
+                    <th className="px-6 py-4 text-center text-sm font-semibold bg-[#D4AF37]/10 text-[#D4AF37]">
+                      {compareHeaders.math}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody
+                  className={`divide-y ${
+                    theme === "dark" ? "divide-white/10" : "divide-gray-100"
+                  }`}
+                >
+                  {safeCompareRows.map((row, index) => (
+                    <tr
+                      key={index}
+                      className={theme === "dark" ? "hover:bg-white/5" : "hover:bg-gray-50"}
+                    >
+                      <td
+                        className={`px-6 py-4 text-sm font-medium ${
+                          theme === "dark" ? "text-gray-300" : "text-gray-700"
+                        }`}
+                      >
+                        {row.label}
+                      </td>
+                      <td className="px-6 py-4 text-center">
+                        <CompareCell value={row.c1} />
+                      </td>
+                      <td className="px-6 py-4 text-center">
+                        <CompareCell value={row.c2} />
+                      </td>
+                      <td className="px-6 py-4 text-center bg-[#D4AF37]/5">
+                        {row.c3 === true ? (
+                          <CheckCircle2 className="w-5 h-5 text-[#D4AF37] mx-auto" />
+                        ) : (
+                          <span
+                            className={`text-sm font-medium ${
+                              theme === "dark" ? "text-white" : "text-[#0D1B2A]"
+                            }`}
+                          >
+                            {row.c3}
+                          </span>
+                        )}
+                      </td>
                     </tr>
-                  </thead>
-                  <tbody className={`divide-y ${mt.isDark ? "divide-white/10" : "divide-gray-100"}`}>
-                    {compareRows.map((row, index) => {
-                      const RowIcon = compareRowIcons[index] ?? CheckCircle2;
-                      const isEven = index % 2 === 0;
-                      return (
-                        <tr
-                          key={row.label}
-                          className={isEven ? mt.tableRowEven : mt.tableRowOdd}
-                        >
-                          <td className="px-5 py-4">
-                            <div className="flex items-center gap-3">
-                              <RowIcon className="h-4 w-4 shrink-0 text-[#D4AF37]" strokeWidth={1.5} />
-                              <span className={`text-sm font-medium ${mt.heading}`}>{row.label}</span>
-                            </div>
-                          </td>
-                          <td className="px-4 py-4 text-center">
-                            <CompareCell value={row.c1} />
-                          </td>
-                          <td className="px-4 py-4 text-center">
-                            <CompareCell value={row.c2} />
-                          </td>
-                          <td className="bg-[#D4AF37]/5 px-4 py-4 text-center">
-                            <CompareCell value={row.c3} highlight />
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
         </section>
 
-        {/* CTA banner */}
-        <section className={`px-4 py-20 sm:px-6 lg:px-8 ${mt.section}`}>
-          <div className="mx-auto max-w-5xl rounded-2xl bg-[#0D1B2A] px-6 py-10 sm:px-10">
-            <div className="flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-center">
-              <div className="flex flex-col gap-6 sm:flex-row sm:items-start">
-                <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-[#D4AF37]/15">
-                  <Calendar className="h-8 w-8 text-[#D4AF37]" strokeWidth={1.5} />
-                </div>
-                <div>
-                  <h3 className="mb-2 text-xl font-bold text-white sm:text-2xl">
-                    {t("programsPage.ctaTitle")}
-                  </h3>
-                  <p className="mb-5 max-w-lg text-sm text-gray-300 sm:text-base">
-                    {t("programsPage.ctaDesc")}
-                  </p>
-                  <div className="flex flex-wrap gap-x-5 gap-y-2">
-                    {ctaTags.map((tag) => (
-                      <span key={tag} className="flex items-center gap-2 text-xs text-gray-300 sm:text-sm">
-                        <CheckCircle2 className="h-4 w-4 text-[#D4AF37]" />
-                        {tag}
-                      </span>
-                    ))}
+        <section
+          className={`py-12 ${theme === "dark" ? "bg-[#112240] text-white" : "bg-[#FAFAFA] text-[#0D1B2A]"}`}
+        >
+          <div className="max-w-5xl mx-auto px-4">
+            <Card
+              className={`p-8 ${
+                theme === "dark"
+                  ? "bg-[#0D1B2A] border border-white/10"
+                  : "bg-white border border-gray-100"
+              }`}
+            >
+              <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
+                <div className="flex items-center gap-6">
+                  <Calendar className="w-16 h-16 text-[#D4AF37]" />
+                  <div>
+                    <h3 className="text-2xl font-bold mb-2">{t("programsPage.ctaTitle")}</h3>
+                    <p className={theme === "dark" ? "text-gray-300" : "text-gray-600"}>
+                      {t("programsPage.ctaDesc")}
+                    </p>
+                    <div className="flex flex-wrap gap-4 mt-4">
+                      {safeCtaTags.map((tag, i) => (
+                        <span
+                          key={i}
+                          className={`text-xs flex items-center gap-2 ${
+                            theme === "dark" ? "text-gray-300" : "text-gray-600"
+                          }`}
+                        >
+                          <CheckCircle2 className="w-4 h-4 text-[#D4AF37]" />
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </div>
+                <Button variant="gold" size="xl" href="/consultation">
+                  {t("programsPage.ctaButton")} <ArrowRight className="w-5 h-5 ml-2" />
+                </Button>
               </div>
-              <Button
-                variant="gold"
-                size="lg"
-                href="/consultation"
-                className="shrink-0 whitespace-nowrap"
-              >
-                {t("programsPage.ctaButton")}
-                <ArrowRight className="h-5 w-5" />
-              </Button>
-            </div>
+            </Card>
           </div>
         </section>
       </main>

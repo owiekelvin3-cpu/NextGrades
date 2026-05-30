@@ -22,15 +22,9 @@ import {
 import { useTheme } from "@/context/ThemeContext";
 import { useTranslation } from "react-i18next";
 import { useLocalizedContent } from "@/hooks/useLocalizedContent";
+import { SUBJECT_CARD_IMAGES } from "@/lib/marketing-images";
 
-const subjectIcons = [Calculator, PenTool, PenTool, Atom, FlaskConical];
-const subjectImages = [
-  "https://images.unsplash.com/photo-1503602642458-232111445657?w=600&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=600&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=600&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=600&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=600&h=400&fit=crop",
-];
+const subjectIcons = [Calculator, PenTool, BookOpen, Atom, FlaskConical];
 const benefitIcons = [Users, BookOpen, Calendar, TrendingUp];
 const statIcons = [Users, GraduationCap, Star, TrendingUp];
 
@@ -72,12 +66,13 @@ export default function SubjectsPage() {
           <div className="max-w-6xl mx-auto px-4">
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {subjects.map((subject, index) => {
-                const Icon = subjectIcons[index];
+                const Icon = subjectIcons[index] ?? BookOpen;
+                const image = SUBJECT_CARD_IMAGES[index] ?? SUBJECT_CARD_IMAGES[0];
                 return (
                   <Card key={subject.id} className="p-0 h-full overflow-hidden group">
                     <div className="h-48 relative overflow-hidden">
                       <img
-                        src={subjectImages[index]}
+                        src={image}
                         alt={subject.title}
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                         loading="lazy"

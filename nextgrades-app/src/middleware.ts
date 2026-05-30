@@ -99,7 +99,12 @@ export async function middleware(request: NextRequest) {
     for (const [path, roles] of Object.entries(DASHBOARD_ROLE_PREFIXES)) {
       if (requestedPath.startsWith(path) && !roles.includes(userRole)) {
         const redirectUrl = request.nextUrl.clone();
-        redirectUrl.pathname = `/dashboard/${userRole}`;
+        if (path === "/dashboard/admin") {
+          redirectUrl.pathname = "/admin-access";
+          redirectUrl.searchParams.set("return", requestedPath);
+        } else {
+          redirectUrl.pathname = `/dashboard/${userRole}`;
+        }
         return NextResponse.redirect(redirectUrl);
       }
     }
@@ -114,12 +119,13 @@ export async function middleware(request: NextRequest) {
     }
     if (userRole !== "admin") {
       const redirectUrl = request.nextUrl.clone();
-      redirectUrl.pathname = userRole ? `/dashboard/${userRole}` : "/login";
+      redirectUrl.pathname = "/admin-access";
+      redirectUrl.searchParams.set("return", requestedPath);
       return NextResponse.redirect(redirectUrl);
     }
   }
 
-  if (user && requestedPath === "/login") {
+  if (user && (requestedPath === "/login" || requestedPath === "/register")) {
     const redirectUrl = request.nextUrl.clone();
     redirectUrl.pathname = userRole ? `/dashboard/${userRole}` : "/login";
     return NextResponse.redirect(redirectUrl);
@@ -129,5 +135,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/admin/:path*", "/login"],
+  matcher: ["/dashboard/:path*", "/admin/:path*", "/login", "/register", "/admin-access"],
 };

@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
+import { useState, Suspense } from "react";
 import { motion } from "framer-motion";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -20,29 +20,12 @@ import { buildLoginUrl } from "@/lib/auth/redirect";
 function PricingContent() {
   const [isYearly, setIsYearly] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState<any>(null);
   const { theme } = useTheme();
   const { t } = useTranslation();
   const router = useRouter();
-  const searchParams = useSearchParams();
   const toast = useToast();
 
-  useEffect(() => {
-    const checkUser = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session?.user) {
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("*")
-          .eq("id", session.user.id)
-          .single();
-        setUser({ ...session.user, ...profile });
-      }
-    };
-    checkUser();
-  }, []);
-
-  const handleGetStarted = async (plan: typeof plans[0]) => {
+  const handleGetStarted = async (plan: { id: string }) => {
     setLoading(true);
     try {
       // Check if user is logged in
@@ -93,15 +76,16 @@ function PricingContent() {
   };
 
   const localizedPlans = useLocalizedContent<LocalizedPlan[]>("pricingPage.plans");
-  const plans = localizedPlans.map((plan) => ({
+  const plans = (Array.isArray(localizedPlans) ? localizedPlans : []).map((plan) => ({
     ...plan,
     ...STRIPE_BY_PLAN[plan.id],
   }));
 
-  const faqs = useLocalizedContent<{ question: string; answer: string }[]>("pricingPage.faqs");
+  const faqsRaw = useLocalizedContent<{ question: string; answer: string }[]>("pricingPage.faqs");
+  const faqs = Array.isArray(faqsRaw) ? faqsRaw : [];
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className={`min-h-screen flex flex-col ${theme === "dark" ? "bg-[#0D1B2A]" : "bg-[#FAFAFA]"}`}>
       <Navbar />
       
       <main className="flex-1 pt-32 pb-24">
@@ -313,8 +297,17 @@ function PricingContent() {
 }
 
 export default function PricingPage() {
+  const { theme } = useTheme();
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">…</div>}>
+    <Suspense
+      fallback={
+        <div
+          className={`min-h-screen flex items-center justify-center ${theme === "dark" ? "bg-[#0D1B2A] text-white" : "bg-[#FAFAFA] text-[#0D1B2A]"}`}
+        >
+          …
+        </div>
+      }
+    >
       <PricingContent />
     </Suspense>
   );

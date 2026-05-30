@@ -5,13 +5,15 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { ResourcesExperience } from "@/components/resources/ResourcesExperience";
 import { useTranslation } from "react-i18next";
+import { useTheme } from "@/context/ThemeContext";
 import { Book, GraduationCap, Users, Star } from "lucide-react";
 
 export default function ResourcesPage() {
   const { t } = useTranslation();
+  const { theme } = useTheme();
 
   return (
-    <div className="min-h-screen flex flex-col bg-[var(--background)]">
+    <div className={`min-h-screen flex flex-col ${theme === "dark" ? "bg-[#0D1B2A]" : "bg-[#FAFAFA]"}`}>
       <Navbar />
 
       <main className="flex-1">

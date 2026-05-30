@@ -185,7 +185,8 @@
       "learnMore": "Mehr erfahren",
       "trackProgress": "Fortschritt verfolgen",
       "trackProgressDesc": "Verfolge deinen Fortschritt, schließe Lektionen ab und bleib motiviert!",
-      "weeks": "Wochen lang",
+      "availability": "24/7",
+      "availabilityLabel": "Support verfügbar",
       "materials": "Lernmaterialien"
     }
   },
@@ -203,7 +204,11 @@
     "enterPhone": "+49 (000) 000-0000",
     "enterMessage": "Gib deine Nachricht hier ein...",
     "submitForm": "Formular absenden",
-    "submitting": "Wird gesendet..."
+    "submitting": "Wird gesendet...",
+    "successTitle": "Vielen Dank!",
+    "successMessage": "Wir haben deine Nachricht erhalten und melden uns bald bei dir.",
+    "validationRequired": "Bitte fülle alle Pflichtfelder aus.",
+    "validationEmail": "Bitte gib eine gültige E-Mail-Adresse ein."
   },
   "login": {
     "welcomeBack": "Willkommen zurück",

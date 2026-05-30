@@ -101,19 +101,19 @@ export default function TeacherContentPage() {
     }
   };
 
-  const handleStatusChange = async (id: string, newStatus: string) => {
+  const handleArchive = async (id: string) => {
     try {
       const response = await fetch(`/api/teacher/resources/${id}`, {
-        method: "PUT",
+        method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: newStatus }),
+        body: JSON.stringify({ action: "archive" }),
       });
       if (response.ok) {
-        success(`Resource ${newStatus}`);
+        success("Resource archived");
         fetchResources();
       }
-    } catch (error) {
-      toastError("Failed to update resource");
+    } catch {
+      toastError("Failed to archive resource");
     }
   };
 
@@ -163,15 +163,15 @@ export default function TeacherContentPage() {
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
             <div>
               <h1 className={`text-2xl md:text-3xl font-bold ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
-                My Content
+                My Resources
               </h1>
               <p className={`mt-1 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
-                Manage and organize your educational resources
+                View, edit, and manage your published learning content
               </p>
             </div>
             <Button variant="gold" size="md" href="/dashboard/teacher/upload">
               <Plus className="w-5 h-5 mr-2" />
-              Upload Resource
+              Publish Content
             </Button>
           </div>
 
@@ -386,7 +386,17 @@ export default function TeacherContentPage() {
                           variant="outline"
                           size="sm"
                           className={`${theme === "dark" ? "border-white/20 text-white hover:bg-white/10" : "border-gray-200 text-gray-700 hover:bg-gray-50"}`}
+                          onClick={() => handleArchive(resource.id)}
+                          title="Archive"
+                        >
+                          <Archive className="w-4 h-4" />
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className={`${theme === "dark" ? "border-white/20 text-white hover:bg-white/10" : "border-gray-200 text-gray-700 hover:bg-gray-50"}`}
                           onClick={() => handleDelete(resource.id)}
+                          title="Delete"
                         >
                           <Trash2 className="w-4 h-4" />
                         </Button>

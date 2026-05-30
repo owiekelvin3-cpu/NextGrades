@@ -29,9 +29,12 @@ export default function AboutPage() {
   const storyPoints = useLocalizedContent<{ title: string; desc: string }[]>("aboutPage.story");
   const team = useLocalizedContent<{ name: string; role: string; bio: string }[]>("aboutPage.team");
   const communityTags = useLocalizedContent<string[]>("aboutPage.communityTags");
+  const safeStory = Array.isArray(storyPoints) ? storyPoints : [];
+  const safeTeam = Array.isArray(team) ? team : [];
+  const safeTags = Array.isArray(communityTags) ? communityTags : [];
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className={`min-h-screen flex flex-col ${theme === "dark" ? "bg-[#0D1B2A]" : "bg-white"}`}>
       <Navbar />
 
       <main className="flex-1">
@@ -113,7 +116,7 @@ export default function AboutPage() {
                     : "absolute left-1/2 transform -translate-x-1/2 top-0 bottom-0 w-1 bg-[#0D1B2A]"
                 }
               />
-              {storyPoints.map((point, index) => (
+              {safeStory.map((point, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
@@ -125,7 +128,7 @@ export default function AboutPage() {
                     <div className="relative">
                       <div className="absolute inset-0 bg-[#0D1B2A] rounded-[100px] transform rotate-1" />
                       <img
-                        src={storyImages[index]}
+                        src={storyImages[index] ?? storyImages[0]}
                         alt={point.title}
                         className="relative w-full h-60 object-cover rounded-[100px] border-4 border-[#D4AF37]"
                       />
@@ -171,11 +174,17 @@ export default function AboutPage() {
               {t("aboutPage.teamTitle")}
             </h2>
             <div className="grid md:grid-cols-3 gap-8">
-              {team.map((member, index) => (
-                <motion.div key={index} className="text-center group" whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+              {safeTeam.map((member, index) => (
+                <motion.div
+                  key={member.name}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className="text-center group"
+                >
                   <div className="mb-4 rounded-2xl overflow-hidden shadow-lg">
                     <img
-                      src={teamImages[index]}
+                      src={teamImages[index] ?? teamImages[0]}
                       alt={`${member.name} – ${t("images.teamMember")}`}
                       className="w-full h-72 object-cover transform transition-transform duration-500 group-hover:scale-105"
                     />
@@ -204,7 +213,7 @@ export default function AboutPage() {
                 </Button>
               </div>
               <div className="flex flex-wrap justify-center lg:justify-start gap-8 mt-8">
-                {communityTags.map((text, idx) => (
+                {safeTags.map((text, idx) => (
                   <div key={idx} className="flex items-center gap-2">
                     <CheckCircle2 className="w-6 h-6 text-[#D4AF37]" />
                     <span className="text-white font-semibold">{text}</span>

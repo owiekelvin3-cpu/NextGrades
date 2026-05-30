@@ -11,60 +11,47 @@ import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { useTheme } from "@/context/ThemeContext";
 import { useTranslation } from "react-i18next";
-import { HOME_HERO_STUDENT_IMAGE } from "@/lib/marketing-images";
+import { HOME_HERO_STUDENT_IMAGE, PROGRAM_CARD_IMAGES, HERO_STUDY_IMAGE } from "@/lib/marketing-images";
 import {
   ArrowRight,
   Users,
-  BookOpen,
-  Layers,
-  TrendingUp,
+  Video,
+  Target,
   Clock,
   Star,
   CheckCircle2,
-  PlayCircle,
-  Shield,
   Trophy,
   Calendar,
-  Book,
-  Zap,
   GraduationCap,
-  Video,
-  Target,
   FileText,
-  ChevronLeft,
-  ChevronRight
 } from "lucide-react";
 
-const featureIcons = [Users, Users, Video, Target, Clock];
+const featureIcons = [Users, Video, Target, Clock, CheckCircle2];
 const statIcons = [GraduationCap, Users, FileText, Star];
 
 export default function Home() {
   const { theme } = useTheme();
   const { t, i18n } = useTranslation();
 
-  const features = useMemo(
-    () => t("home.features", { returnObjects: true }) as { title: string; desc: string }[],
-    [t, i18n.language]
-  );
-  const programs = useMemo(
-    () =>
-      t("home.programsSection.items", { returnObjects: true }) as {
-        title: string;
-        features: string[];
-      }[],
-    [t, i18n.language]
-  );
-  const stats = useMemo(
-    () => t("home.stats", { returnObjects: true }) as { number: string; label: string }[],
-    [t, i18n.language]
-  );
-  const testimonials = useMemo(
-    () => t("home.testimonials.items", { returnObjects: true }) as { quote: string; name: string }[],
-    [t, i18n.language]
-  );
+  const features = useMemo(() => {
+    const data = t("home.features", { returnObjects: true });
+    return Array.isArray(data) ? (data as { title: string; desc: string }[]) : [];
+  }, [t, i18n.language]);
+  const programs = useMemo(() => {
+    const data = t("home.programsSection.items", { returnObjects: true });
+    return Array.isArray(data) ? (data as { title: string; features: string[] }[]) : [];
+  }, [t, i18n.language]);
+  const stats = useMemo(() => {
+    const data = t("home.stats", { returnObjects: true });
+    return Array.isArray(data) ? (data as { number: string; label: string }[]) : [];
+  }, [t, i18n.language]);
+  const testimonials = useMemo(() => {
+    const data = t("home.testimonials.items", { returnObjects: true });
+    return Array.isArray(data) ? (data as { quote: string; name: string }[]) : [];
+  }, [t, i18n.language]);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className={`min-h-screen flex flex-col ${theme === "dark" ? "bg-[#0D1B2A]" : "bg-white"}`}>
       <Navbar />
       
       <main className="flex-1">
@@ -237,14 +224,10 @@ export default function Home() {
                     {/* Program images */}
                     <div className="h-44 relative overflow-hidden">
                       <img
-                        src={featured 
-                          ? "https://images.unsplash.com/photo-1498243691581-b145c3f54a5a?w=600&h=400&fit=crop"
-                          : index === 0 
-                            ? "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&h=400&fit=crop"
-                            : "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=600&h=400&fit=crop"
-                        }
+                        src={PROGRAM_CARD_IMAGES[index] ?? PROGRAM_CARD_IMAGES[0]}
                         alt={program.title}
                         className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+                        loading="lazy"
                       />
                     </div>
                     
@@ -310,9 +293,10 @@ export default function Home() {
               {/* Hero Image Background */}
               <div className="relative">
                 <img
-                  src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=1200&h=600&fit=crop"
+                  src={HERO_STUDY_IMAGE}
                   alt={t("images.modernLearning")}
                   className="w-full h-[500px] object-cover"
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-[#0D1B2A]/80 via-[#0D1B2A]/40 to-transparent" />
                 
@@ -369,11 +353,11 @@ export default function Home() {
                           
                           <div className="grid grid-cols-2 gap-4">
                             <div className="bg-white rounded-2xl p-4 shadow-xl">
-                              <div className="text-3xl font-bold text-[#0D1B2A]">27/4</div>
-                              <div className="text-sm text-gray-500">{t("home.platform.weeks")}</div>
+                              <div className="text-3xl font-bold text-[#0D1B2A]">{t("home.platform.availability")}</div>
+                              <div className="text-sm text-gray-500">{t("home.platform.availabilityLabel")}</div>
                             </div>
                             <div className="bg-white rounded-2xl p-4 shadow-xl">
-                              <div className="text-3xl font-bold text-[#0D1B2A]">120K+</div>
+                              <div className="text-3xl font-bold text-[#0D1B2A]">{stats[2]?.number ?? "1,000+"}</div>
                               <div className="text-sm text-gray-500">{t("home.platform.materials")}</div>
                             </div>
                           </div>
@@ -389,17 +373,13 @@ export default function Home() {
 
         {/* Testimonials Section */}
         <section className="py-20 relative overflow-hidden">
-          {/* Video Background */}
           <div className="absolute inset-0 z-0">
-            <video
-              autoPlay
-              muted
-              loop
-              playsInline
+            <img
+              src={HERO_STUDY_IMAGE}
+              alt=""
+              aria-hidden
               className="w-full h-full object-cover"
-            >
-              <source src="/germany-uni.mp4" type="video/mp4" />
-            </video>
+            />
             <div className="absolute inset-0 bg-gradient-to-r from-[#0D1B2A]/90 via-[#0D1B2A]/70 to-[#0D1B2A]/90" />
           </div>
           

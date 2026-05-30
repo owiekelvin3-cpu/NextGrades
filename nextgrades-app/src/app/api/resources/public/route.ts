@@ -7,64 +7,86 @@ export async function GET(request: Request) {
     const supabase = await createClient();
     const db = await createServerReadClient(supabase);
     const { searchParams } = new URL(request.url);
+
     const search = (searchParams.get("search") || "").trim();
     const access = searchParams.get("access");
     const categoryId = searchParams.get("category");
+    const contentType = searchParams.get("contentType");
+    const difficulty = searchParams.get("difficulty");
+    const ageRange = searchParams.get("ageRange");
+    const teacherId = searchParams.get("teacher");
+    const language = searchParams.get("language");
+    const sort = searchParams.get("sort") || "recent";
     const limit = Math.min(100, Math.max(1, parseInt(searchParams.get("limit") || "50", 10)));
 
-    const baseSelect = `
-        id,
-        title,
-        description,
-        type,
-        url,
-        thumbnail_url,
-        file_size,
-        is_premium,
-        download_count,
-        view_count,
-        created_at,
-        subject:subjects(id, name)
-      `;
+    const select = `
+      id,
+      title,
+      description,
+      short_description,
+      full_description,
+      type,
+      content_type,
+      url,
+      thumbnail_url,
+      file_size,
+      is_premium,
+      access_type,
+      download_count,
+      view_count,
+      difficulty_level,
+      age_range,
+      estimated_minutes,
+      language,
+      created_at,
+      created_by,
+      category:resource_categories(id, name, icon),
+      author:profiles!materials_created_by_fkey(id, full_name, avatar_url),
+      resource_tag_relations(tag_id, resource_tags(id, name, slug, color))
+    `;
 
-    const extendedSelect = `
-        ${baseSelect},
-        access_type,
-        category:resource_categories(id, name, icon)
-      `;
-
-    let data: Record<string, unknown>[] | null = null;
-    let error: { message: string } | null = null;
-
-    const primary = await db
+    let query = db
       .from("materials")
-      .select(extendedSelect)
-      .order("created_at", { ascending: false })
-      .limit(limit)
+      .select(select)
       .eq("status", "published")
-      .eq("moderation_status", "approved");
+      .eq("moderation_status", "approved")
+      .limit(limit);
 
-    data = primary.data;
-    error = primary.error;
+    if (categoryId) query = query.eq("category_id", categoryId);
+    if (contentType) query = query.eq("content_type", contentType);
+    if (difficulty) query = query.eq("difficulty_level", difficulty);
+    if (ageRange) query = query.eq("age_range", ageRange);
+    if (teacherId) query = query.eq("created_by", teacherId);
+    if (language) query = query.eq("language", language);
 
-    if (error?.message?.includes("status") || error?.message?.includes("moderation_status")) {
+    if (access === "free") {
+      query = query.or("access_type.eq.free,is_premium.eq.false,is_premium.is.null");
+    } else if (access === "premium") {
+      query = query.or("access_type.eq.premium,is_premium.eq.true");
+    }
+
+    if (sort === "popular") {
+      query = query.order("view_count", { ascending: false, nullsFirst: false });
+    } else if (sort === "downloads") {
+      query = query.order("download_count", { ascending: false, nullsFirst: false });
+    } else {
+      query = query.order("created_at", { ascending: false });
+    }
+
+    let { data, error } = await query;
+
+    if (error?.message?.includes("content_type") || error?.message?.includes("short_description")) {
       const fallback = await db
         .from("materials")
-        .select(baseSelect)
-        .order("created_at", { ascending: false })
-        .limit(limit)
-        .or("is_premium.eq.false,is_premium.is.null");
-      data = fallback.data;
-      error = fallback.error;
-    } else if (error?.message?.includes("resource_categories")) {
-      const fallback = await db
-        .from("materials")
-        .select(`${baseSelect}, access_type`)
+        .select(`
+          id, title, description, type, url, thumbnail_url, file_size,
+          is_premium, access_type, download_count, view_count, created_at, created_by,
+          category:resource_categories(id, name, icon)
+        `)
         .eq("status", "published")
-        .eq("moderation_status", "approved")
         .order("created_at", { ascending: false })
         .limit(limit);
-      data = fallback.data;
+      data = fallback.data as typeof data;
       error = fallback.error;
     }
 
@@ -72,34 +94,25 @@ export async function GET(request: Request) {
 
     let results = data || [];
 
-    if (access === "free") {
-      results = results.filter(
-        (item) =>
-          (item as { access_type?: string; is_premium?: boolean }).access_type === "free" ||
-          !(item as { is_premium?: boolean }).is_premium
-      );
-    } else if (access === "premium") {
-      results = results.filter(
-        (item) =>
-          (item as { access_type?: string; is_premium?: boolean }).access_type === "premium" ||
-          (item as { is_premium?: boolean }).is_premium === true
-      );
-    }
-
-    if (categoryId) {
-      results = results.filter(
-        (item) => (item as { category?: { id?: string } }).category?.id === categoryId
-      );
-    }
-
     if (search) {
       const q = search.toLowerCase();
       results = results.filter((item) => {
-        const row = item as { title?: string; description?: string };
-        return (
-          row.title?.toLowerCase().includes(q) ||
-          row.description?.toLowerCase().includes(q)
-        );
+        const row = item as {
+          title?: string;
+          description?: string;
+          short_description?: string;
+          full_description?: string;
+        };
+        const haystack = [
+          row.title,
+          row.description,
+          row.short_description,
+          row.full_description,
+        ]
+          .filter(Boolean)
+          .join(" ")
+          .toLowerCase();
+        return haystack.includes(q);
       });
     }
 

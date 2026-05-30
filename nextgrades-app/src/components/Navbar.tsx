@@ -184,7 +184,7 @@ export default function Navbar() {
                   {t("common.login")}
                 </Link>
                 <div className="flex-shrink-0">
-                  <Button variant="gold" size="md" className="rounded-lg text-sm font-semibold" href="/login?mode=signup">
+                  <Button variant="gold" size="md" className="rounded-lg text-sm font-semibold" href="/register">
                     {t("common.signup")}
                   </Button>
                 </div>
@@ -339,7 +339,7 @@ export default function Navbar() {
                         variant="gold"
                         size="lg"
                         className="w-full"
-                        href="/login?mode=signup"
+                        href="/register"
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
                         {t("common.signup")}

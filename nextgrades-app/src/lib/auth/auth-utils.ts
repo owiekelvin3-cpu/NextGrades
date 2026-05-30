@@ -29,3 +29,13 @@ export async function requireRole(supabase: any, role: string) {
 
   return auth;
 }
+
+export async function requireTeacherOrAdmin(supabase: Awaited<ReturnType<typeof createClient>>) {
+  const auth = await requireAuth(supabase);
+  if (!auth.user) return { ...auth, error: "Unauthorized" };
+  const role = auth.profile?.role;
+  if (role !== "teacher" && role !== "admin") {
+    return { user: null, profile: null, error: "Forbidden" };
+  }
+  return auth;
+}
