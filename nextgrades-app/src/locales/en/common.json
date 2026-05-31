@@ -1,0 +1,686 @@
+{
+  "common": {
+    "brand": "NextGrades",
+    "login": "Login",
+    "signup": "Sign up",
+    "freeConsultation": "Free Consultation",
+    "home": "Home",
+    "about": "About Us",
+    "programs": "Programs",
+    "subjects": "Subjects",
+    "pricing": "Pricing",
+    "resources": "Resources",
+    "contact": "Contact",
+    "careers": "Careers",
+    "help": "Help",
+    "aiGenerator": "AI Generator",
+    "dashboard": "Dashboard",
+    "logout": "Logout",
+    "lightMode": "Light Mode",
+    "darkMode": "Dark Mode"
+  },
+  "navbar": {
+    "login": "Login",
+    "freeConsultation": "Free Consultation"
+  },
+  "footer": {
+    "programs": "Programs",
+    "program1": "1:1 Tutoring",
+    "program2": "Small Group Learning",
+    "program3": "Math Excellence Program",
+    "program4": "Exam Preparation",
+    "resources": "Resources",
+    "resource1": "Study Materials",
+    "resource2": "Worksheets",
+    "resource3": "Explainer Videos",
+    "resource4": "Exam Prep",
+    "company": "Company",
+    "legal": "Legal",
+    "terms": "Terms & Conditions",
+    "privacy": "Privacy Policy",
+    "imprint": "Imprint",
+    "madeInGermany": "Made with ♥ in Germany",
+    "copyright": "© 2026 NextGrades. All rights reserved."
+  },
+  "home": {
+    "heroEyebrow": "THE FUTURE OF LEARNING STARTS HERE.",
+    "heroTitle": "Learn smarter.",
+    "heroTitleHighlight": "Better results.",
+    "heroSubtitle": "Premium online tutoring, modern learning systems, and structured learning support for ambitious students.",
+    "freeConsultation": "Free Consultation",
+    "explorePrograms": "Explore programs →",
+    "rating": "4.9/5",
+    "reviewsFrom": "from 200+ reviews",
+    "floatingCardTitle": "Individual support.",
+    "floatingCardDesc": "Real results.",
+    "learnMore": "Learn more",
+    "mostPopular": "Most popular program",
+    "features": [
+      { "title": "Premium teachers", "desc": "Carefully selected, experienced educators focused on success." },
+      { "title": "Small learning groups", "desc": "Max. 3–5 students per group for intensive learning." },
+      { "title": "Modern learning platform", "desc": "Videos, exercises, PDFs and more — all in one place." },
+      { "title": "Structured learning systems", "desc": "Clear learning path, progress tracking & systematic preparation." },
+      { "title": "Flexible & online", "desc": "Learn where you want, when you want, on your schedule." }
+    ],
+    "programsSection": {
+      "title": "Our Programs",
+      "subtitle": "Choose the program that fits you best.",
+      "items": [
+        {
+          "title": "1:1 Premium Tutoring",
+          "features": ["Individual, personal, efficient.", "Personal 1:1 support", "Flexible appointments", "Tailored learning plan"]
+        },
+        {
+          "title": "Small Group Learning",
+          "features": ["Learn together with friends.", "Max. 3–5 students", "Interactive exchange", "Motivation through the group"]
+        },
+        {
+          "title": "Math Excellence Program",
+          "features": ["Our flagship program for math.", "Weekly live sessions", "Premium learning materials", "Graduation exam preparation", "Instructors from university & sessions"]
+        }
+      ]
+    },
+    "stats": [
+      { "number": "200+", "label": "happy students" },
+      { "number": "25+", "label": "top teachers" },
+      { "number": "1,000+", "label": "learning materials" },
+      { "number": "4.9/5", "label": "rating from parents & students" }
+    ],
+    "platform": {
+      "eyebrow": "Learning platform",
+      "title": "Your complete learning platform",
+      "subtitle": "Our modern platform supports you at every step of your learning journey.",
+      "discover": "Discover platform",
+      "learnMore": "Learn more",
+      "trackProgress": "Track progress",
+      "trackProgressDesc": "Track your progress, complete lessons, and stay motivated!",
+      "availability": "24/7",
+      "availabilityLabel": "Support available",
+      "materials": "learning materials",
+      "features": [
+        { "title": "Track progress", "desc": "Track your progress, complete lessons, and stay motivated!" },
+        { "title": "24/7 support", "desc": "Support available whenever you need it." },
+        { "title": "1,000+ materials", "desc": "Premium worksheets, videos, and guides in one place." },
+        { "title": "Structured learning", "desc": "Clear learning paths with progress tracking and exam prep." }
+      ]
+    },
+    "testimonials": {
+      "title": "What students and parents say",
+      "items": [
+        { "quote": "Thanks to NextGrades I improved my math grade from C to A! The explanations are great and you understand right away!", "name": "Lena, Grade 10" },
+        { "quote": "The small learning group has really helped my son! He is more motivated and finally understands math.", "name": "Peter M., Father" },
+        { "quote": "The platform is super intuitive and the materials are perfect for graduation exam preparation!", "name": "Julia, Grade 12" }
+      ]
+    },
+    "cta": {
+      "title": "Ready for the next step?",
+      "subtitle": "Book your free consultation now and find out which program fits you best.",
+      "button": "Book free consultation"
+    }
+  },
+  "contact": {
+    "title": "Let's Get In Touch.",
+    "subtitle": "Or just reach out manually to",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "emailAddress": "Email Address",
+    "phoneNumber": "Phone Number",
+    "message": "Message",
+    "enterFirstName": "Enter your first name...",
+    "enterLastName": "Enter your last name...",
+    "enterEmail": "Enter your email address...",
+    "enterPhone": "+49 (000) 000-0000",
+    "enterMessage": "Enter your message here...",
+    "submitForm": "Submit Form",
+    "submitting": "Sending...",
+    "successTitle": "Thank you!",
+    "successMessage": "We received your message and will get back to you soon.",
+    "validationRequired": "Please fill in all required fields.",
+    "validationEmail": "Please enter a valid email address."
+  },
+  "login": {
+    "welcomeBack": "Welcome back",
+    "createAccount": "Create an account",
+    "loginDescription": "Login to your NextGrades account",
+    "signupDescription": "Sign up and get premium tutoring",
+    "iAmLoggingInAs": "I am logging in as...",
+    "iAmA": "I am a...",
+    "student": "Student",
+    "studentLogin": "Student login",
+    "iWantToLearn": "I want to learn",
+    "teacher": "Teacher",
+    "teacherLogin": "Teacher login",
+    "iWantToTeach": "I want to teach",
+    "fullName": "Full name",
+    "email": "Email",
+    "password": "Password",
+    "forgot": "Forgot?",
+    "loginNow": "Login now",
+    "createAccountNow": "Create account",
+    "loading": "Loading...",
+    "orContinueWith": "or continue with",
+    "apple": "Apple",
+    "google": "Google",
+    "alreadyHaveAccount": "Already have an account?",
+    "dontHaveAccount": "Don't have an account?",
+    "signIn": "Sign in",
+    "signUp": "Sign up",
+    "terms": "Terms & Conditions",
+    "smartLearning": "Smart Learning, Better Results.",
+    "dailyMeeting": "Daily Meeting",
+    "supabaseNotConfigured": "Supabase credentials are not configured. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in .env.local."
+  },
+  "about": {
+    "heroTitle": "More than tutoring.",
+    "heroTitle2": "A new vision for education.",
+    "heroSubtitle": "We have set ourselves the task of providing students with a modern, structured and motivating learning environment – online, flexible and at the highest level.",
+    "heroFeature1": "High-quality content",
+    "heroFeature1Desc": "Created by experienced teachers.",
+    "heroFeature2": "Free & helpful",
+    "heroFeature2Desc": "Developed for learning.",
+    "heroFeature3": "For all subjects",
+    "heroFeature3Desc": "Materials for all important school subjects.",
+    "storyTitle": "How it all began",
+    "principlesTitle": "Our Principles for Your Success",
+    "teamTitle": "The People Behind NextGrades",
+    "teamSubtitle": "A team of passionate teachers, learning experts and visionaries.",
+    "milestonesTitle": "Milestones",
+    "ctaTitle": "Unlock even more exclusive content",
+    "ctaSubtitle": "Discover access to all premium materials, learning videos, dozens of mini-courses and much more.",
+    "ctaButton": "Become a member now"
+  },
+  "resources": {
+    "heroTitle": "Knowledge that helps you progress.",
+    "heroSubtitle": "Discover free materials, useful guides and valuable tips to support your learning.",
+    "heroFeature1": "High-quality content",
+    "heroFeature1Desc": "Created by experienced teachers.",
+    "heroFeature2": "Free & helpful",
+    "heroFeature2Desc": "Developed for learning.",
+    "heroFeature3": "For all subjects",
+    "heroFeature3Desc": "Materials for all important school subjects.",
+    "topBarResults": "Results",
+    "searchPlaceholder": "Search materials...",
+    "sortBy": "Sort by:",
+    "sortNewest": "Newest first",
+    "sortOldest": "Oldest first",
+    "sortPopular": "Most popular",
+    "freeTitle": "Free Content",
+    "freeSubtitle": "Available for everyone",
+    "freeButton": "Free",
+    "freeShowAll": "Show all",
+    "premiumTitle": "PREMIUM Content",
+    "premiumSubtitle": "Members only",
+    "premiumShowAll": "Show all",
+    "resourcesBySubject": "Resources by Subject",
+    "explore": "Explore →",
+    "ctaTitle": "Unlock even more exclusive content",
+    "ctaSubtitle": "Discover access to all premium materials, learning videos, dozens of mini-courses and much more.",
+    "ctaButton": "Become a member now",
+    "features": {
+      "feature1Title": "Structured by curriculum",
+      "feature1Desc": "Learning content tailored to the curriculum.",
+      "feature2Title": "Regularly updated",
+      "feature2Desc": "Always up-to-date content.",
+      "feature3Title": "Created by experts",
+      "feature3Desc": "Created by educators and teachers.",
+      "feature4Title": "Safe & good",
+      "feature4Desc": "Optimally prepared for students."
+    },
+    "filters": {
+      "title": "Filters",
+      "subject": "Subject",
+      "grade": "Grade",
+      "semester": "Semester",
+      "materialType": "Material Type",
+      "access": "Access",
+      "accessAll": "All Content",
+      "accessFree": "Free Content",
+      "accessPremium": "Premium Content",
+      "reset": "Reset filters"
+    },
+    "video": {
+      "back": "Back to resources",
+      "watch": "Watch",
+      "notFound": "Video not found.",
+      "loadFailed": "Could not load video.",
+      "lockedDesc": "Upgrade your membership to watch this video on NextGrades."
+    }
+  },
+  "dashboard": {
+    "student": {
+      "welcomeBack": "Welcome back!",
+      "overview": "Overview",
+      "myCourses": "My Courses",
+      "myGrades": "My Grades",
+      "upcomingLessons": "Upcoming Lessons",
+      "learningMaterials": "Learning Materials",
+      "settings": "Settings"
+    },
+    "teacher": {
+      "welcomeBack": "Welcome back!",
+      "overview": "Overview",
+      "myStudents": "My Students",
+      "mySchedule": "My Schedule",
+      "materials": "Materials",
+      "settings": "Settings"
+    }
+  },
+  "admin": {
+    "title": "Admin Dashboard",
+    "users": "Users",
+    "courses": "Courses",
+    "analytics": "Analytics",
+    "settings": "Settings"
+  },
+  "pricing": {
+    "title": "Pricing",
+    "subtitle": "Choose the right package for you",
+    "badge": "Premium Plans",
+    "heroTitle": "Choose your perfect plan",
+    "heroSubtitle": "Whether you just need resources or full 1:1 support — we have the right plan for you.",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "yearlyDiscount": "(2 months free)",
+    "perMonth": "month",
+    "perYear": "year",
+    "billedAnnually": "billed annually",
+    "includesPrefix": "Includes everything in {plan}, plus:",
+    "mostPopular": "Most Popular",
+    "getStarted": "Get Started",
+    "faqTitle": "Frequently Asked Questions",
+    "faqHeading": "Frequently asked questions."
+  },
+  "programs": {
+    "title": "Our Programs",
+    "subtitle": "The right support for every learning goal"
+  },
+  "subjects": {
+    "title": "Our Subjects",
+    "subtitle": "Choose your subject",
+    "eyebrow": "OUR SUBJECTS",
+    "heroTitle": "All subjects. One goal:",
+    "heroTitleHighlight": "Your success.",
+    "heroSubtitle": "We offer tutoring in all relevant school subjects — individual, structured, and with real results."
+  },
+  "careers": {
+    "title": "Careers at NextGrades",
+    "subtitle": "Become part of our team"
+  },
+  "help": {
+    "title": "Help Center",
+    "subtitle": "Find answers to frequently asked questions",
+    "faqs": [
+      { "question": "How does registration work?", "answer": "You can easily sign up or log in through our login page." },
+      { "question": "How can I book a program?", "answer": "Contact us or book a free consultation to learn more." },
+      { "question": "What payment methods are available?", "answer": "We accept credit cards, PayPal, and bank transfers via Stripe." }
+    ]
+  },
+  "aiGenerator": {
+    "title": "AI Generator",
+    "subtitle": "Create learning materials with AI"
+  },
+  "consultation": {
+    "breadcrumb": "Consultation",
+    "title": "Free Consultation",
+    "titleHighlight": "Your learning plan starts here.",
+    "subtitle": "Speak with our education advisors and discover the right tutoring path — tailored to your goals, schedule, and budget.",
+    "heroDesc": "No commitment. No pressure. Just clear guidance from experts who understand German school systems and university preparation.",
+    "bookNow": "Request consultation",
+    "viewPrograms": "Explore programs",
+    "cardTitle": "Book your free consultation",
+    "cardSubtitle": "Tell us about your goals — we respond within one business day.",
+    "trustBadges": ["100% free", "No obligation", "30-minute session"],
+    "stats": [
+      { "value": "< 24h", "label": "Response time" },
+      { "value": "30 min", "label": "Consultation length" },
+      { "value": "1:1", "label": "Personal advisor" },
+      { "value": "DE", "label": "Germany-focused expertise" }
+    ],
+    "processTitle": "How your consultation works",
+    "processSubtitle": "A simple, structured process designed to give you clarity — not a sales pitch.",
+    "steps": [
+      {
+        "title": "Share your situation",
+        "description": "Tell us about grade level, subjects, upcoming exams, and what you want to improve."
+      },
+      {
+        "title": "Meet your advisor",
+        "description": "In a relaxed 30-minute call or video session, we listen and ask the right questions."
+      },
+      {
+        "title": "Receive a learning plan",
+        "description": "We recommend the best format — 1:1, group, or exam prep — with transparent next steps."
+      },
+      {
+        "title": "Start when you're ready",
+        "description": "Enroll only if it feels right. You can also explore materials and programs first."
+      }
+    ],
+    "benefitsTitle": "What you'll get from this session",
+    "benefitsSubtitle": "Every consultation is focused on outcomes — not generic advice.",
+    "benefits": [
+      {
+        "title": "Personalized assessment",
+        "description": "We identify strengths, gaps, and the fastest path to better grades."
+      },
+      {
+        "title": "Program matching",
+        "description": "Compare 1:1 tutoring, small groups, and subject-specific tracks side by side."
+      },
+      {
+        "title": "Clear pricing overview",
+        "description": "Understand plans, units, and value before you commit to anything."
+      },
+      {
+        "title": "Exam & university guidance",
+        "description": "Abitur, university prep, and STEM pathways explained in plain language."
+      },
+      {
+        "title": "Flexible scheduling options",
+        "description": "Find session times that fit school, work, and family calendars."
+      },
+      {
+        "title": "Trusted German educators",
+        "description": "Work with qualified tutors who know local curricula and expectations."
+      }
+    ],
+    "audienceTitle": "Who this is for",
+    "audiences": [
+      {
+        "title": "Students",
+        "description": "From middle school to university prep — build confidence and consistent results."
+      },
+      {
+        "title": "Parents",
+        "description": "Get transparency on progress, scheduling, and the right level of support."
+      },
+      {
+        "title": "Career changers",
+        "description": "Refresh math, languages, or business skills for studies and applications."
+      }
+    ],
+    "formTitle": "Request your free consultation",
+    "formSubtitle": "Complete the form below and our team will contact you to schedule your session.",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email address",
+    "phone": "Phone number",
+    "gradeLevel": "Grade / level",
+    "gradePlaceholder": "Select level",
+    "grades": ["Grade 5–7", "Grade 8–10", "Abitur / Oberstufe", "University / adult learner"],
+    "subject": "Subject of interest",
+    "subjectPlaceholder": "Select subject",
+    "subjects": ["Mathematics", "English", "German", "Physics", "Chemistry", "Business / Economics", "Computer science", "Other"],
+    "preferredTime": "Preferred contact time",
+    "timePlaceholder": "Select preference",
+    "times": ["Morning (8–12)", "Afternoon (12–17)", "Evening (17–20)", "Weekend", "Flexible"],
+    "goals": "Your goals (optional)",
+    "goalsPlaceholder": "e.g. Improve math grade before exams, prepare for Abitur, build study habits…",
+    "privacyNote": "By submitting, you agree that we may contact you about your consultation request. We never share your data with third parties.",
+    "submit": "Send consultation request",
+    "submitting": "Sending…",
+    "successTitle": "Request received!",
+    "successMessage": "Thank you — we'll reach out shortly to schedule your free consultation.",
+    "faqTitle": "Frequently asked questions",
+    "faqs": [
+      {
+        "question": "Is the consultation really free?",
+        "answer": "Yes. The initial consultation is completely free and comes with no obligation to enroll."
+      },
+      {
+        "question": "How long does the session take?",
+        "answer": "Most consultations last about 30 minutes — enough time to understand your needs and recommend a path."
+      },
+      {
+        "question": "Online or in person?",
+        "answer": "We primarily offer online sessions via video call for flexibility. In-person options may be available depending on location."
+      },
+      {
+        "question": "Do parents need to attend?",
+        "answer": "For students under 16, we recommend a parent or guardian joins. Older students may attend alone if they prefer."
+      },
+      {
+        "question": "What should I prepare?",
+        "answer": "Bring recent grades, exam dates, and a short list of goals. That helps us tailor recommendations immediately."
+      }
+    ],
+    "ctaTitle": "Ready to take the next step?",
+    "ctaDesc": "Explore our programs and pricing, or speak with us first — whichever works best for you.",
+    "ctaPrograms": "View programs",
+    "ctaPricing": "See pricing"
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "subtitle": "How we collect, use, and protect your personal data",
+    "eyebrow": "Legal",
+    "lastUpdated": "Last updated: May 2026",
+    "intro": "NextGrades takes the protection of your personal data seriously. This Privacy Policy explains what information we collect when you use our website and learning platform, why we process it, and what rights you have under the General Data Protection Regulation (GDPR).",
+    "contactTitle": "Questions about your data?",
+    "contactNote": "If you have questions about this policy or wish to exercise your rights, contact us at support@nextgrades.de.",
+    "contactCta": "Contact us",
+    "sections": [
+      {
+        "title": "Data controller",
+        "paragraphs": [
+          "The controller responsible for data processing on this website is NextGrades. For privacy-related enquiries, please contact us at support@nextgrades.de or via our contact page."
+        ]
+      },
+      {
+        "title": "Data we collect",
+        "paragraphs": [
+          "We only collect data that is necessary to provide our services, improve your experience, and fulfil legal obligations. Depending on how you use NextGrades, this may include:"
+        ],
+        "bullets": [
+          "Account information such as name, email address, and role (student, teacher, or admin)",
+          "Profile details you choose to provide, including avatar, bio, and learning preferences",
+          "Booking and consultation information, including grade level, subjects, and goals",
+          "Payment-related data processed by our payment provider (we do not store full card numbers)",
+          "Usage data such as pages visited, resources accessed, and quiz activity",
+          "Technical data including IP address, browser type, device information, and cookies"
+        ]
+      },
+      {
+        "title": "How we use your data",
+        "paragraphs": [
+          "We use your personal data to operate the NextGrades platform, deliver tutoring services and learning materials, process bookings and payments, communicate with you about your account, and improve our website and services.",
+          "We may also send service-related emails (e.g. account verification, password reset, booking confirmations). Marketing communications are only sent where you have given consent or where permitted by law."
+        ]
+      },
+      {
+        "title": "Legal basis for processing",
+        "paragraphs": [
+          "We process personal data on the following legal bases under the GDPR:"
+        ],
+        "bullets": [
+          "Contract performance — to provide the services you register for",
+          "Legitimate interests — to secure our platform, prevent fraud, and improve our offering",
+          "Consent — for optional features such as marketing emails or non-essential cookies",
+          "Legal obligation — where we must retain or disclose data to comply with applicable law"
+        ]
+      },
+      {
+        "title": "Cookies and analytics",
+        "paragraphs": [
+          "Our website uses cookies and similar technologies to keep you signed in, remember your preferences (such as language and theme), and understand how the site is used.",
+          "You can control cookies through your browser settings. Disabling essential cookies may limit certain features of the platform."
+        ]
+      },
+      {
+        "title": "Third-party services",
+        "paragraphs": [
+          "We work with trusted service providers who process data on our behalf, including hosting (Supabase), payment processing (Stripe), email delivery (Resend), and video conferencing (Zoom) where applicable.",
+          "These providers are contractually required to protect your data and may only use it to deliver services to NextGrades. We do not sell your personal data to third parties."
+        ]
+      },
+      {
+        "title": "Data retention",
+        "paragraphs": [
+          "We retain personal data only for as long as necessary to fulfil the purposes described in this policy, or as required by law. When data is no longer needed, we delete or anonymise it in a secure manner.",
+          "Account data is generally kept for the duration of your account and for a reasonable period thereafter to handle disputes, legal claims, or regulatory requirements."
+        ]
+      },
+      {
+        "title": "Your rights",
+        "paragraphs": [
+          "Under the GDPR, you have the following rights regarding your personal data:"
+        ],
+        "bullets": [
+          "Right of access — request a copy of the data we hold about you",
+          "Right to rectification — correct inaccurate or incomplete data",
+          "Right to erasure — request deletion of your data where applicable",
+          "Right to restriction — limit how we use your data in certain circumstances",
+          "Right to data portability — receive your data in a structured, machine-readable format",
+          "Right to object — object to processing based on legitimate interests",
+          "Right to withdraw consent — where processing is based on consent",
+          "Right to lodge a complaint with a supervisory authority"
+        ]
+      },
+      {
+        "title": "Security",
+        "paragraphs": [
+          "We implement appropriate technical and organisational measures to protect your data against unauthorised access, loss, or misuse. These include encrypted connections (HTTPS), access controls, and secure authentication.",
+          "No method of transmission over the internet is completely secure. We encourage you to use a strong password and keep your login credentials confidential."
+        ]
+      },
+      {
+        "title": "Children and minors",
+        "paragraphs": [
+          "NextGrades provides educational services that may be used by students under 18. Where required, we recommend that a parent or guardian is involved in registration and consultations.",
+          "We do not knowingly collect personal data from children without appropriate consent where required by applicable law."
+        ]
+      },
+      {
+        "title": "Changes to this policy",
+        "paragraphs": [
+          "We may update this Privacy Policy from time to time to reflect changes in our services or legal requirements. The date at the top of this page indicates when it was last revised. We encourage you to review this page periodically."
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "title": "Terms & Conditions",
+    "subtitle": "General Terms and Conditions for using NextGrades",
+    "eyebrow": "Legal",
+    "lastUpdated": "Last updated: May 2026",
+    "intro": "These General Terms and Conditions govern your use of the NextGrades website and learning platform. By creating an account, booking a consultation, or purchasing a program, you agree to these terms. Please read them carefully before using our services.",
+    "contactTitle": "Questions about these terms?",
+    "contactNote": "If anything is unclear, our team is happy to help at support@nextgrades.de.",
+    "contactCta": "Get in touch",
+    "sections": [
+      {
+        "title": "Scope and contracting party",
+        "paragraphs": [
+          "These Terms & Conditions apply to all services offered by NextGrades through its website and online platform, including tutoring programs, learning resources, consultations, and related digital services.",
+          "The contracting party is NextGrades. Individual tutors or teachers listed on the platform act as service providers within the framework defined by NextGrades."
+        ]
+      },
+      {
+        "title": "Description of services",
+        "paragraphs": [
+          "NextGrades provides online and hybrid tutoring, educational resources, progress tracking, AI-assisted learning tools, and consultation services focused on German school and university preparation.",
+          "The exact scope of services depends on the program or plan you select. Service descriptions, pricing, and features are published on our website and may be updated from time to time."
+        ]
+      },
+      {
+        "title": "Registration and user accounts",
+        "paragraphs": [
+          "To access certain features, you must create an account with accurate and complete information. You are responsible for keeping your login credentials secure and for all activity under your account.",
+          "You must notify us immediately if you suspect unauthorised access to your account. NextGrades reserves the right to suspend or terminate accounts that violate these terms or applicable law."
+        ],
+        "bullets": [
+          "Students and parents may register for learning services",
+          "Teachers register separately and are subject to additional onboarding requirements",
+          "One person may not share account access with unauthorised third parties"
+        ]
+      },
+      {
+        "title": "Bookings, programs, and payments",
+        "paragraphs": [
+          "Consultations, tutoring sessions, and program subscriptions are booked through our website or by agreement with our team. Prices displayed at the time of booking apply unless otherwise agreed in writing.",
+          "Payments are processed securely through our payment provider. By completing a purchase, you authorise the charge for the selected service or subscription period.",
+          "Subscription plans renew automatically unless cancelled before the renewal date, as described in the plan details at checkout."
+        ]
+      },
+      {
+        "title": "Cancellation and refunds",
+        "paragraphs": [
+          "You may cancel a free consultation at any time before the scheduled session by contacting us or using the cancellation option provided in your confirmation.",
+          "For paid programs and subscriptions, cancellation and refund terms depend on the specific plan purchased. Unless otherwise stated, fees for completed sessions are non-refundable.",
+          "NextGrades may cancel or reschedule sessions due to tutor unavailability or technical issues. In such cases, we will offer a replacement session or appropriate credit."
+        ]
+      },
+      {
+        "title": "User obligations",
+        "paragraphs": [
+          "You agree to use NextGrades lawfully and respectfully. The following conduct is prohibited:"
+        ],
+        "bullets": [
+          "Sharing account credentials or copyrighted materials without permission",
+          "Harassing tutors, staff, or other users",
+          "Uploading harmful, illegal, or misleading content",
+          "Attempting to disrupt or reverse-engineer the platform",
+          "Using the service for any purpose other than personal educational use without authorisation"
+        ]
+      },
+      {
+        "title": "Intellectual property",
+        "paragraphs": [
+          "All content on the NextGrades platform — including text, videos, quizzes, branding, and software — is protected by copyright and other intellectual property laws.",
+          "You receive a limited, non-transferable licence to access materials for your personal learning purposes. You may not copy, redistribute, or commercially exploit platform content without written consent from NextGrades."
+        ]
+      },
+      {
+        "title": "Availability and liability",
+        "paragraphs": [
+          "We strive to keep the platform available and reliable, but uninterrupted access cannot be guaranteed. Maintenance, updates, or third-party outages may temporarily affect availability.",
+          "NextGrades is liable without limitation for intent and gross negligence, and for injury to life, body, or health. For slight negligence, we are liable only for breach of essential contractual obligations, limited to foreseeable typical damages.",
+          "NextGrades does not guarantee specific academic outcomes such as exam grades or admission results. Tutoring supports learning; final results depend on individual effort and external factors."
+        ]
+      },
+      {
+        "title": "Data protection",
+        "paragraphs": [
+          "The processing of personal data is governed by our Privacy Policy, which forms part of these Terms & Conditions. By using our services, you acknowledge that you have read and understood our Privacy Policy."
+        ]
+      },
+      {
+        "title": "Changes to these terms",
+        "paragraphs": [
+          "We may update these Terms & Conditions to reflect changes in our services or legal requirements. Material changes will be communicated via email or a notice on the website. Continued use after changes take effect constitutes acceptance of the updated terms."
+        ]
+      },
+      {
+        "title": "Governing law and jurisdiction",
+        "paragraphs": [
+          "These Terms & Conditions are governed by the laws of the Federal Republic of Germany, excluding the UN Convention on Contracts for the International Sale of Goods (CISG).",
+          "If you are a consumer residing in the EU, mandatory consumer protection laws of your country of residence may also apply. The courts of Germany shall have jurisdiction where permitted by law."
+        ]
+      }
+    ]
+  },
+  "careersPage": {
+    "title": "Careers",
+    "subtitle": "Join our team!",
+    "applyNow": "Apply now",
+    "jobs": [
+      { "title": "Math Tutor", "description": "We are looking for dedicated math tutors." },
+      { "title": "English Tutor", "description": "We are looking for dedicated English tutors." }
+    ]
+  },
+  "mobileNav": {
+    "main": "Main navigation",
+    "home": "Home",
+    "courses": "Courses",
+    "resources": "Resources",
+    "liveClasses": "Live",
+    "ai": "AI",
+    "aiChat": "NextGrades AI",
+    "notifications": "Alerts",
+    "profile": "Profile",
+    "settings": "Settings",
+    "students": "Students",
+    "schedule": "Schedule",
+    "users": "Users",
+    "content": "Content"
+  }
+}

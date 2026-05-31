@@ -1,0 +1,1375 @@
+{
+  "images": {
+    "logo": "NextGrades Logo",
+    "studentStudying": "Schüler:in beim Lernen",
+    "modernLearning": "Moderne Lernumgebung",
+    "nextGradesLearning": "NextGrades Lernplattform",
+    "teamMember": "Teammitglied Foto",
+    "studentsCollaborating": "Schüler:innen arbeiten zusammen",
+    "germanBuilding": "Modernes Gebäude in Deutschland",
+    "germanyFlag": "Deutschland Flagge"
+  },
+  "aboutPage": {
+    "breadcrumb": "Startseite > Über uns",
+    "heroEyebrow": "ÜBER NEXTGRADES",
+    "heroQuote": "Bildung ist nicht die Befüllung eines Eimers, sondern das Entzünden eines Feuers.",
+    "heroQuoteAuthor": "William Butler Yeats",
+    "heroPillars": [
+      { "title": "Mission", "desc": "Lernen verständlich, motivierend und zugänglich machen – für jeden Schüler." },
+      { "title": "Vision", "desc": "Eine neue Generation des Lernens – modern, strukturiert und ergebnisorientiert." },
+      { "title": "Values", "desc": "Qualität, Empathie und echter Fortschritt für jeden Lernenden." }
+    ],
+    "heroFeatures": [
+      { "title": "Mehr als Nachhilfe", "desc": "Ganzheitliche Lernbegleitung." },
+      { "title": "Echte Ergebnisse", "desc": "Messbarer Fortschritt & Selbstvertrauen." },
+      { "title": "Individuelle Förderung", "desc": "Auf jeden Schüler zugeschnitten." },
+      { "title": "Zukunft gestalten", "desc": "Kompetenzen für morgen." }
+    ],
+    "storyEyebrow": "UNSERE GESCHICHTE",
+    "storyTitle": "Wie alles begann",
+    "storyParagraphs": [
+      "NextGrades entstand 2021 als Leidenschaftsprojekt – aus Frustration mit veralteten Nachhilfe-Methoden und dem Glauben, dass jeder Schüler Besseres verdient.",
+      "Was als Hilfe für ein paar Freund:innen begann, wuchs schnell zu einer Plattform, der Hunderte Schüler:innen in Deutschland vertrauen. Wir verbinden Live-Nachhilfe mit strukturierten digitalen Inhalten.",
+      "Heute bauen wir die Lernerfahrung, die wir uns immer gewünscht haben: persönlich, professionell und für den echten Alltag gemacht."
+    ],
+    "storyCta": "Mehr über unsere Mission",
+    "missionEyebrow": "UNSERE MISSION IM DETAIL",
+    "missionTitle": "Wofür wir jeden Tag arbeiten",
+    "missionCards": [
+      { "title": "Wissen verständlich machen", "desc": "Komplexe Themen klar aufbereiten – damit Schüler:innen wirklich verstehen." },
+      { "title": "Hochwertige Materialien bereitstellen", "desc": "Premium-Arbeitsblätter, Videos und Guides von erfahrenen Lehrkräften." },
+      { "title": "Individuell fördern", "desc": "Jeder lernt anders – wir passen uns an Tempo und Ziele an." },
+      { "title": "Messbare Ergebnisse erzielen", "desc": "Bessere Noten, mehr Selbstvertrauen und Fähigkeiten über Prüfungen hinaus." }
+    ],
+    "principlesEyebrow": "WARUM NEXTGRADES?",
+    "principlesTitle": "Unsere Prinzipien für deinen Erfolg",
+    "principles": [
+      { "title": "Persönliche Betreuung", "desc": "Jeder Schüler ist einzigartig – wir passen uns individuellen Bedürfnissen an." },
+      { "title": "Erfahrene Lehrkräfte", "desc": "Qualifizierte Pädagogen mit Leidenschaft und nachweisbarer Expertise." },
+      { "title": "Moderne Methoden", "desc": "Bewährte Pädagogik kombiniert mit digitalen Tools für effizientes Lernen." },
+      { "title": "Echte Ergebnisse", "desc": "Fokus auf messbaren Fortschritt – bessere Noten und dauerhaftes Selbstvertrauen." },
+      { "title": "Leidenschaft für Bildung", "desc": "Wir lieben, was wir tun, und investieren Herzblut in jeden Erfolg." }
+    ],
+    "promiseEyebrow": "UNSER VERSPRECHEN",
+    "promiseTitle": "Wir geben immer unser Bestes – für deinen Erfolg.",
+    "promiseItems": [
+      "Hochwertige Lernmaterialien von erfahrenen Lehrkräften",
+      "Sorgfältig ausgewählte, qualifizierte Tutor:innen",
+      "Moderne, erprobte Lernmethoden",
+      "Individuelle Betreuung für jeden Schüler",
+      "Transparente Kommunikation mit Schüler:innen und Eltern"
+    ],
+    "statsEyebrow": "UNSER ZIEL",
+    "statsTitle": "Eine neue Generation des Lernens",
+    "stats": [
+      { "value": "200+", "label": "glückliche Schüler:innen" },
+      { "value": "25+", "label": "erfahrene Lehrkräfte" },
+      { "value": "95%", "label": "verbesserte Noten" },
+      { "value": "100%", "label": "Leidenschaft & Engagement" }
+    ],
+    "teamEyebrow": "UNSER TEAM",
+    "teamSubtitle": "Ein Team aus leidenschaftlichen Lehrkräften, Lernexpert:innen und Visionär:innen.",
+    "team": [
+      { "name": "Adrian H.", "role": "Gründer & CEO", "bio": "Leidenschaft für Bildung und moderne Lernsysteme." },
+      { "name": "Lea Maria", "role": "Leitung Pädagogik", "bio": "Expertin für Lernmethoden und Unterrichtsentwicklung." },
+      { "name": "David K.", "role": "Leitung Online-Nachhilfe", "bio": "Fachlicher Leiter und Ansprechpartner für unsere Lehrer:innen." },
+      { "name": "Julia W.", "role": "Lernmaterial & Inhalte", "bio": "Verantwortlich für hochwertige Lerninhalte und Materialien." },
+      { "name": "Michael T.", "role": "Technologie & Plattform", "bio": "Sorgt für die beste digitale Lernexperience." }
+    ],
+    "milestonesEyebrow": "UNSER WEG",
+    "milestones": [
+      { "year": "2021", "title": "Der Anfang", "desc": "NextGrades als Leidenschaftsprojekt gegründet." },
+      { "year": "2022", "title": "Erste 100 Schüler:innen", "desc": "Erster Meilenstein mit überwältigend positivem Feedback." },
+      { "year": "2023", "title": "Digitale Plattform", "desc": "Launch der Online-Lernplattform mit Premium-Materialien." },
+      { "year": "2024", "title": "200+ Schüler:innen", "desc": "Wachsende Community und erweiterte Fachangebote." },
+      { "year": "2025", "title": "KI & Innovation", "desc": "KI-gestützte Tools für personalisierte Lernpfade." }
+    ],
+    "communityTitle": "Werde Teil der NextGrades Community",
+    "communityDesc": "Starte deine Reise zu besseren Noten, mehr Selbstvertrauen und echtem Lernerfolg.",
+    "communityCta": "Kostenloses Erstgespräch buchen",
+    "communityTags": [
+      "Unverbindlich",
+      "Kostenlos",
+      "Individuelle Beratung"
+    ]
+  },
+  "programsPage": {
+    "breadcrumb": "Startseite > Programme",
+    "heroFeatures": [
+      {
+        "title": "Premium-Betreuung",
+        "desc": "Persönlich, engagiert, ergebnisorientiert."
+      },
+      {
+        "title": "Moderne Lernmethoden",
+        "desc": "Effizient und systematisch."
+      },
+      {
+        "title": "Flexibel & online",
+        "desc": "Lerne wo und wann du willst."
+      }
+    ],
+    "freeConsultation": "Kostenloses Erstgespräch",
+    "stats": [
+      {
+        "number": "200+",
+        "label": "glückliche Schüler:innen"
+      },
+      {
+        "number": "25+",
+        "label": "Top-Lehrer:innen"
+      },
+      {
+        "number": "4.9/5",
+        "label": "Bewertung von Eltern & Schüler:innen"
+      }
+    ],
+    "sectionEyebrow": "UNSERE PROGRAMME",
+    "sectionTitle": "Finde das perfekte Programm für dich.",
+    "sectionDesc": "Ob Einzelnachhilfe, Lernen in kleinen Gruppen oder unser Signature-Programm – wir haben die passende Lösung.",
+    "mostPopular": "Beliebtestes Programm",
+    "learnMore": "Mehr erfahren",
+    "items": [
+      {
+        "type": "1:1",
+        "title": "1:1 Premium-Nachhilfe",
+        "description": "Individuelle Nachhilfe, 100 % auf dich zugeschnitten.",
+        "features": [
+          "Individuelle 1:1 Betreuung",
+          "Persönliche Lernpläne",
+          "Prüfungsvorbereitung",
+          "Flexible Termine",
+          "Erfahrene Fokus-Betreuung"
+        ],
+        "price": "ab 45 € / Stunde"
+      },
+      {
+        "type": "Gruppe",
+        "title": "Kleine Lerngruppen",
+        "description": "Lernen in kleinen Gruppen mit maximal 3–5 Schüler:innen.",
+        "features": [
+          "Max. 3–5 Schüler:innen",
+          "Motivierende Atmosphäre",
+          "Austausch & Zusammenarbeit",
+          "Günstiger als 1:1",
+          "Gemeinsamer Fortschritt"
+        ],
+        "price": "ab 30 € / Schüler:in"
+      },
+      {
+        "type": "Signature",
+        "title": "Mathe Excellence Programm",
+        "description": "Unser Premium-Programm für Mathematik und Abiturvorbereitung.",
+        "features": [
+          "Wöchentliche Live-Sessions",
+          "Premium-Materialien",
+          "Übungen, Videos & PDFs",
+          "Prüfungsvorbereitung & Strategien",
+          "Betreuung zwischen den Sessions"
+        ],
+        "price": "ab 99 € / Monat"
+      }
+    ],
+    "compareTitle": "Programmvergleich",
+    "compareHeaders": {
+      "features": "Merkmale",
+      "oneOnOne": "1:1 Premium-Nachhilfe",
+      "group": "Kleine Lerngruppen",
+      "math": "Mathe Excellence Programm"
+    },
+    "compareRows": [
+      {
+        "label": "Betreuung",
+        "c1": "Individuell 1:1",
+        "c2": "Max. 3–5 Schüler:innen",
+        "c3": "Gruppe + Einzelbetreuung"
+      },
+      {
+        "label": "Lernpläne",
+        "c1": true,
+        "c2": true,
+        "c3": true
+      },
+      {
+        "label": "Flexible Termine",
+        "c1": true,
+        "c2": true,
+        "c3": "Feste Zeiten (wöchentlich)"
+      },
+      {
+        "label": "Lernmaterialien",
+        "c1": true,
+        "c2": true,
+        "c3": true
+      },
+      {
+        "label": "Abiturvorbereitung",
+        "c1": true,
+        "c2": true,
+        "c3": true
+      },
+      {
+        "label": "Preis",
+        "c1": "ab 45 € / Stunde",
+        "c2": "ab 30 € / Schüler:in",
+        "c3": "ab 99 € / Monat"
+      }
+    ],
+    "ctaTitle": "Unsicher, welches Programm passt?",
+    "ctaDesc": "Buche ein kostenloses Erstgespräch – wir beraten dich und finden gemeinsam den besten Weg.",
+    "ctaTags": [
+      "Unverbindlich & kostenlos",
+      "Individuelle Beratung",
+      "Die besten Optionen für dich"
+    ],
+    "ctaButton": "Kostenloses Erstgespräch buchen"
+  },
+  "subjectsPage": {
+    "learnMore": "Mehr erfahren",
+    "whyEyebrow": "WARUM NEXTGRADES",
+    "whyTitle": "Dein Vorteil bei uns",
+    "benefits": [
+      {
+        "title": "Persönliche Betreuung",
+        "desc": "Individuell und auf deinen Lernfortschritt abgestimmt."
+      },
+      {
+        "title": "Hochwertige Materialien",
+        "desc": "Exklusive Lerninhalte, Videos und Arbeitsblätter."
+      },
+      {
+        "title": "Flexibel & online",
+        "desc": "Lerne wann und wo du willst – 100 % online."
+      },
+      {
+        "title": "Bessere Ergebnisse",
+        "desc": "Mehr Verständnis, bessere Noten, mehr Selbstvertrauen."
+      }
+    ],
+    "stats": [
+      {
+        "value": "200+",
+        "label": "glückliche Schüler:innen"
+      },
+      {
+        "value": "25+",
+        "label": "erfahrene Lehrer:innen"
+      },
+      {
+        "value": "4.9/5",
+        "label": "Bewertung von Eltern & Schüler:innen"
+      },
+      {
+        "value": "100%",
+        "label": "online & flexibel"
+      }
+    ],
+    "ctaTitle": "Bereit, deine Noten zu verbessern?",
+    "ctaDesc": "Buche jetzt dein kostenloses Erstgespräch und leg los!",
+    "ctaButton": "Kostenloses Erstgespräch buchen",
+    "items": [
+      {
+        "id": "math",
+        "title": "Mathematik",
+        "description": "Von Grundlagen bis Abitur – wir machen Mathe verständlich und spannend!",
+        "features": [
+          "Alle Klassenstufen",
+          "Prüfungsvorbereitung",
+          "Arbeitsblätter",
+          "Schritt-für-Schritt Erklärungen"
+        ]
+      },
+      {
+        "id": "english",
+        "title": "Englisch",
+        "description": "Verbessere Verständnis, Konversation und Skills in allen Bereichen.",
+        "features": [
+          "Grammatik & Wortschatz",
+          "Konversation",
+          "Business English",
+          "Aufsätze schreiben"
+        ]
+      },
+      {
+        "id": "german",
+        "title": "Deutsch",
+        "description": "Texte verstehen, richtig schreiben und Aufsätze verfassen – wir helfen dir!",
+        "features": [
+          "Grammatik & Rechtschreibung",
+          "Textanalyse",
+          "Aufsätze & Interpretation",
+          "Prüfungsvorbereitung"
+        ]
+      },
+      {
+        "id": "physics",
+        "title": "Physik",
+        "description": "Physik verstehst du, wenn du sie anwendest – wir zeigen dir wie!",
+        "features": [
+          "Mechanik",
+          "Elektrizität",
+          "Optik & Thermodynamik",
+          "Prüfungsvorbereitung"
+        ]
+      },
+      {
+        "id": "chemistry",
+        "title": "Chemie",
+        "description": "Chemie verstehen und aufbauen – wir zeigen dir, wie es funktioniert!",
+        "features": [
+          "Stoffe & Reaktionen",
+          "Organische Chemie",
+          "Grundlagen & Übungen",
+          "Prüfungsvorbereitung"
+        ]
+      },
+      {
+        "id": "business",
+        "title": "Wirtschaft",
+        "description": "Volkswirtschaft, Rechnungswesen und BWL – verständlich für jede Klassenstufe.",
+        "features": [
+          "Wirtschaftsgrundlagen",
+          "Buchführung",
+          "Fallstudien",
+          "Prüfungsvorbereitung"
+        ]
+      },
+      {
+        "id": "computer-science",
+        "title": "Informatik",
+        "description": "Programmieren, Algorithmen und digitale Kompetenz mit praxisnahen Projekten.",
+        "features": [
+          "Programmiergrundlagen",
+          "Algorithmen",
+          "Projekte & Übungen",
+          "Prüfungsvorbereitung"
+        ]
+      },
+      {
+        "id": "technical-drawing",
+        "title": "Technisches Zeichnen",
+        "description": "Technisches Zeichnen Schritt für Schritt – mit professionellen Standards.",
+        "features": [
+          "Zeichengrundlagen",
+          "CAD-Einführung",
+          "Normen & Standards",
+          "Prüfungsvorbereitung"
+        ]
+      }
+    ]
+  },
+  "resourcesPage": {
+    "rating": "4,9/5 Sterne",
+    "ratingDesc": "Bewertet von Eltern & Schüler:innen",
+    "tabs": [
+      "Alle Ressourcen",
+      "Lernmaterialien",
+      "Arbeitsblätter",
+      "Erklärvideos",
+      "Guides & E-Books",
+      "Prüfungsvorbereitung",
+      "Mini-Kurse",
+      "Formelsammlungen"
+    ],
+    "materialTypes": [
+      "Arbeitsblätter & Übungen",
+      "Zusammenfassungen",
+      "Guides & Lernpläne",
+      "Erklärvideos",
+      "Formelsammlungen"
+    ],
+    "resultsCount": "428 Ergebnisse",
+    "sortNewest": "Sortieren: Neueste zuerst",
+    "freeResources": [
+      {
+        "title": "Mathe-Formelsammlung",
+        "subtitle": "Klassen 1–5",
+        "description": "Alle wichtigen Formeln und Regeln übersichtlich zusammengefasst.",
+        "type": "PDF"
+      },
+      {
+        "title": "Deutsch-Rechtschreibguide",
+        "subtitle": "Kostenlos",
+        "description": "Die wichtigsten Rechtschreibregeln einfach erklärt.",
+        "type": "PDF"
+      },
+      {
+        "title": "Lernplan-Vorlage",
+        "subtitle": "Kostenlos",
+        "description": "Plane dein Lernen Schritt für Schritt und bleib am Ball.",
+        "type": "PDF"
+      },
+      {
+        "title": "5 Tipps gegen Prüfungsstress",
+        "subtitle": "Kostenlos",
+        "description": "So bereitest du dich stressfrei auf Prüfungen vor.",
+        "type": "Video"
+      }
+    ],
+    "premiumResources": [
+      {
+        "title": "Mathematik",
+        "subtitle": "Klasse 2, Semester 2",
+        "description": "Komplette Lernmaterialien, Videos, Arbeitsblätter und mehr.",
+        "type": "PREMIUM"
+      },
+      {
+        "title": "Deutsch",
+        "subtitle": "Klasse 3, Semester 1",
+        "description": "Deutsch-Lernmaterialien, Videos und Arbeitsblätter.",
+        "type": "PREMIUM"
+      },
+      {
+        "title": "Englisch",
+        "subtitle": "Klasse 4, Semester 2",
+        "description": "Grammatik, Wortschatz, Materialien und mehr.",
+        "type": "PREMIUM"
+      },
+      {
+        "title": "Physik",
+        "subtitle": "Klasse 5, Semester 1",
+        "description": "Alle Themen, Formeln, Beispiele und Übungen.",
+        "type": "PREMIUM"
+      }
+    ],
+    "subjectsWithCounts": [
+      {
+        "name": "Alle Fächer",
+        "count": 428
+      },
+      {
+        "name": "Mathematik",
+        "count": 98
+      },
+      {
+        "name": "Deutsch",
+        "count": 82
+      },
+      {
+        "name": "Englisch",
+        "count": 76
+      },
+      {
+        "name": "Physik",
+        "count": 54
+      },
+      {
+        "name": "Chemie",
+        "count": 48
+      },
+      {
+        "name": "Biologie",
+        "count": 38
+      },
+      {
+        "name": "Wirtschaft",
+        "count": 32
+      }
+    ],
+    "subjectsFilter": [
+      "Alle Fächer",
+      "Mathematik",
+      "Englisch",
+      "Deutsch",
+      "Physik",
+      "Chemie"
+    ],
+    "gradesFilter": [
+      "Alle Klassen",
+      "Klasse 5",
+      "Klasse 6",
+      "Klasse 7",
+      "Klasse 8",
+      "Klasse 9",
+      "Klasse 10",
+      "Klasse 11",
+      "Klasse 12"
+    ],
+    "semestersFilter": [
+      "Alle Semester",
+      "Semester 1",
+      "Semester 2"
+    ]
+  },
+  "pricingPage": {
+    "plansEyebrow": "WÄHLE DEIN PAKET",
+    "plansTitle": "Investiere in deine Zukunft — wähle die passende Unterstützung",
+    "stats": [
+      { "value": "200+", "label": "aktive Schüler:innen" },
+      { "value": "4,9/5", "label": "Durchschnittsbewertung" },
+      { "value": "95%", "label": "Notenverbesserung" },
+      { "value": "100%", "label": "online & flexibel" }
+    ],
+    "trustedTitle": "Vertraut von 200+ Schüler:innen",
+    "trustedDesc": "Durchschnittlich 4,9/5 von echten Schüler:innen und Eltern",
+    "loading": "Laden...",
+    "finalCtaTitle": "Gemeinsam erreichen wir Großes",
+    "finalCtaDesc": "Unsicher, welches Paket passt? Buche ein kostenloses Erstgespräch — unverbindlich.",
+    "finalCtaButton": "Kostenloses Erstgespräch buchen",
+    "finalCtaTags": ["Unverbindlich", "Kostenlos", "Individuelle Beratung"],
+    "plans": [
+      {
+        "id": "resource",
+        "name": "Ressourcen-Mitgliedschaft",
+        "description": "Zugang zu allen Premium-Lernmaterialien",
+        "monthlyPrice": 29,
+        "yearlyPrice": 249,
+        "highlighted": false,
+        "features": [
+          "Alle Premium-Ressourcen",
+          "Lernvideos",
+          "Übungsblätter",
+          "Zusammenfassungen",
+          "Crashkurse"
+        ]
+      },
+      {
+        "id": "group",
+        "name": "Gruppen-Nachhilfe",
+        "description": "Lerne in kleinen Gruppen mit anderen Schüler:innen",
+        "monthlyPrice": 99,
+        "yearlyPrice": 949,
+        "highlighted": true,
+        "features": [
+          "Alles aus Ressourcen-Mitgliedschaft",
+          "Wöchentliche Gruppenstunden",
+          "Max. 5 Schüler:innen pro Gruppe",
+          "Hausaufgabenbetreuung",
+          "Fortschrittsverfolgung"
+        ]
+      },
+      {
+        "id": "premium",
+        "name": "1:1 Premium-Nachhilfe",
+        "description": "Individuelle Betreuung für maximale Erfolge",
+        "monthlyPrice": 249,
+        "yearlyPrice": 2399,
+        "highlighted": false,
+        "features": [
+          "Alles aus Gruppen-Nachhilfe",
+          "Individuelle 1:1 Stunden",
+          "Persönlicher Lernplan",
+          "Flexible Terminvereinbarung",
+          "Priority Support",
+          "Eltern-Reports"
+        ]
+      }
+    ],
+    "faqs": [
+      {
+        "question": "Kann ich jederzeit den Tarif wechseln?",
+        "answer": "Ja! Du kannst deinen Tarif jederzeit upgraden oder downgraden."
+      },
+      {
+        "question": "Gibt es eine kostenlose Testphase?",
+        "answer": "Ja! Kontaktiere uns für ein kostenloses Erstgespräch."
+      },
+      {
+        "question": "Welche Zahlungsmethoden akzeptiert ihr?",
+        "answer": "Wir akzeptieren Kreditkarten, PayPal und Banküberweisung."
+      }
+    ]
+  },
+  "dashboardNav": {
+    "student": [
+      {
+        "label": "Dashboard"
+      },
+      {
+        "label": "Meine Kurse"
+      },
+      {
+        "label": "Termine"
+      },
+      {
+        "label": "Materialien"
+      },
+      {
+        "label": "KI-Quizze"
+      },
+      {
+        "label": "Fortschritt"
+      },
+      {
+        "label": "NextGrades KI"
+      },
+      {
+        "label": "Einstellungen"
+      }
+    ],
+    "teacher": [
+      {
+        "label": "Dashboard"
+      },
+      {
+        "label": "Schüler:innen"
+      },
+      {
+        "label": "Stundenplan"
+      },
+      {
+        "label": "Ressourcen"
+      },
+      {
+        "label": "KI-Generator"
+      },
+      {
+        "label": "Inhalte"
+      },
+      {
+        "label": "Analysen"
+      },
+      {
+        "label": "Einnahmen"
+      },
+      {
+        "label": "NextGrades KI"
+      },
+      {
+        "label": "Einstellungen"
+      }
+    ],
+    "admin": [
+      {
+        "label": "Dashboard"
+      },
+      {
+        "label": "Website-Inhalte"
+      },
+      {
+        "label": "Schüler:innen"
+      },
+      {
+        "label": "Lehrer:innen"
+      },
+      {
+        "label": "Benutzer"
+      },
+      {
+        "label": "Quiz-Monitor"
+      },
+      {
+        "label": "Moderation"
+      },
+      {
+        "label": "Mitgliedschaften"
+      },
+      {
+        "label": "Zahlungen"
+      },
+      {
+        "label": "Ressourcen"
+      },
+      {
+        "label": "KI-Chatbot"
+      },
+      {
+        "label": "Analysen"
+      },
+      {
+        "label": "Zoom"
+      }
+    ],
+    "logout": "Abmelden",
+    "backToSite": "Zur Website"
+  },
+  "forgotPassword": {
+    "title": "Passwort vergessen?",
+    "subtitle": "Gib deine E-Mail ein – wir senden dir einen Link zum Zurücksetzen.",
+    "successTitle": "E-Mail prüfen",
+    "successSubtitle": "Wir haben dir einen Link zum Zurücksetzen deines Passworts gesendet!",
+    "spamHint": "Wenn du die E-Mail nicht siehst, prüfe deinen Spam-Ordner!",
+    "email": "E-Mail-Adresse",
+    "emailPlaceholder": "du@beispiel.de",
+    "submit": "Link senden",
+    "sending": "Wird gesendet...",
+    "backToLogin": "Zurück zur Anmeldung",
+    "rememberPassword": "Passwort wieder eingefallen? Jetzt anmelden",
+    "success": "Prüfe deine E-Mails für den Reset-Link."
+  },
+  "resetPassword": {
+    "title": "Neues Passwort setzen",
+    "subtitle": "Gib dein neues Passwort unten ein.",
+    "successTitle": "Passwort erfolgreich zurückgesetzt!",
+    "successSubtitle": "Dein Passwort wurde zurückgesetzt! Du wirst weitergeleitet...",
+    "password": "Neues Passwort",
+    "confirmPassword": "Passwort bestätigen",
+    "submit": "Passwort zurücksetzen",
+    "resetting": "Passwort wird zurückgesetzt...",
+    "passwordMismatch": "Passwörter stimmen nicht überein!",
+    "passwordTooShort": "Passwort muss mindestens 6 Zeichen lang sein!",
+    "success": "Passwort aktualisiert! Weiterleitung zur Anmeldung..."
+  },
+  "loginPage": {
+    "emailConfirm": "Prüfe deine E-Mails zur Bestätigung!",
+    "continueGmail": "Mit Gmail fortfahren",
+    "studentAvatar": "Schüler:innen-Profil"
+  },
+  "aiGeneratorPage": {
+    "title": "KI-Quiz-Generator",
+    "subtitle": "Erstelle smarte Quizze, MCQs und Karteikarten mit KI",
+    "step1": "1. Material hochladen",
+    "uploadTitle": "PDFs, Notizen oder Zusammenfassungen hochladen",
+    "uploadHint": "Drag & Drop oder klicken zum Auswählen",
+    "selectFile": "Datei auswählen",
+    "step2": "2. Einstellungen",
+    "subject": "Fach",
+    "grade": "Klasse",
+    "questionCount": "Anzahl Fragen",
+    "difficulty": "Schwierigkeit",
+    "easy": "Leicht",
+    "medium": "Mittel",
+    "hard": "Schwer",
+    "step3": "3. Generieren",
+    "generateQuiz": "Quiz generieren",
+    "generating": "Wird generiert...",
+    "generatedTitle": "Generiertes Quiz",
+    "preview": "Vorschau",
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "addQuestion": "Frage hinzufügen",
+    "promptLabel": "Beschreibe, was du erstellen möchtest",
+    "promptPlaceholder": "z. B. 10 Mathe-Übungen zu quadratischen Gleichungen für Klasse 9...",
+    "generate": "Generieren",
+    "quickAccess": "Schnellzugriff",
+    "flashcards": "Karteikarten generieren",
+    "summary": "Zusammenfassung erstellen",
+    "exercises": "Übungen generieren",
+    "tipsTitle": "Tipps",
+    "tip1": "Lade klare, strukturierte PDFs hoch",
+    "tip2": "Wähle das passende Schwierigkeitsniveau",
+    "tip3": "Prüfe das generierte Quiz vor dem Einsatz",
+    "subjects": [
+      "Mathematik",
+      "Englisch",
+      "Deutsch",
+      "Physik"
+    ],
+    "grades": [
+      "Klasse 1",
+      "Klasse 2",
+      "Klasse 3",
+      "Klasse 4"
+    ]
+  },
+  "dashboardCommon": {
+    "comingSoon": "Demnächst verfügbar!",
+    "comingSoonDesc": "Diese Seite wird gerade entwickelt und ist bald verfügbar!",
+    "today": "Heute",
+    "available": "Verfügbar",
+    "showAll": "Alle anzeigen",
+    "with": "mit",
+    "minutes": "Min",
+    "joinZoom": "Zoom beitreten",
+    "download": "Herunterladen",
+    "premium": "Premium"
+  },
+  "dashboardPages": {
+    "student": {
+      "courses": {
+        "title": "Meine Kurse",
+        "description": "Übersicht aller aktuellen und vergangenen Kurse"
+      },
+      "appointments": {
+        "title": "Termine",
+        "description": "Verwalte deine Nachhilfetermine"
+      },
+      "resources": {
+        "title": "Materialien",
+        "description": "Zugriff auf deine Lernmaterialien"
+      },
+      "quizzes": {
+        "title": "KI-Quizze",
+        "description": "Übe mit KI-generierten Quizzen"
+      },
+      "progress": {
+        "title": "Fortschritt",
+        "description": "Verfolge deinen Lernfortschritt"
+      },
+      "settings": {
+        "title": "Einstellungen",
+        "description": "Verwalte deine Kontoeinstellungen"
+      }
+    },
+    "teacher": {
+      "students": {
+        "title": "Schüler:innen",
+        "description": "Verwalte deine zugewiesenen Schüler:innen"
+      },
+      "schedule": {
+        "title": "Stundenplan",
+        "description": "Plane und verwalte deine Termine"
+      },
+      "resources": {
+        "title": "Ressourcen",
+        "description": "Lernmaterialien hochladen und verwalten"
+      },
+      "aiGenerator": {
+        "title": "KI-Generator",
+        "description": "Erstelle Quizze und Lerninhalte mit KI"
+      },
+      "earnings": {
+        "title": "Einnahmen",
+        "description": "Übersicht deiner Einnahmen und Auszahlungen"
+      },
+      "settings": {
+        "title": "Einstellungen",
+        "description": "Verwalte dein Lehrer:innen-Profil"
+      }
+    },
+    "admin": {
+      "websiteContent": {
+        "title": "Website-Inhalte",
+        "description": "Öffentliche Website-Inhalte bearbeiten"
+      },
+      "students": {
+        "title": "Schüler:innen",
+        "description": "Alle Schüler:innen auf der Plattform verwalten"
+      },
+      "teachers": {
+        "title": "Lehrer:innen",
+        "description": "Alle Lehrer:innen auf der Plattform verwalten"
+      },
+      "memberships": {
+        "title": "Mitgliedschaften",
+        "description": "Abonnements und Mitgliedschaften verwalten"
+      },
+      "payments": {
+        "title": "Zahlungen",
+        "description": "Zahlungen anzeigen und verwalten"
+      },
+      "resources": {
+        "title": "Ressourcen",
+        "description": "Plattform-Lernressourcen verwalten"
+      },
+      "analytics": {
+        "title": "Analysen",
+        "description": "Plattform-Statistiken und Einblicke"
+      }
+    }
+  },
+  "chatbotAdmin": {
+    "title": "KI-Chatbot",
+    "description": "Nutzung überwachen und Chatbot-Einstellungen verwalten"
+  },
+  "studentDashboard": {
+    "overviewTitle": "Übersicht",
+    "nav": {
+      "overview": "Übersicht",
+      "appointments": "Meine Termine",
+      "liveClasses": "Live-Klassen",
+      "courses": "Meine Kurse",
+      "materials": "Materialien",
+      "tasks": "Aufgaben",
+      "progress": "Fortschritt",
+      "messages": "Nachrichten",
+      "notifications": "Benachrichtigungen",
+      "aiChat": "NextGrades KI",
+      "settings": "Einstellungen"
+    },
+    "welcomeSubtitleMock": "Schön, dass du weiter an deinen Zielen arbeitest.",
+    "welcomeBack": "Willkommen zurück, {{name}}!",
+    "welcomeSubtitle": "Dein Lernzentrum — Fortschritt verfolgen, Unterricht besuchen und smarter lernen.",
+    "signInRequired": "Bitte melde dich an, um dein Dashboard zu sehen.",
+    "yourGoal": "Dein Ziel",
+    "noGoalSet": "Setze dir ein Lernziel, um motiviert zu bleiben.",
+    "editGoal": "Ziel bearbeiten",
+    "remainingUnits": "Unterrichtseinheiten",
+    "unitsOf": "Noch {{remaining}} von {{total}}",
+    "noUnits": "Kein aktives Paket",
+    "manageUnits": "Einheiten verwalten",
+    "nextAppointment": "Nächste Stunde",
+    "goToAppointment": "Details anzeigen",
+    "noAppointments": "Keine Termine geplant",
+    "bookConsultation": "Stunde buchen",
+    "myAppointments": "Meine Termine",
+    "totalProgress": "Gesamtfortschritt",
+    "progressHint": "Basierend auf Quizzen und abgeschlossenen Stunden",
+    "viewProgress": "Fortschritt anzeigen",
+    "openTasks": "Offene Aufgaben",
+    "noOpenTasks": "Alles erledigt!",
+    "tasksWaiting": "{{count}} offen",
+    "goToTasks": "Zu den Quizzen",
+    "upcomingAppointments": "Nächste Termine",
+    "showAllAppointments": "Alle anzeigen",
+    "teacherShort": "mit {{name}}",
+    "noZoomLink": "Noch kein Zoom-Link",
+    "syncCalendar": "Kalender synchronisieren",
+    "myMaterials": "Meine Materialien",
+    "noMaterials": "Noch keine Materialien.",
+    "toMaterialLibrary": "Bibliothek",
+    "myCourses": "Meine Kurse",
+    "noCourses": "Noch keine Kurse.",
+    "lessonUnits": "{{count}} Stunden",
+    "toMyCourses": "Alle Kurse",
+    "tasks": "Aufgaben & Quizze",
+    "noTasks": "Keine offenen Aufgaben — super!",
+    "taskInProgress": "In Bearbeitung",
+    "taskOpen": "Offen",
+    "allTasks": "Alle Aufgaben",
+    "notifications": "Benachrichtigungen",
+    "noMessages": "Keine neuen Benachrichtigungen.",
+    "quickAccess": "Schnellzugriff",
+    "joinZoom": "Zoom beitreten",
+    "openAi": "NextGrades KI öffnen",
+    "aiTitle": "NextGrades KI",
+    "aiDesc": "Fragen stellen, Erklärungen erhalten und Inhalte übersetzen — dein persönlicher Lernassistent.",
+    "helpCenter": "Hilfe-Center",
+    "contactSupport": "Support kontaktieren",
+    "giveFeedback": "Feedback geben",
+    "motivationQuote": "Stay hungry, stay foolish.",
+    "motivationSaved": "Zu deinen Favoriten gespeichert!",
+    "saveMotivation": "Zitat speichern",
+    "welcome": "Willkommen zurück! 👋",
+    "subtitle": "Hier ist deine Lernübersicht für heute",
+    "startQuiz": "KI-Quiz starten",
+    "unitsLeft": "Verbleibende Einheiten",
+    "learningProgress": "Lernfortschritt",
+    "newMaterials": "Neue Materialien",
+    "bookWithTeacher": "Du kannst Termine bei deiner Lehrkraft buchen",
+    "learningMaterials": "Lernmaterialien",
+    "videos": "Videos",
+    "recentMaterials": "Neueste Materialien",
+    "allMaterials": "Alle Materialien",
+    "sidebarHello": "Hallo, {{name}}!",
+    "sidebarRole": "Schüler:in",
+    "liveClasses": "Live-Klassen",
+    "liveClassesDesc": "Nimm mit einem Klick an deinen Live-Unterrichtsstunden teil.",
+    "noLiveClasses": "Keine bevorstehenden Live-Klassen geplant.",
+    "joinClass": "Klasse beitreten"
+  },
+  "teacherDashboard": {
+    "overviewTitle": "Lehrer-Dashboard",
+    "overviewSubtitle": "Dein Lehr-Hub — Stunden planen, Einnahmen verfolgen und mit Schülern verbinden.",
+    "signInRequired": "Bitte melde dich an, um dein Lehrer-Dashboard zu sehen.",
+    "sidebarHello": "Hallo, {{name}}!",
+    "sidebarGuest": "Willkommen, Lehrkraft",
+    "sidebarRole": "Lehrer",
+    "nav": {
+      "overview": "Übersicht",
+      "teaching": "Unterricht",
+      "materials": "Materialien",
+      "tools": "Werkzeuge",
+      "insights": "Auswertung",
+      "account": "Konto",
+      "dashboard": "Übersicht",
+      "students": "Schüler",
+      "appointments": "Meine Termine",
+      "calendar": "Kalender",
+      "payments": "Zahlungen",
+      "nextJumpBonus": "Next Jump Bonus",
+      "messages": "NextGrades AI",
+      "schedule": "Stundenplan",
+      "myMaterials": "Meine Materialien",
+      "publish": "Neu veröffentlichen",
+      "aiGenerator": "KI-Quiz-Generator",
+      "aiChat": "NextGrades KI-Chat",
+      "analytics": "Analysen",
+      "earnings": "Einnahmen",
+      "settings": "Einstellungen"
+    },
+    "quickLinksTitle": "Schnellzugriff",
+    "quickLinksSubtitle": "Springe direkt zu deinen wichtigsten Tools.",
+    "contentPageDesc": "Veröffentlichte Lerninhalte ansehen, bearbeiten und verwalten.",
+    "publishPageDesc": "Arbeitsblätter, Videos oder Guides hochladen — veröffentlichte Inhalte erscheinen auf der öffentlichen Ressourcen-Seite.",
+    "welcome": "Willkommen zurück! 👋",
+    "subtitle": "Hier ist deine Übersicht für heute",
+    "newAppointment": "Neuer Termin",
+    "createAppointment": "Neuer Termin",
+    "viewSchedule": "Stundenplan ansehen",
+    "lessonsToday": "Stunden heute",
+    "hoursTodayLabel": "Stunden heute",
+    "hoursToday": "{{count}} Stunden heute",
+    "lessonsShort": "Stunden",
+    "lessonsThisWeek": "Stunden diese Woche",
+    "assignedStudents": "Zugewiesene Schüler:innen",
+    "hoursThisWeek": "Stunden diese Woche",
+    "earningsMonth": "Monatliche Einnahmen",
+    "nextJumpLevel": "NextJump Level {{level}}",
+    "hoursToNext": "{{hours}} Stunden bis zum nächsten Level",
+    "upcomingAppointments": "Nächste Termine",
+    "upcomingLessons": "Kommende Stunden",
+    "noAppointments": "Keine Termine geplant",
+    "planWithStudents": "Schüler:innen buchen über die Beratungsseite. Dein Stundenplan erscheint hier.",
+    "myStudents": "Meine Schüler:innen",
+    "allStudents": "Alle",
+    "allStudents": "Alle Schüler:innen",
+    "nextLesson": "Nächste Stunde",
+    "uploadMaterial": "Material hochladen",
+    "manageContent": "Alle Inhalte verwalten",
+    "uploadFirst": "Erstes Material hochladen",
+    "editResource": "Bearbeiten",
+    "views": "Aufrufe",
+    "welcomeBack": "Willkommen zurück, {{name}}!",
+    "welcomeSubtitle": "Stunden, Schüler:innen und Einnahmen an einem Ort verwalten.",
+    "openAi": "NextGrades KI",
+    "aiGenerator": "KI-Generator",
+    "notifications": "Benachrichtigungen",
+    "todayLabel": "Heute",
+    "upcomingShort": "anstehend",
+    "completedShort": "abgeschlossen",
+    "pendingShort": "ausstehend",
+    "goToCalendar": "Zum Kalender",
+    "thisWeek": "Diese Woche",
+    "plannedHours": "{{count}} Stunden geplant",
+    "myAppointments": "Meine Termine",
+    "allAppointments": "Alle Termine",
+    "gross": "Brutto",
+    "pending": "Ausstehend",
+    "viewPayments": "Zahlungen ansehen",
+    "nextJumpBonus": "NextJump-Bonus",
+    "currentBonus": "aktueller Bonus",
+    "nextGoal": "nächstes Ziel",
+    "learnMore": "Mehr erfahren",
+    "colDate": "Datum",
+    "colSubject": "Fach",
+    "colStudent": "Schüler:in",
+    "colTime": "Uhrzeit",
+    "colStatus": "Status",
+    "colAction": "Aktion",
+    "statusBooked": "Gebucht",
+    "startLesson": "Stunde starten",
+    "noZoom": "Kein Zoom-Link",
+    "syncCalendar": "Kalender synchronisieren",
+    "studentList": "Schüler:innenliste",
+    "noStudents": "Noch keine Schüler:innen zugewiesen",
+    "units": "Einheiten",
+    "createForStudent": "Planen",
+    "addStudent": "Alle Schüler:innen",
+    "recentPayments": "Letzte Zahlungen",
+    "viewAll": "Alle ansehen",
+    "noPayments": "Keine Zahlungen in diesem Monat",
+    "paid": "Bezahlt",
+    "noMessages": "Keine neuen Benachrichtigungen.",
+    "createNewAppointment": "Neuen Termin erstellen",
+    "netLabel": "Netto",
+    "colDuration": "Dauer",
+    "addNewStudent": "+ Neuen Schüler hinzufügen",
+    "messagesTitle": "NextGrades AI",
+    "studentsSubtitle": "Verwalte deine Schüler, Termine und Fortschritt.",
+    "export": "Exportieren",
+    "searchStudents": "Schüler suchen…",
+    "statusActive": "Aktiv",
+    "hoursBooked": "Gebuchte Stunden",
+    "hoursRemaining": "Verbleibende Stunden",
+    "progressLabel": "Fortschritt",
+    "availableMaterials": "Verfügbare Materialien",
+    "lastPayment": "Letzte Zahlung",
+    "sampleNote": "Guter Fortschritt in Analysis — nächste Stunde: Integrale.",
+    "addNote": "Neue Notiz hinzufügen",
+    "tabComingSoon": "Dieser Bereich wird bald verfügbar sein.",
+    "tabs": {
+      "overview": "Übersicht",
+      "appointments": "Termine",
+      "progress": "Fortschritt",
+      "payments": "Zahlungen",
+      "materials": "Materialien",
+      "notes": "Notizen"
+    },
+    "bonusSubtitle": "Verdiene mehr mit dem Next Jump Bonus-Programm.",
+    "bonusProgram": "Next Jump Bonus",
+    "currentBonusTitle": "Aktueller Bonus",
+    "nextGoalTitle": "Nächstes Ziel",
+    "progressBonus": "Fortschritts-Bonus",
+    "withdrawableFrom": "Auszahlbar ab",
+    "withdrawNow": "Jetzt auszahlen",
+    "thisMonth": "diesen Monat",
+    "monthlyProgress": "Dein Fortschritt diesen Monat",
+    "hoursTaught": "Stunden unterrichtet",
+    "bonusCalculation": "Bonus-Berechnung",
+    "hourlyRate": "Stundensatz",
+    "bonusRate": "Bonus-Satz",
+    "bonusLevels": "Bonus-Level",
+    "level": "Level",
+    "requirement": "Anforderung",
+    "hoursPerMonth": "Std./Monat",
+    "statusCompleted": "Abgeschlossen",
+    "statusCurrent": "Aktuell",
+    "statusLocked": "Gesperrt",
+    "bonusHistory": "Bonus-Historie",
+    "paidOut": "Ausgezahlt am",
+    "paidOutStatus": "Ausgezahlt",
+    "faq": "Häufig gestellte Fragen",
+    "faq1q": "Wie wird der Bonus berechnet?",
+    "faq1a": "Der Bonus basiert auf deinen unterrichteten Stunden und deinem aktuellen Level.",
+    "faq2q": "Wann kann ich auszahlen?",
+    "faq2a": "Auszahlungen sind ab €250 möglich, sobald der Monat abgeschlossen ist.",
+    "faq3q": "Wie erreiche ich das nächste Level?",
+    "faq3a": "Unterrichte mehr Stunden pro Monat, um das nächste Bonus-Level freizuschalten.",
+    "bonusTips": "Tipps für mehr Bonus",
+    "tip1": "Plane regelmäßige Stunden mit deinen Schülern.",
+    "tip2": "Nutze freie Zeiten am Wochenende für zusätzliche Termine.",
+    "tip3": "Halte deinen Kalender aktuell für bessere Sichtbarkeit.",
+    "paymentsSubtitle": "Übersicht deiner Einnahmen und Zahlungen.",
+    "paymentMethod": "Zahlungsmethode",
+    "amount": "Betrag"
+  },
+  "adminDashboard": {
+    "title": "Admin-Bereich",
+    "subtitle": "Übersicht über die gesamte Plattform",
+    "newUser": "Neuer Benutzer",
+    "students": "Schüler:innen",
+    "totalStudents": "Schüler:innen gesamt",
+    "teachers": "Lehrer:innen",
+    "totalTeachers": "Lehrer:innen gesamt",
+    "activeCourses": "Aktive Kurse",
+    "totalRevenue": "Gesamtumsatz",
+    "recentActivity": "Letzte Aktivität",
+    "viewAll": "Alle anzeigen",
+    "quickActions": "Schnellaktionen",
+    "manageUsers": "Benutzer verwalten",
+    "managePayments": "Zahlungen verwalten",
+    "websiteContent": "Website-Inhalte",
+    "activeStudents": "Aktive Schüler:innen",
+    "activeTeachers": "Aktive Lehrer:innen",
+    "platformRevenue": "Plattformumsatz",
+    "manageStudents": "Schüler:innen verwalten",
+    "manageTeachers": "Lehrer:innen verwalten",
+    "viewPayments": "Zahlungen anzeigen",
+    "manageResources": "Ressourcen verwalten",
+    "totalRevenueMonthly": "Monatlicher Gesamtumsatz",
+    "courses": "Kurse",
+    "revenue": "Umsatz"
+  },
+  "misc": {
+    "loading": "Laden...",
+    "errorGeneric": "Etwas ist schiefgelaufen. Bitte versuche es erneut."
+  },
+  "zoom": {
+    "connectTitle": "Zoom-Integration",
+    "connectDesc": "Verbinde dein Zoom-Konto, um Live-Klassen und Einzelstunden zu planen.",
+    "connect": "Zoom verbinden",
+    "reconnect": "Zoom erneut verbinden",
+    "disconnect": "Trennen",
+    "connectedSuccess": "Zoom-Konto erfolgreich verbunden!",
+    "connectedError": "Zoom-Verbindung fehlgeschlagen. Bitte erneut versuchen.",
+    "errorAccessDenied": "Zoom-Autorisierung abgebrochen. Bitte erneut versuchen und Zugriff für dein eigenes Zoom-Konto bestätigen.",
+    "errorAppNotFound": "Zoom konnte diese App für dein Konto nicht finden. Der Server nutzt möglicherweise Development-Zugangsdaten — nur das Zoom-Konto des App-Erstellers kann sich verbinden, bis Production OAuth aktiviert ist.",
+    "errorInvalidState": "Die Anmeldesitzung ist abgelaufen. Bitte Zoom erneut verbinden.",
+    "errorTokenExchange": "Zoom hat die Autorisierung abgelehnt. Prüfe Production Client ID, Client Secret und Redirect-URL in Zoom Marketplace.",
+    "devModeWarning": "Zoom läuft auf dem Server im Development-Modus. Nur das Zoom-Konto, das die App erstellt hat, kann sich verbinden, bis Production OAuth konfiguriert ist.",
+    "devModeTeacherHint": "Wenn auf Zoom „Application Not Found“ erscheint, bitte den Admin, auf Production-Zugangsdaten in Zoom Marketplace umzustellen.",
+    "disconnected": "Zoom-Konto getrennt",
+    "disconnectError": "Zoom konnte nicht getrennt werden",
+    "notConfigured": "Zoom OAuth ist auf dem Server nicht konfiguriert.",
+    "statusConnected": "Verbunden",
+    "statusDisconnected": "Nicht verbunden",
+    "tokenExpired": "Sitzung abgelaufen — erneut verbinden.",
+    "connectedSince": "Verbunden seit {{date}}",
+    "createLiveClass": "Live-Klasse erstellen",
+    "classCreated": "Live-Klasse erstellt und Schüler benachrichtigt!",
+    "meetingTitle": "Titel",
+    "description": "Beschreibung",
+    "meetingType": "Meeting-Typ",
+    "timezone": "Zeitzone",
+    "date": "Datum",
+    "startTime": "Startzeit",
+    "duration": "Dauer (Minuten)",
+    "subject": "Fach",
+    "student": "Schüler:in",
+    "studentOptional": "Schüler:in (optional)",
+    "selectSubject": "Fach wählen",
+    "selectStudent": "Schüler:in wählen",
+    "types": {
+      "live_class": "Live-Klasse",
+      "webinar": "Webinar",
+      "private_session": "Einzelstunde",
+      "group_session": "Gruppensitzung"
+    },
+    "scheduleDesc": "Live-Klassen planen, Einladungen automatisch senden und von einem Ort aus starten.",
+    "scheduleNew": "Live-Klasse planen",
+    "scheduleNewDesc": "Typ wählen, Zeit festlegen — Schüler erhalten automatisch eine Einladung.",
+    "setupRequired": "Zoom verbinden, um zu planen",
+    "setupRequiredDesc": "Ein schneller Schritt — Zoom verbinden, dann die erste Live-Klasse erstellen.",
+    "readyToSchedule": "Bereit zum Planen",
+    "connectBeforeSchedule": "Verbinde oben dein Zoom-Konto, um Meetings zu erstellen.",
+    "when": "Wann",
+    "minShort": "Min.",
+    "titlePlaceholder": "z. B. Algebra — Quadratische Gleichungen",
+    "descriptionPlaceholder": "Optionale Hinweise für Schüler…",
+    "moreOptions": "Weitere Optionen",
+    "createAndNotify": "Erstellen & Schüler benachrichtigen",
+    "getStarted": "In 3 Schritten starten",
+    "stepConnect": "Zoom verbinden",
+    "stepSchedule": "Klasse planen",
+    "stepGoLive": "Mit einem Klick live gehen",
+    "statUpcoming": "Bevorstehend",
+    "statUpcomingDesc": "Geplante Live-Sitzungen",
+    "statNext": "Nächste Klasse",
+    "noMeetingsShort": "Noch nichts geplant",
+    "scheduledMeetingsDesc": "Deine kommenden Live-Sitzungen — jederzeit beitreten oder absagen.",
+    "emptyTitle": "Noch keine Klassen geplant",
+    "emptyDescReady": "Nutze das Formular links, um deine erste Live-Klasse zu planen.",
+    "emptyDescConnect": "Verbinde zuerst Zoom, dann plane deine erste Sitzung.",
+    "cancelMeeting": "Meeting absagen",
+    "typesDesc": {
+      "live_class": "Offene Sitzung für eingeschriebene Schüler",
+      "private_session": "1:1 mit einem Schüler",
+      "group_session": "Kleine Gruppenstunde",
+      "webinar": "Präsentation für großes Publikum"
+    },
+    "scheduledMeetings": "Geplante Meetings",
+    "noMeetings": "Keine bevorstehenden Zoom-Meetings.",
+    "liveClass": "Live-Klasse",
+    "startMeeting": "Klasse starten",
+    "passcodeHint": "Meeting-Passcode: {{code}}",
+    "confirmDelete": "Dieses Meeting absagen?",
+    "deleteFailed": "Meeting konnte nicht abgesagt werden",
+    "deleted": "Meeting abgesagt",
+    "connectHint": "Zoom verbinden unter",
+    "joinLink": "Beitrittslink",
+    "admin": {
+      "title": "Zoom-Übersicht",
+      "connectedTeachers": "Verbundene Lehrkräfte",
+      "totalMeetings": "Zoom-Meetings gesamt",
+      "upcomingMeetings": "Bevorstehende Meetings",
+      "activeMeetings": "Gerade aktiv",
+      "upcomingList": "Bevorstehende Meetings",
+      "connections": "Verbundene Zoom-Konten",
+      "noConnections": "Noch keine Lehrkräfte verbunden",
+      "teacherStatus": "Zoom-Status der Lehrkräfte",
+      "oauthDevWarning": "Zoom OAuth läuft im Development-Modus — externe Lehrkräfte können sich nicht verbinden.",
+      "oauthDevHint": "Setze ZOOM_OAUTH_ENV=production und verwende Production Client ID, Client Secret und Redirect-URL aus Zoom Marketplace (Beta Test oder veröffentlichte App). Development-Zugangsdaten funktionieren nur für das Zoom-Konto des App-Erstellers.",
+      "oauthProductionOk": "Zoom OAuth ist für mehrere Lehrkräfte konfiguriert (Production-Modus).",
+      "oauthRedirect": "Aktuelle Redirect-URI: {{uri}}"
+    }
+  },
+  "notifications": {
+    "title": "Benachrichtigungen",
+    "bell": "Benachrichtigungen",
+    "empty": "Noch keine Benachrichtigungen.",
+    "emptyTitle": "Alles erledigt",
+    "emptyDesc": "Neue Updates zu Kursen, Aufgaben und Nachrichten erscheinen hier.",
+    "viewAll": "Alle Benachrichtigungen",
+    "markAllRead": "Alle als gelesen markieren",
+    "markRead": "Als gelesen markieren",
+    "delete": "Löschen",
+    "all": "Alle",
+    "unreadCount": "{{count}} ungelesen",
+    "managePrefs": "Benachrichtigungseinstellungen verwalten",
+    "pushDenied": "Push-Benachrichtigungen wurden nicht aktiviert.",
+    "unreadOnly": "Nur ungelesen",
+    "noUnread": "Keine ungelesenen Benachrichtigungen",
+    "showAll": "Alle anzeigen",
+    "allCaughtUp": "Alles erledigt",
+    "statsTotal": "Gesamt",
+    "statsUnread": "Ungelesen",
+    "prefsShort": "Einstellungen",
+    "filterBy": "Nach Typ filtern",
+    "prefs": {
+      "push": "Push-Benachrichtigungen",
+      "pushDesc": "Browser-Hinweise, wenn du unterwegs bist",
+      "sound": "Benachrichtigungstöne",
+      "soundDesc": "Dezenter Ton bei neuen Hinweisen",
+      "email": "E-Mail-Benachrichtigungen",
+      "emailDesc": "Wichtige Updates per E-Mail erhalten",
+      "delivery": "So wirst du benachrichtigt",
+      "emailTopics": "E-Mail-Themen",
+      "categories": "In-App-Kategorien"
+    },
+    "sounds": {
+      "title": "Benachrichtigungstöne",
+      "subtitle": "Wähle einen Standardton und passe Töne pro Benachrichtigungstyp an.",
+      "default": "Standardton",
+      "perCategory": "Ton pro Benachrichtigungstyp",
+      "useDefault": "Standard verwenden",
+      "chime": "Glockenton",
+      "bell": "Glocke",
+      "ping": "Ping",
+      "soft": "Sanfter Ton",
+      "message": "Nachricht",
+      "success": "Erfolg",
+      "alert": "Alarm",
+      "glass": "Glas",
+      "pop": "Pop",
+      "digital": "Digital"
+    },
+    "admin": {
+      "title": "Benachrichtigungszentrale",
+      "subtitle": "Ankündigungen an Schüler, Lehrer oder alle Nutzer senden.",
+      "compose": "Ankündigung verfassen",
+      "audience": "Zielgruppe",
+      "titlePlaceholder": "Titel der Ankündigung",
+      "messagePlaceholder": "Deine Nachricht…",
+      "schedule": "Planen (optional)",
+      "scheduleBtn": "Planen",
+      "sendNow": "Jetzt senden",
+      "history": "Versandverlauf",
+      "noHistory": "Noch keine Ankündigungen.",
+      "required": "Titel und Nachricht sind erforderlich.",
+      "sent": "An {{count}} Nutzer gesendet."
+    }
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "saved": "Einstellungen gespeichert",
+    "save": "Änderungen speichern",
+    "saving": "Speichern…",
+    "tabs": {
+      "profile": "Profil",
+      "account": "Konto",
+      "preferences": "Präferenzen",
+      "notifications": "Benachrichtigungen",
+      "subscription": "Abonnement",
+      "teaching": "Unterricht"
+    },
+    "profilePhoto": "Profilfoto",
+    "profilePhotoDesc": "Wird in deinem Dashboard und in Stunden angezeigt.",
+    "photoUpdated": "Foto aktualisiert",
+    "photoRemoved": "Foto entfernt",
+    "personalInfo": "Persönliche Daten",
+    "phone": "Telefonnummer",
+    "phoneHint": "Optional — für Terminerinnerungen",
+    "bio": "Über dich",
+    "bioHint": "Für Schüler:innen sichtbar — Erfahrung, Fächer, Unterrichtsstil",
+    "bioPlaceholder": "Erzähle Schüler:innen von deiner Unterrichtserfahrung…",
+    "goalHint": "Wird in deinem Dashboard angezeigt",
+    "goalPlaceholder": "z.B. Abitur in Mathematik mit Note 1 bestehen…",
+    "accountInfo": "Konto",
+    "emailHint": "Support kontaktieren, um die E-Mail zu ändern",
+    "memberSince": "Mitglied seit",
+    "role": "Rolle",
+    "changePassword": "Passwort ändern",
+    "changePasswordDesc": "Mindestens 8 Zeichen, Groß- und Kleinbuchstaben empfohlen",
+    "newPassword": "Neues Passwort",
+    "confirmPassword": "Passwort bestätigen",
+    "updatePassword": "Passwort aktualisieren",
+    "passwordMismatch": "Passwörter stimmen nicht überein",
+    "passwordUpdated": "Passwort aktualisiert",
+    "session": "Sitzung",
+    "signOutDesc": "Von diesem Gerät abmelden.",
+    "preferencesTitle": "Präferenzen",
+    "language": "Sprache",
+    "theme": "Darstellung",
+    "lightMode": "Hell",
+    "darkMode": "Dunkel",
+    "timezone": "Zeitzone",
+    "aiLanguage": "NextGrades KI Sprache",
+    "aiLanguageHint": "Standard-Sprache für KI-Antworten",
+    "notificationsTitle": "Benachrichtigungen",
+    "notifLessons": "Stundenerinnerungen",
+    "notifLessonsDesc": "E-Mail vor anstehenden Terminen",
+    "notifMaterials": "Neue Materialien",
+    "notifMaterialsDesc": "Wenn neue Lernressourcen hinzugefügt werden",
+    "notifMarketing": "Tipps & Updates",
+    "notifMarketingDesc": "Lerntipps und Plattform-News",
+    "subscriptionTitle": "Abonnement & Einheiten",
+    "subscriptionStatus": "Status",
+    "noSubscription": "Kein aktiver Plan",
+    "subscriptionDesc": "Unterrichtseinheiten und Abrechnung verwalten.",
+    "viewPlans": "Pläne ansehen",
+    "aiAccess": "NextGrades KI",
+    "aiAccessDesc": "Dein KI-Tutor ist in deinem Konto enthalten.",
+    "teachingTools": "Unterrichts-Tools",
+    "teachingToolsDesc": "Schnellzugriff auf deinen Lehrbereich",
+    "linkSchedule": "Stundenplan & Kalender",
+    "linkStudents": "Meine Schüler:innen",
+    "linkAiGen": "KI-Quiz-Generator",
+    "linkUpload": "Materialien hochladen",
+    "linkEarnings": "Einnahmen & Zahlungen",
+    "linkAiChat": "NextGrades KI",
+    "nameRequired": "Bitte gib deinen vollständigen Namen ein",
+    "passwordRequired": "Bitte gib ein neues Passwort ein",
+    "loadError": "Profil konnte nicht geladen werden. Bitte melde dich erneut an."
+  }
+}

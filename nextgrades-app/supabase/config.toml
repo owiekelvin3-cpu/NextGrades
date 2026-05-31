@@ -1,0 +1,5 @@
+# Supabase local config — remote project
+project_id = "pzavnfdhctsrhzesdvfd"
+
+[db]
+major_version = 15

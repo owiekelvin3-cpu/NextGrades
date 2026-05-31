@@ -1,0 +1,657 @@
+{
+  "common": {
+    "brand": "NextGrades",
+    "login": "Login",
+    "signup": "Registrieren",
+    "freeConsultation": "Kostenloses Erstgespräch",
+    "home": "Startseite",
+    "about": "Über uns",
+    "programs": "Programme",
+    "subjects": "Fächer",
+    "pricing": "Preise",
+    "resources": "Ressourcen",
+    "contact": "Kontakt",
+    "careers": "Karriere",
+    "help": "Hilfe",
+    "aiGenerator": "KI-Generator",
+    "dashboard": "Dashboard",
+    "logout": "Abmelden",
+    "lightMode": "Heller Modus",
+    "darkMode": "Dunkler Modus"
+  },
+  "navbar": {
+    "login": "Login",
+    "freeConsultation": "Kostenloses Erstgespräch"
+  },
+  "footer": {
+    "programs": "Programme",
+    "program1": "1:1 Nachhilfe",
+    "program2": "Kleine Lerngruppen",
+    "program3": "Mathe Excellence Programm",
+    "program4": "Prüfungsvorbereitung",
+    "resources": "Ressourcen",
+    "resource1": "Lernmaterialien",
+    "resource2": "Übungsblätter",
+    "resource3": "Erklärvideos",
+    "resource4": "Prüfungsvorbereitung",
+    "company": "Unternehmen",
+    "legal": "Rechtliches",
+    "terms": "AGB",
+    "privacy": "Datenschutz",
+    "imprint": "Impressum",
+    "madeInGermany": "Mit ♥ in Deutschland",
+    "copyright": "© 2026 NextGrades. Alle Rechte vorbehalten."
+  },
+  "home": {
+    "heroTitle1": "Nachhilfe neu gedacht.",
+    "heroTitle2": "Dein Erfolg beginnt hier.",
+    "heroSubtitle": "Individuelle 1:1 Betreuung, strukturierte Lernsysteme und moderne Digitaltools für nachhaltige Ergebnisse.",
+    "getStarted": "Loslegen",
+    "learnMore": "Mehr erfahren",
+    "featuresStrip": {
+      "feature1": "Strukturierte Lernsysteme",
+      "feature2": "Erfahrene Lehrer:innen",
+      "feature3": "Flexible Termine",
+      "feature4": "Erfolge messbar"
+    },
+    "programs": {
+      "title": "Unsere Programme",
+      "subtitle": "Für jede Lernziel die passende Unterstützung"
+    },
+    "statsBar": {
+      "stat1": "200+",
+      "stat2": "glückliche Schüler:innen",
+      "stat3": "25+",
+      "stat4": "erfahrene Lehrer:innen",
+      "stat5": "4.9/5",
+      "stat6": "Bewertungen",
+      "stat7": "100%",
+      "stat8": "online & flexibel"
+    },
+    "platformPreview": {
+      "title": "ALLES AN EINEM ORT",
+      "subtitle": "Deine komplette Lernplattform"
+    },
+    "testimonials": {
+      "title": "Das sagen Schüler:innen und Eltern",
+      "items": [
+        {
+          "quote": "Dank NextGrades habe ich in Mathe von Note 3 auf 1 verbessert! Die Erklärungen sind super und man versteht sofort!",
+          "name": "Lena, Klasse 10"
+        },
+        {
+          "quote": "Die kleine Lerngruppe hat meinem Sohn wirklich geholfen! Er ist motivierter und versteht Mathe endlich.",
+          "name": "Peter M., Vater"
+        },
+        {
+          "quote": "Die Plattform ist super intuitiv und die Materialien perfekt für die Abiturvorbereitung!",
+          "name": "Julia, Klasse 12"
+        }
+      ]
+    },
+    "cta": {
+      "title": "Bereit für den nächsten Schritt?",
+      "subtitle": "Buche jetzt dein kostenloses Erstgespräch und finde heraus, welches Programm zu dir passt.",
+      "button": "Kostenloses Erstgespräch buchen"
+    },
+    "heroEyebrow": "DIE ZUKUNFT DES LERNENS BEGINNT HIER.",
+    "heroTitle": "Smarter lernen.",
+    "heroTitleHighlight": "Bessere Ergebnisse.",
+    "freeConsultation": "Kostenloses Erstgespräch",
+    "explorePrograms": "Programme entdecken →",
+    "rating": "4,9/5",
+    "reviewsFrom": "aus 200+ Bewertungen",
+    "floatingCardTitle": "Individuelle Betreuung.",
+    "floatingCardDesc": "Echte Ergebnisse.",
+    "mostPopular": "Beliebtestes Programm",
+    "features": [
+      {
+        "title": "Premium-Lehrer:innen",
+        "desc": "Sorgfältig ausgewählt, erfahren und erfolgsorientiert."
+      },
+      {
+        "title": "Kleine Lerngruppen",
+        "desc": "Max. 3–5 Schüler:innen pro Gruppe für intensives Lernen."
+      },
+      {
+        "title": "Moderne Lernplattform",
+        "desc": "Videos, Übungen, PDFs und mehr — alles an einem Ort."
+      },
+      {
+        "title": "Strukturierte Lernsysteme",
+        "desc": "Klarer Lernpfad, Fortschritt & systematische Vorbereitung."
+      },
+      {
+        "title": "Flexibel & online",
+        "desc": "Lerne wo und wann du willst — nach deinem Zeitplan."
+      }
+    ],
+    "programsSection": {
+      "title": "Unsere Programme",
+      "subtitle": "Wähle das Programm, das am besten zu dir passt.",
+      "items": [
+        {
+          "title": "1:1 Premium-Nachhilfe",
+          "features": [
+            "Individuell, persönlich, effizient.",
+            "Persönliche 1:1 Betreuung",
+            "Flexible Termine",
+            "Maßgeschneiderter Lernplan"
+          ]
+        },
+        {
+          "title": "Kleine Lerngruppen",
+          "features": [
+            "Gemeinsam mit Freund:innen lernen.",
+            "Max. 3–5 Schüler:innen",
+            "Interaktiver Austausch",
+            "Motivation durch die Gruppe"
+          ]
+        },
+        {
+          "title": "Mathe Excellence Programm",
+          "features": [
+            "Unser Flaggschiff für Mathematik.",
+            "Wöchentliche Live-Sessions",
+            "Premium-Lernmaterialien",
+            "Abiturvorbereitung",
+            "Dozent:innen aus der Uni & Sessions"
+          ]
+        }
+      ]
+    },
+    "stats": [
+      {
+        "number": "200+",
+        "label": "glückliche Schüler:innen"
+      },
+      {
+        "number": "25+",
+        "label": "Top-Lehrer:innen"
+      },
+      {
+        "number": "1.000+",
+        "label": "Lernmaterialien"
+      },
+      {
+        "number": "4,9/5",
+        "label": "Bewertung von Eltern & Schüler:innen"
+      }
+    ],
+    "platform": {
+      "eyebrow": "Lernplattform",
+      "title": "Deine komplette Lernplattform",
+      "subtitle": "Unsere moderne Plattform unterstützt dich bei jedem Schritt deiner Lernreise.",
+      "discover": "Plattform entdecken",
+      "learnMore": "Mehr erfahren",
+      "trackProgress": "Fortschritt verfolgen",
+      "trackProgressDesc": "Verfolge deinen Fortschritt, schließe Lektionen ab und bleib motiviert!",
+      "availability": "24/7",
+      "availabilityLabel": "Support verfügbar",
+      "materials": "Lernmaterialien",
+      "features": [
+        { "title": "Fortschritt verfolgen", "desc": "Verfolge deinen Fortschritt, schließe Lektionen ab und bleib motiviert!" },
+        { "title": "24/7 Support", "desc": "Support, wann immer du ihn brauchst." },
+        { "title": "1.000+ Materialien", "desc": "Premium-Arbeitsblätter, Videos und Leitfäden an einem Ort." },
+        { "title": "Strukturiertes Lernen", "desc": "Klare Lernpfade mit Fortschrittsverfolgung und Prüfungsvorbereitung." }
+      ]
+    }
+  },
+  "contact": {
+    "title": "Komm mit uns in Kontakt.",
+    "subtitle": "Oder schreibe uns direkt an",
+    "firstName": "Vorname",
+    "lastName": "Nachname",
+    "emailAddress": "E-Mail Adresse",
+    "phoneNumber": "Telefonnummer",
+    "message": "Nachricht",
+    "enterFirstName": "Gib deinen Vornamen ein...",
+    "enterLastName": "Gib deinen Nachnamen ein...",
+    "enterEmail": "Gib deine E-Mail Adresse ein...",
+    "enterPhone": "+49 (000) 000-0000",
+    "enterMessage": "Gib deine Nachricht hier ein...",
+    "submitForm": "Formular absenden",
+    "submitting": "Wird gesendet...",
+    "successTitle": "Vielen Dank!",
+    "successMessage": "Wir haben deine Nachricht erhalten und melden uns bald bei dir.",
+    "validationRequired": "Bitte fülle alle Pflichtfelder aus.",
+    "validationEmail": "Bitte gib eine gültige E-Mail-Adresse ein."
+  },
+  "login": {
+    "welcomeBack": "Willkommen zurück",
+    "createAccount": "Ein Konto erstellen",
+    "loginDescription": "Melde dich in dein NextGrades Konto an",
+    "signupDescription": "Registriere dich und erhalte Premium Nachhilfe",
+    "iAmLoggingInAs": "Ich melde mich an als...",
+    "iAmA": "Ich bin ein/e...",
+    "student": "Schüler:in",
+    "studentLogin": "Schüler:in Login",
+    "iWantToLearn": "Ich möchte lernen",
+    "teacher": "Lehrer:in",
+    "teacherLogin": "Lehrer:in Login",
+    "iWantToTeach": "Ich möchte unterrichten",
+    "fullName": "Vollständiger Name",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "forgot": "Passwort vergessen?",
+    "loginNow": "Jetzt anmelden",
+    "createAccountNow": "Jetzt registrieren",
+    "loading": "Laden...",
+    "orContinueWith": "oder weiter mit",
+    "apple": "Apple",
+    "google": "Google",
+    "alreadyHaveAccount": "Du hast bereits ein Konto?",
+    "dontHaveAccount": "Du hast noch kein Konto?",
+    "signIn": "Anmelden",
+    "signUp": "Registrieren",
+    "terms": "AGB",
+    "smartLearning": "Smart Learning, Better Results.",
+    "dailyMeeting": "Tägliche Besprechung",
+    "supabaseNotConfigured": "Supabase-Anmeldedaten sind nicht konfiguriert. Bitte setze NEXT_PUBLIC_SUPABASE_URL und NEXT_PUBLIC_SUPABASE_ANON_KEY in .env.local."
+  },
+  "about": {
+    "heroTitle": "Mehr als Nachhilfe.",
+    "heroTitle2": "Eine neue Vision für Bildung.",
+    "heroSubtitle": "Wir haben uns die Aufgabe gemacht, um Schüler:innen eine moderne, strukturierte und motivierende Lernumgebung zu bieten – online, flexibel und auf höchstem Niveau.",
+    "heroFeature1": "Hochwertige Inhalte",
+    "heroFeature1Desc": "Von erfahrenen Lehrer:innen erstellt.",
+    "heroFeature2": "Kostenlos & hilfreich",
+    "heroFeature2Desc": "Fürs Lernen entwickelt.",
+    "heroFeature3": "Für alle Fächer",
+    "heroFeature3Desc": "Materialien für alle wichtigen Schulfächer.",
+    "storyTitle": "Wie alles begann",
+    "principlesTitle": "Unsere Prinzipien für deinen Erfolg",
+    "teamTitle": "Die Menschen hinter NextGrades",
+    "teamSubtitle": "Ein Team aus leidenschaftlichen Lehrer:innen, Lernexpert:innen und Visionär:innen.",
+    "milestonesTitle": "Meilensteine",
+    "ctaTitle": "Noch mehr exklusive Inhalte freischalten",
+    "ctaSubtitle": "Entdecke Zugriff auf alle Premium-Materialien, Lernvideos, Dutzende Mini-Kurse und vieles mehr.",
+    "ctaButton": "Jetzt Mitglied werden"
+  },
+  "resources": {
+    "heroTitle": "Wissen, das dich weiterbringt.",
+    "heroSubtitle": "Entdecke kostenlose Materialien, nützliche Guides und wertvolle Tipps, die dich beim Lernen unterstützen.",
+    "heroFeature1": "Hochwertige Inhalte",
+    "heroFeature1Desc": "Von erfahrenen Lehrer:innen erstellt.",
+    "heroFeature2": "Kostenlos & hilfreich",
+    "heroFeature2Desc": "Fürs Lernen entwickelt.",
+    "heroFeature3": "Für alle Fächer",
+    "heroFeature3Desc": "Materialien für alle wichtigen Schulfächer.",
+    "topBarResults": "Ergebnisse",
+    "searchPlaceholder": "Materialien durchsuchen...",
+    "sortBy": "Sortieren nach:",
+    "sortNewest": "Neuste zuerst",
+    "sortOldest": "Alteste zuerst",
+    "sortPopular": "Beliebteste",
+    "freeTitle": "Kostenlose Inhalte",
+    "freeSubtitle": "Für alle verfügbar",
+    "freeShowAll": "Alle anzeigen",
+    "premiumTitle": "PREMIUM Inhalte",
+    "premiumSubtitle": "Nur für Mitglieder",
+    "premiumShowAll": "Alle anzeigen",
+    "resourcesBySubject": "Ressourcen nach Fach",
+    "explore": "Entdecken →",
+    "ctaTitle": "Noch mehr exklusive Inhalte freischalten",
+    "ctaSubtitle": "Entdecke Zugriff auf alle Premium-Materialien, Lernvideos, Dutzende Mini-Kurse und vieles mehr.",
+    "ctaButton": "Jetzt Mitglied werden",
+    "features": {
+      "feature1Title": "Strukturiert nach Lehrplan",
+      "feature1Desc": "Lerninhalte passend zum Lehrplan.",
+      "feature2Title": "Regelmäßig aktualisiert",
+      "feature2Desc": "Stets aktuelle Inhalte.",
+      "feature3Title": "Von Experten erstellt",
+      "feature3Desc": "Von Pädagogen und Lehrkräften erstellt.",
+      "feature4Title": "Sicher & gut",
+      "feature4Desc": "Für Schüler:innen optimal aufbereitet."
+    },
+    "filters": {
+      "title": "Filter",
+      "subject": "Fach",
+      "grade": "Klasse",
+      "semester": "Semester",
+      "materialType": "Material-Typ",
+      "access": "Zugriff",
+      "accessAll": "Alle Inhalte",
+      "accessFree": "Kostenlose Inhalte",
+      "accessPremium": "Premium-Inhalte",
+      "reset": "Filter zurücksetzen"
+    },
+    "video": {
+      "back": "Zurück zu Ressourcen",
+      "watch": "Ansehen",
+      "notFound": "Video nicht gefunden.",
+      "loadFailed": "Video konnte nicht geladen werden.",
+      "lockedDesc": "Upgrade deine Mitgliedschaft, um dieses Video auf NextGrades anzusehen."
+    },
+    "freeButton": "Kostenlos"
+  },
+  "dashboard": {
+    "student": {
+      "welcomeBack": "Willkommen zurück!",
+      "overview": "Übersicht",
+      "myCourses": "Meine Kurse",
+      "myGrades": "Meine Noten",
+      "upcomingLessons": "Nächste Unterrichtsstunden",
+      "learningMaterials": "Lernmaterialien",
+      "settings": "Einstellungen"
+    },
+    "teacher": {
+      "welcomeBack": "Willkommen zurück!",
+      "overview": "Übersicht",
+      "myStudents": "Meine Schüler:innen",
+      "mySchedule": "Mein Stundenplan",
+      "materials": "Materialien",
+      "settings": "Einstellungen"
+    }
+  },
+  "admin": {
+    "title": "Admin Dashboard",
+    "users": "Benutzer",
+    "courses": "Kurse",
+    "analytics": "Analysen",
+    "settings": "Einstellungen"
+  },
+  "pricing": {
+    "title": "Preise",
+    "subtitle": "Wähle das passende Paket für dich",
+    "badge": "Premium-Tarife",
+    "heroTitle": "Wähle deinen perfekten Tarif",
+    "heroSubtitle": "Ob du nur Ressourcen brauchst oder volle 1:1-Betreuung — wir haben den passenden Tarif für dich.",
+    "monthly": "Monatlich",
+    "yearly": "Jährlich",
+    "yearlyDiscount": "(2 Monate gratis)",
+    "perMonth": "Monat",
+    "perYear": "Jahr",
+    "billedAnnually": "jährliche Abrechnung",
+    "includesPrefix": "Enthält alles aus {plan}, plus:",
+    "mostPopular": "Am beliebtesten",
+    "getStarted": "Loslegen",
+    "faqTitle": "Häufig gestellte Fragen",
+    "faqHeading": "Häufig gestellte Fragen."
+  },
+  "programs": {
+    "title": "Unsere Programme",
+    "subtitle": "Für jede Lernziel die passende Unterstützung"
+  },
+  "subjects": {
+    "title": "Unsere Fächer",
+    "subtitle": "Wähle dein Fach",
+    "eyebrow": "UNSERE FÄCHER",
+    "heroTitle": "Alle Fächer. Ein Ziel:",
+    "heroTitleHighlight": "Dein Erfolg.",
+    "heroSubtitle": "Wir bieten Nachhilfe in allen relevanten Schulfächern — individuell, strukturiert und mit echten Ergebnissen."
+  },
+  "careers": {
+    "title": "Karriere bei NextGrades",
+    "subtitle": "Werde Teil unseres Teams"
+  },
+  "help": {
+    "title": "Hilfe & Support",
+    "subtitle": "Finde Antworten auf deine Fragen",
+    "faqs": [
+      {
+        "question": "Wie funktioniert die Registrierung?",
+        "answer": "Du kannst dich einfach über unsere Anmeldeseite registrieren oder anmelden."
+      },
+      {
+        "question": "Wie kann ich ein Programm buchen?",
+        "answer": "Kontaktiere uns oder buche ein kostenloses Erstgespräch für mehr Informationen."
+      },
+      {
+        "question": "Welche Zahlungsmethoden gibt es?",
+        "answer": "Wir akzeptieren Kreditkarten, PayPal und Banküberweisung über Stripe."
+      }
+    ]
+  },
+  "aiGenerator": {
+    "title": "KI-Generator",
+    "subtitle": "Erstelle Lernmaterialien mit KI"
+  },
+  "consultation": {
+    "title": "Kostenloses Erstgespräch",
+    "subtitle": "Buche dein kostenloses Erstgespräch jetzt",
+    "cardTitle": "Buche dein kostenloses Erstgespräch",
+    "cardSubtitle": "Nutze Calendly, um einen passenden Termin zu buchen.",
+    "bookNow": "Jetzt Termin buchen"
+  },
+  "privacy": {
+    "title": "Datenschutzerklärung",
+    "subtitle": "Wie wir deine personenbezogenen Daten erheben, nutzen und schützen",
+    "eyebrow": "Rechtliches",
+    "lastUpdated": "Zuletzt aktualisiert: Mai 2026",
+    "intro": "NextGrades nimmt den Schutz deiner personenbezogenen Daten ernst. Diese Datenschutzerklärung erläutert, welche Informationen wir bei der Nutzung unserer Website und Lernplattform erheben, warum wir sie verarbeiten und welche Rechte du nach der Datenschutz-Grundverordnung (DSGVO) hast.",
+    "contactTitle": "Fragen zu deinen Daten?",
+    "contactNote": "Bei Fragen zu dieser Erklärung oder zur Ausübung deiner Rechte erreichst du uns unter support@nextgrades.de.",
+    "contactCta": "Kontakt aufnehmen",
+    "sections": [
+      {
+        "title": "Verantwortlicher",
+        "paragraphs": [
+          "Verantwortlich für die Datenverarbeitung auf dieser Website ist NextGrades. Datenschutzanfragen richtest du bitte an support@nextgrades.de oder über unsere Kontaktseite."
+        ]
+      },
+      {
+        "title": "Welche Daten wir erheben",
+        "paragraphs": [
+          "Wir erheben nur Daten, die zur Bereitstellung unserer Leistungen, zur Verbesserung deiner Nutzererfahrung und zur Erfüllung gesetzlicher Pflichten erforderlich sind. Je nach Nutzung können dies sein:"
+        ],
+        "bullets": [
+          "Kontodaten wie Name, E-Mail-Adresse und Rolle (Schüler:in, Lehrkraft oder Admin)",
+          "Profilangaben, die du freiwillig hinterlegst, z. B. Avatar, Bio und Lernpräferenzen",
+          "Buchungs- und Beratungsinformationen wie Klassenstufe, Fächer und Lernziele",
+          "Zahlungsbezogene Daten über unseren Zahlungsdienstleister (keine vollständigen Kartennummern)",
+          "Nutzungsdaten wie besuchte Seiten, aufgerufene Materialien und Quiz-Aktivitäten",
+          "Technische Daten wie IP-Adresse, Browsertyp, Geräteinformationen und Cookies"
+        ]
+      },
+      {
+        "title": "Wofür wir deine Daten nutzen",
+        "paragraphs": [
+          "Wir verwenden deine personenbezogenen Daten, um die NextGrades-Plattform zu betreiben, Nachhilfe und Lernmaterialien bereitzustellen, Buchungen und Zahlungen abzuwickeln, mit dir über dein Konto zu kommunizieren und unsere Website sowie Services zu verbessern.",
+          "Service-E-Mails (z. B. Kontobestätigung, Passwort-Reset, Buchungsbestätigungen) senden wir im Rahmen der Vertragserfüllung. Marketing-Nachrichten nur mit deiner Einwilligung oder soweit gesetzlich zulässig."
+        ]
+      },
+      {
+        "title": "Rechtsgrundlagen der Verarbeitung",
+        "paragraphs": [
+          "Wir verarbeiten personenbezogene Daten auf folgenden Rechtsgrundlagen der DSGVO:"
+        ],
+        "bullets": [
+          "Vertragserfüllung — zur Erbringung der von dir gebuchten Leistungen",
+          "Berechtigte Interessen — zur Absicherung der Plattform, Betrugsprävention und Serviceverbesserung",
+          "Einwilligung — für optionale Funktionen wie Marketing-E-Mails oder nicht notwendige Cookies",
+          "Rechtliche Verpflichtung — wenn wir Daten aufbewahren oder offenlegen müssen"
+        ]
+      },
+      {
+        "title": "Cookies und Analyse",
+        "paragraphs": [
+          "Unsere Website verwendet Cookies und ähnliche Technologien, um dich angemeldet zu halten, Einstellungen (Sprache, Design) zu speichern und die Nutzung der Seite zu verstehen.",
+          "Du kannst Cookies in deinen Browser-Einstellungen steuern. Das Deaktivieren essentieller Cookies kann einzelne Funktionen einschränken."
+        ]
+      },
+      {
+        "title": "Drittanbieter",
+        "paragraphs": [
+          "Wir arbeiten mit vertrauenswürdigen Dienstleistern, die Daten in unserem Auftrag verarbeiten, u. a. Hosting (Supabase), Zahlungsabwicklung (Stripe), E-Mail-Versand (Resend) und ggf. Videokonferenzen (Zoom).",
+          "Diese Anbieter sind vertraglich verpflichtet, deine Daten zu schützen und nur für NextGrades-Leistungen zu nutzen. Wir verkaufen deine personenbezogenen Daten nicht an Dritte."
+        ]
+      },
+      {
+        "title": "Speicherdauer",
+        "paragraphs": [
+          "Wir speichern personenbezogene Daten nur so lange, wie es für die in dieser Erklärung genannten Zwecke oder gesetzliche Vorgaben erforderlich ist. Anschließend löschen oder anonymisieren wir sie sicher.",
+          "Kontodaten werden in der Regel für die Dauer deines Kontos und eine angemessene Zeit danach aufbewahrt, um Streitigkeiten, Ansprüche oder gesetzliche Pflichten zu erfüllen."
+        ]
+      },
+      {
+        "title": "Deine Rechte",
+        "paragraphs": [
+          "Nach der DSGVO hast du folgende Rechte in Bezug auf deine personenbezogenen Daten:"
+        ],
+        "bullets": [
+          "Auskunft — eine Kopie der über dich gespeicherten Daten anfordern",
+          "Berichtigung — unrichtige oder unvollständige Daten korrigieren lassen",
+          "Löschung — Löschung deiner Daten verlangen, soweit anwendbar",
+          "Einschränkung — die Verarbeitung in bestimmten Fällen einschränken lassen",
+          "Datenübertragbarkeit — deine Daten in einem strukturierten Format erhalten",
+          "Widerspruch — gegen Verarbeitung auf Basis berechtigter Interessen widersprechen",
+          "Widerruf der Einwilligung — soweit die Verarbeitung auf Einwilligung beruht",
+          "Beschwerde bei einer Aufsichtsbehörde"
+        ]
+      },
+      {
+        "title": "Sicherheit",
+        "paragraphs": [
+          "Wir setzen angemessene technische und organisatorische Maßnahmen ein, um deine Daten vor unbefugtem Zugriff, Verlust oder Missbrauch zu schützen — u. a. verschlüsselte Verbindungen (HTTPS), Zugriffskontrollen und sichere Authentifizierung.",
+          "Eine vollständige Sicherheit bei der Übertragung im Internet ist nicht möglich. Bitte verwende ein starkes Passwort und behandle deine Zugangsdaten vertraulich."
+        ]
+      },
+      {
+        "title": "Kinder und Minderjährige",
+        "paragraphs": [
+          "NextGrades richtet sich auch an Schüler:innen unter 18 Jahren. Wo erforderlich, empfehlen wir die Beteiligung eines Erziehungsberechtigten bei Registrierung und Beratung.",
+          "Wir erheben wissentlich keine personenbezogenen Daten von Kindern ohne die nach geltendem Recht erforderliche Einwilligung."
+        ]
+      },
+      {
+        "title": "Änderungen dieser Erklärung",
+        "paragraphs": [
+          "Wir können diese Datenschutzerklärung anpassen, wenn sich unsere Leistungen oder gesetzliche Anforderungen ändern. Das Datum oben auf dieser Seite zeigt die letzte Überarbeitung. Bitte prüfe diese Seite regelmäßig."
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "title": "Allgemeine Geschäftsbedingungen",
+    "subtitle": "AGB für die Nutzung von NextGrades",
+    "eyebrow": "Rechtliches",
+    "lastUpdated": "Zuletzt aktualisiert: Mai 2026",
+    "intro": "Diese Allgemeinen Geschäftsbedingungen regeln die Nutzung der NextGrades-Website und Lernplattform. Mit der Kontoerstellung, Buchung einer Beratung oder dem Kauf eines Programms akzeptierst du diese AGB. Bitte lies sie vor der Nutzung unserer Leistungen sorgfältig.",
+    "contactTitle": "Fragen zu den AGB?",
+    "contactNote": "Bei Unklarheiten hilft dir unser Team gerne unter support@nextgrades.de weiter.",
+    "contactCta": "Kontakt aufnehmen",
+    "sections": [
+      {
+        "title": "Geltungsbereich und Vertragspartner",
+        "paragraphs": [
+          "Diese AGB gelten für alle über die Website und Online-Plattform von NextGrades angebotenen Leistungen, einschließlich Nachhilfeprogramme, Lernmaterialien, Beratungen und zugehöriger digitaler Services.",
+          "Vertragspartner ist NextGrades. Auf der Plattform gelistete Tutor:innen und Lehrkräfte erbringen Leistungen im Rahmen der von NextGrades definierten Strukturen."
+        ]
+      },
+      {
+        "title": "Leistungsbeschreibung",
+        "paragraphs": [
+          "NextGrades bietet Online- und Hybrid-Nachhilfe, Bildungsressourcen, Fortschrittsverfolgung, KI-gestützte Lernwerkzeuge und Beratungsleistungen mit Fokus auf deutsches Schul- und Studiumsvorbereitung.",
+          "Der genaue Leistungsumfang richtet sich nach dem gewählten Programm oder Tarif. Beschreibungen, Preise und Funktionen sind auf unserer Website veröffentlicht und können aktualisiert werden."
+        ]
+      },
+      {
+        "title": "Registrierung und Nutzerkonten",
+        "paragraphs": [
+          "Für bestimmte Funktionen ist ein Konto mit wahrheitsgemäßen und vollständigen Angaben erforderlich. Du bist für die Sicherheit deiner Zugangsdaten und alle Aktivitäten unter deinem Konto verantwortlich.",
+          "Bei Verdacht auf unbefugten Zugriff informiere uns umgehend. NextGrades kann Konten sperren oder kündigen, die gegen diese AGB oder geltendes Recht verstoßen."
+        ],
+        "bullets": [
+          "Schüler:innen und Eltern können Lernleistungen registrieren",
+          "Lehrkräfte registrieren sich separat und unterliegen zusätzlichen Anforderungen",
+          "Kontozugang darf nicht an unbefugte Dritte weitergegeben werden"
+        ]
+      },
+      {
+        "title": "Buchungen, Programme und Zahlungen",
+        "paragraphs": [
+          "Beratungen, Nachhilfestunden und Programm-Abonnements werden über unsere Website oder nach Vereinbarung gebucht. Es gelten die zum Buchungszeitpunkt angezeigten Preise, sofern nicht schriftlich anders vereinbart.",
+          "Zahlungen werden sicher über unseren Zahlungsdienstleister abgewickelt. Mit dem Kauf autorisierst du die Belastung für die gewählte Leistung oder Abo-Periode.",
+          "Abonnements verlängern sich automatisch, sofern sie nicht vor dem Verlängerungsdatum gekündigt werden — wie im Checkout beschrieben."
+        ]
+      },
+      {
+        "title": "Stornierung und Erstattungen",
+        "paragraphs": [
+          "Eine kostenlose Beratung kannst du jederzeit vor dem Termin stornieren — per Kontakt oder über die Stornierungsoption in der Bestätigung.",
+          "Für kostenpflichtige Programme und Abos gelten die jeweils beim Kauf genannten Kündigungs- und Erstattungsbedingungen. Gebühren für bereits durchgeführte Stunden sind grundsätzlich nicht erstattungsfähig.",
+          "NextGrades kann Termine bei Ausfall der Lehrkraft oder technischen Problemen absagen oder verschieben. In diesem Fall bieten wir Ersatztermine oder angemessene Gutschriften an."
+        ]
+      },
+      {
+        "title": "Pflichten der Nutzer:innen",
+        "paragraphs": [
+          "Du verpflichtest dich, NextGrades rechtmäßig und respektvoll zu nutzen. Folgendes ist untersagt:"
+        ],
+        "bullets": [
+          "Weitergabe von Zugangsdaten oder urheberrechtlich geschützten Materialien ohne Erlaubnis",
+          "Belästigung von Lehrkräften, Mitarbeitenden oder anderen Nutzer:innen",
+          "Upload schädlicher, illegaler oder irreführender Inhalte",
+          "Störung oder Reverse Engineering der Plattform",
+          "Nutzung zu anderen als persönlichen Lernzwecken ohne Genehmigung"
+        ]
+      },
+      {
+        "title": "Geistiges Eigentum",
+        "paragraphs": [
+          "Alle Inhalte auf der NextGrades-Plattform — Texte, Videos, Quizze, Marken und Software — sind urheberrechtlich und durch andere Schutzrechte geschützt.",
+          "Du erhältst eine beschränkte, nicht übertragbare Lizenz zur Nutzung der Materialien für persönliche Lernzwecke. Eine Vervielfältigung, Weitergabe oder kommerzielle Nutzung ohne schriftliche Zustimmung ist untersagt."
+        ]
+      },
+      {
+        "title": "Verfügbarkeit und Haftung",
+        "paragraphs": [
+          "Wir bemühen uns um eine zuverlässige Plattform, können aber keine unterbrechungsfreie Verfügbarkeit garantieren. Wartung, Updates oder Ausfälle bei Drittanbietern können die Nutzung vorübergehend einschränken.",
+          "NextGrades haftet unbeschränkt bei Vorsatz und grober Fahrlässigkeit sowie bei Verletzung von Leben, Körper oder Gesundheit. Bei leichter Fahrlässigkeit haften wir nur bei Verletzung wesentlicher Vertragspflichten, begrenzt auf den vorhersehbaren typischen Schaden.",
+          "NextGrades garantiert keine bestimmten schulischen Ergebnisse wie Noten oder Zulassungen. Nachhilfe unterstützt das Lernen; Ergebnisse hängen auch von individuellem Einsatz und externen Faktoren ab."
+        ]
+      },
+      {
+        "title": "Datenschutz",
+        "paragraphs": [
+          "Die Verarbeitung personenbezogener Daten richtet sich nach unserer Datenschutzerklärung, die Bestandteil dieser AGB ist. Mit der Nutzung unserer Leistungen bestätigst du, die Datenschutzerklärung zur Kenntnis genommen zu haben."
+        ]
+      },
+      {
+        "title": "Änderungen der AGB",
+        "paragraphs": [
+          "Wir können diese AGB anpassen, wenn sich Leistungen oder Rechtslage ändern. Wesentliche Änderungen teilen wir per E-Mail oder Hinweis auf der Website mit. Die fortgesetzte Nutzung nach Inkrafttreten gilt als Zustimmung."
+        ]
+      },
+      {
+        "title": "Anwendbares Recht und Gerichtsstand",
+        "paragraphs": [
+          "Es gilt das Recht der Bundesrepublik Deutschland unter Ausschluss des UN-Kaufrechts (CISG).",
+          "Bist du Verbraucher:in in der EU, können zwingende Verbraucherschutzvorschriften deines Wohnsitzlandes gelten. Gerichtsstand ist — soweit gesetzlich zulässig — Deutschland."
+        ]
+      }
+    ]
+  },
+  "careersPage": {
+    "title": "Karriere",
+    "subtitle": "Werde Teil unseres Teams!",
+    "applyNow": "Jetzt bewerben",
+    "jobs": [
+      {
+        "title": "Mathe-Nachhilfelehrer:in",
+        "description": "Wir suchen engagierte Mathe-Nachhilfelehrer:innen."
+      },
+      {
+        "title": "Englisch-Nachhilfelehrer:in",
+        "description": "Wir suchen engagierte Englisch-Nachhilfelehrer:innen."
+      }
+    ]
+  },
+  "mobileNav": {
+    "main": "Hauptnavigation",
+    "home": "Start",
+    "courses": "Kurse",
+    "resources": "Ressourcen",
+    "liveClasses": "Live",
+    "ai": "KI",
+    "aiChat": "NextGrades KI",
+    "notifications": "Hinweise",
+    "profile": "Profil",
+    "settings": "Einstellungen",
+    "students": "Schüler",
+    "schedule": "Termine",
+    "users": "Nutzer",
+    "content": "Inhalt"
+  }
+}

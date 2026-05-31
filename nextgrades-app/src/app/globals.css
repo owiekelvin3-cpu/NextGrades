@@ -1,0 +1,414 @@
+@import "tailwindcss";
+
+/* Class-based dark mode (matches ThemeContext toggling .dark on <html>) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  color-scheme: light;
+  --color-deep-navy: #0D1B2A;
+  --color-gold: #D4AF37;
+  --color-gold-light: #F5A623;
+  --color-orange: #FFA500;
+  --color-white: #FFFFFF;
+  --color-accent-blue: #4DA3FF;
+  --color-gray-light: #F5F5F5;
+  --color-gray-very-light: #FAFAFA;
+  --color-gray-dark: #111827;
+  --color-green: #22C55E;
+  --color-orange-badge: #F97316;
+  --color-gray-border: #E5E7EB;
+  
+  --background: #FFFFFF;
+  --foreground: #0D1B2A;
+  
+  --card-background: #FFFFFF;
+  --card-foreground: #0D1B2A;
+  --card-border: #E5E7EB;
+  --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  
+  --input-background: #FFFFFF;
+  --input-foreground: #0D1B2A;
+  --input-border: #E5E7EB;
+  --input-placeholder: #9CA3AF;
+  
+  --button-primary-background: #D4AF37;
+  --button-primary-foreground: #0D1B2A;
+  --button-secondary-background: #0D1B2A;
+  --button-secondary-foreground: #FFFFFF;
+  --button-outline-background: transparent;
+  --button-outline-foreground: #0D1B2A;
+  --button-outline-border: #0D1B2A;
+
+  --surface-muted: #FAFAFA;
+  --surface-subtle: #F5F6F8;
+  --surface-dashboard: #F0F2F5;
+  --surface-elevated: #FFFFFF;
+  --text-muted: #6B7280;
+  --border-default: #E5E7EB;
+}
+
+.dark {
+  color-scheme: dark;
+  --background: #0D1B2A;
+  --foreground: #FFFFFF;
+  
+  --card-background: #112240;
+  --card-foreground: #FFFFFF;
+  --card-border: rgba(255, 255, 255, 0.1);
+  --card-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 40px rgba(212, 175, 55, 0.1);
+  
+  --input-background: #0D1B2A;
+  --input-foreground: #FFFFFF;
+  --input-border: rgba(255, 255, 255, 0.15);
+  --input-placeholder: #64748B;
+  
+  --button-primary-background: linear-gradient(135deg, #D4AF37 0%, #F5A623 100%);
+  --button-primary-foreground: #0D1B2A;
+  --button-secondary-background: linear-gradient(135deg, #1E3A5F 0%, #0D1B2A 100%);
+  --button-secondary-foreground: #FFFFFF;
+  --button-outline-background: transparent;
+  --button-outline-foreground: #FFFFFF;
+  --button-outline-border: rgba(255, 255, 255, 0.3);
+
+  --surface-muted: #0D1B2A;
+  --surface-subtle: #0A1628;
+  --surface-dashboard: #0A1628;
+  --surface-elevated: #112240;
+  --text-muted: #9CA3AF;
+  --border-default: rgba(255, 255, 255, 0.1);
+}
+
+@theme inline {
+  --color-deep-navy: var(--color-deep-navy);
+  --color-gold: var(--color-gold);
+  --color-gold-light: var(--color-gold-light);
+  --color-orange: var(--color-orange);
+  --color-white: var(--color-white);
+  --color-accent-blue: var(--color-accent-blue);
+  --color-gray-light: var(--color-gray-light);
+  --color-gray-very-light: var(--color-gray-very-light);
+  --color-gray-dark: var(--color-gray-dark);
+  --color-green: var(--color-green);
+  --color-orange-badge: var(--color-orange-badge);
+  --color-gray-border: var(--color-gray-border);
+  
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card-background: var(--card-background);
+  --color-card-foreground: var(--card-foreground);
+  --color-card-border: var(--card-border);
+  --color-input-background: var(--input-background);
+  --color-input-foreground: var(--input-foreground);
+  --color-input-border: var(--input-border);
+  --color-input-placeholder: var(--input-placeholder);
+
+  --color-surface-muted: var(--surface-muted);
+  --color-surface-subtle: var(--surface-subtle);
+  --color-surface-dashboard: var(--surface-dashboard);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-text-muted: var(--text-muted);
+  --color-border-default: var(--border-default);
+  
+  --font-sans: var(--font-geist-sans);
+  --font-poppins: var(--font-poppins);
+  --font-playfair: var(--font-playfair-display);
+  --font-mono: var(--font-geist-mono);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+@supports (scroll-behavior: smooth) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+.theme-transition-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  pointer-events: none;
+  will-change: clip-path, opacity;
+}
+
+/* Smooth page transitions */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Utility animation classes */
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.animate-fade-in-down {
+  animation: fadeInDown 0.6s ease-out forwards;
+}
+
+.animate-fade-in-left {
+  animation: fadeInLeft 0.6s ease-out forwards;
+}
+
+.animate-fade-in-right {
+  animation: fadeInRight 0.6s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.6s ease-out forwards;
+}
+
+.animate-slide-in-left {
+  animation: slideInFromLeft 0.6s ease-out forwards;
+}
+
+.animate-slide-in-right {
+  animation: slideInFromRight 0.6s ease-out forwards;
+}
+
+/* Stagger children animations */
+.stagger-children > * {
+  animation: fadeInUp 0.6s ease-out backwards;
+}
+
+.stagger-children > :nth-child(1) { animation-delay: 0.1s; }
+.stagger-children > :nth-child(2) { animation-delay: 0.2s; }
+.stagger-children > :nth-child(3) { animation-delay: 0.3s; }
+.stagger-children > :nth-child(4) { animation-delay: 0.4s; }
+.stagger-children > :nth-child(5) { animation-delay: 0.5s; }
+.stagger-children > :nth-child(6) { animation-delay: 0.6s; }
+.stagger-children > :nth-child(7) { animation-delay: 0.7s; }
+.stagger-children > :nth-child(8) { animation-delay: 0.8s; }
+.stagger-children > :nth-child(9) { animation-delay: 0.9s; }
+.stagger-children > :nth-child(10) { animation-delay: 1s; }
+
+.gradient-gold {
+  background: linear-gradient(135deg, #D4AF37 0%, #F5A623 100%);
+}
+
+.gradient-navy {
+  background: linear-gradient(135deg, #0D1B2A 0%, #1A2F42 100%);
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.glass-dark {
+  background: rgba(13, 27, 42, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float 6s ease-in-out infinite;
+  animation-delay: -3s;
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(212, 175, 55, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(212, 175, 55, 0.6); }
+}
+
+@keyframes publish-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.animate-glow {
+  animation: glow 3s ease-in-out infinite;
+}
+
+/* Mobile-first design system */
+:root {
+  --mobile-page-x: 1rem;
+  --mobile-section-y: 1.5rem;
+  --mobile-card-gap: 0.75rem;
+  --mobile-touch-min: 48px;
+  --mobile-nav-height: 4.5rem;
+  --mobile-radius: 1rem;
+  --mobile-radius-lg: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --mobile-page-x: 1.5rem;
+    --mobile-section-y: 2rem;
+    --mobile-card-gap: 1rem;
+  }
+}
+
+.touch-target {
+  min-height: var(--mobile-touch-min);
+  min-width: var(--mobile-touch-min);
+}
+
+@supports (padding: env(safe-area-inset-bottom)) {
+  .safe-bottom {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+  .safe-top {
+    padding-top: max(0.75rem, env(safe-area-inset-top));
+  }
+}
+
+/* Prevent horizontal overflow globally */
+body {
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Mobile card tap feedback */
+.mobile-card-press {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  touch-action: manipulation;
+}
+.mobile-card-press:active {
+  transform: scale(0.98);
+}
+
+/* Skeleton shimmer */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--surface-subtle) 25%,
+    var(--surface-muted) 50%,
+    var(--surface-subtle) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Mobile app shell */
+html {
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .marketing-mobile-section {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+  .marketing-mobile-hero-image {
+    border-radius: 1.5rem;
+  }
+}
