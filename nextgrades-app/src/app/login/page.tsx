@@ -33,6 +33,7 @@ import { cn } from "@/lib/utils";
 import { useCmsImage } from "@/hooks/useCmsImage";
 import { LOGIN_HERO_IMAGE, LOGIN_AVATAR_IMAGES } from "@/lib/marketing-images";
 import { MarketingImage } from "@/components/marketing/MarketingImage";
+import { BrandLogo } from "@/components/BrandLogo";
 import { RegisterForm } from "@/components/auth/RegisterForm";
 
 function LoginContent() {
@@ -251,19 +252,25 @@ function LoginContent() {
         ? "bg-gradient-to-br from-[#0D1B2A] via-[#112240] to-[#0D1B2A]"
         : "bg-gradient-to-br from-[#FAFAFA] via-white to-[#D4AF37]/10"
     )}>
-      <Navbar />
+      <div className="hidden md:block">
+        <Navbar />
+      </div>
 
-      <main className="flex-1 flex items-center justify-center py-24 px-4">
+      <main className="flex flex-1 items-center justify-center px-4 py-8 md:py-24">
         <div className="w-full max-w-6xl">
           {/* Main Card with enhanced styling */}
           <div className={`bg-gradient-to-br ${theme === "dark" ? "from-[#0D1B2A]/90 to-[#1a2e4a]/90" : "from-white/95 to-white/90"} backdrop-blur-xl rounded-3xl shadow-2xl border ${theme === "dark" ? "border-[#D4AF37]/20" : "border-[#D4AF37]/10"} overflow-hidden transition-all duration-300 hover:shadow-2xl`}>
             <div className="grid lg:grid-cols-2">
               {/* Left Side - Form */}
-              <div className="p-8 sm:p-12 lg:p-16">
-                <div className="max-w-md mx-auto">
+              <div className="p-6 sm:p-12 lg:p-16">
+                <div className="mx-auto max-w-md">
+                  {/* Mobile logo */}
+                  <div className="mb-8 flex justify-center md:hidden">
+                    <BrandLogo className="h-10 w-auto" href="/" />
+                  </div>
                   {/* Header */}
                   <div className="mb-8 transition-all duration-300">
-                    <h1 className={`text-4xl font-bold mb-3 bg-gradient-to-r ${theme === "dark" ? "from-white to-[#D4AF37]" : "from-[#0D1B2A] to-[#D4AF37]"} bg-clip-text text-transparent`}>
+                    <h1 className={`mb-3 text-3xl font-bold leading-tight md:text-4xl bg-gradient-to-r ${theme === "dark" ? "from-white to-[#D4AF37]" : "from-[#0D1B2A] to-[#D4AF37]"} bg-clip-text text-transparent`}>
                       {isSignup ? "Create Account" : "Welcome Back"}
                     </h1>
                     <p className={`text-base ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>
@@ -524,7 +531,9 @@ function LoginContent() {
         </div>
       </main>
 
-      <Footer />
+      <div className="hidden md:block">
+        <Footer />
+      </div>
     </div>
   );
 }

@@ -3,7 +3,7 @@
 export const SUBJECT_COLORS = ["#2563EB", "#16A34A", "#D97706", "#9333EA", "#DC2626", "#0891B2"];
 
 export function studentPanel(className = "") {
-  return `rounded-2xl border border-gray-100 bg-white shadow-sm ${className}`;
+  return `rounded-2xl border border-border-default bg-surface-elevated shadow-sm ${className}`;
 }
 
 export function subjectInitials(name: string) {

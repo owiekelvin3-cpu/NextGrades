@@ -23,6 +23,7 @@ type Props = {
   onMaterialTypesChange: (types: string[]) => void;
   onReset: () => void;
   subjectLinkBase?: string;
+  mobile?: boolean;
 };
 
 export function ResourcesFilterSidebar({
@@ -41,6 +42,7 @@ export function ResourcesFilterSidebar({
   onMaterialTypesChange,
   onReset,
   subjectLinkBase = "/resources",
+  mobile: isMobile = false,
 }: Props) {
   const { t } = useTranslation();
 
@@ -52,7 +54,7 @@ export function ResourcesFilterSidebar({
 
   return (
     <aside className="space-y-6">
-      <div className={cn("p-5", appShell.elevatedCard)}>
+      <div className={cn(isMobile ? "space-y-5" : cn("p-5", appShell.elevatedCard))}>
         <div className="mb-4 flex items-center justify-between">
           <h3 className="text-sm font-bold text-foreground">
             {t("resources.filters.title", { defaultValue: "Filters" })}

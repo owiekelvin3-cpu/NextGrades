@@ -8,11 +8,11 @@ export const teacherHeader =
   "border-b border-gray-200/80 bg-white/95 backdrop-blur-sm";
 
 export function teacherPanel(className = "") {
-  return `overflow-hidden rounded-xl border border-gray-100 bg-white shadow-sm ${className}`;
+  return `overflow-hidden rounded-2xl border border-border-default bg-surface-elevated shadow-sm ${className}`;
 }
 
 export function teacherStatCard(className = "") {
-  return `flex min-h-[172px] flex-col rounded-xl border border-gray-100 bg-white p-5 shadow-sm transition hover:border-[#D4AF37]/25 hover:shadow-md ${className}`;
+  return `flex min-h-[160px] flex-col rounded-2xl border border-border-default bg-surface-elevated p-4 shadow-sm transition active:scale-[0.98] touch-manipulation md:min-h-[172px] md:p-5 md:hover:border-[#D4AF37]/25 md:hover:shadow-md ${className}`;
 }
 
 export function formatTeacherEuro(amount: number) {

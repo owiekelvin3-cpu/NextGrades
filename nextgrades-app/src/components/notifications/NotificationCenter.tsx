@@ -17,7 +17,7 @@ import type { NotificationCategory } from "@/lib/notifications/types";
 import { formatRelativeTime, categoryLabel, typeIconColor } from "@/lib/notifications/format";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
-import { appShell } from "@/lib/theme/shell";
+import { mobile } from "@/lib/mobile/tokens";
 
 type Props = {
   /** Hide page title when parent layout already shows it */
@@ -125,26 +125,24 @@ export function NotificationCenter({ embedded = false, settingsHref }: Props) {
       </div>
 
       {/* Category filter — horizontal scroll */}
-      <div className="relative mb-4">
-        <div className="flex gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div className={cn("relative mb-4", mobile.chipRow)}>
+        <FilterChip
+          active={!categoryFilter}
+          onClick={() => setCategoryFilter(null)}
+          label={t("notifications.all", { defaultValue: "All" })}
+        />
+        {PRIMARY_CATEGORIES.map((cat) => (
           <FilterChip
-            active={!categoryFilter}
-            onClick={() => setCategoryFilter(null)}
-            label={t("notifications.all", { defaultValue: "All" })}
+            key={cat}
+            active={categoryFilter === cat}
+            onClick={() => setCategoryFilter(categoryFilter === cat ? null : cat)}
+            label={categoryLabel(cat, i18n.language)}
           />
-          {PRIMARY_CATEGORIES.map((cat) => (
-            <FilterChip
-              key={cat}
-              active={categoryFilter === cat}
-              onClick={() => setCategoryFilter(categoryFilter === cat ? null : cat)}
-              label={categoryLabel(cat, i18n.language)}
-            />
-          ))}
-        </div>
+        ))}
       </div>
 
       {/* List */}
-      <div className={cn("overflow-hidden", appShell.elevatedCard)}>
+      <div className={cn("overflow-hidden", mobile.card)}>
         {loading && notifications.length === 0 ? (
           <div className="flex flex-col items-center justify-center gap-3 py-20 text-gray-500">
             <Loader2 className="h-7 w-7 animate-spin text-[#D4AF37]" />
@@ -181,8 +179,8 @@ export function NotificationCenter({ embedded = false, settingsHref }: Props) {
               <li
                 key={n.id}
                 className={cn(
-                  "group relative flex gap-4 px-4 py-4 transition sm:px-5",
-                  !n.is_read && "bg-[#D4AF37]/[0.04]"
+                  "group relative flex gap-4 px-4 py-4 transition touch-manipulation active:bg-surface-subtle sm:px-5",
+                  !n.is_read && "bg-[#D4AF37]/[0.06]"
                 )}
               >
                 {!n.is_read && (
@@ -278,10 +276,10 @@ function FilterChip({
       type="button"
       onClick={onClick}
       className={cn(
-        "shrink-0 rounded-full px-3.5 py-1.5 text-xs font-medium transition",
+        "shrink-0 rounded-full px-4 py-2.5 text-sm font-medium transition touch-manipulation min-h-10",
         active
-          ? "bg-[#D4AF37] text-[#0D1B2A] shadow-sm"
-          : "border border-gray-200 bg-white text-gray-600 hover:border-[#D4AF37]/40 hover:text-[#0D1B2A]"
+          ? "bg-[#D4AF37] text-[#0D1B2A] shadow-sm font-semibold"
+          : "border border-border-default bg-surface-elevated text-text-muted active:scale-[0.98]"
       )}
     >
       {label}

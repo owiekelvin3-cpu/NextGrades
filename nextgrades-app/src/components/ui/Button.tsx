@@ -20,10 +20,10 @@ const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(
     };
 
     const sizes = {
-      sm: "px-4 py-2 text-sm rounded-xl",
-      md: "px-6 py-3 text-base rounded-xl",
-      lg: "px-8 py-4 text-lg rounded-xl",
-      xl: "px-10 py-5 text-xl rounded-xl",
+      sm: "min-h-10 px-4 py-2 text-sm rounded-xl md:min-h-0",
+      md: "min-h-12 px-6 py-3 text-base rounded-2xl md:min-h-0 md:rounded-xl",
+      lg: "min-h-12 px-8 py-4 text-lg rounded-2xl md:min-h-0 md:rounded-xl",
+      xl: "min-h-14 px-10 py-5 text-xl rounded-2xl md:min-h-0 md:rounded-xl",
     };
 
     const classes = cn(

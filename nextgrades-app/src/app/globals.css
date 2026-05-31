@@ -325,19 +325,72 @@ body {
   animation: glow 3s ease-in-out infinite;
 }
 
-/* Mobile app shell */
-html {
-  overflow-x: hidden;
-  -webkit-tap-highlight-color: transparent;
+/* Mobile-first design system */
+:root {
+  --mobile-page-x: 1rem;
+  --mobile-section-y: 1.5rem;
+  --mobile-card-gap: 0.75rem;
+  --mobile-touch-min: 48px;
+  --mobile-nav-height: 4.5rem;
+  --mobile-radius: 1rem;
+  --mobile-radius-lg: 1.25rem;
 }
 
-@supports (padding: env(safe-area-inset-bottom)) {
-  .safe-bottom {
-    padding-bottom: env(safe-area-inset-bottom);
+@media (min-width: 768px) {
+  :root {
+    --mobile-page-x: 1.5rem;
+    --mobile-section-y: 2rem;
+    --mobile-card-gap: 1rem;
   }
 }
 
 .touch-target {
-  min-height: 44px;
-  min-width: 44px;
+  min-height: var(--mobile-touch-min);
+  min-width: var(--mobile-touch-min);
+}
+
+@supports (padding: env(safe-area-inset-bottom)) {
+  .safe-bottom {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+  .safe-top {
+    padding-top: max(0.75rem, env(safe-area-inset-top));
+  }
+}
+
+/* Prevent horizontal overflow globally */
+body {
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Mobile card tap feedback */
+.mobile-card-press {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  touch-action: manipulation;
+}
+.mobile-card-press:active {
+  transform: scale(0.98);
+}
+
+/* Skeleton shimmer */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--surface-subtle) 25%,
+    var(--surface-muted) 50%,
+    var(--surface-subtle) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Mobile app shell */
+html {
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
 }

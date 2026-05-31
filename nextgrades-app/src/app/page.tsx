@@ -14,6 +14,7 @@ import { useTranslation } from "react-i18next";
 import { useCmsImages } from "@/hooks/useCmsImage";
 import { HOME_HERO_STUDENT_IMAGE, PROGRAM_CARD_IMAGES, HERO_STUDY_IMAGE, HOME_PLATFORM_THUMB, HOME_TESTIMONIALS_BG } from "@/lib/marketing-images";
 import { MarketingImage } from "@/components/marketing/MarketingImage";
+import { MobileCarousel, CarouselCard } from "@/components/mobile/MobileCarousel";
 import {
   ArrowRight,
   Users,
@@ -67,9 +68,9 @@ export default function Home() {
       
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative overflow-hidden bg-[#0D1B2A] pt-28 pb-20 text-white">
+        <section className="relative overflow-hidden bg-[#0D1B2A] pb-16 pt-24 text-white md:pb-20 md:pt-28">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(212,175,55,0.08)_0%,_transparent_55%)]" />
-          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="relative mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
             <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
               <motion.div
                 initial={{ opacity: 0, x: -40 }}
@@ -164,34 +165,34 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Features Strip — 5 columns on all breakpoints */}
-        <section className={`py-8 md:py-12 ${theme === "dark" ? "bg-[#112240]" : "bg-[#FAFAFA]"}`}>
-          <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-5 gap-2 sm:gap-4 md:gap-8">
-              {features.map((feature, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  className="min-w-0 text-center"
-                >
-                  <div className="mx-auto mb-2 flex h-8 w-8 items-center justify-center rounded-lg bg-[#D4AF37]/20 sm:mb-4 sm:h-12 sm:w-12">
-                    {(() => {
-                      const Icon = featureIcons[index];
-                      return <Icon className="h-4 w-4 text-[#D4AF37] sm:h-6 sm:w-6" />;
-                    })()}
-                  </div>
-                  <h3 className={`mb-1 text-[10px] font-semibold leading-tight sm:mb-2 sm:text-sm md:text-base ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
-                    {feature.title}
-                  </h3>
-                  <p className={`hidden text-xs leading-snug sm:block md:text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
-                    {feature.desc}
-                  </p>
-                </motion.div>
-              ))}
-            </div>
+        {/* Features — slider on mobile, grid on desktop */}
+        <section className={`py-10 md:py-12 ${theme === "dark" ? "bg-[#112240]" : "bg-[#FAFAFA]"}`}>
+          <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+            <MobileCarousel
+              ariaLabel="Platform features"
+              slideWidth="full"
+              desktopClassName="md:grid md:grid-cols-5 md:gap-6 lg:gap-8"
+            >
+              {features.map((feature, index) => {
+                const Icon = featureIcons[index];
+                return (
+                  <CarouselCard
+                    key={index}
+                    className={`text-center ${theme === "dark" ? "border-white/10 bg-[#112240]" : "bg-white"}`}
+                  >
+                    <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#D4AF37]/15">
+                      <Icon className="h-7 w-7 text-[#D4AF37]" />
+                    </div>
+                    <h3 className={`mb-2 text-base font-bold leading-snug ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
+                      {feature.title}
+                    </h3>
+                    <p className={`text-sm leading-relaxed ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                      {feature.desc}
+                    </p>
+                  </CarouselCard>
+                );
+              })}
+            </MobileCarousel>
           </div>
         </section>
 
@@ -212,103 +213,160 @@ export default function Home() {
               </p>
             </motion.div>
 
-            <div className="grid md:grid-cols-3 gap-8">
+            <MobileCarousel
+              ariaLabel="Programs"
+              slideWidth="full"
+              desktopClassName="md:grid md:grid-cols-3 md:gap-8"
+            >
               {programs.map((program, index) => {
                 const featured = index === 2;
                 return (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  whileHover={{ y: -8 }}
-                  className="h-full"
-                >
-                  <Card className={`p-0 h-full flex flex-col relative overflow-hidden transition-all duration-300 ${
-                    featured ? "border-2 border-[#D4AF37] shadow-xl" : "border border-gray-100"
-                  }`}>
+                  <Card
+                    key={index}
+                    className={`relative flex h-full flex-col overflow-hidden p-0 transition-all duration-300 ${
+                      featured ? "border-2 border-[#D4AF37] shadow-xl" : "border border-gray-100"
+                    }`}
+                  >
                     {featured && (
-                      <div className="absolute top-4 right-4 z-10">
-                        <Badge className="bg-[#D4AF37] text-[#0D1B2A] px-3 py-1 text-xs font-semibold uppercase">
+                      <div className="absolute right-4 top-4 z-10">
+                        <Badge className="bg-[#D4AF37] px-3 py-1 text-xs font-semibold uppercase text-[#0D1B2A]">
                           {t("home.mostPopular")}
                         </Badge>
                       </div>
                     )}
-                    
-                    {/* Program images */}
-                    <div className="h-44 relative overflow-hidden">
+                    <div className="relative h-44 overflow-hidden">
                       <MarketingImage
                         src={programCardImages[index] ?? programCardImages[0]}
                         fallbackSrc={PROGRAM_CARD_IMAGES[index] ?? PROGRAM_CARD_IMAGES[0]}
                         alt={program.title}
                         containerClassName="h-full w-full"
-                        sizes="(max-width: 768px) 100vw, 33vw"
+                        sizes="(max-width: 768px) 90vw, 33vw"
                         className="transition-transform duration-500 hover:scale-110"
                       />
                     </div>
-                    
-                    <div className="p-6 flex flex-col flex-1">
-                      <h3 className={`text-xl font-bold mb-4 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
+                    <div className="flex flex-1 flex-col p-6">
+                      <h3 className={`mb-4 text-xl font-bold ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
                         {program.title}
                       </h3>
-                      
-                      <ul className="flex-1 space-y-3 mb-6">
+                      <ul className="mb-6 flex-1 space-y-3">
                         {program.features.map((feature, i) => (
                           <li key={i} className="flex items-start gap-2">
-                            <CheckCircle2 className="w-4 h-4 text-[#D4AF37] flex-shrink-0 mt-0.5" />
+                            <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#D4AF37]" />
                             <span className={`text-sm ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>{feature}</span>
                           </li>
                         ))}
                       </ul>
-                      
-                      <Link href="/programs" className={`font-semibold flex items-center gap-2 transition-all group ${
-                        featured ? "text-[#D4AF37]" : (theme === "dark" ? "text-white" : "text-[#0D1B2A]")
-                      }`}>
+                      <Link
+                        href="/programs"
+                        className={`group flex items-center gap-2 font-semibold transition-all ${
+                          featured ? "text-[#D4AF37]" : theme === "dark" ? "text-white" : "text-[#0D1B2A]"
+                        }`}
+                      >
                         {t("home.learnMore")}
-                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                       </Link>
                     </div>
                   </Card>
-                </motion.div>
-              );
+                );
               })}
-            </div>
+            </MobileCarousel>
           </div>
         </section>
 
-        {/* Stats Bar */}
-        <section className={`py-10 md:py-14 ${theme === "dark" ? "bg-[#112240] text-white" : "bg-[#FAFAFA] text-[#0D1B2A]"}`}>
-          <div className="max-w-5xl mx-auto px-3 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-4 gap-2 sm:gap-6 md:gap-8 text-center">
-              {stats.map((stat, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  className="min-w-0"
-                >
-                  <div className={`mx-auto mb-2 flex h-8 w-8 items-center justify-center rounded-lg sm:mb-4 sm:h-12 sm:w-12 ${theme === "dark" ? "bg-white/10" : "bg-[#D4AF37]/20"}`}>
-                    {(() => {
-                      const Icon = statIcons[index];
-                      return <Icon className="h-4 w-4 text-[#D4AF37] sm:h-6 sm:w-6" />;
-                    })()}
-                  </div>
-                  <p className={`text-lg font-bold leading-none sm:text-2xl md:text-3xl mb-1 sm:mb-2 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>{stat.number}</p>
-                  <p className={`text-[10px] leading-tight sm:text-xs md:text-sm ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>{stat.label}</p>
-                </motion.div>
-              ))}
-            </div>
+        {/* Stats — slider on mobile */}
+        <section className={`py-12 md:py-14 ${theme === "dark" ? "bg-[#112240] text-white" : "bg-[#FAFAFA] text-[#0D1B2A]"}`}>
+          <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-8">
+            <MobileCarousel
+              ariaLabel="Statistics"
+              slideWidth="compact"
+              desktopClassName="md:grid md:grid-cols-4 md:gap-8"
+            >
+              {stats.map((stat, index) => {
+                const Icon = statIcons[index];
+                return (
+                  <CarouselCard
+                    key={index}
+                    className={`items-center text-center ${theme === "dark" ? "border-white/10 bg-[#0D1B2A]/50" : "bg-white"}`}
+                  >
+                    <div className={`mb-4 flex h-14 w-14 items-center justify-center rounded-2xl ${theme === "dark" ? "bg-white/10" : "bg-[#D4AF37]/15"}`}>
+                      <Icon className="h-7 w-7 text-[#D4AF37]" />
+                    </div>
+                    <p className={`mb-2 text-3xl font-bold leading-none ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
+                      {stat.number}
+                    </p>
+                    <p className={`text-sm leading-snug ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>
+                      {stat.label}
+                    </p>
+                  </CarouselCard>
+                );
+              })}
+            </MobileCarousel>
           </div>
         </section>
 
-        {/* Platform Preview Section */}
-        <section className={`py-12 ${theme === "dark" ? "bg-[#112240]" : "bg-[#FAFAFA]"}`}>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="relative rounded-3xl overflow-hidden shadow-2xl">
-              {/* Hero Image Background */}
+        {/* Platform Preview — stacked on mobile, overlay on desktop */}
+        <section className={`py-10 md:py-12 ${theme === "dark" ? "bg-[#112240]" : "bg-[#FAFAFA]"}`}>
+          <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+            {/* Mobile layout */}
+            <div className="overflow-hidden rounded-3xl bg-[#0D1B2A] shadow-2xl md:hidden">
+              <div className="relative h-52 w-full">
+                <MarketingImage
+                  src={studyBannerImage}
+                  fallbackSrc={HERO_STUDY_IMAGE}
+                  alt={t("images.modernLearning")}
+                  containerClassName="h-full w-full"
+                  sizes="100vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0D1B2A] via-[#0D1B2A]/40 to-transparent" />
+              </div>
+              <div className="px-5 pb-8 pt-2">
+                <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-[#D4AF37]">
+                  {t("images.modernLearning")}
+                </p>
+                <h2 className="mb-3 text-2xl font-bold leading-tight text-white">
+                  {t("home.platform.title")}
+                </h2>
+                <p className="mb-6 text-base leading-relaxed text-gray-300">
+                  {t("home.platform.subtitle")}
+                </p>
+                <div className="mb-8 flex flex-col gap-3">
+                  <Button variant="gold" size="md" href="/resources" className="w-full">
+                    {t("home.platform.discover")}
+                  </Button>
+                  <Button variant="outline" size="md" href="/about" className="w-full border-white/40 text-white hover:bg-white hover:text-[#0D1B2A]">
+                    {t("home.platform.learnMore")}
+                  </Button>
+                </div>
+                <MobileCarousel ariaLabel="Platform highlights" slideWidth="full" desktopClassName="hidden">
+                  <CarouselCard className="bg-white">
+                    <h3 className="mb-3 text-sm font-semibold text-[#0D1B2A]">{t("home.platform.trackProgress")}</h3>
+                    <div className="flex gap-4">
+                      <MarketingImage
+                        src={platformThumb}
+                        fallbackSrc={HOME_PLATFORM_THUMB}
+                        alt={t("images.studentStudying")}
+                        width={64}
+                        height={64}
+                        sizes="64px"
+                        className="rounded-xl"
+                      />
+                      <p className="flex-1 text-sm leading-relaxed text-gray-600">{t("home.platform.trackProgressDesc")}</p>
+                    </div>
+                  </CarouselCard>
+                  <CarouselCard className="items-center bg-white text-center">
+                    <p className="text-3xl font-bold text-[#0D1B2A]">{t("home.platform.availability")}</p>
+                    <p className="mt-1 text-sm text-gray-500">{t("home.platform.availabilityLabel")}</p>
+                  </CarouselCard>
+                  <CarouselCard className="items-center bg-white text-center">
+                    <p className="text-3xl font-bold text-[#0D1B2A]">{stats[2]?.number ?? "1,000+"}</p>
+                    <p className="mt-1 text-sm text-gray-500">{t("home.platform.materials")}</p>
+                  </CarouselCard>
+                </MobileCarousel>
+              </div>
+            </div>
+
+            {/* Desktop layout */}
+            <div className="relative hidden overflow-hidden rounded-3xl shadow-2xl md:block">
               <div className="relative">
                 <MarketingImage
                   src={studyBannerImage}
@@ -318,74 +376,40 @@ export default function Home() {
                   sizes="100vw"
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-[#0D1B2A]/80 via-[#0D1B2A]/40 to-transparent" />
-                
-                {/* Content Overlay */}
                 <div className="absolute inset-0 flex items-center">
-                  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-                    <div className="grid lg:grid-cols-2 gap-12 items-center">
-                      <motion.div
-                        initial={{ opacity: 0, x: -50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                      >
-                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight">
+                  <div className="mx-auto w-full max-w-7xl px-6 lg:px-8">
+                    <div className="grid items-center gap-12 lg:grid-cols-2">
+                      <div>
+                        <h2 className="mb-4 text-4xl font-bold leading-tight text-white lg:text-5xl">
                           {t("home.platform.title")}
-                        </h1>
-                        <p className="text-gray-200 text-lg mb-8">
-                          {t("home.platform.subtitle")}
-                        </p>
-                        <div className="flex flex-col sm:flex-row gap-4">
-                          <Button variant="gold" size="md" href="/resources">
-                            {t("home.platform.discover")}
-                          </Button>
+                        </h2>
+                        <p className="mb-8 text-lg text-gray-200">{t("home.platform.subtitle")}</p>
+                        <div className="flex flex-row gap-4">
+                          <Button variant="gold" size="md" href="/resources">{t("home.platform.discover")}</Button>
                           <Button variant="outline" size="md" href="/about" className="border-white text-white hover:bg-white hover:text-[#0D1B2A]">
                             {t("home.platform.learnMore")}
                           </Button>
                         </div>
-                      </motion.div>
-                      
-                      <motion.div
-                        initial={{ opacity: 0, x: 50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        className="relative"
-                      >
-                        <div className="space-y-4">
-                          {/* Info Cards */}
-                          <div className="bg-white rounded-2xl p-6 shadow-xl">
-                            <h3 className="text-[#0D1B2A] font-semibold text-sm mb-2">
-                              {t("home.platform.trackProgress")}
-                            </h3>
-                            <div className="flex gap-4">
-                              <MarketingImage
-                                src={platformThumb}
-                                fallbackSrc={HOME_PLATFORM_THUMB}
-                                alt={t("images.studentStudying")}
-                                width={64}
-                                height={64}
-                                sizes="64px"
-                                className="rounded-xl"
-                              />
-                              <div className="flex-1">
-                                <p className="text-gray-600 text-sm">
-                                  {t("home.platform.trackProgressDesc")}
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                          
-                          <div className="grid grid-cols-2 gap-4">
-                            <div className="bg-white rounded-2xl p-4 shadow-xl">
-                              <div className="text-3xl font-bold text-[#0D1B2A]">{t("home.platform.availability")}</div>
-                              <div className="text-sm text-gray-500">{t("home.platform.availabilityLabel")}</div>
-                            </div>
-                            <div className="bg-white rounded-2xl p-4 shadow-xl">
-                              <div className="text-3xl font-bold text-[#0D1B2A]">{stats[2]?.number ?? "1,000+"}</div>
-                              <div className="text-sm text-gray-500">{t("home.platform.materials")}</div>
-                            </div>
+                      </div>
+                      <div className="space-y-4">
+                        <div className="rounded-2xl bg-white p-6 shadow-xl">
+                          <h3 className="mb-2 text-sm font-semibold text-[#0D1B2A]">{t("home.platform.trackProgress")}</h3>
+                          <div className="flex gap-4">
+                            <MarketingImage src={platformThumb} fallbackSrc={HOME_PLATFORM_THUMB} alt={t("images.studentStudying")} width={64} height={64} sizes="64px" className="rounded-xl" />
+                            <p className="flex-1 text-sm text-gray-600">{t("home.platform.trackProgressDesc")}</p>
                           </div>
                         </div>
-                      </motion.div>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="rounded-2xl bg-white p-4 shadow-xl">
+                            <div className="text-3xl font-bold text-[#0D1B2A]">{t("home.platform.availability")}</div>
+                            <div className="text-sm text-gray-500">{t("home.platform.availabilityLabel")}</div>
+                          </div>
+                          <div className="rounded-2xl bg-white p-4 shadow-xl">
+                            <div className="text-3xl font-bold text-[#0D1B2A]">{stats[2]?.number ?? "1,000+"}</div>
+                            <div className="text-sm text-gray-500">{t("home.platform.materials")}</div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -407,7 +431,7 @@ export default function Home() {
             <div className="absolute inset-0 bg-gradient-to-r from-[#0D1B2A]/90 via-[#0D1B2A]/70 to-[#0D1B2A]/90" />
           </div>
 
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="max-w-6xl mx-auto px-5 sm:px-6 lg:px-8 relative z-10">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -419,67 +443,50 @@ export default function Home() {
               </h2>
             </motion.div>
 
-            <div className="relative">
-              <div className="grid md:grid-cols-3 gap-8">
-                {testimonials.map((testimonial, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.1 }}
-                  >
-                    <Card className="p-8 h-full bg-white/10 backdrop-blur-xl border border-white/20">
-                      <div className="flex items-center gap-1 mb-6">
-                        {[1, 2, 3, 4, 5].map((star) => (
-                          <Star key={star} className="w-5 h-5 fill-[#D4AF37] text-[#D4AF37]" />
-                        ))}
-                      </div>
-                      <p className="mb-6 leading-relaxed text-white">
-                        &ldquo;{testimonial.quote}&rdquo;
-                      </p>
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-[#D4AF37]/30 flex items-center justify-center">
-                          <span className="text-[#D4AF37] font-bold text-sm">
-                            {testimonial.name.charAt(0)}
-                          </span>
-                        </div>
-                        <p className="text-sm text-gray-200">{testimonial.name}</p>
-                      </div>
-                    </Card>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
+            <MobileCarousel
+              ariaLabel="Testimonials"
+              slideWidth="full"
+              desktopClassName="md:grid md:grid-cols-3 md:gap-8"
+            >
+              {testimonials.map((testimonial, index) => (
+                <Card key={index} className="h-full border border-white/20 bg-white/10 p-8 backdrop-blur-xl">
+                  <div className="mb-6 flex items-center gap-1">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <Star key={star} className="h-5 w-5 fill-[#D4AF37] text-[#D4AF37]" />
+                    ))}
+                  </div>
+                  <p className="mb-6 text-base leading-relaxed text-white">&ldquo;{testimonial.quote}&rdquo;</p>
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#D4AF37]/30">
+                      <span className="text-sm font-bold text-[#D4AF37]">{testimonial.name.charAt(0)}</span>
+                    </div>
+                    <p className="text-sm font-medium text-gray-200">{testimonial.name}</p>
+                  </div>
+                </Card>
+              ))}
+            </MobileCarousel>
           </div>
         </section>
 
         {/* CTA Section */}
-        <section className={`py-16 ${theme === "dark" ? "bg-[#112240] text-white" : "bg-[#FAFAFA] text-[#0D1B2A]"}`}>
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="flex flex-col md:flex-row items-center justify-between gap-8"
-            >
-              <div className="flex items-center gap-4">
-                <div className={`w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0 ${theme === "dark" ? "bg-white/10" : "bg-[#D4AF37]/20"}`}>
-                  <Calendar className="w-7 h-7 text-[#D4AF37]" />
+        <section className={`py-12 md:py-16 ${theme === "dark" ? "bg-[#112240] text-white" : "bg-[#FAFAFA] text-[#0D1B2A]"}`}>
+          <div className="mx-auto max-w-4xl px-5 sm:px-6 lg:px-8">
+            <div className={`rounded-3xl p-6 md:p-8 ${theme === "dark" ? "bg-[#0D1B2A]/60 border border-white/10" : "border border-gray-100 bg-white shadow-lg"}`}>
+              <div className="flex flex-col items-center gap-6 text-center md:flex-row md:text-left">
+                <div className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl ${theme === "dark" ? "bg-white/10" : "bg-[#D4AF37]/15"}`}>
+                  <Calendar className="h-8 w-8 text-[#D4AF37]" />
                 </div>
-                <div>
-                  <h3 className="text-2xl font-bold mb-2">
-                    {t("home.cta.title")}
-                  </h3>
-                  <p className={`${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>
+                <div className="flex-1">
+                  <h3 className="mb-2 text-xl font-bold md:text-2xl">{t("home.cta.title")}</h3>
+                  <p className={`text-base leading-relaxed ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>
                     {t("home.cta.subtitle")}
                   </p>
                 </div>
+                <Button variant="gold" size="lg" href="/consultation" className="w-full shrink-0 md:w-auto">
+                  {t("home.cta.button")}
+                </Button>
               </div>
-              <Button variant="gold" size="lg" href="/consultation">
-                {t("home.cta.button")}
-              </Button>
-            </motion.div>
+            </div>
           </div>
         </section>
         </main>

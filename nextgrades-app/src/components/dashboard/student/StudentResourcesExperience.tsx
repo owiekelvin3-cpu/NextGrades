@@ -23,6 +23,7 @@ import { useBookmarks } from "@/hooks/useBookmarks";
 import { fetchStudentResourcesPageData, formatBytes } from "@/lib/dashboard/student-overview";
 import { StudentDashboardLayout } from "./StudentDashboardLayout";
 import { studentPanel, materialTypeLabel, materialTypeColor } from "./student-ui";
+import { mobile } from "@/lib/mobile/tokens";
 import { cn } from "@/lib/utils";
 
 type Tab = "all" | "course" | "type" | "favorites";
@@ -98,7 +99,7 @@ export function StudentResourcesExperience() {
     <StudentDashboardLayout title={title} description={description}>
       <div className="mx-auto grid max-w-[1400px] gap-6 xl:grid-cols-[1fr_300px]">
         <div className="space-y-4">
-          <div className="flex flex-wrap gap-6 border-b border-gray-200">
+          <div className="hidden flex-wrap gap-6 border-b border-border-default md:flex">
             {(
               [
                 ["all", t("studentDashboard.tabAllMaterials", { defaultValue: "All materials" })],
@@ -123,25 +124,43 @@ export function StudentResourcesExperience() {
 
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+              <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-text-muted" />
               <input
                 type="search"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder={t("studentDashboard.searchMaterials", { defaultValue: "Search materials…" })}
-                className="w-full rounded-xl border border-gray-200 bg-white py-2.5 pl-10 pr-4 text-sm outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37]"
+                className="w-full min-h-12 rounded-2xl border border-border-default bg-surface-elevated py-3 pl-12 pr-4 text-base outline-none focus:border-[#D4AF37] focus:ring-2 focus:ring-[#D4AF37]/25"
               />
             </div>
-            <button
-              type="button"
-              className="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-600"
-            >
-              <SlidersHorizontal className="h-4 w-4" />
-              {t("studentDashboard.filter", { defaultValue: "Filter" })}
-            </button>
           </div>
 
-          <div className="flex flex-wrap gap-3">
+          <div className={cn(mobile.chipRow, "md:hidden")}>
+            {(
+              [
+                ["all", t("studentDashboard.tabAllMaterials", { defaultValue: "All materials" })],
+                ["course", t("studentDashboard.tabByCourse", { defaultValue: "By course" })],
+                ["type", t("studentDashboard.tabByType", { defaultValue: "By type" })],
+                ["favorites", t("studentDashboard.tabFavorites", { defaultValue: "Favorites" })],
+              ] as const
+            ).map(([id, label]) => (
+              <button
+                key={id}
+                type="button"
+                onClick={() => setTab(id)}
+                className={cn(
+                  mobile.chip,
+                  tab === id
+                    ? "bg-[#D4AF37] font-semibold text-[#0D1B2A]"
+                    : "border border-border-default bg-surface-elevated text-text-muted"
+                )}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+
+          <div className="hidden flex-wrap gap-3 md:flex">
             <select
               value={courseFilter}
               onChange={(e) => setCourseFilter(e.target.value)}
@@ -179,7 +198,55 @@ export function StudentResourcesExperience() {
             </button>
           </div>
 
-          <div className={studentPanel("overflow-hidden")}>
+          {/* Mobile card list */}
+          <div className="space-y-3 md:hidden">
+            {pageItems.length === 0 ? (
+              <div className={studentPanel("p-8 text-center text-text-muted")}>
+                {t("studentDashboard.noMaterials")}
+              </div>
+            ) : (
+              pageItems.map((m) => (
+                <article key={m.id} className={cn(mobile.cardInteractive, mobile.cardPad, "flex gap-4")}>
+                  <div className={cn("flex h-12 w-12 shrink-0 items-center justify-center rounded-xl", materialTypeColor(m.type))}>
+                    <MaterialIcon type={m.type} />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="font-semibold text-foreground line-clamp-2">{m.title}</p>
+                    <p className="mt-1 text-xs text-text-muted">
+                      {materialTypeLabel(m.type, t)} · {m.file_size ? formatBytes(m.file_size) : m.type}
+                    </p>
+                    {m.created_at && (
+                      <p className="mt-1 text-xs text-text-muted">
+                        {new Date(m.created_at).toLocaleDateString(locale)}
+                      </p>
+                    )}
+                  </div>
+                  <div className="flex shrink-0 flex-col gap-2">
+                    <button
+                      type="button"
+                      onClick={() => toggle(m.id)}
+                      className={cn(mobile.touchTarget, "flex items-center justify-center rounded-xl text-[#D4AF37]")}
+                      aria-label="Favorite"
+                    >
+                      <Star className={cn("h-5 w-5", isBookmarked(m.id) && "fill-[#D4AF37]")} />
+                    </button>
+                    {m.url && (
+                      <a
+                        href={m.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={cn(mobile.touchTarget, "flex items-center justify-center rounded-xl bg-[#D4AF37]/15 text-[#D4AF37]")}
+                      >
+                        <Download className="h-5 w-5" />
+                      </a>
+                    )}
+                  </div>
+                </article>
+              ))
+            )}
+          </div>
+
+          <div className={cn(studentPanel("overflow-hidden"), "hidden md:block")}>
             <div className="overflow-x-auto">
               <table className="w-full min-w-[640px] text-left text-sm">
                 <thead>

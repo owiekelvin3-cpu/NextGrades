@@ -39,6 +39,9 @@ import {
 } from "@/lib/dashboard/student-overview";
 import { StudentDashboardLayout } from "./StudentDashboardLayout";
 import { studentPanel, formatTimeRange, lessonDateParts } from "./student-ui";
+import { SwipeableCardRow, SwipeableCard } from "@/components/mobile/SwipeableCardRow";
+import { MobileAccordion } from "@/components/mobile/MobileAccordion";
+import { mobile } from "@/lib/mobile/tokens";
 import { cn } from "@/lib/utils";
 
 function ProgressSparkline({ values }: { values: number[] }) {
@@ -120,9 +123,35 @@ export function StudentOverviewDashboard() {
 
   return (
     <StudentDashboardLayout title={title}>
-      <div className="mx-auto max-w-[1400px] flex flex-col gap-4">
-        {/* Welcome + goal */}
-        <section className={`${studentPanel()} p-6 sm:p-8`}>
+      <div className="mx-auto flex max-w-[1400px] flex-col gap-8 md:gap-6">
+        {/* Welcome hero — mobile */}
+        <section className={cn(mobile.card, mobile.cardPad, "md:hidden")}>
+          <span className={mobile.pill}>
+            <GraduationCap className="h-3.5 w-3.5" />
+            {t("studentDashboard.overviewTitle", { defaultValue: "Dashboard" })}
+          </span>
+          <h2 className="mt-4 text-2xl font-bold leading-tight text-foreground">
+            {t("studentDashboard.welcomeBack", { name: firstName })}
+          </h2>
+          <p className={cn(mobile.caption, "mt-3")}>
+            {t("studentDashboard.welcomeSubtitleMock", {
+              defaultValue: "Great to see you keep working toward your goals.",
+            })}
+          </p>
+          <Link
+            href="/dashboard/student/courses"
+            className={cn(
+              mobile.button,
+              "mt-6 flex w-full items-center justify-center gap-2 bg-gradient-to-r from-[#D4AF37] to-[#F5A623] text-[#0D1B2A]"
+            )}
+          >
+            {t("studentDashboard.continueLearning", { subject: "", defaultValue: "Continue learning" })}
+            <ArrowRight className="h-5 w-5" />
+          </Link>
+        </section>
+
+        {/* Welcome + goal — desktop */}
+        <section className={cn(`${studentPanel()} p-6 sm:p-8`, "hidden md:block")}>
           <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
             <div>
               <h2 className="text-2xl font-bold text-[#0D1B2A] sm:text-3xl">
@@ -154,87 +183,145 @@ export function StudentOverviewDashboard() {
           </div>
         </section>
 
-        {/* Stats row */}
-        <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          <div className={`${studentPanel()} p-5`}>
-            <p className="text-xs font-medium uppercase tracking-wide text-gray-400">
-              {t("studentDashboard.remainingUnits")}
-            </p>
-            <p className="mt-2 text-2xl font-bold text-[#0D1B2A]">
-              {data.units
-                ? t("studentDashboard.unitsOf", { remaining: unitsRemaining, total: unitsTotal })
-                : "—"}
-            </p>
-            {data.units && (
-              <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-gray-100">
-                <div className="h-full rounded-full bg-[#D4AF37]" style={{ width: `${unitsPercent}%` }} />
+        {/* Stats — swipeable on mobile */}
+        <section>
+          <SwipeableCardRow desktopCols={4}>
+            <SwipeableCard>
+              <div className={`${studentPanel()} h-full p-5`}>
+                <p className="text-xs font-medium uppercase tracking-wide text-text-muted">
+                  {t("studentDashboard.remainingUnits")}
+                </p>
+                <p className="mt-2 text-2xl font-bold text-foreground">
+                  {data.units
+                    ? t("studentDashboard.unitsOf", { remaining: unitsRemaining, total: unitsTotal })
+                    : "—"}
+                </p>
+                {data.units && (
+                  <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-surface-subtle">
+                    <div className="h-full rounded-full bg-[#D4AF37]" style={{ width: `${unitsPercent}%` }} />
+                  </div>
+                )}
+                <Link href="/pricing" className="mt-4 inline-flex min-h-10 items-center text-xs font-medium text-[#D4AF37]">
+                  {t("studentDashboard.manageUnitsPackage", { defaultValue: "Manage unit package" })}
+                </Link>
               </div>
-            )}
-            <Link href="/pricing" className="mt-4 inline-flex text-xs font-medium text-[#D4AF37] hover:underline">
-              {t("studentDashboard.manageUnitsPackage", { defaultValue: "Manage unit package" })}
-            </Link>
-          </div>
+            </SwipeableCard>
 
-          <div className={`${studentPanel()} p-5`}>
-            <p className="text-xs font-medium uppercase tracking-wide text-gray-400">
-              {t("studentDashboard.nextAppointment")}
-            </p>
-            {data.nextLesson ? (
-              <>
-                <p className="mt-2 text-lg font-bold text-[#0D1B2A]">
-                  {new Date(data.nextLesson.start_time).toLocaleDateString(dateLocale, {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
-                  })}
+            <SwipeableCard>
+              <div className={`${studentPanel()} h-full p-5`}>
+                <p className="text-xs font-medium uppercase tracking-wide text-text-muted">
+                  {t("studentDashboard.nextAppointment")}
                 </p>
-                <p className="mt-1 text-sm text-gray-500">
-                  {formatTimeRange(data.nextLesson.start_time, data.nextLesson.duration, dateLocale)} ·{" "}
-                  {data.nextLesson.subject_name}
+                {data.nextLesson ? (
+                  <>
+                    <p className="mt-2 text-lg font-bold text-foreground">
+                      {new Date(data.nextLesson.start_time).toLocaleDateString(dateLocale, {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                      })}
+                    </p>
+                    <p className="mt-1 text-sm text-text-muted">
+                      {formatTimeRange(data.nextLesson.start_time, data.nextLesson.duration, dateLocale)} ·{" "}
+                      {data.nextLesson.subject_name}
+                    </p>
+                  </>
+                ) : (
+                  <p className="mt-2 text-sm text-text-muted">{t("studentDashboard.noAppointments")}</p>
+                )}
+                <Link href="/dashboard/student/appointments" className="mt-4 inline-flex min-h-10 items-center text-xs font-medium text-[#D4AF37]">
+                  {t("studentDashboard.goToAppointmentBtn", { defaultValue: "Go to appointment" })}
+                </Link>
+              </div>
+            </SwipeableCard>
+
+            <SwipeableCard>
+              <div className={`${studentPanel()} h-full p-5`}>
+                <p className="text-xs font-medium uppercase tracking-wide text-text-muted">
+                  {t("studentDashboard.totalProgress")}
                 </p>
-              </>
-            ) : (
-              <p className="mt-2 text-sm text-gray-500">{t("studentDashboard.noAppointments")}</p>
-            )}
-            <Link href="/dashboard/student/appointments" className="mt-4 inline-flex text-xs font-medium text-[#D4AF37] hover:underline">
-              {t("studentDashboard.goToAppointmentBtn", { defaultValue: "Go to appointment" })}
-            </Link>
-          </div>
+                <div className="mt-2 flex items-end gap-2">
+                  <span className="text-2xl font-bold text-foreground">{data.overallProgress}%</span>
+                  <ProgressSparkline values={data.progressSparkline} />
+                </div>
+                <p className="mt-1 text-sm text-text-muted">{t("studentDashboard.progressKeepGoing", { defaultValue: "Keep it up!" })}</p>
+                <Link href="/dashboard/student/progress" className="mt-4 inline-flex min-h-10 items-center text-xs font-medium text-[#D4AF37]">
+                  {t("studentDashboard.viewProgress")}
+                </Link>
+              </div>
+            </SwipeableCard>
 
-          <div className={`${studentPanel()} p-5`}>
-            <p className="text-xs font-medium uppercase tracking-wide text-gray-400">
-              {t("studentDashboard.totalProgress")}
-            </p>
-            <div className="mt-2 flex items-end gap-2">
-              <span className="text-2xl font-bold text-[#0D1B2A]">{data.overallProgress}%</span>
-              <ProgressSparkline values={data.progressSparkline} />
-            </div>
-            <p className="mt-1 text-sm text-gray-500">{t("studentDashboard.progressKeepGoing", { defaultValue: "Keep it up! 💪" })}</p>
-            <Link href="/dashboard/student/progress" className="mt-4 inline-flex text-xs font-medium text-[#D4AF37] hover:underline">
-              {t("studentDashboard.viewProgress")}
-            </Link>
-          </div>
-
-          <div className={`${studentPanel()} p-5`}>
-            <p className="text-xs font-medium uppercase tracking-wide text-gray-400">
-              {t("studentDashboard.openTasks")}
-            </p>
-            <p className="mt-2 text-2xl font-bold text-[#0D1B2A]">
-              {data.openTaskCount === 0 ? "0" : data.openTaskCount}
-            </p>
-            <p className="mt-1 text-sm text-gray-500">
-              {data.openTaskCount === 0
-                ? t("studentDashboard.noOpenTasks")
-                : t("studentDashboard.tasksWaitingDesc", { defaultValue: "Tasks waiting for you" })}
-            </p>
-            <Link href="/dashboard/student/quizzes" className="mt-4 inline-flex text-xs font-medium text-[#D4AF37] hover:underline">
-              {t("studentDashboard.goToTasksBtn", { defaultValue: "Go to tasks" })}
-            </Link>
-          </div>
+            <SwipeableCard>
+              <div className={`${studentPanel()} h-full p-5`}>
+                <p className="text-xs font-medium uppercase tracking-wide text-text-muted">
+                  {t("studentDashboard.openTasks")}
+                </p>
+                <p className="mt-2 text-2xl font-bold text-foreground">
+                  {data.openTaskCount === 0 ? "0" : data.openTaskCount}
+                </p>
+                <p className="mt-1 text-sm text-text-muted">
+                  {data.openTaskCount === 0
+                    ? t("studentDashboard.noOpenTasks")
+                    : t("studentDashboard.tasksWaitingDesc", { defaultValue: "Tasks waiting for you" })}
+                </p>
+                <Link href="/dashboard/student/quizzes" className="mt-4 inline-flex min-h-10 items-center text-xs font-medium text-[#D4AF37]">
+                  {t("studentDashboard.goToTasksBtn", { defaultValue: "Go to tasks" })}
+                </Link>
+              </div>
+            </SwipeableCard>
+          </SwipeableCardRow>
         </section>
 
-        {/* Appointments */}
-        <section className={studentPanel()}>
+        {/* Appointments — accordion on mobile */}
+        {data.lessons.length > 0 && (
+          <MobileAccordion
+            defaultOpenId={data.lessons[0]?.id}
+            items={data.lessons.slice(0, 3).map((lesson) => {
+              const parts = lessonDateParts(lesson.start_time, dateLocale, todayLabel);
+              return {
+                id: lesson.id,
+                icon: <Calendar className="h-5 w-5" />,
+                title: lesson.subject_name || t("studentDashboard.lessonTopic", { defaultValue: "Lesson" }),
+                summary: `${parts.weekday} · ${formatTimeRange(lesson.start_time, lesson.duration, dateLocale)}`,
+                content: (
+                  <div className="space-y-4">
+                    {lesson.teacher_name && (
+                      <p className="flex items-center gap-2 text-sm text-text-muted">
+                        <User className="h-4 w-4" />
+                        {lesson.teacher_name}
+                      </p>
+                    )}
+                    {lesson.zoom_link ? (
+                      <a
+                        href={lesson.zoom_link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={cn(
+                          mobile.button,
+                          "flex w-full items-center justify-center gap-2 bg-[#2D8CFF] text-white"
+                        )}
+                      >
+                        <Video className="h-5 w-5" />
+                        {t("studentDashboard.joinZoomMeeting", { defaultValue: "Join meeting" })}
+                      </a>
+                    ) : (
+                      <p className="text-sm text-text-muted">{t("studentDashboard.noZoomLink")}</p>
+                    )}
+                    <Link
+                      href="/dashboard/student/appointments"
+                      className="inline-flex items-center gap-1 text-sm font-medium text-[#D4AF37]"
+                    >
+                      {t("studentDashboard.showAllAppointments")}
+                      <ChevronRight className="h-4 w-4" />
+                    </Link>
+                  </div>
+                ),
+              };
+            })}
+          />
+        )}
+
+        <section className={cn(studentPanel(), "hidden md:block")}>
           <div className="flex items-center justify-between border-b border-gray-100 px-5 py-4">
             <h2 className="text-sm font-semibold text-[#0D1B2A]">{t("studentDashboard.upcomingAppointments")}</h2>
             <PanelLink href="/dashboard/student/appointments" label={t("studentDashboard.showAllAppointments")} />
@@ -310,8 +397,63 @@ export function StudentOverviewDashboard() {
           </div>
         </section>
 
-        {/* Materials / Courses / Tasks */}
-        <section className="grid gap-6 lg:grid-cols-3">
+        {/* Explore — mobile accordion links */}
+        <MobileAccordion
+          className="md:hidden"
+          items={[
+            {
+              id: "materials",
+              icon: <FileText className="h-5 w-5" />,
+              title: t("studentDashboard.myMaterials"),
+              summary:
+                data.materials.length > 0
+                  ? `${data.materials.length} ${t("studentDashboard.tabAllMaterials", { defaultValue: "materials" })}`
+                  : t("studentDashboard.noMaterials"),
+              content: (
+                <Link
+                  href="/dashboard/student/resources"
+                  className={cn(mobile.buttonOutline, "flex w-full items-center justify-center gap-2 text-foreground")}
+                >
+                  {t("studentDashboard.viewAllMaterials", { defaultValue: "View all materials" })}
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              ),
+            },
+            {
+              id: "courses",
+              icon: <BookOpen className="h-5 w-5" />,
+              title: t("studentDashboard.myCourses"),
+              summary: t("studentDashboard.coursesDesc", { defaultValue: "Track your learning progress" }),
+              content: (
+                <Link
+                  href="/dashboard/student/courses"
+                  className={cn(mobile.buttonOutline, "flex w-full items-center justify-center gap-2 text-foreground")}
+                >
+                  {t("mobileNav.courses")}
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              ),
+            },
+            {
+              id: "tasks",
+              icon: <ListChecks className="h-5 w-5" />,
+              title: t("studentDashboard.openTasks"),
+              summary: `${data.openTaskCount} ${t("studentDashboard.tasksWaitingDesc", { defaultValue: "waiting" })}`,
+              content: (
+                <Link
+                  href="/dashboard/student/quizzes"
+                  className={cn(mobile.buttonOutline, "flex w-full items-center justify-center gap-2 text-foreground")}
+                >
+                  {t("studentDashboard.goToTasksBtn", { defaultValue: "Go to tasks" })}
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              ),
+            },
+          ]}
+        />
+
+        {/* Materials / Courses / Tasks — desktop */}
+        <section className="hidden gap-6 md:grid lg:grid-cols-3">
           <div className={studentPanel("flex flex-col")}>
             <div className="border-b border-gray-100 px-5 py-4">
               <h2 className="text-sm font-semibold text-[#0D1B2A]">{t("studentDashboard.myMaterials")}</h2>

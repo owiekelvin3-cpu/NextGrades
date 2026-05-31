@@ -16,6 +16,8 @@ import {
 import { tabContentTypes, getSubjectUi, type ResourceTabId } from "@/lib/resources/ui-config";
 import { getResourcesSubjectImage } from "@/lib/resources/images";
 import { LoadingBlock } from "@/components/dashboard/LoadingBlock";
+import { MobileResourcesToolbar } from "@/components/mobile/MobileResourcesToolbar";
+import { MobileResourceCard } from "@/components/mobile/MobileResourceCard";
 import { appShell } from "@/lib/theme/shell";
 
 export function ResourcesHubExperience() {
@@ -40,10 +42,12 @@ export function ResourcesHubExperience() {
     <>
       <ResourcesCategoryTabs active={activeTab} onChange={handleTabChange} />
 
-      <section className={`${appShell.sectionSubtle} py-10`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-4 gap-8">
-            <div className="lg:col-span-1">
+      <section className={`${appShell.sectionSubtle} py-6 md:py-10`}>
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <MobileResourcesToolbar catalog={catalog} resultCount={catalog.resources.length} />
+
+          <div className="grid gap-8 lg:grid-cols-4">
+            <div className="hidden lg:col-span-1 lg:block">
               <ResourcesFilterSidebar
                 subjects={catalog.subjects}
                 classes={catalog.classes}
@@ -62,8 +66,8 @@ export function ResourcesHubExperience() {
               />
             </div>
 
-            <div className="lg:col-span-3 space-y-10">
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="space-y-8 lg:col-span-3 lg:space-y-10">
+              <div className="hidden flex-col gap-4 sm:flex-row sm:items-center sm:justify-between md:flex">
                 <p className="text-sm font-semibold text-[#0D1B2A]">
                   {catalog.resources.length}{" "}
                   {t("resources.topBarResults", { defaultValue: "results" })}
@@ -105,15 +109,26 @@ export function ResourcesHubExperience() {
                         actionHref="/resources?access=free"
                         actionLabel={t("resources.freeShowAll", { defaultValue: "Show all" })}
                       />
-                      <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+                      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
                         {displayFree.map((r) => (
-                          <ResourceHubCard
-                            key={r.id}
-                            resource={r}
-                            variant="free"
-                            subjectSlug={catalog.subjectSlug}
-                            onOpen={() => void catalog.openResource(r)}
-                          />
+                          <div key={r.id} className="hidden sm:block">
+                            <ResourceHubCard
+                              resource={r}
+                              variant="free"
+                              subjectSlug={catalog.subjectSlug}
+                              onOpen={() => void catalog.openResource(r)}
+                            />
+                          </div>
+                        ))}
+                        {displayFree.map((r) => (
+                          <div key={`m-${r.id}`} className="sm:hidden">
+                            <MobileResourceCard
+                              resource={r}
+                              variant="free"
+                              subjectSlug={catalog.subjectSlug}
+                              onOpen={() => void catalog.openResource(r)}
+                            />
+                          </div>
                         ))}
                       </div>
                     </div>
@@ -129,15 +144,26 @@ export function ResourcesHubExperience() {
                         actionHref="/resources/upgrade"
                         actionLabel={t("resources.premiumShowAll", { defaultValue: "Show all" })}
                       />
-                      <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+                      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
                         {displayPremium.map((r) => (
-                          <ResourceHubCard
-                            key={r.id}
-                            resource={r}
-                            variant="premium"
-                            subjectSlug={catalog.subjectSlug}
-                            onOpen={() => void catalog.openResource(r)}
-                          />
+                          <div key={r.id} className="hidden sm:block">
+                            <ResourceHubCard
+                              resource={r}
+                              variant="premium"
+                              subjectSlug={catalog.subjectSlug}
+                              onOpen={() => void catalog.openResource(r)}
+                            />
+                          </div>
+                        ))}
+                        {displayPremium.map((r) => (
+                          <div key={`m-${r.id}`} className="sm:hidden">
+                            <MobileResourceCard
+                              resource={r}
+                              variant="premium"
+                              subjectSlug={catalog.subjectSlug}
+                              onOpen={() => void catalog.openResource(r)}
+                            />
+                          </div>
                         ))}
                       </div>
                     </div>

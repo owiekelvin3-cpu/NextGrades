@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
 import { NotificationProvider } from "@/context/NotificationContext";
+import PageTransition from "@/components/PageTransition";
 
 const ChatProvider = dynamic(
   () => import("@/components/chat/ChatProvider").then((m) => m.ChatProvider),
@@ -18,7 +19,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   return (
     <NotificationProvider>
       <ChatProvider>
-        {children}
+        <PageTransition>{children}</PageTransition>
         <Suspense fallback={null}>
           <FloatingChatWidget />
         </Suspense>

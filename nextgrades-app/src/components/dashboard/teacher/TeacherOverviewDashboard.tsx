@@ -36,6 +36,8 @@ import {
   teacherPanel,
   teacherStatCard,
 } from "./teacher-ui";
+import { SwipeableCardRow, SwipeableCard } from "@/components/mobile/SwipeableCardRow";
+import { TeacherMobileQuickActions } from "@/components/mobile/MobileQuickActions";
 import { cn } from "@/lib/utils";
 
 function formatTimeRange(start: string, durationMin: number, locale: string) {
@@ -129,7 +131,9 @@ export function TeacherOverviewDashboard() {
 
   return (
     <TeacherDashboardLayout title={t("teacherDashboard.nav.dashboard")} topRightAction={createAppointmentBtn}>
-      <div className="mx-auto flex max-w-6xl flex-col gap-4">
+      <div className="mx-auto flex max-w-6xl flex-col gap-6">
+        <TeacherMobileQuickActions />
+
         {/* Welcome */}
         <div className="overflow-hidden rounded-xl border border-[#0D1B2A]/10 bg-gradient-to-r from-[#0D1B2A] via-[#132942] to-[#1a3555] px-5 py-4 text-white shadow-sm sm:flex sm:items-center sm:justify-between">
           <div className="min-w-0">
@@ -154,9 +158,10 @@ export function TeacherOverviewDashboard() {
           </div>
         </div>
 
-        {/* KPI row */}
-        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-          <Link href="/dashboard/teacher/schedule" className={teacherStatCard()}>
+        {/* KPI row — swipeable on mobile */}
+        <SwipeableCardRow desktopCols={4}>
+          <SwipeableCard>
+          <Link href="/dashboard/teacher/schedule" className={cn(teacherStatCard(), "block h-full")}>
             <div className="flex items-start justify-between">
               <p className="text-[11px] font-semibold uppercase tracking-wider text-gray-400">
                 {t("teacherDashboard.todayLabel")}
@@ -173,8 +178,10 @@ export function TeacherOverviewDashboard() {
               <StatMetric label={t("teacherDashboard.completedShort")} value={data.stats.todayCompleted} />
             </div>
           </Link>
+          </SwipeableCard>
 
-          <Link href="/dashboard/teacher/schedule" className={teacherStatCard()}>
+          <SwipeableCard>
+          <Link href="/dashboard/teacher/schedule" className={cn(teacherStatCard(), "block h-full")}>
             <div className="flex items-start justify-between">
               <p className="text-[11px] font-semibold uppercase tracking-wider text-gray-400">
                 {t("teacherDashboard.thisWeek")}
@@ -191,8 +198,10 @@ export function TeacherOverviewDashboard() {
               <StatMetric label={t("teacherDashboard.pendingShort")} value={data.stats.weekPending} />
             </div>
           </Link>
+          </SwipeableCard>
 
-          <Link href="/dashboard/teacher/payments" className={teacherStatCard()}>
+          <SwipeableCard>
+          <Link href="/dashboard/teacher/payments" className={cn(teacherStatCard(), "block h-full")}>
             <div className="flex items-start justify-between">
               <p className="text-[11px] font-semibold uppercase tracking-wider text-gray-400">
                 {t("teacherDashboard.earningsMonth")}
@@ -215,8 +224,10 @@ export function TeacherOverviewDashboard() {
               </span>
             </div>
           </Link>
+          </SwipeableCard>
 
-          <Link href="/dashboard/teacher/earnings" className={teacherStatCard()}>
+          <SwipeableCard>
+          <Link href="/dashboard/teacher/earnings" className={cn(teacherStatCard(), "block h-full")}>
             <div className="flex items-start justify-between">
               <p className="text-[11px] font-semibold uppercase tracking-wider text-gray-400">
                 {t("teacherDashboard.nextJumpBonus")}
@@ -243,7 +254,8 @@ export function TeacherOverviewDashboard() {
               </div>
             </div>
           </Link>
-        </div>
+          </SwipeableCard>
+        </SwipeableCardRow>
 
         {/* Main content */}
         <div className="grid gap-4 lg:grid-cols-5">

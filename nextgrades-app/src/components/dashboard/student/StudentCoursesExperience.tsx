@@ -23,6 +23,7 @@ import {
 } from "@/lib/dashboard/student-overview";
 import { StudentDashboardLayout } from "./StudentDashboardLayout";
 import { studentPanel, subjectInitials, subjectColor, formatTimeRange } from "./student-ui";
+import { mobile } from "@/lib/mobile/tokens";
 import { cn } from "@/lib/utils";
 
 type Tab = "all" | "active" | "completed";
@@ -175,6 +176,8 @@ export function StudentCoursesExperience() {
   );
 
   const { progressBreakdown, overallProgress } = data;
+  const continueCourse =
+    filtered.find((c) => c.progressPercent > 0 && c.progressPercent < 100) ?? filtered[0];
 
   return (
     <StudentDashboardLayout title={title} description={description} headerAction={headerAction}>
@@ -305,6 +308,18 @@ export function StudentCoursesExperience() {
           </div>
         </aside>
       </div>
+
+      {continueCourse && (
+        <div className={cn(mobile.stickyAction, "md:hidden")}>
+          <Button variant="gold" href="/dashboard/student/progress" className="w-full">
+            {t("studentDashboard.continueLearning", {
+              subject: continueCourse.subjectName,
+              defaultValue: `Continue ${continueCourse.subjectName}`,
+            })}
+            <ChevronRight className="h-5 w-5" />
+          </Button>
+        </div>
+      )}
     </StudentDashboardLayout>
   );
 }
