@@ -1,5 +1,5 @@
 /**
- * Central marketing image registry — all remote Unsplash URLs.
+ * Central marketing image registry — remote Unsplash URLs.
  * Each photo ID is used at most once site-wide on marketing pages.
  * Resources section uses @/lib/resources/images.ts separately.
  */

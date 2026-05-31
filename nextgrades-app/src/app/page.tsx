@@ -3,7 +3,6 @@
 import { useMemo } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/Button";
@@ -130,11 +129,12 @@ export default function Home() {
                 className="relative mx-auto w-full max-w-lg lg:max-w-none"
               >
                 <div className="relative aspect-[4/5] max-h-[520px] overflow-hidden rounded-2xl shadow-2xl ring-1 ring-white/10 sm:aspect-[5/6] lg:aspect-auto lg:h-[480px]">
-                  <Image
-                    src={heroStudentImage || HOME_HERO_STUDENT_IMAGE}
+                  <MarketingImage
+                    src={heroStudentImage}
+                    fallbackSrc={HOME_HERO_STUDENT_IMAGE}
                     alt={t("images.studentStudying")}
-                    fill
                     priority
+                    containerClassName="absolute inset-0"
                     className="object-cover object-[center_20%]"
                     sizes="(max-width: 1024px) 90vw, 560px"
                   />

@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import Image from "next/image";
+import { MarketingImage } from "@/components/marketing/MarketingImage";
 import { Button } from "@/components/ui/Button";
 import { useTranslation } from "react-i18next";
 import { PlatformDashboardMockup } from "@/components/home/PlatformDashboardMockup";
@@ -101,10 +101,10 @@ export function HomePageContent() {
     <main className="flex-1 bg-white text-[#0D1B2A]">
       {/* Hero — full-bleed background */}
       <section className="relative min-h-[92vh] flex items-center overflow-hidden">
-        <Image
+        <MarketingImage
           src={HERO_STUDY_IMAGE}
           alt=""
-          fill
+          containerClassName="absolute inset-0"
           priority
           className="object-cover object-center"
           sizes="100vw"
@@ -246,12 +246,11 @@ export function HomePageContent() {
                         {t("home.mostPopularBadge")}
                       </span>
                     )}
-                    <img
+                    <MarketingImage
                       src={PROGRAM_CARD_IMAGES[index]}
                       alt=""
-                      className={`h-full w-full object-cover transition-transform duration-500 hover:scale-105 ${
-                        featured ? "opacity-90" : ""
-                      }`}
+                      containerClassName="absolute inset-0"
+                      className={`transition-transform duration-500 hover:scale-105 ${featured ? "opacity-90" : ""}`}
                     />
                     {featured && (
                       <div className="absolute inset-0 bg-gradient-to-t from-[#0D1B2A]/80 to-transparent" />

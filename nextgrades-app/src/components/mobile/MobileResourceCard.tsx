@@ -1,13 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
+import { MarketingImage } from "@/components/marketing/MarketingImage";
 import { Play, Lock, Download, Calendar, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { mobile } from "@/lib/mobile/tokens";
 import type { LearningResource } from "@/components/resources/ResourceLearningCard";
 import { contentTypeLabel } from "@/lib/resources/constants";
-import { getResourceThumbnail } from "@/lib/resources/images";
+import { getResourceThumbnail, RESOURCES_DEFAULT_THUMBNAIL } from "@/lib/resources/images";
 import { isPremiumResource } from "@/lib/resources/ui-config";
 import { isVideoResource, resourceWatchPath } from "@/lib/resources/video";
 import { Button } from "@/components/ui/Button";
@@ -39,13 +39,13 @@ export function MobileResourceCard({ resource, onOpen, variant, subjectSlug }: P
   return (
     <article className={cn(mobile.cardInteractive, "flex flex-col")}>
       <div className="relative aspect-[16/10] overflow-hidden bg-surface-subtle">
-        <Image
+        <MarketingImage
           src={thumb}
+          fallbackSrc={RESOURCES_DEFAULT_THUMBNAIL}
           alt={resource.title}
-          fill
-          className={cn("object-cover", locked && "brightness-75")}
+          containerClassName="absolute inset-0"
+          className={cn(locked && "brightness-75")}
           sizes="(max-width: 768px) 100vw, 400px"
-          unoptimized={thumb.startsWith("http")}
         />
         <span className="absolute left-3 top-3 rounded-lg bg-[#0D1B2A]/85 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-white">
           {isVideo ? "Video" : type}

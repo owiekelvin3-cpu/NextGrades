@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
+import { MarketingImage } from "@/components/marketing/MarketingImage";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { CheckCircle2, ChevronRight, Headphones, Shield, Clock, Lock, BarChart3, Calendar, Sparkles } from "lucide-react";
@@ -53,7 +53,7 @@ export function ResourcesUpgradeExperience() {
     <>
       <section className="relative overflow-hidden bg-[#0D1B2A] text-white pt-28 pb-16">
         <div className="absolute inset-0 opacity-20">
-          <Image src={heroImage} alt="" fill className="object-cover" unoptimized />
+          <MarketingImage src={heroImage} alt="" containerClassName="absolute inset-0" className="object-cover" />
         </div>
         <div className="absolute inset-0 bg-gradient-to-r from-[#0D1B2A] via-[#0D1B2A]/95 to-transparent" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -84,7 +84,7 @@ export function ResourcesUpgradeExperience() {
               </div>
             </div>
             <div className="relative hidden lg:block h-72">
-              <Image src={RESOURCES_UPGRADE_HERO} alt="" fill className="object-cover object-right rounded-2xl" unoptimized />
+              <MarketingImage src={RESOURCES_UPGRADE_HERO} alt="" containerClassName="absolute inset-0 rounded-2xl" className="object-cover object-right rounded-2xl" />
               <div className="absolute bottom-0 right-0 rounded-2xl bg-[#112240] p-4 shadow-2xl max-w-xs">
                 <Sparkles className="h-5 w-5 text-[#D4AF37] mb-2" />
                 <p className="text-sm font-semibold">Individual support. Real results.</p>

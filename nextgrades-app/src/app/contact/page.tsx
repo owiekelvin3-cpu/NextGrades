@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import { motion } from "framer-motion";
+import { MarketingImage } from "@/components/marketing/MarketingImage";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/Button";
@@ -186,12 +186,12 @@ export default function ContactPage() {
                 </div>
 
                 <div className="relative hidden overflow-hidden rounded-2xl lg:block lg:h-64">
-                  <Image
+                  <MarketingImage
                     src={contactHeroImage}
+                    fallbackSrc={CONTACT_HERO_IMAGE}
                     alt=""
-                    fill
+                    containerClassName="absolute inset-0"
                     className="object-cover"
-                    unoptimized
                     sizes="(max-width: 1024px) 100vw, 40vw"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0D1B2A]/90 via-[#0D1B2A]/30 to-transparent" />

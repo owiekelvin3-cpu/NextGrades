@@ -1,13 +1,13 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { useTheme } from "@/context/ThemeContext";
 import { contentTypeLabel, AGE_RANGES } from "@/lib/resources/constants";
-import { getResourceThumbnail } from "@/lib/resources/images";
+import { MarketingImage } from "@/components/marketing/MarketingImage";
+import { getResourceThumbnail, RESOURCES_DEFAULT_THUMBNAIL } from "@/lib/resources/images";
 import { isVideoResource, resourceWatchPath } from "@/lib/resources/video";
 import {
   Bookmark,
@@ -89,14 +89,13 @@ export function ResourceLearningCard({
   return (
     <Card className={`overflow-hidden h-full flex flex-col group ${panel}`}>
       <div className="relative aspect-[16/9] bg-[#0D1B2A]/5 overflow-hidden">
-        <Image
+        <MarketingImage
           src={thumb}
+          fallbackSrc={RESOURCES_DEFAULT_THUMBNAIL}
           alt={resource.title}
-          fill
-          className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+          containerClassName="absolute inset-0"
+          className="transition-transform duration-300 group-hover:scale-[1.02]"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          loading={index < 4 ? "eager" : "lazy"}
-          unoptimized={thumb.startsWith("http") && !thumb.includes(process.env.NEXT_PUBLIC_SUPABASE_URL || "supabase")}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
         <div className="absolute top-3 left-3 flex flex-wrap gap-2">

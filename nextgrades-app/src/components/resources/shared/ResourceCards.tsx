@@ -1,15 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { Download, Lock, Play, Gift, Crown, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { LearningResource } from "@/components/resources/ResourceLearningCard";
 import { contentTypeLabel } from "@/lib/resources/constants";
-import { getResourceThumbnail } from "@/lib/resources/images";
+import { getResourceThumbnail, RESOURCES_DEFAULT_THUMBNAIL } from "@/lib/resources/images";
 import { isPremiumResource } from "@/lib/resources/ui-config";
 import { isVideoResource, resourceWatchPath } from "@/lib/resources/video";
 import { appShell } from "@/lib/theme/shell";
+import { MarketingImage } from "@/components/marketing/MarketingImage";
 
 type HubCardProps = {
   resource: LearningResource;
@@ -17,6 +17,27 @@ type HubCardProps = {
   variant?: "free" | "premium";
   subjectSlug?: string;
 };
+
+function ResourceThumb({
+  src,
+  alt,
+  locked,
+}: {
+  src: string;
+  alt: string;
+  locked?: boolean;
+}) {
+  return (
+    <MarketingImage
+      src={src}
+      fallbackSrc={RESOURCES_DEFAULT_THUMBNAIL}
+      alt={alt}
+      containerClassName="absolute inset-0"
+      className={cn("transition duration-300 group-hover:scale-[1.02]", locked && "brightness-50")}
+      sizes="(max-width: 640px) 100vw, 25vw"
+    />
+  );
+}
 
 export function ResourceHubCard({ resource, onOpen, variant, subjectSlug }: HubCardProps) {
   const premium = variant === "premium" || isPremiumResource(resource);
@@ -29,34 +50,13 @@ export function ResourceHubCard({ resource, onOpen, variant, subjectSlug }: HubC
     <article className={cn("group flex flex-col overflow-hidden transition hover:shadow-md", appShell.elevatedCard)}>
       <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
         {locked ? (
-          <Image
-            src={thumb}
-            alt={resource.title}
-            fill
-            className={cn("object-cover transition duration-300 group-hover:scale-[1.02]", "brightness-50")}
-            sizes="(max-width: 640px) 100vw, 25vw"
-            unoptimized={thumb.startsWith("http")}
-          />
+          <ResourceThumb src={thumb} alt={resource.title} locked />
         ) : isVideo ? (
           <Link href={resourceWatchPath(resource.id)} className="block h-full w-full">
-            <Image
-              src={thumb}
-              alt={resource.title}
-              fill
-              className="object-cover transition duration-300 group-hover:scale-[1.02]"
-              sizes="(max-width: 640px) 100vw, 25vw"
-              unoptimized={thumb.startsWith("http")}
-            />
+            <ResourceThumb src={thumb} alt={resource.title} />
           </Link>
         ) : (
-          <Image
-            src={thumb}
-            alt={resource.title}
-            fill
-            className="object-cover transition duration-300 group-hover:scale-[1.02]"
-            sizes="(max-width: 640px) 100vw, 25vw"
-            unoptimized={thumb.startsWith("http")}
-          />
+          <ResourceThumb src={thumb} alt={resource.title} />
         )}
         <span className="absolute left-3 top-3 rounded-md bg-[#0D1B2A]/85 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
           {isVideo ? "Video" : type.includes("Video") ? "Video" : "PDF"}
@@ -134,24 +134,24 @@ type SubjectCardProps = {
 };
 
 export function ResourceSubjectTile({ name, slug, count, color, icon, imageUrl }: SubjectCardProps) {
+  const thumb = imageUrl || getResourceThumbnail({ subject: { slug, name } }, slug);
+
   return (
     <Link
       href={`/resources/${slug}`}
       className={cn("group flex flex-col overflow-hidden transition hover:shadow-md", appShell.elevatedCard)}
     >
-      {imageUrl && (
-        <div className="relative aspect-[16/9] overflow-hidden bg-gray-100 dark:bg-[#0D1B2A]">
-          <Image
-            src={imageUrl}
-            alt={name}
-            fill
-            className="object-cover transition duration-300 group-hover:scale-[1.03]"
-            sizes="(max-width: 640px) 100vw, 20vw"
-            unoptimized
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0D1B2A]/60 to-transparent" />
-        </div>
-      )}
+      <div className="relative aspect-[16/9] overflow-hidden bg-gray-100 dark:bg-[#0D1B2A]">
+        <MarketingImage
+          src={thumb}
+          fallbackSrc={RESOURCES_DEFAULT_THUMBNAIL}
+          alt={name}
+          containerClassName="absolute inset-0"
+          className="transition duration-300 group-hover:scale-[1.03]"
+          sizes="(max-width: 640px) 100vw, 20vw"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0D1B2A]/60 to-transparent" />
+      </div>
       <div className="flex flex-col p-5">
         <div
           className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl"

@@ -1,8 +1,8 @@
 "use client";
 
 import { Suspense } from "react";
-import Image from "next/image";
 import { motion } from "framer-motion";
+import { MarketingImage } from "@/components/marketing/MarketingImage";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { ResourcesHubExperience } from "@/components/resources/ResourcesHubExperience";
@@ -21,7 +21,7 @@ export default function ResourcesPage() {
       <main className="flex-1">
         <section className="relative overflow-hidden bg-[#0D1B2A] text-white">
           <div className="absolute inset-0 opacity-40">
-            <Image src={HUB_HERO_IMAGE} alt="" fill sizes="100vw" className="object-cover" priority unoptimized />
+            <MarketingImage src={HUB_HERO_IMAGE} alt="" containerClassName="absolute inset-0" sizes="100vw" className="object-cover" priority />
           </div>
           <div className="absolute inset-0 bg-gradient-to-r from-[#0D1B2A] via-[#0D1B2A]/95 to-[#0D1B2A]/70" />
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-14">
@@ -48,8 +48,8 @@ export default function ResourcesPage() {
                   ))}
                 </div>
               </div>
-              <div className="relative hidden lg:block h-80">
-                <Image src={HUB_HERO_IMAGE} alt={t("resources.heroTitle")} fill sizes="(max-width: 1024px) 0vw, 50vw" className="object-cover object-right rounded-2xl" priority unoptimized />
+              <div className="relative hidden h-80 lg:block">
+                <MarketingImage src={HUB_HERO_IMAGE} alt={t("resources.heroTitle")} containerClassName="absolute inset-0 rounded-2xl" sizes="(max-width: 1024px) 0vw, 50vw" className="object-cover object-right rounded-2xl" priority />
               </div>
             </motion.div>
           </div>

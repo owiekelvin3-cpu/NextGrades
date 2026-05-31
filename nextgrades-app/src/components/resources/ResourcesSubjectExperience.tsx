@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
+import { MarketingImage } from "@/components/marketing/MarketingImage";
 import { Search, Shield, BookOpen, Download, Star } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useResourcesCatalog } from "@/hooks/useResourcesCatalog";
@@ -50,7 +50,7 @@ export function ResourcesSubjectExperience({ subjectSlug, subjectName, classLeve
     <>
       <section className="relative overflow-hidden bg-[#0D1B2A] text-white">
         <div className="absolute inset-0 opacity-30">
-          <Image src={ui.heroImage} alt="" fill className="object-cover" priority unoptimized />
+          <MarketingImage src={ui.heroImage} alt="" containerClassName="absolute inset-0" className="object-cover" priority />
         </div>
         <div className="absolute inset-0 bg-gradient-to-r from-[#0D1B2A] via-[#0D1B2A]/90 to-[#0D1B2A]/60" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-12">
@@ -80,7 +80,7 @@ export function ResourcesSubjectExperience({ subjectSlug, subjectName, classLeve
               </div>
             </div>
             <div className="hidden lg:block relative h-64">
-              <Image src={ui.heroImage} alt={subjectName} fill className="object-cover object-right rounded-2xl" unoptimized />
+              <MarketingImage src={ui.heroImage} alt={subjectName} containerClassName="absolute inset-0 rounded-2xl" className="object-cover object-right rounded-2xl" />
             </div>
           </div>
         </div>

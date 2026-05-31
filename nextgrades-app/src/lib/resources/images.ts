@@ -1,6 +1,5 @@
 /**
- * Resources-section images only — each Unsplash photo ID is unique across the site.
- * Do not reuse IDs from marketing-images.ts or inline page URLs.
+ * Resources-section images — Unsplash URLs unique from marketing-images.ts.
  */
 
 function u(id: string, w = 800, h = 500) {
@@ -13,7 +12,7 @@ export const RESOURCES_UPGRADE_HERO = u("1523050854548-600962526ae0", 1920, 1080
 
 export const RESOURCES_DEFAULT_THUMBNAIL = u("1524995993596-b08947747391");
 
-/** Subject heroes & tiles — not shared with /subjects page */
+/** Subject heroes & tiles */
 export const RESOURCES_SUBJECT_IMAGE_BY_ID: Record<string, string> = {
   math: u("1596495578064-82f9e4034428"),
   english: u("1457695719797-6647b2660e71"),
