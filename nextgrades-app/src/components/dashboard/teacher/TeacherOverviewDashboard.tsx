@@ -10,8 +10,9 @@ import {
   Euro,
   Rocket,
   ChevronRight,
-  MoreHorizontal,
   Plus,
+  Sparkles,
+  TrendingUp,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { getDateLocale } from "@/lib/i18n/locales";
@@ -20,15 +21,22 @@ import { Badge } from "@/components/ui/Badge";
 import { LoadingBlock } from "@/components/dashboard/LoadingBlock";
 import {
   fetchTeacherOverviewData,
+  getTeacherFirstName,
   type TeacherOverviewData,
 } from "@/lib/dashboard/teacher-overview";
 import { TeacherDashboardLayout } from "./TeacherDashboardLayout";
+import {
+  ABOUT_IMAGES,
+  ABOUT_TEAM_IMAGES,
+} from "@/lib/marketing-images";
 import {
   TEACHER_AVATAR_COLORS,
   formatTeacherEuro,
   studentInitials,
   teacherPanel,
+  teacherStatCard,
 } from "./teacher-ui";
+import { cn } from "@/lib/utils";
 
 function formatTimeRange(start: string, durationMin: number, locale: string) {
   const s = new Date(start);
@@ -37,13 +45,6 @@ function formatTimeRange(start: string, durationMin: number, locale: string) {
   return `${fmt(s)} – ${fmt(e)}`;
 }
 
-function formatRelativeTime(iso: string, locale: string) {
-  const d = new Date(iso);
-  const diffDays = Math.floor((Date.now() - d.getTime()) / (1000 * 60 * 60 * 24));
-  if (diffDays === 0) return d.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit" });
-  if (diffDays === 1) return locale.startsWith("de") ? "Gestern" : "Yesterday";
-  return d.toLocaleDateString(locale, { day: "numeric", month: "short" });
-}
 
 function PanelHeader({
   title,
@@ -55,15 +56,26 @@ function PanelHeader({
   linkLabel?: string;
 }) {
   return (
-    <div className="flex items-center justify-between gap-3 border-b border-gray-100 px-5 py-4">
+    <div className="flex items-center justify-between gap-3 border-b border-gray-100 px-4 py-3 shrink-0">
       <h2 className="text-sm font-semibold text-[#0D1B2A]">{title}</h2>
       {href && linkLabel && (
-        <Link href={href} className="inline-flex items-center gap-0.5 text-xs font-medium text-[#D4AF37] hover:underline">
+        <Link
+          href={href}
+          className="inline-flex items-center gap-0.5 text-xs font-medium text-[#D4AF37] hover:underline"
+        >
           {linkLabel}
           <ChevronRight className="h-3.5 w-3.5" />
         </Link>
       )}
     </div>
+  );
+}
+
+function StatMetric({ label, value }: { label: string; value: string | number }) {
+  return (
+    <span className="text-xs text-gray-500">
+      <strong className="font-semibold text-[#0D1B2A]">{value}</strong> {label}
+    </span>
   );
 }
 
@@ -73,7 +85,11 @@ export function TeacherOverviewDashboard() {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<TeacherOverviewData | null>(null);
 
-  const monthLabel = new Date().toLocaleDateString(locale, { month: "long", year: "numeric" });
+  const todayLabel = new Date().toLocaleDateString(locale, {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+  });
 
   useEffect(() => {
     fetchTeacherOverviewData()
@@ -109,97 +125,86 @@ export function TeacherOverviewDashboard() {
     );
   }
 
+  const firstName = getTeacherFirstName(data.profile.fullName);
+
   return (
-    <TeacherDashboardLayout
-      title={t("teacherDashboard.nav.dashboard")}
-      topRightAction={createAppointmentBtn}
-      headerAction={<div className="sm:hidden">{createAppointmentBtn}</div>}
-    >
-      <div className="mx-auto max-w-[1400px] space-y-6">
-        {/* Top stat cards — mockup row */}
-        <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          <div className={teacherPanel("p-5")}>
-            <div className="flex items-start justify-between">
-              <div>
-                <p className="text-xs font-medium uppercase tracking-wide text-gray-400">
-                  {t("teacherDashboard.todayLabel")}
-                </p>
-                <p className="mt-2 text-2xl font-bold text-[#0D1B2A]">
-                  {t("teacherDashboard.hoursToday", { count: data.stats.hoursToday })}
-                </p>
-              </div>
-              <span className="rounded-xl bg-blue-50 p-2.5">
-                <Clock className="h-5 w-5 text-blue-500" />
-              </span>
-            </div>
-            <div className="mt-4 flex gap-4 text-xs text-gray-500">
-              <span>
-                <strong className="text-[#0D1B2A]">{data.stats.todayUpcoming}</strong>{" "}
-                {t("teacherDashboard.upcomingShort")}
-              </span>
-              <span>
-                <strong className="text-[#0D1B2A]">{data.stats.todayCompleted}</strong>{" "}
-                {t("teacherDashboard.completedShort")}
-              </span>
-            </div>
-            <Link
-              href="/dashboard/teacher/schedule"
-              className="mt-4 inline-flex items-center gap-1 text-xs font-medium text-[#D4AF37] hover:underline"
-            >
-              {t("teacherDashboard.goToCalendar")}
-              <ChevronRight className="h-3.5 w-3.5" />
+    <TeacherDashboardLayout title={t("teacherDashboard.nav.dashboard")} topRightAction={createAppointmentBtn}>
+      <div className="mx-auto flex max-w-6xl flex-col gap-4">
+        {/* Welcome */}
+        <div className="overflow-hidden rounded-xl border border-[#0D1B2A]/10 bg-gradient-to-r from-[#0D1B2A] via-[#132942] to-[#1a3555] px-5 py-4 text-white shadow-sm sm:flex sm:items-center sm:justify-between">
+          <div className="min-w-0">
+            <p className="truncate text-sm font-medium text-[#D4AF37]">
+              {t("teacherDashboard.welcomeBack", { name: firstName || t("teacherDashboard.sidebarGuest") })}
+              <span className="hidden text-gray-400 sm:inline"> · </span>
+              <span className="hidden capitalize text-gray-300 sm:inline">{todayLabel}</span>
+            </p>
+          </div>
+          <div className="mt-2 flex flex-wrap gap-1.5 sm:mt-0">
+            <Link href="/dashboard/chat" className="inline-flex items-center gap-1.5 rounded-lg border border-white/20 bg-white/10 px-2.5 py-1.5 text-[11px] font-medium transition hover:bg-white/15">
+              <Sparkles className="h-3 w-3 text-[#D4AF37]" />
+              {t("teacherDashboard.openAi")}
+            </Link>
+            <Link href="/dashboard/teacher/payments" className="inline-flex items-center gap-1.5 rounded-lg border border-white/20 bg-white/10 px-2.5 py-1.5 text-[11px] font-medium transition hover:bg-white/15">
+              <Euro className="h-3 w-3" />
+              {t("teacherDashboard.viewPayments")}
+            </Link>
+            <Link href="/dashboard/notifications" className="inline-flex items-center gap-1.5 rounded-lg border border-white/20 bg-white/10 px-2.5 py-1.5 text-[11px] font-medium transition hover:bg-white/15">
+              {t("teacherDashboard.notifications")}
             </Link>
           </div>
+        </div>
 
-          <div className={teacherPanel("p-5")}>
+        {/* KPI row */}
+        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          <Link href="/dashboard/teacher/schedule" className={teacherStatCard()}>
             <div className="flex items-start justify-between">
-              <div>
-                <p className="text-xs font-medium uppercase tracking-wide text-gray-400">
-                  {t("teacherDashboard.thisWeek")}
-                </p>
-                <p className="mt-2 text-2xl font-bold text-[#0D1B2A]">
-                  {t("teacherDashboard.plannedHours", { count: data.stats.weekHours })}
-                </p>
-              </div>
-              <span className="rounded-xl bg-purple-50 p-2.5">
-                <Calendar className="h-5 w-5 text-purple-500" />
+              <p className="text-[11px] font-semibold uppercase tracking-wider text-gray-400">
+                {t("teacherDashboard.todayLabel")}
+              </p>
+              <span className="rounded-lg bg-blue-50 p-2">
+                <Clock className="h-4 w-4 text-blue-500" />
               </span>
             </div>
-            <div className="mt-4 flex gap-4 text-xs text-gray-500">
-              <span>
-                <strong className="text-[#0D1B2A]">{data.stats.weekCompleted}</strong>{" "}
-                {t("teacherDashboard.completedShort")}
-              </span>
-              <span>
-                <strong className="text-[#0D1B2A]">{data.stats.weekPending}</strong>{" "}
-                {t("teacherDashboard.pendingShort")}
-              </span>
+            <p className="mt-2 text-xl font-bold tracking-tight text-[#0D1B2A]">
+              {t("teacherDashboard.hoursToday", { count: data.stats.hoursToday })}
+            </p>
+            <div className="mt-auto flex gap-3 border-t border-gray-50 pt-3">
+              <StatMetric label={t("teacherDashboard.upcomingShort")} value={data.stats.todayUpcoming} />
+              <StatMetric label={t("teacherDashboard.completedShort")} value={data.stats.todayCompleted} />
             </div>
-            <Link
-              href="/dashboard/teacher/schedule"
-              className="mt-4 inline-flex items-center gap-1 text-xs font-medium text-[#D4AF37] hover:underline"
-            >
-              {t("teacherDashboard.myAppointments")}
-              <ChevronRight className="h-3.5 w-3.5" />
-            </Link>
-          </div>
+          </Link>
 
-          <div className={teacherPanel("p-5")}>
+          <Link href="/dashboard/teacher/schedule" className={teacherStatCard()}>
             <div className="flex items-start justify-between">
-              <div>
-                <p className="text-xs font-medium uppercase tracking-wide text-gray-400">
-                  {t("teacherDashboard.earningsMonth")} ({monthLabel})
-                </p>
-                <p className="mt-2 text-2xl font-bold text-[#0D1B2A]">
-                  {formatTeacherEuro(data.stats.earningsMonth)}
-                </p>
-                <p className="text-xs text-gray-400">{t("teacherDashboard.netLabel")}</p>
-              </div>
-              <span className="rounded-xl bg-green-50 p-2.5">
-                <Euro className="h-5 w-5 text-green-600" />
+              <p className="text-[11px] font-semibold uppercase tracking-wider text-gray-400">
+                {t("teacherDashboard.thisWeek")}
+              </p>
+              <span className="rounded-lg bg-violet-50 p-2">
+                <Calendar className="h-4 w-4 text-violet-500" />
               </span>
             </div>
-            <div className="mt-4 flex gap-4 text-xs text-gray-500">
+            <p className="mt-2 text-xl font-bold tracking-tight text-[#0D1B2A]">
+              {t("teacherDashboard.plannedHours", { count: data.stats.weekHours })}
+            </p>
+            <div className="mt-auto flex gap-3 border-t border-gray-50 pt-3">
+              <StatMetric label={t("teacherDashboard.completedShort")} value={data.stats.weekCompleted} />
+              <StatMetric label={t("teacherDashboard.pendingShort")} value={data.stats.weekPending} />
+            </div>
+          </Link>
+
+          <Link href="/dashboard/teacher/payments" className={teacherStatCard()}>
+            <div className="flex items-start justify-between">
+              <p className="text-[11px] font-semibold uppercase tracking-wider text-gray-400">
+                {t("teacherDashboard.earningsMonth")}
+              </p>
+              <span className="rounded-lg bg-emerald-50 p-2">
+                <Euro className="h-4 w-4 text-emerald-600" />
+              </span>
+            </div>
+            <p className="mt-2 text-xl font-bold tracking-tight text-[#0D1B2A]">
+              {formatTeacherEuro(data.stats.earningsMonth)}
+            </p>
+            <div className="mt-auto flex flex-wrap gap-x-4 gap-y-1 border-t border-gray-50 pt-4 text-xs text-gray-500">
               <span>
                 {t("teacherDashboard.gross")}:{" "}
                 <strong className="text-[#0D1B2A]">{formatTeacherEuro(data.stats.earningsGross)}</strong>
@@ -209,151 +214,125 @@ export function TeacherOverviewDashboard() {
                 <strong className="text-[#0D1B2A]">{formatTeacherEuro(data.stats.earningsPending)}</strong>
               </span>
             </div>
-            <Link
-              href="/dashboard/teacher/payments"
-              className="mt-4 inline-flex items-center gap-1 text-xs font-medium text-[#D4AF37] hover:underline"
-            >
-              {t("teacherDashboard.viewPayments")}
-              <ChevronRight className="h-3.5 w-3.5" />
-            </Link>
-          </div>
+          </Link>
 
-          <div className={teacherPanel("p-5")}>
+          <Link href="/dashboard/teacher/earnings" className={teacherStatCard()}>
             <div className="flex items-start justify-between">
-              <div>
-                <p className="text-xs font-medium uppercase tracking-wide text-gray-400">
-                  {t("teacherDashboard.nextJumpBonus")}
-                </p>
-                <p className="mt-2 text-2xl font-bold text-[#0D1B2A]">
-                  {formatTeacherEuro(data.stats.bonusCurrent)}
-                </p>
-                <p className="text-xs text-gray-400">{t("teacherDashboard.currentBonus")}</p>
-              </div>
-              <span className="rounded-xl bg-orange-50 p-2.5">
-                <Rocket className="h-5 w-5 text-orange-500" />
+              <p className="text-[11px] font-semibold uppercase tracking-wider text-gray-400">
+                {t("teacherDashboard.nextJumpBonus")}
+              </p>
+              <span className="rounded-lg bg-orange-50 p-2">
+                <Rocket className="h-4 w-4 text-orange-500" />
               </span>
             </div>
-            <div className="mt-4">
-              <div className="mb-1 flex justify-between text-xs text-gray-500">
+            <p className="mt-2 text-xl font-bold tracking-tight text-[#0D1B2A]">
+              {formatTeacherEuro(data.stats.bonusCurrent)}
+            </p>
+            <div className="mt-auto border-t border-gray-50 pt-3">
+              <div className="mb-1.5 flex justify-between text-[11px] text-gray-500">
                 <span>{data.stats.bonusProgress}%</span>
-                <span>
+                <span className="truncate pl-2">
                   {t("teacherDashboard.nextGoal")}: {formatTeacherEuro(data.stats.bonusNextGoal)}
                 </span>
               </div>
-              <div className="h-2 overflow-hidden rounded-full bg-gray-100">
+              <div className="h-1.5 overflow-hidden rounded-full bg-gray-100">
                 <div
-                  className="h-full rounded-full bg-green-500 transition-all"
+                  className="h-full rounded-full bg-gradient-to-r from-[#D4AF37] to-[#22C55E] transition-all"
                   style={{ width: `${data.stats.bonusProgress}%` }}
                 />
               </div>
             </div>
-            <Link
-              href="/dashboard/teacher/earnings"
-              className="mt-4 inline-flex items-center gap-1 text-xs font-medium text-[#D4AF37] hover:underline"
-            >
-              {t("teacherDashboard.learnMore")}
-              <ChevronRight className="h-3.5 w-3.5" />
-            </Link>
-          </div>
-        </section>
+          </Link>
+        </div>
 
-        {/* Middle: lessons table + student list */}
-        <div className="grid gap-6 xl:grid-cols-3">
-          <div className={`${teacherPanel()} xl:col-span-2`}>
+        {/* Main content */}
+        <div className="grid gap-4 lg:grid-cols-5">
+          {/* Upcoming lessons */}
+          <div className={cn(teacherPanel(), "lg:col-span-3")}>
             <PanelHeader
               title={t("teacherDashboard.upcomingLessons")}
               href="/dashboard/teacher/schedule"
               linkLabel={t("teacherDashboard.allAppointments")}
             />
             {data.upcomingLessons.length === 0 ? (
-              <div className="px-6 py-14 text-center">
-                <Calendar className="mx-auto mb-3 h-8 w-8 text-gray-300" />
-                <p className="text-sm text-gray-500">{t("teacherDashboard.noAppointments")}</p>
-                <Button variant="outline" size="sm" href="/dashboard/teacher/schedule" className="mt-4">
+              <div className="flex flex-col items-center px-6 py-16 text-center">
+                <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-gray-50">
+                  <Calendar className="h-7 w-7 text-gray-300" />
+                </div>
+                <p className="text-sm font-medium text-[#0D1B2A]">{t("teacherDashboard.noAppointments")}</p>
+                <p className="mt-1 max-w-sm text-xs text-gray-500">{t("teacherDashboard.planWithStudents")}</p>
+                <Button variant="gold" size="sm" href="/dashboard/teacher/schedule" className="mt-5">
                   {t("teacherDashboard.goToCalendar")}
                 </Button>
               </div>
             ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full min-w-[640px] text-sm">
-                  <thead>
-                    <tr className="border-b border-gray-100 text-left text-[11px] font-semibold uppercase tracking-wide text-gray-400">
-                      <th className="px-5 py-3">{t("teacherDashboard.colDate")}</th>
-                      <th className="px-3 py-3">{t("teacherDashboard.colTime")}</th>
-                      <th className="px-3 py-3">{t("teacherDashboard.colStudent")}</th>
-                      <th className="px-3 py-3">{t("teacherDashboard.colSubject")}</th>
-                      <th className="px-3 py-3">{t("teacherDashboard.colDuration")}</th>
-                      <th className="px-3 py-3">{t("teacherDashboard.colStatus")}</th>
-                      <th className="px-5 py-3 text-right">{t("teacherDashboard.colAction")}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {data.upcomingLessons.slice(0, 6).map((lesson) => (
-                      <tr key={lesson.id} className="border-b border-gray-50 last:border-0">
-                        <td className="whitespace-nowrap px-5 py-3.5 text-[#0D1B2A]">
-                          {new Date(lesson.start_time).toLocaleDateString(locale, {
-                            weekday: "short",
-                            day: "numeric",
-                            month: "short",
-                          })}
-                        </td>
-                        <td className="whitespace-nowrap px-3 py-3.5 text-gray-600">
-                          {formatTimeRange(lesson.start_time, lesson.duration, locale)}
-                        </td>
-                        <td className="px-3 py-3.5 font-medium text-[#0D1B2A]">{lesson.student_name || "—"}</td>
-                        <td className="px-3 py-3.5 text-gray-600">{lesson.subject_name || "—"}</td>
-                        <td className="px-3 py-3.5 text-gray-600">{lesson.duration} min</td>
-                        <td className="px-3 py-3.5">
-                          <Badge variant="success">{t("teacherDashboard.statusBooked")}</Badge>
-                        </td>
-                        <td className="px-5 py-3.5">
-                          <div className="flex items-center justify-end gap-2">
-                            {lesson.zoom_link ? (
-                              <a
-                                href={lesson.zoom_link}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center gap-1.5 rounded-lg bg-[#2D8CFF] px-3 py-1.5 text-xs font-medium text-white hover:bg-[#1a7ae8]"
-                              >
-                                <Video className="h-3.5 w-3.5" />
-                                {t("teacherDashboard.startLesson")}
-                              </a>
-                            ) : null}
-                            <button
-                              type="button"
-                              className="rounded-lg p-1.5 text-gray-400 hover:bg-gray-100"
-                              aria-label="More options"
-                            >
-                              <MoreHorizontal className="h-4 w-4" />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+              <ul className="divide-y divide-gray-50">
+                {data.upcomingLessons.slice(0, 4).map((lesson) => {
+                  const start = new Date(lesson.start_time);
+                  return (
+                    <li
+                      key={lesson.id}
+                      className="flex flex-col gap-2 px-4 py-3 transition hover:bg-gray-50/80 sm:flex-row sm:items-center sm:justify-between"
+                    >
+                      <div className="flex min-w-0 items-center gap-4">
+                        <div className="flex h-12 w-12 shrink-0 flex-col items-center justify-center rounded-lg bg-[#F0F2F5]">
+                          <span className="text-[10px] font-bold uppercase leading-none text-gray-400">
+                            {start.toLocaleDateString(locale, { weekday: "short" })}
+                          </span>
+                          <span className="text-base font-bold leading-tight text-[#0D1B2A]">
+                            {start.getDate()}
+                          </span>
+                        </div>
+                        <div className="min-w-0">
+                          <p className="truncate font-semibold text-[#0D1B2A]">
+                            {lesson.student_name || "—"}
+                          </p>
+                          <p className="mt-0.5 truncate text-sm text-gray-500">
+                            {lesson.subject_name || "—"} · {lesson.duration} min ·{" "}
+                            {formatTimeRange(lesson.start_time, lesson.duration, locale)}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex shrink-0 items-center gap-2 pl-16 sm:pl-0">
+                        <Badge variant="success">{t("teacherDashboard.statusBooked")}</Badge>
+                        {lesson.zoom_link ? (
+                          <a
+                            href={lesson.zoom_link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 rounded-lg bg-[#2D8CFF] px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-[#1a7ae8]"
+                          >
+                            <Video className="h-3.5 w-3.5" />
+                            {t("teacherDashboard.startLesson")}
+                          </a>
+                        ) : null}
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
             )}
           </div>
 
-          <div className={teacherPanel()}>
+          {/* Students */}
+          <div className={cn(teacherPanel(), "lg:col-span-2")}>
             <PanelHeader
               title={t("teacherDashboard.studentList")}
               href="/dashboard/teacher/students"
               linkLabel={t("teacherDashboard.allStudents")}
             />
             {data.students.length === 0 ? (
-              <div className="px-6 py-12 text-center">
-                <Users className="mx-auto mb-3 h-8 w-8 text-gray-300" />
+              <div className="flex flex-col items-center px-6 py-14 text-center">
+                <Users className="mb-3 h-8 w-8 text-gray-300" />
                 <p className="text-sm text-gray-500">{t("teacherDashboard.noStudents")}</p>
               </div>
             ) : (
               <ul className="divide-y divide-gray-50">
-                {data.students.slice(0, 6).map((student, i) => (
-                  <li key={student.id} className="px-5 py-3.5">
+                {data.students.slice(0, 4).map((student, i) => (
+                  <li key={student.id} className="px-4 py-2.5">
                     <div className="flex items-center gap-3">
                       <div
-                        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white"
+                        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-[11px] font-bold text-white"
                         style={{ backgroundColor: TEACHER_AVATAR_COLORS[i % TEACHER_AVATAR_COLORS.length] }}
                       >
                         {studentInitials(student.name)}
@@ -364,91 +343,27 @@ export function TeacherOverviewDashboard() {
                           {student.subject} · {student.totalHours}h
                         </p>
                       </div>
+                      <Link
+                        href={`/dashboard/teacher/schedule?student=${student.id}`}
+                        className="shrink-0 rounded-lg p-1.5 text-gray-400 transition hover:bg-gray-100 hover:text-[#D4AF37]"
+                        title={t("teacherDashboard.createForStudent")}
+                      >
+                        <Plus className="h-4 w-4" />
+                      </Link>
                     </div>
-                    <Link
-                      href={`/dashboard/teacher/schedule?student=${student.id}`}
-                      className="mt-2 block w-full rounded-lg border border-gray-200 py-1.5 text-center text-xs font-medium text-gray-600 transition hover:border-[#D4AF37]/40 hover:text-[#D4AF37]"
-                    >
-                      {t("teacherDashboard.createForStudent")}
-                    </Link>
                   </li>
                 ))}
               </ul>
             )}
-            <div className="border-t border-gray-100 px-5 py-4">
+            <div className="shrink-0 border-t border-gray-100 px-4 py-2">
               <Link
                 href="/dashboard/teacher/students"
                 className="inline-flex items-center gap-1 text-xs font-medium text-[#D4AF37] hover:underline"
               >
-                <Plus className="h-3.5 w-3.5" />
+                <TrendingUp className="h-3.5 w-3.5" />
                 {t("teacherDashboard.addNewStudent")}
               </Link>
             </div>
-          </div>
-        </div>
-
-        {/* Bottom: payments + messages */}
-        <div className="grid gap-6 md:grid-cols-2">
-          <div className={teacherPanel()}>
-            <PanelHeader
-              title={t("teacherDashboard.recentPayments")}
-              href="/dashboard/teacher/payments"
-              linkLabel={t("teacherDashboard.viewAll")}
-            />
-            {data.recentPayments.length === 0 ? (
-              <p className="px-6 py-10 text-sm text-gray-500">{t("teacherDashboard.noPayments")}</p>
-            ) : (
-              <ul className="divide-y divide-gray-50">
-                {data.recentPayments.slice(0, 5).map((p) => (
-                  <li key={p.id} className="flex items-center justify-between gap-3 px-5 py-3.5">
-                    <div className="min-w-0">
-                      <p className="truncate text-sm font-medium text-[#0D1B2A]">{p.studentName}</p>
-                      <p className="text-xs text-gray-500">
-                        {p.method} · {new Date(p.date).toLocaleDateString(locale)}
-                      </p>
-                    </div>
-                    <div className="flex shrink-0 items-center gap-3">
-                      <span className="text-sm font-semibold text-[#0D1B2A]">{formatTeacherEuro(p.amount)}</span>
-                      <Badge variant="success">{t("teacherDashboard.paid")}</Badge>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-
-          <div className={teacherPanel()}>
-            <PanelHeader
-              title={t("teacherDashboard.messagesTitle")}
-              href="/dashboard/chat"
-              linkLabel={t("teacherDashboard.viewAll")}
-            />
-            {data.notifications.length === 0 ? (
-              <p className="px-6 py-10 text-sm text-gray-500">{t("teacherDashboard.noMessages")}</p>
-            ) : (
-              <ul className="divide-y divide-gray-50">
-                {data.notifications.slice(0, 5).map((n, i) => (
-                  <li key={n.id} className="flex gap-3 px-5 py-3.5">
-                    <div
-                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white"
-                      style={{ backgroundColor: TEACHER_AVATAR_COLORS[i % TEACHER_AVATAR_COLORS.length] }}
-                    >
-                      {(n.title || "?").charAt(0).toUpperCase()}
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-start justify-between gap-2">
-                        <p className={`truncate text-sm ${n.is_read ? "text-gray-600" : "font-medium text-[#0D1B2A]"}`}>
-                          {n.title}
-                        </p>
-                        {!n.is_read && <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-blue-500" />}
-                      </div>
-                      <p className="mt-0.5 line-clamp-1 text-xs text-gray-500">{n.message || n.title}</p>
-                      <p className="mt-0.5 text-[11px] text-gray-400">{formatRelativeTime(n.created_at, locale)}</p>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            )}
           </div>
         </div>
       </div>

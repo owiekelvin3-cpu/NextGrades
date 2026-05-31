@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, ReactNode } from "react";
+import { useLayoutEffect, useEffect, ReactNode } from "react";
 import i18n from "@/lib/i18n/config";
 import { I18nextProvider } from "react-i18next";
 import { normalizeLanguage } from "@/lib/i18n/locales";
@@ -16,29 +16,33 @@ interface I18nProviderProps {
 }
 
 export function I18nProvider({ children }: I18nProviderProps) {
+  useLayoutEffect(() => {
+    const stored = localStorage.getItem(LANGUAGE_STORAGE_KEY) ?? navigator.language;
+    const lang = normalizeLanguage(stored);
+    document.documentElement.lang = lang;
+  }, []);
+
   useEffect(() => {
-    const applyLanguage = (raw: string | null, skipI18n = false) => {
+    const applyLanguage = (raw: string | null) => {
       const lang = normalizeLanguage(raw);
       persistLanguageLocally(lang);
-      if (!skipI18n && normalizeLanguage(i18n.language) !== lang) {
+      document.documentElement.lang = lang;
+      if (normalizeLanguage(i18n.language) !== lang) {
         void i18n.changeLanguage(lang);
       }
     };
 
-    applyLanguage(localStorage.getItem(LANGUAGE_STORAGE_KEY), false);
+    applyLanguage(localStorage.getItem(LANGUAGE_STORAGE_KEY) ?? navigator.language);
 
     const onStorage = (event: StorageEvent) => {
       if (event.key === LANGUAGE_STORAGE_KEY) {
-        applyLanguage(event.newValue, false);
+        applyLanguage(event.newValue);
       }
     };
 
     const onLanguageChanged = (event: Event) => {
       const lang = normalizeLanguage((event as CustomEvent<string>).detail);
-      document.documentElement.lang = lang;
-      if (normalizeLanguage(i18n.language) !== lang) {
-        void i18n.changeLanguage(lang);
-      }
+      applyLanguage(lang);
     };
 
     const onI18nLanguageChanged = (lang: string) => {
@@ -66,6 +70,7 @@ export function I18nProvider({ children }: I18nProviderProps) {
 export async function changeAppLanguage(lang: string): Promise<void> {
   const normalized = normalizeLanguage(lang);
   persistLanguageLocally(normalized);
+  document.documentElement.lang = normalized;
   if (normalizeLanguage(i18n.language) !== normalized) {
     await i18n.changeLanguage(normalized);
   }

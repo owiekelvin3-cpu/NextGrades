@@ -25,15 +25,20 @@ export interface CatalogResource {
   downloads?: number;
 }
 
+import {
+  RESOURCES_SUBJECT_IMAGE_BY_ID,
+  RESOURCES_CONTENT_TYPE_IMAGES,
+} from "./images";
+
 const images = {
-  math: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=400&h=250&fit=crop",
-  german: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400&h=250&fit=crop",
-  study: "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=400&h=250&fit=crop",
-  exam: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=400&h=250&fit=crop",
-  premium1: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=250&fit=crop",
-  premium2: "https://images.unsplash.com/photo-1513258496099-48168024aec0?w=400&h=250&fit=crop",
-  premium3: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400&h=250&fit=crop",
-  premium4: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&h=250&fit=crop",
+  math: RESOURCES_SUBJECT_IMAGE_BY_ID.math,
+  german: RESOURCES_SUBJECT_IMAGE_BY_ID.german,
+  study: RESOURCES_CONTENT_TYPE_IMAGES.learning_material,
+  exam: RESOURCES_CONTENT_TYPE_IMAGES.exam_preparation,
+  premium1: RESOURCES_CONTENT_TYPE_IMAGES.video_course,
+  premium2: RESOURCES_CONTENT_TYPE_IMAGES.guidebook,
+  premium3: RESOURCES_CONTENT_TYPE_IMAGES.mini_course,
+  premium4: RESOURCES_CONTENT_TYPE_IMAGES.document,
 };
 
 export const RESOURCE_CATALOG: CatalogResource[] = [

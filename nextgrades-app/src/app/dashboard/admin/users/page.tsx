@@ -1,22 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Sidebar } from "@/components/dashboard/Sidebar";
+import { MobileBottomNav, MOBILE_BOTTOM_NAV_PADDING } from "@/components/mobile/MobileBottomNav";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import {
   Search,
-  Filter,
-  MoreVertical,
   Trash2,
   Ban,
   CheckCircle,
   User,
-  Mail,
-  Calendar,
-  Shield,
   ChevronDown,
   RefreshCw,
 } from "lucide-react";
@@ -54,11 +50,7 @@ export default function AdminUsersPage() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
-  useEffect(() => {
-    fetchUsers();
-  }, [page, roleFilter, statusFilter, verifiedFilter, sortBy]);
-
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     try {
       setLoading(true);
       const params = new URLSearchParams({
@@ -80,37 +72,52 @@ export default function AdminUsersPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [page, roleFilter, statusFilter, verifiedFilter, sortBy, searchQuery, toastError]);
+
+  useEffect(() => {
+    void fetchUsers();
+  }, [fetchUsers]);
 
   const handleSuspend = async (userId: string, currentStatus: boolean) => {
+    const action = currentStatus ? "suspend" : "reactivate";
+    if (!confirm(currentStatus ? "Suspend this user? They will be signed out and unable to log in." : "Reactivate this user? They will be able to log in again.")) {
+      return;
+    }
+
     try {
       const response = await fetch(`/api/admin/users/${userId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ is_active: !currentStatus }),
       });
-      if (response.ok) {
-        success(currentStatus ? "User suspended" : "User activated");
-        fetchUsers();
-      }
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || `Failed to ${action} user`);
+      success(currentStatus ? "User suspended — they can no longer sign in" : "User reactivated");
+      fetchUsers();
     } catch (error) {
-      toastError("Failed to update user");
+      toastError(error instanceof Error ? error.message : "Failed to update user");
     }
   };
 
-  const handleDelete = async (userId: string) => {
-    if (!confirm("Are you sure you want to delete this user?")) return;
+  const handleDelete = async (userId: string, userName: string | null) => {
+    if (
+      !confirm(
+        `Permanently delete ${userName || "this user"}?\n\nThis removes their account, profile, and all associated data. This cannot be undone.`
+      )
+    ) {
+      return;
+    }
 
     try {
       const response = await fetch(`/api/admin/users/${userId}`, {
         method: "DELETE",
       });
-      if (response.ok) {
-        success("User deleted successfully");
-        fetchUsers();
-      }
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Failed to delete user");
+      success("User permanently deleted");
+      fetchUsers();
     } catch (error) {
-      toastError("Failed to delete user");
+      toastError(error instanceof Error ? error.message : "Failed to delete user");
     }
   };
 
@@ -152,7 +159,7 @@ export default function AdminUsersPage() {
     <div className={`flex min-h-screen ${theme === "dark" ? "bg-[#0D1B2A]" : "bg-[#FAFAFA]"}`}>
       <Sidebar role="admin" />
       
-      <main className="flex-1 p-4 sm:p-6 lg:p-8 pt-20 md:pt-8">
+      <main className={`flex-1 overflow-x-hidden p-4 sm:p-6 lg:p-8 md:pt-8 ${MOBILE_BOTTOM_NAV_PADDING}`}>
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
@@ -228,7 +235,7 @@ export default function AdminUsersPage() {
                 >
                   <option value="all">All Status</option>
                   <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
+                  <option value="inactive">Suspended</option>
                 </select>
                 <ChevronDown className={`absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`} />
               </div>
@@ -371,7 +378,7 @@ export default function AdminUsersPage() {
                         </td>
                         <td className="p-4">
                           <Badge className={user.is_active ? "bg-green-500/10 text-green-500" : "bg-red-500/10 text-red-500"}>
-                            {user.is_active ? "Active" : "Inactive"}
+                            {user.is_active ? "Active" : "Suspended"}
                           </Badge>
                         </td>
                         <td className="p-4">
@@ -404,6 +411,7 @@ export default function AdminUsersPage() {
                               variant="outline"
                               size="sm"
                               onClick={() => handleSuspend(user.id, user.is_active)}
+                              title={user.is_active ? "Suspend user" : "Reactivate user"}
                               className={theme === "dark" ? "border-white/20 text-white hover:bg-white/10" : "border-gray-200 text-gray-700 hover:bg-gray-50"}
                             >
                               {user.is_active ? <Ban className="w-4 h-4" /> : <CheckCircle className="w-4 h-4" />}
@@ -411,7 +419,8 @@ export default function AdminUsersPage() {
                             <Button
                               variant="outline"
                               size="sm"
-                              onClick={() => handleDelete(user.id)}
+                              onClick={() => handleDelete(user.id, user.full_name)}
+                              title="Permanently delete user"
                               className={`text-red-500 hover:bg-red-500/10 ${theme === "dark" ? "border-white/20" : "border-gray-200"}`}
                             >
                               <Trash2 className="w-4 h-4" />
@@ -456,6 +465,7 @@ export default function AdminUsersPage() {
           </Card>
         </div>
       </main>
+      <MobileBottomNav role="admin" />
     </div>
   );
 }

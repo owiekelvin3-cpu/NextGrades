@@ -11,7 +11,9 @@ import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { useTheme } from "@/context/ThemeContext";
 import { useTranslation } from "react-i18next";
-import { HOME_HERO_STUDENT_IMAGE, PROGRAM_CARD_IMAGES, HERO_STUDY_IMAGE } from "@/lib/marketing-images";
+import { useCmsImages } from "@/hooks/useCmsImage";
+import { HOME_HERO_STUDENT_IMAGE, PROGRAM_CARD_IMAGES, HERO_STUDY_IMAGE, HOME_PLATFORM_THUMB, HOME_TESTIMONIALS_BG } from "@/lib/marketing-images";
+import { MarketingImage } from "@/components/marketing/MarketingImage";
 import {
   ArrowRight,
   Users,
@@ -32,6 +34,15 @@ const statIcons = [GraduationCap, Users, FileText, Star];
 export default function Home() {
   const { theme } = useTheme();
   const { t, i18n } = useTranslation();
+  const { getImage } = useCmsImages();
+
+  const heroStudentImage = getImage("cmsImages.home.heroStudent", HOME_HERO_STUDENT_IMAGE);
+  const studyBannerImage = getImage("cmsImages.home.studyBanner", HERO_STUDY_IMAGE);
+  const platformThumb = getImage("cmsImages.home.platformThumb", HOME_PLATFORM_THUMB);
+  const testimonialsBg = getImage("cmsImages.home.testimonialsBg", HOME_TESTIMONIALS_BG);
+  const programCardImages = PROGRAM_CARD_IMAGES.map((url, i) =>
+    getImage(`cmsImages.home.programCard.${i}`, url)
+  );
 
   const features = useMemo(() => {
     const data = t("home.features", { returnObjects: true });
@@ -119,7 +130,7 @@ export default function Home() {
               >
                 <div className="relative aspect-[4/5] max-h-[520px] overflow-hidden rounded-2xl shadow-2xl ring-1 ring-white/10 sm:aspect-[5/6] lg:aspect-auto lg:h-[480px]">
                   <Image
-                    src={HOME_HERO_STUDENT_IMAGE}
+                    src={heroStudentImage || HOME_HERO_STUDENT_IMAGE}
                     alt={t("images.studentStudying")}
                     fill
                     priority
@@ -153,10 +164,10 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Features Strip */}
-        <section className={`py-12 ${theme === "dark" ? "bg-[#112240]" : "bg-[#FAFAFA]"}`}>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid md:grid-cols-5 gap-8">
+        {/* Features Strip — 5 columns on all breakpoints */}
+        <section className={`py-8 md:py-12 ${theme === "dark" ? "bg-[#112240]" : "bg-[#FAFAFA]"}`}>
+          <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-5 gap-2 sm:gap-4 md:gap-8">
               {features.map((feature, index) => (
                 <motion.div
                   key={index}
@@ -164,16 +175,20 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
-                  className="text-center"
+                  className="min-w-0 text-center"
                 >
-                  <div className="w-12 h-12 rounded-lg bg-[#D4AF37]/20 flex items-center justify-center mx-auto mb-4">
+                  <div className="mx-auto mb-2 flex h-8 w-8 items-center justify-center rounded-lg bg-[#D4AF37]/20 sm:mb-4 sm:h-12 sm:w-12">
                     {(() => {
                       const Icon = featureIcons[index];
-                      return <Icon className="w-6 h-6 text-[#D4AF37]" />;
+                      return <Icon className="h-4 w-4 text-[#D4AF37] sm:h-6 sm:w-6" />;
                     })()}
                   </div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>{feature.title}</h3>
-                  <p className={`text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>{feature.desc}</p>
+                  <h3 className={`mb-1 text-[10px] font-semibold leading-tight sm:mb-2 sm:text-sm md:text-base ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
+                    {feature.title}
+                  </h3>
+                  <p className={`hidden text-xs leading-snug sm:block md:text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                    {feature.desc}
+                  </p>
                 </motion.div>
               ))}
             </div>
@@ -223,11 +238,13 @@ export default function Home() {
                     
                     {/* Program images */}
                     <div className="h-44 relative overflow-hidden">
-                      <img
-                        src={PROGRAM_CARD_IMAGES[index] ?? PROGRAM_CARD_IMAGES[0]}
+                      <MarketingImage
+                        src={programCardImages[index] ?? programCardImages[0]}
+                        fallbackSrc={PROGRAM_CARD_IMAGES[index] ?? PROGRAM_CARD_IMAGES[0]}
                         alt={program.title}
-                        className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
-                        loading="lazy"
+                        containerClassName="h-full w-full"
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                        className="transition-transform duration-500 hover:scale-110"
                       />
                     </div>
                     
@@ -261,9 +278,9 @@ export default function Home() {
         </section>
 
         {/* Stats Bar */}
-        <section className={`py-14 ${theme === "dark" ? "bg-[#112240] text-white" : "bg-[#FAFAFA] text-[#0D1B2A]"}`}>
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid md:grid-cols-4 gap-8 text-center">
+        <section className={`py-10 md:py-14 ${theme === "dark" ? "bg-[#112240] text-white" : "bg-[#FAFAFA] text-[#0D1B2A]"}`}>
+          <div className="max-w-5xl mx-auto px-3 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-4 gap-2 sm:gap-6 md:gap-8 text-center">
               {stats.map((stat, index) => (
                 <motion.div
                   key={index}
@@ -271,15 +288,16 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
+                  className="min-w-0"
                 >
-                  <div className={`w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-4 ${theme === "dark" ? "bg-white/10" : "bg-[#D4AF37]/20"}`}>
+                  <div className={`mx-auto mb-2 flex h-8 w-8 items-center justify-center rounded-lg sm:mb-4 sm:h-12 sm:w-12 ${theme === "dark" ? "bg-white/10" : "bg-[#D4AF37]/20"}`}>
                     {(() => {
                       const Icon = statIcons[index];
-                      return <Icon className="w-6 h-6 text-[#D4AF37]" />;
+                      return <Icon className="h-4 w-4 text-[#D4AF37] sm:h-6 sm:w-6" />;
                     })()}
                   </div>
-                  <p className={`text-3xl font-bold mb-2 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>{stat.number}</p>
-                  <p className={`text-sm ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>{stat.label}</p>
+                  <p className={`text-lg font-bold leading-none sm:text-2xl md:text-3xl mb-1 sm:mb-2 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>{stat.number}</p>
+                  <p className={`text-[10px] leading-tight sm:text-xs md:text-sm ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>{stat.label}</p>
                 </motion.div>
               ))}
             </div>
@@ -292,11 +310,12 @@ export default function Home() {
             <div className="relative rounded-3xl overflow-hidden shadow-2xl">
               {/* Hero Image Background */}
               <div className="relative">
-                <img
-                  src={HERO_STUDY_IMAGE}
+                <MarketingImage
+                  src={studyBannerImage}
+                  fallbackSrc={HERO_STUDY_IMAGE}
                   alt={t("images.modernLearning")}
-                  className="w-full h-[500px] object-cover"
-                  loading="lazy"
+                  containerClassName="h-[500px] w-full"
+                  sizes="100vw"
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-[#0D1B2A]/80 via-[#0D1B2A]/40 to-transparent" />
                 
@@ -338,10 +357,14 @@ export default function Home() {
                               {t("home.platform.trackProgress")}
                             </h3>
                             <div className="flex gap-4">
-                              <img
-                                src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=100&h=100&fit=crop"
+                              <MarketingImage
+                                src={platformThumb}
+                                fallbackSrc={HOME_PLATFORM_THUMB}
                                 alt={t("images.studentStudying")}
-                                className="w-16 h-16 rounded-xl object-cover"
+                                width={64}
+                                height={64}
+                                sizes="64px"
+                                className="rounded-xl"
                               />
                               <div className="flex-1">
                                 <p className="text-gray-600 text-sm">
@@ -374,15 +397,16 @@ export default function Home() {
         {/* Testimonials Section */}
         <section className="py-20 relative overflow-hidden">
           <div className="absolute inset-0 z-0">
-            <img
-              src={HERO_STUDY_IMAGE}
+            <MarketingImage
+              src={testimonialsBg}
+              fallbackSrc={HOME_TESTIMONIALS_BG}
               alt=""
-              aria-hidden
-              className="w-full h-full object-cover"
+              containerClassName="absolute inset-0"
+              sizes="100vw"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-[#0D1B2A]/90 via-[#0D1B2A]/70 to-[#0D1B2A]/90" />
           </div>
-          
+
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -412,7 +436,7 @@ export default function Home() {
                         ))}
                       </div>
                       <p className="mb-6 leading-relaxed text-white">
-                        "{testimonial.quote}"
+                        &ldquo;{testimonial.quote}&rdquo;
                       </p>
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-full bg-[#D4AF37]/30 flex items-center justify-center">

@@ -1,16 +1,7 @@
 "use client";
 
-import { DashboardPage } from "@/components/dashboard/DashboardPage";
-import { StudentCoursesSection } from "@/components/dashboard/sections/DashboardSections";
+import { StudentCoursesExperience } from "@/components/dashboard/student/StudentCoursesExperience";
 
 export default function StudentCoursesPage() {
-  return (
-    <DashboardPage
-      role="student"
-      titleKey="dashboardPages.student.courses.title"
-      descriptionKey="dashboardPages.student.courses.description"
-    >
-      <StudentCoursesSection />
-    </DashboardPage>
-  );
+  return <StudentCoursesExperience />;
 }

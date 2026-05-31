@@ -3,8 +3,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import Image from "next/image";
-import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Card } from "@/components/ui/Card";
@@ -33,7 +31,9 @@ import {
 import { useTheme } from "@/context/ThemeContext";
 import { useTranslation } from "react-i18next";
 import { useLocalizedContent } from "@/hooks/useLocalizedContent";
+import { useCmsImages } from "@/hooks/useCmsImage";
 import { SUBJECTS_HERO_IMAGE, getSubjectImage } from "@/lib/marketing-images";
+import { MarketingImage } from "@/components/marketing/MarketingImage";
 import { cn } from "@/lib/utils";
 
 const SUBJECT_ICONS: Record<string, typeof Calculator> = {
@@ -61,9 +61,19 @@ export default function SubjectsPage() {
   const { theme } = useTheme();
   const { t } = useTranslation();
   const router = useRouter();
+  const { getImage } = useCmsImages();
+  const subjectsHeroImage = getImage("cmsImages.subjects.hero", SUBJECTS_HERO_IMAGE);
+  const resolveSubjectImage = (subjectId: string, index: number) => {
+    const fallback = getSubjectImage(subjectId, index);
+    return {
+      src: getImage(`cmsImages.subjects.${subjectId}`, fallback),
+      fallback,
+    };
+  };
   const [browseSubject, setBrowseSubject] = useState<SubjectItem | null>(null);
   const [browseGrade, setBrowseGrade] = useState("");
   const [browseSemester, setBrowseSemester] = useState("");
+  const [activeSubjectId, setActiveSubjectId] = useState<string | null>(null);
   const [catalogClasses, setCatalogClasses] = useState<Array<{ id: string; name: string; level: number }>>([]);
 
   useEffect(() => {
@@ -88,12 +98,34 @@ export default function SubjectsPage() {
     setBrowseSemester("");
   };
 
+  const scrollToSubject = (subjectId: string) => {
+    setActiveSubjectId(subjectId);
+    document.getElementById(`subject-${subjectId}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
+  };
+
+  const subjectPillCls = (subjectId: string) =>
+    cn(
+      "shrink-0 rounded-full border px-4 py-2.5 text-xs font-semibold transition-all duration-200 sm:text-sm",
+      "active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF37] focus-visible:ring-offset-2",
+      activeSubjectId === subjectId
+        ? "border-[#D4AF37] bg-[#D4AF37] text-[#0D1B2A] shadow-md shadow-[#D4AF37]/25"
+        : cn(
+            "hover:border-[#D4AF37] hover:bg-[#D4AF37]/10 hover:text-[#D4AF37]",
+            isDark
+              ? "border-white/15 bg-white/5 text-gray-200"
+              : "border-gray-200 bg-white text-[#0D1B2A] shadow-sm"
+          )
+    );
+
   const goToResources = () => {
     if (!browseSubject) return;
-    const params = new URLSearchParams({ subject: browseSubject.id });
-    if (browseGrade) params.set("class", browseGrade);
-    if (browseSemester) params.set("semester", browseSemester);
-    router.push(`/resources?${params.toString()}`);
+    const slug = browseSubject.id;
+    if (browseGrade) {
+      const q = browseSemester ? `?semester=${browseSemester}` : "";
+      router.push(`/resources/${slug}/${browseGrade}${q}`);
+    } else {
+      router.push(`/resources/${slug}`);
+    }
   };
 
   const inputCls = cn(
@@ -132,27 +164,29 @@ export default function SubjectsPage() {
                   {t("subjects.heroSubtitle")}
                 </p>
 
-                <div className="mb-10 grid gap-4 sm:grid-cols-3">
+                <div className="mb-10 grid grid-cols-3 gap-2 sm:gap-4">
                   {benefits.slice(0, 3).map((item, index) => {
                     const Icon = heroFeatureIcons[index] ?? Target;
                     return (
                       <div
                         key={index}
                         className={cn(
-                          "rounded-xl border p-4",
+                          "min-w-0 rounded-xl border p-2.5 sm:p-4",
                           isDark ? "border-white/10 bg-white/5" : "border-gray-100 bg-[#FAFAFA]"
                         )}
                       >
-                        <Icon className="mb-2 h-5 w-5 text-[#D4AF37]" />
-                        <p className="text-sm font-semibold">{item.title}</p>
-                        <p className={cn("mt-1 text-xs", isDark ? "text-gray-400" : "text-gray-500")}>{item.desc}</p>
+                        <Icon className="mb-1.5 h-4 w-4 text-[#D4AF37] sm:mb-2 sm:h-5 sm:w-5" />
+                        <p className="text-[11px] font-semibold leading-tight sm:text-sm">{item.title}</p>
+                        <p className={cn("mt-1 hidden text-xs leading-snug sm:block", isDark ? "text-gray-400" : "text-gray-500")}>
+                          {item.desc}
+                        </p>
                       </div>
                     );
                   })}
                 </div>
 
-                <Button variant="gold" size="lg" href="/consultation">
-                  {t("subjectsPage.ctaButton")} <ArrowRight className="ml-2 h-5 w-5" />
+                <Button variant="gold" size="lg" className="w-full sm:w-auto" href="/consultation">
+                  {t("subjectsPage.ctaButton")} <ArrowRight className="h-5 w-5" />
                 </Button>
               </motion.div>
 
@@ -163,12 +197,12 @@ export default function SubjectsPage() {
                 className="relative mx-auto w-full max-w-lg lg:max-w-none"
               >
                 <div className="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-2xl ring-1 ring-[#D4AF37]/20 lg:aspect-auto lg:h-[420px]">
-                  <Image
-                    src={SUBJECTS_HERO_IMAGE}
+                  <MarketingImage
+                    src={subjectsHeroImage}
+                    fallbackSrc={SUBJECTS_HERO_IMAGE}
                     alt={t("subjects.title")}
-                    fill
                     priority
-                    className="object-cover"
+                    containerClassName="absolute inset-0"
                     sizes="(max-width: 1024px) 90vw, 560px"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0D1B2A]/70 via-transparent to-transparent" />
@@ -202,23 +236,23 @@ export default function SubjectsPage() {
         {/* Stats strip */}
         <section className="relative z-10 -mt-4 pb-4">
           <div className="mx-auto max-w-5xl px-4">
-            <Card className={cn("border-0 p-6 shadow-xl", isDark ? "bg-[#112240]" : "bg-white")}>
-              <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-4">
+            <Card className={cn("border-0 p-4 shadow-xl sm:p-6", isDark ? "bg-[#112240]" : "bg-white")}>
+              <div className="grid grid-cols-4 gap-2 sm:gap-6">
                 {stats.map((stat, index) => {
                   const Icon = statIcons[index];
                   return (
-                    <div key={index} className="flex items-center gap-4">
+                    <div key={index} className="flex min-w-0 flex-col items-center gap-1.5 text-center sm:flex-row sm:items-center sm:gap-4 sm:text-left">
                       <div
                         className={cn(
-                          "flex h-12 w-12 shrink-0 items-center justify-center rounded-full",
+                          "flex h-9 w-9 shrink-0 items-center justify-center rounded-full sm:h-12 sm:w-12",
                           isDark ? "bg-[#D4AF37]/15" : "bg-[#D4AF37]/10"
                         )}
                       >
-                        <Icon className="h-6 w-6 text-[#D4AF37]" />
+                        <Icon className="h-4 w-4 text-[#D4AF37] sm:h-6 sm:w-6" />
                       </div>
-                      <div>
-                        <p className={cn("text-2xl font-bold", isDark ? "text-white" : "text-[#0D1B2A]")}>{stat.value}</p>
-                        <p className={cn("text-sm", isDark ? "text-gray-400" : "text-gray-600")}>{stat.label}</p>
+                      <div className="min-w-0">
+                        <p className={cn("text-base font-bold leading-none sm:text-2xl", isDark ? "text-white" : "text-[#0D1B2A]")}>{stat.value}</p>
+                        <p className={cn("text-[9px] leading-tight sm:text-sm", isDark ? "text-gray-400" : "text-gray-600")}>{stat.label}</p>
                       </div>
                     </div>
                   );
@@ -231,22 +265,36 @@ export default function SubjectsPage() {
         {/* Subject cards */}
         <section className={cn("py-20", isDark ? "bg-[#0D1B2A]" : "bg-[#FAFAFA]")}>
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="mb-14 text-center">
+            <div className="mb-8 text-center sm:mb-14">
               <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#D4AF37]">
                 {t("subjects.eyebrow")}
               </p>
-              <h2 className={cn("text-3xl font-bold md:text-4xl", isDark ? "text-white" : "text-[#0D1B2A]")}>
+              <h2 className={cn("text-2xl font-bold sm:text-3xl md:text-4xl", isDark ? "text-white" : "text-[#0D1B2A]")}>
                 {t("subjects.subtitle", { defaultValue: "Choose your subject" })}
               </h2>
             </div>
 
-            <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
+            <div className="scrollbar-none mb-8 flex gap-2 overflow-x-auto pb-2 sm:mb-10 sm:flex-wrap sm:justify-center sm:overflow-visible sm:pb-0">
+              {subjects.map((subject) => (
+                <button
+                  key={subject.id}
+                  type="button"
+                  onClick={() => scrollToSubject(subject.id)}
+                  className={subjectPillCls(subject.id)}
+                >
+                  {subject.title}
+                </button>
+              ))}
+            </div>
+
+            <div className="grid gap-6 sm:gap-8 md:grid-cols-2 xl:grid-cols-3">
               {subjects.map((subject, index) => {
                 const Icon = SUBJECT_ICONS[subject.id] ?? BookOpen;
-                const image = getSubjectImage(subject.id, index);
+                const { src: image, fallback: imageFallback } = resolveSubjectImage(subject.id, index);
                 return (
                   <motion.div
                     key={subject.id}
+                    id={`subject-${subject.id}`}
                     initial={{ opacity: 0, y: 24 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-40px" }}
@@ -254,17 +302,18 @@ export default function SubjectsPage() {
                   >
                     <Card
                       className={cn(
-                        "group h-full overflow-hidden border transition-shadow hover:shadow-xl",
+                        "group flex h-full flex-col overflow-hidden border transition-shadow hover:shadow-xl",
                         isDark ? "border-white/10 bg-[#112240]" : "border-gray-100 bg-white"
                       )}
                     >
-                      <div className="relative h-52 overflow-hidden">
-                        <Image
+                      <div className="relative h-44 overflow-hidden sm:h-52">
+                        <MarketingImage
                           src={image}
+                          fallbackSrc={imageFallback}
                           alt={subject.title}
-                          fill
-                          className="object-cover transition-transform duration-700 group-hover:scale-105"
+                          containerClassName="absolute inset-0"
                           sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                          className="transition-transform duration-700 group-hover:scale-105"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-[#0D1B2A]/90 via-[#0D1B2A]/20 to-transparent" />
                         <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between">
@@ -277,14 +326,14 @@ export default function SubjectsPage() {
                         </div>
                       </div>
 
-                      <div className="p-6">
-                        <h3 className={cn("mb-2 text-xl font-bold", isDark ? "text-white" : "text-[#0D1B2A]")}>
+                      <div className="flex flex-1 flex-col p-5 sm:p-6">
+                        <h3 className={cn("mb-2 text-lg font-bold sm:text-xl", isDark ? "text-white" : "text-[#0D1B2A]")}>
                           {subject.title}
                         </h3>
-                        <p className={cn("mb-5 text-sm leading-relaxed", isDark ? "text-gray-400" : "text-gray-600")}>
+                        <p className={cn("mb-4 text-sm leading-relaxed sm:mb-5", isDark ? "text-gray-400" : "text-gray-600")}>
                           {subject.description}
                         </p>
-                        <ul className="mb-6 space-y-2">
+                        <ul className="mb-5 space-y-2 sm:mb-6">
                           {subject.features.map((feature, i) => (
                             <li key={i} className="flex items-start gap-2 text-sm">
                               <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#D4AF37]" />
@@ -292,12 +341,26 @@ export default function SubjectsPage() {
                             </li>
                           ))}
                         </ul>
-                        <div className="flex flex-col gap-3 sm:flex-row">
-                          <Button variant="gold" size="md" className="flex-1" onClick={() => openBrowse(subject)}>
+                        <div className="mt-auto flex flex-col gap-2.5 sm:flex-row sm:items-stretch">
+                          <Button
+                            variant="gold"
+                            size="md"
+                            className="min-h-11 flex-1 whitespace-normal py-2.5 text-center text-sm font-semibold leading-snug shadow-md"
+                            onClick={() => openBrowse(subject)}
+                          >
                             {t("subjectsPage.browseMaterials", { defaultValue: "Browse materials" })}
-                            <ArrowRight className="ml-2 h-4 w-4" />
+                            <ArrowRight className="h-4 w-4 shrink-0" />
                           </Button>
-                          <Button variant="outline" size="md" className="flex-1" href="/consultation">
+                          <Button
+                            variant={isDark ? "secondary" : "outline"}
+                            size="md"
+                            href="/consultation"
+                            className={cn(
+                              "min-h-11 flex-1 whitespace-normal py-2.5 text-center text-sm font-semibold leading-snug",
+                              isDark &&
+                                "border-white/20 bg-white/5 text-white hover:border-[#D4AF37] hover:bg-[#D4AF37]/10 hover:text-[#D4AF37]"
+                            )}
+                          >
                             {t("subjectsPage.learnMore")}
                           </Button>
                         </div>
@@ -321,22 +384,26 @@ export default function SubjectsPage() {
                 {t("subjectsPage.whyTitle")}
               </h2>
             </div>
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid grid-cols-4 gap-2 sm:gap-4 lg:gap-6">
               {benefits.map((item, index) => {
                 const Icon = benefitIcons[index];
                 return (
                   <Card
                     key={index}
                     className={cn(
-                      "p-6 text-center transition-transform hover:-translate-y-1",
+                      "min-w-0 p-3 text-center transition-transform hover:-translate-y-1 sm:p-6",
                       isDark ? "border-white/10 bg-[#0D1B2A]/50" : "border-gray-100"
                     )}
                   >
-                    <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#D4AF37]/10">
-                      <Icon className="h-8 w-8 text-[#D4AF37]" />
+                    <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-[#D4AF37]/10 sm:mb-5 sm:h-16 sm:w-16 sm:rounded-2xl">
+                      <Icon className="h-5 w-5 text-[#D4AF37] sm:h-8 sm:w-8" />
                     </div>
-                    <h3 className={cn("mb-2 font-bold", isDark ? "text-white" : "text-[#0D1B2A]")}>{item.title}</h3>
-                    <p className={cn("text-sm leading-relaxed", isDark ? "text-gray-400" : "text-gray-600")}>{item.desc}</p>
+                    <h3 className={cn("mb-1 text-[11px] font-bold leading-tight sm:mb-2 sm:text-base", isDark ? "text-white" : "text-[#0D1B2A]")}>
+                      {item.title}
+                    </h3>
+                    <p className={cn("hidden text-xs leading-relaxed sm:block sm:text-sm", isDark ? "text-gray-400" : "text-gray-600")}>
+                      {item.desc}
+                    </p>
                   </Card>
                 );
               })}
@@ -350,16 +417,18 @@ export default function SubjectsPage() {
           <div className="relative mx-auto max-w-3xl px-4">
             <h2 className="mb-4 text-3xl font-bold md:text-4xl">{t("subjectsPage.ctaTitle")}</h2>
             <p className="mb-8 text-lg text-gray-300">{t("subjectsPage.ctaDesc")}</p>
-            <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <Button variant="gold" size="xl" href="/consultation">
-                {t("subjectsPage.ctaButton")} <ArrowRight className="ml-2 h-5 w-5" />
+            <div className="flex w-full max-w-lg flex-col items-stretch justify-center gap-3 sm:max-w-none sm:flex-row sm:items-center">
+              <Button variant="gold" size="lg" className="w-full sm:w-auto" href="/consultation">
+                {t("subjectsPage.ctaButton")} <ArrowRight className="h-5 w-5" />
               </Button>
-              <Link
+              <Button
+                variant="outline"
+                size="lg"
                 href="/programs"
-                className="inline-flex items-center gap-2 rounded-xl border-2 border-white/30 px-6 py-3 font-semibold text-white transition-colors hover:border-[#D4AF37] hover:text-[#D4AF37]"
+                className="w-full border-white/40 text-white hover:border-[#D4AF37] hover:bg-[#D4AF37]/10 hover:text-[#D4AF37] sm:w-auto"
               >
                 {t("home.explorePrograms", { defaultValue: "Explore programs" })}
-              </Link>
+              </Button>
             </div>
           </div>
         </section>
@@ -403,9 +472,9 @@ export default function SubjectsPage() {
                     <option value="2">{t("resources.filters.semester2", { defaultValue: "Semester 2" })}</option>
                   </select>
                 </div>
-                <Button variant="gold" className="w-full" onClick={goToResources}>
+                <Button variant="gold" className="h-12 w-full text-sm font-semibold" onClick={goToResources}>
                   {t("subjectsPage.viewResources", { defaultValue: "View resources" })}
-                  <ArrowRight className="ml-2 h-4 w-4" />
+                  <ArrowRight className="h-4 w-4" />
                 </Button>
               </div>
             </Card>

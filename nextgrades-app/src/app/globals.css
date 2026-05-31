@@ -38,6 +38,13 @@
   --button-outline-background: transparent;
   --button-outline-foreground: #0D1B2A;
   --button-outline-border: #0D1B2A;
+
+  --surface-muted: #FAFAFA;
+  --surface-subtle: #F5F6F8;
+  --surface-dashboard: #F0F2F5;
+  --surface-elevated: #FFFFFF;
+  --text-muted: #6B7280;
+  --border-default: #E5E7EB;
 }
 
 .dark {
@@ -62,6 +69,13 @@
   --button-outline-background: transparent;
   --button-outline-foreground: #FFFFFF;
   --button-outline-border: rgba(255, 255, 255, 0.3);
+
+  --surface-muted: #0D1B2A;
+  --surface-subtle: #0A1628;
+  --surface-dashboard: #0A1628;
+  --surface-elevated: #112240;
+  --text-muted: #9CA3AF;
+  --border-default: rgba(255, 255, 255, 0.1);
 }
 
 @theme inline {
@@ -87,11 +101,18 @@
   --color-input-foreground: var(--input-foreground);
   --color-input-border: var(--input-border);
   --color-input-placeholder: var(--input-placeholder);
+
+  --color-surface-muted: var(--surface-muted);
+  --color-surface-subtle: var(--surface-subtle);
+  --color-surface-dashboard: var(--surface-dashboard);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-text-muted: var(--text-muted);
+  --color-border-default: var(--border-default);
   
-  --font-sans: var(--font-poppins);
+  --font-sans: var(--font-geist-sans);
   --font-poppins: var(--font-poppins);
   --font-playfair: var(--font-playfair-display);
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-mono: var(--font-geist-mono);
 }
 
 * {
@@ -112,8 +133,25 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-poppins), Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
   transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+.theme-transition-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  pointer-events: none;
+  will-change: clip-path, opacity;
 }
 
 /* Smooth page transitions */
@@ -278,6 +316,28 @@ body {
   50% { box-shadow: 0 0 40px rgba(212, 175, 55, 0.6); }
 }
 
+@keyframes publish-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
 .animate-glow {
   animation: glow 3s ease-in-out infinite;
+}
+
+/* Mobile app shell */
+html {
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@supports (padding: env(safe-area-inset-bottom)) {
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
 }

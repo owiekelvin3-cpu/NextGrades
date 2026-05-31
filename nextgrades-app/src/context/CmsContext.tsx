@@ -1,12 +1,13 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
+import { usePathname } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { applyCmsOverridesToI18n } from "@/lib/cms/apply-overrides";
 import type { CmsOverrideMap } from "@/lib/cms/types";
 
 const CMS_CACHE_KEY = "nextgrades_cms_overrides";
-const CMS_CACHE_TTL_MS = 5 * 60 * 1000;
+const CMS_CACHE_TTL_MS = 10 * 60 * 1000;
 
 type CmsContextValue = {
   overrides: CmsOverrideMap;
@@ -42,9 +43,12 @@ function writeCachedOverrides(data: CmsOverrideMap) {
 }
 
 export function CmsProvider({ children }: { children: ReactNode }) {
+  const pathname = usePathname();
   const { i18n } = useTranslation();
   const [overrides, setOverrides] = useState<CmsOverrideMap>(() => readCachedOverrides() ?? {});
   const [loading, setLoading] = useState(false);
+
+  const isDashboard = pathname?.startsWith("/dashboard") ?? false;
 
   const refresh = useCallback(async () => {
     setLoading(true);
@@ -70,14 +74,16 @@ export function CmsProvider({ children }: { children: ReactNode }) {
       applyCmsOverridesToI18n(cached);
     }
 
+    if (isDashboard) return;
+
     const run = () => void refresh();
     if (typeof window.requestIdleCallback === "function") {
-      const id = window.requestIdleCallback(run, { timeout: 3000 });
+      const id = window.requestIdleCallback(run, { timeout: 4000 });
       return () => window.cancelIdleCallback(id);
     }
-    const t = window.setTimeout(run, 1500);
+    const t = window.setTimeout(run, 2000);
     return () => window.clearTimeout(t);
-  }, [refresh]);
+  }, [refresh, isDashboard]);
 
   useEffect(() => {
     if (Object.keys(overrides).length) {

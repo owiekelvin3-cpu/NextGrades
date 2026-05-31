@@ -14,7 +14,15 @@ import {
   LANGUAGES,
   DEFAULT_THUMBNAIL,
 } from "@/lib/resources/constants";
+import {
+  RESOURCE_FILE_ACCEPT,
+  resourceFileValidationError,
+  isAllowedThumbnailMime,
+  resolveUploadMimeType,
+} from "@/lib/storage/config";
 import { compressImageFile } from "@/lib/resources/image-utils";
+import { xhrUploadJson, type UploadProgressSnapshot } from "@/lib/upload/xhr-upload";
+import { PublishUploadProgress } from "@/components/teacher/PublishUploadProgress";
 import {
   Upload,
   X,
@@ -89,7 +97,7 @@ export function PublishContentForm({ resourceId, initialData }: PublishContentFo
   const router = useRouter();
   const [step, setStep] = useState(1);
   const [uploading, setUploading] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0);
+  const [uploadProgress, setUploadProgress] = useState<UploadProgressSnapshot | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
@@ -142,14 +150,49 @@ export function PublishContentForm({ resourceId, initialData }: PublishContentFo
     }));
   };
 
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const f = e.target.files?.[0];
+    if (!f) return;
+    const err = resourceFileValidationError(f);
+    if (err) {
+      toastError(err);
+      e.target.value = "";
+      return;
+    }
+    setFile(f);
+  };
+
   const handlePublish = async () => {
     if (!form.title.trim()) {
       toastError("Please enter a title");
       return;
     }
 
+    if (file) {
+      const err = resourceFileValidationError(file);
+      if (err) {
+        toastError(err);
+        return;
+      }
+    }
+
+    if (thumbnail) {
+      const thumbMime = resolveUploadMimeType(thumbnail);
+      if (!isAllowedThumbnailMime(thumbMime)) {
+        toastError("Thumbnail must be JPG, PNG, or WebP.");
+        return;
+      }
+    }
+
     setUploading(true);
-    setUploadProgress(10);
+    setUploadProgress({
+      phase: "preparing",
+      percent: 2,
+      loadedBytes: 0,
+      totalBytes: (file?.size ?? 0) + (thumbnail?.size ?? 0) + 48_000,
+      bytesPerSecond: 0,
+      etaSeconds: null,
+    });
 
     try {
       const fd = new FormData();
@@ -174,25 +217,24 @@ export function PublishContentForm({ resourceId, initialData }: PublishContentFo
       if (thumbnail) fd.append("thumbnail", thumbnail);
       if (resourceId) fd.append("resource_id", resourceId);
 
-      setUploadProgress(40);
+      const result = await xhrUploadJson<{ error?: string }>(
+        "/api/teacher/publish",
+        fd,
+        setUploadProgress
+      );
 
-      const res = await fetch("/api/teacher/publish", { method: "POST", body: fd });
-      setUploadProgress(90);
-
-      const data = await res.json();
-      if (!res.ok) {
-        toastError(data.error || "Failed to publish");
+      if (!result.ok) {
+        toastError(result.data?.error || "Failed to publish");
         return;
       }
 
-      setUploadProgress(100);
       success(form.status === "published" ? "Resource published! It is now live on the Resources page." : "Draft saved successfully.");
       router.push("/dashboard/teacher/content");
     } catch {
       toastError("Upload failed. Please try again.");
     } finally {
       setUploading(false);
-      setUploadProgress(0);
+      setUploadProgress(null);
     }
   };
 
@@ -245,9 +287,10 @@ export function PublishContentForm({ resourceId, initialData }: PublishContentFo
                     }`}
                     onClick={() => fileRef.current?.click()}
                   >
-                    <input ref={fileRef} type="file" className="hidden" onChange={(e) => setFile(e.target.files?.[0] || null)} accept=".pdf,.doc,.docx,.ppt,.pptx,.mp4,.webm,.jpg,.jpeg,.png,.txt" />
+                    <input ref={fileRef} type="file" className="hidden" onChange={handleFileSelect} accept={RESOURCE_FILE_ACCEPT} />
                     <Upload className={`w-12 h-12 mx-auto mb-3 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`} />
                     <p className={theme === "dark" ? "text-white" : "text-[#0D1B2A]"}>Drop file or click to browse (max 50MB)</p>
+                    <p className={`text-xs mt-2 ${muted(theme)}`}>PDF, video, Word, PowerPoint, Excel, images, text</p>
                   </div>
                 ) : (
                   <div className={`flex items-center gap-4 p-4 rounded-xl border ${theme === "dark" ? "border-white/10 bg-[#0D1B2A]" : "border-gray-200 bg-gray-50"}`}>
@@ -440,22 +483,26 @@ export function PublishContentForm({ resourceId, initialData }: PublishContentFo
               </div>
             </div>
 
-            {uploading && (
-              <div>
-                <div className="flex justify-between mb-1 text-sm">
-                  <span className={muted(theme)}>Publishing…</span>
-                  <span>{uploadProgress}%</span>
-                </div>
-                <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
-                  <div className="h-full bg-[#D4AF37] transition-all" style={{ width: `${uploadProgress}%` }} />
-                </div>
-              </div>
+            {uploading && uploadProgress && (
+              <PublishUploadProgress
+                progress={uploadProgress}
+                fileName={file?.name ?? form.title}
+                theme={theme === "dark" ? "dark" : "light"}
+              />
             )}
 
             <div className="flex gap-3">
               <Button variant="outline" className="flex-1" onClick={() => setStep(2)} disabled={uploading}>Back</Button>
               <Button variant="gold" className="flex-1" onClick={handlePublish} disabled={uploading}>
-                {uploading ? "Publishing…" : form.status === "published" ? "Publish Now" : "Save Draft"}
+                {uploading
+                  ? uploadProgress?.phase === "processing"
+                    ? "Publishing…"
+                    : uploadProgress?.phase === "uploading"
+                      ? `Uploading ${uploadProgress.percent}%`
+                      : "Preparing…"
+                  : form.status === "published"
+                    ? "Publish Now"
+                    : "Save Draft"}
               </Button>
             </div>
           </Card>

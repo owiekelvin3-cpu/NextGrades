@@ -34,4 +34,9 @@ i18n
     },
   });
 
+/** @deprecated Both locales are bundled; kept for callers that still await it. */
+export async function ensureGermanBundle(): Promise<void> {
+  /* no-op — German is in the initial bundle */
+}
+
 export default i18n;

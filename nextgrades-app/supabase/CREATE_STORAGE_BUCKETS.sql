@@ -8,12 +8,13 @@ VALUES (
   false,
   52428800,
   ARRAY[
-    'application/pdf','video/mp4','video/webm',
+    'application/pdf','video/mp4','video/webm','video/quicktime',
     'image/jpeg','image/png','image/webp',
     'application/vnd.ms-powerpoint',
     'application/vnd.openxmlformats-officedocument.presentationml.presentation',
     'application/msword',
     'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     'text/plain'
   ]
 )

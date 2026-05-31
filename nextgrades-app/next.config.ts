@@ -21,7 +21,9 @@ function supabaseImagePatterns(): { protocol: "https"; hostname: string }[] {
 }
 
 const nextConfig: NextConfig = {
+  poweredByHeader: false,
   images: {
+    formats: ["image/avif", "image/webp"],
     remotePatterns: [
       ...supabaseImagePatterns(),
       {
@@ -32,6 +34,15 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "picsum.photos",
       },
+    ],
+  },
+  experimental: {
+    optimizePackageImports: [
+      "lucide-react",
+      "framer-motion",
+      "@fortawesome/free-solid-svg-icons",
+      "@fortawesome/free-brands-svg-icons",
+      "@fortawesome/react-fontawesome",
     ],
   },
 };

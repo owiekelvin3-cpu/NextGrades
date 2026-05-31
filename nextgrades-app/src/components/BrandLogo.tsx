@@ -1,38 +1,50 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useTheme } from "@/context/ThemeContext";
 import { useState } from "react";
 
 interface BrandLogoProps {
   className?: string;
   href?: string;
-  /** Force light logo (for dark hero backgrounds) */
-  variant?: "light" | "dark";
+  /** Force gold logo on dark sections regardless of theme */
+  onDarkBackground?: boolean;
 }
 
-export function BrandLogo({ className = "h-12 w-auto", href = "/", variant }: BrandLogoProps) {
+export function BrandLogo({
+  className = "h-10 w-auto sm:h-12",
+  href = "/",
+  onDarkBackground = false,
+}: BrandLogoProps) {
   const { theme } = useTheme();
   const [imgError, setImgError] = useState(false);
-  const useLight = variant === "light" || (variant !== "dark" && theme === "dark");
-  const src = useLight ? "/logo-dark.png" : "/logo-light.png";
+
+  // Dark logo (navy) on light UI; gold/light logo on dark UI
+  const useDarkLogo = onDarkBackground ? false : theme === "light";
+  const src = useDarkLogo ? "/logo-dark.png" : "/logo-light.png";
 
   return (
-    <Link href={href} className="flex items-center gap-2 hover:opacity-90 transition-opacity flex-shrink-0">
+    <Link href={href} className="flex shrink-0 items-center gap-2 transition-opacity hover:opacity-90">
       {!imgError ? (
-        <img
+        <Image
           src={src}
           alt="NextGrades"
+          width={180}
+          height={48}
+          priority
+          unoptimized
           className={className}
-          loading="eager"
           onError={() => setImgError(true)}
         />
       ) : (
         <span className="flex items-center gap-2">
-          <span className="w-10 h-10 rounded-xl bg-[#D4AF37] flex items-center justify-center text-[#0D1B2A] font-bold text-lg">
+          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#D4AF37] text-lg font-bold text-[#0D1B2A]">
             N
           </span>
-          <span className={`font-bold text-xl ${useLight ? "text-white" : "text-[#0D1B2A]"}`}>
+          <span
+            className={`text-xl font-bold ${theme === "dark" || onDarkBackground ? "text-white" : "text-[#0D1B2A]"}`}
+          >
             NextGrades
           </span>
         </span>

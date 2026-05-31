@@ -2,29 +2,13 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient, isSupabaseServiceRoleConfigured } from "@/lib/supabase/admin";
 import { getAuthProfile } from "@/lib/quiz/auth";
+import { AVATARS_BUCKET, ALLOWED_AVATAR_MIME_TYPES, MAX_AVATAR_BYTES } from "@/lib/storage/config";
+import { ensureAllStorageBuckets } from "@/lib/storage/ensure-buckets";
 
 export const runtime = "nodejs";
 
-const MAX_BYTES = 5 * 1024 * 1024;
-const ALLOWED_TYPES = new Set(["image/jpeg", "image/png", "image/webp", "image/gif"]);
-const BUCKET_SETUP_HINT =
-  " Run supabase/AVATARS_BUCKET_ONLY.sql in the Supabase SQL Editor to enable avatars.";
-
-async function ensureAvatarsBucket(): Promise<void> {
-  if (!isSupabaseServiceRoleConfigured()) return;
-
-  const admin = createAdminClient();
-  const { data: buckets, error } = await admin.storage.listBuckets();
-  if (error) throw error;
-  if (buckets?.some((bucket) => bucket.id === "avatars")) return;
-
-  const { error: createError } = await admin.storage.createBucket("avatars", {
-    public: true,
-    fileSizeLimit: MAX_BYTES,
-    allowedMimeTypes: [...ALLOWED_TYPES],
-  });
-  if (createError) throw createError;
-}
+const ALLOWED_TYPES = new Set<string>(ALLOWED_AVATAR_MIME_TYPES);
+const BUCKET_SETUP_HINT = " Run npm run storage:verify or restart the dev server with SUPABASE_SERVICE_ROLE_KEY set.";
 
 export async function POST(request: Request) {
   const supabase = await createClient();
@@ -49,7 +33,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Please upload a JPG, PNG, WebP, or GIF image" }, { status: 400 });
   }
 
-  if (file.size > MAX_BYTES) {
+  if (file.size > MAX_AVATAR_BYTES) {
     return NextResponse.json({ error: "Image must be under 5 MB" }, { status: 400 });
   }
 
@@ -59,14 +43,20 @@ export async function POST(request: Request) {
   const buffer = Buffer.from(await file.arrayBuffer());
 
   try {
-    await ensureAvatarsBucket();
+    if (isSupabaseServiceRoleConfigured()) {
+      const setup = await ensureAllStorageBuckets();
+      if (!setup.ok) {
+        throw new Error(setup.error ?? "Storage buckets not ready");
+      }
+    }
   } catch (bucketError) {
     const message = bucketError instanceof Error ? bucketError.message : "Failed to prepare avatars bucket";
     return NextResponse.json({ error: `${message}${BUCKET_SETUP_HINT}` }, { status: 500 });
   }
 
-  const { error: uploadError } = await supabase.storage
-    .from("avatars")
+  const storageClient = isSupabaseServiceRoleConfigured() ? createAdminClient() : supabase;
+  const { error: uploadError } = await storageClient.storage
+    .from(AVATARS_BUCKET)
     .upload(path, buffer, { upsert: true, contentType: file.type, cacheControl: "3600" });
 
   if (uploadError) {
@@ -77,7 +67,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: `${uploadError.message}${hint}` }, { status: 500 });
   }
 
-  const { data: urlData } = supabase.storage.from("avatars").getPublicUrl(path);
+  const { data: urlData } = supabase.storage.from(AVATARS_BUCKET).getPublicUrl(path);
   const publicUrl = urlData.publicUrl;
 
   const { error: profileError } = await supabase

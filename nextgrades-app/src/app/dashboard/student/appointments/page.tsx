@@ -1,16 +1,7 @@
 "use client";
 
-import { DashboardPage } from "@/components/dashboard/DashboardPage";
-import { StudentAppointmentsSection } from "@/components/dashboard/sections/DashboardSections";
+import { StudentAppointmentsExperience } from "@/components/dashboard/student/StudentAppointmentsExperience";
 
 export default function StudentAppointmentsPage() {
-  return (
-    <DashboardPage
-      role="student"
-      titleKey="dashboardPages.student.appointments.title"
-      descriptionKey="dashboardPages.student.appointments.description"
-    >
-      <StudentAppointmentsSection />
-    </DashboardPage>
-  );
+  return <StudentAppointmentsExperience />;
 }

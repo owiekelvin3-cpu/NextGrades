@@ -42,23 +42,63 @@ export async function notifyResourcePublished(params: {
   });
 }
 
+/** In-app + push confirmation when a teacher uploads or saves a resource. */
+export async function notifyTeacherResourceUploaded(params: {
+  teacherId: string;
+  materialId: string;
+  title: string;
+  status: string;
+  isUpdate?: boolean;
+}) {
+  const published = params.status === "published";
+  const isUpdate = params.isUpdate === true;
+
+  await createNotification({
+    userId: params.teacherId,
+    type: "success",
+    category: "resource",
+    title: published
+      ? isUpdate
+        ? "Resource updated & published"
+        : "Resource published successfully"
+      : isUpdate
+        ? "Draft updated"
+        : "Resource uploaded",
+    message: published
+      ? `"${params.title}" is now live on the Resources page.`
+      : `"${params.title}" was saved as a draft. Publish it anytime from My materials.`,
+    actionUrl: published
+      ? "/dashboard/teacher/content"
+      : `/dashboard/teacher/content/${params.materialId}/edit`,
+    entityType: "material",
+    entityId: params.materialId,
+  });
+}
+
 export async function notifyLiveClassScheduled(params: {
   lessonId: string;
   studentId: string;
   teacherId: string;
+  teacherName?: string;
   subjectName?: string;
+  title?: string;
   startTime: string;
+  joinUrl?: string;
 }) {
-  const when = new Date(params.startTime).toLocaleString();
+  const when = new Date(params.startTime).toLocaleString("de-DE", {
+    dateStyle: "medium",
+    timeStyle: "short",
+  });
+  const className = params.title || params.subjectName || "Live class";
+  const teacher = params.teacherName ?? "Your teacher";
+
   await createNotification({
     userId: params.studentId,
     type: "info",
     category: "live_class",
     title: "Live class scheduled",
-    message: params.subjectName
-      ? `${params.subjectName} — ${when}`
-      : `Your lesson is scheduled for ${when}.`,
-    actionUrl: `/dashboard/student/appointments`,
+    message: `${className} with ${teacher} — ${when}${params.joinUrl ? " · Tap to join when it's time." : ""}`,
+    actionUrl: params.joinUrl ?? `/dashboard/student/live-classes`,
     entityType: "lesson",
     entityId: params.lessonId,
   });
@@ -67,8 +107,8 @@ export async function notifyLiveClassScheduled(params: {
     userId: params.teacherId,
     type: "info",
     category: "live_class",
-    title: "Live class scheduled",
-    message: `Lesson scheduled for ${when}.`,
+    title: "Live class created",
+    message: `${className} scheduled for ${when}.`,
     actionUrl: `/dashboard/teacher/schedule`,
     entityType: "lesson",
     entityId: params.lessonId,

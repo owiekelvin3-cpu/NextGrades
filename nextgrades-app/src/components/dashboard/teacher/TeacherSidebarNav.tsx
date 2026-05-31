@@ -10,7 +10,7 @@ import {
   Calendar,
   CreditCard,
   Rocket,
-  MessageSquare,
+  Sparkles,
   FolderOpen,
   Settings,
   Bell,
@@ -36,7 +36,7 @@ export const teacherNavItems: TeacherNavItem[] = [
   { href: "/dashboard/teacher/earnings", icon: Rocket, labelKey: "teacherDashboard.nav.nextJumpBonus" },
   {
     href: "/dashboard/chat",
-    icon: MessageSquare,
+    icon: Sparkles,
     labelKey: "teacherDashboard.nav.messages",
   },
   {

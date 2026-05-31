@@ -10,7 +10,7 @@ export type CmsContentRow = {
   i18n_key: string;
   field_key: string;
   field_name: string;
-  field_type: CmsFieldType;
+  field_type: CmsFieldType | string;
   content_value: string | null;
   content_json: { en?: unknown; de?: unknown } | null;
   sort_order: number;

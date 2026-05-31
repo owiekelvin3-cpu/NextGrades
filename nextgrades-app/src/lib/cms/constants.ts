@@ -29,6 +29,11 @@ export const CMS_EXCLUDED_PREFIXES = [
 ];
 
 export function getPageGroupForKey(i18nKey: string): string {
+  if (i18nKey.startsWith("cmsImages.")) {
+    const segment = i18nKey.split(".")[1];
+    const bySegment = CMS_PAGE_GROUPS.find((g) => g.id === segment);
+    if (bySegment) return bySegment.id;
+  }
   const group = CMS_PAGE_GROUPS.find((g) => g.prefixes.some((p) => i18nKey === p || i18nKey.startsWith(`${p}.`)));
   return group?.id ?? "misc";
 }

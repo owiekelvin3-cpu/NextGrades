@@ -1,10 +1,23 @@
 import { NextResponse } from "next/server";
-import { createZoomMeeting } from "@/lib/zoom/client";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { requireTeacherOrAdminApi } from "@/lib/auth/api-auth";
+import { isSupabaseServiceRoleConfigured } from "@/lib/supabase/env";
+import { createZoomMeetingOAuth } from "@/lib/zoom/meetings";
+import { getZoomConnection } from "@/lib/zoom/tokens";
+import { notifyLiveClassScheduled } from "@/lib/notifications/triggers";
 
+/** @deprecated Prefer POST /api/zoom/meetings — kept for backward compatibility */
 export async function POST(request: Request) {
   const gate = await requireTeacherOrAdminApi();
   if (gate.error) return gate.error;
+
+  const teacherId = gate.auth!.profile!.id;
+  if (!(await getZoomConnection(teacherId))) {
+    return NextResponse.json(
+      { error: "Connect Zoom in Settings before creating meetings." },
+      { status: 400 }
+    );
+  }
 
   try {
     const { topic, startTime, duration, studentId, subjectId } = await request.json();
@@ -13,11 +26,19 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
-    const teacherId = gate.auth!.profile!.id;
+    const startDateTime = new Date(startTime);
+    const meeting = await createZoomMeetingOAuth({
+      teacherId,
+      topic,
+      startTime: startDateTime,
+      duration: duration ?? 60,
+      timezone: "Europe/Berlin",
+      meetingType: "private_session",
+    });
 
-    const meeting = await createZoomMeeting(topic, new Date(startTime), duration ?? 60);
+    const admin = isSupabaseServiceRoleConfigured() ? createAdminClient() : gate.auth!.supabase;
 
-    const { data: lesson, error } = await gate.auth!.supabase
+    const { data: lesson, error } = await admin
       .from("lessons")
       .insert({
         teacher_id: teacherId,
@@ -27,6 +48,10 @@ export async function POST(request: Request) {
         duration: duration ?? 60,
         zoom_link: meeting.join_url,
         zoom_meeting_id: meeting.id,
+        zoom_passcode: meeting.password ?? null,
+        meeting_title: topic,
+        meeting_type: "private_session",
+        timezone: "Europe/Berlin",
         status: "scheduled",
       })
       .select()
@@ -34,12 +59,14 @@ export async function POST(request: Request) {
 
     if (error) throw error;
 
-    const { notifyLiveClassScheduled } = await import("@/lib/notifications/triggers");
     void notifyLiveClassScheduled({
       lessonId: lesson.id,
       studentId,
       teacherId,
+      teacherName: gate.auth!.profile!.full_name ?? undefined,
+      title: topic,
       startTime,
+      joinUrl: meeting.join_url,
     });
 
     return NextResponse.json(lesson);

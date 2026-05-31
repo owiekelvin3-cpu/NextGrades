@@ -21,9 +21,12 @@ import {
   Menu,
   X,
   Sparkles,
+  Video,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useTheme } from "@/context/ThemeContext";
 import { TeacherSidebarNav } from "@/components/dashboard/teacher/TeacherSidebarNav";
+import { StudentSidebarNav } from "@/components/dashboard/student/StudentSidebarNav";
 import { useNotificationsOptional } from "@/context/NotificationContext";
 import { supabase } from "@/lib/supabase/client";
 import { getTeacherFirstName } from "@/lib/dashboard/teacher-overview";
@@ -84,6 +87,7 @@ const adminConfig = [
   { href: "/dashboard/admin/resources", icon: FileText },
   { href: "/dashboard/admin/chatbot", icon: Sparkles },
   { href: "/dashboard/admin/analytics", icon: TrendingUp },
+  { href: "/dashboard/admin/zoom", icon: Video },
 ];
 
 function SidebarContent({
@@ -197,6 +201,11 @@ function SidebarContent({
           unreadNotifications={badgeCount}
           onNavigate={() => setIsMobileMenuOpen?.(false)}
         />
+      ) : isStudent ? (
+        <StudentSidebarNav
+          unreadNotifications={badgeCount}
+          onNavigate={() => setIsMobileMenuOpen?.(false)}
+        />
       ) : (
         <nav className="flex-1 space-y-1 overflow-y-auto">
           {links.map((link, index) => {
@@ -259,7 +268,9 @@ export function Sidebar({
 }: SidebarProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const { theme } = useTheme();
   const isDashboardShell = role === "teacher" || role === "student";
+  const useDarkSidebar = isDashboardShell || theme === "dark";
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -268,31 +279,34 @@ export function Sidebar({
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  const sidebarClass = isDashboardShell
+  const sidebarClass = useDarkSidebar
     ? "bg-[#0D1B2A] text-white"
     : "bg-white text-[#0D1B2A] border-r border-gray-100";
 
   if (isMobile) {
+    // Dashboard uses bottom nav + layout headers on mobile — no duplicate top bar
+    if (isDashboardShell) return null;
+
     return (
       <>
         <div
           className={cn(
             "fixed left-0 right-0 top-0 z-40 flex items-center justify-between p-4",
-            isDashboardShell ? "border-b border-white/10 bg-[#0D1B2A]" : "border-b border-gray-100 bg-white"
+            isDashboardShell ? "border-b border-white/10 bg-[#0D1B2A]" : useDarkSidebar ? "border-b border-white/10 bg-[#0D1B2A]" : "border-b border-gray-100 bg-white"
           )}
         >
           <Link href="/" className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#D4AF37]">
               <span className="text-xl font-bold text-[#0D1B2A]">NG</span>
             </div>
-            <span className={cn("text-xl font-bold", isDashboardShell ? "text-white" : "text-[#0D1B2A]")}>
+            <span className={cn("text-xl font-bold", useDarkSidebar ? "text-white" : "text-[#0D1B2A]")}>
               NextGrades
             </span>
           </Link>
           <button
             type="button"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className={cn("rounded-lg p-2", isDashboardShell ? "text-white" : "text-[#0D1B2A]")}
+            className={cn("rounded-lg p-2", useDarkSidebar ? "text-white" : "text-[#0D1B2A]")}
           >
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -309,7 +323,7 @@ export function Sidebar({
                 teacherName={teacherName}
                 teacherAvatarUrl={teacherAvatarUrl}
                 unreadNotifications={unreadNotifications}
-                darkSidebar={isDashboardShell}
+                darkSidebar={useDarkSidebar}
               />
             </aside>
           </>
@@ -326,7 +340,7 @@ export function Sidebar({
         teacherName={teacherName}
         teacherAvatarUrl={teacherAvatarUrl}
         unreadNotifications={unreadNotifications}
-        darkSidebar={isDashboardShell}
+        darkSidebar={useDarkSidebar}
       />
     </aside>
   );

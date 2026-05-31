@@ -24,7 +24,7 @@ export function TestimonialCard({ quote, name, role, avatar, delay = 0 }: Testim
             <Star key={star} className="w-5 h-5 fill-soft-gold text-soft-gold" />
           ))}
         </div>
-        <p className="text-gray-700 mb-6 leading-relaxed">"{quote}"</p>
+        <p className="text-gray-700 mb-6 leading-relaxed">&ldquo;{quote}&rdquo;</p>
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 rounded-full bg-gradient-to-br from-deep-navy to-soft-gold flex items-center justify-center text-white font-bold">
             {name.charAt(0)}

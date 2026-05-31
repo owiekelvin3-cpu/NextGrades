@@ -1,9 +1,8 @@
 "use client";
 
-
-
+import { Loader2 } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
-
+import { Toggle } from "@/components/ui/Toggle";
 import { cn } from "@/lib/utils";
 
 
@@ -281,95 +280,90 @@ export function SettingsSelect({
 
 
 export function SettingsToggle({
-
   label,
-
   description,
-
   checked,
-
   onChange,
-
+  disabled,
+  loading,
+  variant = "card",
 }: {
-
   label: string;
-
   description?: string;
-
   checked: boolean;
-
   onChange: (v: boolean) => void;
-
+  disabled?: boolean;
+  loading?: boolean;
+  /** card = bordered box; row = list row inside a group */
+  variant?: "card" | "row";
 }) {
-
   const { theme } = useTheme();
 
+  return (
+    <div
+      className={cn(
+        "flex min-h-[56px] touch-manipulation items-center justify-between gap-4 py-3.5",
+        variant === "card" && "rounded-xl border px-4",
+        variant === "card" &&
+          (theme === "dark" ? "border-white/10 bg-[#0D1B2A]" : "border-gray-100 bg-[#FAFBFC]"),
+        variant === "row" && "border-b px-4 last:border-b-0",
+        variant === "row" && (theme === "dark" ? "border-white/10" : "border-gray-100")
+      )}
+    >
+      <div className="min-w-0 flex-1 pr-2">
+        <p className={cn("text-sm font-medium", theme === "dark" ? "text-white" : "text-[#0D1B2A]")}>{label}</p>
+        {description && (
+          <p className={cn("mt-0.5 text-xs leading-relaxed", theme === "dark" ? "text-gray-400" : "text-gray-500")}>
+            {description}
+          </p>
+        )}
+      </div>
+      {loading ? (
+        <Loader2 className="h-5 w-5 shrink-0 animate-spin text-[#D4AF37]" aria-hidden />
+      ) : (
+        <Toggle
+          checked={checked}
+          onChange={onChange}
+          disabled={disabled || loading}
+          label={label}
+          size="lg"
+        />
+      )}
+    </div>
+  );
+}
 
+export function SettingsToggleGroup({
+  title,
+  children,
+}: {
+  title?: string;
+  children: React.ReactNode;
+}) {
+  const { theme } = useTheme();
 
   return (
-
-    <div
-
-      className={cn(
-
-        "flex items-center justify-between gap-4 rounded-xl border px-4 py-3",
-
-        theme === "dark" ? "border-white/10 bg-[#0D1B2A]" : "border-gray-100 bg-[#FAFBFC]"
-
-      )}
-
-    >
-
-      <div>
-
-        <p className={cn("text-sm font-medium", theme === "dark" ? "text-white" : "text-[#0D1B2A]")}>{label}</p>
-
-        {description && (
-
-          <p className={cn("text-xs", theme === "dark" ? "text-gray-400" : "text-gray-500")}>{description}</p>
-
-        )}
-
-      </div>
-
-      <button
-
-        type="button"
-
-        role="switch"
-
-        aria-checked={checked}
-
-        onClick={() => onChange(!checked)}
-
-        className={cn(
-
-          "relative h-6 w-11 shrink-0 rounded-full transition-colors",
-
-          checked ? "bg-[#D4AF37]" : "bg-gray-300"
-
-        )}
-
-      >
-
-        <span
-
+    <div className="space-y-1">
+      {title && (
+        <p
           className={cn(
-
-            "absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform",
-
-            checked ? "translate-x-5" : "translate-x-0.5"
-
+            "mb-2 px-1 text-xs font-semibold uppercase tracking-wide",
+            theme === "dark" ? "text-gray-400" : "text-gray-500"
           )}
-
-        />
-
-      </button>
-
+        >
+          {title}
+        </p>
+      )}
+      <div
+        className={cn(
+          "overflow-hidden rounded-xl border",
+          theme === "dark" ? "border-white/10 bg-[#0D1B2A]" : "border-gray-100 bg-[#FAFBFC]"
+        )}
+      >
+        {children}
+      </div>
     </div>
-
   );
-
 }
 
 

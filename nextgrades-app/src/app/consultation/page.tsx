@@ -10,7 +10,10 @@ import { Badge } from "@/components/ui/Badge";
 import { useTheme } from "@/context/ThemeContext";
 import { useTranslation } from "react-i18next";
 import { useLocalizedContent } from "@/hooks/useLocalizedContent";
+import { useCmsImage } from "@/hooks/useCmsImage";
 import { useToast } from "@/context/ToastContext";
+import { CONSULTATION_HERO_IMAGE } from "@/lib/marketing-images";
+import { MarketingImage } from "@/components/marketing/MarketingImage";
 import {
   Calendar,
   CheckCircle2,
@@ -42,6 +45,7 @@ export default function ConsultationPage() {
   const { theme } = useTheme();
   const { t } = useTranslation();
   const toast = useToast();
+  const consultationHeroImage = useCmsImage("cmsImages.consultation.hero", CONSULTATION_HERO_IMAGE);
 
   const trustBadges = useLocalizedContent<string[]>("consultation.trustBadges");
   const stats = useLocalizedContent<StatItem[]>("consultation.stats");
@@ -180,10 +184,11 @@ export default function ConsultationPage() {
                 className="relative hidden lg:block"
               >
                 <div className="relative rounded-3xl overflow-hidden shadow-2xl aspect-[4/5] max-h-[560px]">
-                  <img
-                    src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=900&h=1100&fit=crop"
-                    alt=""
-                    className="w-full h-full object-cover"
+                  <MarketingImage
+                    src={consultationHeroImage}
+                    alt={t("consultation.title")}
+                    containerClassName="absolute inset-0"
+                    sizes="(max-width: 1024px) 0px, 40vw"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0D1B2A]/80 via-[#0D1B2A]/20 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-8">

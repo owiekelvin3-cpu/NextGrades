@@ -56,26 +56,40 @@ export async function middleware(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   let userRole: AppRole | null = null;
+  let userActive = true;
   if (user) {
     let profileRole: unknown = null;
+    let profileActive: boolean | null = null;
 
     if (isSupabaseServiceRoleConfigured()) {
       const { data: profile } = await createAdminClient()
         .from("profiles")
-        .select("role")
+        .select("role, is_active")
         .eq("id", user.id)
         .maybeSingle();
       profileRole = profile?.role;
+      profileActive = profile?.is_active ?? null;
     } else {
       const { data: profile } = await supabase
         .from("profiles")
-        .select("role")
+        .select("role, is_active")
         .eq("id", user.id)
         .maybeSingle();
       profileRole = profile?.role;
+      profileActive = profile?.is_active ?? null;
     }
 
+    userActive = profileActive !== false;
     userRole = resolveUserRole(profileRole, user.user_metadata);
+
+    if (!userActive) {
+      await supabase.auth.signOut();
+      const redirectUrl = request.nextUrl.clone();
+      redirectUrl.pathname = "/login";
+      redirectUrl.searchParams.set("suspended", "1");
+      redirectUrl.searchParams.delete("redirect");
+      return NextResponse.redirect(redirectUrl);
+    }
   }
 
   const isDashboardRoute = AUTHENTICATED_DASHBOARD_PREFIXES.some((p) =>

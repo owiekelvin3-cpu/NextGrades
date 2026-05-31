@@ -20,6 +20,7 @@ import {
   LANGUAGES,
 } from "@/lib/resources/constants";
 import { buildLoginUrl } from "@/lib/auth/redirect";
+import { isVideoResource, resourceWatchPath } from "@/lib/resources/video";
 import { Search, Filter, ChevronRight, FileText } from "lucide-react";
 
 type Category = { id: string; name: string };
@@ -154,6 +155,11 @@ export function ResourcesExperience() {
   const handleOpen = async (resource: LearningResource) => {
     if (resource.locked) {
       toast.info(t("resources.premiumRequired", { defaultValue: "Premium membership or enrollment required." }));
+      return;
+    }
+
+    if (isVideoResource(resource)) {
+      router.push(resourceWatchPath(resource.id));
       return;
     }
 

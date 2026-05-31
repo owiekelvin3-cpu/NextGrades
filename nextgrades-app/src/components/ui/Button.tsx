@@ -27,13 +27,30 @@ const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(
     };
 
     const classes = cn(
-      "inline-flex items-center justify-center gap-2 font-medium focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed",
+      "inline-flex items-center justify-center gap-2 font-medium transition-all duration-200",
+      "whitespace-normal text-center leading-snug",
+      "focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:ring-offset-2",
+      "active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100",
       variants[variant],
       sizes[size],
       className
     );
 
     if (href) {
+      const useNativeAnchor =
+        href.startsWith("http") || href.startsWith("/api/") || href.startsWith("mailto:");
+
+      if (useNativeAnchor) {
+        return (
+          <a
+            href={href}
+            className={classes}
+            ref={ref as React.ForwardedRef<HTMLAnchorElement>}
+            {...(props as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
+          />
+        );
+      }
+
       return (
         <Link
           href={href}

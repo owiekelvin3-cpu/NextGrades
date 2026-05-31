@@ -12,6 +12,7 @@ export type AuthProfile = {
   role: AppRole;
   full_name: string | null;
   email?: string | null;
+  is_active?: boolean;
 };
 
 type ApiAuthContext = {
@@ -38,9 +39,13 @@ export async function getApiAuth(supabase?: SupabaseClient): Promise<{
   const profileClient = isSupabaseServiceRoleConfigured() ? createAdminClient() : client;
   const { data: profile, error: profileError } = await profileClient
     .from("profiles")
-    .select("id, role, full_name, email")
+    .select("id, role, full_name, email, is_active")
     .eq("id", user.id)
     .maybeSingle();
+
+  if (profile?.is_active === false) {
+    return { user: null, profile: null, supabase: client };
+  }
 
   const resolvedRole = resolveUserRole(profile?.role, user.user_metadata);
 
@@ -55,6 +60,7 @@ export async function getApiAuth(supabase?: SupabaseClient): Promise<{
       role: resolvedRole,
       full_name: profile?.full_name ?? (user.user_metadata?.full_name as string | null) ?? null,
       email: profile?.email ?? user.email ?? null,
+      is_active: profile?.is_active ?? true,
     },
     supabase: client,
   };

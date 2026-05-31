@@ -8,11 +8,14 @@ import { Badge } from "@/components/ui/Badge";
 import { useTheme } from "@/context/ThemeContext";
 import { useToast } from "@/context/ToastContext";
 import { useCms } from "@/context/CmsContext";
-import { CMS_PAGE_GROUPS, humanizeKey, getPageGroupForKey } from "@/lib/cms/constants";
-import { buildSeedEntries } from "@/lib/cms/seed";
-import { parseCmsValue, serializeCmsValue } from "@/lib/cms/flatten";
-import type { CmsContentRow, CmsFaq, CmsSeo, CmsTeamMember, CmsTestimonial } from "@/lib/cms/types";
-import type { CmsFieldType } from "@/lib/cms/flatten";
+import { CMS_PAGE_GROUPS } from "@/lib/cms/constants";
+import { groupFieldsBySection } from "@/lib/cms/field-groups";
+import type { MergedCmsField, EditLocale } from "@/lib/cms/merge-content";
+import { buildSavePayloads, getDirtyFields } from "@/lib/cms/save-content";
+import { getPreviewUrl } from "@/lib/cms/page-routes";
+import { CmsLivePreview } from "@/components/admin/cms/CmsLivePreview";
+import { CmsFieldEditor, CmsFieldGroup } from "@/components/admin/cms/CmsFieldEditor";
+import { CmsStructuredEditors } from "@/components/admin/cms/CmsStructuredEditors";
 import {
   Save,
   Search,
@@ -24,57 +27,24 @@ import {
   HelpCircle,
   Globe,
   Eye,
-  Plus,
-  Trash2,
   CheckCircle2,
   Menu,
   X,
   Languages,
+  Image as ImageIcon,
+  LayoutPanelLeft,
 } from "lucide-react";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
-type EditorTab = "pages" | "testimonials" | "team" | "faqs" | "seo";
-type EditLocale = "en" | "de";
+type EditorTab = "pages" | "images" | "testimonials" | "team" | "faqs" | "seo";
 
-type EditableField = CmsContentRow & {
-  pageGroup: string;
-  draft: { en: string; de: string };
+type CmsStats = {
+  totalFields: number;
+  persistedFields: number;
+  customizedFields: number;
+  byPage: Record<string, { total: number; customized: number }>;
 };
-
-function getValueForLocale(row: CmsContentRow, locale: EditLocale): unknown {
-  const json = row.content_json as { en?: unknown; de?: unknown } | null;
-  if (json && json[locale] !== undefined) return json[locale];
-  if (locale === "en" && row.content_value) {
-    if (row.field_type === "json") {
-      try {
-        return JSON.parse(row.content_value);
-      } catch {
-        return row.content_value;
-      }
-    }
-    return row.content_value;
-  }
-  return "";
-}
-
-function fieldsFromSeed(): EditableField[] {
-  return buildSeedEntries().map((entry, index) => ({
-    id: `local-${entry.i18nKey}`,
-    section_id: null,
-    i18n_key: entry.i18nKey,
-    field_key: entry.i18nKey,
-    field_name: humanizeKey(entry.i18nKey),
-    field_type: entry.fieldType,
-    content_value: typeof entry.valueEn === "string" ? entry.valueEn : null,
-    content_json: { en: entry.valueEn, de: entry.valueDe },
-    sort_order: index,
-    pageGroup: entry.pageGroup,
-    draft: {
-      en: serializeCmsValue(entry.valueEn),
-      de: serializeCmsValue(entry.valueDe),
-    },
-  }));
-}
 
 export function WebsiteContentAdmin() {
   const { theme } = useTheme();
@@ -82,93 +52,57 @@ export function WebsiteContentAdmin() {
   const { refresh: refreshCms } = useCms();
 
   const [tab, setTab] = useState<EditorTab>("pages");
-  const [activePage, setActivePage] = useState<(typeof CMS_PAGE_GROUPS)[number]["id"]>(CMS_PAGE_GROUPS[0].id);
+  const [activePage, setActivePage] = useState<(typeof CMS_PAGE_GROUPS)[number]["id"]>("home");
   const [editLocale, setEditLocale] = useState<EditLocale>("en");
   const [search, setSearch] = useState("");
-  const [fields, setFields] = useState<EditableField[]>([]);
+  const [fields, setFields] = useState<MergedCmsField[]>([]);
+  const [stats, setStats] = useState<CmsStats | null>(null);
   const [loading, setLoading] = useState(true);
-  const [seeded, setSeeded] = useState(false);
+  const [dbSeeded, setDbSeeded] = useState(false);
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved">("idle");
   const [mobileNav, setMobileNav] = useState(false);
-  const [dirty, setDirty] = useState(false);
-
-  const [testimonials, setTestimonials] = useState<CmsTestimonial[]>([]);
-  const [team, setTeam] = useState<CmsTeamMember[]>([]);
-  const [faqs, setFaqs] = useState<CmsFaq[]>([]);
-  const [seoRows, setSeoRows] = useState<CmsSeo[]>([]);
+  const [previewTick, setPreviewTick] = useState(0);
+  const [showPreview, setShowPreview] = useState(true);
 
   const isDark = theme === "dark";
   const textPrimary = isDark ? "text-white" : "text-[#0D1B2A]";
   const textMuted = isDark ? "text-gray-400" : "text-gray-600";
-  const inputClass = `w-full px-4 py-3 rounded-xl border text-sm ${
+  const inputClass = cn(
+    "w-full rounded-xl border px-4 py-3 text-sm focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20",
     isDark ? "border-white/15 bg-[#0D1B2A] text-white" : "border-gray-200 bg-white text-[#0D1B2A]"
-  }`;
+  );
 
-  const mapRowsToFields = useCallback((rows: CmsContentRow[]): EditableField[] => {
-    return rows.map((row) => {
-      const i18nKey = row.i18n_key || row.field_key;
-      return {
-        ...row,
-        i18n_key: i18nKey,
-        pageGroup: getPageGroupForKey(i18nKey),
-        draft: {
-          en: serializeCmsValue(getValueForLocale(row, "en")),
-          de: serializeCmsValue(getValueForLocale(row, "de")),
-        },
-      };
-    });
-  }, []);
+  const dirtyFields = useMemo(() => getDirtyFields(fields), [fields]);
+  const dirty = dirtyFields.length > 0;
 
-  const loadBulk = useCallback(async () => {
+  const loadContent = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await fetch("/api/cms/bulk");
+      const res = await fetch("/api/cms/bulk", { cache: "no-store" });
       if (res.status === 401 || res.status === 403) {
-        setFields(fieldsFromSeed());
-        setSeeded(false);
-        toast.error("Admin login required to save to database. Showing local copy.");
+        toast.error("Admin access required.");
         return;
       }
-      if (!res.ok) throw new Error("Failed to load");
+      if (!res.ok) throw new Error("Failed to load CMS content");
       const data = await res.json();
-      const content = (data.content || []) as CmsContentRow[];
-      if (content.length) {
-        setFields(mapRowsToFields(content));
-        setSeeded(true);
-      } else {
-        setFields(fieldsFromSeed());
-        setSeeded(false);
-      }
-    } catch {
-      setFields(fieldsFromSeed());
-      setSeeded(false);
+      setFields((data.content ?? []) as MergedCmsField[]);
+      setStats(data.stats ?? null);
+      setDbSeeded(Boolean(data.seeded));
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Failed to load content");
     } finally {
       setLoading(false);
     }
-  }, [mapRowsToFields, toast]);
-
-  const loadExtras = useCallback(async () => {
-    const [t, tm, f, s] = await Promise.all([
-      fetch("/api/cms/testimonials").then((r) => (r.ok ? r.json() : [])),
-      fetch("/api/cms/team").then((r) => (r.ok ? r.json() : [])),
-      fetch("/api/cms/faqs").then((r) => (r.ok ? r.json() : [])),
-      fetch("/api/cms/seo").then((r) => (r.ok ? r.json() : [])),
-    ]);
-    setTestimonials(t);
-    setTeam(tm);
-    setFaqs(f);
-    setSeoRows(s);
-  }, []);
+  }, [toast]);
 
   useEffect(() => {
-    void loadBulk();
-    void loadExtras();
-  }, [loadBulk, loadExtras]);
+    void loadContent();
+  }, [loadContent]);
 
-  const filteredFields = useMemo(() => {
+  const pageFields = useMemo(() => {
     const q = search.trim().toLowerCase();
     return fields
-      .filter((f) => f.pageGroup === activePage)
+      .filter((f) => (tab === "images" ? f.field_type === "image" : f.pageGroup === activePage))
       .filter(
         (f) =>
           !q ||
@@ -177,59 +111,61 @@ export function WebsiteContentAdmin() {
           f.draft.en.toLowerCase().includes(q) ||
           f.draft.de.toLowerCase().includes(q)
       );
-  }, [fields, activePage, search]);
+  }, [fields, activePage, search, tab]);
 
-  const updateDraft = (id: string, locale: EditLocale, value: string) => {
+  const fieldMap = useMemo(() => new Map(fields.map((f) => [f.i18n_key, f])), [fields]);
+
+  const sectionGroups = useMemo(
+    () => groupFieldsBySection(pageFields.map((f) => f.i18n_key)),
+    [pageFields]
+  );
+
+  const updateDraft = (i18nKey: string, locale: EditLocale, value: string) => {
     setFields((prev) =>
-      prev.map((f) => (f.id === id ? { ...f, draft: { ...f.draft, [locale]: value } } : f))
+      prev.map((f) => {
+        if (f.i18n_key !== i18nKey) return f;
+        if (f.field_type === "image") {
+          return { ...f, draft: { en: value, de: value } };
+        }
+        return { ...f, draft: { ...f.draft, [locale]: value } };
+      })
     );
-    setDirty(true);
     setSaveStatus("idle");
   };
 
-  const handleSeed = async () => {
+  const resetField = (i18nKey: string) => {
+    setFields((prev) =>
+      prev.map((f) =>
+        f.i18n_key === i18nKey ? { ...f, draft: { ...f.liveBaseline } } : f
+      )
+    );
+  };
+
+  const handleSyncToDatabase = async () => {
     setLoading(true);
     try {
       const res = await fetch("/api/cms/bulk?action=seed", { method: "POST" });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Seed failed");
-      toast.success(`Imported ${data.count} content fields from website locales.`);
-      await loadBulk();
+      if (!res.ok) throw new Error(data.error || "Sync failed");
+      toast.success(`Synced ${data.count} fields from live website into database.`);
+      await loadContent();
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Seed failed");
+      toast.error(e instanceof Error ? e.message : "Sync failed");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleSavePages = async () => {
-    const dbFields = fields.filter((f) => !f.id.startsWith("local-"));
-    if (!dbFields.length) {
-      toast.error("Initialize CMS from database first (Import website content).");
+  const handleSave = async () => {
+    const toSave = tab === "pages" || tab === "images" ? dirtyFields : [];
+    if (!toSave.length) {
+      toast.error("No changes to save.");
       return;
     }
 
     setSaveStatus("saving");
     try {
-      const updates = dbFields.map((field) => {
-        const fieldType = field.field_type as CmsFieldType;
-        let content_json: { en?: unknown; de?: unknown };
-        try {
-          content_json = {
-            en: parseCmsValue(field.draft.en, fieldType),
-            de: parseCmsValue(field.draft.de, fieldType),
-          };
-        } catch {
-          throw new Error(`Invalid JSON in field: ${field.i18n_key}`);
-        }
-        const enStr = field.draft.en;
-        return {
-          id: field.id,
-          content_json,
-          content_value: fieldType === "text" || fieldType === "textarea" ? enStr : JSON.stringify(content_json.en),
-        };
-      });
-
+      const updates = buildSavePayloads(toSave);
       const res = await fetch("/api/cms/bulk", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -238,10 +174,11 @@ export function WebsiteContentAdmin() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Save failed");
 
+      toast.success(`Published ${data.count} field${data.count === 1 ? "" : "s"} to the live website.`);
       setSaveStatus("saved");
-      setDirty(false);
-      toast.success("Website content saved. Changes are live.");
       await refreshCms();
+      setPreviewTick((t) => t + 1);
+      await loadContent();
       setTimeout(() => setSaveStatus("idle"), 2000);
     } catch (e) {
       setSaveStatus("idle");
@@ -250,107 +187,136 @@ export function WebsiteContentAdmin() {
   };
 
   const pageLabel = CMS_PAGE_GROUPS.find((p) => p.id === activePage)?.label ?? activePage;
+  const pageStats = stats?.byPage?.[activePage];
+  const previewUrl = getPreviewUrl(activePage);
 
   const tabs: { id: EditorTab; label: string; icon: typeof FileText }[] = [
-    { id: "pages", label: "Page copy", icon: FileText },
+    { id: "pages", label: "Pages", icon: LayoutPanelLeft },
+    { id: "images", label: "Images", icon: ImageIcon },
     { id: "testimonials", label: "Testimonials", icon: MessageSquareQuote },
     { id: "team", label: "Team", icon: Users },
     { id: "faqs", label: "FAQs", icon: HelpCircle },
     { id: "seo", label: "SEO", icon: Globe },
   ];
 
+  const isPageTab = tab === "pages" || tab === "images";
+
   return (
-    <div className={`min-h-screen flex ${isDark ? "bg-[#0D1B2A]" : "bg-[#FAFAFA]"}`}>
+    <div className={cn("flex min-h-screen", isDark ? "bg-[#0D1B2A]" : "bg-[#FAFAFA]")}>
       <Sidebar role="admin" />
 
-      <main className="flex-1 flex flex-col pt-20 md:pt-0 min-w-0">
-        {/* Top bar */}
+      <main className="flex min-w-0 flex-1 flex-col pt-20 md:pt-0">
+        {/* Header */}
         <div
-          className={`sticky top-0 z-20 border-b px-4 sm:px-6 py-4 flex flex-wrap items-center justify-between gap-3 ${
-            isDark ? "bg-[#0D1B2A]/95 border-white/10 backdrop-blur" : "bg-white/95 border-gray-100 backdrop-blur"
-          }`}
+          className={cn(
+            "sticky top-0 z-20 border-b px-4 py-4 sm:px-6",
+            isDark ? "border-white/10 bg-[#0D1B2A]/95 backdrop-blur" : "border-gray-100 bg-white/95 backdrop-blur"
+          )}
         >
-          <div>
-            <h1 className={`text-xl md:text-2xl font-bold ${textPrimary}`}>Website Content</h1>
-            <p className={`text-sm ${textMuted}`}>Edit all public website text in English and German</p>
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div>
+              <h1 className={cn("text-xl font-bold md:text-2xl", textPrimary)}>Website Content</h1>
+              <p className={cn("mt-1 text-sm", textMuted)}>
+                Edit every public page in real time — values load from the live site and publish instantly on save.
+              </p>
+              {stats && (
+                <div className="mt-2 flex flex-wrap gap-2">
+                  <Badge variant="outline">{stats.totalFields} fields</Badge>
+                  <Badge variant="gold">{stats.customizedFields} customized</Badge>
+                  {!dbSeeded && (
+                    <Badge variant="warning">Not yet synced to database</Badge>
+                  )}
+                </div>
+              )}
+            </div>
+            <div className="flex flex-wrap items-center gap-2">
+              <Button variant="outline" size="sm" onClick={() => void handleSyncToDatabase()} disabled={loading}>
+                <Database className="mr-2 h-4 w-4" />
+                Sync to DB
+              </Button>
+              <Button variant="outline" size="sm" onClick={() => void loadContent()} disabled={loading}>
+                <RefreshCw className={cn("mr-2 h-4 w-4", loading && "animate-spin")} />
+                Reload
+              </Button>
+              <Link href={previewUrl.split("?")[0]} target="_blank">
+                <Button variant="outline" size="sm">
+                  <Eye className="mr-2 h-4 w-4" />
+                  Open page
+                </Button>
+              </Link>
+              {isPageTab && (
+                <Button
+                  variant="gold"
+                  size="sm"
+                  onClick={() => void handleSave()}
+                  disabled={saveStatus === "saving" || !dirty}
+                >
+                  {saveStatus === "saved" ? (
+                    <>
+                      <CheckCircle2 className="mr-2 h-4 w-4" /> Published
+                    </>
+                  ) : (
+                    <>
+                      <Save className="mr-2 h-4 w-4" />
+                      {saveStatus === "saving" ? "Publishing…" : `Publish${dirty ? ` (${dirtyFields.length})` : ""}`}
+                    </>
+                  )}
+                </Button>
+              )}
+            </div>
           </div>
-          <div className="flex flex-wrap items-center gap-2">
-            {!seeded && (
-              <Button variant="outline" size="sm" onClick={handleSeed} disabled={loading}>
-                <Database className="w-4 h-4 mr-2" />
-                Import website content
-              </Button>
-            )}
-            <Button variant="outline" size="sm" onClick={() => loadBulk()} disabled={loading}>
-              <RefreshCw className={`w-4 h-4 mr-2 ${loading ? "animate-spin" : ""}`} />
-              Reload
-            </Button>
-            <Link href="/" target="_blank">
-              <Button variant="outline" size="sm">
-                <Eye className="w-4 h-4 mr-2" />
-                Preview site
-              </Button>
-            </Link>
-            {tab === "pages" && (
-              <Button variant="gold" size="sm" onClick={handleSavePages} disabled={saveStatus === "saving" || !dirty}>
-                {saveStatus === "saved" ? (
-                  <>
-                    <CheckCircle2 className="w-4 h-4 mr-2" /> Saved
-                  </>
-                ) : (
-                  <>
-                    <Save className="w-4 h-4 mr-2" />
-                    {saveStatus === "saving" ? "Saving…" : "Save changes"}
-                  </>
+
+          {/* Tabs */}
+          <div className={cn("mt-4 flex gap-1 overflow-x-auto border-t pt-3", isDark ? "border-white/10" : "border-gray-100")}>
+            {tabs.map(({ id, label, icon: Icon }) => (
+              <button
+                key={id}
+                type="button"
+                onClick={() => setTab(id)}
+                className={cn(
+                  "flex shrink-0 items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors",
+                  tab === id ? "bg-[#D4AF37] text-[#0D1B2A]" : isDark ? "text-gray-400 hover:text-white" : "text-gray-600"
                 )}
-              </Button>
-            )}
+              >
+                <Icon className="h-4 w-4" />
+                {label}
+              </button>
+            ))}
           </div>
         </div>
 
-        {/* Tab nav */}
-        <div className={`flex gap-1 px-4 sm:px-6 py-2 border-b overflow-x-auto ${isDark ? "border-white/10" : "border-gray-100"}`}>
-          {tabs.map(({ id, label, icon: Icon }) => (
-            <button
-              key={id}
-              type="button"
-              onClick={() => setTab(id)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
-                tab === id ? "bg-[#D4AF37] text-[#0D1B2A]" : isDark ? "text-gray-400 hover:text-white" : "text-gray-600 hover:text-[#0D1B2A]"
-              }`}
-            >
-              <Icon className="w-4 h-4" />
-              {label}
-            </button>
-          ))}
-        </div>
-
-        {tab === "pages" && (
-          <div className="flex flex-1 min-h-0">
-            {/* Page sidebar - desktop */}
+        {isPageTab ? (
+          <div className="flex min-h-0 flex-1 flex-col xl:flex-row">
+            {/* Page sidebar */}
             <aside
-              className={`hidden lg:block w-56 shrink-0 border-r p-4 overflow-y-auto ${
+              className={cn(
+                "hidden w-56 shrink-0 overflow-y-auto border-r p-4 xl:block",
                 isDark ? "border-white/10 bg-[#112240]" : "border-gray-100 bg-white"
-              }`}
+              )}
             >
+              <p className={cn("mb-3 text-xs font-semibold uppercase tracking-wider", textMuted)}>Website pages</p>
               <nav className="space-y-1">
                 {CMS_PAGE_GROUPS.map((page) => {
-                  const count = fields.filter((f) => f.pageGroup === page.id).length;
+                  const ps = stats?.byPage?.[page.id];
                   return (
                     <button
                       key={page.id}
                       type="button"
                       onClick={() => setActivePage(page.id)}
-                      className={`w-full text-left px-3 py-2.5 rounded-lg text-sm transition-colors ${
+                      className={cn(
+                        "w-full rounded-lg px-3 py-2.5 text-left text-sm transition-colors",
                         activePage === page.id
-                          ? "bg-[#D4AF37] text-[#0D1B2A] font-semibold"
+                          ? "bg-[#D4AF37] font-semibold text-[#0D1B2A]"
                           : isDark
                             ? "text-gray-300 hover:bg-white/10"
                             : "text-gray-600 hover:bg-gray-50"
-                      }`}
+                      )}
                     >
-                      {page.label}
-                      <span className="ml-1 opacity-60">({count})</span>
+                      <span className="block">{page.label}</span>
+                      <span className="text-xs opacity-70">
+                        {ps?.total ?? 0} fields
+                        {ps?.customized ? ` · ${ps.customized} live` : ""}
+                      </span>
                     </button>
                   );
                 })}
@@ -358,191 +324,152 @@ export function WebsiteContentAdmin() {
             </aside>
 
             {/* Mobile page picker */}
-            <div className="lg:hidden px-4 pt-3">
+            <div className="flex items-center gap-2 border-b px-4 py-3 xl:hidden">
               <Button variant="outline" size="sm" onClick={() => setMobileNav(true)}>
-                <Menu className="w-4 h-4 mr-2" />
+                <Menu className="mr-2 h-4 w-4" />
                 {pageLabel}
+              </Button>
+              <Button variant="outline" size="sm" onClick={() => setShowPreview((v) => !v)}>
+                <Eye className="mr-2 h-4 w-4" />
+                {showPreview ? "Hide" : "Show"} preview
               </Button>
             </div>
 
-            {/* Editor */}
-            <div className="flex-1 overflow-y-auto p-4 sm:p-6">
-              {!seeded && (
-                <Card className={`p-4 mb-6 border-[#D4AF37]/40 ${isDark ? "bg-[#112240]" : "bg-amber-50"}`}>
-                  <p className={`text-sm ${textMuted}`}>
-                    Click <strong>Import website content</strong> to copy all current English & German text from the site
-                    into the database. You can then edit and publish changes live.
-                  </p>
-                </Card>
-              )}
+            {/* Editor column */}
+            <div className="min-w-0 flex-1 overflow-y-auto p-4 sm:p-6">
+              <Card className={cn("mb-6 border-[#D4AF37]/30 p-4", isDark ? "bg-[#112240]" : "bg-amber-50/80")}>
+                <p className={cn("text-sm", textMuted)}>
+                  <strong className={textPrimary}>Live data:</strong> All fields show current website copy from locale
+                  files merged with database overrides. Edit and click <strong>Publish</strong> — changes appear on the
+                  public site immediately.
+                  {!dbSeeded && " Use Sync to DB to persist the baseline into Supabase."}
+                </p>
+              </Card>
 
-              <div className="flex flex-wrap items-center gap-3 mb-6">
-                <div className="relative flex-1 min-w-[200px]">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <div className="mb-6 flex flex-wrap items-center gap-3">
+                <div className="relative min-w-[200px] flex-1">
+                  <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
                   <input
                     type="search"
-                    placeholder="Search fields…"
+                    placeholder="Search fields on this page…"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    className={`${inputClass} pl-10`}
+                    className={cn(inputClass, "pl-10")}
                   />
                 </div>
-                <div className={`flex rounded-xl border p-1 ${isDark ? "border-white/15" : "border-gray-200"}`}>
+                <div className={cn("flex rounded-xl border p-1", isDark ? "border-white/15" : "border-gray-200")}>
                   {(["en", "de"] as const).map((lng) => (
                     <button
                       key={lng}
                       type="button"
                       onClick={() => setEditLocale(lng)}
-                      className={`px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-1.5 ${
+                      className={cn(
+                        "flex items-center gap-1.5 rounded-lg px-4 py-2 text-sm font-medium",
                         editLocale === lng ? "bg-[#D4AF37] text-[#0D1B2A]" : textMuted
-                      }`}
+                      )}
                     >
-                      <Languages className="w-3.5 h-3.5" />
+                      <Languages className="h-3.5 w-3.5" />
                       {lng.toUpperCase()}
                     </button>
                   ))}
                 </div>
-                <Badge variant="outline">{filteredFields.length} fields</Badge>
+                <Badge variant="outline">{pageFields.length} fields</Badge>
+                {pageStats?.customized ? (
+                  <Badge variant="gold">{pageStats.customized} customized</Badge>
+                ) : null}
               </div>
 
-              <h2 className={`text-lg font-bold mb-4 ${textPrimary}`}>{pageLabel}</h2>
+              <h2 className={cn("mb-4 text-lg font-bold", textPrimary)}>
+                {tab === "images" ? "All marketing images" : pageLabel}
+              </h2>
 
               {loading ? (
-                <p className={textMuted}>Loading content…</p>
-              ) : filteredFields.length === 0 ? (
+                <p className={textMuted}>Loading live website content…</p>
+              ) : pageFields.length === 0 ? (
                 <p className={textMuted}>No fields match your search.</p>
+              ) : tab === "images" ? (
+                <div className="max-w-3xl space-y-4">
+                  {pageFields.map((field) => (
+                    <CmsFieldEditor
+                      key={field.i18n_key}
+                      field={field}
+                      editLocale={editLocale}
+                      isDark={isDark}
+                      inputClass={inputClass}
+                      isDirty={dirtyFields.some((d) => d.i18n_key === field.i18n_key)}
+                      onChange={(v) => updateDraft(field.i18n_key, editLocale, v)}
+                      onReset={() => resetField(field.i18n_key)}
+                    />
+                  ))}
+                </div>
               ) : (
-                <div className="space-y-6 max-w-4xl">
-                  {filteredFields.map((field) => (
-                    <Card key={field.id} className={`p-5 ${isDark ? "bg-[#112240] border-white/10" : "bg-white"}`}>
-                      <div className="flex flex-wrap items-start justify-between gap-2 mb-3">
-                        <div>
-                          <p className={`font-semibold ${textPrimary}`}>{field.field_name}</p>
-                          <p className="text-xs text-gray-500 font-mono mt-0.5">{field.i18n_key}</p>
-                        </div>
-                        <Badge variant={field.field_type === "json" ? "warning" : "gold"}>{field.field_type}</Badge>
-                      </div>
-
-                      {field.field_type === "json" ? (
-                        <textarea
-                          rows={8}
-                          className={`${inputClass} font-mono text-xs`}
-                          value={field.draft[editLocale]}
-                          onChange={(e) => updateDraft(field.id, editLocale, e.target.value)}
-                        />
-                      ) : field.field_type === "textarea" ? (
-                        <textarea
-                          rows={4}
-                          className={inputClass}
-                          value={field.draft[editLocale]}
-                          onChange={(e) => updateDraft(field.id, editLocale, e.target.value)}
-                        />
-                      ) : (
-                        <input
-                          type="text"
-                          className={inputClass}
-                          value={field.draft[editLocale]}
-                          onChange={(e) => updateDraft(field.id, editLocale, e.target.value)}
-                        />
-                      )}
-
-                      {editLocale === "en" && field.draft.de && (
-                        <p className={`text-xs mt-2 ${textMuted}`}>
-                          DE preview: {field.draft.de.slice(0, 80)}
-                          {field.draft.de.length > 80 ? "…" : ""}
-                        </p>
-                      )}
-                    </Card>
+                <div className="max-w-3xl space-y-8">
+                  {sectionGroups.map((group) => (
+                    <CmsFieldGroup
+                      key={group.id}
+                      label={group.label}
+                      count={group.fieldKeys.length}
+                      isDark={isDark}
+                    >
+                      {group.fieldKeys.map((key) => {
+                        const field = fieldMap.get(key);
+                        if (!field) return null;
+                        return (
+                          <CmsFieldEditor
+                            key={field.i18n_key}
+                            field={field}
+                            editLocale={editLocale}
+                            isDark={isDark}
+                            inputClass={inputClass}
+                            isDirty={dirtyFields.some((d) => d.i18n_key === field.i18n_key)}
+                            onChange={(v) => updateDraft(field.i18n_key, editLocale, v)}
+                            onReset={() => resetField(field.i18n_key)}
+                          />
+                        );
+                      })}
+                    </CmsFieldGroup>
                   ))}
                 </div>
               )}
             </div>
+
+            {/* Live preview */}
+            {showPreview && (
+              <div
+                className={cn(
+                  "hidden w-full shrink-0 border-l p-4 xl:block xl:w-[42%] 2xl:w-[45%]",
+                  isDark ? "border-white/10 bg-[#0A1628]" : "border-gray-200 bg-gray-100"
+                )}
+              >
+                <div className="sticky top-24 h-[calc(100vh-7rem)]">
+                  <CmsLivePreview
+                    pageId={activePage}
+                    previewTick={previewTick}
+                    isDark={isDark}
+                    onRefresh={() => setPreviewTick((t) => t + 1)}
+                  />
+                </div>
+              </div>
+            )}
           </div>
+        ) : (
+          <CmsStructuredEditors tab={tab} isDark={isDark} textPrimary={textPrimary} textMuted={textMuted} inputClass={inputClass} />
         )}
 
-        {tab === "testimonials" && (
-          <StructuredListEditor
-            title="Testimonials"
-            items={testimonials}
-            isDark={isDark}
-            textPrimary={textPrimary}
-            textMuted={textMuted}
-            inputClass={inputClass}
-            onReload={loadExtras}
-            endpoint="/api/cms/testimonials"
-            fields={[
-              { key: "name", label: "Name" },
-              { key: "role", label: "Role" },
-              { key: "content", label: "Quote", textarea: true },
-              { key: "rating", label: "Rating (1-5)", type: "number" },
-            ]}
-            emptyItem={{ name: "", role: "", content: "", rating: 5, is_active: true, sort_order: 0 }}
-          />
-        )}
-
-        {tab === "team" && (
-          <StructuredListEditor
-            title="Team members"
-            items={team}
-            isDark={isDark}
-            textPrimary={textPrimary}
-            textMuted={textMuted}
-            inputClass={inputClass}
-            onReload={loadExtras}
-            endpoint="/api/cms/team"
-            fields={[
-              { key: "name", label: "Name" },
-              { key: "role", label: "Role" },
-              { key: "bio", label: "Bio", textarea: true },
-              { key: "photo_url", label: "Photo URL" },
-            ]}
-            emptyItem={{ name: "", role: "", bio: "", photo_url: "", is_active: true, sort_order: 0 }}
-          />
-        )}
-
-        {tab === "faqs" && (
-          <StructuredListEditor
-            title="FAQs"
-            items={faqs}
-            isDark={isDark}
-            textPrimary={textPrimary}
-            textMuted={textMuted}
-            inputClass={inputClass}
-            onReload={loadExtras}
-            endpoint="/api/cms/faqs"
-            fields={[
-              { key: "question", label: "Question" },
-              { key: "answer", label: "Answer", textarea: true },
-              { key: "category", label: "Category" },
-            ]}
-            emptyItem={{ question: "", answer: "", category: "general", is_active: true, sort_order: 0 }}
-          />
-        )}
-
-        {tab === "seo" && (
-          <SeoEditor
-            rows={seoRows}
-            isDark={isDark}
-            textPrimary={textPrimary}
-            textMuted={textMuted}
-            inputClass={inputClass}
-            onReload={loadExtras}
-          />
-        )}
-
-        {/* Mobile nav overlay */}
+        {/* Mobile page nav */}
         {mobileNav && (
           <>
-            <div className="fixed inset-0 bg-black/50 z-40 lg:hidden" onClick={() => setMobileNav(false)} />
+            <div className="fixed inset-0 z-40 bg-black/50 lg:hidden" onClick={() => setMobileNav(false)} />
             <div
-              className={`fixed top-20 left-0 bottom-0 w-72 z-50 p-4 overflow-y-auto lg:hidden ${
+              className={cn(
+                "fixed top-20 bottom-0 left-0 z-50 w-72 overflow-y-auto p-4 lg:hidden",
                 isDark ? "bg-[#112240]" : "bg-white"
-              }`}
+              )}
             >
-              <div className="flex justify-between mb-4">
-                <span className={`font-bold ${textPrimary}`}>Pages</span>
+              <div className="mb-4 flex items-center justify-between">
+                <span className={cn("font-bold", textPrimary)}>Pages</span>
                 <button type="button" onClick={() => setMobileNav(false)}>
-                  <X className="w-5 h-5" />
+                  <X className="h-5 w-5" />
                 </button>
               </div>
               <nav className="space-y-1">
@@ -554,9 +481,10 @@ export function WebsiteContentAdmin() {
                       setActivePage(page.id);
                       setMobileNav(false);
                     }}
-                    className={`w-full text-left px-3 py-2 rounded-lg text-sm ${
+                    className={cn(
+                      "w-full rounded-lg px-3 py-2 text-left text-sm",
                       activePage === page.id ? "bg-[#D4AF37] text-[#0D1B2A]" : textMuted
-                    }`}
+                    )}
                   >
                     {page.label}
                   </button>
@@ -566,237 +494,6 @@ export function WebsiteContentAdmin() {
           </>
         )}
       </main>
-    </div>
-  );
-}
-
-type FieldConfig = {
-  key: string;
-  label: string;
-  textarea?: boolean;
-  type?: string;
-};
-
-function StructuredListEditor<T extends { id?: string }>({
-  title,
-  items,
-  fields,
-  emptyItem,
-  endpoint,
-  isDark,
-  textPrimary,
-  textMuted,
-  inputClass,
-  onReload,
-}: {
-  title: string;
-  items: T[];
-  fields: FieldConfig[];
-  emptyItem: Partial<T>;
-  endpoint: string;
-  isDark: boolean;
-  textPrimary: string;
-  textMuted: string;
-  inputClass: string;
-  onReload: () => void;
-}) {
-  const toast = useToast();
-  const [draft, setDraft] = useState<Partial<T>>(emptyItem);
-
-  const saveItem = async (item: T) => {
-    const method = item.id ? "PUT" : "POST";
-    const res = await fetch(endpoint, {
-      method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(item),
-    });
-    if (!res.ok) {
-      const data = await res.json();
-      throw new Error(data.error || "Save failed");
-    }
-    toast.success("Saved");
-    onReload();
-  };
-
-  const deleteItem = async (id: string) => {
-    const res = await fetch(endpoint, { method: "DELETE", body: JSON.stringify({ id }) });
-    if (!res.ok) throw new Error("Delete failed");
-    toast.success("Deleted");
-    onReload();
-  };
-
-  return (
-    <div className="p-4 sm:p-6 max-w-3xl">
-      <h2 className={`text-lg font-bold mb-6 ${textPrimary}`}>{title}</h2>
-
-      <Card className={`p-5 mb-8 space-y-4 ${isDark ? "bg-[#112240]" : "bg-white"}`}>
-        <p className={`text-sm font-semibold ${textPrimary}`}>Add new</p>
-        {fields.map((f) =>
-          f.textarea ? (
-            <textarea
-              key={f.key}
-              rows={3}
-              placeholder={f.label}
-              className={inputClass}
-              value={String((draft as Record<string, unknown>)[f.key] ?? "")}
-              onChange={(e) => setDraft({ ...draft, [f.key]: e.target.value })}
-            />
-          ) : (
-            <input
-              key={f.key}
-              type={f.type || "text"}
-              placeholder={f.label}
-              className={inputClass}
-              value={String((draft as Record<string, unknown>)[f.key] ?? "")}
-              onChange={(e) =>
-                setDraft({
-                  ...draft,
-                  [f.key]: f.type === "number" ? Number(e.target.value) : e.target.value,
-                })
-              }
-            />
-          )
-        )}
-        <Button
-          variant="gold"
-          size="sm"
-          onClick={() => {
-            void saveItem(draft as T).then(() => setDraft(emptyItem));
-          }}
-        >
-          <Plus className="w-4 h-4 mr-2" />
-          Add
-        </Button>
-      </Card>
-
-      <div className="space-y-4">
-        {items.length === 0 ? (
-          <p className={textMuted}>No entries yet. Import website content or add items above.</p>
-        ) : (
-          items.map((item) => (
-            <Card key={item.id} className={`p-5 space-y-3 ${isDark ? "bg-[#112240]" : "bg-white"}`}>
-              {fields.map((f) => (
-                <div key={f.key}>
-                  <label className={`text-xs font-semibold ${textMuted}`}>{f.label}</label>
-                  {f.textarea ? (
-                    <textarea
-                      rows={3}
-                      className={`${inputClass} mt-1`}
-                      value={String((item as Record<string, unknown>)[f.key] ?? "")}
-                      onChange={(e) => {
-                        Object.assign(item, { [f.key]: e.target.value });
-                      }}
-                    />
-                  ) : (
-                    <input
-                      className={`${inputClass} mt-1`}
-                      value={String((item as Record<string, unknown>)[f.key] ?? "")}
-                      onChange={(e) => {
-                        Object.assign(item, { [f.key]: e.target.value });
-                      }}
-                    />
-                  )}
-                </div>
-              ))}
-              <div className="flex gap-2">
-                <Button variant="gold" size="sm" onClick={() => void saveItem(item)}>
-                  <Save className="w-4 h-4 mr-2" />
-                  Save
-                </Button>
-                {item.id && (
-                  <Button variant="outline" size="sm" onClick={() => void deleteItem(item.id!)}>
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
-                )}
-              </div>
-            </Card>
-          ))
-        )}
-      </div>
-    </div>
-  );
-}
-
-const SEO_PAGES = ["home", "about", "programs", "subjects", "resources", "pricing", "consultation", "contact", "help", "careers"];
-
-function SeoEditor({
-  rows,
-  isDark,
-  textPrimary,
-  textMuted,
-  inputClass,
-  onReload,
-}: {
-  rows: CmsSeo[];
-  isDark: boolean;
-  textPrimary: string;
-  textMuted: string;
-  inputClass: string;
-  onReload: () => void;
-}) {
-  const toast = useToast();
-  const byPage = useMemo(() => {
-    const map = new Map(rows.map((r) => [r.page_name, r]));
-    return SEO_PAGES.map((page) => map.get(page) || { page_name: page, title: "", description: "", keywords: "" });
-  }, [rows]);
-
-  const save = async (row: Partial<CmsSeo> & { page_name: string }) => {
-    const res = await fetch("/api/cms/seo", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(row),
-    });
-    if (!res.ok) throw new Error("Save failed");
-    toast.success("SEO saved");
-    onReload();
-  };
-
-  return (
-    <div className="p-4 sm:p-6 max-w-3xl space-y-6">
-      <h2 className={`text-lg font-bold ${textPrimary}`}>SEO per page</h2>
-      {byPage.map((row) => (
-        <Card key={row.page_name} className={`p-5 space-y-3 ${isDark ? "bg-[#112240]" : "bg-white"}`}>
-          <p className={`font-semibold capitalize ${textPrimary}`}>{row.page_name}</p>
-          <input
-            className={inputClass}
-            placeholder="Meta title"
-            defaultValue={row.title ?? ""}
-            id={`seo-title-${row.page_name}`}
-          />
-          <textarea
-            className={inputClass}
-            rows={2}
-            placeholder="Meta description"
-            defaultValue={row.description ?? ""}
-            id={`seo-desc-${row.page_name}`}
-          />
-          <input
-            className={inputClass}
-            placeholder="Keywords"
-            defaultValue={row.keywords ?? ""}
-            id={`seo-kw-${row.page_name}`}
-          />
-          <Button
-            variant="gold"
-            size="sm"
-            onClick={() => {
-              const title = (document.getElementById(`seo-title-${row.page_name}`) as HTMLInputElement).value;
-              const description = (document.getElementById(`seo-desc-${row.page_name}`) as HTMLTextAreaElement).value;
-              const keywords = (document.getElementById(`seo-kw-${row.page_name}`) as HTMLInputElement).value;
-              void save({
-                id: "id" in row ? row.id : undefined,
-                page_name: row.page_name,
-                title,
-                description,
-                keywords,
-              } as Partial<CmsSeo> & { page_name: string });
-            }}
-          >
-            Save
-          </Button>
-        </Card>
-      ))}
-      <p className={`text-xs ${textMuted}`}>SEO metadata is stored in the database for future dynamic meta tags.</p>
     </div>
   );
 }

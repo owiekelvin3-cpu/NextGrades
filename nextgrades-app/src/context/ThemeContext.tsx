@@ -1,6 +1,13 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+  useRef,
+} from "react";
 import {
   type UiTheme,
   getStoredTheme,
@@ -8,19 +15,28 @@ import {
   THEME_CHANGED_EVENT,
   THEME_STORAGE_KEY,
 } from "@/lib/preferences";
+import { getClickOrigin, runThemeTransition } from "@/lib/theme/animate-theme-change";
 
 interface ThemeContextType {
   theme: UiTheme;
   isReady: boolean;
-  toggleTheme: () => void;
+  isTransitioning: boolean;
+  toggleTheme: (event?: React.MouseEvent<HTMLElement>) => void;
   setTheme: (theme: UiTheme) => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
+function readThemeFromDocument(): UiTheme {
+  if (typeof document === "undefined") return "dark";
+  return document.documentElement.classList.contains("dark") ? "dark" : "light";
+}
+
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<UiTheme>("dark");
+  const [theme, setThemeState] = useState<UiTheme>(readThemeFromDocument);
   const [isReady, setIsReady] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const transitioningRef = useRef(false);
 
   useEffect(() => {
     const stored = getStoredTheme();
@@ -46,21 +62,41 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
-  const toggleTheme = useCallback(() => {
-    setThemeState((prev) => {
-      const next: UiTheme = prev === "dark" ? "light" : "dark";
-      setAppTheme(next);
-      return next;
-    });
-  }, []);
-
-  const setThemeExplicit = useCallback((next: UiTheme) => {
+  const applyTheme = useCallback((next: UiTheme) => {
     setThemeState(next);
     setAppTheme(next);
   }, []);
 
+  const toggleTheme = useCallback(
+    (event?: React.MouseEvent<HTMLElement>) => {
+      if (transitioningRef.current) return;
+
+      const next: UiTheme = theme === "dark" ? "light" : "dark";
+      const origin = getClickOrigin(event);
+
+      transitioningRef.current = true;
+      setIsTransitioning(true);
+
+      void runThemeTransition(next, origin, () => applyTheme(next)).finally(() => {
+        transitioningRef.current = false;
+        setIsTransitioning(false);
+      });
+    },
+    [applyTheme, theme]
+  );
+
+  const setThemeExplicit = useCallback(
+    (next: UiTheme) => {
+      if (next === theme) return;
+      applyTheme(next);
+    },
+    [applyTheme, theme]
+  );
+
   return (
-    <ThemeContext.Provider value={{ theme, isReady, toggleTheme, setTheme: setThemeExplicit }}>
+    <ThemeContext.Provider
+      value={{ theme, isReady, isTransitioning, toggleTheme, setTheme: setThemeExplicit }}
+    >
       {children}
     </ThemeContext.Provider>
   );

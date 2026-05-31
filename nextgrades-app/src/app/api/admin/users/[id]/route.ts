@@ -1,35 +1,67 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
-import { requireRole } from "@/lib/auth/auth-utils";
-import { sendTeacherApprovedEmail, sendTeacherRejectedEmail, sendAdminNotificationEmail } from "@/lib/email";
+import { requireAdminApi } from "@/lib/auth/api-auth";
+import {
+  activateUserAccount,
+  deleteUserAccount,
+  suspendUserAccount,
+} from "@/lib/auth/admin-user-actions";
+import { sendTeacherApprovedEmail, sendTeacherRejectedEmail } from "@/lib/email";
+import { createAdminClient } from "@/lib/supabase/admin";
+import { isSupabaseServiceRoleConfigured } from "@/lib/supabase/env";
 
-// PATCH - Update user (suspend/activate, change role)
-export async function PATCH(
-  request: Request,
-  { params }: { params: Promise<{ id: string }> }
-) {
+type RouteParams = { params: Promise<{ id: string }> };
+
+function guardSelfAction(adminId: string, targetId: string, action: string) {
+  if (targetId === adminId) {
+    return NextResponse.json({ error: `You cannot ${action} your own account` }, { status: 400 });
+  }
+  return null;
+}
+
+// PATCH - Suspend/activate, change role
+export async function PATCH(request: Request, { params }: RouteParams) {
+  const gate = await requireAdminApi();
+  if (gate.error) return gate.error;
+
   try {
     const { id } = await params;
-    const supabase = await createClient();
-    const auth = await requireRole(supabase, "admin");
-    
-    if (!auth.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    const selfBlock = guardSelfAction(gate.auth!.user.id, id, "modify");
+    if (selfBlock) return selfBlock;
 
     const body = await request.json();
     const { is_active, role, teacher_status, rejection_reason } = body;
 
-    const { data: before } = await supabase
+    if (is_active !== undefined) {
+      if (!isSupabaseServiceRoleConfigured()) {
+        return NextResponse.json(
+          { error: "SUPABASE_SERVICE_ROLE_KEY required to suspend or activate users." },
+          { status: 503 }
+        );
+      }
+
+      if (is_active) {
+        await activateUserAccount(id, gate.auth!.user.id);
+      } else {
+        await suspendUserAccount(id, gate.auth!.user.id);
+      }
+
+      const admin = createAdminClient();
+      const { data, error } = await admin.from("profiles").select("*").eq("id", id).maybeSingle();
+      if (error) throw error;
+      return NextResponse.json(data);
+    }
+
+    const admin = isSupabaseServiceRoleConfigured() ? createAdminClient() : gate.auth!.supabase;
+
+    const { data: before } = await admin
       .from("profiles")
       .select("role, full_name, email")
       .eq("id", id)
       .maybeSingle();
 
-    const { data, error } = await supabase
+    const { data, error } = await admin
       .from("profiles")
       .update({
-        is_active: is_active !== undefined ? is_active : undefined,
         role: role !== undefined ? role : undefined,
         updated_at: new Date().toISOString(),
       })
@@ -39,13 +71,11 @@ export async function PATCH(
 
     if (error) throw error;
 
-    const userEmail = (data as { email?: string }).email || (before as { email?: string } | null)?.email;
+    const userEmail = (data as { email?: string }).email || before?.email;
     const userName = data.full_name || before?.full_name;
 
-    if (userEmail && role !== undefined && before?.role !== role) {
-      if (role === "teacher") {
-        void sendTeacherApprovedEmail(userEmail, userName ?? undefined);
-      }
+    if (userEmail && role !== undefined && before?.role !== role && role === "teacher") {
+      void sendTeacherApprovedEmail(userEmail, userName ?? undefined);
     }
 
     if (userEmail && teacher_status === "rejected") {
@@ -63,74 +93,61 @@ export async function PATCH(
       void notifyTeacherApproved(id, false);
     }
 
-    // Log the action
-    await supabase.from("user_activity_log").insert({
-      user_id: auth.user.id,
-      action: is_active !== undefined ? (is_active ? "activate_user" : "suspend_user") : "update_user_role",
-      metadata: {
-        target_user_id: id,
-        changes: body
-      }
+    await admin.from("user_activity_log").insert({
+      user_id: gate.auth!.user.id,
+      action: "update_user_role",
+      metadata: { target_user_id: id, changes: body },
     });
 
     return NextResponse.json(data);
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : "Failed to update user";
     console.error("Error updating user:", error);
-    return NextResponse.json(
-      { error: error.message || "Failed to update user" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 
-// DELETE - Delete user (mark as inactive)
-export async function DELETE(
-  request: Request,
-  { params }: { params: Promise<{ id: string }> }
-) {
+// DELETE - Permanently delete user from auth + database
+export async function DELETE(_request: Request, { params }: RouteParams) {
+  const gate = await requireAdminApi();
+  if (gate.error) return gate.error;
+
   try {
     const { id } = await params;
-    const supabase = await createClient();
-    const auth = await requireRole(supabase, "admin");
-    
-    if (!auth.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    const selfBlock = guardSelfAction(gate.auth!.user.id, id, "delete");
+    if (selfBlock) return selfBlock;
 
-    // Prevent deleting yourself
-    if (id === auth.user.id) {
+    if (!isSupabaseServiceRoleConfigured()) {
       return NextResponse.json(
-        { error: "Cannot delete your own account" },
-        { status: 400 }
+        { error: "SUPABASE_SERVICE_ROLE_KEY required to permanently delete users." },
+        { status: 503 }
       );
     }
 
-    // Mark user as inactive instead of deleting
-    const { error } = await supabase
-      .from("profiles")
-      .update({
-        is_active: false,
-        updated_at: new Date().toISOString()
-      })
-      .eq("id", id);
+    const admin = createAdminClient();
+    const { data: target } = await admin.from("profiles").select("role").eq("id", id).maybeSingle();
 
-    if (error) throw error;
+    if (!target) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
 
-    // Log the action
-    await supabase.from("user_activity_log").insert({
-      user_id: auth.user.id,
-      action: "delete_user",
-      metadata: {
-        target_user_id: id
+    if (target.role === "admin") {
+      const { count } = await admin
+        .from("profiles")
+        .select("id", { count: "exact", head: true })
+        .eq("role", "admin")
+        .eq("is_active", true);
+      if ((count ?? 0) <= 1) {
+        return NextResponse.json({ error: "Cannot delete the last active admin account" }, { status: 400 });
       }
-    });
+    }
 
-    return NextResponse.json({ success: true });
-  } catch (error: any) {
+    await deleteUserAccount(id, gate.auth!.user.id);
+
+    return NextResponse.json({ success: true, deleted: true });
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : "Failed to delete user";
     console.error("Error deleting user:", error);
-    return NextResponse.json(
-      { error: error.message || "Failed to delete user" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

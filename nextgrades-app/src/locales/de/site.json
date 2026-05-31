@@ -10,49 +10,82 @@
     "germanyFlag": "Deutschland Flagge"
   },
   "aboutPage": {
-    "introEyebrow": "NextGrades Challenge",
-    "introTitle": "Entdecke NextGrades – Wo Innovation auf Bildung trifft",
-    "introDesc": "NextGrades transformiert Bildung mit innovativen Konzepten. Entdecke unsere Geschichte und erstklassige Nachhilfe, die modernes Lernen inspiriert.",
-    "journeyTitle": "Die NextGrades Reise",
-    "journeySubtitle": "Von bescheidenen Anfängen zu Bildungsexzellenz.",
-    "story": [
-      {
-        "title": "Bescheidene Anfänge",
-        "desc": "Unsere Reise begann 2021 als Leidenschaftsprojekt aus Frustration mit traditioneller Nachhilfe. Was als Hilfe für ein paar Freund:innen begann, ist heute eine Plattform, der Tausende vertrauen."
-      },
-      {
-        "title": "Innovation und Wachstum",
-        "desc": "Innovation stand immer im Mittelpunkt. 2023 führten wir unsere digitale Lernplattform ein – Live-Nachhilfe kombiniert mit strukturierten, ergebnisorientierten Inhalten."
-      },
-      {
-        "title": "Unsere Reichweite",
-        "desc": "Heute betreut NextGrades Schüler:innen in Deutschland und darüber hinaus. Über 10.000 Schüler:innen haben ihre Noten verbessert und Selbstvertrauen aufgebaut."
-      },
-      {
-        "title": "Blick nach vorn",
-        "desc": "Unser Ziel ist es, Bildung weiter zu revolutionieren – mit KI-gestützten Lernpfaden und erweiterten Fachangeboten."
-      }
+    "breadcrumb": "Startseite > Über uns",
+    "heroEyebrow": "ÜBER NEXTGRADES",
+    "heroQuote": "Bildung ist nicht die Befüllung eines Eimers, sondern das Entzünden eines Feuers.",
+    "heroQuoteAuthor": "William Butler Yeats",
+    "heroPillars": [
+      { "title": "Mission", "desc": "Lernen verständlich, motivierend und zugänglich machen – für jeden Schüler." },
+      { "title": "Vision", "desc": "Eine neue Generation des Lernens – modern, strukturiert und ergebnisorientiert." },
+      { "title": "Values", "desc": "Qualität, Empathie und echter Fortschritt für jeden Lernenden." }
     ],
-    "teamTitle": "Unser großartiges Team",
+    "heroFeatures": [
+      { "title": "Mehr als Nachhilfe", "desc": "Ganzheitliche Lernbegleitung." },
+      { "title": "Echte Ergebnisse", "desc": "Messbarer Fortschritt & Selbstvertrauen." },
+      { "title": "Individuelle Förderung", "desc": "Auf jeden Schüler zugeschnitten." },
+      { "title": "Zukunft gestalten", "desc": "Kompetenzen für morgen." }
+    ],
+    "storyEyebrow": "UNSERE GESCHICHTE",
+    "storyTitle": "Wie alles begann",
+    "storyParagraphs": [
+      "NextGrades entstand 2021 als Leidenschaftsprojekt – aus Frustration mit veralteten Nachhilfe-Methoden und dem Glauben, dass jeder Schüler Besseres verdient.",
+      "Was als Hilfe für ein paar Freund:innen begann, wuchs schnell zu einer Plattform, der Hunderte Schüler:innen in Deutschland vertrauen. Wir verbinden Live-Nachhilfe mit strukturierten digitalen Inhalten.",
+      "Heute bauen wir die Lernerfahrung, die wir uns immer gewünscht haben: persönlich, professionell und für den echten Alltag gemacht."
+    ],
+    "storyCta": "Mehr über unsere Mission",
+    "missionEyebrow": "UNSERE MISSION IM DETAIL",
+    "missionTitle": "Wofür wir jeden Tag arbeiten",
+    "missionCards": [
+      { "title": "Wissen verständlich machen", "desc": "Komplexe Themen klar aufbereiten – damit Schüler:innen wirklich verstehen." },
+      { "title": "Hochwertige Materialien bereitstellen", "desc": "Premium-Arbeitsblätter, Videos und Guides von erfahrenen Lehrkräften." },
+      { "title": "Individuell fördern", "desc": "Jeder lernt anders – wir passen uns an Tempo und Ziele an." },
+      { "title": "Messbare Ergebnisse erzielen", "desc": "Bessere Noten, mehr Selbstvertrauen und Fähigkeiten über Prüfungen hinaus." }
+    ],
+    "principlesEyebrow": "WARUM NEXTGRADES?",
+    "principlesTitle": "Unsere Prinzipien für deinen Erfolg",
+    "principles": [
+      { "title": "Persönliche Betreuung", "desc": "Jeder Schüler ist einzigartig – wir passen uns individuellen Bedürfnissen an." },
+      { "title": "Erfahrene Lehrkräfte", "desc": "Qualifizierte Pädagogen mit Leidenschaft und nachweisbarer Expertise." },
+      { "title": "Moderne Methoden", "desc": "Bewährte Pädagogik kombiniert mit digitalen Tools für effizientes Lernen." },
+      { "title": "Echte Ergebnisse", "desc": "Fokus auf messbaren Fortschritt – bessere Noten und dauerhaftes Selbstvertrauen." },
+      { "title": "Leidenschaft für Bildung", "desc": "Wir lieben, was wir tun, und investieren Herzblut in jeden Erfolg." }
+    ],
+    "promiseEyebrow": "UNSER VERSPRECHEN",
+    "promiseTitle": "Wir geben immer unser Bestes – für deinen Erfolg.",
+    "promiseItems": [
+      "Hochwertige Lernmaterialien von erfahrenen Lehrkräften",
+      "Sorgfältig ausgewählte, qualifizierte Tutor:innen",
+      "Moderne, erprobte Lernmethoden",
+      "Individuelle Betreuung für jeden Schüler",
+      "Transparente Kommunikation mit Schüler:innen und Eltern"
+    ],
+    "statsEyebrow": "UNSER ZIEL",
+    "statsTitle": "Eine neue Generation des Lernens",
+    "stats": [
+      { "value": "200+", "label": "glückliche Schüler:innen" },
+      { "value": "25+", "label": "erfahrene Lehrkräfte" },
+      { "value": "95%", "label": "verbesserte Noten" },
+      { "value": "100%", "label": "Leidenschaft & Engagement" }
+    ],
+    "teamEyebrow": "UNSER TEAM",
+    "teamSubtitle": "Ein Team aus leidenschaftlichen Lehrkräften, Lernexpert:innen und Visionär:innen.",
     "team": [
-      {
-        "name": "Adrian H.",
-        "role": "Gründer & CEO",
-        "bio": "Lernwissenschaft & Bildung"
-      },
-      {
-        "name": "Lea Maria",
-        "role": "Leitung Pädagogik",
-        "bio": "Expertin für Lernmethoden"
-      },
-      {
-        "name": "David K.",
-        "role": "Leitung Online-Nachhilfe",
-        "bio": "Digitales Lernen & EdTech"
-      }
+      { "name": "Adrian H.", "role": "Gründer & CEO", "bio": "Lernwissenschaft & Bildungsstrategie" },
+      { "name": "Lea Maria", "role": "Leitung Pädagogik", "bio": "Expertin für moderne Lernmethoden" },
+      { "name": "David K.", "role": "Leitung Online-Nachhilfe", "bio": "Digitales Lernen & EdTech" },
+      { "name": "Sarah M.", "role": "Lead Mathe-Tutorin", "bio": "Mathematik & Prüfungsvorbereitung" },
+      { "name": "Tom R.", "role": "Content Director", "bio": "Curriculum-Design & Materialien" }
+    ],
+    "milestonesEyebrow": "UNSER WEG",
+    "milestones": [
+      { "year": "2021", "title": "Der Anfang", "desc": "NextGrades als Leidenschaftsprojekt gegründet." },
+      { "year": "2022", "title": "Erste 100 Schüler:innen", "desc": "Erster Meilenstein mit überwältigend positivem Feedback." },
+      { "year": "2023", "title": "Digitale Plattform", "desc": "Launch der Online-Lernplattform mit Premium-Materialien." },
+      { "year": "2024", "title": "200+ Schüler:innen", "desc": "Wachsende Community und erweiterte Fachangebote." },
+      { "year": "2025", "title": "KI & Innovation", "desc": "KI-gestützte Tools für personalisierte Lernpfade." }
     ],
     "communityTitle": "Werde Teil der NextGrades Community",
-    "communityDesc": "Starte mit deinen Zielen, Lernerfahrungen und deinem Wachstum – gemeinsam schaffen wir etwas Besonderes.",
+    "communityDesc": "Starte deine Reise zu besseren Noten, mehr Selbstvertrauen und echtem Lernerfolg.",
     "communityCta": "Kostenloses Erstgespräch buchen",
     "communityTags": [
       "Unverbindlich",
@@ -459,12 +492,21 @@
     ]
   },
   "pricingPage": {
+    "plansEyebrow": "WÄHLE DEIN PAKET",
+    "plansTitle": "Investiere in deine Zukunft — wähle die passende Unterstützung",
+    "stats": [
+      { "value": "200+", "label": "aktive Schüler:innen" },
+      { "value": "4,9/5", "label": "Durchschnittsbewertung" },
+      { "value": "95%", "label": "Notenverbesserung" },
+      { "value": "100%", "label": "online & flexibel" }
+    ],
     "trustedTitle": "Vertraut von 200+ Schüler:innen",
     "trustedDesc": "Durchschnittlich 4,9/5 von echten Schüler:innen und Eltern",
     "loading": "Laden...",
-    "finalCtaTitle": "Unsicher, welches Paket das Richtige ist?",
-    "finalCtaDesc": "Buche ein kostenloses Erstgespräch – wir finden gemeinsam die perfekte Lösung!",
+    "finalCtaTitle": "Gemeinsam erreichen wir Großes",
+    "finalCtaDesc": "Unsicher, welches Paket passt? Buche ein kostenloses Erstgespräch — unverbindlich.",
     "finalCtaButton": "Kostenloses Erstgespräch buchen",
+    "finalCtaTags": ["Unverbindlich", "Kostenlos", "Individuelle Beratung"],
     "plans": [
       {
         "id": "resource",
@@ -623,6 +665,9 @@
       },
       {
         "label": "Analysen"
+      },
+      {
+        "label": "Zoom"
       }
     ],
     "logout": "Abmelden",
@@ -809,6 +854,18 @@
   },
   "studentDashboard": {
     "overviewTitle": "Übersicht",
+    "nav": {
+      "overview": "Übersicht",
+      "appointments": "Meine Termine",
+      "liveClasses": "Live-Klassen",
+      "courses": "Meine Kurse",
+      "materials": "Materialien",
+      "tasks": "Aufgaben",
+      "progress": "Fortschritt",
+      "messages": "Nachrichten",
+      "settings": "Einstellungen"
+    },
+    "welcomeSubtitleMock": "Schön, dass du weiter an deinen Zielen arbeitest.",
     "welcomeBack": "Willkommen zurück, {{name}}!",
     "welcomeSubtitle": "Dein Lernzentrum — Fortschritt verfolgen, Unterricht besuchen und smarter lernen.",
     "signInRequired": "Bitte melde dich an, um dein Dashboard zu sehen.",
@@ -873,7 +930,11 @@
     "recentMaterials": "Neueste Materialien",
     "allMaterials": "Alle Materialien",
     "sidebarHello": "Hallo, {{name}}!",
-    "sidebarRole": "Schüler:in"
+    "sidebarRole": "Schüler:in",
+    "liveClasses": "Live-Klassen",
+    "liveClassesDesc": "Nimm mit einem Klick an deinen Live-Unterrichtsstunden teil.",
+    "noLiveClasses": "Keine bevorstehenden Live-Klassen geplant.",
+    "joinClass": "Klasse beitreten"
   },
   "teacherDashboard": {
     "overviewTitle": "Lehrer-Dashboard",
@@ -894,7 +955,7 @@
       "calendar": "Kalender",
       "payments": "Zahlungen",
       "nextJumpBonus": "Next Jump Bonus",
-      "messages": "Nachrichten",
+      "messages": "NextGrades AI",
       "schedule": "Stundenplan",
       "myMaterials": "Meine Materialien",
       "publish": "Neu veröffentlichen",
@@ -981,7 +1042,7 @@
     "netLabel": "Netto",
     "colDuration": "Dauer",
     "addNewStudent": "+ Neuen Schüler hinzufügen",
-    "messagesTitle": "Nachrichten",
+    "messagesTitle": "NextGrades AI",
     "studentsSubtitle": "Verwalte deine Schüler, Termine und Fortschritt.",
     "export": "Exportieren",
     "searchStudents": "Schüler suchen…",
@@ -1071,6 +1132,62 @@
     "loading": "Laden...",
     "errorGeneric": "Etwas ist schiefgelaufen. Bitte versuche es erneut."
   },
+  "zoom": {
+    "connectTitle": "Zoom-Integration",
+    "connectDesc": "Verbinde dein Zoom-Konto, um Live-Klassen und Einzelstunden zu planen.",
+    "connect": "Zoom verbinden",
+    "reconnect": "Zoom erneut verbinden",
+    "disconnect": "Trennen",
+    "connectedSuccess": "Zoom-Konto erfolgreich verbunden!",
+    "connectedError": "Zoom-Verbindung fehlgeschlagen. Bitte erneut versuchen.",
+    "disconnected": "Zoom-Konto getrennt",
+    "disconnectError": "Zoom konnte nicht getrennt werden",
+    "notConfigured": "Zoom OAuth ist auf dem Server nicht konfiguriert.",
+    "statusConnected": "Verbunden",
+    "statusDisconnected": "Nicht verbunden",
+    "tokenExpired": "Sitzung abgelaufen — erneut verbinden.",
+    "connectedSince": "Verbunden seit {{date}}",
+    "createLiveClass": "Live-Klasse erstellen",
+    "classCreated": "Live-Klasse erstellt und Schüler benachrichtigt!",
+    "meetingTitle": "Titel",
+    "description": "Beschreibung",
+    "meetingType": "Meeting-Typ",
+    "timezone": "Zeitzone",
+    "date": "Datum",
+    "startTime": "Startzeit",
+    "duration": "Dauer (Minuten)",
+    "subject": "Fach",
+    "student": "Schüler:in",
+    "studentOptional": "Schüler:in (optional)",
+    "selectSubject": "Fach wählen",
+    "selectStudent": "Schüler:in wählen",
+    "types": {
+      "live_class": "Live-Klasse",
+      "webinar": "Webinar",
+      "private_session": "Einzelstunde",
+      "group_session": "Gruppensitzung"
+    },
+    "scheduleDesc": "Live-Klassen planen und Zoom-Meetings verwalten.",
+    "scheduledMeetings": "Geplante Meetings",
+    "noMeetings": "Keine bevorstehenden Zoom-Meetings.",
+    "liveClass": "Live-Klasse",
+    "startMeeting": "Starten",
+    "confirmDelete": "Dieses Meeting absagen?",
+    "deleteFailed": "Meeting konnte nicht abgesagt werden",
+    "deleted": "Meeting abgesagt",
+    "connectHint": "Zoom verbinden unter",
+    "joinLink": "Beitrittslink",
+    "admin": {
+      "title": "Zoom-Übersicht",
+      "connectedTeachers": "Verbundene Lehrkräfte",
+      "totalMeetings": "Zoom-Meetings gesamt",
+      "upcomingMeetings": "Bevorstehende Meetings",
+      "activeMeetings": "Gerade aktiv",
+      "upcomingList": "Bevorstehende Meetings",
+      "connections": "Verbundene Zoom-Konten",
+      "noConnections": "Noch keine Lehrkräfte verbunden"
+    }
+  },
   "notifications": {
     "title": "Benachrichtigungen",
     "bell": "Benachrichtigungen",
@@ -1085,6 +1202,10 @@
     "unreadCount": "{{count}} ungelesen",
     "managePrefs": "Benachrichtigungseinstellungen verwalten",
     "pushDenied": "Push-Benachrichtigungen wurden nicht aktiviert.",
+    "unreadOnly": "Nur ungelesen",
+    "noUnread": "Keine ungelesenen Benachrichtigungen",
+    "showAll": "Alle anzeigen",
+    "allCaughtUp": "Alles erledigt",
     "prefs": {
       "push": "Push-Benachrichtigungen",
       "pushDesc": "Browser-Hinweise, wenn du unterwegs bist",
@@ -1092,7 +1213,9 @@
       "soundDesc": "Dezenter Ton bei neuen Hinweisen",
       "email": "E-Mail-Benachrichtigungen",
       "emailDesc": "Wichtige Updates per E-Mail erhalten",
-      "categories": "Kategorien"
+      "delivery": "So wirst du benachrichtigt",
+      "emailTopics": "E-Mail-Themen",
+      "categories": "In-App-Kategorien"
     },
     "admin": {
       "title": "Benachrichtigungszentrale",

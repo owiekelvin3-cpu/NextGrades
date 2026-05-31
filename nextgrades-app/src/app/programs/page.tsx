@@ -19,13 +19,10 @@ import {
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useLocalizedContent } from "@/hooks/useLocalizedContent";
+import { useCmsImages } from "@/hooks/useCmsImage";
 import { useTheme } from "@/context/ThemeContext";
-
-const programImages = [
-  "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=600&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=600&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&h=400&fit=crop",
-];
+import { PROGRAMS_HERO_IMAGE, PROGRAMS_PAGE_CARD_IMAGES } from "@/lib/marketing-images";
+import { MarketingImage } from "@/components/marketing/MarketingImage";
 
 const statIcons = [GraduationCap, Users, Star];
 const heroFeatureIcons = [Award, Zap, Clock];
@@ -55,6 +52,11 @@ function CompareCell({ value }: { value: string | boolean }) {
 export default function ProgramsPage() {
   const { theme } = useTheme();
   const { t } = useTranslation();
+  const { getImage } = useCmsImages();
+  const programsHeroImage = getImage("cmsImages.programs.hero", PROGRAMS_HERO_IMAGE);
+  const programCardImages = PROGRAMS_PAGE_CARD_IMAGES.map((url, i) =>
+    getImage(`cmsImages.programs.card.${i}`, url)
+  );
   const heroFeatures = useLocalizedContent<{ title: string; desc: string }[]>("programsPage.heroFeatures");
   const stats = useLocalizedContent<{ number: string; label: string }[]>("programsPage.stats");
   const programs = useLocalizedContent<ProgramItem[]>("programsPage.items");
@@ -145,10 +147,12 @@ export default function ProgramsPage() {
                 transition={{ duration: 0.8, delay: 0.2 }}
               >
                 <div className="rounded-2xl h-[450px] overflow-hidden">
-                  <img
-                    src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800&h=600&fit=crop"
+                  <MarketingImage
+                    src={programsHeroImage}
                     alt={t("images.studentStudying")}
-                    className="w-full h-full object-cover"
+                    containerClassName="h-full w-full"
+                    priority
+                    sizes="(max-width: 1024px) 100vw, 50vw"
                   />
                 </div>
               </motion.div>
@@ -241,10 +245,12 @@ export default function ProgramsPage() {
                       <Badge className="absolute top-4 left-4 z-10 bg-[#0D1B2A] text-white px-3 py-1 text-xs">
                         {program.type}
                       </Badge>
-                      <img
-                        src={programImages[index]}
+                      <MarketingImage
+                        src={programCardImages[index]}
                         alt={program.title}
-                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                        containerClassName="h-full w-full"
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                        className="hover:scale-105 transition-transform duration-500"
                       />
                     </div>
                     <div className="p-6 flex flex-col flex-1">

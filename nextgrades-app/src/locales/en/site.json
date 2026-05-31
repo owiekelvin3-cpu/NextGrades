@@ -10,25 +10,82 @@
     "germanyFlag": "Germany flag"
   },
   "aboutPage": {
-    "introEyebrow": "NextGrades Challenge",
-    "introTitle": "Discover NextGrades – Where Innovation Meets Education",
-    "introDesc": "NextGrades: Transforming education with innovative designs. Explore our story of craftsmanship and style, creating tutoring that inspires and enhances modern learning.",
-    "journeyTitle": "The NextGrades Journey Story",
-    "journeySubtitle": "From humble beginnings to excellence in education.",
-    "story": [
-      { "title": "From Humble Beginnings", "desc": "Our journey began in 2021 as a passion project born from firsthand frustration with traditional tutoring methods. What started as helping a few friends has grown into a platform trusted by thousands." },
-      { "title": "Innovation and Growth", "desc": "Innovation has always been at the heart of our journey. In 2023, we introduced our revolutionary digital learning platform, combining live tutoring with structured, results-driven content." },
-      { "title": "Our Global Reach", "desc": "Today, NextGrades serves students across Germany and beyond. We've helped over 10,000 students improve their grades and build confidence through our modern approach to learning." },
-      { "title": "Looking Ahead", "desc": "Looking forward, our goal is to continue revolutionizing education. We're working on integrating AI-powered personalized learning paths and expanding our subject offerings." }
+    "breadcrumb": "Home > About Us",
+    "heroEyebrow": "ABOUT NEXTGRADES",
+    "heroQuote": "Education is not the filling of a bucket, but the lighting of a fire.",
+    "heroQuoteAuthor": "William Butler Yeats",
+    "heroPillars": [
+      { "title": "Mission", "desc": "Make learning understandable, motivating, and accessible for every student." },
+      { "title": "Vision", "desc": "A new generation of learning — modern, structured, and results-driven." },
+      { "title": "Values", "desc": "Quality, empathy, and real progress for every learner." }
     ],
-    "teamTitle": "Our Awesome Team",
+    "heroFeatures": [
+      { "title": "More than tutoring", "desc": "Holistic learning support." },
+      { "title": "Real results", "desc": "Measurable progress & confidence." },
+      { "title": "Individual support", "desc": "Tailored to every student." },
+      { "title": "Shaping the future", "desc": "Skills for tomorrow." }
+    ],
+    "storyEyebrow": "OUR STORY",
+    "storyTitle": "How it all began",
+    "storyParagraphs": [
+      "NextGrades started in 2021 as a passion project — born from frustration with outdated tutoring methods and a belief that every student deserves better.",
+      "What began as helping a few friends quickly grew into a platform trusted by hundreds of students across Germany. We combine live tutoring with structured digital content.",
+      "Today we are building the learning experience we always wished existed: personal, professional, and designed for real life."
+    ],
+    "storyCta": "Learn more about our mission",
+    "missionEyebrow": "OUR MISSION IN DETAIL",
+    "missionTitle": "What we work for every day",
+    "missionCards": [
+      { "title": "Make knowledge understandable", "desc": "Complex topics broken down clearly — so students truly grasp the material." },
+      { "title": "Provide high-quality materials", "desc": "Premium worksheets, videos, and guides created by experienced teachers." },
+      { "title": "Support individually", "desc": "Every student learns differently — we adapt to their pace and goals." },
+      { "title": "Achieve measurable results", "desc": "Better grades, more confidence, and skills that last beyond exams." }
+    ],
+    "principlesEyebrow": "WHY NEXTGRADES?",
+    "principlesTitle": "Our principles for your success",
+    "principles": [
+      { "title": "Personal approach", "desc": "Every student is unique — we tailor our support to individual needs and learning styles." },
+      { "title": "Experienced teachers", "desc": "Our team consists of qualified educators with passion and proven expertise." },
+      { "title": "Modern methods", "desc": "We combine proven pedagogy with digital tools for efficient, engaging learning." },
+      { "title": "Real results", "desc": "Our focus is on measurable progress — better grades and lasting confidence." },
+      { "title": "Passion for education", "desc": "We love what we do and invest heart and soul into every student's success." }
+    ],
+    "promiseEyebrow": "OUR PROMISE",
+    "promiseTitle": "We always give our best — for your success.",
+    "promiseItems": [
+      "High-quality learning materials created by experienced teachers",
+      "Carefully selected, qualified tutors",
+      "Modern, proven learning methods",
+      "Individual support tailored to each student",
+      "Transparent communication with students and parents"
+    ],
+    "statsEyebrow": "OUR GOAL",
+    "statsTitle": "A new generation of learning",
+    "stats": [
+      { "value": "200+", "label": "happy students" },
+      { "value": "25+", "label": "experienced teachers" },
+      { "value": "95%", "label": "improved grades" },
+      { "value": "100%", "label": "passion & commitment" }
+    ],
+    "teamEyebrow": "OUR TEAM",
+    "teamSubtitle": "A team of passionate teachers, learning experts, and visionaries.",
     "team": [
-      { "name": "Adrian H.", "role": "Founder & CEO", "bio": "Learning science & education" },
-      { "name": "Lea Maria", "role": "Head of Pedagogy", "bio": "Expert in learning methods" },
-      { "name": "David K.", "role": "Head of Online Tutoring", "bio": "Digital learning & EdTech" }
+      { "name": "Adrian H.", "role": "Founder & CEO", "bio": "Learning science & education strategy" },
+      { "name": "Lea Maria", "role": "Head of Pedagogy", "bio": "Expert in modern learning methods" },
+      { "name": "David K.", "role": "Head of Online Tutoring", "bio": "Digital learning & EdTech" },
+      { "name": "Sarah M.", "role": "Lead Math Tutor", "bio": "Mathematics & exam preparation" },
+      { "name": "Tom R.", "role": "Content Director", "bio": "Curriculum design & materials" }
     ],
-    "communityTitle": "Join the NextGrades Community",
-    "communityDesc": "Get started with your goals, learning experiences, and growth – together we create something special.",
+    "milestonesEyebrow": "OUR JOURNEY",
+    "milestones": [
+      { "year": "2021", "title": "The beginning", "desc": "NextGrades founded as a passion project to revolutionize tutoring." },
+      { "year": "2022", "title": "First 100 students", "desc": "Reached our first milestone with overwhelmingly positive feedback." },
+      { "year": "2023", "title": "Digital platform", "desc": "Launched our online learning platform with premium materials." },
+      { "year": "2024", "title": "200+ students", "desc": "Growing community and expanded subject offerings." },
+      { "year": "2025", "title": "AI & innovation", "desc": "Integrating AI-powered tools for personalized learning paths." }
+    ],
+    "communityTitle": "Become part of the NextGrades community",
+    "communityDesc": "Start your journey toward better grades, more confidence, and real learning success.",
     "communityCta": "Book free consultation",
     "communityTags": ["No obligation", "Free", "Individual consultation"]
   },
@@ -152,12 +209,21 @@
     "semestersFilter": ["All semesters", "Semester 1", "Semester 2"]
   },
   "pricingPage": {
+    "plansEyebrow": "CHOOSE YOUR PLAN",
+    "plansTitle": "Invest in your future — pick the support that fits you",
+    "stats": [
+      { "value": "200+", "label": "active students" },
+      { "value": "4.9/5", "label": "average rating" },
+      { "value": "95%", "label": "grade improvement" },
+      { "value": "100%", "label": "online & flexible" }
+    ],
     "trustedTitle": "Trusted by 200+ students",
     "trustedDesc": "4.9/5 average rating from real students and parents",
     "loading": "Loading...",
-    "finalCtaTitle": "Not sure which plan is right for you?",
-    "finalCtaDesc": "Book a free consultation and we'll find the perfect solution together!",
+    "finalCtaTitle": "Together we achieve great things",
+    "finalCtaDesc": "Not sure which plan fits? Book a free consultation — no obligation.",
     "finalCtaButton": "Book free consultation",
+    "finalCtaTags": ["No obligation", "Free", "Individual consultation"],
     "plans": [
       {
         "id": "resource",
@@ -247,7 +313,8 @@
       { "label": "Payments" },
       { "label": "Resources" },
       { "label": "AI Chatbot" },
-      { "label": "Analytics" }
+      { "label": "Analytics" },
+      { "label": "Zoom" }
     ],
     "logout": "Log out",
     "backToSite": "Back to website"
@@ -366,6 +433,18 @@
   },
   "studentDashboard": {
     "overviewTitle": "Overview",
+    "nav": {
+      "overview": "Overview",
+      "appointments": "My appointments",
+      "liveClasses": "Live classes",
+      "courses": "My courses",
+      "materials": "Materials",
+      "tasks": "Tasks",
+      "progress": "Progress",
+      "messages": "Messages",
+      "settings": "Settings"
+    },
+    "welcomeSubtitleMock": "Great to see you keep working toward your goals.",
     "welcomeBack": "Welcome back, {{name}}!",
     "welcomeSubtitle": "Your learning hub — track progress, join lessons, and study smarter.",
     "signInRequired": "Please sign in to view your dashboard.",
@@ -430,7 +509,11 @@
     "recentMaterials": "Recent materials",
     "allMaterials": "All materials",
     "sidebarHello": "Hi, {{name}}!",
-    "sidebarRole": "Student"
+    "sidebarRole": "Student",
+    "liveClasses": "Live classes",
+    "liveClassesDesc": "Join your upcoming live classes with one click.",
+    "noLiveClasses": "No upcoming live classes scheduled.",
+    "joinClass": "Join class"
   },
   "teacherDashboard": {
     "overviewTitle": "Teacher dashboard",
@@ -451,7 +534,7 @@
       "calendar": "Calendar",
       "payments": "Payments",
       "nextJumpBonus": "Next Jump Bonus",
-      "messages": "Messages",
+      "messages": "NextGrades AI",
       "schedule": "Schedule",
       "myMaterials": "My materials",
       "publish": "Publish new",
@@ -538,7 +621,7 @@
     "netLabel": "Net",
     "colDuration": "Duration",
     "addNewStudent": "+ Add new student",
-    "messagesTitle": "Messages",
+    "messagesTitle": "NextGrades AI",
     "studentsSubtitle": "Manage your students, appointments, and progress.",
     "export": "Export",
     "searchStudents": "Search students…",
@@ -629,6 +712,62 @@
     "loading": "Loading...",
     "errorGeneric": "Something went wrong. Please try again."
   },
+  "zoom": {
+    "connectTitle": "Zoom integration",
+    "connectDesc": "Connect your Zoom account to schedule live classes and private sessions.",
+    "connect": "Connect Zoom",
+    "reconnect": "Reconnect Zoom",
+    "disconnect": "Disconnect",
+    "connectedSuccess": "Zoom account connected successfully!",
+    "connectedError": "Zoom connection failed. Please try again.",
+    "disconnected": "Zoom account disconnected",
+    "disconnectError": "Could not disconnect Zoom",
+    "notConfigured": "Zoom OAuth is not configured on the server.",
+    "statusConnected": "Connected",
+    "statusDisconnected": "Not connected",
+    "tokenExpired": "Session expired — reconnect to continue scheduling.",
+    "connectedSince": "Connected since {{date}}",
+    "createLiveClass": "Create live class",
+    "classCreated": "Live class created and students notified!",
+    "meetingTitle": "Meeting title",
+    "description": "Description",
+    "meetingType": "Meeting type",
+    "timezone": "Time zone",
+    "date": "Date",
+    "startTime": "Start time",
+    "duration": "Duration (minutes)",
+    "subject": "Subject",
+    "student": "Student",
+    "studentOptional": "Student (optional)",
+    "selectSubject": "Select subject",
+    "selectStudent": "Select student",
+    "types": {
+      "live_class": "Live class",
+      "webinar": "Webinar",
+      "private_session": "Private session",
+      "group_session": "Group session"
+    },
+    "scheduleDesc": "Schedule live classes and manage Zoom meetings.",
+    "scheduledMeetings": "Scheduled meetings",
+    "noMeetings": "No upcoming Zoom meetings.",
+    "liveClass": "Live class",
+    "startMeeting": "Start",
+    "confirmDelete": "Cancel this meeting?",
+    "deleteFailed": "Could not cancel meeting",
+    "deleted": "Meeting cancelled",
+    "connectHint": "Connect Zoom in",
+    "joinLink": "Join link",
+    "admin": {
+      "title": "Zoom overview",
+      "connectedTeachers": "Connected teachers",
+      "totalMeetings": "Total Zoom meetings",
+      "upcomingMeetings": "Upcoming meetings",
+      "activeMeetings": "Active now",
+      "upcomingList": "Upcoming meetings",
+      "connections": "Connected Zoom accounts",
+      "noConnections": "No teachers connected yet"
+    }
+  },
   "notifications": {
     "title": "Notifications",
     "bell": "Notifications",
@@ -643,6 +782,10 @@
     "unreadCount": "{{count}} unread",
     "managePrefs": "Manage notification preferences",
     "pushDenied": "Push notifications were not enabled.",
+    "unreadOnly": "Unread only",
+    "noUnread": "No unread notifications",
+    "showAll": "Show all",
+    "allCaughtUp": "You're all caught up",
     "prefs": {
       "push": "Push notifications",
       "pushDesc": "Browser alerts when you're away",
@@ -650,7 +793,9 @@
       "soundDesc": "Play a subtle sound for new alerts",
       "email": "Email notifications",
       "emailDesc": "Receive important updates by email",
-      "categories": "Categories"
+      "delivery": "How you're notified",
+      "emailTopics": "Email topics",
+      "categories": "In-app categories"
     },
     "admin": {
       "title": "Notification center",

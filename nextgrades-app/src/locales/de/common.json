@@ -309,6 +309,13 @@
       "accessPremium": "Premium-Inhalte",
       "reset": "Filter zurücksetzen"
     },
+    "video": {
+      "back": "Zurück zu Ressourcen",
+      "watch": "Ansehen",
+      "notFound": "Video nicht gefunden.",
+      "loadFailed": "Video konnte nicht geladen werden.",
+      "lockedDesc": "Upgrade deine Mitgliedschaft, um dieses Video auf NextGrades anzusehen."
+    },
     "freeButton": "Kostenlos"
   },
   "dashboard": {
@@ -398,14 +405,213 @@
     "bookNow": "Jetzt Termin buchen"
   },
   "privacy": {
-    "title": "Datenschutz",
-    "subtitle": "Wie wir deine Daten schützen",
-    "body": "Hier findest du unsere Datenschutzerklärung."
+    "title": "Datenschutzerklärung",
+    "subtitle": "Wie wir deine personenbezogenen Daten erheben, nutzen und schützen",
+    "eyebrow": "Rechtliches",
+    "lastUpdated": "Zuletzt aktualisiert: Mai 2026",
+    "intro": "NextGrades nimmt den Schutz deiner personenbezogenen Daten ernst. Diese Datenschutzerklärung erläutert, welche Informationen wir bei der Nutzung unserer Website und Lernplattform erheben, warum wir sie verarbeiten und welche Rechte du nach der Datenschutz-Grundverordnung (DSGVO) hast.",
+    "contactTitle": "Fragen zu deinen Daten?",
+    "contactNote": "Bei Fragen zu dieser Erklärung oder zur Ausübung deiner Rechte erreichst du uns unter support@nextgrades.de.",
+    "contactCta": "Kontakt aufnehmen",
+    "sections": [
+      {
+        "title": "Verantwortlicher",
+        "paragraphs": [
+          "Verantwortlich für die Datenverarbeitung auf dieser Website ist NextGrades. Datenschutzanfragen richtest du bitte an support@nextgrades.de oder über unsere Kontaktseite."
+        ]
+      },
+      {
+        "title": "Welche Daten wir erheben",
+        "paragraphs": [
+          "Wir erheben nur Daten, die zur Bereitstellung unserer Leistungen, zur Verbesserung deiner Nutzererfahrung und zur Erfüllung gesetzlicher Pflichten erforderlich sind. Je nach Nutzung können dies sein:"
+        ],
+        "bullets": [
+          "Kontodaten wie Name, E-Mail-Adresse und Rolle (Schüler:in, Lehrkraft oder Admin)",
+          "Profilangaben, die du freiwillig hinterlegst, z. B. Avatar, Bio und Lernpräferenzen",
+          "Buchungs- und Beratungsinformationen wie Klassenstufe, Fächer und Lernziele",
+          "Zahlungsbezogene Daten über unseren Zahlungsdienstleister (keine vollständigen Kartennummern)",
+          "Nutzungsdaten wie besuchte Seiten, aufgerufene Materialien und Quiz-Aktivitäten",
+          "Technische Daten wie IP-Adresse, Browsertyp, Geräteinformationen und Cookies"
+        ]
+      },
+      {
+        "title": "Wofür wir deine Daten nutzen",
+        "paragraphs": [
+          "Wir verwenden deine personenbezogenen Daten, um die NextGrades-Plattform zu betreiben, Nachhilfe und Lernmaterialien bereitzustellen, Buchungen und Zahlungen abzuwickeln, mit dir über dein Konto zu kommunizieren und unsere Website sowie Services zu verbessern.",
+          "Service-E-Mails (z. B. Kontobestätigung, Passwort-Reset, Buchungsbestätigungen) senden wir im Rahmen der Vertragserfüllung. Marketing-Nachrichten nur mit deiner Einwilligung oder soweit gesetzlich zulässig."
+        ]
+      },
+      {
+        "title": "Rechtsgrundlagen der Verarbeitung",
+        "paragraphs": [
+          "Wir verarbeiten personenbezogene Daten auf folgenden Rechtsgrundlagen der DSGVO:"
+        ],
+        "bullets": [
+          "Vertragserfüllung — zur Erbringung der von dir gebuchten Leistungen",
+          "Berechtigte Interessen — zur Absicherung der Plattform, Betrugsprävention und Serviceverbesserung",
+          "Einwilligung — für optionale Funktionen wie Marketing-E-Mails oder nicht notwendige Cookies",
+          "Rechtliche Verpflichtung — wenn wir Daten aufbewahren oder offenlegen müssen"
+        ]
+      },
+      {
+        "title": "Cookies und Analyse",
+        "paragraphs": [
+          "Unsere Website verwendet Cookies und ähnliche Technologien, um dich angemeldet zu halten, Einstellungen (Sprache, Design) zu speichern und die Nutzung der Seite zu verstehen.",
+          "Du kannst Cookies in deinen Browser-Einstellungen steuern. Das Deaktivieren essentieller Cookies kann einzelne Funktionen einschränken."
+        ]
+      },
+      {
+        "title": "Drittanbieter",
+        "paragraphs": [
+          "Wir arbeiten mit vertrauenswürdigen Dienstleistern, die Daten in unserem Auftrag verarbeiten, u. a. Hosting (Supabase), Zahlungsabwicklung (Stripe), E-Mail-Versand (Resend) und ggf. Videokonferenzen (Zoom).",
+          "Diese Anbieter sind vertraglich verpflichtet, deine Daten zu schützen und nur für NextGrades-Leistungen zu nutzen. Wir verkaufen deine personenbezogenen Daten nicht an Dritte."
+        ]
+      },
+      {
+        "title": "Speicherdauer",
+        "paragraphs": [
+          "Wir speichern personenbezogene Daten nur so lange, wie es für die in dieser Erklärung genannten Zwecke oder gesetzliche Vorgaben erforderlich ist. Anschließend löschen oder anonymisieren wir sie sicher.",
+          "Kontodaten werden in der Regel für die Dauer deines Kontos und eine angemessene Zeit danach aufbewahrt, um Streitigkeiten, Ansprüche oder gesetzliche Pflichten zu erfüllen."
+        ]
+      },
+      {
+        "title": "Deine Rechte",
+        "paragraphs": [
+          "Nach der DSGVO hast du folgende Rechte in Bezug auf deine personenbezogenen Daten:"
+        ],
+        "bullets": [
+          "Auskunft — eine Kopie der über dich gespeicherten Daten anfordern",
+          "Berichtigung — unrichtige oder unvollständige Daten korrigieren lassen",
+          "Löschung — Löschung deiner Daten verlangen, soweit anwendbar",
+          "Einschränkung — die Verarbeitung in bestimmten Fällen einschränken lassen",
+          "Datenübertragbarkeit — deine Daten in einem strukturierten Format erhalten",
+          "Widerspruch — gegen Verarbeitung auf Basis berechtigter Interessen widersprechen",
+          "Widerruf der Einwilligung — soweit die Verarbeitung auf Einwilligung beruht",
+          "Beschwerde bei einer Aufsichtsbehörde"
+        ]
+      },
+      {
+        "title": "Sicherheit",
+        "paragraphs": [
+          "Wir setzen angemessene technische und organisatorische Maßnahmen ein, um deine Daten vor unbefugtem Zugriff, Verlust oder Missbrauch zu schützen — u. a. verschlüsselte Verbindungen (HTTPS), Zugriffskontrollen und sichere Authentifizierung.",
+          "Eine vollständige Sicherheit bei der Übertragung im Internet ist nicht möglich. Bitte verwende ein starkes Passwort und behandle deine Zugangsdaten vertraulich."
+        ]
+      },
+      {
+        "title": "Kinder und Minderjährige",
+        "paragraphs": [
+          "NextGrades richtet sich auch an Schüler:innen unter 18 Jahren. Wo erforderlich, empfehlen wir die Beteiligung eines Erziehungsberechtigten bei Registrierung und Beratung.",
+          "Wir erheben wissentlich keine personenbezogenen Daten von Kindern ohne die nach geltendem Recht erforderliche Einwilligung."
+        ]
+      },
+      {
+        "title": "Änderungen dieser Erklärung",
+        "paragraphs": [
+          "Wir können diese Datenschutzerklärung anpassen, wenn sich unsere Leistungen oder gesetzliche Anforderungen ändern. Das Datum oben auf dieser Seite zeigt die letzte Überarbeitung. Bitte prüfe diese Seite regelmäßig."
+        ]
+      }
+    ]
   },
   "terms": {
-    "title": "AGB",
-    "subtitle": "Unsere Allgemeinen Geschäftsbedingungen",
-    "body": "Hier findest du unsere Allgemeinen Geschäftsbedingungen."
+    "title": "Allgemeine Geschäftsbedingungen",
+    "subtitle": "AGB für die Nutzung von NextGrades",
+    "eyebrow": "Rechtliches",
+    "lastUpdated": "Zuletzt aktualisiert: Mai 2026",
+    "intro": "Diese Allgemeinen Geschäftsbedingungen regeln die Nutzung der NextGrades-Website und Lernplattform. Mit der Kontoerstellung, Buchung einer Beratung oder dem Kauf eines Programms akzeptierst du diese AGB. Bitte lies sie vor der Nutzung unserer Leistungen sorgfältig.",
+    "contactTitle": "Fragen zu den AGB?",
+    "contactNote": "Bei Unklarheiten hilft dir unser Team gerne unter support@nextgrades.de weiter.",
+    "contactCta": "Kontakt aufnehmen",
+    "sections": [
+      {
+        "title": "Geltungsbereich und Vertragspartner",
+        "paragraphs": [
+          "Diese AGB gelten für alle über die Website und Online-Plattform von NextGrades angebotenen Leistungen, einschließlich Nachhilfeprogramme, Lernmaterialien, Beratungen und zugehöriger digitaler Services.",
+          "Vertragspartner ist NextGrades. Auf der Plattform gelistete Tutor:innen und Lehrkräfte erbringen Leistungen im Rahmen der von NextGrades definierten Strukturen."
+        ]
+      },
+      {
+        "title": "Leistungsbeschreibung",
+        "paragraphs": [
+          "NextGrades bietet Online- und Hybrid-Nachhilfe, Bildungsressourcen, Fortschrittsverfolgung, KI-gestützte Lernwerkzeuge und Beratungsleistungen mit Fokus auf deutsches Schul- und Studiumsvorbereitung.",
+          "Der genaue Leistungsumfang richtet sich nach dem gewählten Programm oder Tarif. Beschreibungen, Preise und Funktionen sind auf unserer Website veröffentlicht und können aktualisiert werden."
+        ]
+      },
+      {
+        "title": "Registrierung und Nutzerkonten",
+        "paragraphs": [
+          "Für bestimmte Funktionen ist ein Konto mit wahrheitsgemäßen und vollständigen Angaben erforderlich. Du bist für die Sicherheit deiner Zugangsdaten und alle Aktivitäten unter deinem Konto verantwortlich.",
+          "Bei Verdacht auf unbefugten Zugriff informiere uns umgehend. NextGrades kann Konten sperren oder kündigen, die gegen diese AGB oder geltendes Recht verstoßen."
+        ],
+        "bullets": [
+          "Schüler:innen und Eltern können Lernleistungen registrieren",
+          "Lehrkräfte registrieren sich separat und unterliegen zusätzlichen Anforderungen",
+          "Kontozugang darf nicht an unbefugte Dritte weitergegeben werden"
+        ]
+      },
+      {
+        "title": "Buchungen, Programme und Zahlungen",
+        "paragraphs": [
+          "Beratungen, Nachhilfestunden und Programm-Abonnements werden über unsere Website oder nach Vereinbarung gebucht. Es gelten die zum Buchungszeitpunkt angezeigten Preise, sofern nicht schriftlich anders vereinbart.",
+          "Zahlungen werden sicher über unseren Zahlungsdienstleister abgewickelt. Mit dem Kauf autorisierst du die Belastung für die gewählte Leistung oder Abo-Periode.",
+          "Abonnements verlängern sich automatisch, sofern sie nicht vor dem Verlängerungsdatum gekündigt werden — wie im Checkout beschrieben."
+        ]
+      },
+      {
+        "title": "Stornierung und Erstattungen",
+        "paragraphs": [
+          "Eine kostenlose Beratung kannst du jederzeit vor dem Termin stornieren — per Kontakt oder über die Stornierungsoption in der Bestätigung.",
+          "Für kostenpflichtige Programme und Abos gelten die jeweils beim Kauf genannten Kündigungs- und Erstattungsbedingungen. Gebühren für bereits durchgeführte Stunden sind grundsätzlich nicht erstattungsfähig.",
+          "NextGrades kann Termine bei Ausfall der Lehrkraft oder technischen Problemen absagen oder verschieben. In diesem Fall bieten wir Ersatztermine oder angemessene Gutschriften an."
+        ]
+      },
+      {
+        "title": "Pflichten der Nutzer:innen",
+        "paragraphs": [
+          "Du verpflichtest dich, NextGrades rechtmäßig und respektvoll zu nutzen. Folgendes ist untersagt:"
+        ],
+        "bullets": [
+          "Weitergabe von Zugangsdaten oder urheberrechtlich geschützten Materialien ohne Erlaubnis",
+          "Belästigung von Lehrkräften, Mitarbeitenden oder anderen Nutzer:innen",
+          "Upload schädlicher, illegaler oder irreführender Inhalte",
+          "Störung oder Reverse Engineering der Plattform",
+          "Nutzung zu anderen als persönlichen Lernzwecken ohne Genehmigung"
+        ]
+      },
+      {
+        "title": "Geistiges Eigentum",
+        "paragraphs": [
+          "Alle Inhalte auf der NextGrades-Plattform — Texte, Videos, Quizze, Marken und Software — sind urheberrechtlich und durch andere Schutzrechte geschützt.",
+          "Du erhältst eine beschränkte, nicht übertragbare Lizenz zur Nutzung der Materialien für persönliche Lernzwecke. Eine Vervielfältigung, Weitergabe oder kommerzielle Nutzung ohne schriftliche Zustimmung ist untersagt."
+        ]
+      },
+      {
+        "title": "Verfügbarkeit und Haftung",
+        "paragraphs": [
+          "Wir bemühen uns um eine zuverlässige Plattform, können aber keine unterbrechungsfreie Verfügbarkeit garantieren. Wartung, Updates oder Ausfälle bei Drittanbietern können die Nutzung vorübergehend einschränken.",
+          "NextGrades haftet unbeschränkt bei Vorsatz und grober Fahrlässigkeit sowie bei Verletzung von Leben, Körper oder Gesundheit. Bei leichter Fahrlässigkeit haften wir nur bei Verletzung wesentlicher Vertragspflichten, begrenzt auf den vorhersehbaren typischen Schaden.",
+          "NextGrades garantiert keine bestimmten schulischen Ergebnisse wie Noten oder Zulassungen. Nachhilfe unterstützt das Lernen; Ergebnisse hängen auch von individuellem Einsatz und externen Faktoren ab."
+        ]
+      },
+      {
+        "title": "Datenschutz",
+        "paragraphs": [
+          "Die Verarbeitung personenbezogener Daten richtet sich nach unserer Datenschutzerklärung, die Bestandteil dieser AGB ist. Mit der Nutzung unserer Leistungen bestätigst du, die Datenschutzerklärung zur Kenntnis genommen zu haben."
+        ]
+      },
+      {
+        "title": "Änderungen der AGB",
+        "paragraphs": [
+          "Wir können diese AGB anpassen, wenn sich Leistungen oder Rechtslage ändern. Wesentliche Änderungen teilen wir per E-Mail oder Hinweis auf der Website mit. Die fortgesetzte Nutzung nach Inkrafttreten gilt als Zustimmung."
+        ]
+      },
+      {
+        "title": "Anwendbares Recht und Gerichtsstand",
+        "paragraphs": [
+          "Es gilt das Recht der Bundesrepublik Deutschland unter Ausschluss des UN-Kaufrechts (CISG).",
+          "Bist du Verbraucher:in in der EU, können zwingende Verbraucherschutzvorschriften deines Wohnsitzlandes gelten. Gerichtsstand ist — soweit gesetzlich zulässig — Deutschland."
+        ]
+      }
+    ]
   },
   "careersPage": {
     "title": "Karriere",
@@ -421,5 +627,18 @@
         "description": "Wir suchen engagierte Englisch-Nachhilfelehrer:innen."
       }
     ]
+  },
+  "mobileNav": {
+    "main": "Hauptnavigation",
+    "home": "Start",
+    "courses": "Kurse",
+    "liveClasses": "Live",
+    "ai": "KI",
+    "notifications": "Hinweise",
+    "settings": "Einstellungen",
+    "students": "Schüler",
+    "schedule": "Termine",
+    "users": "Nutzer",
+    "content": "Inhalt"
   }
 }

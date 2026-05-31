@@ -6,13 +6,16 @@ import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { useTheme } from "@/context/ThemeContext";
-import { contentTypeLabel, DEFAULT_THUMBNAIL, AGE_RANGES } from "@/lib/resources/constants";
+import { contentTypeLabel, AGE_RANGES } from "@/lib/resources/constants";
+import { getResourceThumbnail } from "@/lib/resources/images";
+import { isVideoResource, resourceWatchPath } from "@/lib/resources/video";
 import {
   Bookmark,
   BookmarkCheck,
   Clock,
   Download,
   Lock,
+  Play,
   User,
 } from "lucide-react";
 
@@ -75,10 +78,11 @@ export function ResourceLearningCard({
   const { theme } = useTheme();
   const access = resourceAccess(resource);
   const locked = resource.locked ?? (access === "premium" && resource.canAccess === false);
+  const isVideo = isVideoResource(resource);
   const text = theme === "dark" ? "text-white" : "text-[#0D1B2A]";
   const muted = theme === "dark" ? "text-gray-400" : "text-gray-600";
   const panel = theme === "dark" ? "bg-[#112240] border-white/10" : "bg-white border-gray-200";
-  const thumb = resource.thumbnail_url || DEFAULT_THUMBNAIL;
+  const thumb = getResourceThumbnail(resource);
   const summary = resource.short_description || resource.description || "—";
   const typeLabel = contentTypeLabel(resource.content_type || resource.type || "resource");
 
@@ -164,10 +168,17 @@ export function ResourceLearningCard({
         <div className="flex items-center justify-between mt-auto pt-2 border-t border-black/5 dark:border-white/10">
           <span className={`text-xs ${muted}`}>{resource.download_count ?? 0} downloads</span>
           {locked ? (
-            <Link href="/pricing" onClick={onView}>
+            <Link href="/resources/upgrade" onClick={onView}>
               <Button variant="gold" size="sm">
                 <Lock className="w-4 h-4 mr-1" />
                 {premiumCta}
+              </Button>
+            </Link>
+          ) : isVideo ? (
+            <Link href={resourceWatchPath(resource.id)} onClick={onView}>
+              <Button variant="gold" size="sm">
+                <Play className="w-4 h-4 mr-1" />
+                Watch
               </Button>
             </Link>
           ) : (

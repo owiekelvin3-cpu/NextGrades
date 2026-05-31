@@ -1,25 +1,32 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Menu, X, Sun, Moon, User as UserIcon, LogOut } from "lucide-react";
+import { Menu, X, User as UserIcon, LogOut } from "lucide-react";
 import { Button } from "./ui/Button";
 import { motion, AnimatePresence } from "framer-motion";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { BrandLogo } from "./BrandLogo";
+import { ThemeToggle } from "./ThemeToggle";
 import { useTheme } from "@/context/ThemeContext";
 import { useTranslation } from "react-i18next";
 import { supabase, isSupabaseEnvConfigured } from "@/lib/supabase/client";
-import type { Session, User } from "@supabase/supabase-js";
+import type { Session, User, AuthChangeEvent } from "@supabase/supabase-js";
+
+type NavProfile = {
+  full_name: string | null;
+  role: string;
+  avatar_url: string | null;
+};
 
 const navLinks = [
   { href: "/", key: "home" },
   { href: "/programs", key: "programs" },
   { href: "/subjects", key: "subjects" },
-  { href: "/pricing", key: "pricing" },
   { href: "/about", key: "about" },
   { href: "/resources", key: "resources" },
+  { href: "/pricing", key: "pricing" },
   { href: "/contact", key: "contact" },
 ];
 
@@ -30,15 +37,31 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [session, setSession] = useState<Session | null>(null);
   const [user, setUser] = useState<User | null>(null);
-  const [profile, setProfile] = useState<any>(null);
-  const { theme, toggleTheme } = useTheme();
+  const [profile, setProfile] = useState<NavProfile | null>(null);
+  const { theme } = useTheme();
   const { t } = useTranslation();
+
+  const fetchProfile = useCallback(async (userId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("full_name, role, avatar_url")
+        .eq("id", userId)
+        .single();
+      if (!error && data) {
+        setProfile(data);
+      }
+    } catch (err) {
+      console.error("Error fetching profile:", err);
+    }
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 15);
     };
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -51,11 +74,11 @@ export default function Navbar() {
     if (!isSupabaseEnvConfigured()) return;
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event: any, newSession: Session | null) => {
+      (_event: AuthChangeEvent, newSession: Session | null) => {
         setSession(newSession);
         setUser(newSession?.user ?? null);
         if (newSession?.user) {
-          fetchProfile(newSession.user.id);
+          void fetchProfile(newSession.user.id);
         } else {
           setProfile(null);
         }
@@ -67,30 +90,15 @@ export default function Navbar() {
       setSession(currentSession);
       setUser(currentSession?.user ?? null);
       if (currentSession?.user) {
-        fetchProfile(currentSession.user.id);
+        void fetchProfile(currentSession.user.id);
       }
     };
-    checkSession();
+    void checkSession();
 
     return () => {
       subscription.unsubscribe();
     };
-  }, []);
-
-  const fetchProfile = async (userId: string) => {
-    try {
-      const { data, error } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("id", userId)
-        .single();
-      if (!error) {
-        setProfile(data);
-      }
-    } catch (err) {
-      console.error("Error fetching profile:", err);
-    }
-  };
+  }, [fetchProfile]);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -132,22 +140,7 @@ export default function Navbar() {
           {/* Desktop Actions - fixed gap, no wrapping */}
           <div className="hidden md:flex items-center gap-3 flex-shrink-0">
             <LanguageSwitcher />
-            <button
-              onClick={toggleTheme}
-              className="w-10 h-10 rounded-lg flex items-center justify-center hover:bg-[#D4AF37]/20 hover:text-[#D4AF37] transition-all duration-300 border flex-shrink-0 font-semibold"
-              style={{
-                backgroundColor: theme === "dark" ? "rgba(255,255,255,0.08)" : "#f5f5f5",
-                borderColor: theme === "dark" ? "rgba(255,255,255,0.15)" : "#e5e7eb",
-                color: theme === "dark" ? "white" : "#0D1B2A"
-              }}
-              aria-label="Toggle theme"
-            >
-              {theme === "dark" ? (
-                <Sun className="w-5 h-5" />
-              ) : (
-                <Moon className="w-5 h-5" />
-              )}
-            </button>
+            <ThemeToggle />
             
             {session && user ? (
               <>
@@ -272,26 +265,7 @@ export default function Navbar() {
                     <LanguageSwitcher />
                   </div>
                   <div className="py-2">
-                    <button
-                      onClick={toggleTheme}
-                      className={`w-full flex items-center justify-center gap-3 py-3 border rounded-xl font-semibold hover:bg-white/10 transition-all ${
-                        theme === "dark"
-                          ? "border-white/30 text-white"
-                          : "border-gray-200 text-[#0D1B2A]"
-                      }`}
-                    >
-                      {theme === "dark" ? (
-                        <>
-                          <Sun className="w-5 h-5" />
-                          {t("common.lightMode")}
-                        </>
-                      ) : (
-                        <>
-                          <Moon className="w-5 h-5" />
-                          {t("common.darkMode")}
-                        </>
-                      )}
-                    </button>
+                    <ThemeToggle variant="full" />
                   </div>
 
                   {session && user ? (

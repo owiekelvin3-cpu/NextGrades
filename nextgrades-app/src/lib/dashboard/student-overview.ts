@@ -283,6 +283,158 @@ export async function fetchStudentOverviewData(): Promise<StudentOverviewData | 
   };
 }
 
+export type StudentCourseDetail = StudentCourseRow & {
+  status: string;
+  className?: string;
+  semester?: number | null;
+  nextLesson: DashboardLesson | null;
+  completedLessons: number;
+};
+
+export type StudentAppointmentsData = {
+  profile: { fullName: string; avatarUrl?: string | null };
+  units: { total: number; remaining: number } | null;
+  upcoming: DashboardLesson[];
+  past: DashboardLesson[];
+  nextLesson: DashboardLesson | null;
+  primaryTeacher: { name: string; subject?: string } | null;
+};
+
+export type StudentCoursesPageData = {
+  courses: StudentCourseDetail[];
+  overallProgress: number;
+  activeCount: number;
+  remainingUnits: number;
+  learnedHours: number;
+  progressBreakdown: { completed: number; inProgress: number; planned: number };
+};
+
+export async function fetchAllStudentLessonsForStudent(studentId: string): Promise<DashboardLesson[]> {
+  return fetchAllStudentLessons(studentId);
+}
+
+function buildCourseDetails(
+  enrollments: StudentEnrollment[],
+  lessons: DashboardLesson[]
+): StudentCourseDetail[] {
+  const now = Date.now();
+  return enrollments.map((e) => {
+    const subjectLessons = lessons.filter((l) => l.subject_name === e.subject_name);
+    const completed = subjectLessons.filter((l) => l.status === "completed").length;
+    const total = subjectLessons.length;
+    const progressPercent = total > 0 ? Math.round((completed / total) * 100) : 0;
+    const upcoming = subjectLessons
+      .filter((l) => l.status === "scheduled" && new Date(l.start_time).getTime() >= now)
+      .sort((a, b) => new Date(a.start_time).getTime() - new Date(b.start_time).getTime());
+    const latest = [...subjectLessons].sort(
+      (a, b) => new Date(b.start_time).getTime() - new Date(a.start_time).getTime()
+    )[0];
+
+    return {
+      enrollmentId: e.id,
+      subjectName: e.subject_name ?? "—",
+      teacherName: latest?.teacher_name,
+      lessonCount: total,
+      progressPercent,
+      status: e.status,
+      className: e.class_name,
+      semester: e.semester,
+      nextLesson: upcoming[0] ?? null,
+      completedLessons: completed,
+    };
+  });
+}
+
+export async function fetchStudentAppointmentsData(): Promise<StudentAppointmentsData | null> {
+  const userId = await getSessionUserId();
+  if (!userId) return null;
+
+  const profile = await fetchCurrentProfile();
+  const [units, allLessons] = await Promise.all([
+    fetchStudentUnits(userId),
+    fetchAllStudentLessons(userId),
+  ]);
+
+  const now = Date.now();
+  const upcoming = allLessons
+    .filter((l) => l.status === "scheduled" && new Date(l.start_time).getTime() >= now)
+    .sort((a, b) => new Date(a.start_time).getTime() - new Date(b.start_time).getTime());
+  const past = allLessons
+    .filter((l) => l.status === "completed" || new Date(l.start_time).getTime() < now)
+    .sort((a, b) => new Date(b.start_time).getTime() - new Date(a.start_time).getTime());
+
+  const next = upcoming[0] ?? null;
+  const primaryTeacher = next?.teacher_name
+    ? { name: next.teacher_name, subject: next.subject_name }
+    : allLessons.find((l) => l.teacher_name)?.teacher_name
+      ? {
+          name: allLessons.find((l) => l.teacher_name)!.teacher_name!,
+          subject: allLessons.find((l) => l.teacher_name)!.subject_name,
+        }
+      : null;
+
+  return {
+    profile: {
+      fullName: profile?.full_name ?? "",
+      avatarUrl: profile?.avatar_url,
+    },
+    units,
+    upcoming,
+    past,
+    nextLesson: next,
+    primaryTeacher,
+  };
+}
+
+export async function fetchStudentCoursesPageData(): Promise<StudentCoursesPageData | null> {
+  const userId = await getSessionUserId();
+  if (!userId) return null;
+
+  const [enrollments, allLessons, units] = await Promise.all([
+    fetchStudentEnrollments(userId),
+    fetchAllStudentLessons(userId),
+    fetchStudentUnits(userId),
+  ]);
+
+  const courses = buildCourseDetails(enrollments, allLessons);
+  const activeCount = enrollments.filter((e) => e.status === "active").length;
+  const completedLessons = allLessons.filter((l) => l.status === "completed").length;
+  const scheduledLessons = allLessons.filter((l) => l.status === "scheduled").length;
+  const learnedMinutes = allLessons
+    .filter((l) => l.status === "completed")
+    .reduce((sum, l) => sum + (l.duration ?? 60), 0);
+
+  const { percent } = await computeOverallProgress(userId, allLessons);
+
+  return {
+    courses,
+    overallProgress: percent,
+    activeCount,
+    remainingUnits: units?.remaining ?? 0,
+    learnedHours: Math.round(learnedMinutes / 60),
+    progressBreakdown: {
+      completed: completedLessons,
+      inProgress: scheduledLessons,
+      planned: Math.max(0, (units?.total ?? 0) - completedLessons - scheduledLessons),
+    },
+  };
+}
+
+export async function fetchStudentResourcesPageData(): Promise<{
+  materials: Material[];
+  enrollments: StudentEnrollment[];
+} | null> {
+  const userId = await getSessionUserId();
+  if (!userId) return null;
+
+  const [materials, enrollments] = await Promise.all([
+    fetchMaterials({ limit: 100 }),
+    fetchStudentEnrollments(userId),
+  ]);
+
+  return { materials, enrollments };
+}
+
 export function getFirstName(fullName: string): string {
   return fullName.trim().split(/\s+/)[0] || fullName || "—";
 }

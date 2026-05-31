@@ -1,47 +1,59 @@
 "use client";
 
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
-import { Sidebar } from "@/components/dashboard/Sidebar";
-import { TeacherDashboardLayout } from "@/components/dashboard/teacher/TeacherDashboardLayout";
-import { NotificationCenter } from "@/components/notifications/NotificationCenter";
-import { useTheme } from "@/context/ThemeContext";
-import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { StudentDashboardLayout } from "@/components/dashboard/student/StudentDashboardLayout";
+import { TeacherDashboardLayout } from "@/components/dashboard/teacher/TeacherDashboardLayout";
+import { DashboardPage } from "@/components/dashboard/DashboardPage";
+import { NotificationCenter } from "@/components/notifications/NotificationCenter";
 import { fetchProfileSettings } from "@/lib/dashboard/profile-settings";
+import { appShell } from "@/lib/theme/shell";
 import { cn } from "@/lib/utils";
 
+function settingsPathForRole(role: "student" | "teacher" | "admin") {
+  if (role === "teacher") return "/dashboard/teacher/settings";
+  if (role === "admin") return "/dashboard/admin";
+  return "/dashboard/student/settings";
+}
+
 export default function NotificationsPage() {
-  const { theme } = useTheme();
   const { t } = useTranslation();
-  const router = useRouter();
   const [role, setRole] = useState<"student" | "teacher" | "admin">("student");
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     fetchProfileSettings().then((p) => {
       if (p?.role === "teacher" || p?.role === "admin" || p?.role === "student") {
         setRole(p.role);
       }
+      setReady(true);
     });
   }, []);
 
-  const content = <NotificationCenter />;
+  const title = t("notifications.title", { defaultValue: "Notifications" });
+  const settingsHref = settingsPathForRole(role);
 
-  if (role === "teacher") {
+  const center = <NotificationCenter embedded settingsHref={settingsHref} />;
+
+  if (!ready) {
     return (
-      <TeacherDashboardLayout title={t("notifications.title", { defaultValue: "Notifications" })}>
-        {content}
-      </TeacherDashboardLayout>
+      <div className={cn("flex min-h-screen items-center justify-center text-sm text-text-muted", appShell.dashboardShell)}>
+        {t("misc.loading", { defaultValue: "Loading..." })}
+      </div>
     );
   }
 
-  return (
-    <div className={cn("flex min-h-screen", theme === "dark" ? "bg-[#0D1B2A]" : "bg-[#F0F2F5]")}>
-      <Sidebar role={role} />
-      <main className="flex-1 p-4 pt-20 sm:p-6 md:pt-8 lg:p-8">
-        <div className="mx-auto max-w-3xl">{content}</div>
-      </main>
-    </div>
-  );
+  if (role === "teacher") {
+    return <TeacherDashboardLayout title={title}>{center}</TeacherDashboardLayout>;
+  }
+
+  if (role === "admin") {
+    return (
+      <DashboardPage role="admin" titleKey="notifications.title">
+        <NotificationCenter embedded settingsHref={settingsHref} />
+      </DashboardPage>
+    );
+  }
+
+  return <StudentDashboardLayout title={title}>{center}</StudentDashboardLayout>;
 }

@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "storage:verify": "node scripts/verify-storage.mjs",
     "db:setup": "node scripts/apply-migrations.mjs",
     "db:apply-pdf": "node scripts/run-sql.mjs supabase/migrations/00017_pdf_alignment.sql supabase/migrations/00018_backfill_storage_paths.sql",
     "db:backfill-storage": "node scripts/backfill-storage-paths.mjs"

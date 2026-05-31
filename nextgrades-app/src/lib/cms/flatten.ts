@@ -1,6 +1,6 @@
 import { CMS_EXCLUDED_PREFIXES, getPageGroupForKey } from "./constants";
 
-export type CmsFieldType = "text" | "textarea" | "json";
+export type CmsFieldType = "text" | "textarea" | "json" | "image" | "url";
 
 export type FlatLocaleEntry = {
   i18nKey: string;

@@ -1,0 +1,186 @@
+"use client";
+
+import { useState } from "react";
+import { Search, Gift, Lock } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { useResourcesCatalog } from "@/hooks/useResourcesCatalog";
+import { ResourcesFilterSidebar } from "@/components/resources/shared/ResourcesFilterSidebar";
+import { ResourcesCategoryTabs } from "@/components/resources/shared/ResourcesCategoryTabs";
+import {
+  ResourceHubCard,
+  ResourceSubjectTile,
+  SectionHeader,
+  ResourcesCtaBanner,
+  ResourcesFeatureRow,
+} from "@/components/resources/shared/ResourceCards";
+import { tabContentTypes, getSubjectUi, type ResourceTabId } from "@/lib/resources/ui-config";
+import { getResourcesSubjectImage } from "@/lib/resources/images";
+import { LoadingBlock } from "@/components/dashboard/LoadingBlock";
+import { appShell } from "@/lib/theme/shell";
+
+export function ResourcesHubExperience() {
+  const { t } = useTranslation();
+  const [activeTab, setActiveTab] = useState<ResourceTabId>("all");
+  const catalog = useResourcesCatalog();
+
+  const handleTabChange = (tab: ResourceTabId) => {
+    setActiveTab(tab);
+    const types = tabContentTypes(tab);
+    catalog.setContentTypes(types ?? []);
+  };
+
+  const displayFree = catalog.accessFilter === "all" || catalog.accessFilter === "free"
+    ? catalog.freeResources.slice(0, 4)
+    : [];
+  const displayPremium = catalog.accessFilter === "all" || catalog.accessFilter === "premium"
+    ? catalog.premiumResources.slice(0, 4)
+    : [];
+
+  return (
+    <>
+      <ResourcesCategoryTabs active={activeTab} onChange={handleTabChange} />
+
+      <section className={`${appShell.sectionSubtle} py-10`}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-4 gap-8">
+            <div className="lg:col-span-1">
+              <ResourcesFilterSidebar
+                subjects={catalog.subjects}
+                classes={catalog.classes}
+                subjectSlug={catalog.subjectSlug}
+                classLevel={catalog.classLevel}
+                semester={catalog.semester}
+                accessFilter={catalog.accessFilter}
+                materialTypes={catalog.materialTypes}
+                subjectCounts={catalog.subjectCounts}
+                onSubjectChange={catalog.setSubjectSlug}
+                onClassChange={catalog.setClassLevel}
+                onSemesterChange={catalog.setSemester}
+                onAccessChange={catalog.setAccessFilter}
+                onMaterialTypesChange={catalog.setMaterialTypes}
+                onReset={catalog.resetFilters}
+              />
+            </div>
+
+            <div className="lg:col-span-3 space-y-10">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <p className="text-sm font-semibold text-[#0D1B2A]">
+                  {catalog.resources.length}{" "}
+                  {t("resources.topBarResults", { defaultValue: "results" })}
+                </p>
+                <div className="flex flex-1 flex-col gap-3 sm:max-w-xl sm:flex-row">
+                  <div className="relative flex-1">
+                    <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                    <input
+                      type="search"
+                      value={catalog.search}
+                      onChange={(e) => catalog.setSearch(e.target.value)}
+                      placeholder={t("resources.searchPlaceholder", { defaultValue: "Search materials…" })}
+                      className="w-full rounded-xl border border-gray-200 bg-white py-2.5 pl-10 pr-4 text-sm"
+                    />
+                  </div>
+                  <select
+                    value={catalog.sort}
+                    onChange={(e) => catalog.setSort(e.target.value as typeof catalog.sort)}
+                    className="rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm"
+                  >
+                    <option value="recent">{t("resources.sortNewest", { defaultValue: "Newest first" })}</option>
+                    <option value="popular">{t("resources.sortPopular", { defaultValue: "Most popular" })}</option>
+                    <option value="downloads">Most downloaded</option>
+                  </select>
+                </div>
+              </div>
+
+              {catalog.loading ? (
+                <LoadingBlock />
+              ) : (
+                <>
+                  {displayFree.length > 0 && (
+                    <div>
+                      <SectionHeader
+                        title={t("resources.freeTitle", { defaultValue: "Free content" })}
+                        badge={t("resources.freeSubtitle", { defaultValue: "Available for everyone" })}
+                        badgeVariant="green"
+                        icon={<Gift className="h-5 w-5 text-[#22C55E]" />}
+                        actionHref="/resources?access=free"
+                        actionLabel={t("resources.freeShowAll", { defaultValue: "Show all" })}
+                      />
+                      <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+                        {displayFree.map((r) => (
+                          <ResourceHubCard
+                            key={r.id}
+                            resource={r}
+                            variant="free"
+                            subjectSlug={catalog.subjectSlug}
+                            onOpen={() => void catalog.openResource(r)}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {displayPremium.length > 0 && (
+                    <div>
+                      <SectionHeader
+                        title={t("resources.premiumTitle", { defaultValue: "Premium content" })}
+                        badge={t("resources.premiumSubtitle", { defaultValue: "Members only" })}
+                        badgeVariant="gold"
+                        icon={<Lock className="h-5 w-5 text-[#D4AF37]" />}
+                        actionHref="/resources/upgrade"
+                        actionLabel={t("resources.premiumShowAll", { defaultValue: "Show all" })}
+                      />
+                      <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+                        {displayPremium.map((r) => (
+                          <ResourceHubCard
+                            key={r.id}
+                            resource={r}
+                            variant="premium"
+                            subjectSlug={catalog.subjectSlug}
+                            onOpen={() => void catalog.openResource(r)}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {catalog.resources.length === 0 && (
+                    <div className="rounded-2xl border border-dashed border-gray-200 bg-white p-12 text-center text-gray-500">
+                      {t("resources.noResults", { defaultValue: "No resources match your filters." })}
+                    </div>
+                  )}
+
+                  <div>
+                    <SectionHeader
+                      title={t("resources.resourcesBySubject", { defaultValue: "Resources by subject" })}
+                    />
+                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+                      {catalog.subjects.slice(0, 5).map((s, index) => {
+                        const slug = s.slug || s.id;
+                        const ui = getSubjectUi(slug);
+                        const Icon = ui.icon;
+                        return (
+                          <ResourceSubjectTile
+                            key={s.id}
+                            name={s.name}
+                            slug={slug}
+                            count={catalog.subjectCounts.get(slug) ?? 0}
+                            color={ui.color}
+                            icon={<Icon className="h-5 w-5" />}
+                            imageUrl={getResourcesSubjectImage(slug, index)}
+                          />
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  <ResourcesCtaBanner />
+                  <ResourcesFeatureRow />
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}

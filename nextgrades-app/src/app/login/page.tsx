@@ -30,6 +30,9 @@ import { useToast } from "@/context/ToastContext";
 import { syncPreferencesAfterAuth } from "@/lib/preferences";
 import { changeAppLanguage } from "@/components/I18nProvider";
 import { cn } from "@/lib/utils";
+import { useCmsImage } from "@/hooks/useCmsImage";
+import { LOGIN_HERO_IMAGE, LOGIN_AVATAR_IMAGES } from "@/lib/marketing-images";
+import { MarketingImage } from "@/components/marketing/MarketingImage";
 import { RegisterForm } from "@/components/auth/RegisterForm";
 
 function LoginContent() {
@@ -51,6 +54,7 @@ function LoginContent() {
   const searchParams = useSearchParams();
   const { t } = useTranslation();
   const toast = useToast();
+  const loginHeroImage = useCmsImage("cmsImages.auth.loginHero", LOGIN_HERO_IMAGE);
 
   const redirectTo = sanitizeRedirect(searchParams.get("redirect"));
 
@@ -116,12 +120,14 @@ function LoginContent() {
 
   useEffect(() => {
     const errorParam = searchParams.get("error");
-    if (errorParam === "profile_incomplete") {
+    if (searchParams.get("suspended") === "1") {
+      setError(t("login.accountSuspended", { defaultValue: "Your account has been suspended. Contact support@nextgrades.de if you believe this is a mistake." }));
+    } else if (errorParam === "profile_incomplete") {
       setError(t("login.profileIncomplete", { defaultValue: "Your account profile is incomplete. Please contact support." }));
     } else if (errorParam) {
       setError(decodeURIComponent(errorParam));
     }
-  }, [searchParams]);
+  }, [searchParams, t]);
 
   const navigateAfterAuth = async (userId: string) => {
     await syncPreferencesAfterAuth((lang) => changeAppLanguage(lang));
@@ -458,12 +464,11 @@ function LoginContent() {
               {/* Right Side - Image */}
               <div className="relative bg-gradient-to-br from-[#D4AF37]/20 to-[#D4AF37]/5 hidden lg:block overflow-hidden">
                 <div className="relative h-full min-h-[600px]">
-                  {/* Background Image */}
-                  <img
-                    src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1000&h=1200&fit=crop"
+                  <MarketingImage
+                    src={loginHeroImage}
                     alt="Students collaborating"
-                    className="w-full h-full object-cover"
-                    loading="lazy"
+                    containerClassName="absolute inset-0"
+                    sizes="50vw"
                   />
                   <div className="absolute inset-0 bg-gradient-to-br from-[#0D1B2A]/40 via-[#D4AF37]/10 to-[#0D1B2A]/20" />
 
@@ -494,20 +499,18 @@ function LoginContent() {
                   {/* Profile Avatars */}
                   <div className="absolute bottom-12 right-8">
                     <div className="flex -space-x-3">
-                      {[1, 2, 3].map((i) => (
+                      {[0, 1, 2].map((i) => (
                         <div
                           key={i}
                           className="w-12 h-12 rounded-full border-4 border-white shadow-lg hover:scale-110 transition-transform duration-300 cursor-pointer"
                         >
-                          <img
-                            src={`https://images.unsplash.com/photo-${
-                              i === 1 ? "1494790108377-be9c29b29330" :
-                              i === 2 ? "1507003211169-0a1dd7228f2d" :
-                              "1500648767791-00dcc994a43e"
-                            }?w=100&h=100&fit=crop&crop=face`}
-                            alt={`Student ${i}`}
-                            className="w-full h-full rounded-full object-cover"
-                            loading="lazy"
+                          <MarketingImage
+                            src={LOGIN_AVATAR_IMAGES[i]}
+                            alt={`Student ${i + 1}`}
+                            width={48}
+                            height={48}
+                            sizes="48px"
+                            className="rounded-full"
                           />
                         </div>
                       ))}

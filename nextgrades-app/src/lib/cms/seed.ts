@@ -5,11 +5,14 @@ import deSite from "@/locales/de/site.json";
 import { CMS_PAGE_GROUPS } from "./constants";
 import { flattenLocale, mergeLocale } from "./flatten";
 import type { FlatLocaleEntry } from "./flatten";
+import { buildMarketingImageEntries } from "./marketing-images-registry";
 
 export function buildSeedEntries(): FlatLocaleEntry[] {
   const en = mergeLocale(enCommon as Record<string, unknown>, enSite as Record<string, unknown>);
   const de = mergeLocale(deCommon as Record<string, unknown>, deSite as Record<string, unknown>);
-  return flattenLocale(en, de);
+  const localeEntries = flattenLocale(en, de);
+  const imageEntries = buildMarketingImageEntries();
+  return [...localeEntries, ...imageEntries];
 }
 
 export function buildSectionRows() {

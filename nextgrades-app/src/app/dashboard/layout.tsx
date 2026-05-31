@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
+import { NotificationProvider } from "@/context/NotificationContext";
 
 const ChatProvider = dynamic(
   () => import("@/components/chat/ChatProvider").then((m) => m.ChatProvider),
@@ -15,11 +16,13 @@ const FloatingChatWidget = dynamic(
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
-    <ChatProvider>
-      {children}
-      <Suspense fallback={null}>
-        <FloatingChatWidget />
-      </Suspense>
-    </ChatProvider>
+    <NotificationProvider>
+      <ChatProvider>
+        {children}
+        <Suspense fallback={null}>
+          <FloatingChatWidget />
+        </Suspense>
+      </ChatProvider>
+    </NotificationProvider>
   );
 }

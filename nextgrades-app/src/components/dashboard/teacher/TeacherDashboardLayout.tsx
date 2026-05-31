@@ -5,16 +5,17 @@ import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { NotificationBell } from "@/components/notifications/NotificationBell";
+import { MobileBottomNav, MOBILE_BOTTOM_NAV_PADDING } from "@/components/mobile/MobileBottomNav";
 import { fetchProfileSettings } from "@/lib/dashboard/profile-settings";
-import { fetchNotifications, getSessionUserId } from "@/lib/dashboard/data";
 import { getTeacherFirstName } from "@/lib/dashboard/teacher-overview";
+import { teacherHeader, teacherShell } from "./teacher-ui";
+import { cn } from "@/lib/utils";
 
 interface TeacherDashboardLayoutProps {
   title: string;
   description?: string;
   children: React.ReactNode;
   headerAction?: React.ReactNode;
-  /** Primary CTA shown top-right on desktop (e.g. “Neuen Termin erstellen”) */
   topRightAction?: React.ReactNode;
 }
 
@@ -47,16 +48,17 @@ export function TeacherDashboardLayout({
   const initials = firstName ? firstName.charAt(0).toUpperCase() : "T";
 
   return (
-    <div className="flex min-h-screen bg-[#F0F2F5]">
-      <Sidebar
-        role="teacher"
-        teacherName={profileName}
-        teacherAvatarUrl={avatarUrl}
-      />
+    <div className={teacherShell}>
+      <Sidebar role="teacher" teacherName={profileName} teacherAvatarUrl={avatarUrl} />
 
-      <div className="flex min-w-0 flex-1 flex-col pt-14 md:pt-0">
-        <header className="sticky top-0 z-30 border-b border-gray-200/80 bg-white/95 px-4 py-4 backdrop-blur-sm sm:px-6 lg:px-8">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+      <div className={cn("flex min-w-0 flex-1 flex-col md:pt-0", MOBILE_BOTTOM_NAV_PADDING)}>
+        <header
+          className={cn(
+            teacherHeader,
+            "sticky top-0 z-30 px-4 py-4 pt-[max(1rem,env(safe-area-inset-top))] sm:px-6 lg:px-8"
+          )}
+        >
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="min-w-0 flex-1">
               <div className="flex items-start justify-between gap-3 sm:block">
                 <div>
@@ -64,7 +66,7 @@ export function TeacherDashboardLayout({
                   {description && <p className="mt-1 text-sm text-gray-500">{description}</p>}
                 </div>
                 <div className="flex shrink-0 items-center gap-2 sm:hidden">
-                  <NotificationBell variant="light" />
+                  <NotificationBell />
                   <Link href="/dashboard/teacher/settings">
                     {avatarUrl ? (
                       // eslint-disable-next-line @next/next/no-img-element
@@ -77,7 +79,7 @@ export function TeacherDashboardLayout({
                   </Link>
                 </div>
               </div>
-              {headerAction && <div className="mt-4">{headerAction}</div>}
+              {headerAction && <div className="mt-4 sm:hidden">{headerAction}</div>}
             </div>
 
             <div className="hidden items-center gap-3 sm:flex">
@@ -102,8 +104,10 @@ export function TeacherDashboardLayout({
           </div>
         </header>
 
-        <main className="flex-1 p-4 sm:p-6 lg:p-8">{children}</main>
+        <main className="flex-1 overflow-x-hidden p-4 sm:p-6 lg:p-8">{children}</main>
       </div>
+
+      <MobileBottomNav role="teacher" />
     </div>
   );
 }

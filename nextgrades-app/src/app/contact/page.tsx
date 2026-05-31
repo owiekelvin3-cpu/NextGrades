@@ -1,21 +1,36 @@
-
 "use client";
 
 import { useState } from "react";
-import { useTheme } from "@/context/ThemeContext";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/Button";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faEnvelope, faPhone, faArrowRight, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+import { Badge } from "@/components/ui/Badge";
+import { Card } from "@/components/ui/Card";
+import { useMarketingTheme } from "@/lib/marketing-theme";
 import { useTranslation } from "react-i18next";
 import { useToast } from "@/context/ToastContext";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Clock,
+  Send,
+  CheckCircle2,
+  MessageSquare,
+  ArrowRight,
+  Sparkles,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import { useCmsImage } from "@/hooks/useCmsImage";
+import { CONTACT_HERO_IMAGE } from "@/lib/marketing-images";
 
 export default function ContactPage() {
-  const { theme } = useTheme();
+  const mt = useMarketingTheme();
   const { t } = useTranslation();
   const toast = useToast();
+  const contactHeroImage = useCmsImage("cmsImages.contact.hero", CONTACT_HERO_IMAGE);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -25,6 +40,13 @@ export default function ContactPage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+
+  const inputClass = cn(
+    "w-full rounded-xl border px-4 py-3.5 text-sm transition-all focus:outline-none focus:border-[#D4AF37] focus:ring-2 focus:ring-[#D4AF37]/20",
+    mt.isDark
+      ? "border-white/10 bg-[#0D1B2A] text-white placeholder:text-gray-500"
+      : "border-gray-200 bg-white text-[#0D1B2A] placeholder:text-gray-400"
+  );
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -64,221 +86,282 @@ export default function ContactPage() {
     }
   };
 
+  const contactCards = [
+    {
+      icon: Mail,
+      label: t("contact.emailAddress", { defaultValue: "Email" }),
+      value: "support@nextgrades.de",
+      href: "mailto:support@nextgrades.de",
+      color: "bg-[#D4AF37]/15 text-[#D4AF37]",
+    },
+    {
+      icon: Phone,
+      label: t("contact.phoneNumber", { defaultValue: "Phone" }),
+      value: "+49 (0) 30 1234 5678",
+      href: "tel:+493012345678",
+      color: "bg-[#4DA3FF]/15 text-[#4DA3FF]",
+    },
+    {
+      icon: MapPin,
+      label: t("contact.officeLabel", { defaultValue: "Office" }),
+      value: t("contact.officeValue", { defaultValue: "Berlin, Germany" }),
+      color: "bg-emerald-500/15 text-emerald-500",
+    },
+    {
+      icon: Clock,
+      label: t("contact.hoursLabel", { defaultValue: "Response time" }),
+      value: t("contact.hoursValue", { defaultValue: "Within 24 hours" }),
+      color: "bg-violet-500/15 text-violet-500",
+    },
+  ];
+
   return (
-    <div className={`min-h-screen flex flex-col ${theme === "dark" ? "bg-[#0D1B2A]" : "bg-[#FAFAFA]"}`}>
+    <div className={cn("min-h-screen flex flex-col", mt.page)}>
       <Navbar />
 
-      <main className="flex-1 pt-24 pb-16 relative overflow-hidden">
-        <div className={`absolute top-0 left-0 right-0 h-40 ${theme === "dark" ? "bg-gradient-to-b from-[#0D1B2A] to-transparent" : "bg-gradient-to-b from-[#D4AF37]/20 to-transparent"}`} />
-        
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="grid lg:grid-cols-2 gap-8 items-start">
+      <main className="flex-1">
+        {/* Hero */}
+        <section className="relative overflow-hidden bg-[#0D1B2A] pt-28 pb-20 text-white">
+          <div className="pointer-events-none absolute inset-0">
+            <div className="absolute -right-20 top-10 h-72 w-72 rounded-full bg-[#D4AF37]/15 blur-3xl" />
+            <div className="absolute bottom-0 left-0 h-64 w-64 rounded-full bg-[#4DA3FF]/10 blur-3xl" />
+          </div>
+          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-              className="hidden lg:block relative h-[700px] rounded-3xl overflow-hidden"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mx-auto max-w-3xl text-center"
             >
-              <img
-                src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=900&h=1000&fit=crop"
-                alt={t("images.germanBuilding")}
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-br from-[#0D1B2A]/20 to-[#D4AF37]/30" />
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className={`p-8 sm:p-12 lg:p-16 rounded-3xl shadow-2xl border ${
-                theme === "dark"
-                  ? "bg-[#112240] border-white/10"
-                  : "bg-white border-white/20"
-              }`}
-            >
-              <div className="mb-10">
-                <div className="flex items-center gap-2 mb-6">
-                  <div className="w-10 h-10 rounded-xl bg-[#D4AF37] flex items-center justify-center">
-                    <span className="text-[#0D1B2A] font-bold text-xl">N</span>
-                  </div>
-                  <span className={`text-xl font-bold ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
-                    NextGrades
-                  </span>
-                </div>
-
-                <h1 className={`text-3xl sm:text-4xl font-bold mb-3 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
-                  {t("contact.title")}
-                </h1>
-                <p className={`mb-8 ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>
-                  {t("contact.subtitle")}{" "}
-                  <a 
-                    href="mailto:support@nextgrades.de" 
-                    className="text-[#D4AF37] font-semibold hover:underline"
-                  >
-                    support@nextgrades.de
-                  </a>.
-                </p>
-              </div>
-
-              {submitted ? (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="text-center py-16"
-                >
-                  <div className="w-20 h-20 rounded-full bg-[#22C55E]/20 flex items-center justify-center mx-auto mb-6">
-                    <FontAwesomeIcon icon={faCheckCircle} className="w-10 h-10 text-[#22C55E]" />
-                  </div>
-                  <h2 className={`text-2xl font-bold mb-4 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
-                    {t("contact.successTitle")}
-                  </h2>
-                  <p className={`${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>
-                    {t("contact.successMessage")}
-                  </p>
-                </motion.div>
-              ) : (
-                <form className="space-y-5" onSubmit={handleSubmit}>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                  <div className="space-y-2">
-                    <label className={`text-sm font-semibold ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>
-                      {t("contact.firstName")}
-                    </label>
-                    <div className="relative">
-                      <div className="absolute left-4 top-1/2 -translate-y-1/2">
-                        <FontAwesomeIcon icon={faUser} className="w-4 h-4 text-gray-400" />
-                      </div>
-                      <input
-                        type="text"
-                        required
-                        value={formData.firstName}
-                        onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                        placeholder={t("contact.enterFirstName")}
-                        className={`w-full pl-12 pr-5 py-4 rounded-full border transition-all ${
-                          theme === "dark"
-                            ? "border-white/10 bg-[#0D1B2A] text-white placeholder:text-gray-400"
-                            : "border-gray-200 bg-white text-[#0D1B2A] placeholder:text-gray-400"
-                        } focus:outline-none focus:border-[#D4AF37] focus:ring-2 focus:ring-[#D4AF37]/20`}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className={`text-sm font-semibold ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>
-                      {t("contact.lastName")}
-                    </label>
-                    <div className="relative">
-                      <div className="absolute left-4 top-1/2 -translate-y-1/2">
-                        <FontAwesomeIcon icon={faUser} className="w-4 h-4 text-gray-400" />
-                      </div>
-                      <input
-                        type="text"
-                        required
-                        value={formData.lastName}
-                        onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                        placeholder={t("contact.enterLastName")}
-                        className={`w-full pl-12 pr-5 py-4 rounded-full border transition-all ${
-                          theme === "dark"
-                            ? "border-white/10 bg-[#0D1B2A] text-white placeholder:text-gray-400"
-                            : "border-gray-200 bg-white text-[#0D1B2A] placeholder:text-gray-400"
-                        } focus:outline-none focus:border-[#D4AF37] focus:ring-2 focus:ring-[#D4AF37]/20`}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <label className={`text-sm font-semibold ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>
-                    {t("contact.emailAddress")}
-                  </label>
-                  <div className="relative">
-                    <div className="absolute left-4 top-1/2 -translate-y-1/2">
-                      <FontAwesomeIcon icon={faEnvelope} className="w-4 h-4 text-gray-400" />
-                    </div>
-                    <input
-                      type="email"
-                      required
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      placeholder={t("contact.enterEmail")}
-                      className={`w-full pl-12 pr-5 py-4 rounded-full border transition-all ${
-                        theme === "dark"
-                          ? "border-white/10 bg-[#0D1B2A] text-white placeholder:text-gray-400"
-                          : "border-gray-200 bg-white text-[#0D1B2A] placeholder:text-gray-400"
-                      } focus:outline-none focus:border-[#D4AF37] focus:ring-2 focus:ring-[#D4AF37]/20`}
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <label className={`text-sm font-semibold ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>
-                    {t("contact.phoneNumber")}
-                  </label>
-                  <div className="relative">
-                    <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
-                      <img
-                        src="https://upload.wikimedia.org/wikipedia/en/thumb/b/ba/Flag_of_Germany.svg/1200px-Flag_of_Germany.svg.png"
-                        alt={t("images.germanyFlag")}
-                        className="w-5 h-4 object-cover rounded-sm"
-                      />
-                      <FontAwesomeIcon icon={faPhone} className="w-4 h-4 text-gray-400" />
-                    </div>
-                    <input
-                      type="tel"
-                      value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      placeholder={t("contact.enterPhone")}
-                      className={`w-full pl-28 pr-12 py-4 rounded-full border transition-all ${
-                        theme === "dark"
-                          ? "border-white/10 bg-[#0D1B2A] text-white placeholder:text-gray-400"
-                          : "border-gray-200 bg-white text-[#0D1B2A] placeholder:text-gray-400"
-                      } focus:outline-none focus:border-[#D4AF37] focus:ring-2 focus:ring-[#D4AF37]/20`}
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <label className={`text-sm font-semibold ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>
-                    {t("contact.message")}
-                  </label>
-                  <div className="relative">
-                    <textarea
-                      required
-                      value={formData.message}
-                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      placeholder={t("contact.enterMessage")}
-                      rows={4}
-                      maxLength={300}
-                      className={`w-full px-5 pt-4 pb-8 rounded-3xl border transition-all resize-none ${
-                        theme === "dark"
-                          ? "border-white/10 bg-[#0D1B2A] text-white placeholder:text-gray-400"
-                          : "border-gray-200 bg-white text-[#0D1B2A] placeholder:text-gray-400"
-                      } focus:outline-none focus:border-[#D4AF37] focus:ring-2 focus:ring-[#D4AF37]/20`}
-                    />
-                    <div className="absolute bottom-4 right-4 text-xs text-gray-400">
-                      {formData.message.length}/300
-                    </div>
-                  </div>
-                </div>
-
-                <Button
-                  type="submit"
-                  variant="gold"
-                  size="xl"
-                  className="w-full !rounded-full mt-2"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? t("contact.submitting") : (
-                    <>
-                      {t("contact.submitForm")} <FontAwesomeIcon icon={faArrowRight} className="w-4 h-4 ml-2" />
-                    </>
-                  )}
-                </Button>
-              </form>
-              )}
+              <Badge variant="gold" className="mb-5">
+                <MessageSquare className="mr-1.5 h-3.5 w-3.5" />
+                {t("common.contact")}
+              </Badge>
+              <h1 className="text-4xl font-bold leading-tight md:text-5xl lg:text-6xl">
+                {t("contact.title")}
+              </h1>
+              <p className="mx-auto mt-5 max-w-2xl text-lg text-gray-300">
+                {t("contact.subtitle")}{" "}
+                <a href="mailto:support@nextgrades.de" className="font-semibold text-[#D4AF37] hover:underline">
+                  support@nextgrades.de
+                </a>
+              </p>
             </motion.div>
           </div>
-        </div>
+        </section>
+
+        {/* Contact cards + form */}
+        <section className={cn("py-16 lg:py-20", mt.isDark ? "bg-[#0D1B2A]" : "bg-[#F5F6F8]")}>
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="grid gap-8 lg:grid-cols-12 lg:gap-10">
+              {/* Left — info */}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.1 }}
+                className="lg:col-span-5 space-y-6"
+              >
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
+                  {contactCards.map((item) => (
+                    <Card key={item.label} className={cn("p-5", mt.card)}>
+                      <div className="flex items-start gap-4">
+                        <div className={cn("flex h-11 w-11 shrink-0 items-center justify-center rounded-xl", item.color)}>
+                          <item.icon className="h-5 w-5" />
+                        </div>
+                        <div className="min-w-0">
+                          <p className={cn("text-xs font-semibold uppercase tracking-wide", mt.muted)}>{item.label}</p>
+                          {item.href ? (
+                            <a
+                              href={item.href}
+                              className={cn("mt-1 block text-sm font-semibold hover:text-[#D4AF37]", mt.heading)}
+                            >
+                              {item.value}
+                            </a>
+                          ) : (
+                            <p className={cn("mt-1 text-sm font-semibold", mt.heading)}>{item.value}</p>
+                          )}
+                        </div>
+                      </div>
+                    </Card>
+                  ))}
+                </div>
+
+                <div className="relative hidden overflow-hidden rounded-2xl lg:block lg:h-64">
+                  <Image
+                    src={contactHeroImage}
+                    alt=""
+                    fill
+                    className="object-cover"
+                    unoptimized
+                    sizes="(max-width: 1024px) 100vw, 40vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0D1B2A]/90 via-[#0D1B2A]/30 to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                    <p className="text-sm font-semibold text-[#D4AF37]">
+                      {t("contact.sideEyebrow", { defaultValue: "Premium support" })}
+                    </p>
+                    <p className="mt-1 text-lg font-bold">
+                      {t("contact.sideTitle", { defaultValue: "We're here to help you succeed." })}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Right — form */}
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.2 }}
+                className="lg:col-span-7"
+              >
+                <Card className={cn("overflow-hidden p-6 sm:p-8 lg:p-10", mt.card)}>
+                  {submitted ? (
+                    <div className="flex flex-col items-center py-16 text-center">
+                      <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-[#22C55E]/15">
+                        <CheckCircle2 className="h-10 w-10 text-[#22C55E]" />
+                      </div>
+                      <h2 className={cn("text-2xl font-bold", mt.heading)}>{t("contact.successTitle")}</h2>
+                      <p className={cn("mt-3 max-w-md", mt.body)}>{t("contact.successMessage")}</p>
+                      <Button variant="gold" href="/" className="mt-8">
+                        {t("common.home", { defaultValue: "Home" })}
+                      </Button>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="mb-8">
+                        <h2 className={cn("text-2xl font-bold", mt.heading)}>
+                          {t("contact.formTitle", { defaultValue: "Send us a message" })}
+                        </h2>
+                        <p className={cn("mt-2 text-sm", mt.body)}>
+                          {t("contact.formDesc", {
+                            defaultValue: "Fill out the form and our team will get back to you shortly.",
+                          })}
+                        </p>
+                      </div>
+
+                      <form className="space-y-5" onSubmit={handleSubmit}>
+                        <div className="grid gap-5 sm:grid-cols-2">
+                          <div>
+                            <label className={cn("mb-2 block text-sm font-medium", mt.heading)}>
+                              {t("contact.firstName")} *
+                            </label>
+                            <input
+                              type="text"
+                              required
+                              value={formData.firstName}
+                              onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                              placeholder={t("contact.enterFirstName")}
+                              className={inputClass}
+                            />
+                          </div>
+                          <div>
+                            <label className={cn("mb-2 block text-sm font-medium", mt.heading)}>
+                              {t("contact.lastName")} *
+                            </label>
+                            <input
+                              type="text"
+                              required
+                              value={formData.lastName}
+                              onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                              placeholder={t("contact.enterLastName")}
+                              className={inputClass}
+                            />
+                          </div>
+                        </div>
+
+                        <div>
+                          <label className={cn("mb-2 block text-sm font-medium", mt.heading)}>
+                            {t("contact.emailAddress")} *
+                          </label>
+                          <input
+                            type="email"
+                            required
+                            value={formData.email}
+                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                            placeholder={t("contact.enterEmail")}
+                            className={inputClass}
+                          />
+                        </div>
+
+                        <div>
+                          <label className={cn("mb-2 block text-sm font-medium", mt.heading)}>
+                            {t("contact.phoneNumber")}
+                          </label>
+                          <input
+                            type="tel"
+                            value={formData.phone}
+                            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                            placeholder={t("contact.enterPhone")}
+                            className={inputClass}
+                          />
+                        </div>
+
+                        <div>
+                          <label className={cn("mb-2 block text-sm font-medium", mt.heading)}>
+                            {t("contact.message")} *
+                          </label>
+                          <div className="relative">
+                            <textarea
+                              required
+                              value={formData.message}
+                              onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                              placeholder={t("contact.enterMessage")}
+                              rows={5}
+                              maxLength={500}
+                              className={cn(inputClass, "resize-none pb-8")}
+                            />
+                            <span className={cn("absolute bottom-3 right-3 text-xs", mt.muted)}>
+                              {formData.message.length}/500
+                            </span>
+                          </div>
+                        </div>
+
+                        <Button type="submit" variant="gold" size="lg" className="w-full" disabled={isSubmitting}>
+                          {isSubmitting ? (
+                            t("contact.submitting")
+                          ) : (
+                            <>
+                              {t("contact.submitForm")}
+                              <Send className="ml-2 h-4 w-4" />
+                            </>
+                          )}
+                        </Button>
+                      </form>
+                    </>
+                  )}
+                </Card>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        {/* Bottom CTAs */}
+        <section className={cn("border-t py-14", mt.isDark ? "border-white/10 bg-[#112240]" : "border-gray-100 bg-white")}>
+          <div className="mx-auto flex max-w-5xl flex-col items-center gap-6 px-4 text-center sm:flex-row sm:justify-between sm:text-left sm:px-6">
+            <div>
+              <div className="mb-2 flex items-center justify-center gap-2 sm:justify-start">
+                <Sparkles className="h-5 w-5 text-[#D4AF37]" />
+                <span className={cn("text-sm font-semibold text-[#D4AF37]", mt.heading)}>
+                  {t("contact.ctaEyebrow", { defaultValue: "Explore plans" })}
+                </span>
+              </div>
+              <h2 className={cn("text-xl font-bold sm:text-2xl", mt.heading)}>
+                {t("contact.ctaTitle", { defaultValue: "Looking for the right learning plan?" })}
+              </h2>
+              <p className={cn("mt-2 text-sm", mt.body)}>
+                {t("contact.ctaDesc", { defaultValue: "Compare memberships and tutoring packages on our pricing page." })}
+              </p>
+            </div>
+            <div className="flex shrink-0 flex-wrap justify-center gap-3">
+              <Button variant="gold" href="/pricing">
+                {t("common.pricing")}
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+              <Button variant="outline" href="/consultation" className={mt.isDark ? "border-white/20 text-white" : ""}>
+                {t("consultation.bookNow", { defaultValue: "Free consultation" })}
+              </Button>
+            </div>
+          </div>
+        </section>
       </main>
 
       <Footer />

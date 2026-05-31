@@ -1,7 +1,21 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient, isSupabaseServiceRoleConfigured } from "@/lib/supabase/admin";
 import { requireTeacherOrAdmin } from "@/lib/auth/auth-utils";
 import { LEGACY_TYPE_MAP, DEFAULT_THUMBNAIL, type ContentType } from "@/lib/resources/constants";
+import {
+  RESOURCES_BUCKET,
+  THUMBNAILS_BUCKET,
+  BUCKET_SETUP_HINT,
+  SERVICE_ROLE_REQUIRED_MESSAGE,
+  requireTeacherStorageReady,
+  isAllowedResourceMime,
+  isAllowedThumbnailMime,
+  removeFromBucket,
+  resolveUploadMimeType,
+  storageErrorHint,
+  uploadToBucket,
+} from "@/lib/resources/storage-upload";
 
 export const runtime = "nodejs";
 
@@ -88,20 +102,58 @@ export async function POST(request: Request) {
     let fileName: string | null = null;
     let fileSize: number | null = null;
     let mimeType: string | null = null;
+    let thumbPath: string | null = null;
+
+    const needsStorage = (file && file.size > 0) || (thumbnail && thumbnail.size > 0);
+
+    if (needsStorage && !isSupabaseServiceRoleConfigured()) {
+      return NextResponse.json({ error: SERVICE_ROLE_REQUIRED_MESSAGE }, { status: 503 });
+    }
+
+    const storageClient = isSupabaseServiceRoleConfigured() ? createAdminClient() : supabase;
+
+    if (needsStorage) {
+      try {
+        await requireTeacherStorageReady();
+      } catch (bucketError) {
+        const message = bucketError instanceof Error ? bucketError.message : "Storage is not configured";
+        return NextResponse.json(
+          { error: `${message}${storageErrorHint(message)}${BUCKET_SETUP_HINT}` },
+          { status: 500 }
+        );
+      }
+    }
 
     if (file && file.size > 0) {
       fileName = file.name;
       fileSize = file.size;
-      mimeType = file.type || "application/octet-stream";
+      mimeType = resolveUploadMimeType(file);
+
+      if (!isAllowedResourceMime(mimeType)) {
+        return NextResponse.json(
+          {
+            error: `Unsupported file type (${mimeType || "unknown"}). Use PDF, video, Word, PowerPoint, Excel, or image files.`,
+          },
+          { status: 400 }
+        );
+      }
+
       storagePath = `${auth.user.id}/${Date.now()}-${sanitizeName(file.name)}`;
       const buffer = Buffer.from(await file.arrayBuffer());
 
-      const { error: uploadError } = await supabase.storage
-        .from("resources")
-        .upload(storagePath, buffer, { contentType: mimeType, upsert: false });
+      const { error: uploadError } = await uploadToBucket(
+        storageClient,
+        RESOURCES_BUCKET,
+        storagePath,
+        buffer,
+        mimeType
+      );
 
       if (uploadError) {
-        return NextResponse.json({ error: `File upload failed: ${uploadError.message}` }, { status: 500 });
+        return NextResponse.json(
+          { error: `File upload failed: ${uploadError}${storageErrorHint(uploadError)}` },
+          { status: 500 }
+        );
       }
 
       fileUrl = "";
@@ -109,20 +161,31 @@ export async function POST(request: Request) {
 
     let thumbnailUrl: string | null = null;
     if (thumbnail && thumbnail.size > 0) {
-      const thumbPath = `${auth.user.id}/${Date.now()}-thumb-${sanitizeName(thumbnail.name)}`;
-      const thumbBuffer = Buffer.from(await thumbnail.arrayBuffer());
-      const { error: thumbError } = await supabase.storage
-        .from("resource-thumbnails")
-        .upload(thumbPath, thumbBuffer, {
-          contentType: thumbnail.type || "image/jpeg",
-          upsert: false,
-        });
-
-      if (thumbError) {
-        return NextResponse.json({ error: `Thumbnail upload failed: ${thumbError.message}` }, { status: 500 });
+      const thumbMime = resolveUploadMimeType(thumbnail);
+      if (!isAllowedThumbnailMime(thumbMime)) {
+        if (storagePath) await removeFromBucket(storageClient, RESOURCES_BUCKET, storagePath);
+        return NextResponse.json({ error: "Thumbnail must be JPG, PNG, or WebP." }, { status: 400 });
       }
 
-      const { data: thumbUrlData } = supabase.storage.from("resource-thumbnails").getPublicUrl(thumbPath);
+      thumbPath = `${auth.user.id}/${Date.now()}-thumb-${sanitizeName(thumbnail.name)}`;
+      const thumbBuffer = Buffer.from(await thumbnail.arrayBuffer());
+      const { error: thumbError } = await uploadToBucket(
+        storageClient,
+        THUMBNAILS_BUCKET,
+        thumbPath,
+        thumbBuffer,
+        thumbMime
+      );
+
+      if (thumbError) {
+        if (storagePath) await removeFromBucket(storageClient, RESOURCES_BUCKET, storagePath);
+        return NextResponse.json(
+          { error: `Thumbnail upload failed: ${thumbError}${storageErrorHint(thumbError)}` },
+          { status: 500 }
+        );
+      }
+
+      const { data: thumbUrlData } = supabase.storage.from(THUMBNAILS_BUCKET).getPublicUrl(thumbPath);
       thumbnailUrl = thumbUrlData.publicUrl;
     }
 
@@ -183,11 +246,19 @@ export async function POST(request: Request) {
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) {
+        if (storagePath) await removeFromBucket(storageClient, RESOURCES_BUCKET, storagePath);
+        if (thumbPath) await removeFromBucket(storageClient, THUMBNAILS_BUCKET, thumbPath);
+        throw error;
+      }
       resource = data;
     } else {
       const { data, error } = await supabase.from("materials").insert(payload).select().single();
-      if (error) throw error;
+      if (error) {
+        if (storagePath) await removeFromBucket(storageClient, RESOURCES_BUCKET, storagePath);
+        if (thumbPath) await removeFromBucket(storageClient, THUMBNAILS_BUCKET, thumbPath);
+        throw error;
+      }
       resource = data;
     }
 
@@ -209,10 +280,22 @@ export async function POST(request: Request) {
       );
     }
 
+    const {
+      notifyTeacherResourceUploaded,
+      notifyResourcePublished,
+      notifyAssignmentAssigned,
+      notifyExamPublished,
+    } = await import("@/lib/notifications/triggers");
+
+    void notifyTeacherResourceUploaded({
+      teacherId: auth.user.id,
+      materialId: resource.id,
+      title,
+      status,
+      isUpdate: Boolean(resourceId),
+    });
+
     if (isPublished) {
-      const { notifyResourcePublished, notifyAssignmentAssigned, notifyExamPublished } = await import(
-        "@/lib/notifications/triggers"
-      );
       const studentIds = await import("@/lib/notifications/server").then((m) =>
         m.getStudentIdsForEnrollment(subjectId)
       );

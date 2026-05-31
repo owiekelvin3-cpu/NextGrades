@@ -139,7 +139,11 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    void refresh();
+    if (!isSupabaseEnvConfigured()) {
+      setLoading(false);
+      return;
+    }
+
     fetch("/api/user/notification-preferences")
       .then((r) => (r.ok ? r.json() : null))
       .then((json) => {
@@ -147,15 +151,23 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
       })
       .catch(() => {});
 
-    if (!isSupabaseEnvConfigured()) return;
-
     supabase.auth.getUser().then(({ data }) => {
       userIdRef.current = data.user?.id ?? null;
+      if (data.user) {
+        void refresh();
+      } else {
+        setLoading(false);
+      }
     });
 
     const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
       userIdRef.current = session?.user?.id ?? null;
       if (session?.user) void refresh();
+      else {
+        setNotifications([]);
+        setUnreadCount(0);
+        setLoading(false);
+      }
     });
 
     const channel = supabase

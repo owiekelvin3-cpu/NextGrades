@@ -26,8 +26,10 @@ import {
   SettingsTextarea,
   SettingsSelect,
   SettingsToggle,
+  SettingsToggleGroup,
   SettingsSaveBar,
 } from "./SettingsCard";
+import { ZoomConnectCard } from "@/components/zoom/ZoomConnectCard";
 import {
   fetchProfileSettings,
   updateProfileSettings,
@@ -77,6 +79,7 @@ export function StudentSettingsPanel({ role = "student" }: StudentSettingsPanelP
   const [tab, setTab] = useState<SettingsTab>("profile");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [pushLoading, setPushLoading] = useState(false);
   const [profile, setProfile] = useState<UserProfileSettings | null>(null);
 
   const [fullName, setFullName] = useState("");
@@ -187,12 +190,21 @@ export function StudentSettingsPanel({ role = "student" }: StudentSettingsPanelP
   };
 
   const handleTogglePush = async (enabled: boolean) => {
-    setNotifs((p) => ({ ...p, pushEnabled: enabled }));
-    if (enabled) {
-      const ok = await subscribeToPush();
-      if (!ok) toast.error(t("notifications.pushDenied", { defaultValue: "Push notifications were not enabled." }));
-    } else {
-      await unsubscribeFromPush();
+    if (pushLoading) return;
+    setPushLoading(true);
+    try {
+      if (enabled) {
+        const ok = await subscribeToPush();
+        if (!ok) {
+          toast.error(t("notifications.pushDenied", { defaultValue: "Push notifications were not enabled." }));
+          return;
+        }
+      } else {
+        await unsubscribeFromPush();
+      }
+      setNotifs((p) => ({ ...p, pushEnabled: enabled }));
+    } finally {
+      setPushLoading(false);
     }
   };
 
@@ -451,52 +463,67 @@ export function StudentSettingsPanel({ role = "student" }: StudentSettingsPanelP
 
         {tab === "notifications" && (
           <SettingsCard title={t("settings.notificationsTitle", { defaultValue: "Notifications" })} icon={Bell}>
-            <div className="space-y-3">
-              <SettingsToggle
-                label={t("notifications.prefs.push", { defaultValue: "Push notifications" })}
-                description={t("notifications.prefs.pushDesc", { defaultValue: "Browser alerts when you're away" })}
-                checked={notifs.pushEnabled}
-                onChange={(v) => void handleTogglePush(v)}
-              />
-              <SettingsToggle
-                label={t("notifications.prefs.sound", { defaultValue: "Notification sounds" })}
-                description={t("notifications.prefs.soundDesc", { defaultValue: "Play a subtle sound for new alerts" })}
-                checked={notifs.soundEnabled}
-                onChange={(v) => setNotifs((p) => ({ ...p, soundEnabled: v }))}
-              />
-              <SettingsToggle
-                label={t("notifications.prefs.email", { defaultValue: "Email notifications" })}
-                description={t("notifications.prefs.emailDesc", { defaultValue: "Receive important updates by email" })}
-                checked={notifs.emailEnabled}
-                onChange={(v) => setNotifs((p) => ({ ...p, emailEnabled: v }))}
-              />
-              <SettingsToggle
-                label={t("settings.notifLessons", { defaultValue: "Lesson reminders" })}
-                description={t("settings.notifLessonsDesc", { defaultValue: "Email before upcoming appointments" })}
-                checked={notifs.emailLessons}
-                onChange={(v) => setNotifs((p) => ({ ...p, emailLessons: v }))}
-              />
-              <SettingsToggle
-                label={t("settings.notifMaterials", { defaultValue: "New materials" })}
-                description={t("settings.notifMaterialsDesc", { defaultValue: "When new study resources are added" })}
-                checked={notifs.emailMaterials}
-                onChange={(v) => setNotifs((p) => ({ ...p, emailMaterials: v }))}
-              />
-              <SettingsToggle
-                label={t("settings.notifMarketing", { defaultValue: "Tips & updates" })}
-                description={t("settings.notifMarketingDesc", { defaultValue: "Learning tips and platform news" })}
-                checked={notifs.emailMarketing}
-                onChange={(v) => setNotifs((p) => ({ ...p, emailMarketing: v }))}
-              />
-            </div>
-            <div className="mt-6 border-t border-gray-100 pt-4 dark:border-white/10">
-              <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-gray-500">
-                {t("notifications.prefs.categories", { defaultValue: "Categories" })}
-              </p>
-              <div className="grid gap-2 sm:grid-cols-2">
+            <div className="space-y-6">
+              <SettingsToggleGroup
+                title={t("notifications.prefs.delivery", { defaultValue: "How you're notified" })}
+              >
+                <SettingsToggle
+                  variant="row"
+                  label={t("notifications.prefs.push", { defaultValue: "Push notifications" })}
+                  description={t("notifications.prefs.pushDesc", { defaultValue: "Browser alerts when you're away" })}
+                  checked={notifs.pushEnabled}
+                  loading={pushLoading}
+                  onChange={(v) => void handleTogglePush(v)}
+                />
+                <SettingsToggle
+                  variant="row"
+                  label={t("notifications.prefs.sound", { defaultValue: "Notification sounds" })}
+                  description={t("notifications.prefs.soundDesc", { defaultValue: "Play a subtle sound for new alerts" })}
+                  checked={notifs.soundEnabled}
+                  onChange={(v) => setNotifs((p) => ({ ...p, soundEnabled: v }))}
+                />
+                <SettingsToggle
+                  variant="row"
+                  label={t("notifications.prefs.email", { defaultValue: "Email notifications" })}
+                  description={t("notifications.prefs.emailDesc", { defaultValue: "Receive important updates by email" })}
+                  checked={notifs.emailEnabled}
+                  onChange={(v) => setNotifs((p) => ({ ...p, emailEnabled: v }))}
+                />
+              </SettingsToggleGroup>
+
+              <SettingsToggleGroup
+                title={t("notifications.prefs.emailTopics", { defaultValue: "Email topics" })}
+              >
+                <SettingsToggle
+                  variant="row"
+                  label={t("settings.notifLessons", { defaultValue: "Lesson reminders" })}
+                  description={t("settings.notifLessonsDesc", { defaultValue: "Email before upcoming appointments" })}
+                  checked={notifs.emailLessons}
+                  onChange={(v) => setNotifs((p) => ({ ...p, emailLessons: v }))}
+                />
+                <SettingsToggle
+                  variant="row"
+                  label={t("settings.notifMaterials", { defaultValue: "New materials" })}
+                  description={t("settings.notifMaterialsDesc", { defaultValue: "When new study resources are added" })}
+                  checked={notifs.emailMaterials}
+                  onChange={(v) => setNotifs((p) => ({ ...p, emailMaterials: v }))}
+                />
+                <SettingsToggle
+                  variant="row"
+                  label={t("settings.notifMarketing", { defaultValue: "Tips & updates" })}
+                  description={t("settings.notifMarketingDesc", { defaultValue: "Learning tips and platform news" })}
+                  checked={notifs.emailMarketing}
+                  onChange={(v) => setNotifs((p) => ({ ...p, emailMarketing: v }))}
+                />
+              </SettingsToggleGroup>
+
+              <SettingsToggleGroup
+                title={t("notifications.prefs.categories", { defaultValue: "In-app categories" })}
+              >
                 {NOTIFICATION_CATEGORIES.map((cat) => (
                   <SettingsToggle
                     key={cat}
+                    variant="row"
                     label={categoryLabel(cat, i18n.language)}
                     checked={notifs.categories[cat]}
                     onChange={(v) =>
@@ -507,7 +534,7 @@ export function StudentSettingsPanel({ role = "student" }: StudentSettingsPanelP
                     }
                   />
                 ))}
-              </div>
+              </SettingsToggleGroup>
             </div>
             <SettingsSaveBar saving={saving} onSave={() => void handleSaveNotifications()} />
           </SettingsCard>
@@ -550,7 +577,9 @@ export function StudentSettingsPanel({ role = "student" }: StudentSettingsPanelP
         )}
 
         {isTeacher && tab === "teaching" && (
-          <SettingsCard
+          <>
+            <ZoomConnectCard />
+            <SettingsCard
             title={t("settings.teachingTools", { defaultValue: "Teaching tools" })}
             description={t("settings.teachingToolsDesc", { defaultValue: "Quick links to your teaching workspace" })}
             icon={BookOpen}
@@ -574,6 +603,7 @@ export function StudentSettingsPanel({ role = "student" }: StudentSettingsPanelP
               ))}
             </div>
           </SettingsCard>
+          </>
         )}
 
         {isTeacher && tab === "subscription" && null}
