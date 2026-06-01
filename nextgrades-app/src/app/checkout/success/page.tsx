@@ -39,7 +39,7 @@ function SuccessContent() {
   return (
     <div className={`min-h-screen flex flex-col ${theme === "dark" ? "bg-[#0D1B2A]" : "bg-[#FAFAFA]"}`}>
       <Navbar />
-      <main className="flex-1 pt-28 pb-16 px-4 flex items-center justify-center">
+      <main className="flex flex-1 items-center justify-center px-4 pb-16 pt-site-nav md:pt-28">
         <Card className={`p-10 max-w-md w-full text-center ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
           <div className="w-20 h-20 rounded-full bg-[#22C55E]/20 flex items-center justify-center mx-auto mb-6">
             <CheckCircle2 className="w-10 h-10 text-[#22C55E]" />

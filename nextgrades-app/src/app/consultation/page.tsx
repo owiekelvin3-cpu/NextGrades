@@ -125,12 +125,12 @@ export default function ConsultationPage() {
   };
 
   return (
-    <div className={`min-h-screen flex flex-col ${isDark ? "bg-[#0D1B2A]" : "bg-[#FAFAFA]"}`}>
+    <div className={`marketing-page-root min-h-screen flex flex-col ${isDark ? "bg-[#0D1B2A]" : "bg-[#FAFAFA]"}`}>
       <Navbar />
 
       <main className="flex-1">
         {/* Hero */}
-        <section className={`pt-28 pb-16 relative overflow-hidden ${isDark ? "bg-[#0D1B2A]" : "bg-white"}`}>
+        <section className={`relative overflow-hidden pt-site-nav pb-16 md:pt-28 ${isDark ? "bg-[#0D1B2A]" : "bg-white"}`}>
           <div className="absolute inset-0 pointer-events-none">
             <div className="absolute top-20 right-0 w-[500px] h-[500px] bg-[#D4AF37]/10 rounded-full blur-3xl" />
             <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#4DA3FF]/5 rounded-full blur-3xl" />

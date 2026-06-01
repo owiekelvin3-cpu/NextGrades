@@ -413,6 +413,33 @@ body {
   }
 }
 
+/* Horizontal snap row — resources tabs, subject carousels */
+.snap-carousel {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.snap-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.snap-carousel > * {
+  flex-shrink: 0;
+  scroll-snap-align: start;
+}
+
+.marketing-page-root {
+  display: flex;
+  min-height: 100dvh;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
 /* Mobile card tap feedback */
 .mobile-card-press {
   transition: transform 0.15s ease, box-shadow 0.15s ease;

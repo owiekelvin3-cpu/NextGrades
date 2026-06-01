@@ -288,10 +288,10 @@ function LoginContent() {
 
   return (
     <>
-      <div className={cn("flex min-h-screen flex-col", isDark ? "bg-[#0D1B2A]" : "bg-[#F0F2F5]")}>
+      <div className={cn("marketing-page-root flex min-h-screen flex-col", isDark ? "bg-[#0D1B2A]" : "bg-[#F0F2F5]")}>
         <Navbar />
 
-        <main className="flex-1 pt-[4.5rem] md:pt-20">
+        <main className="flex-1 pt-site-nav md:pt-20">
           {/* Mobile — bottom sheet */}
           <div className="md:hidden">
             <AuthMobileSheet

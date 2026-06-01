@@ -34,7 +34,7 @@ export function LegalDocumentPage({ namespace }: LegalDocumentPageProps) {
 
       <main className="flex-1">
         {/* Hero */}
-        <section className={cn("border-b pt-28 pb-12", mt.isDark ? "border-white/10 bg-[#112240]" : "border-gray-100 bg-[#F5F6F8]")}>
+        <section className={cn("border-b pt-site-nav pb-12 md:pt-28", mt.isDark ? "border-white/10 bg-[#112240]" : "border-gray-100 bg-[#F5F6F8]")}>
           <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
             <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#D4AF37]/30 bg-[#D4AF37]/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-[#D4AF37]">
               <FileText className="h-3.5 w-3.5" />

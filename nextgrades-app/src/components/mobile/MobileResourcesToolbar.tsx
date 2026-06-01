@@ -84,7 +84,7 @@ export function MobileResourcesToolbar({ catalog, resultCount }: Props) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm lg:hidden"
+              className="fixed inset-0 z-[60] bg-black/40 backdrop-blur-sm lg:hidden"
               onClick={() => setFiltersOpen(false)}
             />
             <motion.div
@@ -92,7 +92,7 @@ export function MobileResourcesToolbar({ catalog, resultCount }: Props) {
               animate={{ y: 0 }}
               exit={{ y: "100%" }}
               transition={{ type: "spring", damping: 28, stiffness: 320 }}
-              className="fixed inset-x-0 bottom-0 z-50 max-h-[85dvh] overflow-y-auto rounded-t-3xl border-t border-border-default bg-surface-elevated p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] lg:hidden"
+              className="fixed inset-x-0 bottom-0 z-[70] max-h-[85dvh] overflow-y-auto rounded-t-3xl border-t border-border-default bg-surface-elevated p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] lg:hidden"
             >
               <div className="mb-4 flex items-center justify-between">
                 <h3 className="text-lg font-bold text-foreground">

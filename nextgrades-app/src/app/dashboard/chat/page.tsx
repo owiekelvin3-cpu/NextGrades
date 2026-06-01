@@ -2,7 +2,7 @@
 
 import { ChatPanel } from "@/components/chat/ChatPanel";
 import { Sidebar } from "@/components/dashboard/Sidebar";
-import { MobileBottomNav, MOBILE_BOTTOM_NAV_PADDING } from "@/components/mobile/MobileBottomNav";
+import { MobileTopBar } from "@/components/mobile/MobileTopBar";
 import { useEffect, useState } from "react";
 import { getSessionUserId } from "@/lib/dashboard/data";
 import { supabase } from "@/lib/supabase/client";
@@ -29,17 +29,18 @@ export default function ChatPage() {
       style={{ ["--sidebar-width" as string]: `${sidebarWidth}px` }}
     >
       <Sidebar role={role} />
+
       <div
         className={cn(
-          "flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden transition-[margin-left] duration-300 ease-out md:ml-[var(--sidebar-width)]",
-          MOBILE_BOTTOM_NAV_PADDING
+          "flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden transition-[margin-left] duration-300 ease-out md:ml-[var(--sidebar-width)]"
         )}
       >
-        <div className="flex-1 overflow-hidden">
-          <ChatPanel open={true} fullPage onClose={() => {}} />
+        <MobileTopBar role={role} className="md:hidden" />
+
+        <div className="flex min-h-0 flex-1 flex-col overflow-hidden pt-0 md:pt-0">
+          <ChatPanel open fullPage onClose={() => {}} />
         </div>
       </div>
-      <MobileBottomNav role={role === "admin" ? "admin" : role === "teacher" ? "teacher" : "student"} />
     </div>
   );
 }

@@ -88,14 +88,14 @@ function PricingContent() {
   };
 
   return (
-    <div className={cn("flex min-h-screen flex-col", mt.page)}>
+    <div className={cn("marketing-page-root flex min-h-screen flex-col", mt.page)}>
       <Navbar />
 
       <main className="flex-1">
         {/* Light hero + billing toggle — reference layout */}
         <section
           className={cn(
-            "relative overflow-hidden pt-28 pb-10 md:pb-14",
+            "relative overflow-hidden pt-site-nav pb-10 md:pb-14 md:pt-28",
             mt.isDark
               ? "bg-gradient-to-b from-[#0D1B2A] via-[#112240] to-[#0D1B2A]"
               : "bg-gradient-to-b from-[#EEF2F8] via-[#F8FAFC] to-white"
@@ -239,7 +239,7 @@ function PricingContent() {
                       type="button"
                       onClick={() => setOpenFaq(isOpen ? null : i)}
                       className={cn(
-                        "flex w-full items-center justify-between gap-4 py-4 text-left touch-manipulation",
+                        "flex min-h-12 w-full items-center justify-between gap-4 py-3 text-left touch-manipulation",
                         !isOpen && "border-b",
                         !isOpen && (mt.isDark ? "border-white/10" : "border-gray-200/80")
                       )}

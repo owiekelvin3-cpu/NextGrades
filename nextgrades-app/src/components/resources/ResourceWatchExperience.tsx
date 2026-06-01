@@ -132,7 +132,7 @@ export function ResourceWatchExperience({ resourceId }: { resourceId: string }) 
     <div className={cn("min-h-screen flex flex-col", appShell.sectionSubtle)}>
       <Navbar />
 
-      <main className="flex-1 pt-24 pb-12">
+      <main className="flex-1 pb-12 pt-site-nav md:pt-28">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <Link
             href={backHref}

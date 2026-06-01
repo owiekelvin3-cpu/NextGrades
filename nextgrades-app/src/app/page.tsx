@@ -62,7 +62,7 @@ export default function Home() {
   }, [t, i18n.language]);
 
   return (
-    <div className={`min-h-screen flex flex-col ${theme === "dark" ? "bg-[#0D1B2A]" : "bg-white"}`}>
+    <div className={`marketing-page-root min-h-screen flex flex-col ${theme === "dark" ? "bg-[#0D1B2A]" : "bg-white"}`}>
       <Navbar />
 
       <main className="flex-1">

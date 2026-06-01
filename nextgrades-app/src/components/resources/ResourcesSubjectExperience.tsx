@@ -53,7 +53,7 @@ export function ResourcesSubjectExperience({ subjectSlug, subjectName, classLeve
           <MarketingImage src={ui.heroImage} alt="" containerClassName="absolute inset-0" className="object-cover" priority />
         </div>
         <div className="absolute inset-0 bg-gradient-to-r from-[#0D1B2A] via-[#0D1B2A]/90 to-[#0D1B2A]/60" />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-12">
+        <div className="relative mx-auto max-w-7xl px-4 pb-12 pt-site-nav sm:px-6 md:pt-28 lg:px-8">
           <p className="text-sm text-gray-400 mb-2">
             Home › Resources › {className ? "Learning materials" : subjectName} › {title}
           </p>

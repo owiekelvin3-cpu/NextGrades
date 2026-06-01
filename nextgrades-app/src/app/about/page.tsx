@@ -117,12 +117,12 @@ export default function AboutPage() {
   );
 
   return (
-    <div className={cn("flex min-h-screen flex-col", mt.page)}>
+    <div className={cn("marketing-page-root flex min-h-screen flex-col", mt.page)}>
       <Navbar />
 
       <main className="flex-1">
         {/* Hero — always dark */}
-        <section className="relative overflow-hidden bg-[#0D1B2A] pt-28 text-white">
+        <section className="relative overflow-hidden bg-[#0D1B2A] pt-site-nav text-white md:pt-28">
           <div className="pointer-events-none absolute inset-0">
             <div className="absolute -right-20 top-0 h-[500px] w-[500px] rounded-full bg-[#D4AF37]/8 blur-3xl" />
             <div className="absolute bottom-0 left-0 h-72 w-72 rounded-full bg-[#4DA3FF]/8 blur-3xl" />
@@ -169,7 +169,7 @@ export default function AboutPage() {
                     sizes="(max-width: 768px) 100vw, 50vw"
                   />
                 </div>
-                <div className="absolute -bottom-6 -left-4 max-w-xs rounded-xl border border-white/10 bg-[#0D1B2A]/90 p-5 shadow-xl backdrop-blur-md sm:-left-8">
+                <div className="mt-4 max-w-none rounded-xl border border-white/10 bg-[#0D1B2A]/90 p-5 shadow-xl backdrop-blur-md md:absolute md:-bottom-6 md:-left-8 md:mt-0 md:max-w-xs">
                   <Quote className="mb-2 h-6 w-6 text-[#D4AF37]" />
                   <p className="text-sm italic leading-relaxed text-gray-200">&ldquo;{t("aboutPage.heroQuote")}&rdquo;</p>
                   <p className="mt-2 text-xs text-gray-500">— {t("aboutPage.heroQuoteAuthor")}</p>

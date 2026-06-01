@@ -80,7 +80,7 @@ export default function ProgramsPage() {
 
   return (
     <div
-      className={`min-h-screen flex flex-col ${
+      className={`marketing-page-root min-h-screen flex flex-col ${
         theme === "dark" ? "bg-[#0D1B2A]" : "bg-[#FAFAFA]"
       }`}
     >
@@ -88,7 +88,7 @@ export default function ProgramsPage() {
 
       <main className="flex-1">
         <section
-          className={`pt-32 pb-12 relative overflow-hidden ${
+          className={`relative overflow-hidden pt-site-nav pb-12 md:pt-28 ${
             theme === "dark" ? "bg-[#0D1B2A] text-white" : "bg-white text-[#0D1B2A]"
           }`}
         >
@@ -141,7 +141,7 @@ export default function ProgramsPage() {
                 </Button>
               </div>
               <div className="hero-enter hero-enter-delay-2">
-                <div className="rounded-2xl h-[450px] overflow-hidden">
+                <div className="h-56 overflow-hidden rounded-2xl sm:h-72 md:h-[450px]">
                   <MarketingImage
                     src={programsHeroImage}
                     alt={t("images.studentStudying")}
@@ -297,17 +297,17 @@ export default function ProgramsPage() {
               {t("programsPage.compareTitle")}
             </h2>
             <div
-              className={`overflow-hidden rounded-xl border ${
+              className={`responsive-table-wrap rounded-xl border ${
                 theme === "dark" ? "border-white/10" : "border-gray-200"
               }`}
             >
-              <table className="w-full">
+              <table className="w-full min-w-[520px] text-sm">
                 <thead className={theme === "dark" ? "bg-[#112240]" : "bg-gray-50"}>
                   <tr>
-                    <th className="px-6 py-4 text-left text-sm font-semibold">{compareHeaders.features}</th>
-                    <th className="px-6 py-4 text-center text-sm font-semibold">{compareHeaders.oneOnOne}</th>
-                    <th className="px-6 py-4 text-center text-sm font-semibold">{compareHeaders.group}</th>
-                    <th className="px-6 py-4 text-center text-sm font-semibold bg-[#D4AF37]/10 text-[#D4AF37]">
+                    <th className="px-3 py-3 text-left text-xs font-semibold sm:px-6 sm:py-4 sm:text-sm">{compareHeaders.features}</th>
+                    <th className="px-3 py-3 text-center text-xs font-semibold sm:px-6 sm:py-4 sm:text-sm">{compareHeaders.oneOnOne}</th>
+                    <th className="px-3 py-3 text-center text-xs font-semibold sm:px-6 sm:py-4 sm:text-sm">{compareHeaders.group}</th>
+                    <th className="bg-[#D4AF37]/10 px-3 py-3 text-center text-xs font-semibold text-[#D4AF37] sm:px-6 sm:py-4 sm:text-sm">
                       {compareHeaders.math}
                     </th>
                   </tr>
@@ -323,19 +323,19 @@ export default function ProgramsPage() {
                       className={theme === "dark" ? "hover:bg-white/5" : "hover:bg-gray-50"}
                     >
                       <td
-                        className={`px-6 py-4 text-sm font-medium ${
+                        className={`px-3 py-3 text-xs font-medium sm:px-6 sm:py-4 sm:text-sm ${
                           theme === "dark" ? "text-gray-300" : "text-gray-700"
                         }`}
                       >
                         {row.label}
                       </td>
-                      <td className="px-6 py-4 text-center">
+                      <td className="px-3 py-3 text-center sm:px-6 sm:py-4">
                         <CompareCell value={row.c1} />
                       </td>
-                      <td className="px-6 py-4 text-center">
+                      <td className="px-3 py-3 text-center sm:px-6 sm:py-4">
                         <CompareCell value={row.c2} />
                       </td>
-                      <td className="px-6 py-4 text-center bg-[#D4AF37]/5">
+                      <td className="bg-[#D4AF37]/5 px-3 py-3 text-center sm:px-6 sm:py-4">
                         {row.c3 === true ? (
                           <CheckCircle2 className="w-5 h-5 text-[#D4AF37] mx-auto" />
                         ) : (

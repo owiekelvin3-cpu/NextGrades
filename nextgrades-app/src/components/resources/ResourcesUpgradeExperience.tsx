@@ -51,7 +51,7 @@ export function ResourcesUpgradeExperience() {
 
   return (
     <>
-      <section className="relative overflow-hidden bg-[#0D1B2A] text-white pt-28 pb-16">
+      <section className="relative overflow-hidden bg-[#0D1B2A] pb-16 pt-site-nav text-white md:pt-28">
         <div className="absolute inset-0 opacity-20">
           <MarketingImage src={heroImage} alt="" containerClassName="absolute inset-0" className="object-cover" />
         </div>

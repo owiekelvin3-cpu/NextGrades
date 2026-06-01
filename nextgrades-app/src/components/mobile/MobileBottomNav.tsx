@@ -149,7 +149,7 @@ function NavTab({
         </span>
         <span
           className={cn(
-            "max-w-full truncate text-[9px] leading-tight sm:text-[10px]",
+            "max-w-full truncate text-[10px] leading-tight",
             active ? "font-semibold text-[#D4AF37]" : "font-medium text-text-muted"
           )}
         >

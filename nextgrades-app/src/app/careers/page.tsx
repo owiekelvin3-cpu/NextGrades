@@ -23,7 +23,7 @@ export default function CareersPage() {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className="flex-1 pt-28 pb-16">
+      <main className="flex-1 pt-site-nav pb-16 md:pt-28">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className={`text-4xl font-bold text-center mb-4 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
             {t("careersPage.title")}

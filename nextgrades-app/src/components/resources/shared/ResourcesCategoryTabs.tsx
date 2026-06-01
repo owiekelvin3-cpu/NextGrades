@@ -38,7 +38,7 @@ export function ResourcesCategoryTabs({ active, onChange, className }: Props) {
                 type="button"
                 onClick={() => onChange(tab.id)}
                 className={cn(
-                  "min-h-10 rounded-full px-4 py-2 text-sm font-semibold whitespace-nowrap transition-colors",
+                  "min-h-11 rounded-full px-4 py-2.5 text-sm font-semibold whitespace-nowrap transition-colors touch-manipulation",
                   isActive
                     ? "bg-[#0D1B2A] text-white shadow-md dark:bg-[#D4AF37] dark:text-[#0D1B2A]"
                     : "border border-border-default bg-surface-subtle text-text-muted"

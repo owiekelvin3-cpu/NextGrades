@@ -85,7 +85,7 @@ export default function Footer() {
           </div>
           <Link
             href="/consultation"
-            className="inline-flex shrink-0 items-center justify-center rounded-xl bg-[#D4AF37] px-6 py-3 text-sm font-semibold text-[#0D1B2A] shadow-md transition hover:bg-[#c9a030] sm:self-center"
+            className="inline-flex min-h-[52px] w-full shrink-0 items-center justify-center rounded-xl bg-[#D4AF37] px-6 py-3 text-sm font-semibold text-[#0D1B2A] shadow-md transition hover:bg-[#c9a030] touch-manipulation sm:w-auto sm:self-center"
           >
             {t("navbar.freeConsultation")}
           </Link>

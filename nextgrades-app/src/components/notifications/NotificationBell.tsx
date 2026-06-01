@@ -59,7 +59,7 @@ export function NotificationBell({ className, variant = "dark" }: Props) {
         type="button"
         onClick={() => setOpen((v) => !v)}
         className={cn(
-          "relative rounded-xl p-2.5 transition-colors",
+          "relative flex min-h-12 min-w-12 items-center justify-center rounded-xl transition-colors touch-manipulation",
           onDarkBg
             ? "text-gray-300 hover:bg-white/10 hover:text-white"
             : "text-gray-500 hover:bg-gray-100 hover:text-[#0D1B2A]"

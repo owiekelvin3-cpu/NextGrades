@@ -116,12 +116,12 @@ export default function ContactPage() {
   ];
 
   return (
-    <div className={cn("min-h-screen flex flex-col", mt.page)}>
+    <div className={cn("marketing-page-root min-h-screen flex flex-col", mt.page)}>
       <Navbar />
 
       <main className="flex-1">
         {/* Hero */}
-        <section className="relative overflow-hidden bg-[#0D1B2A] pt-28 pb-20 text-white">
+        <section className="relative overflow-hidden bg-[#0D1B2A] pt-site-nav pb-20 text-white md:pt-28">
           <div className="pointer-events-none absolute inset-0">
             <div className="absolute -right-20 top-10 h-72 w-72 rounded-full bg-[#D4AF37]/15 blur-3xl" />
             <div className="absolute bottom-0 left-0 h-64 w-64 rounded-full bg-[#4DA3FF]/10 blur-3xl" />
