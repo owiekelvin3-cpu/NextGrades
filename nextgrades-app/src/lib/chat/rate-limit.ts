@@ -27,8 +27,8 @@ export function sanitizeInput(text: string, maxLength = 8000): string {
     .slice(0, maxLength);
 }
 
-export function validateMessage(text: string): string | null {
-  if (!text.trim()) return "Message cannot be empty";
+export function validateMessage(text: string, hasAttachments = false): string | null {
+  if (!text.trim() && !hasAttachments) return "Message cannot be empty";
   if (text.length > 8000) return "Message too long (max 8000 characters)";
   return null;
 }

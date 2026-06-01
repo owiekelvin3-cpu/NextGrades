@@ -18,6 +18,7 @@ import { getResourcesSubjectImage } from "@/lib/resources/images";
 import { LoadingBlock } from "@/components/dashboard/LoadingBlock";
 import { MobileResourcesToolbar } from "@/components/mobile/MobileResourcesToolbar";
 import { MobileResourceCard } from "@/components/mobile/MobileResourceCard";
+import { RevealOnScroll } from "@/components/marketing/RevealOnScroll";
 import { appShell } from "@/lib/theme/shell";
 
 export function ResourcesHubExperience() {
@@ -42,11 +43,11 @@ export function ResourcesHubExperience() {
     <>
       <ResourcesCategoryTabs active={activeTab} onChange={handleTabChange} />
 
-      <section className={`${appShell.sectionSubtle} py-6 md:py-10`}>
+      <section className={`${appShell.sectionSubtle} py-5 md:py-10`}>
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <MobileResourcesToolbar catalog={catalog} resultCount={catalog.resources.length} />
 
-          <div className="grid gap-8 lg:grid-cols-4">
+          <div className="grid gap-6 lg:grid-cols-4 lg:gap-8">
             <div className="hidden lg:col-span-1 lg:block">
               <ResourcesFilterSidebar
                 subjects={catalog.subjects}
@@ -100,6 +101,7 @@ export function ResourcesHubExperience() {
               ) : (
                 <>
                   {displayFree.length > 0 && (
+                    <RevealOnScroll>
                     <div>
                       <SectionHeader
                         title={t("resources.freeTitle", { defaultValue: "Free content" })}
@@ -109,7 +111,7 @@ export function ResourcesHubExperience() {
                         actionHref="/resources?access=free"
                         actionLabel={t("resources.freeShowAll", { defaultValue: "Show all" })}
                       />
-                      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
                         {displayFree.map((r) => (
                           <div key={r.id} className="hidden sm:block">
                             <ResourceHubCard
@@ -132,9 +134,11 @@ export function ResourcesHubExperience() {
                         ))}
                       </div>
                     </div>
+                    </RevealOnScroll>
                   )}
 
                   {displayPremium.length > 0 && (
+                    <RevealOnScroll delay={60}>
                     <div>
                       <SectionHeader
                         title={t("resources.premiumTitle", { defaultValue: "Premium content" })}
@@ -144,7 +148,7 @@ export function ResourcesHubExperience() {
                         actionHref="/resources/upgrade"
                         actionLabel={t("resources.premiumShowAll", { defaultValue: "Show all" })}
                       />
-                      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
                         {displayPremium.map((r) => (
                           <div key={r.id} className="hidden sm:block">
                             <ResourceHubCard
@@ -167,19 +171,42 @@ export function ResourcesHubExperience() {
                         ))}
                       </div>
                     </div>
+                    </RevealOnScroll>
                   )}
 
                   {catalog.resources.length === 0 && (
-                    <div className="rounded-2xl border border-dashed border-gray-200 bg-white p-12 text-center text-gray-500">
+                    <div className="rounded-2xl border border-dashed border-gray-200 bg-white p-8 text-center text-gray-500 sm:p-12">
                       {t("resources.noResults", { defaultValue: "No resources match your filters." })}
                     </div>
                   )}
 
+                  <RevealOnScroll delay={80}>
                   <div>
                     <SectionHeader
                       title={t("resources.resourcesBySubject", { defaultValue: "Resources by subject" })}
                     />
-                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+                    {/* Mobile — horizontal subject carousel */}
+                    <div className="snap-carousel pb-1 sm:hidden">
+                      {catalog.subjects.slice(0, 5).map((s, index) => {
+                        const slug = s.slug || s.id;
+                        const ui = getSubjectUi(slug);
+                        const Icon = ui.icon;
+                        return (
+                          <div key={s.id} className="w-[78vw] max-w-[300px]">
+                            <ResourceSubjectTile
+                              name={s.name}
+                              slug={slug}
+                              count={catalog.subjectCounts.get(slug) ?? 0}
+                              color={ui.color}
+                              icon={<Icon className="h-5 w-5" />}
+                              imageUrl={getResourcesSubjectImage(slug, index)}
+                            />
+                          </div>
+                        );
+                      })}
+                    </div>
+                    {/* Desktop grid */}
+                    <div className="hidden gap-4 sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
                       {catalog.subjects.slice(0, 5).map((s, index) => {
                         const slug = s.slug || s.id;
                         const ui = getSubjectUi(slug);
@@ -198,9 +225,14 @@ export function ResourcesHubExperience() {
                       })}
                     </div>
                   </div>
+                  </RevealOnScroll>
 
-                  <ResourcesCtaBanner />
-                  <ResourcesFeatureRow />
+                  <RevealOnScroll delay={100}>
+                    <ResourcesCtaBanner />
+                  </RevealOnScroll>
+                  <RevealOnScroll delay={120}>
+                    <ResourcesFeatureRow />
+                  </RevealOnScroll>
                 </>
               )}
             </div>

@@ -2,6 +2,25 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { requireTeacherOrAdmin } from "@/lib/auth/auth-utils";
 
+type MaterialStats = {
+  id: string;
+  title: string;
+  view_count: number | null;
+  download_count: number | null;
+  student_reach: number | null;
+  revenue_generated: number | null;
+};
+
+type AnalyticsEvent = {
+  created_at: string;
+  action: string;
+  resource_id: string;
+};
+
+function errorMessage(error: unknown, fallback: string) {
+  return error instanceof Error ? error.message : fallback;
+}
+
 // GET - Fetch analytics data for the current teacher
 export async function GET(request: Request) {
   try {
@@ -33,12 +52,14 @@ export async function GET(request: Request) {
 
     if (resourcesError) throw resourcesError;
 
+    const materialRows = (resources ?? []) as MaterialStats[];
+
     // Calculate totals
-    const totalUploads = resources?.length || 0;
-    const totalViews = resources?.reduce((sum: number, r: any) => sum + (r.view_count || 0), 0) || 0;
-    const totalDownloads = resources?.reduce((sum: number, r: any) => sum + (r.download_count || 0), 0) || 0;
-    const totalStudentsReached = resources?.reduce((sum: number, r: any) => sum + (r.student_reach || 0), 0) || 0;
-    const totalRevenue = resources?.reduce((sum: number, r: any) => sum + (r.revenue_generated || 0), 0) || 0;
+    const totalUploads = materialRows.length;
+    const totalViews = materialRows.reduce((sum, r) => sum + (r.view_count || 0), 0);
+    const totalDownloads = materialRows.reduce((sum, r) => sum + (r.download_count || 0), 0);
+    const totalStudentsReached = materialRows.reduce((sum, r) => sum + (r.student_reach || 0), 0);
+    const totalRevenue = materialRows.reduce((sum, r) => sum + (r.revenue_generated || 0), 0);
 
     // Get analytics data for the period
     let analyticsQuery = supabase
@@ -50,7 +71,7 @@ export async function GET(request: Request) {
       analyticsQuery = analyticsQuery.eq("resource_id", resourceId);
     } else {
       // Only get analytics for teacher's resources
-      const resourceIds = resources?.map((r: any) => r.id) || [];
+      const resourceIds = materialRows.map((r) => r.id);
       if (resourceIds.length > 0) {
         analyticsQuery = analyticsQuery.in("resource_id", resourceIds);
       } else {
@@ -65,13 +86,14 @@ export async function GET(request: Request) {
     // Group analytics by date for charts
     const analyticsByDate: Record<string, { views: number; downloads: number }> = {};
     
-    analytics?.forEach((a: any) => {
-      const date = new Date(a.created_at).toISOString().split('T')[0];
+    analytics?.forEach((a) => {
+      const event = a as AnalyticsEvent;
+      const date = new Date(event.created_at).toISOString().split("T")[0];
       if (!analyticsByDate[date]) {
         analyticsByDate[date] = { views: 0, downloads: 0 };
       }
-      if (a.action === 'view') analyticsByDate[date].views++;
-      if (a.action === 'download') analyticsByDate[date].downloads++;
+      if (event.action === "view") analyticsByDate[date].views++;
+      if (event.action === "download") analyticsByDate[date].downloads++;
     });
 
     // Get most viewed resources
@@ -87,7 +109,7 @@ export async function GET(request: Request) {
       .from("resource_analytics")
       .select("created_at, action, resource_id, materials(title, type)")
       .gte("created_at", daysAgo.toISOString())
-      .in("resource_id", resources?.map((r: any) => r.id) || [])
+      .in("resource_id", materialRows.map((r) => r.id))
       .order("created_at", { ascending: false })
       .limit(10);
 
@@ -106,10 +128,10 @@ export async function GET(request: Request) {
       mostViewed: mostViewed || [],
       recentActivity: recentActivity || []
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error fetching analytics:", error);
     return NextResponse.json(
-      { error: error.message || "Failed to fetch analytics" },
+      { error: errorMessage(error, "Failed to fetch analytics") },
       { status: 500 }
     );
   }

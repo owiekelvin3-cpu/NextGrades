@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { ImageIcon, Upload, Loader2, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { useToast } from "@/context/ToastContext";
+import { cmsFetch } from "@/lib/cms/cms-fetch";
 
 type Props = {
   value: string;
@@ -23,11 +24,17 @@ export function ImageFieldEditor({ value, onChange, inputClass, isDark, label }:
     try {
       const form = new FormData();
       form.append("file", file);
-      const res = await fetch("/api/cms/media", { method: "POST", body: form });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Upload failed");
-      onChange(data.url);
-      toast.success("Image uploaded");
+      const res = await cmsFetch("/api/cms/media", { method: "POST", body: form });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        throw new Error(typeof data.error === "string" ? data.error : "Upload failed");
+      }
+      if (typeof data.url === "string" && data.url) {
+        onChange(data.url);
+        toast.success("Photo added — tap Put on live website below when you are done");
+        return;
+      }
+      throw new Error("Upload succeeded but no image URL was returned");
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Upload failed");
     } finally {
@@ -73,7 +80,7 @@ export function ImageFieldEditor({ value, onChange, inputClass, isDark, label }:
         <input
           ref={fileRef}
           type="file"
-          accept="image/jpeg,image/png,image/webp"
+          accept="image/jpeg,image/jpg,image/png,image/webp,image/*"
           className="hidden"
           onChange={(e) => {
             const file = e.target.files?.[0];

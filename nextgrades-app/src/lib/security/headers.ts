@@ -5,7 +5,8 @@ const isProduction = process.env.NODE_ENV === "production";
 /** Security headers applied to all routes via next.config.ts */
 export function securityHeaders(): NonNullable<NextConfig["headers"]> {
   const headers: { key: string; value: string }[] = [
-    { key: "X-Frame-Options", value: "DENY" },
+    /** SAMEORIGIN allows the CMS live-preview iframe (same site); blocks external embeds. */
+    { key: "X-Frame-Options", value: "SAMEORIGIN" },
     { key: "X-Content-Type-Options", value: "nosniff" },
     { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
     {
@@ -24,10 +25,19 @@ export function securityHeaders(): NonNullable<NextConfig["headers"]> {
     });
   }
 
+  const staticCache: { key: string; value: string }[] = [
+    { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+  ];
+
   return async () => [
     {
       source: "/(.*)",
       headers,
+    },
+    /** Long-cache public images (img-*, team, logos, etc.) — extension match avoids invalid :param patterns */
+    {
+      source: "/:path*\\.(png|jpg|jpeg|webp|avif|ico|svg)",
+      headers: staticCache,
     },
   ];
 }

@@ -13,6 +13,9 @@ export type CmsContentRow = {
   field_type: CmsFieldType | string;
   content_value: string | null;
   content_json: { en?: unknown; de?: unknown } | null;
+  draft_json?: { en?: unknown; de?: unknown } | null;
+  published_at?: string | null;
+  updated_by?: string | null;
   sort_order: number;
   help_text?: string | null;
   placeholder?: string | null;
@@ -66,4 +69,39 @@ export type CmsSeo = {
   description: string | null;
   keywords: string | null;
   og_image_url: string | null;
+  og_title?: string | null;
+  og_description?: string | null;
+  twitter_image_url?: string | null;
+  structured_data?: Record<string, unknown> | null;
+};
+
+export type CmsRevision = {
+  id: string;
+  content_id: string | null;
+  i18n_key: string;
+  snapshot_json: { en?: unknown; de?: unknown };
+  created_by: string | null;
+  created_at: string;
+};
+
+export type CmsActivityEntry = {
+  id: string;
+  action: string;
+  entity_type: string;
+  entity_id: string | null;
+  page_name: string | null;
+  summary: string | null;
+  metadata: Record<string, unknown> | null;
+  user_id: string | null;
+  user_email: string | null;
+  created_at: string;
+};
+
+export type CmsPageLayout = {
+  id: string;
+  page_name: string;
+  section_key: string;
+  sort_order: number;
+  is_visible: boolean;
+  config: Record<string, unknown> | null;
 };

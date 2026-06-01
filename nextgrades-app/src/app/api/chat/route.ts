@@ -7,6 +7,7 @@ import { checkRateLimit, sanitizeInput, validateMessage } from "@/lib/chat/rate-
 import { streamChatCompletion, getAvailableModels, isAiConfigured } from "@/lib/chat/ai-client";
 import { resolveModelId } from "@/lib/chat/models";
 import { parseChatResponseLanguage } from "@/lib/chat/languages";
+import { buildUserMessageWithAttachments, type ChatAttachment } from "@/lib/chat/attachments";
 import type { StreamChatRequest } from "@/lib/chat/types";
 import type { ChatCompletionMessageParam } from "openai/resources/chat/completions";
 
@@ -59,10 +60,13 @@ export async function POST(request: Request) {
   }
 
   const message = sanitizeInput(body.message ?? "");
-  const validationError = validateMessage(message);
+  const attachments = (body.attachments ?? []) as ChatAttachment[];
+  const validationError = validateMessage(message, attachments.length > 0);
   if (validationError) {
     return NextResponse.json({ error: validationError }, { status: 400 });
   }
+
+  const fullMessage = buildUserMessageWithAttachments(message, attachments);
 
   const { data: preferenceRow } = await supabase
     .from("chatbot_preferences")
@@ -86,7 +90,7 @@ export async function POST(request: Request) {
         .from("chat_sessions")
         .insert({
           user_id: user.id,
-          title: titleFromMessage(message),
+          title: titleFromMessage(message || attachments[0]?.name || "Chat"),
           material_id: body.materialId ?? null,
           subject_id: body.subjectId ?? null,
           class_id: body.classId ?? null,
@@ -115,7 +119,7 @@ export async function POST(request: Request) {
       await supabase.from("chat_messages").insert({
         session_id: sessionId,
         role: "user",
-        content: message,
+        content: fullMessage,
       });
     }
 
@@ -149,7 +153,7 @@ export async function POST(request: Request) {
       classId: body.classId,
       semester: body.semester,
       topic: body.topic,
-      userMessage: message,
+      userMessage: fullMessage,
       ragEnabled: settings.rag_enabled !== false,
     });
 

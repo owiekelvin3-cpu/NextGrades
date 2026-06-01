@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
@@ -45,12 +45,47 @@ export function QuizPlayer({
   const [secondsLeft, setSecondsLeft] = useState<number | null>(
     quiz.time_limit_minutes ? quiz.time_limit_minutes * 60 : null
   );
-  const [startedAt] = useState(Date.now());
+  const startedAtRef = useRef(0);
+
+  useEffect(() => {
+    startedAtRef.current = Date.now();
+  }, []);
 
   const isDark = theme === "dark";
   const textPrimary = isDark ? "text-white" : "text-[#0D1B2A]";
   const current = questions[index];
   const progress = ((index + 1) / questions.length) * 100;
+
+  const handleSubmit = useCallback(async () => {
+    if (!attemptId || submitting) return;
+    setSubmitting(true);
+    try {
+      const payload = {
+        answers: questions.map((q) => ({
+          question_id: q.id,
+          answer: answers[q.id] || "",
+        })),
+        timeSpentSeconds: Math.round((Date.now() - startedAtRef.current) / 1000),
+      };
+      const res = await fetch(`/api/quiz/attempts/${attemptId}/submit`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      setResult({
+        scorePercent: data.scorePercent,
+        graded: data.graded,
+        questions: data.questions,
+      });
+      setFinished(true);
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Submit failed");
+    } finally {
+      setSubmitting(false);
+    }
+  }, [attemptId, submitting, questions, answers, toast]);
 
   useEffect(() => {
     (async () => {
@@ -78,38 +113,7 @@ export function QuizPlayer({
     }
     const t = setTimeout(() => setSecondsLeft((s) => (s !== null ? s - 1 : s)), 1000);
     return () => clearTimeout(t);
-  }, [secondsLeft, finished]);
-
-  const handleSubmit = async () => {
-    if (!attemptId || submitting) return;
-    setSubmitting(true);
-    try {
-      const payload = {
-        answers: questions.map((q) => ({
-          question_id: q.id,
-          answer: answers[q.id] || "",
-        })),
-        timeSpentSeconds: Math.round((Date.now() - startedAt) / 1000),
-      };
-      const res = await fetch(`/api/quiz/attempts/${attemptId}/submit`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
-      setResult({
-        scorePercent: data.scorePercent,
-        graded: data.graded,
-        questions: data.questions,
-      });
-      setFinished(true);
-    } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Submit failed");
-    } finally {
-      setSubmitting(false);
-    }
-  };
+  }, [secondsLeft, finished, handleSubmit]);
 
   const gradedMap = useMemo(
     () => new Map(result?.graded.map((g) => [g.question_id, g]) || []),

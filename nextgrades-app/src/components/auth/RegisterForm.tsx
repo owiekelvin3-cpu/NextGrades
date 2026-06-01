@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 import { supabase } from "@/lib/supabase/client";
 import { fetchProfileRole, resolvePostAuthRedirect } from "@/lib/auth/redirect";
 import { syncPreferencesAfterAuth } from "@/lib/preferences";
@@ -48,6 +49,7 @@ export function RegisterForm({
   hideInlineError = false,
   onError,
 }: RegisterFormProps) {
+  const { t } = useTranslation();
   const { theme } = useTheme();
   const isSheet = appearance === "sheet";
   const isDark = theme === "dark";
@@ -112,10 +114,18 @@ export function RegisterForm({
 
   const validate = (): boolean => {
     const next: Record<string, string> = {};
-    if (!fullName.trim() || fullName.trim().length < 2) next.fullName = "Enter your full name";
-    if (!email.trim() || !EMAIL_REGEX.test(email.trim())) next.email = "Enter a valid email";
-    if (password.length < 8) next.password = "At least 8 characters";
-    if (password !== confirmPassword) next.confirmPassword = "Passwords do not match";
+    if (!fullName.trim() || fullName.trim().length < 2) {
+      next.fullName = t("login.validationFullName");
+    }
+    if (!email.trim() || !EMAIL_REGEX.test(email.trim())) {
+      next.email = t("login.validationEmail");
+    }
+    if (password.length < 8) {
+      next.password = t("login.validationPasswordLength");
+    }
+    if (password !== confirmPassword) {
+      next.confirmPassword = t("login.validationPasswordMatch");
+    }
     setFieldErrors(next);
     return Object.keys(next).length === 0;
   };
@@ -152,20 +162,20 @@ export function RegisterForm({
         try {
           data = JSON.parse(raw) as Record<string, unknown>;
         } catch {
-          throw new Error("Invalid response from server. Please try again.");
+          throw new Error(t("login.invalidServerResponse"));
         }
       } else if (raw.trimStart().startsWith("<!DOCTYPE") || raw.trimStart().startsWith("<html")) {
         throw new Error(
           res.status === 404
-            ? "Registration API is unavailable. Restart the dev server and try again."
-            : "Server returned an unexpected page instead of JSON. Restart the dev server and try again."
+            ? t("login.registrationApiUnavailable")
+            : t("login.registrationUnexpectedPage")
         );
       } else {
-        throw new Error(raw || "Registration failed");
+        throw new Error(raw || t("login.registrationFailed"));
       }
 
       if (res.status === 409 || data.code === "EMAIL_EXISTS") {
-        reportError("An account with this email already exists. Please sign in to continue.", true);
+        reportError(t("login.emailExists"), true);
         return;
       }
 
@@ -173,7 +183,7 @@ export function RegisterForm({
         throw new Error(
           (typeof data.error === "string" && data.error) ||
             (typeof data.details === "string" && data.details) ||
-            "Registration failed"
+            t("login.registrationFailed")
         );
       }
 
@@ -181,7 +191,7 @@ export function RegisterForm({
 
       if (verificationRequired) {
         setSuccessMessage(
-          typeof data.message === "string" ? data.message : "Check your email to verify your address."
+          typeof data.message === "string" ? data.message : t("login.verifyEmailMessage")
         );
         setSuccess(true);
         return;
@@ -193,14 +203,14 @@ export function RegisterForm({
       });
 
       if (signIn.error || !signIn.data.user) {
-        setSuccessMessage("Account created! Sign in to continue.");
+        setSuccessMessage(t("login.accountCreatedSignIn"));
         setSuccess(true);
         return;
       }
 
       await finishAndRedirect(signIn.data.user.id);
     } catch (err) {
-      reportError(err instanceof Error ? err.message : "Registration failed");
+      reportError(err instanceof Error ? err.message : t("login.registrationFailed"));
     } finally {
       setLoading(false);
     }
@@ -221,14 +231,14 @@ export function RegisterForm({
           <FontAwesomeIcon icon={faCheckCircle} className="mt-0.5 h-5 w-5 shrink-0" />
           <div className="space-y-3">
             <div>
-              <p className="font-semibold">Account created</p>
+              <p className="font-semibold">{t("login.accountCreatedTitle")}</p>
               <p className="mt-1 opacity-90">{successMessage}</p>
             </div>
             <Link
               href={redirectTo ? `/login?redirect=${encodeURIComponent(redirectTo)}&email=${encodeURIComponent(email)}` : `/login?email=${encodeURIComponent(email)}`}
               className="inline-flex items-center gap-2 rounded-lg bg-[#D4AF37] px-4 py-2 text-sm font-semibold text-[#0D1B2A] hover:opacity-90"
             >
-              Sign in now <FontAwesomeIcon icon={faArrowRight} className="h-3 w-3" />
+              {t("login.signInNow")} <FontAwesomeIcon icon={faArrowRight} className="h-3 w-3" />
             </Link>
           </div>
         </div>
@@ -258,9 +268,9 @@ export function RegisterForm({
                   onClick={goToLogin}
                   className="inline-flex items-center gap-2 rounded-lg bg-[#D4AF37] px-4 py-2 text-sm font-semibold text-[#0D1B2A] hover:opacity-90"
                 >
-                  Go to Login <FontAwesomeIcon icon={faArrowRight} className="h-3 w-3" />
+                  {t("login.goToLogin")} <FontAwesomeIcon icon={faArrowRight} className="h-3 w-3" />
                 </button>
-                <span className="text-xs opacity-75">Redirecting in a few seconds…</span>
+                <span className="text-xs opacity-75">{t("login.redirectingSoon")}</span>
               </div>
             )}
           </div>
@@ -279,14 +289,14 @@ export function RegisterForm({
                 role === r ? s.tabActive : s.tabIdle
               )}
             >
-              {r}
+              {r === "student" ? t("login.student") : t("login.teacher")}
             </button>
           ))}
         </div>
       ) : (
       <div className="space-y-3">
         <label className={cn("text-sm font-semibold", isDark ? "text-gray-300" : "text-gray-700")}>
-          I&apos;m registering as
+          {t("login.registeringAs")}
         </label>
         <div className="grid grid-cols-2 gap-3">
           {(["student", "teacher"] as const).map((r) => (
@@ -303,9 +313,11 @@ export function RegisterForm({
                     : "border-gray-200 bg-white hover:border-[#D4AF37]/40"
               )}
             >
-              <p className={cn("text-sm font-bold capitalize", isDark ? "text-white" : "text-[#0D1B2A]")}>{r}</p>
+              <p className={cn("text-sm font-bold", isDark ? "text-white" : "text-[#0D1B2A]")}>
+                {r === "student" ? t("login.student") : t("login.teacher")}
+              </p>
               <p className={cn("mt-1 text-xs", isDark ? "text-gray-400" : "text-gray-500")}>
-                {r === "student" ? "Learn & grow" : "Teach & inspire"}
+                {r === "student" ? t("login.learnAndGrow") : t("login.teachAndInspire")}
               </p>
             </button>
           ))}
@@ -315,7 +327,7 @@ export function RegisterForm({
 
       <div className="space-y-1.5">
         <label htmlFor="reg-full-name" className={cn("text-sm font-medium", isSheet ? s.label : isDark ? "text-gray-300" : "text-gray-700", !isSheet && "font-semibold")}>
-          {isSheet ? "Name" : "Full Name"}
+          {isSheet ? t("login.nameLabel") : t("login.fullName")}
         </label>
         <div className="relative">
           <FontAwesomeIcon icon={faUser} className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
@@ -323,7 +335,7 @@ export function RegisterForm({
             id="reg-full-name"
             type="text"
             autoComplete="name"
-            placeholder="Your full name"
+            placeholder={t("login.fullNamePlaceholder")}
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
             className={cn(inputClass, fieldErrors.fullName && "border-red-500")}
@@ -335,7 +347,7 @@ export function RegisterForm({
 
       <div className="space-y-1.5">
         <label htmlFor="reg-email" className={cn("text-sm font-medium", isSheet ? s.label : isDark ? "text-gray-300" : "text-gray-700", !isSheet && "font-semibold")}>
-          Email
+          {t("login.email")}
         </label>
         <div className="relative">
           <FontAwesomeIcon icon={faEnvelope} className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
@@ -343,7 +355,7 @@ export function RegisterForm({
             id="reg-email"
             type="email"
             autoComplete="email"
-            placeholder="you@example.com"
+            placeholder={t("login.emailPlaceholder")}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className={cn(inputClass, fieldErrors.email && "border-red-500")}
@@ -355,7 +367,7 @@ export function RegisterForm({
 
       <div className="space-y-1.5">
         <label htmlFor="reg-password" className={cn("text-sm font-medium", isSheet ? s.label : isDark ? "text-gray-300" : "text-gray-700", !isSheet && "font-semibold")}>
-          Password
+          {t("login.password")}
         </label>
         <div className="relative">
           <FontAwesomeIcon icon={faLock} className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
@@ -363,7 +375,7 @@ export function RegisterForm({
             id="reg-password"
             type={showPassword ? "text" : "password"}
             autoComplete="new-password"
-            placeholder="At least 8 characters"
+            placeholder={t("login.passwordPlaceholder")}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className={cn(inputClass, "pr-12", fieldErrors.password && "border-red-500")}
@@ -373,7 +385,7 @@ export function RegisterForm({
             type="button"
             onClick={() => setShowPassword(!showPassword)}
             className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#D4AF37]"
-            aria-label={showPassword ? "Hide password" : "Show password"}
+            aria-label={showPassword ? t("login.hidePassword") : t("login.showPassword")}
           >
             <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} className="h-5 w-5" />
           </button>
@@ -383,7 +395,7 @@ export function RegisterForm({
 
       <div className="space-y-1.5">
         <label htmlFor="reg-confirm" className={cn("text-sm font-medium", isSheet ? s.label : isDark ? "text-gray-300" : "text-gray-700", !isSheet && "font-semibold")}>
-          Confirm password
+          {t("login.confirmPassword")}
         </label>
         <div className="relative">
           <FontAwesomeIcon icon={faLock} className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
@@ -391,7 +403,7 @@ export function RegisterForm({
             id="reg-confirm"
             type={showConfirm ? "text" : "password"}
             autoComplete="new-password"
-            placeholder="Repeat your password"
+            placeholder={t("login.confirmPasswordPlaceholder")}
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             className={cn(inputClass, "pr-12", fieldErrors.confirmPassword && "border-red-500")}
@@ -401,7 +413,7 @@ export function RegisterForm({
             type="button"
             onClick={() => setShowConfirm(!showConfirm)}
             className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#D4AF37]"
-            aria-label={showConfirm ? "Hide confirm password" : "Show confirm password"}
+            aria-label={showConfirm ? t("login.hideConfirmPassword") : t("login.showConfirmPassword")}
           >
             <FontAwesomeIcon icon={showConfirm ? faEyeSlash : faEye} className="h-5 w-5" />
           </button>
@@ -418,7 +430,7 @@ export function RegisterForm({
           {loading ? (
             <span className="h-5 w-5 animate-spin rounded-full border-2 border-current border-t-transparent" />
           ) : (
-            "Register"
+            t("login.registerBtn")
           )}
         </button>
       ) : (
@@ -429,20 +441,20 @@ export function RegisterForm({
         className={cn("mt-2 w-full", isSheet ? "!rounded-2xl" : "!rounded-xl")}
         disabled={loading}
       >
-        {loading ? "Creating account…" : "Create Account"}
+        {loading ? t("login.creatingAccount") : t("login.createAccountBtn")}
       </Button>
       )}
 
       {!hideFooterLink && (
       <p className={cn("text-center text-sm", isDark ? "text-gray-400" : "text-gray-600")}>
-        Already have an account?{" "}
+        {t("login.haveAccount")}{" "}
         {onSwitchToLogin ? (
           <button type="button" onClick={onSwitchToLogin} className="font-bold text-[#D4AF37] hover:opacity-90">
-            Sign in
+            {t("login.signIn")}
           </button>
         ) : (
           <Link href="/login" className="font-bold text-[#D4AF37] hover:opacity-90">
-            Sign in
+            {t("login.signIn")}
           </Link>
         )}
       </p>

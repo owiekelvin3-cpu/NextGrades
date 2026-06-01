@@ -1,7 +1,6 @@
 "use client";
 
 import React, { createContext, useCallback, useContext, useMemo, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle2, AlertCircle, Info, X } from "lucide-react";
 
 type ToastType = "success" | "error" | "info";
@@ -40,11 +39,14 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
     setToasts((prev) => prev.filter((t) => t.id !== id));
   }, []);
 
-  const push = useCallback((message: string, type: ToastType = "info") => {
-    const id = `${Date.now()}-${Math.random()}`;
-    setToasts((prev) => [...prev.slice(-4), { id, message, type }]);
-    setTimeout(() => dismiss(id), 4500);
-  }, [dismiss]);
+  const push = useCallback(
+    (message: string, type: ToastType = "info") => {
+      const id = `${Date.now()}-${Math.random()}`;
+      setToasts((prev) => [...prev.slice(-4), { id, message, type }]);
+      setTimeout(() => dismiss(id), 4500);
+    },
+    [dismiss]
+  );
 
   const success = useCallback((m: string) => push(m, "success"), [push]);
   const error = useCallback((m: string) => push(m, "error"), [push]);
@@ -58,32 +60,28 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
   return (
     <ToastContext.Provider value={value}>
       {children}
-      <div className="fixed bottom-4 right-4 z-[10000] flex flex-col gap-2 max-w-sm w-full pointer-events-none px-4 sm:px-0">
-        <AnimatePresence>
-          {toasts.map((t) => {
-            const Icon = icons[t.type];
-            return (
-              <motion.div
-                key={t.id}
-                initial={{ opacity: 0, y: 16, scale: 0.96 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, x: 40 }}
-                className={`pointer-events-auto flex items-start gap-3 px-4 py-3 rounded-xl shadow-2xl ${styles[t.type]}`}
+      <div className="pointer-events-none fixed bottom-4 right-4 z-[10000] flex w-full max-w-sm flex-col gap-2 px-4 sm:px-0">
+        {toasts.map((t) => {
+          const Icon = icons[t.type];
+          return (
+            <div
+              key={t.id}
+              role="status"
+              className={`toast-enter pointer-events-auto flex items-start gap-3 rounded-xl px-4 py-3 shadow-2xl ${styles[t.type]}`}
+            >
+              <Icon className="mt-0.5 h-5 w-5 shrink-0" />
+              <p className="flex-1 text-sm font-medium">{t.message}</p>
+              <button
+                type="button"
+                onClick={() => dismiss(t.id)}
+                className="opacity-80 hover:opacity-100"
+                aria-label="Dismiss"
               >
-                <Icon className="w-5 h-5 flex-shrink-0 mt-0.5" />
-                <p className="text-sm font-medium flex-1">{t.message}</p>
-                <button
-                  type="button"
-                  onClick={() => dismiss(t.id)}
-                  className="opacity-80 hover:opacity-100"
-                  aria-label="Dismiss"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              </motion.div>
-            );
-          })}
-        </AnimatePresence>
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+          );
+        })}
       </div>
     </ToastContext.Provider>
   );

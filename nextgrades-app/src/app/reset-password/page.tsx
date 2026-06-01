@@ -113,8 +113,8 @@ export default function ResetPasswordPage() {
         router.push(path);
         router.refresh();
       }, 2500);
-    } catch (err: any) {
-      setError(err.message || "Failed to reset password");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Failed to reset password");
     } finally {
       setLoading(false);
     }

@@ -1,4 +1,4 @@
-import { ONLINE_IMAGE_FALLBACK } from "./online-assets";
+import { ONLINE_IMAGE_FALLBACK } from "@/lib/marketing-images";
 
 const INVALID_OVERRIDE = /^(none|null|undefined|#|javascript:|data:,|\s*$)/i;
 

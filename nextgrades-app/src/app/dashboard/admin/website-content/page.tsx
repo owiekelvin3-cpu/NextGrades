@@ -1,5 +1,4 @@
-import { WebsiteContentAdmin } from "@/components/admin/cms/WebsiteContentAdmin";
-
+import { redirect } from "next/navigation";
 export default function WebsiteContentPage() {
-  return <WebsiteContentAdmin />;
+  redirect("/portal/admin/website-content");
 }

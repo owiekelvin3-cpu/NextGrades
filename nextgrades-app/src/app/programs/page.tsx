@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Card } from "@/components/ui/Card";
@@ -95,7 +94,7 @@ export default function ProgramsPage() {
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }}>
+              <div className="hero-enter">
                 <div
                   className={`uppercase tracking-[0.2em] text-sm font-semibold mb-4 ${
                     theme === "dark" ? "text-gray-400" : "text-gray-500"
@@ -140,12 +139,8 @@ export default function ProgramsPage() {
                 <Button variant="gold" size="lg" href="/consultation">
                   {t("programsPage.freeConsultation")} <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
-              </motion.div>
-              <motion.div
-                initial={{ opacity: 0, x: 50 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-              >
+              </div>
+              <div className="hero-enter hero-enter-delay-2">
                 <div className="rounded-2xl h-[450px] overflow-hidden">
                   <MarketingImage
                     src={programsHeroImage}
@@ -155,7 +150,7 @@ export default function ProgramsPage() {
                     sizes="(max-width: 1024px) 100vw, 50vw"
                   />
                 </div>
-              </motion.div>
+              </div>
             </div>
           </div>
         </section>

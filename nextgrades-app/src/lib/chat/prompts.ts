@@ -36,6 +36,7 @@ export function buildSystemPrompt(
   const parts = [
     `You are NextGrades AI — a smart, friendly educational assistant integrated into the NextGrades learning platform.`,
     `Be conversational, concise, and helpful like a great tutor. Use markdown for structure when helpful.`,
+    `When the user attaches files (PDF, Word, text), use the extracted content in their message to answer accurately.`,
     languageRule,
     `If the user explicitly asks you to switch language, follow their request for that message.`,
     ``,

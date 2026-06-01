@@ -114,7 +114,7 @@ export function StudentResourcesExperience() {
                 onClick={() => setTab(id)}
                 className={cn(
                   "border-b-2 pb-3 text-sm font-medium transition",
-                  tab === id ? "border-[#D4AF37] text-[#0D1B2A]" : "border-transparent text-gray-500"
+                  tab === id ? "border-[#D4AF37] text-foreground" : "border-transparent text-text-muted"
                 )}
               >
                 {label}
@@ -151,7 +151,7 @@ export function StudentResourcesExperience() {
                 className={cn(
                   mobile.chip,
                   tab === id
-                    ? "bg-[#D4AF37] font-semibold text-[#0D1B2A]"
+                    ? "bg-[#D4AF37] font-semibold text-foreground"
                     : "border border-border-default bg-surface-elevated text-text-muted"
                 )}
               >
@@ -164,7 +164,7 @@ export function StudentResourcesExperience() {
             <select
               value={courseFilter}
               onChange={(e) => setCourseFilter(e.target.value)}
-              className="rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm text-gray-600"
+              className="rounded-xl border border-border-default bg-surface-elevated px-3 py-2 text-sm text-text-muted"
             >
               <option value="">{t("studentDashboard.selectCourse", { defaultValue: "Select course" })}</option>
               {subjectNames.map((s) => (
@@ -176,7 +176,7 @@ export function StudentResourcesExperience() {
             <select
               value={typeFilter}
               onChange={(e) => setTypeFilter(e.target.value)}
-              className="rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm text-gray-600"
+              className="rounded-xl border border-border-default bg-surface-elevated px-3 py-2 text-sm text-text-muted"
             >
               <option value="">{t("studentDashboard.selectType", { defaultValue: "Select type" })}</option>
               {["pdf", "video", "excel", "image", "other"].map((tp) => (
@@ -192,7 +192,7 @@ export function StudentResourcesExperience() {
                 setTypeFilter("");
                 setSearch("");
               }}
-              className="text-sm text-gray-500 hover:text-[#0D1B2A]"
+              className="text-sm text-text-muted hover:text-foreground"
             >
               {t("studentDashboard.resetFilters", { defaultValue: "Reset filters" })}
             </button>
@@ -250,7 +250,7 @@ export function StudentResourcesExperience() {
             <div className="overflow-x-auto">
               <table className="w-full min-w-[640px] text-left text-sm">
                 <thead>
-                  <tr className="border-b border-gray-100 bg-[#FAFBFC] text-xs font-semibold uppercase tracking-wide text-gray-500">
+                  <tr className="border-b border-border-default bg-surface-subtle dark:bg-surface-elevated/[0.03] text-xs font-semibold uppercase tracking-wide text-text-muted">
                     <th className="px-5 py-3">{t("studentDashboard.colMaterial", { defaultValue: "Material" })}</th>
                     <th className="px-5 py-3">{t("studentDashboard.colCourse", { defaultValue: "Course" })}</th>
                     <th className="px-5 py-3">{t("studentDashboard.colType", { defaultValue: "Type" })}</th>
@@ -261,33 +261,33 @@ export function StudentResourcesExperience() {
                 <tbody className="divide-y divide-gray-50">
                   {pageItems.length === 0 ? (
                     <tr>
-                      <td colSpan={5} className="px-5 py-12 text-center text-gray-500">
+                      <td colSpan={5} className="px-5 py-12 text-center text-text-muted">
                         {t("studentDashboard.noMaterials")}
                       </td>
                     </tr>
                   ) : (
                     pageItems.map((m) => (
-                      <tr key={m.id} className="hover:bg-gray-50/50">
+                      <tr key={m.id} className="hover:bg-surface-subtle dark:bg-white/[0.04]/50">
                         <td className="px-5 py-4">
                           <div className="flex items-center gap-3">
                             <div className={cn("flex h-9 w-9 shrink-0 items-center justify-center rounded-lg", materialTypeColor(m.type))}>
                               <MaterialIcon type={m.type} />
                             </div>
                             <div className="min-w-0">
-                              <p className="truncate font-medium text-[#0D1B2A]">{m.title}</p>
-                              <p className="text-xs text-gray-400">
+                              <p className="truncate font-medium text-foreground">{m.title}</p>
+                              <p className="text-xs text-text-muted/80">
                                 {m.file_size ? formatBytes(m.file_size) : m.type}
                               </p>
                             </div>
                           </div>
                         </td>
-                        <td className="px-5 py-4 text-gray-600">—</td>
+                        <td className="px-5 py-4 text-text-muted">—</td>
                         <td className="px-5 py-4">
                           <span className={cn("rounded-full px-2.5 py-0.5 text-xs font-medium", materialTypeColor(m.type))}>
                             {materialTypeLabel(m.type, t)}
                           </span>
                         </td>
-                        <td className="px-5 py-4 text-gray-500">
+                        <td className="px-5 py-4 text-text-muted">
                           {m.created_at
                             ? new Date(m.created_at).toLocaleDateString(locale, { day: "numeric", month: "short", year: "numeric" })
                             : "—"}
@@ -299,7 +299,7 @@ export function StudentResourcesExperience() {
                               onClick={() => toggle(m.id)}
                               className={cn(
                                 "rounded-lg p-2 transition",
-                                isBookmarked(m.id) ? "text-[#D4AF37]" : "text-gray-400 hover:text-[#D4AF37]"
+                                isBookmarked(m.id) ? "text-[#D4AF37]" : "text-text-muted/80 hover:text-[#D4AF37]"
                               )}
                               aria-label="Favorite"
                             >
@@ -310,13 +310,13 @@ export function StudentResourcesExperience() {
                                 href={m.url}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="rounded-lg p-2 text-gray-400 hover:text-[#0D1B2A]"
+                                className="rounded-lg p-2 text-text-muted/80 hover:text-foreground"
                                 aria-label="Download"
                               >
                                 <Download className="h-4 w-4" />
                               </a>
                             )}
-                            <button type="button" className="rounded-lg p-2 text-gray-400 hover:bg-gray-50" aria-label="More">
+                            <button type="button" className="rounded-lg p-2 text-text-muted/80 hover:bg-surface-subtle dark:bg-white/[0.04]" aria-label="More">
                               <MoreHorizontal className="h-4 w-4" />
                             </button>
                           </div>
@@ -329,13 +329,13 @@ export function StudentResourcesExperience() {
             </div>
 
             {filtered.length > 0 && (
-              <div className="flex flex-wrap items-center justify-between gap-3 border-t border-gray-100 px-5 py-3">
-                <p className="text-xs text-gray-500">
+              <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border-default px-5 py-3">
+                <p className="text-xs text-text-muted">
                   {(page - 1) * PAGE_SIZE + 1}–{Math.min(page * PAGE_SIZE, filtered.length)}{" "}
                   {t("studentDashboard.ofTotal", { total: filtered.length, defaultValue: `of ${filtered.length} materials` })}
                 </p>
                 <div className="flex items-center gap-1">
-                  <button type="button" disabled={page <= 1} onClick={() => setPage((p) => p - 1)} className="rounded-lg p-1.5 text-gray-500 disabled:opacity-40">
+                  <button type="button" disabled={page <= 1} onClick={() => setPage((p) => p - 1)} className="rounded-lg p-1.5 text-text-muted disabled:opacity-40">
                     <ChevronLeft className="h-4 w-4" />
                   </button>
                   {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => i + 1).map((p) => (
@@ -345,13 +345,13 @@ export function StudentResourcesExperience() {
                       onClick={() => setPage(p)}
                       className={cn(
                         "flex h-8 w-8 items-center justify-center rounded-lg text-sm font-medium",
-                        page === p ? "bg-[#D4AF37] text-[#0D1B2A]" : "text-gray-500 hover:bg-gray-100"
+                        page === p ? "bg-[#D4AF37] text-foreground" : "text-text-muted hover:bg-surface-subtle dark:bg-white/10"
                       )}
                     >
                       {p}
                     </button>
                   ))}
-                  <button type="button" disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)} className="rounded-lg p-1.5 text-gray-500 disabled:opacity-40">
+                  <button type="button" disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)} className="rounded-lg p-1.5 text-text-muted disabled:opacity-40">
                     <ChevronRight className="h-4 w-4" />
                   </button>
                 </div>
@@ -362,7 +362,7 @@ export function StudentResourcesExperience() {
 
         <aside className="space-y-4">
           <div className={studentPanel("p-5 text-center")}>
-            <h3 className="text-sm font-semibold text-[#0D1B2A]">
+            <h3 className="text-sm font-semibold text-foreground">
               {t("studentDashboard.storageSpace", { defaultValue: "Storage space" })}
             </h3>
             <div className="relative mx-auto my-4 flex h-24 w-24 items-center justify-center">
@@ -380,25 +380,25 @@ export function StudentResourcesExperience() {
                   strokeLinecap="round"
                 />
               </svg>
-              <span className="absolute text-sm font-bold text-[#0D1B2A]">{storagePercent}%</span>
+              <span className="absolute text-sm font-bold text-foreground">{storagePercent}%</span>
             </div>
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-text-muted">
               {totalBytes > 0 ? `${formatBytes(totalBytes)} ${t("studentDashboard.storageUsed", { defaultValue: "used" })}` : t("studentDashboard.noMaterials")}
             </p>
-            <Link href="/dashboard/student/settings" className="mt-4 inline-flex w-full items-center justify-center rounded-xl border border-gray-200 py-2 text-sm font-medium text-[#0D1B2A] hover:bg-gray-50">
+            <Link href="/dashboard/student/settings" className="mt-4 inline-flex w-full items-center justify-center rounded-xl border border-border-default py-2 text-sm font-medium text-foreground hover:bg-surface-subtle dark:bg-white/[0.04]">
               {t("studentDashboard.manageStorage", { defaultValue: "Manage storage" })}
             </Link>
           </div>
 
           <div className={studentPanel("p-5")}>
             <div className="mb-3 flex items-center justify-between">
-              <h3 className="text-sm font-semibold text-[#0D1B2A]">{t("studentDashboard.myFavorites", { defaultValue: "My favorites" })}</h3>
+              <h3 className="text-sm font-semibold text-foreground">{t("studentDashboard.myFavorites", { defaultValue: "My favorites" })}</h3>
               <button type="button" onClick={() => setTab("favorites")} className="text-xs font-medium text-[#D4AF37]">
                 {t("studentDashboard.showAll", { defaultValue: "Show all" })}
               </button>
             </div>
             {favoriteMaterials.length === 0 ? (
-              <p className="text-xs text-gray-500">{t("studentDashboard.noFavorites", { defaultValue: "No favorites yet." })}</p>
+              <p className="text-xs text-text-muted">{t("studentDashboard.noFavorites", { defaultValue: "No favorites yet." })}</p>
             ) : (
               <ul className="space-y-3">
                 {favoriteMaterials.map((m) => (
@@ -407,8 +407,8 @@ export function StudentResourcesExperience() {
                       <MaterialIcon type={m.type} />
                     </div>
                     <div className="min-w-0">
-                      <p className="truncate text-xs font-medium text-[#0D1B2A]">{m.title}</p>
-                      <p className="text-[10px] text-gray-400">{materialTypeLabel(m.type, t)}</p>
+                      <p className="truncate text-xs font-medium text-foreground">{m.title}</p>
+                      <p className="text-[10px] text-text-muted/80">{materialTypeLabel(m.type, t)}</p>
                     </div>
                   </li>
                 ))}
@@ -420,8 +420,8 @@ export function StudentResourcesExperience() {
             <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-[#D4AF37]/20">
               <Headphones className="h-5 w-5 text-[#D4AF37]" />
             </div>
-            <h3 className="text-sm font-semibold text-[#0D1B2A]">{t("studentDashboard.materialNotFound", { defaultValue: "Material not found?" })}</h3>
-            <p className="mt-1 text-xs text-gray-600">
+            <h3 className="text-sm font-semibold text-foreground">{t("studentDashboard.materialNotFound", { defaultValue: "Material not found?" })}</h3>
+            <p className="mt-1 text-xs text-text-muted">
               {t("studentDashboard.materialNotFoundDesc", { defaultValue: "If a material is missing, contact your teacher or our support team." })}
             </p>
             <Link href="/contact" className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-[#D4AF37] hover:underline">

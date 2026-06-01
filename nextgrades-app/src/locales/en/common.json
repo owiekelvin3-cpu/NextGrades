@@ -5,7 +5,7 @@
     "signup": "Sign up",
     "freeConsultation": "Free Consultation",
     "home": "Home",
-    "about": "About Us",
+    "about": "About",
     "programs": "Programs",
     "subjects": "Subjects",
     "pricing": "Pricing",
@@ -22,6 +22,9 @@
   "navbar": {
     "login": "Login",
     "freeConsultation": "Free Consultation"
+  },
+  "nav": {
+    "home": "Home"
   },
   "footer": {
     "programs": "Programs",
@@ -168,7 +171,60 @@
     "terms": "Terms & Conditions",
     "smartLearning": "Smart Learning, Better Results.",
     "dailyMeeting": "Daily Meeting",
-    "supabaseNotConfigured": "Supabase credentials are not configured. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in .env.local."
+    "supabaseNotConfigured": "Supabase credentials are not configured. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in .env.local.",
+    "invalidEmail": "Invalid email",
+    "accountSuspended": "Your account has been suspended. Contact support@nextgrades.de if you believe this is a mistake.",
+    "profileIncomplete": "Your account profile is incomplete. Please contact support.",
+    "enterValidEmail": "Please enter a valid email address",
+    "enterPassword": "Please enter your password",
+    "authFailed": "Authentication failed",
+    "mobileRegisterHeadline": "Get started with NextGrades",
+    "mobileLoginHeadline": "Welcome back",
+    "mobileRegisterSubtitle": "Choose your role and fill in your details below.",
+    "mobileLoginSubtitle": "Sign in to continue your learning journey.",
+    "signUpLink": "Register",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot password?",
+    "termsPrefix": "By continuing, you agree to our",
+    "and": "and",
+    "privacy": "Privacy Policy",
+    "welcomeBackTitle": "Welcome back",
+    "loginSubtitle": "Sign in to continue your learning journey.",
+    "heroCaption": "Premium tutoring, digital materials, and structured learning — all in one place.",
+    "goToLogin": "Go to login",
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?",
+    "emailPlaceholder": "you@example.com",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "backToHome": "Back to home",
+    "registeringAs": "I'm registering as",
+    "nameLabel": "Name",
+    "confirmPassword": "Confirm password",
+    "confirmPasswordPlaceholder": "Repeat your password",
+    "learnAndGrow": "Learn & grow",
+    "teachAndInspire": "Teach & inspire",
+    "validationFullName": "Enter your full name",
+    "validationEmail": "Enter a valid email",
+    "validationPasswordLength": "At least 8 characters",
+    "validationPasswordMatch": "Passwords do not match",
+    "invalidServerResponse": "Invalid response from server. Please try again.",
+    "registrationApiUnavailable": "Registration API is unavailable. Restart the dev server and try again.",
+    "registrationUnexpectedPage": "Server returned an unexpected page instead of JSON. Restart the dev server and try again.",
+    "emailExists": "An account with this email already exists. Please sign in to continue.",
+    "registrationFailed": "Registration failed",
+    "verifyEmailMessage": "Check your email to verify your address.",
+    "accountCreatedSignIn": "Account created! Sign in to continue.",
+    "accountCreatedTitle": "Account created",
+    "signInNow": "Sign in now",
+    "redirectingSoon": "Redirecting in a few seconds…",
+    "creatingAccount": "Creating account…",
+    "createAccountBtn": "Create account",
+    "registerBtn": "Register",
+    "hideConfirmPassword": "Hide confirm password",
+    "showConfirmPassword": "Show confirm password",
+    "fullNamePlaceholder": "Your full name",
+    "passwordPlaceholder": "At least 8 characters"
   },
   "about": {
     "heroTitle": "More than tutoring.",
@@ -207,6 +263,15 @@
     "freeTitle": "Free Content",
     "freeSubtitle": "Available for everyone",
     "freeButton": "Free",
+    "membersOnly": "Members only",
+    "freeLabel": "Free",
+    "materialsCount": "{{count}} materials",
+    "exploreSubject": "Explore",
+    "all": "All",
+    "free": "Free",
+    "premium": "Premium",
+    "filtersLabel": "Filters",
+    "applyFilters": "Show results",
     "freeShowAll": "Show all",
     "premiumTitle": "PREMIUM Content",
     "premiumSubtitle": "Members only",
@@ -236,7 +301,12 @@
       "accessAll": "All Content",
       "accessFree": "Free Content",
       "accessPremium": "Premium Content",
-      "reset": "Reset filters"
+      "reset": "Reset filters",
+      "allSubjects": "All subjects",
+      "allGrades": "All grades",
+      "allSemesters": "All semesters",
+      "semester1": "Semester 1",
+      "semester2": "Semester 2"
     },
     "video": {
       "back": "Back to resources",
@@ -658,13 +728,95 @@
       }
     ]
   },
+  "legal": {
+    "toc": "On this page",
+    "related": "Related",
+    "relatedHint": "Review our other legal documents for full transparency."
+  },
   "careersPage": {
-    "title": "Careers",
-    "subtitle": "Join our team!",
+    "title": "Careers at NextGrades",
+    "subtitle": "Help students succeed — teach online with a team that values quality, flexibility, and growth.",
+    "eyebrow": "Join our team",
+    "heroDesc": "We are building a modern learning platform for German school students. If you are passionate about teaching and want to make a real impact, we would love to hear from you.",
+    "viewPositions": "View open positions",
     "applyNow": "Apply now",
+    "whyEyebrow": "Why NextGrades",
+    "whyTitle": "Teach with purpose",
+    "whyDesc": "Join a growing education brand focused on structured learning, premium materials, and meaningful student outcomes.",
+    "benefits": [
+      {
+        "title": "Meaningful impact",
+        "description": "Support students through exams, confidence-building, and long-term academic growth."
+      },
+      {
+        "title": "Modern platform",
+        "description": "Use our digital tools, resources, and scheduling system — no admin headaches."
+      },
+      {
+        "title": "Supportive team",
+        "description": "Work with experienced educators and a team that helps you deliver your best sessions."
+      },
+      {
+        "title": "Flexible work",
+        "description": "Online tutoring with schedules that fit your life — part-time or full-time."
+      }
+    ],
+    "stats": [
+      { "value": "200+", "label": "students supported" },
+      { "value": "25+", "label": "teachers on the team" },
+      { "value": "100%", "label": "online & flexible" },
+      { "value": "4.9/5", "label": "parent satisfaction" }
+    ],
+    "positionsEyebrow": "Open roles",
+    "positionsTitle": "Current opportunities",
+    "positionsDesc": "We are actively looking for dedicated tutors. Don't see your subject? Send us an open application — we are always growing.",
+    "processEyebrow": "How it works",
+    "processTitle": "Your path to joining us",
+    "stepLabel": "Step {{number}}",
+    "steps": [
+      {
+        "title": "Apply online",
+        "description": "Send your application via our contact form with your subject, experience, and availability."
+      },
+      {
+        "title": "Intro conversation",
+        "description": "We schedule a short video call to learn about your teaching style and goals."
+      },
+      {
+        "title": "Start teaching",
+        "description": "After onboarding, you receive students, materials, and access to our platform."
+      }
+    ],
+    "ctaTitle": "Don't see the right role?",
+    "ctaDesc": "We welcome open applications from passionate educators in all school subjects.",
+    "ctaButton": "Send open application",
     "jobs": [
-      { "title": "Math Tutor", "description": "We are looking for dedicated math tutors." },
-      { "title": "English Tutor", "description": "We are looking for dedicated English tutors." }
+      {
+        "id": "math",
+        "title": "Mathematics Tutor",
+        "description": "We are looking for experienced math tutors to support students from middle school through Abitur preparation. You explain concepts clearly, build confidence, and adapt to each student's level.",
+        "type": "Part-time / Freelance",
+        "location": "Remote (Germany)",
+        "highlights": [
+          "Experience teaching German school mathematics",
+          "Strong communication in German and/or English",
+          "Comfortable with online teaching tools (Zoom)",
+          "Structured, patient, and student-focused approach"
+        ]
+      },
+      {
+        "id": "english",
+        "title": "English Tutor",
+        "description": "Join our English team to help students improve grammar, writing, conversation, and exam skills. You create engaging sessions and guide learners toward measurable progress.",
+        "type": "Part-time / Freelance",
+        "location": "Remote (Germany)",
+        "highlights": [
+          "Native or near-native English proficiency",
+          "Experience with German school English curriculum",
+          "Ability to prepare students for tests and essays",
+          "Reliable availability for recurring online sessions"
+        ]
+      }
     ]
   },
   "mobileNav": {

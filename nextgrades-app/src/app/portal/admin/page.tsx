@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { MobileBottomNav, MOBILE_BOTTOM_NAV_PADDING } from "@/components/mobile/MobileBottomNav";
 import { Card } from "@/components/ui/Card";
@@ -16,19 +15,17 @@ import {
   DollarSign,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import {
-  fetchAdminStats,
-  fetchActivityLogs,
-  type ActivityLogRow,
-  type AdminStats,
-} from "@/lib/dashboard/data";
+import { fetchAdminDashboard, type ActivityLogRow, type AdminStats } from "@/lib/dashboard/data";
 import { appShell } from "@/lib/theme/shell";
+import { AdminNavHub } from "@/components/admin/AdminNavHub";
 import { cn } from "@/lib/utils";
 import { useSidebar } from "@/context/SidebarContext";
+import { DashboardStatsSkeleton, ListRowSkeleton, DashboardHubSkeleton } from "@/components/ui/Skeleton";
 
 export default function AdminDashboard() {
   const { t } = useTranslation();
   const { width: sidebarWidth } = useSidebar();
+  const [loading, setLoading] = useState(true);
   const [activities, setActivities] = useState<ActivityLogRow[]>([]);
   const [stats, setStats] = useState<AdminStats>({
     total_students: 0,
@@ -38,11 +35,21 @@ export default function AdminDashboard() {
   });
 
   useEffect(() => {
-    (async () => {
-      const [statsData, activityData] = await Promise.all([fetchAdminStats(), fetchActivityLogs(10)]);
-      setStats(statsData);
-      setActivities(activityData);
+    let cancelled = false;
+    void (async () => {
+      try {
+        const { stats: statsData, activities: activityData } = await fetchAdminDashboard(10);
+        if (!cancelled) {
+          setStats(statsData);
+          setActivities(activityData);
+        }
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
     })();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   return (
@@ -77,9 +84,22 @@ export default function AdminDashboard() {
         </header>
 
         <main className="flex-1 overflow-y-auto overflow-x-hidden p-4 sm:p-6 lg:p-8">
-          <div className="mx-auto max-w-7xl space-y-6">
+          {loading ? (
+            <div className="mx-auto max-w-7xl space-y-6">
+              <DashboardStatsSkeleton />
+              <Card className="p-6">
+                <div className="mb-4 h-6 w-48 skeleton rounded-lg" />
+                <DashboardHubSkeleton />
+              </Card>
+              <Card className="p-6">
+                <div className="mb-6 h-6 w-40 skeleton rounded-lg" />
+                <ListRowSkeleton rows={5} />
+              </Card>
+            </div>
+          ) : (
+          <div className="content-ready mx-auto max-w-7xl space-y-6">
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+              <div>
                 <Card className="p-6">
                   <div className="mb-4 flex items-center justify-between">
                     <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#4DA3FF]/10">
@@ -90,9 +110,9 @@ export default function AdminDashboard() {
                   <p className="mb-1 text-3xl font-bold text-foreground">{stats.total_students}</p>
                   <p className="text-text-muted">{t("adminDashboard.activeStudents")}</p>
                 </Card>
-              </motion.div>
+              </div>
 
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
+              <div>
                 <Card className="p-6">
                   <div className="mb-4 flex items-center justify-between">
                     <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#22C55E]/10">
@@ -103,9 +123,9 @@ export default function AdminDashboard() {
                   <p className="mb-1 text-3xl font-bold text-foreground">{stats.total_teachers}</p>
                   <p className="text-text-muted">{t("adminDashboard.activeTeachers")}</p>
                 </Card>
-              </motion.div>
+              </div>
 
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
+              <div>
                 <Card className="p-6">
                   <div className="mb-4 flex items-center justify-between">
                     <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#D4AF37]/10">
@@ -116,9 +136,9 @@ export default function AdminDashboard() {
                   <p className="mb-1 text-3xl font-bold text-foreground">{stats.active_enrollments}</p>
                   <p className="text-text-muted">{t("adminDashboard.activeCourses")}</p>
                 </Card>
-              </motion.div>
+              </div>
 
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
+              <div>
                 <Card className="p-6">
                   <div className="mb-4 flex items-center justify-between">
                     <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#F97316]/10">
@@ -131,50 +151,14 @@ export default function AdminDashboard() {
                   </p>
                   <p className="text-text-muted">{t("adminDashboard.totalRevenueMonthly")}</p>
                 </Card>
-              </motion.div>
+              </div>
             </div>
 
             <div className="grid gap-6 lg:grid-cols-2">
-              <Card className="p-6">
-                <h2 className="mb-6 text-xl font-bold text-foreground">{t("adminDashboard.quickActions")}</h2>
-                <div className="grid grid-cols-2 gap-4">
-                  <Button
-                    variant="outline"
-                    size="md"
-                    href="/portal/admin/students"
-                    className="w-full justify-start border-border-default text-foreground hover:bg-black/5 dark:hover:bg-white/10"
-                  >
-                    <Users className="mr-3 h-5 w-5" />
-                    {t("adminDashboard.manageStudents")}
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="md"
-                    href="/portal/admin/teachers"
-                    className="w-full justify-start border-border-default text-foreground hover:bg-black/5 dark:hover:bg-white/10"
-                  >
-                    <Shield className="mr-3 h-5 w-5" />
-                    {t("adminDashboard.manageTeachers")}
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="md"
-                    href="/portal/admin/payments"
-                    className="w-full justify-start border-border-default text-foreground hover:bg-black/5 dark:hover:bg-white/10"
-                  >
-                    <DollarSign className="mr-3 h-5 w-5" />
-                    {t("adminDashboard.managePayments")}
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="md"
-                    href="/portal/admin/website-content"
-                    className="w-full justify-start border-border-default text-foreground hover:bg-black/5 dark:hover:bg-white/10"
-                  >
-                    <FileText className="mr-3 h-5 w-5" />
-                    {t("adminDashboard.manageResources")}
-                  </Button>
-                </div>
+              <Card className="p-6 lg:col-span-2">
+                <h2 className="mb-2 text-xl font-bold text-foreground">{t("adminHub.browseAll")}</h2>
+                <p className="mb-6 text-sm text-text-muted">{t("adminDashboard.subtitle")}</p>
+                <AdminNavHub />
               </Card>
 
               <Card className="p-6">
@@ -183,12 +167,9 @@ export default function AdminDashboard() {
                   {activities.length === 0 ? (
                     <li className="rounded-xl p-4 text-center text-text-muted">{t("adminDashboard.subtitle")}</li>
                   ) : null}
-                  {activities.map((activity, index) => (
-                    <motion.li
+                  {activities.map((activity) => (
+                    <li
                       key={activity.id}
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.1 * index }}
                       className="flex items-center gap-4 rounded-xl bg-surface-subtle p-3"
                     >
                       <div className="flex-1">
@@ -196,12 +177,13 @@ export default function AdminDashboard() {
                         <p className="text-sm text-text-muted">{activity.time}</p>
                       </div>
                       <Badge variant={activity.type}>{activity.type}</Badge>
-                    </motion.li>
+                    </li>
                   ))}
                 </ul>
               </Card>
             </div>
           </div>
+          )}
         </main>
       </div>
 

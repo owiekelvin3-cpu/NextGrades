@@ -84,25 +84,30 @@ export function OverviewStatCard({
   value,
   href,
   icon: Icon,
-  iconClassName = "text-[#D4AF37] bg-[#D4AF37]/10",
+  iconClassName = "text-[#D4AF37] bg-[#D4AF37]/12 dark:bg-[#D4AF37]/15",
   footer,
   className,
 }: OverviewStatCardProps) {
   const inner = (
     <>
       <div className="flex items-start justify-between gap-3">
-        <p className="text-[11px] font-semibold uppercase tracking-wider text-gray-400">{label}</p>
-        <span className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ring-1 ring-inset ring-black/5", iconClassName)}>
+        <p className="text-[11px] font-semibold uppercase tracking-wider text-text-muted">{label}</p>
+        <span
+          className={cn(
+            "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ring-1 ring-inset ring-black/5 dark:ring-white/10",
+            iconClassName
+          )}
+        >
           <Icon className="h-4 w-4" />
         </span>
       </div>
-      <p className="mt-3 text-2xl font-bold tracking-tight text-[#0D1B2A]">{value}</p>
-      {footer && <div className="mt-auto border-t border-gray-100 pt-3">{footer}</div>}
+      <p className="mt-3 text-2xl font-bold tracking-tight text-foreground">{value}</p>
+      {footer && <div className="mt-auto border-t border-border-default pt-3">{footer}</div>}
     </>
   );
 
   const cardCls = cn(
-    "flex h-full min-h-[160px] flex-col rounded-2xl border border-gray-200/80 bg-white p-5 shadow-sm transition hover:border-[#D4AF37]/25 hover:shadow-md",
+    "flex h-full min-h-[160px] flex-col rounded-2xl border border-border-default bg-surface-elevated p-5 shadow-sm transition hover:border-[#D4AF37]/30 hover:shadow-md dark:hover:border-[#D4AF37]/25",
     className
   );
 
@@ -127,17 +132,25 @@ type OverviewPanelProps = {
   noPadding?: boolean;
 };
 
-export function OverviewPanel({ title, icon: Icon, href, linkLabel, children, className, noPadding }: OverviewPanelProps) {
+export function OverviewPanel({
+  title,
+  icon: Icon,
+  href,
+  linkLabel,
+  children,
+  className,
+  noPadding,
+}: OverviewPanelProps) {
   return (
-    <div className={cn("overflow-hidden rounded-2xl border border-gray-200/80 bg-white shadow-sm", className)}>
-      <div className="flex items-center justify-between gap-3 border-b border-gray-100 bg-gradient-to-r from-gray-50/80 to-white px-5 py-4">
+    <div className={cn("overflow-hidden rounded-2xl border border-border-default bg-surface-elevated shadow-sm", className)}>
+      <div className="flex items-center justify-between gap-3 border-b border-border-default bg-surface-subtle/80 px-5 py-4 dark:bg-white/[0.03]">
         <div className="flex items-center gap-2.5">
           {Icon && (
             <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#D4AF37]/10 text-[#D4AF37]">
               <Icon className="h-4 w-4" />
             </span>
           )}
-          <h2 className="text-sm font-semibold text-[#0D1B2A]">{title}</h2>
+          <h2 className="text-sm font-semibold text-foreground">{title}</h2>
         </div>
         {href && linkLabel && (
           <Link href={href} className="inline-flex items-center gap-0.5 text-xs font-semibold text-[#D4AF37] hover:underline">
@@ -151,7 +164,17 @@ export function OverviewPanel({ title, icon: Icon, href, linkLabel, children, cl
   );
 }
 
-export function OverviewGoalCard({ label, value, actionHref, actionLabel }: { label: string; value: string; actionHref: string; actionLabel: string }) {
+export function OverviewGoalCard({
+  label,
+  value,
+  actionHref,
+  actionLabel,
+}: {
+  label: string;
+  value: string;
+  actionHref: string;
+  actionLabel: string;
+}) {
   return (
     <div className="rounded-2xl border border-white/10 bg-white/5 p-5 ring-1 ring-inset ring-white/10 backdrop-blur-sm">
       <p className="text-xs font-semibold uppercase tracking-wide text-[#D4AF37]">{label}</p>
@@ -181,11 +204,11 @@ export function OverviewEmptyState({
 }) {
   return (
     <div className="flex flex-col items-center px-6 py-14 text-center">
-      <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-gray-50 to-white ring-1 ring-gray-100">
-        <Icon className="h-7 w-7 text-gray-300" />
+      <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-surface-subtle ring-1 ring-border-default dark:bg-white/[0.05]">
+        <Icon className="h-7 w-7 text-text-muted/50" />
       </div>
-      <p className="text-sm font-semibold text-[#0D1B2A]">{title}</p>
-      {description && <p className="mt-1 max-w-sm text-xs text-gray-500">{description}</p>}
+      <p className="text-sm font-semibold text-foreground">{title}</p>
+      {description && <p className="mt-1 max-w-sm text-xs text-text-muted">{description}</p>}
       {actionHref && actionLabel && (
         <Link
           href={actionHref}

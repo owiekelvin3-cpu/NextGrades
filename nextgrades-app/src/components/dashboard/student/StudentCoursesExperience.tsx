@@ -66,21 +66,21 @@ function CourseCard({ course, locale }: { course: StudentCourseDetail; locale: s
             {initials}
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-lg font-bold text-[#0D1B2A]">{course.subjectName}</p>
-            {course.teacherName && <p className="text-sm text-gray-500">{course.teacherName}</p>}
+            <p className="text-lg font-bold text-foreground">{course.subjectName}</p>
+            {course.teacherName && <p className="text-sm text-text-muted">{course.teacherName}</p>}
             <div className="mt-4 grid gap-4 sm:grid-cols-2">
               <div>
-                <p className="text-xs font-medium uppercase tracking-wide text-gray-400">
+                <p className="text-xs font-medium uppercase tracking-wide text-text-muted/80">
                   {t("studentDashboard.progressLabel", { defaultValue: "Progress" })}
                 </p>
                 <div className="mt-1 flex items-center gap-2">
                   <span className="text-sm font-bold text-[#D4AF37]">{course.progressPercent}%</span>
-                  <div className="h-2 flex-1 overflow-hidden rounded-full bg-gray-100">
+                  <div className="h-2 flex-1 overflow-hidden rounded-full bg-surface-subtle dark:bg-white/10">
                     <div className="h-full rounded-full bg-[#D4AF37]" style={{ width: `${course.progressPercent}%` }} />
                   </div>
                 </div>
                 {course.lessonCount > 0 && (
-                  <p className="mt-1 text-xs text-gray-400">
+                  <p className="mt-1 text-xs text-text-muted/80">
                     {t("studentDashboard.unitsCompleted", {
                       completed: course.completedLessons,
                       total: course.lessonCount,
@@ -91,17 +91,17 @@ function CourseCard({ course, locale }: { course: StudentCourseDetail; locale: s
               </div>
               {course.nextLesson && (
                 <div>
-                  <p className="text-xs font-medium uppercase tracking-wide text-gray-400">
+                  <p className="text-xs font-medium uppercase tracking-wide text-text-muted/80">
                     {t("studentDashboard.nextAppointment")}
                   </p>
-                  <p className="mt-1 flex items-center gap-1 text-sm text-[#0D1B2A]">
-                    <Calendar className="h-3.5 w-3.5 text-gray-400" />
+                  <p className="mt-1 flex items-center gap-1 text-sm text-foreground">
+                    <Calendar className="h-3.5 w-3.5 text-text-muted/80" />
                     {new Date(course.nextLesson.start_time).toLocaleDateString(locale, {
                       day: "numeric",
                       month: "short",
                     })}
                   </p>
-                  <p className="flex items-center gap-1 text-xs text-gray-500">
+                  <p className="flex items-center gap-1 text-xs text-text-muted">
                     <Clock className="h-3 w-3" />
                     {formatTimeRange(course.nextLesson.start_time, course.nextLesson.duration, locale)}
                   </p>
@@ -118,7 +118,7 @@ function CourseCard({ course, locale }: { course: StudentCourseDetail; locale: s
             {t("studentDashboard.courseDetails", { defaultValue: "Course details" })}
             <ChevronRight className="ml-0.5 inline h-4 w-4" />
           </Link>
-          <button type="button" className="rounded-lg p-2 text-gray-400 hover:bg-gray-50" aria-label="More">
+          <button type="button" className="rounded-lg p-2 text-text-muted/80 hover:bg-surface-subtle dark:bg-white/[0.04]" aria-label="More">
             <MoreHorizontal className="h-4 w-4" />
           </button>
         </div>
@@ -163,7 +163,7 @@ export function StudentCoursesExperience() {
   if (!data) {
     return (
       <StudentDashboardLayout title={title} description={description}>
-        <p className="text-center text-gray-500">{t("studentDashboard.signInRequired")}</p>
+        <p className="text-center text-text-muted">{t("studentDashboard.signInRequired")}</p>
       </StudentDashboardLayout>
     );
   }
@@ -183,7 +183,7 @@ export function StudentCoursesExperience() {
     <StudentDashboardLayout title={title} description={description} headerAction={headerAction}>
       <div className="mx-auto grid max-w-[1400px] gap-6 xl:grid-cols-[1fr_320px]">
         <div className="space-y-6">
-          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-gray-200">
+          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border-default">
             <div className="flex flex-wrap gap-6">
               {(
                 [
@@ -198,22 +198,22 @@ export function StudentCoursesExperience() {
                   onClick={() => setTab(id)}
                   className={cn(
                     "border-b-2 pb-3 text-sm font-medium transition",
-                    tab === id ? "border-[#D4AF37] text-[#0D1B2A]" : "border-transparent text-gray-500"
+                    tab === id ? "border-[#D4AF37] text-foreground" : "border-transparent text-text-muted"
                   )}
                 >
                   {label}
                 </button>
               ))}
             </div>
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-text-muted">
               {t("studentDashboard.sortBy", { defaultValue: "Sort by: Course name (A–Z)" })}
             </p>
           </div>
 
           {filtered.length === 0 ? (
             <div className={studentPanel("p-12 text-center")}>
-              <BookOpen className="mx-auto mb-3 h-10 w-10 text-gray-300" />
-              <p className="text-sm text-gray-500">{t("studentDashboard.noCourses")}</p>
+              <BookOpen className="mx-auto mb-3 h-10 w-10 text-text-muted/60" />
+              <p className="text-sm text-text-muted">{t("studentDashboard.noCourses")}</p>
             </div>
           ) : (
             <div className="space-y-4">
@@ -226,7 +226,7 @@ export function StudentCoursesExperience() {
           <div className="rounded-2xl border border-blue-100 bg-blue-50/50 p-5">
             <div className="flex items-center gap-3">
               <Trophy className="h-5 w-5 text-blue-500" />
-              <p className="text-sm font-medium text-[#0D1B2A]">
+              <p className="text-sm font-medium text-foreground">
                 {t("studentDashboard.keepGoingBanner", {
                   defaultValue: "Keep going! You're making great progress. Stay on track! 💪",
                 })}
@@ -237,13 +237,13 @@ export function StudentCoursesExperience() {
 
         <aside className="space-y-4">
           <div className={studentPanel("p-5")}>
-            <h3 className="text-sm font-semibold text-[#0D1B2A]">
+            <h3 className="text-sm font-semibold text-foreground">
               {t("studentDashboard.yourLearningProgress", { defaultValue: "Your learning progress" })}
             </h3>
             <div className="mt-4 flex items-center gap-4">
               <div className="relative flex items-center justify-center">
                 <DonutChart percent={overallProgress} />
-                <span className="absolute text-lg font-bold text-[#0D1B2A]">{overallProgress}%</span>
+                <span className="absolute text-lg font-bold text-foreground">{overallProgress}%</span>
               </div>
               <ul className="space-y-2 text-xs">
                 <li className="flex items-center gap-2">
@@ -267,27 +267,27 @@ export function StudentCoursesExperience() {
           </div>
 
           <div className={studentPanel("p-5")}>
-            <h3 className="text-sm font-semibold text-[#0D1B2A]">
+            <h3 className="text-sm font-semibold text-foreground">
               {t("studentDashboard.coursesOverview", { defaultValue: "Courses overview" })}
             </h3>
             <ul className="mt-4 space-y-3 text-sm">
               <li className="flex items-center justify-between">
-                <span className="text-gray-500">{t("studentDashboard.activeCoursesCount", { defaultValue: "Active courses" })}</span>
-                <span className="font-semibold text-[#0D1B2A]">{data.activeCount}</span>
+                <span className="text-text-muted">{t("studentDashboard.activeCoursesCount", { defaultValue: "Active courses" })}</span>
+                <span className="font-semibold text-foreground">{data.activeCount}</span>
               </li>
               <li className="flex items-center justify-between">
-                <span className="text-gray-500">{t("studentDashboard.remainingUnits")}</span>
-                <span className="font-semibold text-[#0D1B2A]">{data.remainingUnits}</span>
+                <span className="text-text-muted">{t("studentDashboard.remainingUnits")}</span>
+                <span className="font-semibold text-foreground">{data.remainingUnits}</span>
               </li>
               <li className="flex items-center justify-between">
-                <span className="text-gray-500">{t("studentDashboard.learnedHours", { defaultValue: "Hours learned" })}</span>
-                <span className="font-semibold text-[#0D1B2A]">{data.learnedHours}h</span>
+                <span className="text-text-muted">{t("studentDashboard.learnedHours", { defaultValue: "Hours learned" })}</span>
+                <span className="font-semibold text-foreground">{data.learnedHours}h</span>
               </li>
             </ul>
           </div>
 
           <div className={studentPanel("p-5")}>
-            <h3 className="text-sm font-semibold text-[#0D1B2A]">
+            <h3 className="text-sm font-semibold text-foreground">
               {t("studentDashboard.helpSupport", { defaultValue: "Help & support" })}
             </h3>
             <ul className="mt-3 divide-y divide-gray-50">
@@ -297,10 +297,10 @@ export function StudentCoursesExperience() {
                 { href: "/contact", icon: MessageCircle, label: t("studentDashboard.giveFeedback") },
               ].map((item) => (
                 <li key={item.label}>
-                  <Link href={item.href} className="flex items-center gap-3 py-3 text-sm text-[#0D1B2A] hover:text-[#D4AF37]">
-                    <item.icon className="h-4 w-4 text-gray-400" />
+                  <Link href={item.href} className="flex items-center gap-3 py-3 text-sm text-foreground hover:text-[#D4AF37]">
+                    <item.icon className="h-4 w-4 text-text-muted/80" />
                     {item.label}
-                    <ChevronRight className="ml-auto h-4 w-4 text-gray-300" />
+                    <ChevronRight className="ml-auto h-4 w-4 text-text-muted/60" />
                   </Link>
                 </li>
               ))}

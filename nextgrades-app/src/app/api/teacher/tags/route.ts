@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { requireAuth } from "@/lib/auth/auth-utils";
 
 // GET - Fetch all tags
 export async function GET() {
@@ -15,10 +14,10 @@ export async function GET() {
     if (error) throw error;
 
     return NextResponse.json(data);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error fetching tags:", error);
     return NextResponse.json(
-      { error: error.message || "Failed to fetch tags" },
+      { error: error instanceof Error ? error.message : "Failed to fetch tags" },
       { status: 500 }
     );
   }

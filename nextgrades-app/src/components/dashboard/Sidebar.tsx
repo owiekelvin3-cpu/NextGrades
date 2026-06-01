@@ -22,6 +22,12 @@ import {
   X,
   Sparkles,
   Video,
+  Bell,
+  UserCog,
+  CreditCard,
+  Bot,
+  BarChart3,
+  GraduationCap,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/context/ThemeContext";
@@ -80,20 +86,20 @@ const teacherConfig = [
 ];
 
 const adminConfig = [
-  { href: ADMIN_PORTAL_HOME, icon: LayoutDashboard },
-  { href: `${ADMIN_PORTAL_PREFIX}/website-content`, icon: Layout },
-  { href: `${ADMIN_PORTAL_PREFIX}/students`, icon: Users },
-  { href: `${ADMIN_PORTAL_PREFIX}/teachers`, icon: Users },
-  { href: `${ADMIN_PORTAL_PREFIX}/users`, icon: Shield },
-  { href: `${ADMIN_PORTAL_PREFIX}/notifications`, icon: Sparkles, badge: "notifications" as const },
-  { href: `${ADMIN_PORTAL_PREFIX}/quiz-monitor`, icon: ListChecks },
-  { href: `${ADMIN_PORTAL_PREFIX}/moderation`, icon: Shield },
-  { href: `${ADMIN_PORTAL_PREFIX}/memberships`, icon: Shield },
-  { href: `${ADMIN_PORTAL_PREFIX}/payments`, icon: DollarSign },
-  { href: `${ADMIN_PORTAL_PREFIX}/resources`, icon: FileText },
-  { href: `${ADMIN_PORTAL_PREFIX}/chatbot`, icon: Sparkles },
-  { href: `${ADMIN_PORTAL_PREFIX}/analytics`, icon: TrendingUp },
-  { href: `${ADMIN_PORTAL_PREFIX}/zoom`, icon: Video },
+  { href: ADMIN_PORTAL_HOME, icon: LayoutDashboard, labelKey: "adminNav.dashboard" },
+  { href: `${ADMIN_PORTAL_PREFIX}/website-content`, icon: Layout, labelKey: "adminNav.websiteContent", highlight: true },
+  { href: `${ADMIN_PORTAL_PREFIX}/students`, icon: Users, labelKey: "adminNav.students" },
+  { href: `${ADMIN_PORTAL_PREFIX}/teachers`, icon: GraduationCap, labelKey: "adminNav.teachers" },
+  { href: `${ADMIN_PORTAL_PREFIX}/users`, icon: UserCog, labelKey: "adminNav.users" },
+  { href: `${ADMIN_PORTAL_PREFIX}/notifications`, icon: Bell, labelKey: "adminNav.notifications", badge: "notifications" as const },
+  { href: `${ADMIN_PORTAL_PREFIX}/quiz-monitor`, icon: ListChecks, labelKey: "adminNav.quizMonitor" },
+  { href: `${ADMIN_PORTAL_PREFIX}/moderation`, icon: Shield, labelKey: "adminNav.moderation" },
+  { href: `${ADMIN_PORTAL_PREFIX}/memberships`, icon: CreditCard, labelKey: "adminNav.memberships" },
+  { href: `${ADMIN_PORTAL_PREFIX}/payments`, icon: DollarSign, labelKey: "adminNav.payments" },
+  { href: `${ADMIN_PORTAL_PREFIX}/resources`, icon: FileText, labelKey: "adminNav.resources" },
+  { href: `${ADMIN_PORTAL_PREFIX}/chatbot`, icon: Bot, labelKey: "adminNav.chatbot" },
+  { href: `${ADMIN_PORTAL_PREFIX}/analytics`, icon: BarChart3, labelKey: "adminNav.analytics" },
+  { href: `${ADMIN_PORTAL_PREFIX}/zoom`, icon: Video, labelKey: "adminNav.zoom" },
 ];
 
 function SidebarContent({
@@ -122,11 +128,15 @@ function SidebarContent({
       role === "student" ? studentConfig : role === "teacher" ? teacherConfig : adminConfig;
     const labels =
       role === "student" ? studentLabels : role === "teacher" ? teacherLabels : adminLabels;
-    return config.map((item, index) => ({
-      ...item,
-      label: labels[index]?.label ?? "",
-    }));
-  }, [role, studentLabels, teacherLabels, adminLabels]);
+    return config.map((item, index) => {
+      const adminItem = item as (typeof adminConfig)[number];
+      const label =
+        role === "admin" && "labelKey" in adminItem && adminItem.labelKey
+          ? t(adminItem.labelKey)
+          : labels[index]?.label ?? "";
+      return { ...item, label };
+    });
+  }, [role, studentLabels, teacherLabels, adminLabels, t]);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -179,7 +189,6 @@ function SidebarContent({
                 ? t("teacherDashboard.sidebarHello", { name: teacherDisplay })
                 : t("teacherDashboard.sidebarGuest")}
             </p>
-            <p className="text-xs text-gray-500">{t("teacherDashboard.sidebarRole")}</p>
           </div>
         </div>
       )}
@@ -192,9 +201,6 @@ function SidebarContent({
           <div className="min-w-0">
             <p className="truncate text-sm font-semibold text-white">
               {t("studentDashboard.sidebarHello", { name: studentFirst, defaultValue: `Hi, ${studentFirst}!` })}
-            </p>
-            <p className="text-xs text-gray-400">
-              {t("studentDashboard.sidebarRole", { defaultValue: "Student" })}
             </p>
           </div>
         </div>
@@ -215,6 +221,7 @@ function SidebarContent({
           {links.map((link, index) => {
             const isActive = isLinkActive(link.href);
             const showBadge = "badge" in link && link.badge === "notifications" && badgeCount > 0;
+            const isHighlight = "highlight" in link && link.highlight;
             return (
               <Link
                 key={`${link.href}-${index}`}
@@ -226,9 +233,13 @@ function SidebarContent({
                     ? darkSidebar
                       ? "bg-[#D4AF37]/15 font-semibold text-[#D4AF37] ring-1 ring-[#D4AF37]/30"
                       : "bg-[#D4AF37] font-semibold text-[#0D1B2A]"
-                    : darkSidebar
-                      ? "text-gray-300 hover:bg-white/10 hover:text-white"
-                      : "text-gray-600 hover:bg-gray-50 hover:text-[#0D1B2A]"
+                    : isHighlight
+                      ? darkSidebar
+                        ? "font-medium text-[#D4AF37]/90 ring-1 ring-[#D4AF37]/25 hover:bg-[#D4AF37]/10"
+                        : "font-medium text-[#9A7B1A] ring-1 ring-[#D4AF37]/30 hover:bg-[#D4AF37]/10"
+                      : darkSidebar
+                        ? "text-gray-300 hover:bg-white/10 hover:text-white"
+                        : "text-gray-600 hover:bg-gray-50 hover:text-[#0D1B2A]"
                 )}
               >
                 <link.icon className={cn("h-5 w-5 shrink-0", isActive && "text-[#D4AF37]")} />

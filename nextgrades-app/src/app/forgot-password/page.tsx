@@ -13,7 +13,6 @@ import {
   faArrowLeft,
   faExclamationCircle,
 } from "@fortawesome/free-solid-svg-icons";
-import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 import { FontAwesomeSetup } from "@/components/auth/FontAwesomeSetup";
 import { AuthGuestGuard } from "@/components/auth/AuthGuestGuard";
@@ -25,7 +24,6 @@ function ForgotPasswordContent() {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { theme } = useTheme();
-  const { t } = useTranslation();
 
   const validateEmail = (email: string): boolean => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -59,8 +57,8 @@ function ForgotPasswordContent() {
       setSubmittedEmail(email);
       setSuccess(true);
       setEmail("");
-    } catch (err: any) {
-      setError(err.message || "Failed to send reset email");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Failed to send reset email");
     } finally {
       setLoading(false);
     }
@@ -124,8 +122,8 @@ function ForgotPasswordContent() {
                     : "text-gray-600"
                 }`}>
                   {success
-                    ? "We've sent password reset instructions to your email"
-                    : "Enter your email and we'll send you a link to reset your password"}
+                    ? "We&apos;ve sent password reset instructions to your email"
+                    : "Enter your email and we&apos;ll send you a link to reset your password"}
                 </p>
               </div>
 
@@ -154,7 +152,7 @@ function ForgotPasswordContent() {
                         ? "text-gray-300"
                         : "text-gray-600"
                     }`}>
-                      We've sent a password reset link to <strong>{submittedEmail}</strong>.
+                      We&apos;ve sent a password reset link to <strong>{submittedEmail}</strong>.
                       Click the link in the email to reset your password.
                     </p>
                     <p className={`text-xs ${
@@ -163,7 +161,7 @@ function ForgotPasswordContent() {
                         : "text-gray-500"
                     }`}>
                       The link expires in <strong>1 hour</strong> for security reasons. 
-                      Don't forget to check your spam folder!
+                      Don&apos;t forget to check your spam folder!
                     </p>
                   </div>
 
@@ -259,7 +257,7 @@ function ForgotPasswordContent() {
                 : "text-gray-600"
             }`}>
               🔒 Your password reset link is secure and valid for 1 hour. 
-              If you didn't request this, you can safely ignore this email.
+              If you didn&apos;t request this, you can safely ignore this email.
             </p>
           </div>
         </div>

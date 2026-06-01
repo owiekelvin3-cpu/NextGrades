@@ -1,10 +1,10 @@
 {
   "common": {
     "brand": "NextGrades",
-    "login": "Login",
+    "login": "Anmelden",
     "signup": "Registrieren",
     "freeConsultation": "Kostenloses Erstgespräch",
-    "home": "Startseite",
+    "home": "Start",
     "about": "Über uns",
     "programs": "Programme",
     "subjects": "Fächer",
@@ -14,14 +14,17 @@
     "careers": "Karriere",
     "help": "Hilfe",
     "aiGenerator": "KI-Generator",
-    "dashboard": "Dashboard",
+    "dashboard": "Übersicht",
     "logout": "Abmelden",
     "lightMode": "Heller Modus",
     "darkMode": "Dunkler Modus"
   },
   "navbar": {
-    "login": "Login",
+    "login": "Anmelden",
     "freeConsultation": "Kostenloses Erstgespräch"
+  },
+  "nav": {
+    "home": "Startseite"
   },
   "footer": {
     "programs": "Programme",
@@ -179,22 +182,14 @@
       }
     ],
     "platform": {
-      "eyebrow": "Lernplattform",
       "title": "Deine komplette Lernplattform",
       "subtitle": "Unsere moderne Plattform unterstützt dich bei jedem Schritt deiner Lernreise.",
       "discover": "Plattform entdecken",
       "learnMore": "Mehr erfahren",
       "trackProgress": "Fortschritt verfolgen",
       "trackProgressDesc": "Verfolge deinen Fortschritt, schließe Lektionen ab und bleib motiviert!",
-      "availability": "24/7",
-      "availabilityLabel": "Support verfügbar",
-      "materials": "Lernmaterialien",
-      "features": [
-        { "title": "Fortschritt verfolgen", "desc": "Verfolge deinen Fortschritt, schließe Lektionen ab und bleib motiviert!" },
-        { "title": "24/7 Support", "desc": "Support, wann immer du ihn brauchst." },
-        { "title": "1.000+ Materialien", "desc": "Premium-Arbeitsblätter, Videos und Leitfäden an einem Ort." },
-        { "title": "Strukturiertes Lernen", "desc": "Klare Lernpfade mit Fortschrittsverfolgung und Prüfungsvorbereitung." }
-      ]
+      "weeks": "Wochen lang",
+      "materials": "Lernmaterialien"
     }
   },
   "contact": {
@@ -208,7 +203,7 @@
     "enterFirstName": "Gib deinen Vornamen ein...",
     "enterLastName": "Gib deinen Nachnamen ein...",
     "enterEmail": "Gib deine E-Mail Adresse ein...",
-    "enterPhone": "+49 (000) 000-0000",
+    "enterPhone": "Telefonnummer eingeben",
     "enterMessage": "Gib deine Nachricht hier ein...",
     "submitForm": "Formular absenden",
     "submitting": "Wird gesendet...",
@@ -238,16 +233,69 @@
     "createAccountNow": "Jetzt registrieren",
     "loading": "Laden...",
     "orContinueWith": "oder weiter mit",
-    "apple": "Apple",
-    "google": "Google",
+    "apple": "Mit Apple fortfahren",
+    "google": "Mit Google fortfahren",
     "alreadyHaveAccount": "Du hast bereits ein Konto?",
     "dontHaveAccount": "Du hast noch kein Konto?",
     "signIn": "Anmelden",
     "signUp": "Registrieren",
     "terms": "AGB",
-    "smartLearning": "Smart Learning, Better Results.",
+    "smartLearning": "Smartes Lernen",
     "dailyMeeting": "Tägliche Besprechung",
-    "supabaseNotConfigured": "Supabase-Anmeldedaten sind nicht konfiguriert. Bitte setze NEXT_PUBLIC_SUPABASE_URL und NEXT_PUBLIC_SUPABASE_ANON_KEY in .env.local."
+    "supabaseNotConfigured": "Supabase-Anmeldedaten sind nicht konfiguriert. Bitte setze NEXT_PUBLIC_SUPABASE_URL und NEXT_PUBLIC_SUPABASE_ANON_KEY in .env.local.",
+    "invalidEmail": "Ungültige E-Mail-Adresse",
+    "accountSuspended": "Dein Konto wurde gesperrt. Kontaktiere support@nextgrades.de, wenn du glaubst, dass dies ein Fehler ist.",
+    "profileIncomplete": "Dein Profil ist unvollständig. Bitte kontaktiere den Support.",
+    "enterValidEmail": "Bitte gib eine gültige E-Mail-Adresse ein",
+    "enterPassword": "Bitte gib dein Passwort ein",
+    "authFailed": "Anmeldung fehlgeschlagen",
+    "mobileRegisterHeadline": "Starte mit NextGrades",
+    "mobileLoginHeadline": "Willkommen zurück",
+    "mobileRegisterSubtitle": "Wähle deine Rolle und fülle die Angaben unten aus.",
+    "mobileLoginSubtitle": "Melde dich an, um deine Lernreise fortzusetzen.",
+    "signUpLink": "Registrieren",
+    "rememberMe": "Angemeldet bleiben",
+    "forgotPassword": "Passwort vergessen?",
+    "termsPrefix": "Mit der Fortsetzung stimmst du unseren",
+    "and": "und",
+    "privacy": "Datenschutzerklärung",
+    "welcomeBackTitle": "Willkommen zurück",
+    "loginSubtitle": "Melde dich an, um deine Lernreise fortzusetzen.",
+    "heroCaption": "Premium-Nachhilfe, digitale Materialien und strukturiertes Lernen — alles an einem Ort.",
+    "goToLogin": "Zur Anmeldung",
+    "noAccount": "Du hast noch kein Konto?",
+    "haveAccount": "Du hast bereits ein Konto?",
+    "emailPlaceholder": "du@beispiel.de",
+    "showPassword": "Passwort anzeigen",
+    "hidePassword": "Passwort verbergen",
+    "backToHome": "Zur Startseite",
+    "registeringAs": "Ich registriere mich als",
+    "nameLabel": "Name",
+    "confirmPassword": "Passwort bestätigen",
+    "confirmPasswordPlaceholder": "Passwort wiederholen",
+    "learnAndGrow": "Lernen & wachsen",
+    "teachAndInspire": "Unterrichten & inspirieren",
+    "validationFullName": "Bitte gib deinen vollständigen Namen ein",
+    "validationEmail": "Bitte gib eine gültige E-Mail ein",
+    "validationPasswordLength": "Mindestens 8 Zeichen",
+    "validationPasswordMatch": "Passwörter stimmen nicht überein",
+    "invalidServerResponse": "Ungültige Serverantwort. Bitte versuche es erneut.",
+    "registrationApiUnavailable": "Registrierungs-API nicht verfügbar. Starte den Dev-Server neu und versuche es erneut.",
+    "registrationUnexpectedPage": "Der Server hat eine unerwartete Seite statt JSON zurückgegeben. Starte den Dev-Server neu.",
+    "emailExists": "Mit dieser E-Mail existiert bereits ein Konto. Bitte melde dich an.",
+    "registrationFailed": "Registrierung fehlgeschlagen",
+    "verifyEmailMessage": "Prüfe deine E-Mails, um deine Adresse zu bestätigen.",
+    "accountCreatedSignIn": "Konto erstellt! Melde dich an, um fortzufahren.",
+    "accountCreatedTitle": "Konto erstellt",
+    "signInNow": "Jetzt anmelden",
+    "redirectingSoon": "Weiterleitung in wenigen Sekunden…",
+    "creatingAccount": "Konto wird erstellt…",
+    "createAccountBtn": "Konto erstellen",
+    "registerBtn": "Registrieren",
+    "hideConfirmPassword": "Passwortbestätigung verbergen",
+    "showConfirmPassword": "Passwortbestätigung anzeigen",
+    "fullNamePlaceholder": "Dein vollständiger Name",
+    "passwordPlaceholder": "Mindestens 8 Zeichen"
   },
   "about": {
     "heroTitle": "Mehr als Nachhilfe.",
@@ -304,17 +352,23 @@
       "feature4Title": "Sicher & gut",
       "feature4Desc": "Für Schüler:innen optimal aufbereitet."
     },
+    "filtersLabel": "Filter",
     "filters": {
       "title": "Filter",
       "subject": "Fach",
-      "grade": "Klasse",
+      "grade": "Klassenstufe",
       "semester": "Semester",
-      "materialType": "Material-Typ",
-      "access": "Zugriff",
+      "materialType": "Materialtyp",
+      "access": "Zugang",
       "accessAll": "Alle Inhalte",
       "accessFree": "Kostenlose Inhalte",
-      "accessPremium": "Premium-Inhalte",
-      "reset": "Filter zurücksetzen"
+      "accessPremium": "Nur Premium",
+      "reset": "Filter zurücksetzen",
+      "allSubjects": "Alle Fächer",
+      "allGrades": "Alle Klassenstufen",
+      "allSemesters": "Alle Semester",
+      "semester1": "Semester 1",
+      "semester2": "Semester 2"
     },
     "video": {
       "back": "Zurück zu Ressourcen",
@@ -323,7 +377,20 @@
       "loadFailed": "Video konnte nicht geladen werden.",
       "lockedDesc": "Upgrade deine Mitgliedschaft, um dieses Video auf NextGrades anzusehen."
     },
-    "freeButton": "Kostenlos"
+    "freeButton": "Kostenlos",
+    "membersOnly": "Nur für Mitglieder",
+    "freeLabel": "Kostenlos",
+    "materialsCount": "{{count}} Materialien",
+    "exploreSubject": "Entdecken",
+    "all": "Alle",
+    "free": "Kostenlos",
+    "premium": "Premium",
+    "applyFilters": "Ergebnisse anzeigen",
+    "noResults": "Keine Ressourcen entsprechen deinen Filtern.",
+    "premiumRequired": "Premium-Mitgliedschaft oder Einschreibung erforderlich.",
+    "downloadStarted": "„{{title}}“ wird geöffnet…",
+    "saved": "Gespeichert",
+    "premiumCta": "Freischalten"
   },
   "dashboard": {
     "student": {
@@ -345,7 +412,7 @@
     }
   },
   "admin": {
-    "title": "Admin Dashboard",
+    "title": "Admin-Bereich",
     "users": "Benutzer",
     "courses": "Kurse",
     "analytics": "Analysen",
@@ -412,7 +479,166 @@
     "subtitle": "Buche dein kostenloses Erstgespräch jetzt",
     "cardTitle": "Buche dein kostenloses Erstgespräch",
     "cardSubtitle": "Nutze Calendly, um einen passenden Termin zu buchen.",
-    "bookNow": "Jetzt Termin buchen"
+    "bookNow": "Jetzt Termin buchen",
+    "breadcrumb": "Startseite > Beratung",
+    "titleHighlight": "Dein Lernplan beginnt hier.",
+    "heroDesc": "Unverbindlich. Ohne Druck. Klare Orientierung von Expert:innen, die das deutsche Schulsystem und die Studienvorbereitung kennen.",
+    "viewPrograms": "Programme entdecken",
+    "trustBadges": [
+      "100 % kostenlos",
+      "Unverbindlich",
+      "30 Minuten"
+    ],
+    "stats": [
+      {
+        "value": "< 24h",
+        "label": "Antwortzeit"
+      },
+      {
+        "value": "30 Min.",
+        "label": "Beratungsdauer"
+      },
+      {
+        "value": "1:1",
+        "label": "Persönliche Berater:in"
+      },
+      {
+        "value": "DE",
+        "label": "Deutschland-Expertise"
+      }
+    ],
+    "processTitle": "So läuft deine Beratung ab",
+    "processSubtitle": "Ein einfacher, strukturierter Ablauf — für Klarheit, nicht für Verkaufsgespräche.",
+    "steps": [
+      {
+        "title": "Deine Situation schildern",
+        "description": "Erzähl uns von Klassenstufe, Fächern, anstehenden Prüfungen und deinen Zielen."
+      },
+      {
+        "title": "Deine Berater:in kennenlernen",
+        "description": "In einem entspannten 30-minütigen Gespräch hören wir zu und stellen die richtigen Fragen."
+      },
+      {
+        "title": "Lernplan erhalten",
+        "description": "Wir empfehlen das passende Format — 1:1, Gruppe oder Prüfungsvorbereitung — mit klaren nächsten Schritten."
+      },
+      {
+        "title": "Starten, wenn du bereit bist",
+        "description": "Du meldest dich nur an, wenn es sich richtig anfühlt. Materialien und Programme kannst du vorher erkunden."
+      }
+    ],
+    "benefitsTitle": "Das nimmst du aus dem Gespräch mit",
+    "benefitsSubtitle": "Jede Beratung zielt auf Ergebnisse — nicht auf allgemeine Ratschläge.",
+    "benefits": [
+      {
+        "title": "Individuelle Einschätzung",
+        "description": "Wir erkennen Stärken, Lücken und den schnellsten Weg zu besseren Noten."
+      },
+      {
+        "title": "Programm-Empfehlung",
+        "description": "Vergleiche 1:1-Nachhilfe, Kleingruppen und Fachprogramme nebeneinander."
+      },
+      {
+        "title": "Transparente Preisübersicht",
+        "description": "Verstehe Tarife, Einheiten und Mehrwert, bevor du dich entscheidest."
+      },
+      {
+        "title": "Prüfungs- & Studienberatung",
+        "description": "Abitur, Studienvorbereitung und MINT-Pfade verständlich erklärt."
+      },
+      {
+        "title": "Flexible Terminoptionen",
+        "description": "Finde Zeiten, die zu Schule, Arbeit und Familie passen."
+      },
+      {
+        "title": "Qualifizierte deutsche Lehrkräfte",
+        "description": "Betreuung durch Tutor:innen, die lokale Lehrpläne und Anforderungen kennen."
+      }
+    ],
+    "audienceTitle": "Für wen ist das gedacht?",
+    "audiences": [
+      {
+        "title": "Schüler:innen",
+        "description": "Von der Mittelstufe bis zur Studienvorbereitung — Selbstvertrauen und stabile Ergebnisse."
+      },
+      {
+        "title": "Eltern",
+        "description": "Transparenz zu Fortschritt, Terminen und dem richtigen Unterstützungsniveau."
+      },
+      {
+        "title": "Quereinsteiger:innen",
+        "description": "Mathe, Sprachen oder Wirtschaft auffrischen für Studium und Bewerbungen."
+      }
+    ],
+    "formTitle": "Kostenlose Beratung anfragen",
+    "formSubtitle": "Fülle das Formular aus — unser Team meldet sich zur Terminvereinbarung.",
+    "firstName": "Vorname",
+    "lastName": "Nachname",
+    "email": "E-Mail-Adresse",
+    "phone": "Telefonnummer",
+    "gradeLevel": "Klasse / Niveau",
+    "gradePlaceholder": "Niveau wählen",
+    "grades": [
+      "Klasse 5–7",
+      "Klasse 8–10",
+      "Abitur / Oberstufe",
+      "Studium / Erwachsene"
+    ],
+    "subject": "Interessensfach",
+    "subjectPlaceholder": "Fach wählen",
+    "subjects": [
+      "Mathematik",
+      "Englisch",
+      "Deutsch",
+      "Physik",
+      "Chemie",
+      "Wirtschaft",
+      "Informatik",
+      "Sonstiges"
+    ],
+    "preferredTime": "Bevorzugte Kontaktzeit",
+    "timePlaceholder": "Präferenz wählen",
+    "times": [
+      "Vormittag (8–12)",
+      "Nachmittag (12–17)",
+      "Abend (17–20)",
+      "Wochenende",
+      "Flexibel"
+    ],
+    "goals": "Deine Ziele (optional)",
+    "goalsPlaceholder": "z. B. Mathenote vor Prüfungen verbessern, Abitur vorbereiten, Lernroutine aufbauen…",
+    "privacyNote": "Mit dem Absenden erlaubst du uns, dich wegen deiner Beratungsanfrage zu kontaktieren. Wir geben deine Daten nicht an Dritte weiter.",
+    "submit": "Beratung anfragen",
+    "submitting": "Wird gesendet…",
+    "successTitle": "Anfrage erhalten!",
+    "successMessage": "Danke — wir melden uns in Kürze zur Terminvereinbarung.",
+    "faqTitle": "Häufig gestellte Fragen",
+    "faqs": [
+      {
+        "question": "Ist die Beratung wirklich kostenlos?",
+        "answer": "Ja. Das Erstgespräch ist komplett kostenlos und unverbindlich."
+      },
+      {
+        "question": "Wie lange dauert das Gespräch?",
+        "answer": "In der Regel etwa 30 Minuten — genug, um deine Ziele zu verstehen und einen Weg zu empfehlen."
+      },
+      {
+        "question": "Online oder vor Ort?",
+        "answer": "Primär online per Videocall — flexibel von überall. Vor-Ort-Termine je nach Standort möglich."
+      },
+      {
+        "question": "Müssen Eltern dabei sein?",
+        "answer": "Unter 16 Jahren empfehlen wir die Anwesenheit eines Erziehungsberechtigten. Ältere Schüler:innen können allein teilnehmen."
+      },
+      {
+        "question": "Was soll ich vorbereiten?",
+        "answer": "Aktuelle Noten, Prüfungstermine und eine kurze Zielliste helfen uns, sofort passende Empfehlungen zu geben."
+      }
+    ],
+    "ctaTitle": "Bereit für den nächsten Schritt?",
+    "ctaDesc": "Entdecke Programme und Preise — oder sprich zuerst mit uns, ganz wie es dir passt.",
+    "ctaPrograms": "Programme ansehen",
+    "ctaPricing": "Preise ansehen"
   },
   "privacy": {
     "title": "Datenschutzerklärung",
@@ -520,7 +746,8 @@
           "Wir können diese Datenschutzerklärung anpassen, wenn sich unsere Leistungen oder gesetzliche Anforderungen ändern. Das Datum oben auf dieser Seite zeigt die letzte Überarbeitung. Bitte prüfe diese Seite regelmäßig."
         ]
       }
-    ]
+    ],
+    "body": "Hier findest du unsere Datenschutzerklärung."
   },
   "terms": {
     "title": "Allgemeine Geschäftsbedingungen",
@@ -621,20 +848,97 @@
           "Bist du Verbraucher:in in der EU, können zwingende Verbraucherschutzvorschriften deines Wohnsitzlandes gelten. Gerichtsstand ist — soweit gesetzlich zulässig — Deutschland."
         ]
       }
-    ]
+    ],
+    "body": "Hier findest du unsere Allgemeinen Geschäftsbedingungen."
+  },
+  "legal": {
+    "toc": "Inhalt",
+    "related": "Weitere Dokumente",
+    "relatedHint": "Lies auch unsere weiteren rechtlichen Hinweise für volle Transparenz."
   },
   "careersPage": {
-    "title": "Karriere",
-    "subtitle": "Werde Teil unseres Teams!",
+    "title": "Karriere bei NextGrades",
+    "subtitle": "Hilf Schüler:innen zum Erfolg — unterrichte online mit einem Team, das Qualität, Flexibilität und Entwicklung schätzt.",
+    "eyebrow": "Werde Teil des Teams",
+    "heroDesc": "Wir bauen eine moderne Lernplattform für Schüler:innen in Deutschland. Wenn du Begeisterung fürs Unterrichten mitbringst und echten Impact willst, freuen wir uns auf deine Bewerbung.",
+    "viewPositions": "Offene Stellen ansehen",
     "applyNow": "Jetzt bewerben",
-    "jobs": [
+    "whyEyebrow": "Warum NextGrades",
+    "whyTitle": "Mit Sinn unterrichten",
+    "whyDesc": "Werde Teil einer wachsenden Bildungsmarke mit strukturiertem Lernen, hochwertigen Materialien und messbaren Ergebnissen für Schüler:innen.",
+    "benefits": [
       {
-        "title": "Mathe-Nachhilfelehrer:in",
-        "description": "Wir suchen engagierte Mathe-Nachhilfelehrer:innen."
+        "title": "Echter Impact",
+        "description": "Unterstütze Schüler:innen bei Prüfungen, Selbstvertrauen und langfristigem Lernerfolg."
       },
       {
+        "title": "Moderne Plattform",
+        "description": "Nutze unsere digitalen Tools, Materialien und Terminplanung — ohne Admin-Chaos."
+      },
+      {
+        "title": "Starkes Team",
+        "description": "Arbeite mit erfahrenen Pädagog:innen und einem Team, das dich bestmöglich unterstützt."
+      },
+      {
+        "title": "Flexible Arbeit",
+        "description": "Online-Nachhilfe mit Zeiten, die zu deinem Leben passen — Teilzeit oder Vollzeit."
+      }
+    ],
+    "stats": [
+      { "value": "200+", "label": "betreute Schüler:innen" },
+      { "value": "25+", "label": "Lehrkräfte im Team" },
+      { "value": "100%", "label": "online & flexibel" },
+      { "value": "4,9/5", "label": "Zufriedenheit der Eltern" }
+    ],
+    "positionsEyebrow": "Offene Stellen",
+    "positionsTitle": "Aktuelle Möglichkeiten",
+    "positionsDesc": "Wir suchen engagierte Tutor:innen. Dein Fach ist nicht dabei? Sende eine Initiativbewerbung — wir wachsen stetig.",
+    "processEyebrow": "So funktioniert's",
+    "processTitle": "Dein Weg zu uns",
+    "stepLabel": "Schritt {{number}}",
+    "steps": [
+      {
+        "title": "Online bewerben",
+        "description": "Sende deine Bewerbung über das Kontaktformular mit Fach, Erfahrung und Verfügbarkeit."
+      },
+      {
+        "title": "Kennenlerngespräch",
+        "description": "In einem kurzen Video-Call lernen wir deinen Unterrichtsstil und deine Ziele kennen."
+      },
+      {
+        "title": "Loslegen",
+        "description": "Nach dem Onboarding erhältst du Schüler:innen, Materialien und Zugang zur Plattform."
+      }
+    ],
+    "ctaTitle": "Passende Stelle nicht dabei?",
+    "ctaDesc": "Initiativbewerbungen von engagierten Lehrkräften in allen Schulfächern sind willkommen.",
+    "ctaButton": "Initiativbewerbung senden",
+    "jobs": [
+      {
+        "id": "math",
+        "title": "Mathe-Nachhilfelehrer:in",
+        "description": "Wir suchen erfahrene Mathe-Tutor:innen für Schüler:innen von der Mittelstufe bis zur Abiturvorbereitung. Du erklärst verständlich, stärkst Selbstvertrauen und passt dich dem Niveau an.",
+        "type": "Teilzeit / Freiberuflich",
+        "location": "Remote (Deutschland)",
+        "highlights": [
+          "Erfahrung im Unterrichten von Schulmathematik",
+          "Klare Kommunikation auf Deutsch und/oder Englisch",
+          "Sicher im Umgang mit Online-Tools (Zoom)",
+          "Strukturiert, geduldig und schüler:innenorientiert"
+        ]
+      },
+      {
+        "id": "english",
         "title": "Englisch-Nachhilfelehrer:in",
-        "description": "Wir suchen engagierte Englisch-Nachhilfelehrer:innen."
+        "description": "Verstärke unser Englisch-Team und hilf beim Grammatik-, Schreib- und Konversationstraining sowie bei Prüfungsvorbereitung. Du gestaltest motivierende Stunden mit sichtbarem Fortschritt.",
+        "type": "Teilzeit / Freiberuflich",
+        "location": "Remote (Deutschland)",
+        "highlights": [
+          "Native or near-native Englischkenntnisse",
+          "Erfahrung mit dem deutschen Schul-Englisch",
+          "Vorbereitung auf Tests und Aufsätze",
+          "Zuverlässige Verfügbarkeit für wiederkehrende Online-Termine"
+        ]
       }
     ]
   },

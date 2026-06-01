@@ -6,6 +6,7 @@ import { NotificationProvider } from "@/context/NotificationContext";
 import { SidebarProvider } from "@/context/SidebarContext";
 import PageTransition from "@/components/PageTransition";
 import { AdminPortalGuard } from "@/components/admin/AdminPortalGuard";
+import { AdminErrorBoundary } from "@/components/admin/AdminErrorBoundary";
 import { ADMIN_PORTAL_LOGIN } from "@/lib/admin/portal-paths";
 
 function PortalLayoutInner({ children }: { children: React.ReactNode }) {
@@ -17,9 +18,13 @@ function PortalLayoutInner({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <AdminPortalGuard>
-      <PageTransition>{children}</PageTransition>
-    </AdminPortalGuard>
+    <AdminErrorBoundary>
+      <AdminPortalGuard>
+        <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
+          <PageTransition>{children}</PageTransition>
+        </div>
+      </AdminPortalGuard>
+    </AdminErrorBoundary>
   );
 }
 

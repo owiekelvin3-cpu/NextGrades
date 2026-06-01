@@ -1,4 +1,5 @@
 import { humanizeKey } from "./constants";
+import { friendlySectionLabel } from "./page-meta";
 
 export type CmsFieldGroup = {
   id: string;
@@ -34,7 +35,7 @@ export function groupFieldsBySection(i18nKeys: string[]): CmsFieldGroup[] {
   return Array.from(buckets.entries())
     .map(([id, { label, fieldKeys }]) => ({
       id,
-      label,
+      label: friendlySectionLabel(id, label),
       fieldKeys: fieldKeys.sort(),
     }))
     .sort((a, b) => a.label.localeCompare(b.label));

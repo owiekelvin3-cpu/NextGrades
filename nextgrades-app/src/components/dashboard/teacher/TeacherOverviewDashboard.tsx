@@ -103,7 +103,7 @@ export function TeacherOverviewDashboard() {
 
   return (
     <TeacherDashboardLayout title={t("teacherDashboard.nav.dashboard")} topRightAction={createAppointmentBtn}>
-      <div className="mx-auto flex max-w-6xl flex-col gap-6">
+      <div className="content-ready mx-auto flex max-w-6xl flex-col gap-6">
         <TeacherMobileQuickActions />
 
         <OverviewHero

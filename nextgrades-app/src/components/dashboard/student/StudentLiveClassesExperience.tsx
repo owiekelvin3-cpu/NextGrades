@@ -9,7 +9,7 @@ import { fetchAllStudentLessonsForStudent } from "@/lib/dashboard/student-overvi
 import { getSessionUserId } from "@/lib/dashboard/data";
 import type { DashboardLesson } from "@/lib/dashboard/data";
 import { StudentDashboardLayout } from "./StudentDashboardLayout";
-import { studentPanel, formatTimeRange, lessonDateParts } from "./student-ui";
+import { studentPanel, formatTimeRange, lessonDateParts, st } from "./student-ui";
 import { ZoomMeetingButton } from "@/components/zoom/ZoomMeetingButton";
 import { cn } from "@/lib/utils";
 
@@ -51,10 +51,8 @@ export function StudentLiveClassesExperience() {
           <LoadingBlock />
         ) : lessons.length === 0 ? (
           <div className={cn(studentPanel(), "p-12 text-center")}>
-            <Video className="mx-auto mb-4 h-12 w-12 text-gray-300" />
-            <p className="text-sm text-gray-500">
-              {t("studentDashboard.noLiveClasses", { defaultValue: "No upcoming live classes scheduled." })}
-            </p>
+            <Video className={cn("mx-auto mb-4 h-12 w-12", st.textSubtle)} />
+            <p className={st.empty}>{t("studentDashboard.noLiveClasses", { defaultValue: "No upcoming live classes scheduled." })}</p>
           </div>
         ) : (
           <div className="space-y-4">
@@ -63,21 +61,16 @@ export function StudentLiveClassesExperience() {
               return (
                 <div key={lesson.id} className={studentPanel("p-5")}>
                   <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-                    <div
-                      className={cn(
-                        "flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-xl border",
-                        parts.isToday ? "border-[#D4AF37]/50 bg-[#FFF9E6]" : "border-gray-100 bg-[#FAFBFC]"
-                      )}
-                    >
-                      <span className="text-2xl font-bold text-[#0D1B2A]">{parts.day}</span>
+                    <div className={cn(st.dateBadgeLg, parts.isToday && st.dateBadgeToday)}>
+                      <span className={st.dateDayLg}>{parts.day}</span>
                       <span className="text-[10px] font-bold uppercase text-[#D4AF37]">{parts.month}</span>
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-lg font-bold text-[#0D1B2A]">
+                      <p className={cn("text-lg font-bold", st.textPrimary)}>
                         {lesson.subject_name || t("zoom.liveClass", { defaultValue: "Live class" })}
                       </p>
-                      <p className="text-sm text-gray-500">{parts.weekday}</p>
-                      <div className="mt-2 flex flex-wrap gap-3 text-xs text-gray-500">
+                      <p className={cn("text-sm", st.textMuted)}>{parts.weekday}</p>
+                      <div className={cn("mt-2 flex flex-wrap gap-3 text-xs", st.textMuted)}>
                         {lesson.teacher_name && (
                           <span className="inline-flex items-center gap-1">
                             <User className="h-3.5 w-3.5" />

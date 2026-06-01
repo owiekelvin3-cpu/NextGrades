@@ -90,7 +90,7 @@ export function MobileAppShell({
 
       <div
         className={cn(
-          "flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden bg-surface-dashboard transition-[margin-left] duration-300 ease-out md:bg-transparent md:ml-[var(--sidebar-width)]",
+          "flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden bg-surface-dashboard transition-[margin-left] duration-300 ease-out md:ml-[var(--sidebar-width)]",
           !hideBottomNav && MOBILE_BOTTOM_NAV_PADDING
         )}
       >

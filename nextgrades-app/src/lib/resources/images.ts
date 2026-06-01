@@ -7,21 +7,19 @@ function u(id: string, w = 800, h = 500) {
 }
 
 export const RESOURCES_HUB_HERO = u("1503676260728-1c00da094a0b", 1920, 1080);
-
 export const RESOURCES_UPGRADE_HERO = u("1523050854548-600962526ae0", 1920, 1080);
-
 export const RESOURCES_DEFAULT_THUMBNAIL = u("1524995993596-b08947747391");
 
 /** Subject heroes & tiles */
 export const RESOURCES_SUBJECT_IMAGE_BY_ID: Record<string, string> = {
   math: u("1596495578064-82f9e4034428"),
   english: u("1457695719797-6647b2660e71"),
-  german: u("1544716275-ca93ac96c17e"),
+  german: u("1481627834876-b7833e8f5570", 800, 500),
   physics: u("1636466499355-9f8ee186f12a"),
   chemistry: u("1603120375449-46255d9f3c35"),
   biology: u("1576086210839-4723677ef878"),
   business: u("1556761175-b413da4baf72"),
-  "computer-science": u("1555066931-43614d8685de"),
+  "computer-science": u("1517694712202-14dd9538aa97", 800, 500),
   "technical-drawing": u("1586286861527-3ec0d6d5ae69"),
 };
 
@@ -50,7 +48,7 @@ export const RESOURCES_CONTENT_TYPE_IMAGES: Record<string, string> = {
   mini_course: u("1563986768609-322da13575f3"),
   full_course: u("1588072432834-1101f84faa4b"),
   live_class: u("1516321497487-e544c54d2f00"),
-  webinar: u("1553877525-f6e3844ae254"),
+  webinar: u("1516321497487-e544c54d2f00", 800, 500),
   practice_questions: u("1471107341899-ad7e0e5ab44d"),
   assignment: u("1416331108676-22c6c9da1a92"),
   workspace: u("1488190211103-e3e395f63f07"),

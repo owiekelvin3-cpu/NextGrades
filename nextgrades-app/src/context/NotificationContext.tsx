@@ -38,14 +38,17 @@ const NotificationContext = createContext<NotificationContextValue | null>(null)
 export function NotificationProvider({ children }: { children: ReactNode }) {
   const [notifications, setNotifications] = useState<NotificationRecord[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(() => isSupabaseEnvConfigured());
   const [hasMore, setHasMore] = useState(false);
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
   const [preferences, setPreferences] = useState<NotificationPreferences>(DEFAULT_NOTIFICATION_PREFERENCES);
   const offsetRef = useRef(0);
   const userIdRef = useRef<string | null>(null);
   const prefsRef = useRef(preferences);
-  prefsRef.current = preferences;
+
+  useEffect(() => {
+    prefsRef.current = preferences;
+  }, [preferences]);
 
   const fetchUnreadCount = useCallback(async () => {
     try {
@@ -142,7 +145,6 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (!isSupabaseEnvConfigured()) {
-      setLoading(false);
       return;
     }
 

@@ -1,12 +1,14 @@
 "use client";
 
 import { useLayoutEffect, useEffect, ReactNode } from "react";
-import i18n, { ensureGermanBundle } from "@/lib/i18n/config";
+import i18n, { ensureEnglishBundle } from "@/lib/i18n/config";
 import { I18nextProvider } from "react-i18next";
-import { normalizeLanguage } from "@/lib/i18n/locales";
+import { normalizeLanguage, type SupportedLanguage } from "@/lib/i18n/locales";
 import {
   getStoredLanguage,
   persistLanguageLocally,
+  persistLanguageCookie,
+  migrateLegacyLanguagePreference,
   LANGUAGE_CHANGED_EVENT,
   LANGUAGE_STORAGE_KEY,
 } from "@/lib/preferences";
@@ -15,33 +17,32 @@ interface I18nProviderProps {
   children: ReactNode;
 }
 
+async function syncI18nLanguage(lang: SupportedLanguage): Promise<void> {
+  document.documentElement.lang = lang;
+  if (lang === "en") await ensureEnglishBundle();
+  if (normalizeLanguage(i18n.language) !== lang) {
+    await i18n.changeLanguage(lang);
+  }
+}
+
 export function I18nProvider({ children }: I18nProviderProps) {
   useLayoutEffect(() => {
-    const stored = localStorage.getItem(LANGUAGE_STORAGE_KEY) ?? navigator.language;
-    const lang = normalizeLanguage(stored);
-    document.documentElement.lang = lang;
+    migrateLegacyLanguagePreference();
+    const stored = getStoredLanguage();
+    persistLanguageCookie(stored);
+    void syncI18nLanguage(stored);
   }, []);
 
   useEffect(() => {
-    const applyLanguage = async (raw: string | null) => {
-      const lang = normalizeLanguage(raw);
-      persistLanguageLocally(lang);
-      document.documentElement.lang = lang;
-      if (lang === "de") await ensureGermanBundle();
-      await i18n.changeLanguage(lang);
-    };
-
-    applyLanguage(localStorage.getItem(LANGUAGE_STORAGE_KEY) ?? navigator.language);
-
     const onStorage = (event: StorageEvent) => {
       if (event.key === LANGUAGE_STORAGE_KEY) {
-        applyLanguage(event.newValue);
+        void syncI18nLanguage(normalizeLanguage(event.newValue ?? "de"));
       }
     };
 
     const onLanguageChanged = (event: Event) => {
       const lang = normalizeLanguage((event as CustomEvent<string>).detail);
-      applyLanguage(lang);
+      void syncI18nLanguage(lang);
     };
 
     const onI18nLanguageChanged = (lang: string) => {
@@ -68,10 +69,8 @@ export function I18nProvider({ children }: I18nProviderProps) {
 
 export async function changeAppLanguage(lang: string): Promise<void> {
   const normalized = normalizeLanguage(lang);
-  persistLanguageLocally(normalized);
-  document.documentElement.lang = normalized;
-  if (normalized === "de") await ensureGermanBundle();
-  await i18n.changeLanguage(normalized);
+  persistLanguageLocally(normalized, { userInitiated: true });
+  await syncI18nLanguage(normalized);
 }
 
 export function getAppLanguage(): string {

@@ -10,6 +10,7 @@ import { isPremiumResource } from "@/lib/resources/ui-config";
 import { isVideoResource, resourceWatchPath } from "@/lib/resources/video";
 import { appShell } from "@/lib/theme/shell";
 import { MarketingImage } from "@/components/marketing/MarketingImage";
+import { useTranslation } from "react-i18next";
 
 type HubCardProps = {
   resource: LearningResource;
@@ -40,6 +41,7 @@ function ResourceThumb({
 }
 
 export function ResourceHubCard({ resource, onOpen, variant, subjectSlug }: HubCardProps) {
+  const { t } = useTranslation();
   const premium = variant === "premium" || isPremiumResource(resource);
   const locked = resource.locked ?? (premium && resource.canAccess === false);
   const thumb = getResourceThumbnail(resource, subjectSlug);
@@ -88,11 +90,11 @@ export function ResourceHubCard({ resource, onOpen, variant, subjectSlug }: HubC
         <div className="mt-4 flex items-center justify-between">
           {premium ? (
             <span className="inline-flex items-center gap-1 text-xs font-semibold text-[#D4AF37]">
-              <Lock className="h-3.5 w-3.5" /> Members only
+              <Lock className="h-3.5 w-3.5" /> {t("resources.membersOnly", { defaultValue: "Members only" })}
             </span>
           ) : (
             <span className="inline-flex items-center gap-1 text-xs font-semibold text-[#22C55E]">
-              <Gift className="h-3.5 w-3.5" /> Free
+              <Gift className="h-3.5 w-3.5" /> {t("resources.freeLabel", { defaultValue: "Free" })}
             </span>
           )}
           {locked ? (
@@ -134,6 +136,7 @@ type SubjectCardProps = {
 };
 
 export function ResourceSubjectTile({ name, slug, count, color, icon, imageUrl }: SubjectCardProps) {
+  const { t } = useTranslation();
   const thumb = imageUrl || getResourceThumbnail({ subject: { slug, name } }, slug);
 
   return (
@@ -160,9 +163,12 @@ export function ResourceSubjectTile({ name, slug, count, color, icon, imageUrl }
           {icon}
         </div>
         <h3 className="font-bold text-foreground">{name}</h3>
-        <p className="mt-1 text-xs text-text-muted">{count} materials</p>
+        <p className="mt-1 text-xs text-text-muted">
+          {t("resources.materialsCount", { count, defaultValue: `${count} materials` })}
+        </p>
         <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold" style={{ color }}>
-          Explore <ChevronRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
+          {t("resources.exploreSubject", { defaultValue: "Explore" })}{" "}
+          <ChevronRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
         </span>
         <span className="mt-2 h-0.5 w-8 rounded-full transition-all group-hover:w-full" style={{ backgroundColor: color }} />
       </div>
@@ -211,6 +217,7 @@ export function SectionHeader({
 }
 
 export function ResourcesCtaBanner() {
+  const { t } = useTranslation();
   return (
     <div className="rounded-2xl bg-[#0D1B2A] px-6 py-8 md:px-10 md:py-10">
       <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
@@ -219,17 +226,15 @@ export function ResourcesCtaBanner() {
             <Crown className="h-6 w-6 text-[#D4AF37]" />
           </div>
           <div>
-            <h3 className="text-xl font-bold text-white">Unlock even more exclusive content</h3>
-            <p className="mt-1 max-w-xl text-sm text-gray-300">
-              Get access to all premium materials, learning videos, mini-courses and more.
-            </p>
+            <h3 className="text-xl font-bold text-white">{t("resources.ctaTitle")}</h3>
+            <p className="mt-1 max-w-xl text-sm text-gray-300">{t("resources.ctaSubtitle")}</p>
           </div>
         </div>
         <Link
           href="/resources/upgrade"
           className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#D4AF37] to-[#F5A623] px-6 py-3 text-sm font-bold text-[#0D1B2A] shadow-lg transition hover:opacity-95"
         >
-          Become a member now <ChevronRight className="h-4 w-4" />
+          {t("resources.ctaButton")} <ChevronRight className="h-4 w-4" />
         </Link>
       </div>
     </div>
@@ -237,11 +242,12 @@ export function ResourcesCtaBanner() {
 }
 
 export function ResourcesFeatureRow() {
+  const { t } = useTranslation();
   const features = [
-    { title: "Structured by curriculum", desc: "Content aligned to school curriculum." },
-    { title: "Regularly updated", desc: "Always up-to-date materials." },
-    { title: "Created by experts", desc: "Built by experienced teachers." },
-    { title: "Safe & verified", desc: "Quality-checked for students." },
+    { title: t("resources.features.feature1Title"), desc: t("resources.features.feature1Desc") },
+    { title: t("resources.features.feature2Title"), desc: t("resources.features.feature2Desc") },
+    { title: t("resources.features.feature3Title"), desc: t("resources.features.feature3Desc") },
+    { title: t("resources.features.feature4Title"), desc: t("resources.features.feature4Desc") },
   ];
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">

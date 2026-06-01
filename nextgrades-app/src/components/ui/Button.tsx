@@ -9,28 +9,50 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   href?: string;
 }
 
+/** Apple-style interaction: subtle lift, scale, shadow — 250ms ease-out */
+const interactionBase =
+  "transform-gpu will-change-transform transition-all duration-[250ms] ease-out " +
+  "hover:scale-[1.03] hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0 " +
+  "disabled:hover:scale-100 disabled:hover:translate-y-0 disabled:active:scale-100";
+
 const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(
-  ({ className, variant = "gold", size = "md", href, ...props }, ref) => {
+  ({ className, variant = "gold", size = "md", href, type = "button", ...props }, ref) => {
     const variants = {
-      primary: "bg-white dark:bg-gradient-to-br dark:from-[#1E3A5F] dark:to-[#0D1B2A] text-[#0D1B2A] dark:text-white hover:bg-gray-100 dark:hover:from-[#2A4A70] dark:hover:to-[#112240] transition-all duration-300 border border-gray-200 dark:border-white/10 shadow-md dark:shadow-2xl",
-      secondary: "bg-white dark:bg-gradient-to-br dark:from-[#1E3A5F] dark:to-[#0D1B2A] text-[#0D1B2A] dark:text-white hover:bg-gray-50 dark:hover:from-[#2A4A70] dark:hover:to-[#112240] transition-all duration-300 border border-gray-200 dark:border-white/10 shadow-md dark:shadow-2xl",
-      gold: "bg-gradient-to-r from-[#D4AF37] to-[#F5A623] text-[#0D1B2A] hover:from-[#F5A623] hover:to-[#D4AF37] transition-all duration-300 font-semibold shadow-lg dark:shadow-[0_0_30px_rgba(212,175,55,0.3)] hover:shadow-xl dark:hover:shadow-[0_0_40px_rgba(212,175,55,0.5)]",
-      outline: "border-2 border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#0D1B2A] transition-all duration-300 shadow-sm hover:shadow-md",
-      dark: "bg-[#0D1B2A] dark:bg-gradient-to-br dark:from-[#1E3A5F] dark:to-[#0D1B2A] text-white hover:bg-[#1A2F42] dark:hover:from-[#2A4A70] dark:hover:to-[#112240] transition-all duration-300 shadow-md dark:shadow-2xl",
+      primary:
+        "bg-white text-[#0D1B2A] border border-gray-200/80 shadow-md shadow-black/5 " +
+        "hover:shadow-xl hover:shadow-black/10 hover:border-gray-300 " +
+        "dark:bg-gradient-to-br dark:from-[#1E3A5F] dark:to-[#0D1B2A] dark:text-white dark:border-white/10 " +
+        "dark:shadow-lg dark:shadow-black/30 dark:hover:shadow-2xl dark:hover:from-[#2A4A70] dark:hover:to-[#112240]",
+      secondary:
+        "bg-[#FAFAFA] text-[#0D1B2A] border border-gray-200/80 shadow-sm shadow-black/5 " +
+        "hover:shadow-lg hover:bg-white " +
+        "dark:bg-white/5 dark:text-white dark:border-white/15 dark:hover:bg-white/10 dark:hover:shadow-xl",
+      gold:
+        "bg-gradient-to-r from-[#D4AF37] to-[#F5A623] text-[#0D1B2A] font-semibold " +
+        "shadow-lg shadow-[#D4AF37]/25 hover:shadow-xl hover:shadow-[#D4AF37]/35 " +
+        "hover:from-[#E0BC42] hover:to-[#FFB84D] border border-[#D4AF37]/20",
+      outline:
+        "border-2 border-[#D4AF37] text-[#D4AF37] bg-transparent " +
+        "shadow-sm hover:bg-[#D4AF37] hover:text-[#0D1B2A] hover:shadow-lg hover:shadow-[#D4AF37]/20",
+      dark:
+        "bg-[#0D1B2A] text-white shadow-md shadow-black/20 " +
+        "hover:bg-[#152535] hover:shadow-xl " +
+        "dark:bg-gradient-to-br dark:from-[#1E3A5F] dark:to-[#0D1B2A] dark:hover:from-[#2A4A70] dark:hover:to-[#112240]",
     };
 
     const sizes = {
-      sm: "min-h-10 px-4 py-2 text-sm rounded-xl md:min-h-0",
-      md: "min-h-12 px-6 py-3 text-base rounded-2xl md:min-h-0 md:rounded-xl",
-      lg: "min-h-12 px-8 py-4 text-lg rounded-2xl md:min-h-0 md:rounded-xl",
-      xl: "min-h-14 px-10 py-5 text-xl rounded-2xl md:min-h-0 md:rounded-xl",
+      sm: "min-h-10 px-4 py-2 text-sm rounded-xl",
+      md: "min-h-12 px-6 py-3 text-base rounded-2xl",
+      lg: "min-h-[3.25rem] px-8 py-3.5 text-lg rounded-2xl",
+      xl: "min-h-14 px-10 py-4 text-xl rounded-2xl",
     };
 
     const classes = cn(
-      "inline-flex items-center justify-center gap-2 font-medium transition-all duration-200",
+      "inline-flex items-center justify-center gap-2 font-medium",
       "whitespace-normal text-center leading-snug",
-      "focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:ring-offset-2",
-      "active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100",
+      "focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF37] focus-visible:ring-offset-2",
+      "disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none",
+      interactionBase,
       variants[variant],
       sizes[size],
       className
@@ -63,6 +85,7 @@ const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(
 
     return (
       <button
+        type={type}
         ref={ref as React.ForwardedRef<HTMLButtonElement>}
         className={classes}
         {...props}

@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo } from "react";
-import { motion } from "framer-motion";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -13,6 +12,7 @@ import { useTranslation } from "react-i18next";
 import { useCmsImages } from "@/hooks/useCmsImage";
 import { HOME_HERO_STUDENT_IMAGE, PROGRAM_CARD_IMAGES, HERO_STUDY_IMAGE, HOME_PLATFORM_THUMB, HOME_TESTIMONIALS_BG } from "@/lib/marketing-images";
 import { MarketingImage } from "@/components/marketing/MarketingImage";
+import { RevealOnScroll } from "@/components/marketing/RevealOnScroll";
 import { MobileCarousel, CarouselCard } from "@/components/mobile/MobileCarousel";
 import {
   ArrowRight,
@@ -64,33 +64,41 @@ export default function Home() {
   return (
     <div className={`min-h-screen flex flex-col ${theme === "dark" ? "bg-[#0D1B2A]" : "bg-white"}`}>
       <Navbar />
-      
+
       <main className="flex-1">
-        {/* Hero Section */}
+        {/* Hero — CSS-only entrance (no scroll observer) */}
         <section className="relative overflow-hidden bg-[#0D1B2A] pb-16 pt-24 text-white md:pb-20 md:pt-28">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(212,175,55,0.08)_0%,_transparent_55%)]" />
           <div className="relative mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
             <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-              <motion.div
-                initial={{ opacity: 0, x: -40 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.7 }}
-              >
-                <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-[#D4AF37] sm:text-sm">
+              <div>
+                <p
+                  data-cms-field="home.heroEyebrow"
+                  className="hero-enter mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-[#D4AF37] sm:text-sm"
+                >
                   {t("home.heroEyebrow")}
                 </p>
-                <h1 className="mb-6 text-4xl font-bold leading-[1.08] md:text-5xl lg:text-[3.25rem]">
+                <h1
+                  data-cms-field="home.heroTitle"
+                  className="hero-enter hero-enter-delay-1 mb-6 text-4xl font-bold leading-[1.08] md:text-5xl lg:text-[3.25rem]"
+                >
                   {t("home.heroTitle")}{" "}
-                  <span className="text-[#D4AF37]">{t("home.heroTitleHighlight")}</span>
+                  <span data-cms-field="home.heroTitleHighlight" className="text-[#D4AF37]">
+                    {t("home.heroTitleHighlight")}
+                  </span>
                 </h1>
-                <p className="mb-8 max-w-xl text-base leading-relaxed text-gray-300 sm:text-lg">
+                <p
+                  data-cms-field="home.heroSubtitle"
+                  className="hero-enter hero-enter-delay-2 mb-8 max-w-xl text-base leading-relaxed text-gray-300 sm:text-lg"
+                >
                   {t("home.heroSubtitle")}
                 </p>
-                <div className="mb-10 flex flex-col gap-4 sm:flex-row">
-                  <Button variant="gold" size="md" className="px-8" href="/consultation">
+                <div className="hero-enter hero-enter-delay-3 mb-10 flex flex-col gap-4 sm:flex-row">
+                  <Button variant="gold" size="md" className="px-8" href="/consultation" data-cms-field="home.freeConsultation">
                     {t("home.freeConsultation")}
                   </Button>
                   <Link
+                    data-cms-field="home.explorePrograms"
                     href="/programs"
                     className="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-white/80 px-6 py-3 text-base font-semibold text-white transition-colors hover:bg-white hover:text-[#0D1B2A]"
                   >
@@ -98,8 +106,7 @@ export default function Home() {
                     <ArrowRight className="h-4 w-4" />
                   </Link>
                 </div>
-
-                <div className="flex flex-wrap items-center gap-5">
+                <div className="hero-enter hero-enter-delay-4 flex flex-wrap items-center gap-5">
                   <div className="flex -space-x-3">
                     {[1, 2, 3, 4].map((i) => (
                       <div
@@ -120,14 +127,12 @@ export default function Home() {
                     <p className="text-sm text-gray-400">{t("home.reviewsFrom")}</p>
                   </div>
                 </div>
-              </motion.div>
+              </div>
 
-              <motion.div
-                initial={{ opacity: 0, x: 40 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.7, delay: 0.15 }}
-                className="relative mx-auto w-full max-w-lg lg:max-w-none"
-              >
+                <div
+                  data-cms-field="cmsImages.home.heroStudent"
+                  className="hero-enter hero-enter-delay-2 relative mx-auto w-full max-w-lg lg:max-w-none"
+                >
                 <div className="relative aspect-[4/5] max-h-[520px] overflow-hidden rounded-2xl shadow-2xl ring-1 ring-white/10 sm:aspect-[5/6] lg:aspect-auto lg:h-[480px]">
                   <MarketingImage
                     src={heroStudentImage}
@@ -142,12 +147,7 @@ export default function Home() {
                   <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-[#0D1B2A]/20" />
                 </div>
 
-                <motion.div
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.45 }}
-                  className="absolute -bottom-5 right-2 z-10 max-w-[280px] sm:right-4 lg:-bottom-6 lg:right-6"
-                >
+                <div className="hero-enter hero-enter-delay-4 absolute -bottom-5 right-2 z-10 max-w-[280px] sm:right-4 lg:-bottom-6 lg:right-6">
                   <Card className="border border-[#D4AF37]/30 bg-[#0D1B2A]/95 p-4 shadow-xl backdrop-blur-sm sm:p-5">
                     <div className="flex items-start gap-3">
                       <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-[#D4AF37]/20">
@@ -159,13 +159,13 @@ export default function Home() {
                       </div>
                     </div>
                   </Card>
-                </motion.div>
-              </motion.div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* Features — slider on mobile, grid on desktop */}
+        {/* Features */}
         <section className={`py-10 md:py-12 ${theme === "dark" ? "bg-[#112240]" : "bg-[#FAFAFA]"}`}>
           <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
             <MobileCarousel
@@ -176,42 +176,38 @@ export default function Home() {
               {features.map((feature, index) => {
                 const Icon = featureIcons[index];
                 return (
-                  <CarouselCard
-                    key={index}
-                    className={`text-center ${theme === "dark" ? "border-white/10 bg-[#112240]" : "bg-white"}`}
-                  >
-                    <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#D4AF37]/15">
-                      <Icon className="h-7 w-7 text-[#D4AF37]" />
-                    </div>
-                    <h3 className={`mb-2 text-base font-bold leading-snug ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
-                      {feature.title}
-                    </h3>
-                    <p className={`text-sm leading-relaxed ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
-                      {feature.desc}
-                    </p>
-                  </CarouselCard>
+                  <RevealOnScroll key={index} delay={index * 70} direction="up">
+                    <CarouselCard
+                      className={`text-center ${theme === "dark" ? "border-white/10 bg-[#112240]" : "bg-white"}`}
+                    >
+                      <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#D4AF37]/15">
+                        <Icon className="h-7 w-7 text-[#D4AF37]" />
+                      </div>
+                      <h3 className={`mb-2 text-base font-bold leading-snug ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
+                        {feature.title}
+                      </h3>
+                      <p className={`text-sm leading-relaxed ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                        {feature.desc}
+                      </p>
+                    </CarouselCard>
+                  </RevealOnScroll>
                 );
               })}
             </MobileCarousel>
           </div>
         </section>
 
-        {/* Programs Section */}
+        {/* Programs */}
         <section className={`py-20 ${theme === "dark" ? "bg-[#0D1B2A]" : "bg-white"}`}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-center mb-12"
-            >
+            <RevealOnScroll direction="up" className="text-center mb-12">
               <h2 className={`text-3xl font-bold mb-3 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
                 {t("home.programsSection.title")}
               </h2>
               <p className={`${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
                 {t("home.programsSection.subtitle")}
               </p>
-            </motion.div>
+            </RevealOnScroll>
 
             <MobileCarousel
               ariaLabel="Programs"
@@ -221,59 +217,64 @@ export default function Home() {
               {programs.map((program, index) => {
                 const featured = index === 2;
                 return (
-                  <Card
+                  <RevealOnScroll
                     key={index}
-                    className={`relative flex h-full flex-col overflow-hidden p-0 transition-all duration-300 ${
-                      featured ? "border-2 border-[#D4AF37] shadow-xl" : "border border-gray-100"
-                    }`}
+                    delay={index * 90}
+                    direction={index % 2 === 0 ? "left" : "right"}
                   >
-                    {featured && (
-                      <div className="absolute right-4 top-4 z-10">
-                        <Badge className="bg-[#D4AF37] px-3 py-1 text-xs font-semibold uppercase text-[#0D1B2A]">
-                          {t("home.mostPopular")}
-                        </Badge>
+                    <Card
+                      className={`relative flex h-full flex-col overflow-hidden p-0 transition-all duration-300 ${
+                        featured ? "border-2 border-[#D4AF37] shadow-xl" : "border border-gray-100"
+                      }`}
+                    >
+                      {featured && (
+                        <div className="absolute right-4 top-4 z-10">
+                          <Badge className="bg-[#D4AF37] px-3 py-1 text-xs font-semibold uppercase text-[#0D1B2A]">
+                            {t("home.mostPopular")}
+                          </Badge>
+                        </div>
+                      )}
+                      <div className="relative h-44 overflow-hidden">
+                        <MarketingImage
+                          src={programCardImages[index] ?? programCardImages[0]}
+                          fallbackSrc={PROGRAM_CARD_IMAGES[index] ?? PROGRAM_CARD_IMAGES[0]}
+                          alt={program.title}
+                          containerClassName="h-full w-full"
+                          sizes="(max-width: 768px) 90vw, 33vw"
+                          className="transition-transform duration-500 hover:scale-110"
+                        />
                       </div>
-                    )}
-                    <div className="relative h-44 overflow-hidden">
-                      <MarketingImage
-                        src={programCardImages[index] ?? programCardImages[0]}
-                        fallbackSrc={PROGRAM_CARD_IMAGES[index] ?? PROGRAM_CARD_IMAGES[0]}
-                        alt={program.title}
-                        containerClassName="h-full w-full"
-                        sizes="(max-width: 768px) 90vw, 33vw"
-                        className="transition-transform duration-500 hover:scale-110"
-                      />
-                    </div>
-                    <div className="flex flex-1 flex-col p-6">
-                      <h3 className={`mb-4 text-xl font-bold ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
-                        {program.title}
-                      </h3>
-                      <ul className="mb-6 flex-1 space-y-3">
-                        {program.features.map((feature, i) => (
-                          <li key={i} className="flex items-start gap-2">
-                            <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#D4AF37]" />
-                            <span className={`text-sm ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
-                      <Link
-                        href="/programs"
-                        className={`group flex items-center gap-2 font-semibold transition-all ${
-                          featured ? "text-[#D4AF37]" : theme === "dark" ? "text-white" : "text-[#0D1B2A]"
-                        }`}
-                      >
-                        {t("home.learnMore")}
-                        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                      </Link>
-                    </div>
-                  </Card>
+                      <div className="flex flex-1 flex-col p-6">
+                        <h3 className={`mb-4 text-xl font-bold ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
+                          {program.title}
+                        </h3>
+                        <ul className="mb-6 flex-1 space-y-3">
+                          {program.features.map((feature, i) => (
+                            <li key={i} className="flex items-start gap-2">
+                              <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#D4AF37]" />
+                              <span className={`text-sm ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>{feature}</span>
+                            </li>
+                          ))}
+                        </ul>
+                        <Link
+                          href="/programs"
+                          className={`group flex items-center gap-2 font-semibold transition-all ${
+                            featured ? "text-[#D4AF37]" : theme === "dark" ? "text-white" : "text-[#0D1B2A]"
+                          }`}
+                        >
+                          {t("home.learnMore")}
+                          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                        </Link>
+                      </div>
+                    </Card>
+                  </RevealOnScroll>
                 );
               })}
             </MobileCarousel>
           </div>
         </section>
 
-        {/* Stats — slider on mobile */}
+        {/* Stats */}
         <section className={`py-12 md:py-14 ${theme === "dark" ? "bg-[#112240] text-white" : "bg-[#FAFAFA] text-[#0D1B2A]"}`}>
           <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-8">
             <MobileCarousel
@@ -284,31 +285,31 @@ export default function Home() {
               {stats.map((stat, index) => {
                 const Icon = statIcons[index];
                 return (
-                  <CarouselCard
-                    key={index}
-                    className={`items-center text-center ${theme === "dark" ? "border-white/10 bg-[#0D1B2A]/50" : "bg-white"}`}
-                  >
-                    <div className={`mb-4 flex h-14 w-14 items-center justify-center rounded-2xl ${theme === "dark" ? "bg-white/10" : "bg-[#D4AF37]/15"}`}>
-                      <Icon className="h-7 w-7 text-[#D4AF37]" />
-                    </div>
-                    <p className={`mb-2 text-3xl font-bold leading-none ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
-                      {stat.number}
-                    </p>
-                    <p className={`text-sm leading-snug ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>
-                      {stat.label}
-                    </p>
-                  </CarouselCard>
+                  <RevealOnScroll key={index} delay={index * 80} direction="scale">
+                    <CarouselCard
+                      className={`items-center text-center ${theme === "dark" ? "border-white/10 bg-[#0D1B2A]/50" : "bg-white"}`}
+                    >
+                      <div className={`mb-4 flex h-14 w-14 items-center justify-center rounded-2xl ${theme === "dark" ? "bg-white/10" : "bg-[#D4AF37]/15"}`}>
+                        <Icon className="h-7 w-7 text-[#D4AF37]" />
+                      </div>
+                      <p className={`mb-2 text-3xl font-bold leading-none ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
+                        {stat.number}
+                      </p>
+                      <p className={`text-sm leading-snug ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>
+                        {stat.label}
+                      </p>
+                    </CarouselCard>
+                  </RevealOnScroll>
                 );
               })}
             </MobileCarousel>
           </div>
         </section>
 
-        {/* Platform Preview — stacked on mobile, overlay on desktop */}
+        {/* Platform Preview */}
         <section className={`py-10 md:py-12 ${theme === "dark" ? "bg-[#112240]" : "bg-[#FAFAFA]"}`}>
           <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
-            {/* Mobile layout */}
-            <div className="overflow-hidden rounded-3xl bg-[#0D1B2A] shadow-2xl md:hidden">
+            <RevealOnScroll direction="up" className="overflow-hidden rounded-3xl bg-[#0D1B2A] shadow-2xl md:hidden">
               <div className="relative h-52 w-full">
                 <MarketingImage
                   src={studyBannerImage}
@@ -363,10 +364,9 @@ export default function Home() {
                   </CarouselCard>
                 </MobileCarousel>
               </div>
-            </div>
+            </RevealOnScroll>
 
-            {/* Desktop layout */}
-            <div className="relative hidden overflow-hidden rounded-3xl shadow-2xl md:block">
+            <RevealOnScroll direction="up" className="relative hidden overflow-hidden rounded-3xl shadow-2xl md:block">
               <div className="relative">
                 <MarketingImage
                   src={studyBannerImage}
@@ -414,11 +414,11 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-            </div>
+            </RevealOnScroll>
           </div>
         </section>
 
-        {/* Testimonials Section */}
+        {/* Testimonials */}
         <section className="py-20 relative overflow-hidden">
           <div className="absolute inset-0 z-0">
             <MarketingImage
@@ -432,16 +432,11 @@ export default function Home() {
           </div>
 
           <div className="max-w-6xl mx-auto px-5 sm:px-6 lg:px-8 relative z-10">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-center mb-12"
-            >
+            <RevealOnScroll direction="up" className="text-center mb-12">
               <h2 className="text-3xl font-bold text-white">
                 {t("home.testimonials.title")}
               </h2>
-            </motion.div>
+            </RevealOnScroll>
 
             <MobileCarousel
               ariaLabel="Testimonials"
@@ -449,47 +444,51 @@ export default function Home() {
               desktopClassName="md:grid md:grid-cols-3 md:gap-8"
             >
               {testimonials.map((testimonial, index) => (
-                <Card key={index} className="h-full border border-white/20 bg-white/10 p-8 backdrop-blur-xl">
-                  <div className="mb-6 flex items-center gap-1">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <Star key={star} className="h-5 w-5 fill-[#D4AF37] text-[#D4AF37]" />
-                    ))}
-                  </div>
-                  <p className="mb-6 text-base leading-relaxed text-white">&ldquo;{testimonial.quote}&rdquo;</p>
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#D4AF37]/30">
-                      <span className="text-sm font-bold text-[#D4AF37]">{testimonial.name.charAt(0)}</span>
+                <RevealOnScroll key={index} delay={index * 90} direction="up">
+                  <Card className="h-full border border-white/20 bg-white/10 p-8 backdrop-blur-xl">
+                    <div className="mb-6 flex items-center gap-1">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <Star key={star} className="h-5 w-5 fill-[#D4AF37] text-[#D4AF37]" />
+                      ))}
                     </div>
-                    <p className="text-sm font-medium text-gray-200">{testimonial.name}</p>
-                  </div>
-                </Card>
+                    <p className="mb-6 text-base leading-relaxed text-white">&ldquo;{testimonial.quote}&rdquo;</p>
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#D4AF37]/30">
+                        <span className="text-sm font-bold text-[#D4AF37]">{testimonial.name.charAt(0)}</span>
+                      </div>
+                      <p className="text-sm font-medium text-gray-200">{testimonial.name}</p>
+                    </div>
+                  </Card>
+                </RevealOnScroll>
               ))}
             </MobileCarousel>
           </div>
         </section>
 
-        {/* CTA Section */}
+        {/* CTA */}
         <section className={`py-12 md:py-16 ${theme === "dark" ? "bg-[#112240] text-white" : "bg-[#FAFAFA] text-[#0D1B2A]"}`}>
           <div className="mx-auto max-w-4xl px-5 sm:px-6 lg:px-8">
-            <div className={`rounded-3xl p-6 md:p-8 ${theme === "dark" ? "bg-[#0D1B2A]/60 border border-white/10" : "border border-gray-100 bg-white shadow-lg"}`}>
-              <div className="flex flex-col items-center gap-6 text-center md:flex-row md:text-left">
-                <div className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl ${theme === "dark" ? "bg-white/10" : "bg-[#D4AF37]/15"}`}>
-                  <Calendar className="h-8 w-8 text-[#D4AF37]" />
+            <RevealOnScroll direction="scale">
+              <div className={`rounded-3xl p-6 md:p-8 ${theme === "dark" ? "bg-[#0D1B2A]/60 border border-white/10" : "border border-gray-100 bg-white shadow-lg"}`}>
+                <div className="flex flex-col items-center gap-6 text-center md:flex-row md:text-left">
+                  <div className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl ${theme === "dark" ? "bg-white/10" : "bg-[#D4AF37]/15"}`}>
+                    <Calendar className="h-8 w-8 text-[#D4AF37]" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="mb-2 text-xl font-bold md:text-2xl">{t("home.cta.title")}</h3>
+                    <p className={`text-base leading-relaxed ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>
+                      {t("home.cta.subtitle")}
+                    </p>
+                  </div>
+                  <Button variant="gold" size="lg" href="/consultation" className="w-full shrink-0 md:w-auto">
+                    {t("home.cta.button")}
+                  </Button>
                 </div>
-                <div className="flex-1">
-                  <h3 className="mb-2 text-xl font-bold md:text-2xl">{t("home.cta.title")}</h3>
-                  <p className={`text-base leading-relaxed ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>
-                    {t("home.cta.subtitle")}
-                  </p>
-                </div>
-                <Button variant="gold" size="lg" href="/consultation" className="w-full shrink-0 md:w-auto">
-                  {t("home.cta.button")}
-                </Button>
               </div>
-            </div>
+            </RevealOnScroll>
           </div>
         </section>
-        </main>
+      </main>
 
       <Footer />
     </div>

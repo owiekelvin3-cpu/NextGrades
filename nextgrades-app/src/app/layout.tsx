@@ -1,5 +1,8 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
+import { cookies } from "next/headers";
 import { Poppins, Playfair_Display } from "next/font/google";
+import { normalizeLanguage } from "@/lib/i18n/locales";
 import "./globals.css";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { I18nProvider } from "@/components/I18nProvider";
@@ -8,6 +11,8 @@ import { PreferencesSync } from "@/components/PreferencesSync";
 import { PwaRegister } from "@/components/PwaRegister";
 import { ToastProvider } from "@/context/ToastContext";
 import { DeferredCmsProvider } from "@/components/DeferredCmsProvider";
+import RouteTransition from "@/components/RouteTransition";
+import { DeferredCmsExtras } from "@/components/DeferredCmsExtras";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -15,6 +20,7 @@ const poppins = Poppins({
   weight: ["400", "600", "700"],
   display: "swap",
   preload: true,
+  adjustFontFallback: true,
 });
 
 const playfairDisplay = Playfair_Display({
@@ -66,14 +72,17 @@ export const viewport: Viewport = {
   themeColor: "#0D1B2A",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = await cookies();
+  const htmlLang = normalizeLanguage(cookieStore.get("i18nextLng")?.value ?? "de");
+
   return (
     <html
-      lang="en"
+      lang={htmlLang}
       data-scroll-behavior="smooth"
       className={`${poppins.variable} ${playfairDisplay.variable} dark h-full antialiased`}
       suppressHydrationWarning
@@ -89,13 +98,17 @@ export default function RootLayout({
         )}
       </head>
       <body className="min-h-full flex flex-col overflow-x-hidden bg-background text-foreground touch-manipulation">
+        <Script src="/preferences-init.js" strategy="beforeInteractive" />
         <PreferencesBootstrap />
         <ThemeProvider>
           <I18nProvider>
             <PreferencesSync />
             <PwaRegister />
             <DeferredCmsProvider>
-              <ToastProvider>{children}</ToastProvider>
+              <DeferredCmsExtras />
+              <ToastProvider>
+                <RouteTransition>{children}</RouteTransition>
+              </ToastProvider>
             </DeferredCmsProvider>
           </I18nProvider>
         </ThemeProvider>

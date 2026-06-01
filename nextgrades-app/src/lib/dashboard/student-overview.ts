@@ -235,8 +235,8 @@ export async function fetchStudentOverviewData(): Promise<StudentOverviewData | 
   const userId = await getSessionUserId();
   if (!userId) return null;
 
-  const profile = await fetchCurrentProfile();
   const [
+    profile,
     learningGoal,
     units,
     upcomingLessons,
@@ -246,6 +246,7 @@ export async function fetchStudentOverviewData(): Promise<StudentOverviewData | 
     tasks,
     notifications,
   ] = await Promise.all([
+    fetchCurrentProfile(),
     fetchLearningGoal(userId),
     fetchStudentUnits(userId),
     fetchStudentLessons(userId),

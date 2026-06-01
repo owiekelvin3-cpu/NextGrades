@@ -78,7 +78,7 @@ export function forbidden(message = "Forbidden") {
   return NextResponse.json({ error: message }, { status: 403 });
 }
 
-type AuthGateResult =
+export type AuthGateResult =
   | { error: NextResponse; auth: null }
   | { error: null; auth: ApiAuthContext };
 

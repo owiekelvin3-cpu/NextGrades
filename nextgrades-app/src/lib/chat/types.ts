@@ -68,6 +68,14 @@ export type StreamChatRequest = {
   regenerate?: boolean;
   responseLanguage?: "de" | "en";
   modelId?: string;
+  attachments?: Array<{
+    id: string;
+    name: string;
+    mimeType: string;
+    size: number;
+    content: string;
+    kind: "document" | "image";
+  }>;
 };
 
 export type AiModelInfo = {

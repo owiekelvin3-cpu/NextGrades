@@ -40,13 +40,29 @@ export function rowsToOverrideMap(
   const map: Record<string, { en?: unknown; de?: unknown }> = {};
   for (const row of rows) {
     if (!row.i18n_key) continue;
-    if (row.content_json && (row.content_json.en !== undefined || row.content_json.de !== undefined)) {
-      map[row.i18n_key] = row.content_json;
-    } else if (row.content_value) {
-      map[row.i18n_key] = {
-        en: row.field_type === "json" ? JSON.parse(row.content_value) : row.content_value,
-        de: row.field_type === "json" ? JSON.parse(row.content_value) : row.content_value,
-      };
+    const json = row.content_json;
+    const hasJson =
+      json &&
+      ((json.en !== undefined && json.en !== null && json.en !== "") ||
+        (json.de !== undefined && json.de !== null && json.de !== ""));
+
+    if (hasJson) {
+      const en = json.en ?? json.de;
+      const de = json.de ?? json.en;
+      map[row.i18n_key] = { en, de };
+      continue;
+    }
+
+    if (row.content_value) {
+      let value: unknown = row.content_value;
+      if (row.field_type === "json") {
+        try {
+          value = JSON.parse(row.content_value);
+        } catch {
+          value = row.content_value;
+        }
+      }
+      map[row.i18n_key] = { en: value, de: value };
     }
   }
   return map;

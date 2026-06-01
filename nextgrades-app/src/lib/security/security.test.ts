@@ -1,20 +1,20 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi, afterEach } from "vitest";
 import { isEmailVerificationRequired } from "@/lib/auth/config";
 import { canRoleAccessPath, getDashboardPathForRole } from "@/lib/auth/redirect";
 import { checkRateLimit } from "@/lib/security/rate-limit";
 import { isAdminBootstrapAllowed, isProduction } from "@/lib/security/env";
 
 describe("auth config", () => {
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
   it("requires email verification in production by default", () => {
-    const prev = process.env.NODE_ENV;
-    const prevFlag = process.env.REQUIRE_EMAIL_VERIFICATION;
-    process.env.NODE_ENV = "production";
-    delete process.env.REQUIRE_EMAIL_VERIFICATION;
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("REQUIRE_EMAIL_VERIFICATION", "");
     expect(isEmailVerificationRequired()).toBe(true);
-    process.env.REQUIRE_EMAIL_VERIFICATION = "false";
+    vi.stubEnv("REQUIRE_EMAIL_VERIFICATION", "false");
     expect(isEmailVerificationRequired()).toBe(false);
-    process.env.NODE_ENV = prev;
-    process.env.REQUIRE_EMAIL_VERIFICATION = prevFlag;
   });
 });
 
@@ -45,24 +45,22 @@ describe("rate limit", () => {
 });
 
 describe("production security env", () => {
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
   it("disables admin bootstrap in production by default", () => {
-    const prev = process.env.NODE_ENV;
-    const prevAllow = process.env.ALLOW_ADMIN_BOOTSTRAP;
-    process.env.NODE_ENV = "production";
-    delete process.env.ALLOW_ADMIN_BOOTSTRAP;
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("ALLOW_ADMIN_BOOTSTRAP", "");
     expect(isAdminBootstrapAllowed()).toBe(false);
-    process.env.ALLOW_ADMIN_BOOTSTRAP = "true";
+    vi.stubEnv("ALLOW_ADMIN_BOOTSTRAP", "true");
     expect(isAdminBootstrapAllowed()).toBe(true);
-    process.env.NODE_ENV = prev;
-    process.env.ALLOW_ADMIN_BOOTSTRAP = prevAllow;
   });
 
   it("detects production runtime", () => {
-    const prev = process.env.NODE_ENV;
-    process.env.NODE_ENV = "production";
+    vi.stubEnv("NODE_ENV", "production");
     expect(isProduction()).toBe(true);
-    process.env.NODE_ENV = "development";
+    vi.stubEnv("NODE_ENV", "development");
     expect(isProduction()).toBe(false);
-    process.env.NODE_ENV = prev;
   });
 });

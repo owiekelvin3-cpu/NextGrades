@@ -6,12 +6,15 @@ import { MarkdownContent } from "./MarkdownContent";
 import { cn } from "@/lib/utils";
 import type { ChatResponseLanguage } from "@/lib/chat/languages";
 import type { MessageTranslation } from "@/hooks/useChat";
+import type { ChatAttachment } from "@/lib/chat/attachments";
+import { ChatAttachmentList } from "./ChatAttachmentChip";
 
 interface ChatMessageBubbleProps {
   role: "user" | "assistant";
   content: string;
   streaming?: boolean;
   translation?: MessageTranslation;
+  attachments?: ChatAttachment[];
   responseLanguage: ChatResponseLanguage;
   onRegenerate?: () => void;
   onTranslate?: (targetLanguage: ChatResponseLanguage) => void;
@@ -22,6 +25,7 @@ export function ChatMessageBubble({
   content,
   streaming,
   translation,
+  attachments,
   responseLanguage,
   onRegenerate,
   onTranslate,
@@ -58,6 +62,10 @@ export function ChatMessageBubble({
         </div>
 
         <div className="min-w-0 flex-1 pt-0.5">
+          {attachments && attachments.length > 0 && (
+            <ChatAttachmentList files={attachments} className="mb-3" />
+          )}
+
           {showingTranslation && (
             <p className="mb-2 text-[11px] font-medium text-gray-400">
               {translation?.language === "de" ? "Deutsch" : "English"} ·{" "}
@@ -80,7 +88,7 @@ export function ChatMessageBubble({
                 </span>
               </div>
             ) : isUser ? (
-              <p className="whitespace-pre-wrap">{displayContent}</p>
+              <p className="whitespace-pre-wrap">{displayContent || (attachments?.length ? "" : "…")}</p>
             ) : content || streaming ? (
               <>
                 {displayContent ? (

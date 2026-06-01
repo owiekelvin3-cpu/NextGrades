@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
+import { RevealOnScroll } from "@/components/marketing/RevealOnScroll";
 import Footer from "@/components/Footer";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
@@ -105,15 +106,14 @@ export default function SubjectsPage() {
 
   const subjectPillCls = (subjectId: string) =>
     cn(
-      "shrink-0 rounded-full border px-4 py-2.5 text-xs font-semibold transition-all duration-200 sm:text-sm",
-      "active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF37] focus-visible:ring-offset-2",
+      "btn-chip shrink-0 rounded-full border px-5 py-2.5 text-xs sm:text-sm",
       activeSubjectId === subjectId
-        ? "border-[#D4AF37] bg-[#D4AF37] text-[#0D1B2A] shadow-md shadow-[#D4AF37]/25"
+        ? "border-[#D4AF37] bg-[#D4AF37] text-[#0D1B2A] shadow-lg shadow-[#D4AF37]/30"
         : cn(
-            "hover:border-[#D4AF37] hover:bg-[#D4AF37]/10 hover:text-[#D4AF37]",
+            "hover:border-[#D4AF37] hover:bg-[#D4AF37]/10 hover:text-[#D4AF37] hover:shadow-md",
             isDark
               ? "border-white/15 bg-white/5 text-gray-200"
-              : "border-gray-200 bg-white text-[#0D1B2A] shadow-sm"
+              : "border-gray-200/90 bg-white text-[#0D1B2A] shadow-sm"
           )
     );
 
@@ -148,11 +148,7 @@ export default function SubjectsPage() {
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(212,175,55,0.12)_0%,_transparent_55%)]" />
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-              <motion.div
-                initial={{ opacity: 0, x: -32 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.7 }}
-              >
+              <div className="hero-enter">
                 <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-[#D4AF37] sm:text-sm">
                   {t("subjects.eyebrow")}
                 </p>
@@ -188,14 +184,9 @@ export default function SubjectsPage() {
                 <Button variant="gold" size="lg" className="w-full sm:w-auto" href="/consultation">
                   {t("subjectsPage.ctaButton")} <ArrowRight className="h-5 w-5" />
                 </Button>
-              </motion.div>
+              </div>
 
-              <motion.div
-                initial={{ opacity: 0, x: 32 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.7, delay: 0.15 }}
-                className="relative mx-auto w-full max-w-lg lg:max-w-none"
-              >
+              <div className="hero-enter hero-enter-delay-2 relative mx-auto w-full max-w-lg lg:max-w-none">
                 <div className="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-2xl ring-1 ring-[#D4AF37]/20 lg:aspect-auto lg:h-[420px]">
                   <MarketingImage
                     src={subjectsHeroImage}
@@ -208,12 +199,7 @@ export default function SubjectsPage() {
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0D1B2A]/70 via-transparent to-transparent" />
                 </div>
 
-                <motion.div
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4 }}
-                  className="absolute -bottom-6 left-4 right-4 sm:left-6 sm:right-auto sm:max-w-xs"
-                >
+                <div className="hero-enter hero-enter-delay-4 absolute -bottom-6 left-4 right-4 sm:left-6 sm:right-auto sm:max-w-xs">
                   <Card className="border border-[#D4AF37]/30 bg-[#0D1B2A]/95 p-4 shadow-xl backdrop-blur-sm">
                     <div className="flex items-center gap-3">
                       <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-[#D4AF37]/20">
@@ -227,8 +213,8 @@ export default function SubjectsPage() {
                       </div>
                     </div>
                   </Card>
-                </motion.div>
-              </motion.div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -292,14 +278,12 @@ export default function SubjectsPage() {
                 const Icon = SUBJECT_ICONS[subject.id] ?? BookOpen;
                 const { src: image, fallback: imageFallback } = resolveSubjectImage(subject.id, index);
                 return (
-                  <motion.div
+                  <RevealOnScroll
                     key={subject.id}
-                    id={`subject-${subject.id}`}
-                    initial={{ opacity: 0, y: 24 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-40px" }}
-                    transition={{ duration: 0.5, delay: index * 0.08 }}
+                    delay={index * 80}
+                    className="h-full"
                   >
+                    <div id={`subject-${subject.id}`} className="h-full">
                     <Card
                       className={cn(
                         "group flex h-full flex-col overflow-hidden border transition-shadow hover:shadow-xl",
@@ -341,32 +325,38 @@ export default function SubjectsPage() {
                             </li>
                           ))}
                         </ul>
-                        <div className="mt-auto flex flex-col gap-2.5 sm:flex-row sm:items-stretch">
-                          <Button
-                            variant="gold"
-                            size="md"
-                            className="min-h-11 flex-1 whitespace-normal py-2.5 text-center text-sm font-semibold leading-snug shadow-md"
+                        <div
+                          className={cn(
+                            "mt-auto flex flex-col gap-2 border-t pt-5",
+                            isDark ? "border-white/10" : "border-gray-100"
+                          )}
+                        >
+                          <button
+                            type="button"
                             onClick={() => openBrowse(subject)}
+                            className="btn-card-primary group"
                           >
-                            {t("subjectsPage.browseMaterials", { defaultValue: "Browse materials" })}
-                            <ArrowRight className="h-4 w-4 shrink-0" />
-                          </Button>
-                          <Button
-                            variant={isDark ? "secondary" : "outline"}
-                            size="md"
+                            <span className="min-w-0 truncate pr-1">
+                              {t("subjectsPage.browseMaterials", { defaultValue: "View materials" })}
+                            </span>
+                            <span className="btn-card-primary-icon" aria-hidden>
+                              <ArrowRight className="h-4 w-4" />
+                            </span>
+                          </button>
+                          <Link
                             href="/consultation"
                             className={cn(
-                              "min-h-11 flex-1 whitespace-normal py-2.5 text-center text-sm font-semibold leading-snug",
-                              isDark &&
-                                "border-white/20 bg-white/5 text-white hover:border-[#D4AF37] hover:bg-[#D4AF37]/10 hover:text-[#D4AF37]"
+                              "btn-card-secondary",
+                              isDark ? "btn-card-secondary--dark" : "btn-card-secondary--light"
                             )}
                           >
                             {t("subjectsPage.learnMore")}
-                          </Button>
+                          </Link>
                         </div>
                       </div>
                     </Card>
-                  </motion.div>
+                    </div>
+                  </RevealOnScroll>
                 );
               })}
             </div>
@@ -434,17 +424,35 @@ export default function SubjectsPage() {
         </section>
 
         {browseSubject && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-            <Card className={cn("relative w-full max-w-md p-6", isDark ? "bg-[#112240] border-white/10" : "bg-white")}>
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="browse-subject-title"
+          >
+            <Card
+              className={cn(
+                "content-ready relative w-full max-w-md border p-6 shadow-2xl sm:p-8",
+                isDark ? "border-white/10 bg-[#112240]" : "border-gray-100 bg-white"
+              )}
+            >
               <button
                 type="button"
                 onClick={() => setBrowseSubject(null)}
-                className={cn("absolute right-4 top-4 rounded-full p-1", isDark ? "text-gray-400 hover:text-white" : "text-gray-500 hover:text-[#0D1B2A]")}
+                className={cn(
+                  "btn-chip absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full border",
+                  isDark
+                    ? "border-white/10 bg-white/5 text-gray-400 hover:text-white"
+                    : "border-gray-200 bg-gray-50 text-gray-500 hover:text-[#0D1B2A]"
+                )}
                 aria-label="Close"
               >
                 <X className="h-5 w-5" />
               </button>
-              <h3 className={cn("mb-2 text-xl font-bold", isDark ? "text-white" : "text-[#0D1B2A]")}>
+              <h3
+                id="browse-subject-title"
+                className={cn("mb-2 pr-10 text-xl font-bold sm:text-2xl", isDark ? "text-white" : "text-[#0D1B2A]")}
+              >
                 {browseSubject.title}
               </h3>
               <p className={cn("mb-6 text-sm", isDark ? "text-gray-400" : "text-gray-600")}>
@@ -472,10 +480,12 @@ export default function SubjectsPage() {
                     <option value="2">{t("resources.filters.semester2", { defaultValue: "Semester 2" })}</option>
                   </select>
                 </div>
-                <Button variant="gold" className="h-12 w-full text-sm font-semibold" onClick={goToResources}>
-                  {t("subjectsPage.viewResources", { defaultValue: "View resources" })}
-                  <ArrowRight className="h-4 w-4" />
-                </Button>
+                <button type="button" onClick={goToResources} className="btn-card-primary group">
+                  <span>{t("subjectsPage.viewResources", { defaultValue: "View resources" })}</span>
+                  <span className="btn-card-primary-icon" aria-hidden>
+                    <ArrowRight className="h-4 w-4" />
+                  </span>
+                </button>
               </div>
             </Card>
           </div>

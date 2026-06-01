@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { ONLINE_IMAGE_FALLBACK } from "@/lib/images/online-assets";
+import { ONLINE_IMAGE_FALLBACK } from "@/lib/marketing-images";
+import { shouldOptimizeImage } from "@/lib/images/online-assets";
 import { isValidImageSrc, resolveImageChain } from "@/lib/images/resolve";
 
 type MarketingImageProps = {
@@ -18,7 +19,7 @@ type MarketingImageProps = {
   height?: number;
 };
 
-/** Marketing image with automatic fallback chain (primary → fallback → online default). */
+/** Marketing image with local-first fallbacks; Next.js optimizes /public assets to AVIF/WebP. */
 export function MarketingImage({
   src,
   alt,
@@ -47,23 +48,28 @@ export function MarketingImage({
     setIndex((i) => (i < chain.length - 1 ? i + 1 : i));
   };
 
+  const optimized = shouldOptimizeImage(activeSrc);
+
   const imageProps = {
     src: activeSrc,
     alt,
     priority,
+    fetchPriority: priority ? ("high" as const) : undefined,
     loading: priority ? undefined : ("lazy" as const),
     sizes,
+    quality: priority ? 72 : 68,
     className: cn("object-cover", className),
     onError: handleError,
+    unoptimized: !optimized,
   };
 
   if (width && height) {
-    return <Image {...imageProps} width={width} height={height} />;
+    return <Image key={activeSrc} {...imageProps} width={width} height={height} />;
   }
 
   return (
     <div className={cn("relative overflow-hidden bg-surface-subtle", containerClassName)}>
-      <Image {...imageProps} fill />
+      <Image key={activeSrc} {...imageProps} fill />
     </div>
   );
 }

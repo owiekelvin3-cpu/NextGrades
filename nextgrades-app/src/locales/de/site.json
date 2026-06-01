@@ -15,15 +15,36 @@
     "heroQuote": "Bildung ist nicht die Befüllung eines Eimers, sondern das Entzünden eines Feuers.",
     "heroQuoteAuthor": "William Butler Yeats",
     "heroPillars": [
-      { "title": "Mission", "desc": "Lernen verständlich, motivierend und zugänglich machen – für jeden Schüler." },
-      { "title": "Vision", "desc": "Eine neue Generation des Lernens – modern, strukturiert und ergebnisorientiert." },
-      { "title": "Values", "desc": "Qualität, Empathie und echter Fortschritt für jeden Lernenden." }
+      {
+        "title": "Mission",
+        "desc": "Lernen verständlich, motivierend und zugänglich machen – für jeden Schüler."
+      },
+      {
+        "title": "Vision",
+        "desc": "Eine neue Generation des Lernens – modern, strukturiert und ergebnisorientiert."
+      },
+      {
+        "title": "Values",
+        "desc": "Qualität, Empathie und echter Fortschritt für jeden Lernenden."
+      }
     ],
     "heroFeatures": [
-      { "title": "Mehr als Nachhilfe", "desc": "Ganzheitliche Lernbegleitung." },
-      { "title": "Echte Ergebnisse", "desc": "Messbarer Fortschritt & Selbstvertrauen." },
-      { "title": "Individuelle Förderung", "desc": "Auf jeden Schüler zugeschnitten." },
-      { "title": "Zukunft gestalten", "desc": "Kompetenzen für morgen." }
+      {
+        "title": "Mehr als Nachhilfe",
+        "desc": "Ganzheitliche Lernbegleitung."
+      },
+      {
+        "title": "Echte Ergebnisse",
+        "desc": "Messbarer Fortschritt & Selbstvertrauen."
+      },
+      {
+        "title": "Individuelle Förderung",
+        "desc": "Auf jeden Schüler zugeschnitten."
+      },
+      {
+        "title": "Zukunft gestalten",
+        "desc": "Kompetenzen für morgen."
+      }
     ],
     "storyEyebrow": "UNSERE GESCHICHTE",
     "storyTitle": "Wie alles begann",
@@ -36,19 +57,46 @@
     "missionEyebrow": "UNSERE MISSION IM DETAIL",
     "missionTitle": "Wofür wir jeden Tag arbeiten",
     "missionCards": [
-      { "title": "Wissen verständlich machen", "desc": "Komplexe Themen klar aufbereiten – damit Schüler:innen wirklich verstehen." },
-      { "title": "Hochwertige Materialien bereitstellen", "desc": "Premium-Arbeitsblätter, Videos und Guides von erfahrenen Lehrkräften." },
-      { "title": "Individuell fördern", "desc": "Jeder lernt anders – wir passen uns an Tempo und Ziele an." },
-      { "title": "Messbare Ergebnisse erzielen", "desc": "Bessere Noten, mehr Selbstvertrauen und Fähigkeiten über Prüfungen hinaus." }
+      {
+        "title": "Wissen verständlich machen",
+        "desc": "Komplexe Themen klar aufbereiten – damit Schüler:innen wirklich verstehen."
+      },
+      {
+        "title": "Hochwertige Materialien bereitstellen",
+        "desc": "Premium-Arbeitsblätter, Videos und Guides von erfahrenen Lehrkräften."
+      },
+      {
+        "title": "Individuell fördern",
+        "desc": "Jeder lernt anders – wir passen uns an Tempo und Ziele an."
+      },
+      {
+        "title": "Messbare Ergebnisse erzielen",
+        "desc": "Bessere Noten, mehr Selbstvertrauen und Fähigkeiten über Prüfungen hinaus."
+      }
     ],
     "principlesEyebrow": "WARUM NEXTGRADES?",
     "principlesTitle": "Unsere Prinzipien für deinen Erfolg",
     "principles": [
-      { "title": "Persönliche Betreuung", "desc": "Jeder Schüler ist einzigartig – wir passen uns individuellen Bedürfnissen an." },
-      { "title": "Erfahrene Lehrkräfte", "desc": "Qualifizierte Pädagogen mit Leidenschaft und nachweisbarer Expertise." },
-      { "title": "Moderne Methoden", "desc": "Bewährte Pädagogik kombiniert mit digitalen Tools für effizientes Lernen." },
-      { "title": "Echte Ergebnisse", "desc": "Fokus auf messbaren Fortschritt – bessere Noten und dauerhaftes Selbstvertrauen." },
-      { "title": "Leidenschaft für Bildung", "desc": "Wir lieben, was wir tun, und investieren Herzblut in jeden Erfolg." }
+      {
+        "title": "Persönliche Betreuung",
+        "desc": "Jeder Schüler ist einzigartig – wir passen uns individuellen Bedürfnissen an."
+      },
+      {
+        "title": "Erfahrene Lehrkräfte",
+        "desc": "Qualifizierte Pädagogen mit Leidenschaft und nachweisbarer Expertise."
+      },
+      {
+        "title": "Moderne Methoden",
+        "desc": "Bewährte Pädagogik kombiniert mit digitalen Tools für effizientes Lernen."
+      },
+      {
+        "title": "Echte Ergebnisse",
+        "desc": "Fokus auf messbaren Fortschritt – bessere Noten und dauerhaftes Selbstvertrauen."
+      },
+      {
+        "title": "Leidenschaft für Bildung",
+        "desc": "Wir lieben, was wir tun, und investieren Herzblut in jeden Erfolg."
+      }
     ],
     "promiseEyebrow": "UNSER VERSPRECHEN",
     "promiseTitle": "Wir geben immer unser Bestes – für deinen Erfolg.",
@@ -62,36 +110,102 @@
     "statsEyebrow": "UNSER ZIEL",
     "statsTitle": "Eine neue Generation des Lernens",
     "stats": [
-      { "value": "200+", "label": "glückliche Schüler:innen" },
-      { "value": "25+", "label": "erfahrene Lehrkräfte" },
-      { "value": "95%", "label": "verbesserte Noten" },
-      { "value": "100%", "label": "Leidenschaft & Engagement" }
+      {
+        "value": "200+",
+        "label": "glückliche Schüler:innen"
+      },
+      {
+        "value": "25+",
+        "label": "erfahrene Lehrkräfte"
+      },
+      {
+        "value": "95%",
+        "label": "verbesserte Noten"
+      },
+      {
+        "value": "100%",
+        "label": "Leidenschaft & Engagement"
+      }
     ],
     "teamEyebrow": "UNSER TEAM",
     "teamSubtitle": "Ein Team aus leidenschaftlichen Lehrkräften, Lernexpert:innen und Visionär:innen.",
     "team": [
-      { "name": "Adrian H.", "role": "Gründer & CEO", "bio": "Leidenschaft für Bildung und moderne Lernsysteme." },
-      { "name": "Lea Maria", "role": "Leitung Pädagogik", "bio": "Expertin für Lernmethoden und Unterrichtsentwicklung." },
-      { "name": "David K.", "role": "Leitung Online-Nachhilfe", "bio": "Fachlicher Leiter und Ansprechpartner für unsere Lehrer:innen." },
-      { "name": "Julia W.", "role": "Lernmaterial & Inhalte", "bio": "Verantwortlich für hochwertige Lerninhalte und Materialien." },
-      { "name": "Michael T.", "role": "Technologie & Plattform", "bio": "Sorgt für die beste digitale Lernexperience." }
+      {
+        "name": "Adrian H.",
+        "role": "Gründer & CEO",
+        "bio": "Lernwissenschaft & Bildung"
+      },
+      {
+        "name": "Lea Maria",
+        "role": "Leitung Pädagogik",
+        "bio": "Expertin für Lernmethoden"
+      },
+      {
+        "name": "David K.",
+        "role": "Leitung Online-Nachhilfe",
+        "bio": "Digitales Lernen & EdTech"
+      }
     ],
     "milestonesEyebrow": "UNSER WEG",
     "milestones": [
-      { "year": "2021", "title": "Der Anfang", "desc": "NextGrades als Leidenschaftsprojekt gegründet." },
-      { "year": "2022", "title": "Erste 100 Schüler:innen", "desc": "Erster Meilenstein mit überwältigend positivem Feedback." },
-      { "year": "2023", "title": "Digitale Plattform", "desc": "Launch der Online-Lernplattform mit Premium-Materialien." },
-      { "year": "2024", "title": "200+ Schüler:innen", "desc": "Wachsende Community und erweiterte Fachangebote." },
-      { "year": "2025", "title": "KI & Innovation", "desc": "KI-gestützte Tools für personalisierte Lernpfade." }
+      {
+        "year": "2021",
+        "title": "Der Anfang",
+        "desc": "NextGrades als Leidenschaftsprojekt gegründet."
+      },
+      {
+        "year": "2022",
+        "title": "Erste 100 Schüler:innen",
+        "desc": "Erster Meilenstein mit überwältigend positivem Feedback."
+      },
+      {
+        "year": "2023",
+        "title": "Digitale Plattform",
+        "desc": "Launch der Online-Lernplattform mit Premium-Materialien."
+      },
+      {
+        "year": "2024",
+        "title": "200+ Schüler:innen",
+        "desc": "Wachsende Community und erweiterte Fachangebote."
+      },
+      {
+        "year": "2025",
+        "title": "KI & Innovation",
+        "desc": "KI-gestützte Tools für personalisierte Lernpfade."
+      }
     ],
     "communityTitle": "Werde Teil der NextGrades Community",
-    "communityDesc": "Starte deine Reise zu besseren Noten, mehr Selbstvertrauen und echtem Lernerfolg.",
+    "communityDesc": "Starte mit deinen Zielen, Lernerfahrungen und deinem Wachstum – gemeinsam schaffen wir etwas Besonderes.",
     "communityCta": "Kostenloses Erstgespräch buchen",
     "communityTags": [
       "Unverbindlich",
       "Kostenlos",
       "Individuelle Beratung"
-    ]
+    ],
+    "introEyebrow": "NextGrades Challenge",
+    "introTitle": "Entdecke NextGrades – Wo Innovation auf Bildung trifft",
+    "introDesc": "NextGrades transformiert Bildung mit innovativen Konzepten. Entdecke unsere Geschichte und erstklassige Nachhilfe, die modernes Lernen inspiriert.",
+    "journeyTitle": "Die NextGrades Reise",
+    "journeySubtitle": "Von bescheidenen Anfängen zu Bildungsexzellenz.",
+    "story": [
+      {
+        "title": "Bescheidene Anfänge",
+        "desc": "Unsere Reise begann 2021 als Leidenschaftsprojekt aus Frustration mit traditioneller Nachhilfe. Was als Hilfe für ein paar Freund:innen begann, ist heute eine Plattform, der Tausende vertrauen."
+      },
+      {
+        "title": "Innovation und Wachstum",
+        "desc": "Innovation stand immer im Mittelpunkt. 2023 führten wir unsere digitale Lernplattform ein – Live-Nachhilfe kombiniert mit strukturierten, ergebnisorientierten Inhalten."
+      },
+      {
+        "title": "Unsere Reichweite",
+        "desc": "Heute betreut NextGrades Schüler:innen in Deutschland und darüber hinaus. Über 10.000 Schüler:innen haben ihre Noten verbessert und Selbstvertrauen aufgebaut."
+      },
+      {
+        "title": "Blick nach vorn",
+        "desc": "Unser Ziel ist es, Bildung weiter zu revolutionieren – mit KI-gestützten Lernpfaden und erweiterten Fachangeboten."
+      }
+    ],
+    "teamTitle": "Unser großartiges Team"
   },
   "programsPage": {
     "breadcrumb": "Startseite > Programme",
@@ -226,6 +340,11 @@
   },
   "subjectsPage": {
     "learnMore": "Mehr erfahren",
+    "browseMaterials": "Materialien",
+    "browseHint": "Wähle Klassenstufe und Semester, um passende Materialien zu sehen.",
+    "selectGrade": "Klassenstufe",
+    "selectSemester": "Semester",
+    "viewResources": "Ressourcen anzeigen",
     "whyEyebrow": "WARUM NEXTGRADES",
     "whyTitle": "Dein Vorteil bei uns",
     "benefits": [
@@ -320,39 +439,6 @@
           "Stoffe & Reaktionen",
           "Organische Chemie",
           "Grundlagen & Übungen",
-          "Prüfungsvorbereitung"
-        ]
-      },
-      {
-        "id": "business",
-        "title": "Wirtschaft",
-        "description": "Volkswirtschaft, Rechnungswesen und BWL – verständlich für jede Klassenstufe.",
-        "features": [
-          "Wirtschaftsgrundlagen",
-          "Buchführung",
-          "Fallstudien",
-          "Prüfungsvorbereitung"
-        ]
-      },
-      {
-        "id": "computer-science",
-        "title": "Informatik",
-        "description": "Programmieren, Algorithmen und digitale Kompetenz mit praxisnahen Projekten.",
-        "features": [
-          "Programmiergrundlagen",
-          "Algorithmen",
-          "Projekte & Übungen",
-          "Prüfungsvorbereitung"
-        ]
-      },
-      {
-        "id": "technical-drawing",
-        "title": "Technisches Zeichnen",
-        "description": "Technisches Zeichnen Schritt für Schritt – mit professionellen Standards.",
-        "features": [
-          "Zeichengrundlagen",
-          "CAD-Einführung",
-          "Normen & Standards",
           "Prüfungsvorbereitung"
         ]
       }
@@ -495,18 +581,34 @@
     "plansEyebrow": "WÄHLE DEIN PAKET",
     "plansTitle": "Investiere in deine Zukunft — wähle die passende Unterstützung",
     "stats": [
-      { "value": "200+", "label": "aktive Schüler:innen" },
-      { "value": "4,9/5", "label": "Durchschnittsbewertung" },
-      { "value": "95%", "label": "Notenverbesserung" },
-      { "value": "100%", "label": "online & flexibel" }
+      {
+        "value": "200+",
+        "label": "aktive Schüler:innen"
+      },
+      {
+        "value": "4,9/5",
+        "label": "Durchschnittsbewertung"
+      },
+      {
+        "value": "95%",
+        "label": "Notenverbesserung"
+      },
+      {
+        "value": "100%",
+        "label": "online & flexibel"
+      }
     ],
     "trustedTitle": "Vertraut von 200+ Schüler:innen",
     "trustedDesc": "Durchschnittlich 4,9/5 von echten Schüler:innen und Eltern",
     "loading": "Laden...",
-    "finalCtaTitle": "Gemeinsam erreichen wir Großes",
-    "finalCtaDesc": "Unsicher, welches Paket passt? Buche ein kostenloses Erstgespräch — unverbindlich.",
+    "finalCtaTitle": "Unsicher, welches Paket das Richtige ist?",
+    "finalCtaDesc": "Buche ein kostenloses Erstgespräch – wir finden gemeinsam die perfekte Lösung!",
     "finalCtaButton": "Kostenloses Erstgespräch buchen",
-    "finalCtaTags": ["Unverbindlich", "Kostenlos", "Individuelle Beratung"],
+    "finalCtaTags": [
+      "Unverbindlich",
+      "Kostenlos",
+      "Individuelle Beratung"
+    ],
     "plans": [
       {
         "id": "resource",
@@ -591,9 +693,6 @@
         "label": "Fortschritt"
       },
       {
-        "label": "NextGrades KI"
-      },
-      {
         "label": "Einstellungen"
       }
     ],
@@ -614,61 +713,27 @@
         "label": "KI-Generator"
       },
       {
-        "label": "Inhalte"
-      },
-      {
-        "label": "Analysen"
-      },
-      {
         "label": "Einnahmen"
-      },
-      {
-        "label": "NextGrades KI"
       },
       {
         "label": "Einstellungen"
       }
     ],
     "admin": [
-      {
-        "label": "Dashboard"
-      },
-      {
-        "label": "Website-Inhalte"
-      },
-      {
-        "label": "Schüler:innen"
-      },
-      {
-        "label": "Lehrer:innen"
-      },
-      {
-        "label": "Benutzer"
-      },
-      {
-        "label": "Quiz-Monitor"
-      },
-      {
-        "label": "Moderation"
-      },
-      {
-        "label": "Mitgliedschaften"
-      },
-      {
-        "label": "Zahlungen"
-      },
-      {
-        "label": "Ressourcen"
-      },
-      {
-        "label": "KI-Chatbot"
-      },
-      {
-        "label": "Analysen"
-      },
-      {
-        "label": "Zoom"
-      }
+      { "label": "Dashboard" },
+      { "label": "Website-Inhalte" },
+      { "label": "Schüler:innen" },
+      { "label": "Lehrer:innen" },
+      { "label": "Benutzer" },
+      { "label": "Benachrichtigungen" },
+      { "label": "Quiz-Monitor" },
+      { "label": "Moderation" },
+      { "label": "Mitgliedschaften" },
+      { "label": "Zahlungen" },
+      { "label": "Ressourcen" },
+      { "label": "KI-Chatbot" },
+      { "label": "Analysen" },
+      { "label": "Zoom" }
     ],
     "logout": "Abmelden",
     "backToSite": "Zur Website"
@@ -917,7 +982,7 @@
     "helpCenter": "Hilfe-Center",
     "contactSupport": "Support kontaktieren",
     "giveFeedback": "Feedback geben",
-    "motivationQuote": "Stay hungry, stay foolish.",
+    "motivationQuote": "Jeder Tag ist eine neue Chance, besser zu werden.",
     "motivationSaved": "Zu deinen Favoriten gespeichert!",
     "saveMotivation": "Zitat speichern",
     "welcome": "Willkommen zurück! 👋",
@@ -957,8 +1022,8 @@
       "appointments": "Meine Termine",
       "calendar": "Kalender",
       "payments": "Zahlungen",
-      "nextJumpBonus": "Next Jump Bonus",
-      "messages": "NextGrades AI",
+      "nextJumpBonus": "NextJump Bonus",
+      "messages": "Nachrichten",
       "schedule": "Stundenplan",
       "myMaterials": "Meine Materialien",
       "publish": "Neu veröffentlichen",
@@ -990,9 +1055,8 @@
     "upcomingAppointments": "Nächste Termine",
     "upcomingLessons": "Kommende Stunden",
     "noAppointments": "Keine Termine geplant",
-    "planWithStudents": "Schüler:innen buchen über die Beratungsseite. Dein Stundenplan erscheint hier.",
+    "planWithStudents": "Du kannst Termine mit deinen Schüler:innen planen",
     "myStudents": "Meine Schüler:innen",
-    "allStudents": "Alle",
     "allStudents": "Alle Schüler:innen",
     "nextLesson": "Nächste Stunde",
     "uploadMaterial": "Material hochladen",
@@ -1045,7 +1109,7 @@
     "netLabel": "Netto",
     "colDuration": "Dauer",
     "addNewStudent": "+ Neuen Schüler hinzufügen",
-    "messagesTitle": "NextGrades AI",
+    "messagesTitle": "Nachrichten",
     "studentsSubtitle": "Verwalte deine Schüler, Termine und Fortschritt.",
     "export": "Exportieren",
     "searchStudents": "Schüler suchen…",
@@ -1067,7 +1131,7 @@
       "notes": "Notizen"
     },
     "bonusSubtitle": "Verdiene mehr mit dem Next Jump Bonus-Programm.",
-    "bonusProgram": "Next Jump Bonus",
+    "bonusProgram": "Bonusprogramm",
     "currentBonusTitle": "Aktueller Bonus",
     "nextGoalTitle": "Nächstes Ziel",
     "progressBonus": "Fortschritts-Bonus",
@@ -1103,6 +1167,48 @@
     "paymentsSubtitle": "Übersicht deiner Einnahmen und Zahlungen.",
     "paymentMethod": "Zahlungsmethode",
     "amount": "Betrag"
+  },
+  "adminNav": {
+    "dashboard": "Dashboard",
+    "websiteContent": "Website-Inhalte",
+    "students": "Schüler:innen",
+    "teachers": "Lehrer:innen",
+    "users": "Benutzer",
+    "notifications": "Benachrichtigungen",
+    "quizMonitor": "Quiz-Monitor",
+    "moderation": "Moderation",
+    "memberships": "Mitgliedschaften",
+    "payments": "Zahlungen",
+    "resources": "Ressourcen",
+    "chatbot": "KI-Chatbot",
+    "analytics": "Analysen",
+    "zoom": "Zoom"
+  },
+  "adminHub": {
+    "featuredLabel": "Am wichtigsten",
+    "websiteDesc": "Texte, Bilder und SEO auf der öffentlichen Website ändern. Seite wählen, bearbeiten, veröffentlichen.",
+    "openEditor": "Website-Editor öffnen",
+    "studentsDesc": "Schülerkonten verwalten",
+    "teachersDesc": "Lehrkräfte verwalten",
+    "usersDesc": "Alle Benutzer und Rollen",
+    "notificationsDesc": "Benachrichtigungen senden",
+    "quizDesc": "Quiz-Aktivität überwachen",
+    "moderationDesc": "Gemeldete Inhalte prüfen",
+    "membershipsDesc": "Tarife und Abos",
+    "paymentsDesc": "Zahlungen und Abrechnung",
+    "resourcesDesc": "Lernmaterialien",
+    "chatbotDesc": "KI-Chatbot-Einstellungen",
+    "analyticsDesc": "Plattform-Statistiken",
+    "zoomDesc": "Zoom-Einrichtung",
+    "backToOverview": "Dashboard-Übersicht",
+    "browseAll": "Alle Admin-Bereiche",
+    "choosePageTitle": "Seite zum Bearbeiten wählen",
+    "choosePageDesc": "Wählen Sie eine Seite, passen Sie Texte und Bilder an und veröffentlichen Sie, wenn Sie fertig sind.",
+    "editPage": "Seite bearbeiten",
+    "allPages": "Alle Seiten",
+    "editingPage": "Bearbeitung",
+    "changePage": "Seite wechseln",
+    "fieldsCount": "{{count}} Felder"
   },
   "adminDashboard": {
     "title": "Admin-Bereich",
@@ -1354,7 +1460,7 @@
     "notifMarketing": "Tipps & Updates",
     "notifMarketingDesc": "Lerntipps und Plattform-News",
     "subscriptionTitle": "Abonnement & Einheiten",
-    "subscriptionStatus": "Status",
+    "subscriptionStatus": "Abo-Status",
     "noSubscription": "Kein aktiver Plan",
     "subscriptionDesc": "Unterrichtseinheiten und Abrechnung verwalten.",
     "viewPlans": "Pläne ansehen",
@@ -1371,5 +1477,8 @@
     "nameRequired": "Bitte gib deinen vollständigen Namen ein",
     "passwordRequired": "Bitte gib ein neues Passwort ein",
     "loadError": "Profil konnte nicht geladen werden. Bitte melde dich erneut an."
+  },
+  "nav": {
+    "home": "Startseite"
   }
 }

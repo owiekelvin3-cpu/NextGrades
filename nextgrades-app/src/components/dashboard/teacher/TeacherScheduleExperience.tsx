@@ -45,6 +45,7 @@ function ScheduleContent() {
   const { ready: zoomReady } = useZoomStatus(SCHEDULE_PATH);
   const [meetings, setMeetings] = useState<LessonRow[]>([]);
   const [loading, setLoading] = useState(true);
+  const [now] = useState(() => Date.now());
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -72,9 +73,9 @@ function ScheduleContent() {
   const upcoming = useMemo(
     () =>
       meetings
-        .filter((m) => m.status === "scheduled" && new Date(m.start_time).getTime() >= Date.now())
+        .filter((m) => m.status === "scheduled" && new Date(m.start_time).getTime() >= now)
         .sort((a, b) => new Date(a.start_time).getTime() - new Date(b.start_time).getTime()),
-    [meetings]
+    [meetings, now]
   );
 
   const nextMeeting = upcoming[0] ?? null;

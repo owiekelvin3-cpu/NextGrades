@@ -3,7 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { requireAuth } from "@/lib/auth/auth-utils";
 
 // GET - Fetch all folders for the current teacher
-export async function GET(request: Request) {
+export async function GET() {
   try {
     const supabase = await createClient();
     const auth = await requireAuth(supabase);
@@ -21,10 +21,10 @@ export async function GET(request: Request) {
     if (error) throw error;
 
     return NextResponse.json(data);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error fetching folders:", error);
     return NextResponse.json(
-      { error: error.message || "Failed to fetch folders" },
+      { error: error instanceof Error ? error.message : "Failed to fetch folders" },
       { status: 500 }
     );
   }
@@ -64,10 +64,10 @@ export async function POST(request: Request) {
     if (error) throw error;
 
     return NextResponse.json(data, { status: 201 });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error creating folder:", error);
     return NextResponse.json(
-      { error: error.message || "Failed to create folder" },
+      { error: error instanceof Error ? error.message : "Failed to create folder" },
       { status: 500 }
     );
   }

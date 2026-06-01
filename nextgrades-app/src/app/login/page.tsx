@@ -152,29 +152,24 @@ function LoginContent() {
   const labels = useMemo(
     () => ({
       headline:
-        tab === "register"
-          ? t("login.mobileRegisterHeadline", { defaultValue: "Get started with NextGrades" })
-          : t("login.mobileLoginHeadline", { defaultValue: "Welcome back" }),
+        tab === "register" ? t("login.mobileRegisterHeadline") : t("login.mobileLoginHeadline"),
       subtitle:
-        tab === "register"
-          ? t("login.mobileRegisterSubtitle", { defaultValue: "Choose your role and fill in your details below." })
-          : t("login.mobileLoginSubtitle", { defaultValue: "Sign in to continue your learning journey." }),
-      loginTab: t("login.signIn", { defaultValue: "Login" }),
-      registerTab: t("login.signUpLink", { defaultValue: "Register" }),
-      email: t("login.email", { defaultValue: "Email Address" }),
-      password: t("login.password", { defaultValue: "Password" }),
-      rememberMe: t("login.rememberMe", { defaultValue: "Remember me" }),
-      forgotPassword: t("login.forgotPassword", { defaultValue: "Forgot Password?" }),
-      loginBtn: t("login.signIn", { defaultValue: "Login" }),
-      termsPrefix: t("login.termsPrefix", { defaultValue: "By continuing, you agree to our" }),
-      terms: t("login.terms", { defaultValue: "Terms" }),
-      and: t("login.and", { defaultValue: "and" }),
-      privacy: t("login.privacy", { defaultValue: "Privacy Policy" }),
-      welcomeTitle: t("login.welcomeBackTitle", { defaultValue: "Welcome Back" }),
-      loginSubtitle: t("login.loginSubtitle", { defaultValue: "Sign in to continue your learning journey." }),
-      heroCaption: t("login.heroCaption", {
-        defaultValue: "Premium tutoring, digital materials, and structured learning — all in one place.",
-      }),
+        tab === "register" ? t("login.mobileRegisterSubtitle") : t("login.mobileLoginSubtitle"),
+      loginTab: t("login.signIn"),
+      registerTab: t("login.signUpLink"),
+      email: t("login.email"),
+      password: t("login.password"),
+      rememberMe: t("login.rememberMe"),
+      forgotPassword: t("login.forgotPassword"),
+      loginBtn: t("login.signIn"),
+      goToLogin: t("login.goToLogin"),
+      termsPrefix: t("login.termsPrefix"),
+      terms: t("login.terms"),
+      and: t("login.and"),
+      privacy: t("login.privacy"),
+      welcomeTitle: t("login.welcomeBackTitle"),
+      loginSubtitle: t("login.loginSubtitle"),
+      heroCaption: t("login.heroCaption"),
     }),
     [t, tab]
   );
@@ -248,7 +243,7 @@ function LoginContent() {
           type="email"
           value={formData.email}
           onChange={(v) => handleInputChange("email", v)}
-          placeholder="you@example.com"
+          placeholder={t("login.emailPlaceholder")}
           error={formValidation.email}
         />
         <AuthField
@@ -263,7 +258,7 @@ function LoginContent() {
               type="button"
               onClick={() => setShowPassword(!showPassword)}
               className={cn("absolute right-4 top-1/2 -translate-y-1/2 hover:text-[#D4AF37]", s.body)}
-              aria-label={showPassword ? "Hide password" : "Show password"}
+              aria-label={showPassword ? t("login.hidePassword") : t("login.showPassword")}
             >
               {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
             </button>

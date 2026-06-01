@@ -12,6 +12,19 @@ export async function GET() {
     return NextResponse.json(data ?? []);
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : "Request failed";
+    if (message.includes("og_title") || message.includes("og_description") || message.includes("structured_data")) {
+      try {
+        const supabase = await createClient();
+        const db = await createServerReadClient(supabase);
+        const { data } = await db
+          .from("cms_seo")
+          .select("id, page_name, title, description, keywords, og_image_url, twitter_image_url")
+          .order("page_name", { ascending: true });
+        return NextResponse.json(data ?? []);
+      } catch {
+        return NextResponse.json([]);
+      }
+    }
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }
@@ -21,7 +34,7 @@ export async function PUT(request: Request) {
   if (gate.error) return gate.error;
   try {
     const body = await request.json();
-    const { page_name, title, description, keywords, og_image_url, id } = body;
+    const { page_name, title, description, keywords, og_image_url, og_title, og_description, id } = body;
     if (!page_name) return NextResponse.json({ error: "page_name is required" }, { status: 400 });
 
     const payload = {
@@ -30,25 +43,44 @@ export async function PUT(request: Request) {
       description: description ?? null,
       keywords: keywords ?? null,
       og_image_url: og_image_url ?? null,
+      og_title: og_title ?? null,
+      og_description: og_description ?? null,
       updated_at: new Date().toISOString(),
     };
 
     if (id) {
-      const { data, error } = await gate.auth!.supabase
+      let { data, error } = await gate.auth!.supabase
         .from("cms_seo")
         .update(payload)
         .eq("id", id)
         .select()
         .single();
+      if (error?.message?.includes("og_title")) {
+        const { og_title: _t, og_description: _d, ...legacy } = payload;
+        ({ data, error } = await gate.auth!.supabase
+          .from("cms_seo")
+          .update(legacy)
+          .eq("id", id)
+          .select()
+          .single());
+      }
       if (error) throw error;
       return NextResponse.json(data);
     }
 
-    const { data, error } = await gate.auth!.supabase
+    let { data, error } = await gate.auth!.supabase
       .from("cms_seo")
       .upsert(payload, { onConflict: "page_name" })
       .select()
       .single();
+    if (error?.message?.includes("og_title")) {
+      const { og_title: _t, og_description: _d, ...legacy } = payload;
+      ({ data, error } = await gate.auth!.supabase
+        .from("cms_seo")
+        .upsert(legacy, { onConflict: "page_name" })
+        .select()
+        .single());
+    }
     if (error) throw error;
     return NextResponse.json(data);
   } catch (error: unknown) {

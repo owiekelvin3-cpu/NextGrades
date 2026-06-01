@@ -66,7 +66,7 @@ export function MobileResourcesToolbar({ catalog, resultCount }: Props) {
           )}
         >
           <SlidersHorizontal className="h-4 w-4" />
-          {t("resources.filters", { defaultValue: "Filters" })}
+          {t("resources.filtersLabel", { defaultValue: "Filters" })}
         </button>
       </div>
 
@@ -96,7 +96,7 @@ export function MobileResourcesToolbar({ catalog, resultCount }: Props) {
             >
               <div className="mb-4 flex items-center justify-between">
                 <h3 className="text-lg font-bold text-foreground">
-                  {t("resources.filters", { defaultValue: "Filters" })}
+                  {t("resources.filtersLabel", { defaultValue: "Filters" })}
                 </h3>
                 <button
                   type="button"

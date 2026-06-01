@@ -1,11 +1,8 @@
 "use client";
 
-import { Loader2 } from "lucide-react";
+import { DashboardOverviewSkeleton } from "@/components/ui/Skeleton";
 
+/** Premium skeleton loading for dashboard overview pages */
 export function LoadingBlock() {
-  return (
-    <div className="flex items-center justify-center py-16">
-      <Loader2 className="w-8 h-8 animate-spin text-[#D4AF37]" />
-    </div>
-  );
+  return <DashboardOverviewSkeleton />;
 }

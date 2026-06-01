@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { applyCmsOverridesToI18n } from "@/lib/cms/apply-overrides";
 import type { CmsOverrideMap } from "@/lib/cms/types";
+import { runWhenIdle } from "@/lib/performance/idle";
 
 const CMS_CACHE_KEY = "nextgrades_cms_overrides";
 const CMS_CACHE_TTL_MS = 10 * 60 * 1000;
@@ -48,11 +49,15 @@ export function CmsProvider({ children }: { children: ReactNode }) {
   const [overrides, setOverrides] = useState<CmsOverrideMap>(() => readCachedOverrides() ?? {});
   const [loading, setLoading] = useState(false);
 
-  const isDashboard = pathname?.startsWith("/dashboard") ?? false;
+  const skipCms =
+    (pathname?.startsWith("/dashboard") ?? false) || (pathname?.startsWith("/portal") ?? false);
 
   const refresh = useCallback(async () => {
     setLoading(true);
     try {
+      if (typeof window !== "undefined") {
+        sessionStorage.removeItem(CMS_CACHE_KEY);
+      }
       const res = await fetch("/api/cms/overrides");
       if (!res.ok) return;
       const data = (await res.json()) as CmsOverrideMap;
@@ -74,16 +79,24 @@ export function CmsProvider({ children }: { children: ReactNode }) {
       void applyCmsOverridesToI18n(cached);
     }
 
-    if (isDashboard) return;
+    if (skipCms) return;
 
-    const run = () => void refresh();
-    if (typeof window.requestIdleCallback === "function") {
-      const id = window.requestIdleCallback(run, { timeout: 4000 });
-      return () => window.cancelIdleCallback(id);
-    }
-    const t = window.setTimeout(run, 2000);
-    return () => window.clearTimeout(t);
-  }, [refresh, isDashboard]);
+    const run = async () => {
+      try {
+        const res = await fetch("/api/cms/overrides");
+        if (!res.ok) return;
+        const data = (await res.json()) as CmsOverrideMap;
+        if (data && typeof data === "object" && !("error" in data)) {
+          setOverrides(data);
+          writeCachedOverrides(data);
+          await applyCmsOverridesToI18n(data);
+        }
+      } catch {
+        /* CMS optional */
+      }
+    };
+    return runWhenIdle(() => void run(), 4000);
+  }, [skipCms]);
 
   useEffect(() => {
     if (Object.keys(overrides).length) {

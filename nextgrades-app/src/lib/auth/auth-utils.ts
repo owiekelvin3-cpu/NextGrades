@@ -1,6 +1,8 @@
 import { createClient } from "@/lib/supabase/server";
 
-export async function requireAuth(supabase: any) {
+type SupabaseServerClient = Awaited<ReturnType<typeof createClient>>;
+
+export async function requireAuth(supabase: SupabaseServerClient) {
   const { data: { session }, error } = await supabase.auth.getSession();
   
   if (error || !session) {
@@ -16,7 +18,7 @@ export async function requireAuth(supabase: any) {
   return { user: session.user, profile, error: null };
 }
 
-export async function requireRole(supabase: any, role: string) {
+export async function requireRole(supabase: SupabaseServerClient, role: string) {
   const auth = await requireAuth(supabase);
   
   if (!auth.user) {

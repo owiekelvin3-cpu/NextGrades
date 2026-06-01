@@ -8,8 +8,8 @@ import type { FlatLocaleEntry } from "./flatten";
 import { buildMarketingImageEntries } from "./marketing-images-registry";
 
 export function buildSeedEntries(): FlatLocaleEntry[] {
-  const en = mergeLocale(enCommon as Record<string, unknown>, enSite as Record<string, unknown>);
-  const de = mergeLocale(deCommon as Record<string, unknown>, deSite as Record<string, unknown>);
+  const en = mergeLocale(enCommon as Record<string, unknown>, enSite as unknown as Record<string, unknown>);
+  const de = mergeLocale(deCommon as Record<string, unknown>, deSite as unknown as Record<string, unknown>);
   const localeEntries = flattenLocale(en, de);
   const imageEntries = buildMarketingImageEntries();
   return [...localeEntries, ...imageEntries];
@@ -38,6 +38,7 @@ export function contentRowsFromEntries(
     field_type: entry.fieldType,
     content_value: typeof entry.valueEn === "string" ? entry.valueEn : null,
     content_json: { en: entry.valueEn, de: entry.valueDe },
+    draft_json: { en: entry.valueEn, de: entry.valueDe },
     sort_order: index + 1,
     is_required: false,
   }));

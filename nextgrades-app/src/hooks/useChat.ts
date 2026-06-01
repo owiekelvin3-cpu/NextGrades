@@ -8,6 +8,8 @@ import {
 } from "@/lib/chat/languages";
 import { DEFAULT_MODEL_ID } from "@/lib/chat/models";
 import type { AiModelInfo, ChatMessage, ChatSession, ChatRole } from "@/lib/chat/types";
+import type { ChatAttachment } from "@/lib/chat/attachments";
+import { MAX_CHAT_ATTACHMENTS } from "@/lib/chat/attachments";
 
 export type MessageTranslation = {
   text: string;
@@ -21,6 +23,7 @@ export type LocalMessage = {
   content: string;
   streaming?: boolean;
   translation?: MessageTranslation;
+  attachments?: ChatAttachment[];
 };
 
 type ChatStatus = {
@@ -44,6 +47,8 @@ export function useChat() {
     DEFAULT_CHAT_RESPONSE_LANGUAGE
   );
   const [selectedModelId, setSelectedModelIdState] = useState(DEFAULT_MODEL_ID);
+  const [pendingAttachments, setPendingAttachments] = useState<ChatAttachment[]>([]);
+  const [uploadingFile, setUploadingFile] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
   const initRef = useRef(false);
   const [chatReady, setChatReady] = useState(false);
@@ -136,6 +141,12 @@ export function useChat() {
     setMessages([]);
     setError(null);
     setStreaming(false);
+    setPendingAttachments((prev) => {
+      prev.forEach((a) => {
+        if (a.previewUrl) URL.revokeObjectURL(a.previewUrl);
+      });
+      return [];
+    });
   }, []);
 
   const deleteSession = useCallback(
@@ -221,20 +232,66 @@ export function useChat() {
     [messages]
   );
 
+  const removeAttachment = useCallback((id: string) => {
+    setPendingAttachments((prev) => {
+      const target = prev.find((a) => a.id === id);
+      if (target?.previewUrl) URL.revokeObjectURL(target.previewUrl);
+      return prev.filter((a) => a.id !== id);
+    });
+  }, []);
+
+  const uploadFile = useCallback(async (file: File) => {
+    if (pendingAttachments.length >= MAX_CHAT_ATTACHMENTS) {
+      setError(`Maximum ${MAX_CHAT_ATTACHMENTS} files per message`);
+      return;
+    }
+
+    setUploadingFile(true);
+    setError(null);
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await fetch("/api/chat/upload", { method: "POST", body: formData });
+      const data = (await res.json()) as { attachment?: ChatAttachment; error?: string };
+      if (!res.ok) throw new Error(data.error || "Upload failed");
+
+      const attachment = data.attachment!;
+      if (attachment.kind === "image") {
+        attachment.previewUrl = URL.createObjectURL(file);
+      }
+      setPendingAttachments((prev) => [...prev, attachment]);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Upload failed");
+    } finally {
+      setUploadingFile(false);
+    }
+  }, [pendingAttachments.length]);
+
   const sendMessage = useCallback(
-    async (text: string, opts?: { regenerate?: boolean }) => {
-      if (!text.trim() || streaming) return;
+    async (text: string, opts?: { regenerate?: boolean; attachments?: ChatAttachment[] }) => {
+      const attachments = opts?.attachments ?? (opts?.regenerate ? [] : pendingAttachments);
+      const trimmed = text.trim();
+      if ((!trimmed && !attachments.length) || streaming) return;
 
       setError(null);
       const userMsg: LocalMessage = {
         id: `user-${Date.now()}`,
         role: "user",
-        content: text.trim(),
+        content: trimmed,
+        attachments: attachments.length ? attachments : undefined,
       };
 
       if (!opts?.regenerate) {
         setMessages((prev) => [...prev, userMsg]);
       }
+
+      setPendingAttachments((prev) => {
+        prev.forEach((a) => {
+          if (a.previewUrl) URL.revokeObjectURL(a.previewUrl);
+        });
+        return [];
+      });
 
       const assistantId = `assistant-${Date.now()}`;
       setMessages((prev) => [...prev, { id: assistantId, role: "assistant", content: "", streaming: true }]);
@@ -248,7 +305,15 @@ export function useChat() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             sessionId: activeSessionId ?? undefined,
-            message: text.trim(),
+            message: trimmed,
+            attachments: attachments.map(({ id, name, mimeType, size, content, kind }) => ({
+              id,
+              name,
+              mimeType,
+              size,
+              content,
+              kind,
+            })),
             materialId,
             regenerate: opts?.regenerate,
             responseLanguage,
@@ -329,7 +394,7 @@ export function useChat() {
         abortRef.current = null;
       }
     },
-    [activeSessionId, materialId, responseLanguage, selectedModelId, streaming, loadSessions]
+    [activeSessionId, materialId, pendingAttachments, responseLanguage, selectedModelId, streaming, loadSessions]
   );
 
   const regenerate = useCallback(() => {
@@ -365,6 +430,10 @@ export function useChat() {
     materialId,
     responseLanguage,
     selectedModelId,
+    pendingAttachments,
+    uploadingFile,
+    uploadFile,
+    removeAttachment,
     setMaterialId,
     setResponseLanguage,
     setSelectedModelId,

@@ -5,13 +5,13 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { LogOut, User as UserIcon, X } from "lucide-react";
 import { Button } from "./ui/Button";
-import { motion, AnimatePresence } from "framer-motion";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { BrandLogo } from "./BrandLogo";
 import { ThemeToggle } from "./ThemeToggle";
 import { useTheme } from "@/context/ThemeContext";
 import { useTranslation } from "react-i18next";
 import { supabase, isSupabaseEnvConfigured } from "@/lib/supabase/client";
+import { getCachedSession, updateSessionCache, invalidateSessionCache } from "@/lib/supabase/session-cache";
 import type { Session, User, AuthChangeEvent } from "@supabase/supabase-js";
 import { cn } from "@/lib/utils";
 import { buildLoginUrl, getDashboardPathForRole } from "@/lib/auth/redirect";
@@ -90,6 +90,7 @@ export default function Navbar() {
       const {
         data: { subscription: sub },
       } = supabase.auth.onAuthStateChange((_event: AuthChangeEvent, newSession: Session | null) => {
+        updateSessionCache(newSession);
         setSession(newSession);
         setUser(newSession?.user ?? null);
         if (newSession?.user) void fetchProfile(newSession.user.id);
@@ -98,7 +99,7 @@ export default function Navbar() {
 
       subscription = sub;
 
-      void supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
+      void getCachedSession().then((currentSession) => {
         setSession(currentSession);
         setUser(currentSession?.user ?? null);
         if (currentSession?.user) void fetchProfile(currentSession.user.id);
@@ -124,6 +125,7 @@ export default function Navbar() {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
+    invalidateSessionCache();
     router.push("/");
     router.refresh();
   };
@@ -146,13 +148,13 @@ export default function Navbar() {
     >
       <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
         <div className="flex h-[4.5rem] items-center justify-between md:h-20">
-          <BrandLogo size="lg" priority={pathname === "/"} />
+          <BrandLogo size="md" priority={pathname === "/"} />
 
           {/* Desktop */}
-          <nav className="hidden flex-1 items-center justify-center gap-0.5 md:flex">
+          <nav className="hidden min-w-0 flex-1 items-center justify-center gap-0.5 md:flex">
             {navLinks.map((link) => (
               <NavLink key={link.href} href={link.href} active={pathname === link.href} theme={theme}>
-                {t(`common.${link.key}`)}
+                <span suppressHydrationWarning>{t(`common.${link.key}`)}</span>
               </NavLink>
             ))}
           </nav>
@@ -228,26 +230,18 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile drawer */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
+      {/* Mobile drawer — CSS only (no framer-motion on critical path) */}
+      {isMobileMenuOpen && (
           <>
-            <motion.button
+            <button
               type="button"
               aria-label="Close menu"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm md:hidden"
+              className="mobile-drawer-backdrop fixed inset-0 z-40 bg-black/40 backdrop-blur-sm md:hidden"
               onClick={() => setIsMobileMenuOpen(false)}
             />
-            <motion.div
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ type: "spring", damping: 28, stiffness: 320 }}
+            <div
               className={cn(
-                "fixed inset-y-0 right-0 z-50 flex w-[min(100%,320px)] flex-col shadow-2xl md:hidden",
+                "mobile-drawer-panel fixed inset-y-0 right-0 z-50 flex w-[min(100%,320px)] flex-col shadow-2xl md:hidden",
                 theme === "dark" ? "bg-[#0D1B2A]" : "bg-white"
               )}
               style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
@@ -258,7 +252,7 @@ export default function Navbar() {
                   theme === "dark" ? "border-white/10" : "border-gray-100"
                 )}
               >
-                <BrandLogo size="lg" />
+                <BrandLogo size="md" />
                 <button
                   type="button"
                   onClick={() => setIsMobileMenuOpen(false)}
@@ -351,10 +345,9 @@ export default function Navbar() {
                   </>
                 )}
               </div>
-            </motion.div>
+            </div>
           </>
         )}
-      </AnimatePresence>
     </header>
   );
 }
@@ -374,12 +367,13 @@ function NavLink({
     <Link
       href={href}
       className={cn(
-        "relative rounded-lg px-4 py-2.5 text-sm font-medium transition-all duration-300",
-        active
-          ? "border border-[#D4AF37]/30 bg-[#D4AF37]/15 text-[#D4AF37]"
-          : theme === "dark"
-            ? "text-white hover:bg-[#D4AF37]/10 hover:text-[#D4AF37]"
-            : "text-[#0D1B2A] hover:bg-[#D4AF37]/10 hover:text-[#D4AF37]"
+        "relative shrink-0 whitespace-nowrap rounded-md px-3 py-2 text-[13px] font-medium transition-colors duration-200 md:text-sm",
+        "after:absolute after:inset-x-2 after:bottom-1 after:h-0.5 after:rounded-full after:bg-[#D4AF37] after:transition-opacity after:duration-200",
+        active ? "font-semibold text-[#D4AF37] after:opacity-100" : "after:opacity-0",
+        !active &&
+          (theme === "dark"
+            ? "text-white/90 hover:text-[#D4AF37]"
+            : "text-[#0D1B2A]/85 hover:text-[#B8962E]")
       )}
     >
       {children}

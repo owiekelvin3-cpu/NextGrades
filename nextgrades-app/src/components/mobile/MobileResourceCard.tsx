@@ -11,6 +11,7 @@ import { getResourceThumbnail, RESOURCES_DEFAULT_THUMBNAIL } from "@/lib/resourc
 import { isPremiumResource } from "@/lib/resources/ui-config";
 import { isVideoResource, resourceWatchPath } from "@/lib/resources/video";
 import { Button } from "@/components/ui/Button";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   resource: LearningResource;
@@ -20,6 +21,7 @@ type Props = {
 };
 
 export function MobileResourceCard({ resource, onOpen, variant, subjectSlug }: Props) {
+  const { t } = useTranslation();
   const premium = variant === "premium" || isPremiumResource(resource);
   const locked = resource.locked ?? (premium && resource.canAccess === false);
   const thumb = getResourceThumbnail(resource, subjectSlug);
@@ -37,7 +39,7 @@ export function MobileResourceCard({ resource, onOpen, variant, subjectSlug }: P
       : undefined;
 
   return (
-    <article className={cn(mobile.cardInteractive, "flex flex-col")}>
+    <article className={cn(mobile.cardInteractive, "flex flex-col overflow-hidden rounded-2xl border border-border-default bg-surface-elevated shadow-sm")}>
       <div className="relative aspect-[16/10] overflow-hidden bg-surface-subtle">
         <MarketingImage
           src={thumb}
@@ -101,24 +103,24 @@ export function MobileResourceCard({ resource, onOpen, variant, subjectSlug }: P
               {locked ? (
                 <>
                   <Lock className="h-4 w-4" />
-                  Unlock
+                  {t("resources.premiumCta", { defaultValue: "Unlock" })}
                 </>
               ) : isVideo ? (
                 <>
                   <Play className="h-4 w-4" />
-                  Watch
+                  {t("resources.video.watch", { defaultValue: "Watch" })}
                 </>
               ) : (
                 <>
                   <Download className="h-4 w-4" />
-                  Open
+                  {t("resources.freeButton", { defaultValue: "Open" })}
                 </>
               )}
             </Button>
           ) : (
             <Button variant="gold" size="md" className="w-full min-h-12" onClick={onOpen}>
               <Download className="h-4 w-4" />
-              Open
+              {t("resources.freeButton", { defaultValue: "Open" })}
             </Button>
           )}
         </div>

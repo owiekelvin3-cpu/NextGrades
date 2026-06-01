@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { ArrowLeft, Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { useTheme } from "@/context/ThemeContext";
 import { cn } from "@/lib/utils";
 import { authSurface } from "@/components/auth/auth-ui";
@@ -40,6 +41,7 @@ type Props = {
     rememberMe: string;
     forgotPassword: string;
     loginBtn: string;
+    goToLogin: string;
     termsPrefix: string;
     terms: string;
     and: string;
@@ -61,6 +63,7 @@ export function AuthMobileSheet({
   redirectTo,
   onRegisterError,
 }: Props) {
+  const { t } = useTranslation();
   const { theme } = useTheme();
   const isDark = theme === "dark";
   const s = authSurface(isDark);
@@ -84,7 +87,7 @@ export function AuthMobileSheet({
         <Link
           href="/"
           className="mb-6 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-white transition hover:bg-white/15"
-          aria-label="Back to home"
+          aria-label={t("login.backToHome")}
         >
           <ArrowLeft className="h-5 w-5" />
         </Link>
@@ -126,7 +129,7 @@ export function AuthMobileSheet({
             {error}
             {duplicateEmail && (
               <button type="button" onClick={onClearDuplicate} className={cn("mt-2 block", s.link)}>
-                Go to Login
+                {loginLabels.goToLogin}
               </button>
             )}
           </div>
@@ -160,7 +163,7 @@ export function AuthMobileSheet({
                     autoComplete="email"
                     value={loginForm.email}
                     onChange={(e) => loginForm.onEmailChange(e.target.value)}
-                    placeholder="you@example.com"
+                    placeholder={t("login.emailPlaceholder")}
                     className={cn(loginForm.emailError && "border-red-400/50", s.input)}
                   />
                 </div>
@@ -188,7 +191,7 @@ export function AuthMobileSheet({
                     type="button"
                     onClick={loginForm.onTogglePassword}
                     className="absolute right-4 top-1/2 -translate-y-1/2 text-[#9CA3AF] hover:text-[#D4AF37]"
-                    aria-label={loginForm.showPassword ? "Hide password" : "Show password"}
+                    aria-label={loginForm.showPassword ? t("login.hidePassword") : t("login.showPassword")}
                   >
                     {loginForm.showPassword ? (
                       <EyeOff className="h-[18px] w-[18px]" />

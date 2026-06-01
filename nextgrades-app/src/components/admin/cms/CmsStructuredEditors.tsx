@@ -204,7 +204,17 @@ function SeoEditor({
   const toast = useToast();
   const byPage = useMemo(() => {
     const map = new Map(rows.map((r) => [r.page_name, r]));
-    return SEO_PAGES.map((page) => map.get(page) || { page_name: page, title: "", description: "", keywords: "" });
+    return SEO_PAGES.map((page) =>
+      map.get(page) || {
+        page_name: page,
+        title: "",
+        description: "",
+        keywords: "",
+        og_title: "",
+        og_description: "",
+        og_image_url: "",
+      }
+    );
   }, [rows]);
 
   const save = async (row: Partial<CmsSeo> & { page_name: string }) => {
@@ -239,9 +249,28 @@ function SeoEditor({
           />
           <input
             className={inputClass}
-            placeholder="Keywords"
+            placeholder="Keywords (comma-separated)"
             defaultValue={row.keywords ?? ""}
             id={`seo-kw-${row.page_name}`}
+          />
+          <input
+            className={inputClass}
+            placeholder="Open Graph title"
+            defaultValue={row.og_title ?? ""}
+            id={`seo-og-title-${row.page_name}`}
+          />
+          <textarea
+            className={inputClass}
+            rows={2}
+            placeholder="Open Graph description"
+            defaultValue={row.og_description ?? ""}
+            id={`seo-og-desc-${row.page_name}`}
+          />
+          <input
+            className={inputClass}
+            placeholder="Social sharing image URL"
+            defaultValue={row.og_image_url ?? ""}
+            id={`seo-og-img-${row.page_name}`}
           />
           <Button
             variant="gold"
@@ -250,7 +279,10 @@ function SeoEditor({
               const title = (document.getElementById(`seo-title-${row.page_name}`) as HTMLInputElement)?.value;
               const description = (document.getElementById(`seo-desc-${row.page_name}`) as HTMLTextAreaElement)?.value;
               const keywords = (document.getElementById(`seo-kw-${row.page_name}`) as HTMLInputElement)?.value;
-              void save({ ...row, title, description, keywords });
+              const og_title = (document.getElementById(`seo-og-title-${row.page_name}`) as HTMLInputElement)?.value;
+              const og_description = (document.getElementById(`seo-og-desc-${row.page_name}`) as HTMLTextAreaElement)?.value;
+              const og_image_url = (document.getElementById(`seo-og-img-${row.page_name}`) as HTMLInputElement)?.value;
+              void save({ ...row, title, description, keywords, og_title, og_description, og_image_url });
             }}
           >
             <Save className="mr-2 h-4 w-4" />

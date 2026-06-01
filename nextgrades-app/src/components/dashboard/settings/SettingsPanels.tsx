@@ -357,9 +357,6 @@ export function StudentSettingsPanel({ role = "student" }: StudentSettingsPanelP
                     className="bg-gray-100 text-gray-500"
                   />
                 </SettingsField>
-                <SettingsField label={t("settings.role", { defaultValue: "Role" })}>
-                  <SettingsInput value={profile?.role ?? role} readOnly disabled className="bg-gray-100 capitalize text-gray-500" />
-                </SettingsField>
               </div>
             </SettingsCard>
 

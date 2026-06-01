@@ -36,7 +36,7 @@ import {
   type StudentOverviewData,
 } from "@/lib/dashboard/student-overview";
 import { StudentDashboardLayout } from "./StudentDashboardLayout";
-import { studentPanel, formatTimeRange, lessonDateParts } from "./student-ui";
+import { studentPanel, formatTimeRange, lessonDateParts, st } from "./student-ui";
 import {
   OverviewHero,
   OverviewStatCard,
@@ -102,7 +102,7 @@ export function StudentOverviewDashboard() {
       <StudentDashboardLayout title={title}>
         <div className={`${studentPanel()} mx-auto max-w-md p-10 text-center`}>
           <GraduationCap className="mx-auto mb-4 h-12 w-12 text-[#D4AF37]" />
-          <p className="text-gray-600">{t("studentDashboard.signInRequired")}</p>
+          <p className={st.textMuted}>{t("studentDashboard.signInRequired")}</p>
           <Button variant="gold" size="md" href="/login" className="mt-6">
             {t("common.login")}
           </Button>
@@ -119,7 +119,7 @@ export function StudentOverviewDashboard() {
 
   return (
     <StudentDashboardLayout title={title}>
-      <div className="mx-auto flex max-w-[1400px] flex-col gap-6 md:gap-8">
+      <div className="content-ready mx-auto flex max-w-[1400px] flex-col gap-6 md:gap-8">
         <OverviewHero
           eyebrow={t("studentDashboard.overviewTitle", { defaultValue: "Overview" })}
           title={t("studentDashboard.welcomeBack", { name: firstName })}
@@ -154,11 +154,11 @@ export function StudentOverviewDashboard() {
                 }
                 href="/pricing"
                 icon={Target}
-                iconClassName="text-[#D4AF37] bg-[#FFF9E6] ring-[#D4AF37]/20"
+                iconClassName={st.statIconGold}
                 footer={
                   data.units ? (
-                    <div className="h-1.5 overflow-hidden rounded-full bg-gray-100">
-                      <div className="h-full rounded-full bg-[#D4AF37]" style={{ width: `${unitsPercent}%` }} />
+                    <div className={st.progressTrack}>
+                      <div className={st.progressBar} style={{ width: `${unitsPercent}%` }} />
                     </div>
                   ) : undefined
                 }
@@ -178,15 +178,15 @@ export function StudentOverviewDashboard() {
                 }
                 href="/dashboard/student/appointments"
                 icon={Calendar}
-                iconClassName="text-blue-600 bg-blue-50 ring-blue-100"
+                iconClassName={st.statIconBlue}
                 footer={
                   data.nextLesson ? (
-                    <p className="text-xs text-gray-500">
+                    <p className={cn("text-xs", st.textMuted)}>
                       {formatTimeRange(data.nextLesson.start_time, data.nextLesson.duration, dateLocale)} ·{" "}
                       {data.nextLesson.subject_name}
                     </p>
                   ) : (
-                    <p className="text-xs text-gray-500">{t("studentDashboard.noAppointments")}</p>
+                    <p className={cn("text-xs", st.textMuted)}>{t("studentDashboard.noAppointments")}</p>
                   )
                 }
               />
@@ -198,10 +198,10 @@ export function StudentOverviewDashboard() {
                 value={`${data.overallProgress}%`}
                 href="/dashboard/student/progress"
                 icon={TrendingUp}
-                iconClassName="text-emerald-600 bg-emerald-50 ring-emerald-100"
+                iconClassName={st.statIconEmerald}
                 footer={
                   <div className="flex items-center justify-between gap-2">
-                    <p className="text-xs text-gray-500">{t("studentDashboard.progressKeepGoing", { defaultValue: "Keep it up!" })}</p>
+                    <p className={cn("text-xs", st.textMuted)}>{t("studentDashboard.progressKeepGoing", { defaultValue: "Keep it up!" })}</p>
                     <ProgressSparkline values={data.progressSparkline} />
                   </div>
                 }
@@ -214,9 +214,9 @@ export function StudentOverviewDashboard() {
                 value={data.openTaskCount}
                 href="/dashboard/student/quizzes"
                 icon={ListChecks}
-                iconClassName="text-violet-600 bg-violet-50 ring-violet-100"
+                iconClassName={st.statIconViolet}
                 footer={
-                  <p className="text-xs text-gray-500">
+                  <p className={cn("text-xs", st.textMuted)}>
                     {data.openTaskCount === 0
                       ? t("studentDashboard.noOpenTasks")
                       : t("studentDashboard.tasksWaitingDesc", { defaultValue: "Tasks waiting for you" })}
@@ -278,7 +278,7 @@ export function StudentOverviewDashboard() {
           noPadding
         >
           {data.lessons.length === 0 ? (
-            <p className="px-5 py-10 text-center text-sm text-gray-500">{t("studentDashboard.noAppointments")}</p>
+            <p className={cn("px-5 py-10 text-center", st.empty)}>{t("studentDashboard.noAppointments")}</p>
           ) : (
             <ul className="space-y-2 p-3">
               {data.lessons.slice(0, 3).map((lesson) => {
@@ -286,29 +286,21 @@ export function StudentOverviewDashboard() {
                 return (
                   <li
                     key={lesson.id}
-                    className={cn(
-                      "flex flex-col gap-4 rounded-xl border p-4 transition hover:border-[#D4AF37]/25 hover:shadow-sm sm:flex-row sm:items-center",
-                      parts.isToday ? "border-[#D4AF37]/30 bg-gradient-to-r from-[#FFF9E6]/60 to-white" : "border-gray-100 bg-gray-50/40"
-                    )}
+                    className={cn(st.appointmentRow, parts.isToday && st.appointmentRowToday)}
                   >
                     <div className="flex min-w-0 flex-1 items-center gap-4">
-                      <div
-                        className={cn(
-                          "flex h-14 w-14 shrink-0 flex-col items-center justify-center rounded-xl border text-center",
-                          parts.isToday ? "border-[#D4AF37]/40 bg-[#FFF9E6]" : "border-gray-100 bg-white"
-                        )}
-                      >
-                        <span className="text-xl font-bold leading-none text-[#0D1B2A]">{parts.day}</span>
+                      <div className={cn(st.dateBadge, parts.isToday && st.dateBadgeToday)}>
+                        <span className={st.dateDay}>{parts.day}</span>
                         <span className="text-[10px] font-bold uppercase text-[#D4AF37]">{parts.month}</span>
                       </div>
                       <div className="min-w-0">
-                        <p className="font-semibold text-[#0D1B2A]">
+                        <p className={cn("font-semibold", st.textPrimary)}>
                           {lesson.subject_name}
                           {lesson.subject_name ? " — " : ""}
                           {t("studentDashboard.lessonTopic", { defaultValue: "Lesson" })}
                         </p>
-                        <p className="text-sm text-gray-500">{parts.weekday}</p>
-                        <div className="mt-1 flex flex-wrap items-center gap-x-3 text-xs text-gray-400">
+                        <p className={cn("text-sm", st.textMuted)}>{parts.weekday}</p>
+                        <div className={cn("mt-1 flex flex-wrap items-center gap-x-3 text-xs", st.textSubtle)}>
                           {lesson.teacher_name && (
                             <span className="inline-flex items-center gap-1">
                               <User className="h-3 w-3" />
@@ -327,7 +319,7 @@ export function StudentOverviewDashboard() {
                       {(lesson.zoom_meeting_id || lesson.zoom_link) ? (
                         <ZoomMeetingButton lessonId={lesson.id} mode="join" size="sm" />
                       ) : (
-                        <span className="text-xs text-gray-400">{t("studentDashboard.noZoomLink")}</span>
+                        <span className={cn("text-xs", st.textSubtle)}>{t("studentDashboard.noZoomLink")}</span>
                       )}
                     </div>
                   </li>
@@ -411,17 +403,17 @@ export function StudentOverviewDashboard() {
         <section className="hidden gap-5 md:grid lg:grid-cols-3">
           <OverviewPanel title={t("studentDashboard.myMaterials")} icon={FileText} href="/dashboard/student/resources" linkLabel={t("studentDashboard.toMaterialLibraryBtn", { defaultValue: "Library" })} noPadding>
             {data.materials.length === 0 ? (
-              <p className="flex-1 px-5 py-10 text-center text-sm text-gray-500">{t("studentDashboard.noMaterials")}</p>
+              <p className={cn("flex-1 px-5 py-10 text-center", st.empty)}>{t("studentDashboard.noMaterials")}</p>
             ) : (
               <ul className="space-y-1 p-3">
                 {data.materials.slice(0, 4).map((m) => (
-                  <li key={m.id} className="flex items-center gap-3 rounded-xl px-3 py-3 transition hover:bg-gray-50">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-red-50 ring-1 ring-red-100">
-                      <FileText className="h-4 w-4 text-red-500" />
+                  <li key={m.id} className={cn("flex items-center gap-3", st.listRow)}>
+                    <div className={st.fileIcon}>
+                      <FileText className="h-4 w-4 text-red-500 dark:text-red-400" />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-medium text-[#0D1B2A]">{m.title}</p>
-                      <p className="text-xs text-gray-400">
+                      <p className={cn("truncate text-sm font-medium", st.textPrimary)}>{m.title}</p>
+                      <p className={cn("text-xs", st.textSubtle)}>
                         {m.type.toUpperCase()}
                         {m.file_size ? ` · ${formatBytes(m.file_size)}` : ""}
                       </p>
@@ -434,18 +426,18 @@ export function StudentOverviewDashboard() {
 
           <OverviewPanel title={t("studentDashboard.myCourses")} icon={BookOpen} href="/dashboard/student/courses" linkLabel={t("studentDashboard.toMyCourses")} noPadding>
             {data.courses.length === 0 ? (
-              <p className="flex-1 px-5 py-10 text-center text-sm text-gray-500">{t("studentDashboard.noCourses")}</p>
+              <p className={cn("flex-1 px-5 py-10 text-center", st.empty)}>{t("studentDashboard.noCourses")}</p>
             ) : (
               <ul className="space-y-3 p-4">
                 {data.courses.slice(0, 3).map((course) => (
-                  <li key={course.enrollmentId} className="rounded-xl border border-gray-100 bg-gray-50/50 p-3">
+                  <li key={course.enrollmentId} className={st.courseCard}>
                     <div className="mb-2 flex items-center justify-between gap-2">
-                      <span className="truncate text-sm font-semibold text-[#0D1B2A]">{course.subjectName}</span>
+                      <span className={cn("truncate text-sm font-semibold", st.textPrimary)}>{course.subjectName}</span>
                       <span className="text-sm font-bold text-[#D4AF37]">{course.progressPercent}%</span>
                     </div>
-                    {course.teacherName && <p className="mb-2 text-xs text-gray-400">{course.teacherName}</p>}
-                    <div className="h-2 overflow-hidden rounded-full bg-gray-200">
-                      <div className="h-full rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F5A623]" style={{ width: `${course.progressPercent}%` }} />
+                    {course.teacherName && <p className={cn("mb-2 text-xs", st.textSubtle)}>{course.teacherName}</p>}
+                    <div className={st.progressTrackMd}>
+                      <div className={st.progressBarGold} style={{ width: `${course.progressPercent}%` }} />
                     </div>
                   </li>
                 ))}
@@ -455,15 +447,15 @@ export function StudentOverviewDashboard() {
 
           <OverviewPanel title={t("studentDashboard.tasks")} icon={ListChecks} href="/dashboard/student/quizzes" linkLabel={t("studentDashboard.allTasks")} noPadding>
             {data.tasks.length === 0 ? (
-              <p className="flex-1 px-5 py-10 text-center text-sm text-gray-500">{t("studentDashboard.noTasks")}</p>
+              <p className={cn("flex-1 px-5 py-10 text-center", st.empty)}>{t("studentDashboard.noTasks")}</p>
             ) : (
               <ul className="space-y-1 p-3">
                 {data.tasks.slice(0, 4).map((task) => (
-                  <li key={task.id} className="flex items-center justify-between gap-3 rounded-xl px-3 py-3 transition hover:bg-gray-50">
+                  <li key={task.id} className={cn("flex items-center justify-between gap-3", st.listRow)}>
                     <div className="min-w-0">
-                      <p className="truncate text-sm font-medium text-[#0D1B2A]">{task.title}</p>
+                      <p className={cn("truncate text-sm font-medium", st.textPrimary)}>{task.title}</p>
                       {task.dueLabel && (
-                        <p className="text-xs text-gray-400">
+                        <p className={cn("text-xs", st.textSubtle)}>
                           {new Date(task.dueLabel).toLocaleDateString(dateLocale, { day: "numeric", month: "short" })}
                         </p>
                       )}
@@ -488,7 +480,7 @@ export function StudentOverviewDashboard() {
             noPadding
           >
             {data.notifications.length === 0 ? (
-              <p className="px-5 py-10 text-center text-sm text-gray-500">{t("studentDashboard.noMessages")}</p>
+              <p className={cn("px-5 py-10 text-center", st.empty)}>{t("studentDashboard.noMessages")}</p>
             ) : (
               <ul className="space-y-1 p-3">
                 {data.notifications.map((n) => (
@@ -496,16 +488,16 @@ export function StudentOverviewDashboard() {
                     <Link
                       href="/dashboard/notifications"
                       className={cn(
-                        "flex gap-3 rounded-xl px-3 py-3 transition hover:bg-gray-50",
-                        !n.is_read && "bg-[#FFF9E6]/50"
+                        "flex gap-3 rounded-xl px-3 py-3 transition hover:bg-surface-subtle dark:hover:bg-white/[0.04]",
+                        !n.is_read && st.unreadBg
                       )}
                     >
                       <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#D4AF37]/10">
                         <Bell className="h-4 w-4 text-[#D4AF37]" />
                       </div>
                       <div className="min-w-0 flex-1">
-                        <p className={cn("text-sm", !n.is_read && "font-semibold text-[#0D1B2A]")}>{n.title}</p>
-                        {n.message && <p className="mt-0.5 line-clamp-2 text-xs text-gray-500">{n.message}</p>}
+                        <p className={cn("text-sm", !n.is_read && "font-semibold", st.textPrimary)}>{n.title}</p>
+                        {n.message && <p className={cn("mt-0.5 line-clamp-2 text-xs", st.textMuted)}>{n.message}</p>}
                       </div>
                     </Link>
                   </li>
@@ -515,7 +507,7 @@ export function StudentOverviewDashboard() {
           </OverviewPanel>
 
           <OverviewPanel title={t("studentDashboard.quickAccess")} icon={Zap} noPadding>
-            <ul className="divide-y divide-gray-50">
+            <ul className={st.divider}>
               {[
                 { href: "/dashboard/chat", icon: Sparkles, label: t("studentDashboard.openAi") },
                 { href: "/dashboard/student/appointments", icon: Video, label: t("studentDashboard.joinZoom") },
@@ -525,13 +517,13 @@ export function StudentOverviewDashboard() {
                 <li key={item.label}>
                   <Link
                     href={item.href}
-                    className="flex items-center gap-3 px-5 py-4 text-sm font-medium text-[#0D1B2A] transition hover:bg-gray-50"
+                    className={cn("flex items-center gap-3 px-5 py-4 text-sm font-medium transition hover:bg-surface-subtle dark:hover:bg-white/[0.04]", st.textPrimary)}
                   >
                     <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#D4AF37]/10">
                       <item.icon className="h-4 w-4 text-[#D4AF37]" />
                     </span>
                     {item.label}
-                    <ArrowRight className="ml-auto h-4 w-4 text-gray-300" />
+                    <ArrowRight className={cn("ml-auto h-4 w-4", st.textSubtle)} />
                   </Link>
                 </li>
               ))}
@@ -539,9 +531,8 @@ export function StudentOverviewDashboard() {
           </OverviewPanel>
         </section>
 
-        {/* Motivation quote */}
-        <section className="relative overflow-hidden rounded-2xl border border-[#D4AF37]/20 bg-gradient-to-br from-[#FFF9E6] via-white to-[#FFF9E6] p-6 shadow-sm sm:p-8">
-          <blockquote className="text-center text-sm italic text-[#0D1B2A] sm:text-base">
+        <section className={st.motivation}>
+          <blockquote className={cn("text-center text-sm italic sm:text-base", st.textPrimary)}>
             {t("studentDashboard.motivationQuoteFull", {
               defaultValue:
                 "„The only way to do great work is to love what you do.“ — Steve Jobs",

@@ -20,16 +20,16 @@ export function AuthModeSwitch({ mode, onSwitch, className }: Props) {
     <p className={cn("text-center text-sm", s.body, className)}>
       {mode === "login" ? (
         <>
-          {t("login.noAccount", { defaultValue: "Don't have an account?" })}{" "}
+          {t("login.noAccount")}{" "}
           <button type="button" onClick={onSwitch} className={cn("font-semibold", s.link)}>
-            {t("login.signUpLink", { defaultValue: "Register" })}
+            {t("login.signUpLink")}
           </button>
         </>
       ) : (
         <>
-          {t("login.haveAccount", { defaultValue: "Already have an account?" })}{" "}
+          {t("login.haveAccount")}{" "}
           <button type="button" onClick={onSwitch} className={cn("font-semibold", s.link)}>
-            {t("login.signIn", { defaultValue: "Login" })}
+            {t("login.signIn")}
           </button>
         </>
       )}

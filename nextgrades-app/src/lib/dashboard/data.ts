@@ -1,5 +1,7 @@
 import { supabase } from "@/lib/supabase/client";
 import type { Material, Subject } from "@/lib/api/client";
+import { getCachedSession } from "@/lib/supabase/session-cache";
+import { isSupabaseEnvConfigured } from "@/lib/supabase/env";
 
 export type DashboardLesson = {
   id: string;
@@ -62,11 +64,9 @@ export type AdminStats = {
 };
 
 async function getSessionUserId(): Promise<string | null> {
-  const { data } = await supabase.auth.getSession();
-  return data.session?.user?.id ?? null;
+  const session = await getCachedSession();
+  return session?.user?.id ?? null;
 }
-
-import { isSupabaseEnvConfigured } from "@/lib/supabase/env";
 
 async function mapLessons(rows: Record<string, unknown>[]): Promise<DashboardLesson[]> {
   if (!rows.length) return [];
@@ -422,29 +422,42 @@ export async function fetchProfilesByRole(role: "student" | "teacher" | "admin")
   return data as DashboardProfile[];
 }
 
-export async function fetchAdminStats(): Promise<AdminStats> {
+const EMPTY_ADMIN_STATS: AdminStats = {
+  total_students: 0,
+  total_teachers: 0,
+  active_enrollments: 0,
+  total_earnings: 0,
+};
+
+/** Single round-trip admin dashboard payload (stats + activity) — server-cached. */
+export async function fetchAdminDashboard(activityLimit = 10): Promise<{
+  stats: AdminStats;
+  activities: ActivityLogRow[];
+}> {
   if (!isSupabaseEnvConfigured()) {
-    return { total_students: 0, total_teachers: 0, active_enrollments: 0, total_earnings: 0 };
+    return { stats: EMPTY_ADMIN_STATS, activities: [] };
   }
 
-  const [students, teachers, enrollments, earnings] = await Promise.all([
-    supabase.from("profiles").select("*", { count: "exact", head: true }).eq("role", "student"),
-    supabase.from("profiles").select("*", { count: "exact", head: true }).eq("role", "teacher"),
-    supabase.from("enrollments").select("*", { count: "exact", head: true }).eq("status", "active"),
-    supabase.from("teacher_stats").select("earnings_mtd"),
-  ]);
+  try {
+    const res = await fetch(`/api/admin/dashboard?activityLimit=${activityLimit}`, {
+      credentials: "include",
+    });
+    if (!res.ok) {
+      return { stats: EMPTY_ADMIN_STATS, activities: [] };
+    }
+    const data = (await res.json()) as { stats?: AdminStats; activities?: ActivityLogRow[] };
+    return {
+      stats: data.stats ?? EMPTY_ADMIN_STATS,
+      activities: Array.isArray(data.activities) ? data.activities : [],
+    };
+  } catch {
+    return { stats: EMPTY_ADMIN_STATS, activities: [] };
+  }
+}
 
-  const totalEarnings = (earnings.data || []).reduce(
-    (sum: number, row: { earnings_mtd: number }) => sum + Number(row.earnings_mtd ?? 0),
-    0
-  );
-
-  return {
-    total_students: students.count ?? 0,
-    total_teachers: teachers.count ?? 0,
-    active_enrollments: enrollments.count ?? 0,
-    total_earnings: totalEarnings,
-  };
+export async function fetchAdminStats(): Promise<AdminStats> {
+  const { stats } = await fetchAdminDashboard(1);
+  return stats;
 }
 
 export async function fetchActivityLogs(limit = 10): Promise<ActivityLogRow[]> {

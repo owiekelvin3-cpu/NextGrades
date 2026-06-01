@@ -5,22 +5,22 @@ import Image from "next/image";
 import { useTheme } from "@/context/ThemeContext";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { brandLogoForSurface, BRAND_LOGO } from "@/lib/brand";
+import { brandLogoForSurface, brandLogoHoverForSurface, BRAND_LOGO } from "@/lib/brand";
 
 export type BrandLogoSize = "sm" | "md" | "lg" | "xl";
 
 const SIZE_STYLES: Record<BrandLogoSize, string> = {
-  sm: "h-11 w-auto max-w-[180px] sm:h-12",
-  md: "h-12 w-auto max-w-[220px] sm:h-14",
-  lg: "h-14 w-auto max-w-[260px] sm:h-16 md:h-[4.25rem]",
-  xl: "h-16 w-auto max-w-[300px] sm:h-[4.5rem] md:h-20 md:max-w-[340px]",
+  sm: "h-9 w-auto max-w-[150px] sm:h-10",
+  md: "h-10 w-auto max-w-[190px] sm:h-11",
+  lg: "h-11 w-auto max-w-[220px] sm:h-12 md:h-14",
+  xl: "h-14 w-auto max-w-[260px] sm:h-[3.75rem] md:h-16 md:max-w-[300px]",
 };
 
 const SIZE_PROPS: Record<BrandLogoSize, { width: number; height: number; sizes: string }> = {
-  sm: { width: 180, height: 48, sizes: "180px" },
-  md: { width: 220, height: 56, sizes: "220px" },
-  lg: { width: 280, height: 68, sizes: "(max-width: 768px) 240px, 280px" },
-  xl: { width: 340, height: 80, sizes: "(max-width: 768px) 280px, 340px" },
+  sm: { width: 150, height: 40, sizes: "150px" },
+  md: { width: 190, height: 44, sizes: "190px" },
+  lg: { width: 220, height: 56, sizes: "(max-width: 768px) 200px, 220px" },
+  xl: { width: 300, height: 64, sizes: "(max-width: 768px) 260px, 300px" },
 };
 
 interface BrandLogoProps {
@@ -35,6 +35,59 @@ interface BrandLogoProps {
   onClick?: () => void;
 }
 
+function LogoImages({
+  defaultSrc,
+  hoverSrc,
+  size,
+  className,
+  priority,
+  onError,
+}: {
+  defaultSrc: string;
+  hoverSrc: string;
+  size: BrandLogoSize;
+  className?: string;
+  priority?: boolean;
+  onError: () => void;
+}) {
+  const dim = SIZE_PROPS[size];
+  const imageClass = cn(SIZE_STYLES[size], "object-contain object-left", className);
+
+  const imageStyle = { width: "auto", height: "auto" } as const;
+
+  return (
+    <span className="relative inline-flex shrink-0 items-center">
+      <Image
+        src={defaultSrc}
+        alt="NextGrades"
+        width={dim.width}
+        height={dim.height}
+        priority={priority}
+        sizes={dim.sizes}
+        style={imageStyle}
+        className={cn(
+          imageClass,
+          "relative z-[1] transition-opacity duration-[250ms] ease-out group-hover:opacity-0"
+        )}
+        onError={onError}
+      />
+      <Image
+        src={hoverSrc}
+        alt=""
+        width={dim.width}
+        height={dim.height}
+        sizes={dim.sizes}
+        aria-hidden
+        style={imageStyle}
+        className={cn(
+          imageClass,
+          "pointer-events-none absolute left-0 top-0 z-[2] opacity-0 transition-opacity duration-[250ms] ease-out group-hover:opacity-100"
+        )}
+      />
+    </span>
+  );
+}
+
 export function BrandLogo({
   className,
   href = "/",
@@ -47,21 +100,17 @@ export function BrandLogo({
   const { theme } = useTheme();
   const [imgError, setImgError] = useState(false);
 
-  const src = brandLogoForSurface(theme, onDarkBackground);
+  const defaultSrc = brandLogoForSurface(theme, onDarkBackground);
+  const hoverSrc = brandLogoHoverForSurface(theme, onDarkBackground);
   const isDarkSurface = onDarkBackground || theme === "dark";
-  const dim = SIZE_PROPS[size];
-
-  const imageClass = cn(SIZE_STYLES[size], "object-contain object-left", className);
 
   const content = !imgError ? (
-    <Image
-      src={src}
-      alt="NextGrades"
-      width={dim.width}
-      height={dim.height}
+    <LogoImages
+      defaultSrc={defaultSrc}
+      hoverSrc={hoverSrc}
+      size={size}
+      className={className}
       priority={priority}
-      sizes={dim.sizes}
-      className={imageClass}
       onError={() => setImgError(true)}
     />
   ) : (
@@ -88,14 +137,14 @@ export function BrandLogo({
   );
 
   if (!linked) {
-    return <span className="flex shrink-0 items-center">{content}</span>;
+    return <span className="group flex shrink-0 items-center">{content}</span>;
   }
 
   return (
     <Link
       href={href}
       onClick={onClick}
-      className="flex shrink-0 items-center rounded-lg transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF37]/50"
+      className="group flex shrink-0 items-center rounded-lg transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF37]/50"
       aria-label="NextGrades home"
     >
       {content}

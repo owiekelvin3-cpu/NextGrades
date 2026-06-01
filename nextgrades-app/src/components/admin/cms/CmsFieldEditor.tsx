@@ -27,31 +27,33 @@ export function CmsFieldEditor({
   onChange,
   onReset,
 }: Props) {
+  const [showTechnical, setShowTechnical] = useState(false);
   const textPrimary = isDark ? "text-white" : "text-[#0D1B2A]";
   const textMuted = isDark ? "text-gray-400" : "text-gray-600";
   const otherLocale = editLocale === "en" ? "de" : "en";
+
+  const displayName =
+    field.field_name.length > 60 ? `${field.field_name.slice(0, 57)}…` : field.field_name;
 
   return (
     <Card className={cn("p-4 sm:p-5", isDark ? "border-white/10 bg-[#112240]" : "bg-white")}>
       <div className="mb-3 flex flex-wrap items-start justify-between gap-2">
         <div className="min-w-0 flex-1">
-          <p className={cn("font-semibold", textPrimary)}>{field.field_name}</p>
-          <p className="mt-0.5 truncate font-mono text-xs text-gray-500">{field.i18n_key}</p>
+          <p className={cn("font-semibold", textPrimary)}>{displayName}</p>
+          {field.field_type === "image" && (
+            <p className={cn("mt-0.5 text-xs", textMuted)}>Image — same for English and German</p>
+          )}
         </div>
         <div className="flex flex-wrap items-center gap-1.5">
-          {field.isCustomized && !isDirty && (
-            <Badge variant="gold" className="text-[10px]">
-              Live override
-            </Badge>
-          )}
-          {isDirty && (
+          {isDirty ? (
             <Badge variant="warning" className="text-[10px]">
-              Unsaved
+              Not published yet
             </Badge>
-          )}
-          <Badge variant="outline" className="text-[10px]">
-            {field.field_type}
-          </Badge>
+          ) : field.isCustomized ? (
+            <Badge variant="success" className="text-[10px]">
+              Live on site
+            </Badge>
+          ) : null}
           {(isDirty || field.isCustomized) && (
             <button
               type="button"
@@ -60,10 +62,10 @@ export function CmsFieldEditor({
                 "inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-medium transition-colors",
                 isDark ? "text-gray-400 hover:bg-white/10 hover:text-white" : "text-gray-500 hover:bg-gray-100"
               )}
-              title="Reset to live website default"
+              title="Undo changes on this field"
             >
               <RotateCcw className="h-3 w-3" />
-              Reset
+              Undo
             </button>
           )}
         </div>
@@ -71,15 +73,15 @@ export function CmsFieldEditor({
 
       {field.field_type === "image" ? (
         <ImageFieldEditor
-          value={field.draft[editLocale]}
+          value={field.draft[editLocale] || field.draft.en || field.draft.de}
           onChange={onChange}
           inputClass={inputClass}
           isDark={isDark}
-          label={field.field_name}
+          label={displayName}
         />
       ) : field.field_type === "json" ? (
         <textarea
-          rows={10}
+          rows={8}
           className={cn(inputClass, "font-mono text-xs")}
           value={field.draft[editLocale]}
           onChange={(e) => onChange(e.target.value)}
@@ -102,9 +104,21 @@ export function CmsFieldEditor({
 
       {field.draft[otherLocale] && field.field_type !== "image" && (
         <p className={cn("mt-2 text-xs", textMuted)}>
-          {otherLocale.toUpperCase()}: {field.draft[otherLocale].slice(0, 100)}
-          {field.draft[otherLocale].length > 100 ? "…" : ""}
+          {otherLocale === "en" ? "English" : "German"} version: {field.draft[otherLocale].slice(0, 80)}
+          {field.draft[otherLocale].length > 80 ? "…" : ""}
         </p>
+      )}
+
+      <button
+        type="button"
+        onClick={() => setShowTechnical((v) => !v)}
+        className={cn("mt-3 flex items-center gap-1 text-[11px]", textMuted)}
+      >
+        <ChevronDown className={cn("h-3 w-3 transition-transform", showTechnical && "rotate-180")} />
+        {showTechnical ? "Hide" : "Show"} technical details
+      </button>
+      {showTechnical && (
+        <p className="mt-1 font-mono text-[10px] text-gray-500">{field.i18n_key}</p>
       )}
     </Card>
   );
