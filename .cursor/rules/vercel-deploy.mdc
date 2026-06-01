@@ -1,0 +1,26 @@
+---
+description: Deploy to Vercel when implementation work is complete
+alwaysApply: true
+---
+
+# Vercel deploy on completion
+
+When you finish a task that changes the Next.js app (`nextgrades-app/`), deploy to Vercel before considering the work done.
+
+## Workflow
+
+1. Ensure `main` has the changes: commit if the user asked, or confirm `git push origin main` succeeded.
+2. From the repo root (`NextGrades/`, where `vercel.json` sets `"rootDirectory": "nextgrades-app"`):
+   - Run `npx vercel deploy --prod --yes`
+3. If the CLI is not linked or auth fails, tell the user that a push to `main` should trigger Vercel’s Git integration, and share the production URL if known.
+4. Briefly report deploy status (URL or build link) in the final message.
+
+## Preconditions
+
+- Run `npm run build` in `nextgrades-app/` if you changed app code and build was not verified in this session.
+- Do not deploy secrets; env vars stay in the Vercel dashboard.
+
+## Scope
+
+- Deploy after substantive app changes (features, fixes, mobile/UI, API routes).
+- Skip deploy for docs-only or local-only asset changes outside `nextgrades-app/` unless the user asks.
