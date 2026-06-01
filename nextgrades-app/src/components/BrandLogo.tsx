@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useTheme } from "@/context/ThemeContext";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { brandLogoForSurface, brandLogoHoverForSurface, BRAND_LOGO } from "@/lib/brand";
+import { brandLogoForSurface, BRAND_LOGO } from "@/lib/brand";
 
 export type BrandLogoSize = "sm" | "md" | "lg" | "xl";
 
@@ -29,63 +29,10 @@ interface BrandLogoProps {
   size?: BrandLogoSize;
   /** When false, renders logo markup only (no link). Use when parent is already a link. */
   linked?: boolean;
-  /** Use dark-background logo on navy sections regardless of site theme */
+  /** Use dark-mode logo on navy sections regardless of site theme */
   onDarkBackground?: boolean;
   priority?: boolean;
   onClick?: () => void;
-}
-
-function LogoImages({
-  defaultSrc,
-  hoverSrc,
-  size,
-  className,
-  priority,
-  onError,
-}: {
-  defaultSrc: string;
-  hoverSrc: string;
-  size: BrandLogoSize;
-  className?: string;
-  priority?: boolean;
-  onError: () => void;
-}) {
-  const dim = SIZE_PROPS[size];
-  const imageClass = cn(SIZE_STYLES[size], "object-contain object-left", className);
-
-  const imageStyle = { width: "auto", height: "auto" } as const;
-
-  return (
-    <span className="relative inline-flex shrink-0 items-center">
-      <Image
-        src={defaultSrc}
-        alt="NextGrades"
-        width={dim.width}
-        height={dim.height}
-        priority={priority}
-        sizes={dim.sizes}
-        style={imageStyle}
-        className={cn(
-          imageClass,
-          "relative z-[1] transition-opacity duration-[250ms] ease-out group-hover:opacity-0"
-        )}
-        onError={onError}
-      />
-      <Image
-        src={hoverSrc}
-        alt=""
-        width={dim.width}
-        height={dim.height}
-        sizes={dim.sizes}
-        aria-hidden
-        style={imageStyle}
-        className={cn(
-          imageClass,
-          "pointer-events-none absolute left-0 top-0 z-[2] opacity-0 transition-opacity duration-[250ms] ease-out group-hover:opacity-100"
-        )}
-      />
-    </span>
-  );
 }
 
 export function BrandLogo({
@@ -100,17 +47,26 @@ export function BrandLogo({
   const { theme } = useTheme();
   const [imgError, setImgError] = useState(false);
 
-  const defaultSrc = brandLogoForSurface(theme, onDarkBackground);
-  const hoverSrc = brandLogoHoverForSurface(theme, onDarkBackground);
+  const logoSrc = brandLogoForSurface(theme, onDarkBackground);
   const isDarkSurface = onDarkBackground || theme === "dark";
+  const dim = SIZE_PROPS[size];
+  const imageClass = cn(
+    SIZE_STYLES[size],
+    "object-contain object-left transition-opacity duration-200 group-hover:opacity-90",
+    className
+  );
 
   const content = !imgError ? (
-    <LogoImages
-      defaultSrc={defaultSrc}
-      hoverSrc={hoverSrc}
-      size={size}
-      className={className}
+    <Image
+      key={logoSrc}
+      src={logoSrc}
+      alt="NextGrades"
+      width={dim.width}
+      height={dim.height}
       priority={priority}
+      sizes={dim.sizes}
+      style={{ width: "auto", height: "auto" }}
+      className={imageClass}
       onError={() => setImgError(true)}
     />
   ) : (
@@ -144,7 +100,7 @@ export function BrandLogo({
     <Link
       href={href}
       onClick={onClick}
-      className="group flex shrink-0 items-center rounded-lg transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF37]/50"
+      className="group flex shrink-0 items-center rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF37]/50"
       aria-label="NextGrades home"
     >
       {content}

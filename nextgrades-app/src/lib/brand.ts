@@ -3,9 +3,9 @@
 import { ADMIN_PORTAL_HOME } from "@/lib/admin/portal-paths";
 
 export const BRAND_LOGO = {
-  /** Gold mark on dark — navbar/footer in dark theme, navy marketing sections */
+  /** Dark mode / navy backgrounds — `dark mode logo.png` */
   dark: "/logo-dark.png",
-  /** Mark for light backgrounds — navbar/footer in light theme */
+  /** Light mode / white backgrounds — `light mode logo.png` */
   light: "/logo-light.png",
   icon192: "/icon-192.png",
   icon512: "/icon-512.png",
@@ -15,12 +15,6 @@ export const BRAND_LOGO = {
 
 export function brandLogoForSurface(theme: "light" | "dark", onDarkBackground = false): string {
   return theme === "dark" || onDarkBackground ? BRAND_LOGO.dark : BRAND_LOGO.light;
-}
-
-/** Opposite logo for hover preview (light ↔ dark). */
-export function brandLogoHoverForSurface(theme: "light" | "dark", onDarkBackground = false): string {
-  const isDarkSurface = theme === "dark" || onDarkBackground;
-  return isDarkSurface ? BRAND_LOGO.light : BRAND_LOGO.dark;
 }
 
 export function brandLogoUrl(appUrl: string, theme: "light" | "dark" = "light"): string {
