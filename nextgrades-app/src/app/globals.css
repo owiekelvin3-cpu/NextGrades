@@ -121,7 +121,13 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 80px;
+  scroll-padding-top: calc(4.5rem + env(safe-area-inset-top, 0px));
+}
+
+@media (min-width: 768px) {
+  html {
+    scroll-padding-top: 5rem;
+  }
 }
 
 @supports (scroll-behavior: smooth) {
@@ -362,6 +368,49 @@ body {
 body {
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
+}
+
+/* Marketing pages with fixed Navbar */
+.site-main {
+  min-width: 0;
+}
+
+.pt-site-nav {
+  padding-top: calc(4.5rem + env(safe-area-inset-top, 0px));
+}
+
+@media (min-width: 768px) {
+  .pt-site-nav {
+    padding-top: 5rem;
+  }
+}
+
+/* Dashboard tables & wide content on small screens */
+.dashboard-mobile-content {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.dashboard-mobile-content :is(table, .overflow-x-auto) {
+  -webkit-overflow-scrolling: touch;
+}
+
+.responsive-table-wrap {
+  margin-left: -1.25rem;
+  margin-right: -1.25rem;
+  overflow-x: auto;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (min-width: 768px) {
+  .responsive-table-wrap {
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
 
 /* Mobile card tap feedback */

@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Sidebar } from "@/components/dashboard/Sidebar";
+import { MobileTopBar } from "@/components/mobile/MobileTopBar";
 import { MobileBottomNav, MOBILE_BOTTOM_NAV_PADDING } from "@/components/mobile/MobileBottomNav";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
@@ -166,15 +167,18 @@ export default function AdminUsersPage() {
     >
       <Sidebar role="admin" />
 
-      <main
+      <div
         className={cn(
-          "flex min-h-0 min-w-0 flex-1 flex-col overflow-y-auto overflow-x-hidden p-4 transition-[margin-left] duration-300 ease-out sm:p-6 lg:p-8 md:ml-[var(--sidebar-width)] md:pt-8",
+          "flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden transition-[margin-left] duration-300 ease-out md:ml-[var(--sidebar-width)]",
           MOBILE_BOTTOM_NAV_PADDING
         )}
       >
-        <div className="max-w-7xl mx-auto">
+        <MobileTopBar role="admin" />
+
+        <main className="flex-1 overflow-y-auto overflow-x-hidden p-4 sm:p-6 lg:p-8">
+        <div className="mx-auto max-w-7xl">
           {/* Header */}
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
+          <div className="mb-8 flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
             <div>
               <h1 className={`text-2xl md:text-3xl font-bold ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
                 User Management
@@ -476,7 +480,8 @@ export default function AdminUsersPage() {
             )}
           </Card>
         </div>
-      </main>
+        </main>
+      </div>
       <MobileBottomNav role="admin" />
     </div>
   );

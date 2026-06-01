@@ -3,7 +3,8 @@
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { LogOut, User as UserIcon, X } from "lucide-react";
+import { LogOut, User as UserIcon, Menu, X } from "lucide-react";
+import { MobileDrawer } from "@/components/mobile/MobileDrawer";
 import { Button } from "./ui/Button";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { BrandLogo } from "./BrandLogo";
@@ -71,15 +72,6 @@ export default function Navbar() {
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [pathname]);
-
-  useEffect(() => {
-    if (!isMobileMenuOpen) return;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = prev;
-    };
-  }, [isMobileMenuOpen]);
 
   useEffect(() => {
     if (!isSupabaseEnvConfigured()) return;
@@ -203,151 +195,110 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* Mobile menu toggle — minimal 2-line icon */}
+          {/* Mobile menu toggle */}
           <button
             type="button"
             className={cn(
-              "flex min-h-12 min-w-12 flex-col items-center justify-center gap-1.5 rounded-2xl md:hidden touch-manipulation active:scale-95",
+              "flex min-h-12 min-w-12 items-center justify-center rounded-2xl md:hidden touch-manipulation active:scale-95",
               theme === "dark" ? "text-white" : "text-[#0D1B2A]"
             )}
             onClick={() => setIsMobileMenuOpen((v) => !v)}
             aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
             aria-expanded={isMobileMenuOpen}
           >
-            <span
-              className={cn(
-                "block h-0.5 w-5 rounded-full bg-current transition-transform duration-200",
-                isMobileMenuOpen && "translate-y-[5px] rotate-45"
-              )}
-            />
-            <span
-              className={cn(
-                "block h-0.5 w-5 rounded-full bg-current transition-transform duration-200",
-                isMobileMenuOpen && "-translate-y-[5px] -rotate-45"
-              )}
-            />
+            {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         </div>
       </div>
 
-      {/* Mobile drawer — CSS only (no framer-motion on critical path) */}
-      {isMobileMenuOpen && (
-          <>
-            <button
-              type="button"
-              aria-label="Close menu"
-              className="mobile-drawer-backdrop fixed inset-0 z-40 bg-black/40 backdrop-blur-sm md:hidden"
-              onClick={() => setIsMobileMenuOpen(false)}
-            />
-            <div
-              className={cn(
-                "mobile-drawer-panel fixed inset-y-0 right-0 z-50 flex w-[min(100%,320px)] flex-col shadow-2xl md:hidden",
-                theme === "dark" ? "bg-[#0D1B2A]" : "bg-white"
-              )}
-              style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
-            >
-              <div
-                className={cn(
-                  "flex h-16 items-center justify-between border-b px-5",
-                  theme === "dark" ? "border-white/10" : "border-gray-100"
-                )}
-              >
-                <BrandLogo size="md" />
+      <MobileDrawer
+        open={isMobileMenuOpen}
+        onClose={() => setIsMobileMenuOpen(false)}
+        ariaLabel="Site navigation"
+        panelClassName={theme === "dark" ? "bg-[#0D1B2A]" : "bg-white"}
+        header={<BrandLogo size="md" />}
+        footer={
+          <div className="space-y-3">
+            <LanguageSwitcher layout="drawer" />
+            <ThemeToggle variant="full" />
+            {session && user ? (
+              <>
+                <Link
+                  href={dashboardHref}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={cn(
+                    "flex min-h-[52px] w-full items-center justify-center rounded-2xl border font-semibold touch-manipulation",
+                    theme === "dark" ? "border-white/20 text-white" : "border-gray-200 text-[#0D1B2A]"
+                  )}
+                >
+                  {t("common.dashboard")}
+                </Link>
                 <button
                   type="button"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="flex min-h-12 min-w-12 items-center justify-center rounded-2xl text-text-muted"
-                  aria-label="Close"
+                  onClick={() => {
+                    void handleLogout();
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className={cn(
+                    "flex min-h-[52px] w-full items-center justify-center gap-2 rounded-2xl border font-semibold touch-manipulation",
+                    theme === "dark" ? "border-white/20 text-white" : "border-gray-200 text-[#0D1B2A]"
+                  )}
                 >
-                  <X className="h-5 w-5" />
+                  <LogOut className="h-4 w-4" />
+                  {t("common.logout")}
                 </button>
-              </div>
-
-              <nav className="flex-1 overflow-y-auto px-4 py-6">
-                <Button
-                  variant="gold"
-                  size="lg"
-                  className="mb-6 w-full min-h-[52px]"
-                  href="/consultation"
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={cn(
+                    "flex min-h-[52px] w-full items-center justify-center rounded-2xl border font-semibold touch-manipulation",
+                    theme === "dark" ? "border-white/20 text-white" : "border-gray-200 text-[#0D1B2A]"
+                  )}
                 >
-                  {t("navbar.freeConsultation")}
+                  {t("common.login")}
+                </Link>
+                <Button variant="gold" size="lg" className="w-full min-h-[52px]" href={buildLoginUrl(null, "signup")}>
+                  {t("common.signup")}
                 </Button>
-                <ul className="space-y-1">
-                  {navLinks.map((link) => (
-                    <li key={link.href}>
-                      <Link
-                        href={link.href}
-                        className={cn(
-                          "flex min-h-[52px] items-center rounded-2xl px-4 text-base font-medium transition-colors touch-manipulation",
-                          pathname === link.href
-                            ? "bg-[#D4AF37]/15 text-[#D4AF37] font-semibold"
-                            : theme === "dark"
-                              ? "text-white active:bg-white/5"
-                              : "text-[#0D1B2A] active:bg-gray-50"
-                        )}
-                      >
-                        {t(`common.${link.key}`)}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </nav>
-
-              <div
-                className={cn(
-                  "space-y-3 border-t px-5 py-5",
-                  theme === "dark" ? "border-white/10" : "border-gray-100"
-                )}
-                style={{ paddingBottom: "max(1.25rem, env(safe-area-inset-bottom))" }}
-              >
-                <LanguageSwitcher />
-                <ThemeToggle variant="full" />
-                {session && user ? (
-                  <>
-                    <Link
-                      href={dashboardHref}
-                      className={cn(
-                        "flex min-h-[52px] w-full items-center justify-center rounded-2xl border font-semibold touch-manipulation",
-                        theme === "dark" ? "border-white/20 text-white" : "border-gray-200 text-[#0D1B2A]"
-                      )}
-                    >
-                      {t("common.dashboard")}
-                    </Link>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        void handleLogout();
-                        setIsMobileMenuOpen(false);
-                      }}
-                      className={cn(
-                        "flex min-h-[52px] w-full items-center justify-center gap-2 rounded-2xl border font-semibold touch-manipulation",
-                        theme === "dark" ? "border-white/20 text-white" : "border-gray-200 text-[#0D1B2A]"
-                      )}
-                    >
-                      <LogOut className="h-4 w-4" />
-                      {t("common.logout")}
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <Link
-                      href="/login"
-                      className={cn(
-                        "flex min-h-[52px] w-full items-center justify-center rounded-2xl border font-semibold touch-manipulation",
-                        theme === "dark" ? "border-white/20 text-white" : "border-gray-200 text-[#0D1B2A]"
-                      )}
-                    >
-                      {t("common.login")}
-                    </Link>
-                    <Button variant="gold" size="lg" className="w-full min-h-[52px]" href={buildLoginUrl(null, "signup")}>
-                      {t("common.signup")}
-                    </Button>
-                  </>
-                )}
-              </div>
-            </div>
-          </>
-        )}
+              </>
+            )}
+          </div>
+        }
+      >
+        <nav className="flex-1 overflow-y-auto overscroll-contain px-4 py-6">
+          <Button
+            variant="gold"
+            size="lg"
+            className="mb-6 w-full min-h-[52px]"
+            href="/consultation"
+          >
+            {t("navbar.freeConsultation")}
+          </Button>
+          <ul className="space-y-1">
+            {navLinks.map((link) => (
+              <li key={link.href}>
+                <Link
+                  href={link.href}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={cn(
+                    "flex min-h-[52px] items-center rounded-2xl px-4 text-base font-medium transition-colors touch-manipulation",
+                    pathname === link.href
+                      ? "bg-[#D4AF37]/15 font-semibold text-[#D4AF37]"
+                      : theme === "dark"
+                        ? "text-white active:bg-white/5"
+                        : "text-[#0D1B2A] active:bg-gray-50"
+                  )}
+                >
+                  <span suppressHydrationWarning>{t(`common.${link.key}`)}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </MobileDrawer>
     </header>
   );
 }

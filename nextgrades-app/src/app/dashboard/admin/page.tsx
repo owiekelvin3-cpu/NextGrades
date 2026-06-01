@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Sidebar } from "@/components/dashboard/Sidebar";
+import { MobileTopBar } from "@/components/mobile/MobileTopBar";
 import { MobileBottomNav, MOBILE_BOTTOM_NAV_PADDING } from "@/components/mobile/MobileBottomNav";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
@@ -54,10 +55,12 @@ export default function AdminDashboard() {
       <Sidebar role="admin" />
 
       <div className={cn("flex min-w-0 flex-1 flex-col md:pt-0", MOBILE_BOTTOM_NAV_PADDING)}>
+        <MobileTopBar role="admin" />
+
         <header
           className={cn(
             appShell.dashboardHeader,
-            "sticky top-0 z-30 px-4 py-4 pt-[max(1rem,env(safe-area-inset-top))] sm:px-6 lg:px-8"
+            "hidden shrink-0 px-4 py-4 sm:px-6 md:block lg:px-8"
           )}
         >
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">

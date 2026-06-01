@@ -1,8 +1,9 @@
 /** Shared Tailwind classes that respond to `.dark` on `<html>`. */
 
 export const appShell = {
-  marketingPage: "min-h-screen flex flex-col bg-background text-foreground",
-  marketingPageMuted: "min-h-screen flex flex-col bg-surface-muted text-foreground",
+  marketingPage: "min-h-screen flex flex-col bg-background text-foreground overflow-x-hidden",
+  marketingPageMuted: "min-h-screen flex flex-col bg-surface-muted text-foreground overflow-x-hidden",
+  marketingHero: "pt-site-nav",
   sectionAlt: "bg-surface-muted dark:bg-[#112240]",
   sectionSubtle: "bg-surface-subtle",
   dashboardShell:

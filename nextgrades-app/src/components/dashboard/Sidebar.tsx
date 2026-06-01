@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
@@ -18,8 +18,6 @@ import {
   LayoutDashboard,
   Layout,
   ListChecks,
-  Menu,
-  X,
   Sparkles,
   Video,
   Bell,
@@ -282,65 +280,14 @@ export function Sidebar({
   teacherAvatarUrl,
   unreadNotifications = 0,
 }: SidebarProps) {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
   const { theme } = useTheme();
   const { collapsed } = useSidebar();
-  const isDashboardShell = role === "teacher" || role === "student";
-  const useDarkSidebar = isDashboardShell || role === "admin" || theme === "dark";
-
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
+  const useDarkSidebar =
+    role === "teacher" || role === "student" || role === "admin" || theme === "dark";
 
   const sidebarClass = useDarkSidebar
     ? "bg-[#0D1B2A] text-white"
     : "bg-white text-[#0D1B2A] border-r border-gray-100";
-
-  if (isMobile) {
-    // Dashboard uses bottom nav + layout headers on mobile — no duplicate top bar
-    if (isDashboardShell) return null;
-
-    return (
-      <>
-        <div
-          className={cn(
-            "fixed left-0 right-0 top-0 z-40 flex items-center justify-between p-4",
-            isDashboardShell ? "border-b border-white/10 bg-[#0D1B2A]" : useDarkSidebar ? "border-b border-white/10 bg-[#0D1B2A]" : "border-b border-gray-100 bg-white"
-          )}
-        >
-          <BrandLogo href={dashboardHomeForRole(role)} onDarkBackground={useDarkSidebar} size="lg" />
-          <button
-            type="button"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className={cn("rounded-lg p-2", useDarkSidebar ? "text-white" : "text-[#0D1B2A]")}
-          >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </div>
-
-        {isMobileMenuOpen && (
-          <>
-            <div className="fixed inset-0 z-40 bg-black/50" onClick={() => setIsMobileMenuOpen(false)} />
-            <aside className={cn("fixed left-0 top-0 z-50 flex h-screen w-[260px] flex-col overflow-hidden px-4 py-5", sidebarClass)}>
-              <SidebarContent
-                role={role}
-                setIsMobileMenuOpen={setIsMobileMenuOpen}
-                studentName={studentName}
-                teacherName={teacherName}
-                teacherAvatarUrl={teacherAvatarUrl}
-                unreadNotifications={unreadNotifications}
-                darkSidebar={useDarkSidebar}
-              />
-            </aside>
-          </>
-        )}
-      </>
-    );
-  }
 
   return (
     <>

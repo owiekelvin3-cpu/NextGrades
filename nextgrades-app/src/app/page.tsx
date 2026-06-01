@@ -67,7 +67,7 @@ export default function Home() {
 
       <main className="flex-1">
         {/* Hero — CSS-only entrance (no scroll observer) */}
-        <section className="relative overflow-hidden bg-[#0D1B2A] pb-16 pt-24 text-white md:pb-20 md:pt-28">
+        <section className="relative overflow-hidden bg-[#0D1B2A] pb-16 pt-site-nav text-white md:pb-20 md:pt-28">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(212,175,55,0.08)_0%,_transparent_55%)]" />
           <div className="relative mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
             <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">

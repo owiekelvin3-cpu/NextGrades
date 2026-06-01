@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { MobileBottomNav, MOBILE_BOTTOM_NAV_PADDING } from "@/components/mobile/MobileBottomNav";
+import { MobileTopBar } from "@/components/mobile/MobileTopBar";
 import { Button } from "@/components/ui/Button";
 import { useToast } from "@/context/ToastContext";
 import { useCms } from "@/context/CmsContext";
@@ -255,14 +256,17 @@ export function CmsStudio() {
     <div className={cn(appShell.dashboardShell, "bg-[#EEF0F4]")} style={{ ["--sidebar-width" as string]: `${sidebarWidth}px` }}>
       <Sidebar role="admin" />
 
-      <main
+      <div
         className={cn(
-          "flex min-h-0 flex-1 flex-col md:ml-[var(--sidebar-width)]",
+          "flex min-h-0 min-w-0 flex-1 flex-col md:ml-[var(--sidebar-width)]",
           MOBILE_BOTTOM_NAV_PADDING
         )}
       >
+        <MobileTopBar role="admin" />
+
+        <main className="flex min-h-0 flex-1 flex-col overflow-hidden">
         {/* Top bar */}
-        <header className="border-b border-gray-200 bg-white px-4 py-4 shadow-sm sm:px-6">
+        <header className="hidden border-b border-gray-200 bg-white px-4 py-4 shadow-sm sm:px-6 md:block">
           <div className="mx-auto flex max-w-4xl items-center gap-2 text-sm text-gray-500">
             <Link href="/portal/admin" className="hover:text-[#D4AF37]">
               Admin
@@ -528,7 +532,8 @@ export function CmsStudio() {
             </div>
           </div>
         )}
-      </main>
+        </main>
+      </div>
 
       <MobileBottomNav role="admin" />
     </div>

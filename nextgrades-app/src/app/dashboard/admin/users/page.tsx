@@ -3,7 +3,10 @@
 import { useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Sidebar } from "@/components/dashboard/Sidebar";
+import { MobileTopBar } from "@/components/mobile/MobileTopBar";
 import { MobileBottomNav, MOBILE_BOTTOM_NAV_PADDING } from "@/components/mobile/MobileBottomNav";
+import { appShell } from "@/lib/theme/shell";
+import { cn } from "@/lib/utils";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
@@ -156,13 +159,21 @@ export default function AdminUsersPage() {
   };
 
   return (
-    <div className={`flex min-h-screen ${theme === "dark" ? "bg-[#0D1B2A]" : "bg-[#FAFAFA]"}`}>
+    <div className={cn(appShell.dashboardShell, theme === "dark" ? "bg-[#0D1B2A]" : "bg-[#FAFAFA]")}>
       <Sidebar role="admin" />
-      
-      <main className={`flex-1 overflow-x-hidden p-4 sm:p-6 lg:p-8 md:pt-8 ${MOBILE_BOTTOM_NAV_PADDING}`}>
-        <div className="max-w-7xl mx-auto">
+
+      <div className={cn("flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden", MOBILE_BOTTOM_NAV_PADDING)}>
+        <MobileTopBar role="admin" />
+
+        <main className="flex-1 overflow-x-hidden overflow-y-auto p-4 sm:p-6 lg:p-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-6 md:hidden">
+            <h1 className={appShell.dashboardTitle}>User Management</h1>
+            <p className={appShell.dashboardDescription}>Manage user accounts and permissions</p>
+          </div>
+
           {/* Header */}
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
+          <div className="mb-8 hidden flex-col items-start justify-between gap-4 md:flex md:flex-row md:items-center">
             <div>
               <h1 className={`text-2xl md:text-3xl font-bold ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
                 User Management
@@ -464,7 +475,8 @@ export default function AdminUsersPage() {
             )}
           </Card>
         </div>
-      </main>
+        </main>
+      </div>
       <MobileBottomNav role="admin" />
     </div>
   );

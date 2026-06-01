@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { MobileBottomNav, MOBILE_BOTTOM_NAV_PADDING } from "@/components/mobile/MobileBottomNav";
+import { MobileTopBar } from "@/components/mobile/MobileTopBar";
 import { CmsEditorProvider, useCmsEditor } from "@/context/CmsEditorContext";
 import { CMS_SIDEBAR_PAGES, CMS_SIDEBAR_TOOLS, CMS_HUB_HREF } from "@/lib/cms/cms-nav";
 import { useSidebar } from "@/context/SidebarContext";
@@ -81,7 +82,7 @@ function CmsShellInner({ children }: { children: React.ReactNode }) {
           </nav>
         </aside>
 
-        <div className="flex min-w-0 flex-1 flex-col">
+        <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
           {loading && (
             <div className="flex flex-1 flex-col items-center justify-center gap-3 text-gray-500">
               <Loader2 className="h-10 w-10 animate-spin text-[#D4AF37]" />

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Sidebar } from "@/components/dashboard/Sidebar";
+import { MobileTopBar } from "@/components/mobile/MobileTopBar";
 import { MobileBottomNav, MOBILE_BOTTOM_NAV_PADDING } from "@/components/mobile/MobileBottomNav";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
@@ -65,10 +66,12 @@ export default function AdminDashboard() {
           MOBILE_BOTTOM_NAV_PADDING
         )}
       >
+        <MobileTopBar role="admin" />
+
         <header
           className={cn(
             appShell.dashboardHeader,
-            "shrink-0 px-4 py-4 pt-[max(1rem,env(safe-area-inset-top))] sm:px-6 lg:px-8"
+            "hidden shrink-0 px-4 py-4 sm:px-6 md:block lg:px-8"
           )}
         >
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -84,6 +87,15 @@ export default function AdminDashboard() {
         </header>
 
         <main className="flex-1 overflow-y-auto overflow-x-hidden p-4 sm:p-6 lg:p-8">
+          <div className="mb-6 md:hidden">
+            <h1 className={appShell.dashboardTitle}>{t("adminDashboard.title")}</h1>
+            <p className={appShell.dashboardDescription}>{t("adminDashboard.subtitle")}</p>
+            <Button variant="gold" size="md" className="mt-4 w-full sm:w-auto" href="/portal/admin/students">
+              <Plus className="mr-2 h-4 w-4" />
+              {t("adminDashboard.newUser")}
+            </Button>
+          </div>
+
           {loading ? (
             <div className="mx-auto max-w-7xl space-y-6">
               <DashboardStatsSkeleton />

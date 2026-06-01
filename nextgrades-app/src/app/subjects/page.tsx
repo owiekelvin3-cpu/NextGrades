@@ -134,14 +134,14 @@ export default function SubjectsPage() {
   );
 
   return (
-    <div className={cn("flex min-h-screen flex-col", isDark ? "bg-[#0D1B2A]" : "bg-[#FAFAFA]")}>
+    <div className={cn("flex min-h-screen flex-col overflow-x-hidden", isDark ? "bg-[#0D1B2A]" : "bg-[#FAFAFA]")}>
       <Navbar />
 
       <main className="flex-1">
         {/* Hero */}
         <section
           className={cn(
-            "relative overflow-hidden pt-28 pb-16",
+            "relative overflow-hidden pt-site-nav pb-16 md:pt-28",
             isDark ? "bg-[#0D1B2A] text-white" : "bg-white text-[#0D1B2A]"
           )}
         >

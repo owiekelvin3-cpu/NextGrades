@@ -129,16 +129,16 @@ function NavTab({
   const showBadge = item.badge === "notifications" && unread > 0;
 
   return (
-    <li className="min-w-0 flex-1">
+    <li className="min-w-0 flex-1 basis-0">
       <Link
         href={item.href}
         aria-current={active ? "page" : undefined}
         aria-label={label}
-        className="relative flex min-h-[56px] flex-col items-center justify-center gap-1 touch-manipulation active:opacity-70"
+        className="relative flex min-h-[52px] flex-col items-center justify-center gap-0.5 px-0.5 touch-manipulation active:opacity-70"
       >
-        <span className="relative flex h-7 w-7 items-center justify-center">
+        <span className="relative flex h-6 w-6 items-center justify-center sm:h-7 sm:w-7">
           <Icon
-            className={cn("h-[22px] w-[22px]", active ? "text-[#D4AF37]" : "text-text-muted")}
+            className={cn("h-5 w-5 sm:h-[22px] sm:w-[22px]", active ? "text-[#D4AF37]" : "text-text-muted")}
             strokeWidth={active ? 2.25 : 1.65}
           />
           {showBadge && (
@@ -149,7 +149,7 @@ function NavTab({
         </span>
         <span
           className={cn(
-            "max-w-full truncate text-[10px] leading-none",
+            "max-w-full truncate text-[9px] leading-tight sm:text-[10px]",
             active ? "font-semibold text-[#D4AF37]" : "font-medium text-text-muted"
           )}
         >
@@ -179,8 +179,8 @@ export function MobileBottomNav({ role: roleProp }: Props) {
       className="fixed inset-x-0 bottom-0 z-50 md:hidden"
       style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
     >
-      <div className="mx-3 mb-3 overflow-hidden rounded-3xl border border-border-default bg-surface-elevated shadow-[0_8px_32px_rgba(13,27,42,0.12)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
-        <ul className="flex items-stretch px-1 py-1">
+      <div className="mx-2 mb-2 overflow-hidden rounded-3xl border border-border-default bg-surface-elevated shadow-[0_8px_32px_rgba(13,27,42,0.12)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.4)] sm:mx-3 sm:mb-3">
+        <ul className="flex items-stretch px-0.5 py-1">
           {items.map((item) => {
             const active = item.match ? item.match(pathname) : pathname === item.href;
             return (
