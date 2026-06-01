@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import {
   DEFAULT_CHAT_RESPONSE_LANGUAGE,
   parseChatResponseLanguage,

@@ -61,5 +61,26 @@ export function validateProductionEnv(): EnvIssue[] {
     });
   }
 
+  if (process.env.RESEND_SENDER_EMAIL?.includes("resend.dev")) {
+    issues.push({
+      level: "warn",
+      message: "RESEND_SENDER_EMAIL uses resend.dev — verify a custom domain for production email.",
+    });
+  }
+
+  if (process.env.STRIPE_SECRET_KEY && !process.env.STRIPE_WEBHOOK_SECRET) {
+    issues.push({
+      level: "warn",
+      message: "STRIPE_WEBHOOK_SECRET missing — subscription payments will not sync to the database.",
+    });
+  }
+
+  if (process.env.ZOOM_CLIENT_ID && (process.env.ZOOM_REDIRECT_URI?.includes("localhost") ?? false)) {
+    issues.push({
+      level: "warn",
+      message: "ZOOM_REDIRECT_URI still points to localhost — update for production Zoom OAuth.",
+    });
+  }
+
   return issues;
 }
