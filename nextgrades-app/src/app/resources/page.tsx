@@ -19,12 +19,12 @@ export default function ResourcesPage() {
       <Navbar />
 
       <main className="flex-1">
-        <section className="relative overflow-hidden bg-[#0D1B2A] text-white">
+        <section className="relative overflow-hidden bg-[#0D1B2A] pb-16 text-white md:pb-20">
           <div className="absolute inset-0 opacity-40">
             <MarketingImage src={HUB_HERO_IMAGE} alt="" containerClassName="absolute inset-0" sizes="100vw" className="object-cover" priority />
           </div>
           <div className="absolute inset-0 bg-gradient-to-r from-[#0D1B2A] via-[#0D1B2A]/95 to-[#0D1B2A]/70" />
-          <div className="relative mx-auto max-w-7xl px-4 pb-14 pt-site-nav sm:px-6 md:pt-28 lg:px-8">
+          <div className="relative mx-auto max-w-7xl px-4 pt-site-nav sm:px-6 md:pt-28 lg:px-8">
             <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="grid lg:grid-cols-2 gap-10 items-center">
               <div>
                 <p className="text-xs font-bold uppercase tracking-widest text-[#D4AF37] mb-3">

@@ -122,7 +122,7 @@ export default function AboutPage() {
 
       <main className="flex-1">
         {/* Hero — always dark */}
-        <section className="relative overflow-hidden bg-[#0D1B2A] pt-site-nav text-white md:pt-28">
+        <section className="relative overflow-hidden bg-[#0D1B2A] pb-16 pt-site-nav text-white md:pb-20 md:pt-28">
           <div className="pointer-events-none absolute inset-0">
             <div className="absolute -right-20 top-0 h-[500px] w-[500px] rounded-full bg-[#D4AF37]/8 blur-3xl" />
             <div className="absolute bottom-0 left-0 h-72 w-72 rounded-full bg-[#4DA3FF]/8 blur-3xl" />

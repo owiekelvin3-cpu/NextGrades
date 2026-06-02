@@ -7,14 +7,14 @@ import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import {
   Users,
-  Zap,
   Calendar,
-  Award,
   Star,
   CheckCircle2,
   ArrowRight,
-  Clock,
+  Hexagon,
+  BookOpen,
   GraduationCap,
+  Sparkles,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useLocalizedContent } from "@/hooks/useLocalizedContent";
@@ -24,7 +24,7 @@ import { PROGRAMS_HERO_IMAGE, PROGRAMS_PAGE_CARD_IMAGES } from "@/lib/marketing-
 import { MarketingImage } from "@/components/marketing/MarketingImage";
 
 const statIcons = [GraduationCap, Users, Star];
-const heroFeatureIcons = [Award, Zap, Clock];
+const heroFeatureIcons = [Hexagon, BookOpen, Sparkles];
 
 type ProgramItem = {
   type: string;
@@ -41,11 +41,11 @@ type CompareRow = {
   c3: string | boolean;
 };
 
-function CompareCell({ value }: { value: string | boolean }) {
+function CompareCell({ value, dark }: { value: string | boolean; dark: boolean }) {
   if (value === true) {
-    return <CheckCircle2 className="w-5 h-5 text-[#D4AF37] mx-auto" />;
+    return <CheckCircle2 className="mx-auto h-5 w-5 text-[#D4AF37]" />;
   }
-  return <span className="text-sm text-gray-600 dark:text-gray-300">{value}</span>;
+  return <span className={dark ? "text-sm text-gray-300" : "text-sm text-gray-600"}>{value}</span>;
 }
 
 export default function ProgramsPage() {
@@ -86,49 +86,39 @@ export default function ProgramsPage() {
     >
       <Navbar />
 
-      <main className="flex-1">
+      <main className="flex-1 overflow-x-hidden">
         <section
-          className={`relative overflow-hidden pt-site-nav pb-12 md:pt-28 ${
+          className={`relative overflow-hidden pb-16 pt-site-nav md:pb-20 md:pt-28 ${
             theme === "dark" ? "bg-[#0D1B2A] text-white" : "bg-white text-[#0D1B2A]"
           }`}
         >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(212,175,55,0.15),transparent_45%)]" />
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="grid items-center gap-10 lg:grid-cols-2">
               <div className="hero-enter">
-                <div
-                  className={`uppercase tracking-[0.2em] text-sm font-semibold mb-4 ${
-                    theme === "dark" ? "text-gray-400" : "text-gray-500"
-                  }`}
-                >
-                  {t("programsPage.breadcrumb")}
-                </div>
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+                <h1 className="mb-6 text-4xl font-bold leading-[1.05] sm:text-5xl lg:text-[3.4rem]">
                   {t("programs.title")}
                   <br />
                   <span className="text-[#D4AF37]">{t("programs.subtitle")}</span>
                 </h1>
-                <p
-                  className={`text-lg mb-8 ${
-                    theme === "dark" ? "text-gray-300" : "text-gray-600"
-                  }`}
-                >
+                <p className={theme === "dark" ? "mb-8 max-w-xl text-base text-gray-300 sm:text-lg" : "mb-8 max-w-xl text-base text-gray-600 sm:text-lg"}>
                   {t("home.programsSection.subtitle")}
                 </p>
-                <div className="flex flex-wrap gap-6 mb-10">
-                  {safeHeroFeatures.map((feature, index) => {
-                    const Icon = heroFeatureIcons[index];
+                <div className="grid gap-4 sm:grid-cols-3">
+                  {safeHeroFeatures.slice(0, 3).map((feature, index) => {
+                    const Icon = heroFeatureIcons[index] ?? Hexagon;
                     return (
-                      <div key={index} className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full border-2 border-[#D4AF37]/50 flex items-center justify-center">
-                          <Icon className="w-5 h-5 text-[#D4AF37]" />
+                      <div key={index} className="flex items-start gap-2.5">
+                        <div
+                          className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border ${
+                            theme === "dark" ? "border-[#D4AF37]/45 bg-[#D4AF37]/10" : "border-[#D4AF37]/35 bg-[#D4AF37]/8"
+                          }`}
+                        >
+                          <Icon className="h-4 w-4 text-[#D4AF37]" />
                         </div>
                         <div>
-                          <p className="font-semibold">{feature.title}</p>
-                          <p
-                            className={`text-xs ${
-                              theme === "dark" ? "text-gray-400" : "text-gray-500"
-                            }`}
-                          >
+                          <p className="text-sm font-semibold">{feature.title}</p>
+                          <p className={theme === "dark" ? "mt-1 text-xs text-gray-400" : "mt-1 text-xs text-gray-500"}>
                             {feature.desc}
                           </p>
                         </div>
@@ -136,16 +126,17 @@ export default function ProgramsPage() {
                     );
                   })}
                 </div>
-                <Button variant="gold" size="lg" href="/consultation">
-                  {t("programsPage.freeConsultation")} <ArrowRight className="w-5 h-5 ml-2" />
-                </Button>
               </div>
               <div className="hero-enter hero-enter-delay-2">
-                <div className="h-56 overflow-hidden rounded-2xl sm:h-72 md:h-[450px]">
+                <div
+                  className={`overflow-hidden rounded-2xl border shadow-2xl ${
+                    theme === "dark" ? "border-white/10 shadow-black/45" : "border-gray-200/80 shadow-gray-300/35"
+                  }`}
+                >
                   <MarketingImage
                     src={programsHeroImage}
                     alt={t("images.studentStudying")}
-                    containerClassName="h-full w-full"
+                    containerClassName="h-[260px] w-full sm:h-[340px] md:h-[420px]"
                     priority
                     sizes="(max-width: 1024px) 100vw, 50vw"
                   />
@@ -155,21 +146,25 @@ export default function ProgramsPage() {
           </div>
         </section>
 
-        <section className="py-6 -mt-6">
-          <div className="max-w-4xl mx-auto px-4">
-            <Card className="p-6 shadow-xl border-0">
-              <div className="grid md:grid-cols-3 gap-8">
+        <section className="-mt-6 pb-2 md:-mt-8">
+          <div className="mx-auto max-w-5xl px-4">
+            <Card
+              className={`rounded-2xl border p-4 shadow-xl sm:p-6 ${
+                theme === "dark" ? "border-white/10 bg-[#112240] shadow-black/35" : "border-gray-200 bg-white shadow-gray-300/30"
+              }`}
+            >
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-7">
                 {safeStats.map((stat, index) => {
                   const Icon = statIcons[index];
                   return (
-                    <div key={index} className="flex items-center gap-4">
+                    <div key={index} className="flex items-center gap-3">
                       <div
-                        className={`w-12 h-12 rounded-full flex items-center justify-center ${
-                          theme === "dark" ? "bg-white/10" : "bg-[#0D1B2A]/10"
+                        className={`flex h-11 w-11 items-center justify-center rounded-full ${
+                          theme === "dark" ? "bg-white/10" : "bg-[#0D1B2A]/8"
                         }`}
                       >
                         <Icon
-                          className={`w-6 h-6 ${
+                          className={`h-5 w-5 ${
                             theme === "dark" ? "text-[#D4AF37]" : "text-[#0D1B2A]"
                           }`}
                         />
@@ -198,46 +193,42 @@ export default function ProgramsPage() {
           </div>
         </section>
 
-        <section className={`py-20 ${theme === "dark" ? "bg-[#112240]" : "bg-[#FAFAFA]"}`}>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <p className="text-[#D4AF37] uppercase tracking-[0.2em] text-sm font-semibold mb-4">
+        <section className={`py-14 md:py-16 ${theme === "dark" ? "bg-[#112240]" : "bg-[#F7F8FA]"}`}>
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="mb-10 text-center">
+              <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#D4AF37]">
                 {t("programsPage.sectionEyebrow")}
               </p>
-              <h2
-                className={`text-3xl md:text-4xl font-bold mb-3 ${
-                  theme === "dark" ? "text-white" : "text-[#0D1B2A]"
-                }`}
-              >
+              <h2 className={theme === "dark" ? "mb-2 text-3xl font-bold text-white sm:text-4xl" : "mb-2 text-3xl font-bold text-[#0D1B2A] sm:text-4xl"}>
                 {t("programsPage.sectionTitle")}
               </h2>
-              <p className={theme === "dark" ? "text-gray-400" : "text-gray-600"}>
+              <p className={theme === "dark" ? "mx-auto max-w-2xl text-gray-400" : "mx-auto max-w-2xl text-gray-600"}>
                 {t("programsPage.sectionDesc")}
               </p>
             </div>
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid gap-6 md:grid-cols-3">
               {safePrograms.map((program, index) => {
                 const featured = index === 2;
                 return (
                   <Card
                     key={program.title}
-                    className={`relative p-0 h-full flex flex-col overflow-hidden ${
+                    className={`relative flex h-full flex-col overflow-hidden rounded-2xl border ${
                       featured
-                        ? "border-2 border-[#D4AF37] shadow-2xl scale-[1.02]"
+                        ? "border-2 border-[#D4AF37] shadow-xl"
                         : theme === "dark"
-                          ? "border border-white/10"
-                          : "border border-gray-200"
+                          ? "border-white/10"
+                          : "border-gray-200"
                     }`}
                   >
                     {featured && (
-                      <div className="absolute top-4 right-4 z-10">
+                      <div className="absolute right-3 top-3 z-10">
                         <Badge className="bg-[#D4AF37] text-[#0D1B2A] px-3 py-1 text-xs font-bold uppercase">
                           {t("programsPage.mostPopular")}
                         </Badge>
                       </div>
                     )}
-                    <div className="h-48 relative overflow-hidden">
-                      <Badge className="absolute top-4 left-4 z-10 bg-[#0D1B2A] text-white px-3 py-1 text-xs">
+                    <div className="relative h-44 overflow-hidden">
+                      <Badge className="absolute left-3 top-3 z-10 bg-[#0D1B2A] px-3 py-1 text-xs text-white">
                         {program.type}
                       </Badge>
                       <MarketingImage
@@ -248,24 +239,24 @@ export default function ProgramsPage() {
                         className="hover:scale-105 transition-transform duration-500"
                       />
                     </div>
-                    <div className="p-6 flex flex-col flex-1">
+                    <div className="flex flex-1 flex-col p-5">
                       <h3
-                        className={`text-xl font-bold mb-3 ${
+                        className={`mb-2 text-[1.45rem] font-bold leading-tight ${
                           theme === "dark" ? "text-white" : "text-[#0D1B2A]"
                         }`}
                       >
                         {program.title}
                       </h3>
-                      <p className={`mb-2 text-sm font-semibold text-[#D4AF37] ${theme === "dark" ? "" : ""}`}>
+                      <p className="mb-3 text-sm font-semibold text-[#D4AF37]">
                         {program.price}
                       </p>
-                      <p className={`mb-6 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                      <p className={theme === "dark" ? "mb-5 text-gray-400" : "mb-5 text-gray-600"}>
                         {program.description}
                       </p>
-                      <ul className="flex-1 space-y-3 mb-8">
+                      <ul className="mb-7 flex-1 space-y-2.5">
                         {program.features.map((feature, i) => (
                           <li key={i} className="flex items-start gap-3">
-                            <CheckCircle2 className="w-5 h-5 text-[#D4AF37] flex-shrink-0 mt-0.5" />
+                            <CheckCircle2 className="mt-0.5 h-4.5 w-4.5 shrink-0 text-[#D4AF37]" />
                             <span
                               className={`text-sm ${
                                 theme === "dark" ? "text-gray-300" : "text-gray-700"
@@ -276,8 +267,8 @@ export default function ProgramsPage() {
                           </li>
                         ))}
                       </ul>
-                      <Button variant={featured ? "gold" : "dark"} size="lg" className="w-full" href="/pricing">
-                        {t("programsPage.learnMore")} <ArrowRight className="w-5 h-5 ml-2" />
+                      <Button variant={featured ? "gold" : "dark"} size="md" className="w-full rounded-lg" href="/pricing">
+                        {t("programsPage.learnMore")} <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </div>
                   </Card>
@@ -287,13 +278,9 @@ export default function ProgramsPage() {
           </div>
         </section>
 
-        <section className={`py-20 ${theme === "dark" ? "bg-[#0D1B2A]" : "bg-white"}`}>
-          <div className="max-w-5xl mx-auto px-4">
-            <h2
-              className={`text-3xl font-bold mb-12 text-center ${
-                theme === "dark" ? "text-white" : "text-[#0D1B2A]"
-              }`}
-            >
+        <section className={theme === "dark" ? "bg-[#0D1B2A] py-14 md:py-16" : "bg-white py-14 md:py-16"}>
+          <div className="mx-auto max-w-6xl px-4">
+            <h2 className={theme === "dark" ? "mb-8 text-center text-3xl font-bold text-white" : "mb-8 text-center text-3xl font-bold text-[#0D1B2A]"}>
               {t("programsPage.compareTitle")}
             </h2>
             <div
@@ -301,7 +288,7 @@ export default function ProgramsPage() {
                 theme === "dark" ? "border-white/10" : "border-gray-200"
               }`}
             >
-              <table className="w-full min-w-[520px] text-sm">
+              <table className="w-full min-w-[640px] text-sm">
                 <thead className={theme === "dark" ? "bg-[#112240]" : "bg-gray-50"}>
                   <tr>
                     <th className="px-3 py-3 text-left text-xs font-semibold sm:px-6 sm:py-4 sm:text-sm">{compareHeaders.features}</th>
@@ -330,10 +317,10 @@ export default function ProgramsPage() {
                         {row.label}
                       </td>
                       <td className="px-3 py-3 text-center sm:px-6 sm:py-4">
-                        <CompareCell value={row.c1} />
+                        <CompareCell value={row.c1} dark={theme === "dark"} />
                       </td>
                       <td className="px-3 py-3 text-center sm:px-6 sm:py-4">
-                        <CompareCell value={row.c2} />
+                        <CompareCell value={row.c2} dark={theme === "dark"} />
                       </td>
                       <td className="bg-[#D4AF37]/5 px-3 py-3 text-center sm:px-6 sm:py-4">
                         {row.c3 === true ? (
@@ -357,25 +344,25 @@ export default function ProgramsPage() {
         </section>
 
         <section
-          className={`py-12 ${theme === "dark" ? "bg-[#112240] text-white" : "bg-[#FAFAFA] text-[#0D1B2A]"}`}
+          className={`pb-14 pt-4 ${theme === "dark" ? "bg-[#112240] text-white" : "bg-[#FAFAFA] text-[#0D1B2A]"}`}
         >
-          <div className="max-w-5xl mx-auto px-4">
+          <div className="mx-auto max-w-6xl px-4">
             <Card
-              className={`p-8 ${
+              className={`rounded-2xl border p-5 sm:p-8 ${
                 theme === "dark"
-                  ? "bg-[#0D1B2A] border border-white/10"
-                  : "bg-white border border-gray-100"
+                  ? "border-white/10 bg-[#0D1B2A]"
+                  : "border-gray-200 bg-white"
               }`}
             >
-              <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
-                <div className="flex items-center gap-6">
-                  <Calendar className="w-16 h-16 text-[#D4AF37]" />
+              <div className="flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-center">
+                <div className="flex items-center gap-4 sm:gap-6">
+                  <Calendar className="h-14 w-14 text-[#D4AF37]" />
                   <div>
-                    <h3 className="text-2xl font-bold mb-2">{t("programsPage.ctaTitle")}</h3>
+                    <h3 className="mb-2 text-2xl font-bold">{t("programsPage.ctaTitle")}</h3>
                     <p className={theme === "dark" ? "text-gray-300" : "text-gray-600"}>
                       {t("programsPage.ctaDesc")}
                     </p>
-                    <div className="flex flex-wrap gap-4 mt-4">
+                    <div className="mt-4 flex flex-wrap gap-4">
                       {safeCtaTags.map((tag, i) => (
                         <span
                           key={i}
@@ -390,7 +377,7 @@ export default function ProgramsPage() {
                     </div>
                   </div>
                 </div>
-                <Button variant="gold" size="xl" href="/consultation">
+                <Button variant="gold" size="lg" className="w-full sm:w-auto" href="/consultation">
                   {t("programsPage.ctaButton")} <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
               </div>

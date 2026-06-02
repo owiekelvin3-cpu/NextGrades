@@ -141,7 +141,7 @@ export default function SubjectsPage() {
         {/* Hero */}
         <section
           className={cn(
-            "relative overflow-hidden pt-site-nav pb-16 md:pt-28",
+            "relative overflow-hidden pb-16 pt-site-nav md:pb-20 md:pt-28",
             isDark ? "bg-[#0D1B2A] text-white" : "bg-white text-[#0D1B2A]"
           )}
         >
