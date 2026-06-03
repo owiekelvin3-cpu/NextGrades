@@ -187,8 +187,8 @@ function PricingContent() {
 
         {/* Plan cards */}
         <section className={cn("pb-16 pt-4 md:pb-24 md:pt-8", mt.isDark ? "bg-[#0D1B2A]" : "bg-white")}>
-          <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
-            <div className="flex flex-col gap-6 md:grid md:grid-cols-3 md:items-stretch md:gap-5 lg:gap-6">
+          <div className="mx-auto w-full min-w-0 max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="grid min-w-0 grid-cols-1 gap-6 md:grid-cols-3 md:items-stretch md:gap-5 lg:gap-6">
               {plans.map((plan, planIndex) => (
                 <motion.div
                   key={plan.id}
@@ -196,7 +196,7 @@ function PricingContent() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: planIndex * 0.08 }}
-                  className="flex"
+                  className="flex min-w-0"
                 >
                   <PricingPlanCard
                     plan={plan}

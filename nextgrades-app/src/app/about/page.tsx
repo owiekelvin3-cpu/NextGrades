@@ -123,13 +123,13 @@ export default function AboutPage() {
       <main className="flex-1">
         {/* Hero — always dark */}
         <section className="relative overflow-hidden bg-[#0D1B2A] pb-16 pt-site-nav text-white md:pb-20 md:pt-28">
-          <div className="pointer-events-none absolute inset-0">
-            <div className="absolute -right-20 top-0 h-[500px] w-[500px] rounded-full bg-[#D4AF37]/8 blur-3xl" />
-            <div className="absolute bottom-0 left-0 h-72 w-72 rounded-full bg-[#4DA3FF]/8 blur-3xl" />
+          <div className="pointer-events-none absolute inset-0 overflow-hidden">
+            <div className="absolute -right-1/4 top-0 h-[min(500px,100vw)] w-[min(500px,100vw)] rounded-full bg-[#D4AF37]/8 blur-3xl" />
+            <div className="absolute bottom-0 left-0 h-72 w-72 max-w-[80vw] rounded-full bg-[#4DA3FF]/8 blur-3xl" />
           </div>
 
-          <div className="relative mx-auto max-w-7xl px-4 pb-0 sm:px-6 lg:px-8">
-            <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
+          <div className="relative mx-auto w-full min-w-0 max-w-7xl px-4 pb-0 sm:px-6 lg:px-8">
+            <div className="grid min-w-0 items-center gap-10 lg:grid-cols-2 lg:gap-14">
               <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
                 <Eyebrow className="mb-4">{t("aboutPage.heroEyebrow")}</Eyebrow>
                 <h1 className="text-4xl font-extrabold leading-tight tracking-tight md:text-5xl lg:text-[3.25rem]">

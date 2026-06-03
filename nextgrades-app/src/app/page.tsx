@@ -70,9 +70,9 @@ export default function Home() {
         {/* Hero — CSS-only entrance (no scroll observer) */}
         <section className="relative overflow-hidden bg-[#0D1B2A] pb-16 pt-site-nav text-white md:pb-20 md:pt-28">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(212,175,55,0.08)_0%,_transparent_55%)]" />
-          <div className="relative mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
-            <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-              <div>
+          <div className="relative mx-auto w-full min-w-0 max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="grid min-w-0 items-center gap-10 sm:gap-12 lg:grid-cols-2 lg:gap-16">
+              <div className="min-w-0">
                 <p
                   data-cms-field="home.heroEyebrow"
                   className="hero-enter mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-[#D4AF37] sm:text-sm"
@@ -135,7 +135,7 @@ export default function Home() {
 
                 <div
                   data-cms-field="cmsImages.home.heroStudent"
-                  className="hero-enter hero-enter-delay-2 relative mx-auto w-full max-w-lg lg:max-w-none"
+                  className="hero-enter hero-enter-delay-2 relative mx-auto min-w-0 w-full max-w-full sm:max-w-lg lg:max-w-none"
                 >
                 <div className="relative aspect-[4/5] max-h-[520px] overflow-hidden rounded-2xl shadow-2xl ring-1 ring-white/10 sm:aspect-[5/6] lg:aspect-auto lg:h-[480px]">
                   <HeroImageCarousel

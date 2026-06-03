@@ -89,6 +89,19 @@ async function detectOverflow(page: Page) {
     const elements: OverflowIssue[] = [];
     const nodes = document.querySelectorAll("body *");
 
+    function hasClippingAncestor(node: Element): boolean {
+      let parent = node.parentElement;
+      while (parent && parent !== document.body) {
+        const ps = getComputedStyle(parent);
+        const ox = ps.overflowX;
+        if (ox === "hidden" || ox === "clip") {
+          return true;
+        }
+        parent = parent.parentElement;
+      }
+      return false;
+    }
+
     for (const el of nodes) {
       if (!(el instanceof HTMLElement)) continue;
       const style = getComputedStyle(el);
@@ -100,6 +113,8 @@ async function detectOverflow(page: Page) {
 
       const overflowPx = el.scrollWidth - el.clientWidth;
       if (overflowPx <= 2) continue;
+
+      if (hasClippingAncestor(el)) continue;
 
       const overflowX = style.overflowX;
       const allowsScroll =

@@ -439,7 +439,22 @@ body {
   display: flex;
   min-height: 100dvh;
   flex-direction: column;
-  overflow-x: hidden;
+  overflow-x: clip;
+  max-width: 100%;
+}
+
+/* Constrain all marketing layout containers */
+.marketing-page-root :is(.mx-auto.max-w-7xl, .site-container) {
+  width: 100%;
+  min-width: 0;
+  max-width: 80rem;
+}
+
+.page-route-enter {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: clip;
 }
 
 /* Coursera-style sticky bottom nav on marketing pages */

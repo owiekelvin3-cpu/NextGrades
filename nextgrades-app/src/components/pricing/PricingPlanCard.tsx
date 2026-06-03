@@ -71,9 +71,9 @@ export function PricingPlanCard({
   return (
     <article
       className={cn(
-        "flex h-full w-full flex-col overflow-hidden rounded-3xl border shadow-[0_4px_40px_rgba(13,27,42,0.08)] transition-shadow hover:shadow-[0_8px_48px_rgba(13,27,42,0.12)] dark:shadow-[0_4px_40px_rgba(0,0,0,0.35)]",
+        "flex h-full w-full min-w-0 max-w-full flex-col overflow-hidden rounded-3xl border shadow-[0_4px_40px_rgba(13,27,42,0.08)] transition-shadow hover:shadow-[0_8px_48px_rgba(13,27,42,0.12)] dark:shadow-[0_4px_40px_rgba(0,0,0,0.35)]",
         plan.highlighted
-          ? "border-[#D4AF37]/50 ring-1 ring-[#D4AF37]/30 md:scale-[1.02] md:z-10"
+          ? "border-[#D4AF37]/50 ring-1 ring-[#D4AF37]/30 lg:scale-[1.02] lg:z-10"
           : isDark
             ? "border-white/10"
             : "border-gray-200/80"
@@ -85,7 +85,7 @@ export function PricingPlanCard({
           <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-[#D4AF37]/20 blur-3xl" />
         )}
 
-        <div className="relative mb-5 flex items-start justify-between gap-3">
+        <div className="relative mb-5 flex min-w-0 flex-wrap items-start justify-between gap-2 gap-y-3">
           <span
             className={cn(
               "inline-flex rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wider",
@@ -105,10 +105,10 @@ export function PricingPlanCard({
           )}
         </div>
 
-        <div className="relative mb-1 flex flex-wrap items-baseline gap-x-1.5 gap-y-0">
+        <div className="relative mb-1 flex min-w-0 flex-wrap items-baseline gap-x-1.5 gap-y-1">
           <span
             className={cn(
-              "text-5xl font-extrabold tracking-tight",
+              "text-4xl font-extrabold tracking-tight sm:text-5xl",
               isDark ? "text-white" : "text-[#0D1B2A]"
             )}
           >

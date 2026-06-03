@@ -151,15 +151,20 @@ export default function Navbar() {
   return (
     <>
     <header
-      className={cn("fixed inset-x-0 top-0 z-50 transition-all duration-300", headerBg)}
+      className={cn(
+        "fixed inset-x-0 top-0 z-50 max-w-[100vw] overflow-x-clip transition-all duration-300",
+        headerBg
+      )}
       style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
     >
-      <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
-        <div className="flex h-[4.5rem] items-center justify-between md:h-20">
-          <BrandLogo size="md" priority={pathname === "/"} />
+      <div className="mx-auto w-full min-w-0 max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex h-[4.5rem] min-w-0 items-center justify-between gap-2 md:h-20">
+          <div className="min-w-0 shrink">
+            <BrandLogo size="md" priority={pathname === "/"} />
+          </div>
 
-          {/* Desktop */}
-          <nav className="hidden min-w-0 flex-1 items-center justify-center gap-0.5 md:flex">
+          {/* Desktop — lg+ only so tablet uses drawer (avoids cramped nav overflow) */}
+          <nav className="hidden min-w-0 flex-1 items-center justify-center gap-0.5 overflow-hidden lg:flex">
             {navLinks.map((link) => (
               <NavLink key={link.href} href={link.href} active={pathname === link.href} theme={theme}>
                 <span suppressHydrationWarning>{t(`common.${link.key}`)}</span>
@@ -167,7 +172,7 @@ export default function Navbar() {
             ))}
           </nav>
 
-          <div className="hidden flex-shrink-0 items-center gap-3 md:flex">
+          <div className="hidden shrink-0 items-center gap-2 lg:flex lg:gap-3">
             <LanguageSwitcher />
             <ThemeToggle />
             {session && user ? (
@@ -212,7 +217,7 @@ export default function Navbar() {
           </div>
 
           {/* Mobile — Coursera-style: Login + Join + menu */}
-          <div className="flex shrink-0 items-center gap-1 sm:gap-2 md:hidden">
+          <div className="flex shrink-0 items-center gap-1 sm:gap-2 lg:hidden">
             {session && user ? (
               <Link
                 href={dashboardHref}

@@ -93,9 +93,9 @@ export default function ProgramsPage() {
           }`}
         >
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(212,175,55,0.15),transparent_45%)]" />
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-              <div className="hero-enter max-w-xl">
+          <div className="mx-auto w-full min-w-0 max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="grid min-w-0 items-center gap-10 sm:gap-12 lg:grid-cols-2 lg:gap-16">
+              <div className="hero-enter min-w-0 max-w-xl">
                 <p
                   className={`mb-4 text-xs font-semibold uppercase tracking-[0.22em] sm:text-sm ${
                     theme === "dark" ? "text-[#D4AF37]" : "text-[#B8960C]"

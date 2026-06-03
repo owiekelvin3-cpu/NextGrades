@@ -41,7 +41,7 @@ export default function PageTransition({ children }: PageTransitionProps) {
   }
 
   return (
-    <div key={pathname} className="page-route-enter flex min-h-0 flex-1 flex-col">
+    <div key={pathname} className="page-route-enter flex min-h-0 min-w-0 max-w-full flex-1 flex-col overflow-x-clip">
       {children}
     </div>
   );
