@@ -54,7 +54,8 @@ export default function AuthCallbackPage() {
 
         const user = session.user;
 
-        if (user.email && user.email_confirmed_at) {
+        if (user.email_confirmed_at) {
+          await fetch("/api/auth/sync-email-verified", { method: "POST" });
           void fetch("/api/auth/welcome", { method: "POST" });
         }
 

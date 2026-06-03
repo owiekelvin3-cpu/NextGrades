@@ -9,6 +9,9 @@ import Footer from "@/components/Footer";
 import { useMarketingTheme } from "@/lib/marketing-theme";
 import { cn } from "@/lib/utils";
 import { OpenCookieSettingsButton } from "@/components/cookies/OpenCookieSettingsButton";
+import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
+import { useCmsImage } from "@/hooks/useCmsImage";
+import { PRIVACY_HERO_IMAGE } from "@/lib/marketing-images";
 
 type LegalSection = {
   title: string;
@@ -23,6 +26,8 @@ type LegalDocumentPageProps = {
 export function LegalDocumentPage({ namespace }: LegalDocumentPageProps) {
   const mt = useMarketingTheme();
   const { t, i18n } = useTranslation();
+  const privacyHeroImage = useCmsImage("cmsImages.privacy.hero", PRIVACY_HERO_IMAGE);
+  const showPrivacyHero = namespace === "privacy";
 
   const sections = useMemo(() => {
     const data = t(`${namespace}.sections`, { returnObjects: true });
@@ -35,17 +40,44 @@ export function LegalDocumentPage({ namespace }: LegalDocumentPageProps) {
 
       <main className="flex-1">
         {/* Hero */}
-        <section className={cn("border-b pt-site-nav pb-12 md:pt-28", mt.isDark ? "border-white/10 bg-[#112240]" : "border-gray-100 bg-[#F5F6F8]")}>
-          <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
+        <section
+          className={cn(
+            "relative overflow-hidden border-b pt-site-nav pb-12 md:pt-28",
+            showPrivacyHero
+              ? "border-white/10 bg-[#0D1B2A] text-white"
+              : mt.isDark
+                ? "border-white/10 bg-[#112240]"
+                : "border-gray-100 bg-[#F5F6F8]"
+          )}
+        >
+          {showPrivacyHero && (
+            <MarketingHeroBlend
+              src={privacyHeroImage}
+              alt=""
+              variant="light-split-right"
+              backgroundColor="#F5F6F8"
+              priority
+            />
+          )}
+          <div className="relative z-10 mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
             <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#D4AF37]/30 bg-[#D4AF37]/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-[#D4AF37]">
               <FileText className="h-3.5 w-3.5" />
               {t(`${namespace}.eyebrow`)}
             </div>
-            <h1 className={cn("text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl", mt.heading)}>
+            <h1
+              className={cn(
+                "text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl",
+                showPrivacyHero ? "text-[#0D1B2A]" : mt.heading
+              )}
+            >
               {t(`${namespace}.title`)}
             </h1>
-            <p className={cn("mt-4 text-lg", mt.body)}>{t(`${namespace}.subtitle`)}</p>
-            <p className={cn("mt-3 text-sm", mt.muted)}>{t(`${namespace}.lastUpdated`)}</p>
+            <p className={cn("mt-4 text-lg", showPrivacyHero ? "text-gray-600" : mt.body)}>
+              {t(`${namespace}.subtitle`)}
+            </p>
+            <p className={cn("mt-3 text-sm", showPrivacyHero ? "text-gray-500" : mt.muted)}>
+              {t(`${namespace}.lastUpdated`)}
+            </p>
           </div>
         </section>
 

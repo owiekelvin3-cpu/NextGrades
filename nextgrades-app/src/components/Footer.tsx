@@ -5,7 +5,8 @@ import { useTheme } from "@/context/ThemeContext";
 import { useTranslation } from "react-i18next";
 import { BrandLogo } from "./BrandLogo";
 import { cn } from "@/lib/utils";
-import { Mail, MapPin } from "lucide-react";
+import { Mail, MapPin, Phone } from "lucide-react";
+import { COMPANY_PHONE_DISPLAY, COMPANY_PHONE_TEL } from "@/lib/company";
 import {
   FooterAccordionLink,
   FooterMobileAccordion,
@@ -74,6 +75,16 @@ export default function Footer() {
                 <Mail className="h-4 w-4 shrink-0" />
                 support@nextgrades.de
               </a>
+              <a
+                href={COMPANY_PHONE_TEL}
+                className={cn(
+                  "inline-flex items-center gap-1.5 transition-colors hover:text-[#D4AF37]",
+                  isDark ? "text-gray-400" : "text-gray-600"
+                )}
+              >
+                <Phone className="h-4 w-4 shrink-0" />
+                {COMPANY_PHONE_DISPLAY}
+              </a>
               <span
                 className={cn(
                   "inline-flex items-center gap-1.5",
@@ -81,7 +92,7 @@ export default function Footer() {
                 )}
               >
                 <MapPin className="h-4 w-4 shrink-0" />
-                {t("footer.madeInGermany")}
+                {t("footer.location", { country: t("footer.countryAustria") })}
               </span>
             </div>
           </div>

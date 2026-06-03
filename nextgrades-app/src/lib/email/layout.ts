@@ -85,6 +85,24 @@ export function emailDetailTable(rows: { label: string; value: string }[]): stri
     </table>`;
 }
 
+export function emailNumberedSteps(steps: string[]): string {
+  const rows = steps
+    .map(
+      (step, i) => `
+      <tr>
+        <td style="vertical-align:top;padding:10px 14px 10px 0;width:32px;">
+          <span style="display:inline-block;width:28px;height:28px;line-height:28px;text-align:center;border-radius:50%;background:${C.gold};color:${C.navy};font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:700;">${i + 1}</span>
+        </td>
+        <td style="vertical-align:top;padding:10px 0;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.55;color:${C.text};" class="text-body">${step}</td>
+      </tr>`
+    )
+    .join("");
+  return `
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin:20px 0 24px;background:#FAFAFA;border-radius:10px;border:1px solid #E8ECF0;">
+      ${rows}
+    </table>`;
+}
+
 export function emailFeatureList(items: string[]): string {
   const lis = items
     .map(

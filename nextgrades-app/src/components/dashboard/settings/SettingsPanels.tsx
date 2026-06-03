@@ -325,7 +325,7 @@ export function StudentSettingsPanel({ role = "student" }: StudentSettingsPanelP
                   <SettingsInput value={fullName} onChange={(e) => setFullName(e.target.value)} />
                 </SettingsField>
                 <SettingsField label={t("settings.phone", { defaultValue: "Phone number" })} hint={t("settings.phoneHint", { defaultValue: "Optional — for appointment reminders" })}>
-                  <SettingsInput type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+49 …" />
+                  <SettingsInput type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+43 670 …" />
                 </SettingsField>
                 {isTeacher ? (
                   <SettingsField label={t("settings.bio", { defaultValue: "About you" })} hint={t("settings.bioHint", { defaultValue: "Shown to students — experience, subjects, teaching style" })}>

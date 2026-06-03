@@ -46,20 +46,7 @@ export function welcomeEmail(userName?: string, role: "student" | "teacher" = "s
   return wrapEmail(content, "Welcome to NextGrades — your learning journey starts here");
 }
 
-export function emailVerificationEmail(verifyUrl: string, userName?: string) {
-  const name = displayName(userName);
-  const content = [
-    emailHeading("Verify Your Email"),
-    emailParagraph(`Hi ${name},`),
-    emailParagraph("Please verify your email address to secure your account and unlock full platform access."),
-    emailButton(verifyUrl, "Verify Email Address"),
-    emailNotice("security", "<strong>Security:</strong> This link expires in <strong>24 hours</strong>. If you didn't create this account, ignore this email."),
-    emailSubheading("Or copy this link"),
-    emailLinkBlock(verifyUrl),
-    emailSignature(),
-  ].join("");
-  return wrapEmail(content, "Verify your NextGrades email address");
-}
+export { accountVerificationEmail as emailVerificationEmail } from "./templates/account-verification";
 
 export function verificationCodeEmail(code: string, userName?: string, purpose = "verify your identity") {
   const name = displayName(userName);

@@ -8,12 +8,16 @@ import { Button } from "@/components/ui/Button";
 import { useTheme } from "@/context/ThemeContext";
 import { Users, BookOpen } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useCmsImage } from "@/hooks/useCmsImage";
+import { CAREERS_HERO_IMAGE } from "@/lib/marketing-images";
+import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
 
 const jobIcons = [BookOpen, Users];
 
 export default function CareersPage() {
   const { theme } = useTheme();
   const { t, i18n } = useTranslation();
+  const careersHeroImage = useCmsImage("cmsImages.careers.hero", CAREERS_HERO_IMAGE);
 
   const jobs = useMemo(
     () => t("careersPage.jobs", { returnObjects: true }) as { title: string; description: string }[],
@@ -21,17 +25,26 @@ export default function CareersPage() {
   );
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className={`marketing-page-root min-h-screen flex flex-col ${theme === "dark" ? "bg-[#0D1B2A]" : "bg-[#FAFAFA]"}`}>
       <Navbar />
-      <main className="flex-1 pt-site-nav pb-16 md:pt-28">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className={`text-4xl font-bold text-center mb-4 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
-            {t("careersPage.title")}
-          </h1>
-          <p className={`text-xl text-center mb-12 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
-            {t("careersPage.subtitle")}
-          </p>
+      <main className="flex-1">
+        <section className="relative overflow-hidden bg-white pb-12 pt-site-nav text-[#0D1B2A] md:pb-16 md:pt-28 dark:bg-[#0D1B2A] dark:text-white">
+          <MarketingHeroBlend
+            src={careersHeroImage}
+            alt=""
+            variant={theme === "dark" ? "dark-split-right" : "light-split-right"}
+            backgroundColor={theme === "dark" ? "#0D1B2A" : "#FFFFFF"}
+            priority
+          />
+          <div className="relative z-10 mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+            <h1 className="mb-4 text-4xl font-bold leading-tight md:text-5xl">{t("careersPage.title")}</h1>
+            <p className={`mb-10 max-w-2xl text-lg ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>
+              {t("careersPage.subtitle")}
+            </p>
+          </div>
+        </section>
 
+        <div className="mx-auto max-w-4xl px-4 pb-16 sm:px-6 lg:px-8">
           <div className="space-y-6">
             {jobs.map((job, index) => {
               const Icon = jobIcons[index] ?? BookOpen;

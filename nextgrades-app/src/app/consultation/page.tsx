@@ -13,7 +13,7 @@ import { useLocalizedContent } from "@/hooks/useLocalizedContent";
 import { useCmsImage } from "@/hooks/useCmsImage";
 import { useToast } from "@/context/ToastContext";
 import { CONSULTATION_HERO_IMAGE } from "@/lib/marketing-images";
-import { MarketingImage } from "@/components/marketing/MarketingImage";
+import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
 import {
   Calendar,
   CheckCircle2,
@@ -130,13 +130,17 @@ export default function ConsultationPage() {
 
       <main className="flex-1">
         {/* Hero */}
-        <section className={`relative overflow-hidden pt-site-nav pb-16 md:pt-28 ${isDark ? "bg-[#0D1B2A]" : "bg-white"}`}>
-          <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute top-20 right-0 w-[500px] h-[500px] bg-[#D4AF37]/10 rounded-full blur-3xl" />
-            <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#4DA3FF]/5 rounded-full blur-3xl" />
-          </div>
-
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+        <section
+          className={`relative overflow-hidden pt-site-nav pb-16 md:pt-28 ${isDark ? "bg-[#0D1B2A] text-white" : "bg-white text-[#0D1B2A]"}`}
+        >
+          <MarketingHeroBlend
+            src={consultationHeroImage}
+            alt={t("consultation.title")}
+            variant={isDark ? "dark-split-right" : "light-split-right"}
+            backgroundColor={isDark ? "#0D1B2A" : "#FFFFFF"}
+            priority
+          />
+          <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
                 <p className={`uppercase tracking-[0.2em] text-sm font-semibold mb-4 ${textMuted}`}>
@@ -181,37 +185,34 @@ export default function ConsultationPage() {
                 initial={{ opacity: 0, scale: 0.96 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.7, delay: 0.15 }}
-                className="relative hidden lg:block"
+                className="relative hidden min-h-[400px] lg:block"
               >
-                <div className="relative rounded-3xl overflow-hidden shadow-2xl aspect-[4/5] max-h-[560px]">
-                  <MarketingImage
-                    src={consultationHeroImage}
-                    alt={t("consultation.title")}
-                    containerClassName="absolute inset-0"
-                    sizes="(max-width: 1024px) 0px, 40vw"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0D1B2A]/80 via-[#0D1B2A]/20 to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-8">
-                    <Card className="p-6 bg-white/10 backdrop-blur-md border-white/20 text-white">
-                      <div className="flex items-center gap-3 mb-3">
-                        <div className="w-10 h-10 rounded-full bg-[#D4AF37] flex items-center justify-center">
-                          <Video className="w-5 h-5 text-[#0D1B2A]" />
-                        </div>
-                        <div>
-                          <p className="font-semibold">{t("consultation.cardTitle")}</p>
-                          <p className="text-sm text-gray-300">{t("consultation.cardSubtitle")}</p>
-                        </div>
+                <div className="absolute bottom-0 right-0 z-10 max-w-xs p-4">
+                  <Card
+                    className={`p-6 backdrop-blur-md ${
+                      isDark ? "border-white/20 bg-white/10 text-white" : "border-gray-200/80 bg-white/95 text-[#0D1B2A] shadow-xl"
+                    }`}
+                  >
+                    <div className="mb-3 flex items-center gap-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#D4AF37]">
+                        <Video className="h-5 w-5 text-[#0D1B2A]" />
                       </div>
-                      <div className="flex items-center gap-4 text-sm text-gray-300">
-                        <span className="flex items-center gap-1">
-                          <Clock className="w-4 h-4 text-[#D4AF37]" /> 30 min
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Shield className="w-4 h-4 text-[#D4AF37]" /> {trustBadges[1]}
-                        </span>
+                      <div>
+                        <p className="font-semibold">{t("consultation.cardTitle")}</p>
+                        <p className={`text-sm ${isDark ? "text-gray-300" : "text-gray-600"}`}>
+                          {t("consultation.cardSubtitle")}
+                        </p>
                       </div>
-                    </Card>
-                  </div>
+                    </div>
+                    <div className={`flex items-center gap-4 text-sm ${isDark ? "text-gray-300" : "text-gray-600"}`}>
+                      <span className="flex items-center gap-1">
+                        <Clock className="h-4 w-4 text-[#D4AF37]" /> 30 min
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <Shield className="h-4 w-4 text-[#D4AF37]" /> {trustBadges[1]}
+                      </span>
+                    </div>
+                  </Card>
                 </div>
               </motion.div>
             </div>

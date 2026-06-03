@@ -11,6 +11,7 @@ import { changeAppLanguage } from "@/components/I18nProvider";
 import { useTheme } from "@/context/ThemeContext";
 import { Button } from "@/components/ui/Button";
 import { authSurface } from "@/components/auth/auth-ui";
+import { VerificationCodePanel } from "@/components/auth/VerificationCodePanel";
 import { cn } from "@/lib/utils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -67,6 +68,7 @@ export function RegisterForm({
   const [duplicateEmail, setDuplicateEmail] = useState(false);
   const [success, setSuccess] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [verificationPending, setVerificationPending] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
   const inputClass = cn(
@@ -190,12 +192,15 @@ export function RegisterForm({
       const verificationRequired = data.verificationRequired === true;
 
       if (verificationRequired) {
+        setVerificationPending(true);
         setSuccessMessage(
           typeof data.message === "string" ? data.message : t("login.verifyEmailMessage")
         );
         setSuccess(true);
         return;
       }
+
+      setVerificationPending(false);
 
       const signIn = await supabase.auth.signInWithPassword({
         email: email.trim().toLowerCase(),
@@ -234,12 +239,26 @@ export function RegisterForm({
               <p className="font-semibold">{t("login.accountCreatedTitle")}</p>
               <p className="mt-1 opacity-90">{successMessage}</p>
             </div>
-            <Link
-              href={redirectTo ? `/login?redirect=${encodeURIComponent(redirectTo)}&email=${encodeURIComponent(email)}` : `/login?email=${encodeURIComponent(email)}`}
-              className="inline-flex items-center gap-2 rounded-lg bg-[#D4AF37] px-4 py-2 text-sm font-semibold text-[#0D1B2A] hover:opacity-90"
-            >
-              {t("login.signInNow")} <FontAwesomeIcon icon={faArrowRight} className="h-3 w-3" />
-            </Link>
+            {verificationPending ? (
+              <VerificationCodePanel
+                email={email}
+                password={password}
+                variant="inline"
+                onVerified={finishAndRedirect}
+                onError={(msg) => reportError(msg)}
+              />
+            ) : (
+              <Link
+                href={
+                  redirectTo
+                    ? `/login?redirect=${encodeURIComponent(redirectTo)}&email=${encodeURIComponent(email)}`
+                    : `/login?email=${encodeURIComponent(email)}`
+                }
+                className="inline-flex items-center gap-2 rounded-lg bg-[#D4AF37] px-4 py-2 text-sm font-semibold text-[#0D1B2A] hover:opacity-90"
+              >
+                {t("login.signInNow")} <FontAwesomeIcon icon={faArrowRight} className="h-3 w-3" />
+              </Link>
+            )}
           </div>
         </div>
       </div>

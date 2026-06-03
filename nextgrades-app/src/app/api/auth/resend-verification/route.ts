@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 import { normalizeEmail, EMAIL_REGEX } from "@/lib/auth/registration";
-import { findUserByEmail, generateAuthLink, getAuthCallbackUrl, getAuthConfigError } from "@/lib/auth/auth-links";
-import { isResendConfigured, sendVerificationEmail } from "@/lib/email";
-
+import { findUserByEmail, getAuthConfigError } from "@/lib/auth/auth-links";
+import { isResendConfigured } from "@/lib/email";
 import { isEmailVerificationRequired } from "@/lib/auth/config";
+import { issueRegistrationOtp } from "@/lib/auth/registration-otp";
 import { enforceRateLimit } from "@/lib/security/rate-limit";
 
-/** Resend signup verification email via Resend. */
+/** Resend the 6-digit signup verification code via Resend. */
 export async function POST(request: Request) {
   const limited = enforceRateLimit(request, { bucket: "auth:resend-verification", limit: 5, windowSec: 3600 });
   if (limited) return limited;
@@ -51,7 +51,10 @@ export async function POST(request: Request) {
     }
 
     if (user.email_confirmed_at) {
-      return NextResponse.json({ error: "This email is already verified. You can sign in.", code: "ALREADY_VERIFIED" }, { status: 400 });
+      return NextResponse.json(
+        { error: "This email is already verified. You can sign in.", code: "ALREADY_VERIFIED" },
+        { status: 400 }
+      );
     }
 
     const fullName =
@@ -59,27 +62,18 @@ export async function POST(request: Request) {
       (typeof user.user_metadata?.name === "string" && user.user_metadata.name) ||
       undefined;
 
-    const { actionLink, error } = await generateAuthLink({
-      type: "magiclink",
-      email,
-      redirectTo: getAuthCallbackUrl(),
-    });
-
-    if (error || !actionLink) {
-      return NextResponse.json({ error: error || "Failed to generate verification link" }, { status: 500 });
-    }
-
-    const result = await sendVerificationEmail(email, actionLink, fullName);
+    const result = await issueRegistrationOtp(email, fullName);
     if (!result.success) {
-      return NextResponse.json({ error: result.error || "Failed to send verification email" }, { status: 500 });
+      return NextResponse.json({ error: result.error || "Failed to send verification code" }, { status: 500 });
     }
 
     return NextResponse.json({
       success: true,
-      message: "Verification email sent. Check your inbox and spam folder.",
+      message: "Verification code sent. Check your inbox and spam folder.",
+      expiresAt: result.expiresAt,
     });
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Failed to resend verification email";
+    const message = error instanceof Error ? error.message : "Failed to resend verification code";
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }

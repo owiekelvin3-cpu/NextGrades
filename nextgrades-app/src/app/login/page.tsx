@@ -14,6 +14,7 @@ import { useToast } from "@/context/ToastContext";
 import { syncPreferencesAfterAuth } from "@/lib/preferences";
 import { changeAppLanguage } from "@/components/I18nProvider";
 import { RegisterForm } from "@/components/auth/RegisterForm";
+import { VerificationCodePanel } from "@/components/auth/VerificationCodePanel";
 import { AuthMobileSheet } from "@/components/auth/AuthMobileSheet";
 import {
   AuthSplitCard,
@@ -28,6 +29,8 @@ import { useCmsImage } from "@/hooks/useCmsImage";
 import { LOGIN_HERO_IMAGE } from "@/lib/marketing-images";
 import { cn } from "@/lib/utils";
 import { AuthGuestGuard } from "@/components/auth/AuthGuestGuard";
+import { isEmailVerificationRequired } from "@/lib/auth/config";
+import { isEmailNotConfirmedError } from "@/lib/auth/auth-errors";
 
 const REMEMBER_EMAIL_KEY = "nextgrades_remember_email";
 
@@ -52,6 +55,7 @@ function LoginContent() {
   const redirectTo = sanitizeRedirect(searchParams.get("redirect"));
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [formValidation, setFormValidation] = useState({ email: "", password: "" });
+  const [pendingVerification, setPendingVerification] = useState(false);
 
   const validateEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
@@ -122,18 +126,30 @@ function LoginContent() {
     }
 
     try {
-      await fetch("/api/auth/confirm-email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: formData.email.trim().toLowerCase() }),
-      });
+      setPendingVerification(false);
+
+      if (!isEmailVerificationRequired()) {
+        await fetch("/api/auth/confirm-email", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: formData.email.trim().toLowerCase() }),
+        });
+      }
 
       const result = await supabase.auth.signInWithPassword({
         email: formData.email,
         password: formData.password,
       });
 
-      if (result.error) throw new Error(result.error.message);
+      if (result.error) {
+        if (isEmailNotConfirmedError(result.error)) {
+          setPendingVerification(true);
+          setError(t("login.emailNotVerified"));
+          setLoading(false);
+          return;
+        }
+        throw new Error(result.error.message);
+      }
 
       if (rememberMe) localStorage.setItem(REMEMBER_EMAIL_KEY, formData.email.trim());
       else localStorage.removeItem(REMEMBER_EMAIL_KEY);
@@ -177,6 +193,7 @@ function LoginContent() {
   const clearAuthError = () => {
     setError(null);
     setDuplicateEmail(false);
+    setPendingVerification(false);
   };
 
   const handleRegisterError = (message: string | null, dup?: boolean) => {
@@ -198,9 +215,27 @@ function LoginContent() {
     onSubmit: handleSubmit,
   };
 
-  const errorBlock = error && (
-    <div className={cn("mb-6 rounded-2xl border px-4 py-3 text-sm", s.errorBox)}>
-      {error}
+  const errorBlock = (error || pendingVerification) && (
+    <div className={cn("mb-6 space-y-4 rounded-2xl border px-4 py-3 text-sm", s.errorBox)}>
+      {error && <p>{error}</p>}
+      {pendingVerification && (
+        <VerificationCodePanel
+          email={formData.email}
+          password={formData.password}
+          variant="inline"
+          onVerified={async (userId) => {
+            setPendingVerification(false);
+            setError(null);
+            if (rememberMe) localStorage.setItem(REMEMBER_EMAIL_KEY, formData.email.trim());
+            toast.success(t("login.welcomeBack", { defaultValue: "Welcome back!" }));
+            await navigateAfterAuth(userId);
+          }}
+          onError={(msg) => {
+            setError(msg);
+            toast.error(msg);
+          }}
+        />
+      )}
       {duplicateEmail && (
         <button
           type="button"

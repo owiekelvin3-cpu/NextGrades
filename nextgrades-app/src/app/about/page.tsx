@@ -26,6 +26,7 @@ import { useLocalizedContent } from "@/hooks/useLocalizedContent";
 import { useCmsImages } from "@/hooks/useCmsImage";
 import { useMarketingTheme } from "@/lib/marketing-theme";
 import { MarketingImage } from "@/components/marketing/MarketingImage";
+import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/Button";
@@ -127,8 +128,14 @@ export default function AboutPage() {
             <div className="absolute -right-1/4 top-0 h-[min(500px,100vw)] w-[min(500px,100vw)] rounded-full bg-[#D4AF37]/8 blur-3xl" />
             <div className="absolute bottom-0 left-0 h-72 w-72 max-w-[80vw] rounded-full bg-[#4DA3FF]/8 blur-3xl" />
           </div>
+          <MarketingHeroBlend
+            src={heroImage}
+            alt={t("images.studentsCollaborating")}
+            variant="dark-split-right"
+            priority
+          />
 
-          <div className="relative mx-auto w-full min-w-0 max-w-7xl px-4 pb-0 sm:px-6 lg:px-8">
+          <div className="relative z-10 mx-auto w-full min-w-0 max-w-7xl px-4 pb-0 sm:px-6 lg:px-8">
             <div className="grid min-w-0 items-center gap-10 lg:grid-cols-2 lg:gap-14">
               <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
                 <Eyebrow className="mb-4">{t("aboutPage.heroEyebrow")}</Eyebrow>
@@ -150,24 +157,20 @@ export default function AboutPage() {
                     );
                   })}
                 </div>
+                <div className="mt-8 rounded-xl border border-white/10 bg-[#0D1B2A]/90 p-5 shadow-xl backdrop-blur-md lg:hidden">
+                  <Quote className="mb-2 h-6 w-6 text-[#D4AF37]" />
+                  <p className="text-sm italic leading-relaxed text-gray-200">&ldquo;{t("aboutPage.heroQuote")}&rdquo;</p>
+                  <p className="mt-2 text-xs text-gray-500">— {t("aboutPage.heroQuoteAuthor")}</p>
+                </div>
               </motion.div>
 
               <motion.div
                 initial={{ opacity: 0, scale: 0.96 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.7, delay: 0.15 }}
-                className="relative"
+                className="relative hidden min-h-[360px] lg:block"
               >
-                <div className="overflow-hidden rounded-2xl shadow-2xl shadow-black/40">
-                  <MarketingImage
-                    src={heroImage}
-                    alt={t("images.studentsCollaborating")}
-                    containerClassName="h-[320px] w-full md:h-[420px]"
-                    priority
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                  />
-                </div>
-                <div className="mt-4 max-w-none rounded-xl border border-white/10 bg-[#0D1B2A]/90 p-5 shadow-xl backdrop-blur-md md:absolute md:-bottom-6 md:-left-8 md:mt-0 md:max-w-xs">
+                <div className="mt-4 max-w-none rounded-xl border border-white/10 bg-[#0D1B2A]/90 p-5 shadow-xl backdrop-blur-md lg:absolute lg:-bottom-6 lg:-left-8 lg:mt-0 lg:max-w-xs">
                   <Quote className="mb-2 h-6 w-6 text-[#D4AF37]" />
                   <p className="text-sm italic leading-relaxed text-gray-200">&ldquo;{t("aboutPage.heroQuote")}&rdquo;</p>
                   <p className="mt-2 text-xs text-gray-500">— {t("aboutPage.heroQuoteAuthor")}</p>

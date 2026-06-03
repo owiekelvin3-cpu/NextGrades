@@ -35,6 +35,7 @@ import { useLocalizedContent } from "@/hooks/useLocalizedContent";
 import { useCmsImages } from "@/hooks/useCmsImage";
 import { SUBJECTS_HERO_IMAGE, getSubjectImage } from "@/lib/marketing-images";
 import { MarketingImage } from "@/components/marketing/MarketingImage";
+import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
 import { cn } from "@/lib/utils";
 
 const SUBJECT_ICONS: Record<string, typeof Calculator> = {
@@ -144,14 +145,15 @@ export default function SubjectsPage() {
 
       <main className="flex-1">
         {/* Hero */}
-        <section
-          className={cn(
-            "relative overflow-hidden pb-16 pt-site-nav md:pb-20 md:pt-28",
-            isDark ? "bg-[#0D1B2A] text-white" : "bg-white text-[#0D1B2A]"
-          )}
-        >
+        <section className="relative overflow-hidden bg-[#0D1B2A] pb-16 pt-site-nav text-white md:pb-20 md:pt-28">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(212,175,55,0.12)_0%,_transparent_55%)]" />
-          <div className="relative mx-auto w-full min-w-0 max-w-7xl px-4 sm:px-6 lg:px-8">
+          <MarketingHeroBlend
+            src={subjectsHeroImage}
+            alt={t("subjects.title")}
+            variant="dark-split-right"
+            priority
+          />
+          <div className="relative z-10 mx-auto w-full min-w-0 max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
               <div className="hero-enter">
                 <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-[#D4AF37] sm:text-sm">
@@ -161,7 +163,7 @@ export default function SubjectsPage() {
                   {t("subjects.heroTitle")}{" "}
                   <span className="text-[#D4AF37]">{t("subjects.heroTitleHighlight")}</span>
                 </h1>
-                <p className={cn("mb-8 max-w-xl text-base leading-relaxed sm:text-lg", isDark ? "text-gray-300" : "text-gray-600")}>
+                <p className="mb-8 max-w-xl text-base leading-relaxed text-gray-300 sm:text-lg">
                   {t("subjects.heroSubtitle")}
                 </p>
 
@@ -171,14 +173,11 @@ export default function SubjectsPage() {
                     return (
                       <div
                         key={index}
-                        className={cn(
-                          "min-w-0 rounded-xl border p-2.5 sm:p-4",
-                          isDark ? "border-white/10 bg-white/5" : "border-gray-100 bg-[#FAFAFA]"
-                        )}
+                        className="min-w-0 rounded-xl border border-white/10 bg-white/5 p-2.5 sm:p-4"
                       >
                         <Icon className="mb-1.5 h-4 w-4 text-[#D4AF37] sm:mb-2 sm:h-5 sm:w-5" />
                         <p className="text-[11px] font-semibold leading-tight sm:text-sm">{item.title}</p>
-                        <p className={cn("mt-1 hidden text-xs leading-snug sm:block", isDark ? "text-gray-400" : "text-gray-500")}>
+                        <p className="mt-1 hidden text-xs leading-snug text-gray-400 sm:block">
                           {item.desc}
                         </p>
                       </div>
@@ -189,22 +188,26 @@ export default function SubjectsPage() {
                 <Button variant="gold" size="lg" className="w-full sm:w-auto" href="/consultation">
                   {t("subjectsPage.ctaButton")} <ArrowRight className="h-5 w-5" />
                 </Button>
+
+                <div className="hero-enter hero-enter-delay-4 mt-8 max-w-xs lg:hidden">
+                  <Card className="border border-[#D4AF37]/30 bg-[#0D1B2A]/95 p-4 shadow-xl backdrop-blur-sm">
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-[#D4AF37]/20">
+                        <Star className="h-5 w-5 fill-[#D4AF37] text-[#D4AF37]" />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-white">{stats[2]?.value ?? "4.9/5"}</p>
+                        <p className="text-sm text-gray-400">
+                          {stats[2]?.label ?? "rating from parents & students"}
+                        </p>
+                      </div>
+                    </div>
+                  </Card>
+                </div>
               </div>
 
-              <div className="hero-enter hero-enter-delay-2 relative mx-auto w-full max-w-lg lg:max-w-none">
-                <div className="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-2xl ring-1 ring-[#D4AF37]/20 lg:aspect-auto lg:h-[420px]">
-                  <MarketingImage
-                    src={subjectsHeroImage}
-                    fallbackSrc={SUBJECTS_HERO_IMAGE}
-                    alt={t("subjects.title")}
-                    priority
-                    containerClassName="absolute inset-0"
-                    sizes="(max-width: 1024px) 90vw, 560px"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0D1B2A]/70 via-transparent to-transparent" />
-                </div>
-
-                <div className="hero-enter hero-enter-delay-4 absolute -bottom-6 left-4 right-4 sm:left-6 sm:right-auto sm:max-w-xs">
+              <div className="hero-enter hero-enter-delay-2 relative mx-auto hidden min-h-[360px] w-full max-w-lg lg:block lg:max-w-none">
+                <div className="hero-enter hero-enter-delay-4 absolute -bottom-6 left-4 right-4 sm:left-6 sm:right-auto sm:max-w-xs lg:left-auto">
                   <Card className="border border-[#D4AF37]/30 bg-[#0D1B2A]/95 p-4 shadow-xl backdrop-blur-sm">
                     <div className="flex items-center gap-3">
                       <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-[#D4AF37]/20">

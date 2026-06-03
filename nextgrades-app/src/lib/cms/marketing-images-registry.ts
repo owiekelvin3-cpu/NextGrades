@@ -6,6 +6,7 @@ import {
   PROGRAMS_PAGE_CARD_IMAGES,
   CONSULTATION_HERO_IMAGE,
   LOGIN_HERO_IMAGE,
+  PRIVACY_HERO_IMAGE,
   HOME_PLATFORM_THUMB,
   HOME_TESTIMONIALS_BG,
   HOME_HERO_STUDENT_IMAGE,
@@ -68,6 +69,7 @@ export const CMS_IMAGE_REGISTRY: CmsImageRegistryItem[] = [
   { key: "cmsImages.contact.hero", label: "Contact — Hero image", pageGroup: "contact", defaultUrl: CONTACT_HERO_IMAGE },
   { key: "cmsImages.consultation.hero", label: "Consultation — Hero image", pageGroup: "consultation", defaultUrl: CONSULTATION_HERO_IMAGE },
   { key: "cmsImages.auth.loginHero", label: "Login — Side panel image", pageGroup: "auth", defaultUrl: LOGIN_HERO_IMAGE },
+  { key: "cmsImages.privacy.hero", label: "Privacy — Hero image", pageGroup: "legal", defaultUrl: PRIVACY_HERO_IMAGE },
 ];
 
 export function buildMarketingImageEntries(): FlatLocaleEntry[] {

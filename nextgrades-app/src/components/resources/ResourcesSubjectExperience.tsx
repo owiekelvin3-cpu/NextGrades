@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { MarketingImage } from "@/components/marketing/MarketingImage";
+import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
 import { Search, Shield, BookOpen, Download, Star } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useResourcesCatalog } from "@/hooks/useResourcesCatalog";
@@ -49,11 +49,8 @@ export function ResourcesSubjectExperience({ subjectSlug, subjectName, classLeve
   return (
     <>
       <section className="relative overflow-hidden bg-[#0D1B2A] text-white">
-        <div className="absolute inset-0 opacity-30">
-          <MarketingImage src={ui.heroImage} alt="" containerClassName="absolute inset-0" className="object-cover" priority />
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0D1B2A] via-[#0D1B2A]/90 to-[#0D1B2A]/60" />
-        <div className="relative mx-auto max-w-7xl px-4 pb-12 pt-site-nav sm:px-6 md:pt-28 lg:px-8">
+        <MarketingHeroBlend src={ui.heroImage} alt="" variant="dark-full" priority sizes="100vw" opacity={0.8} />
+        <div className="relative z-10 mx-auto max-w-7xl px-4 pb-12 pt-site-nav sm:px-6 md:pt-28 lg:px-8">
           <p className="text-sm text-gray-400 mb-2">
             Home › Resources › {className ? "Learning materials" : subjectName} › {title}
           </p>
@@ -79,9 +76,7 @@ export function ResourcesSubjectExperience({ subjectSlug, subjectName, classLeve
                 ))}
               </div>
             </div>
-            <div className="hidden lg:block relative h-64">
-              <MarketingImage src={ui.heroImage} alt={subjectName} containerClassName="absolute inset-0 rounded-2xl" className="object-cover object-right rounded-2xl" />
-            </div>
+            <div className="hidden min-h-[240px] lg:block" aria-hidden />
           </div>
         </div>
       </section>

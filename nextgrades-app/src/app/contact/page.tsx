@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { MarketingImage } from "@/components/marketing/MarketingImage";
+import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/Button";
@@ -25,6 +25,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useCmsImage } from "@/hooks/useCmsImage";
 import { CONTACT_HERO_IMAGE } from "@/lib/marketing-images";
+import { COMPANY_PHONE_DISPLAY, COMPANY_PHONE_TEL } from "@/lib/company";
 
 export default function ContactPage() {
   const mt = useMarketingTheme();
@@ -97,8 +98,8 @@ export default function ContactPage() {
     {
       icon: Phone,
       label: t("contact.phoneNumber"),
-      value: "+49 (0) 30 1234 5678",
-      href: "tel:+493012345678",
+      value: COMPANY_PHONE_DISPLAY,
+      href: COMPANY_PHONE_TEL,
       color: "bg-[#4DA3FF]/15 text-[#4DA3FF]",
     },
     {
@@ -120,31 +121,42 @@ export default function ContactPage() {
       <Navbar />
 
       <main className="flex-1">
-        {/* Hero */}
-        <section className="relative overflow-hidden bg-[#0D1B2A] pt-site-nav pb-20 text-white md:pt-28">
-          <div className="pointer-events-none absolute inset-0">
-            <div className="absolute -right-20 top-10 h-72 w-72 rounded-full bg-[#D4AF37]/15 blur-3xl" />
-            <div className="absolute bottom-0 left-0 h-64 w-64 rounded-full bg-[#4DA3FF]/10 blur-3xl" />
-          </div>
-          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        {/* Hero — photo blends into background (mockup) */}
+        <section
+          className={cn(
+            "relative overflow-hidden pt-site-nav pb-16 md:pb-20 md:pt-28",
+            mt.isDark ? "bg-[#0D1B2A] text-white" : "bg-white text-[#0D1B2A]"
+          )}
+        >
+          <MarketingHeroBlend
+            src={contactHeroImage}
+            alt=""
+            variant={mt.isDark ? "dark-split-right" : "light-split-right"}
+            backgroundColor={mt.isDark ? "#0D1B2A" : "#FFFFFF"}
+            priority
+          />
+          <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mx-auto max-w-3xl text-center"
+              className="grid min-w-0 items-center gap-10 lg:grid-cols-2 lg:gap-16"
             >
-              <Badge variant="gold" className="mb-5">
-                <MessageSquare className="mr-1.5 h-3.5 w-3.5" />
-                {t("common.contact")}
-              </Badge>
-              <h1 className="text-4xl font-bold leading-tight md:text-5xl lg:text-6xl">
-                {t("contact.title")}
-              </h1>
-              <p className="mx-auto mt-5 max-w-2xl text-lg text-gray-300">
-                {t("contact.subtitle")}{" "}
-                <a href="mailto:support@nextgrades.de" className="font-semibold text-[#D4AF37] hover:underline">
-                  support@nextgrades.de
-                </a>
-              </p>
+              <div className="min-w-0 max-w-xl">
+                <Badge variant="gold" className="mb-5">
+                  <MessageSquare className="mr-1.5 h-3.5 w-3.5" />
+                  {t("common.contact")}
+                </Badge>
+                <h1 className="text-4xl font-bold leading-tight md:text-5xl lg:text-[3.25rem]">
+                  {t("contact.title")}
+                </h1>
+                <p className={cn("mt-5 max-w-xl text-lg leading-relaxed", mt.isDark ? "text-gray-300" : "text-gray-600")}>
+                  {t("contact.subtitle")}{" "}
+                  <a href="mailto:support@nextgrades.de" className="font-semibold text-[#D4AF37] hover:underline">
+                    support@nextgrades.de
+                  </a>
+                </p>
+              </div>
+              <div className="hidden min-h-[280px] lg:block" aria-hidden />
             </motion.div>
           </div>
         </section>
@@ -185,25 +197,10 @@ export default function ContactPage() {
                   ))}
                 </div>
 
-                <div className="relative hidden overflow-hidden rounded-2xl lg:block lg:h-64">
-                  <MarketingImage
-                    src={contactHeroImage}
-                    fallbackSrc={CONTACT_HERO_IMAGE}
-                    alt={t("contact.heroImageAlt")}
-                    containerClassName="absolute inset-0"
-                    className="object-cover"
-                    sizes="(max-width: 1024px) 100vw, 40vw"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0D1B2A]/90 via-[#0D1B2A]/30 to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                    <p className="text-sm font-semibold text-[#D4AF37]">
-                      {t("contact.sideEyebrow")}
-                    </p>
-                    <p className="mt-1 text-lg font-bold">
-                      {t("contact.sideTitle")}
-                    </p>
-                  </div>
-                </div>
+                <Card className={cn("hidden p-6 lg:block", mt.card)}>
+                  <p className="text-sm font-semibold text-[#D4AF37]">{t("contact.sideEyebrow")}</p>
+                  <p className={cn("mt-2 text-lg font-bold", mt.heading)}>{t("contact.sideTitle")}</p>
+                </Card>
               </motion.div>
 
               {/* Right — form */}

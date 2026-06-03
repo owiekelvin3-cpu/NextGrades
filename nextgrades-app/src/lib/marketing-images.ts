@@ -1,6 +1,6 @@
 /**
- * Marketing images — CDN-hosted (Unsplash). No local content photos.
- * Brand logos remain in /public via @/lib/brand.ts only.
+ * Marketing images — branded photos in /public/images/marketing.
+ * Unsplash URLs remain as remote fallbacks only.
  */
 
 function u(id: string, w = 800, h = 533, q = 75) {
@@ -11,54 +11,68 @@ function face(id: string) {
   return `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=400&h=400&crop=faces&q=80`;
 }
 
-export const ONLINE_IMAGE_FALLBACK = u("1524178232363-1fb2b075b655", 1280, 720);
+/** Branded NextGrades photography (see /public/images/marketing). */
+export const BRANDED = {
+  studentsGroup3: "/images/marketing/students-group-3.png",
+  studentsGroup4: "/images/marketing/students-group-4.png",
+  studentsCollab: "/images/marketing/students-collab.png",
+  tutoringSession: "/images/marketing/tutoring-session.png",
+  studyDesk: "/images/marketing/study-desk.png",
+  subjectBooks: "/images/marketing/subject-books.png",
+  progressDashboard: "/images/marketing/progress-dashboard.png",
+  privacySecure: "/images/marketing/privacy-secure.png",
+} as const;
+
+export const ONLINE_IMAGE_FALLBACK = BRANDED.studyDesk;
 export const LOCAL_IMAGE_FALLBACK = ONLINE_IMAGE_FALLBACK;
 
 export const ABOUT_IMAGES = {
-  hero: u("1523240795612-9a054b0db644", 1200, 800),
-  story: u("1497366216548-37526070297c", 1000, 700),
+  hero: BRANDED.studentsGroup4,
+  story: BRANDED.studentsGroup3,
   mission: [
-    u("1488190211103-e3e395f63f07", 700, 450),
-    u("1456513080510-7bf3a84b82f8", 700, 450),
-    u("1517486808906-6ca784374367", 700, 450),
-    u("1524995993596-b08947747391", 700, 450),
+    BRANDED.studyDesk,
+    BRANDED.subjectBooks,
+    BRANDED.tutoringSession,
+    BRANDED.progressDashboard,
   ] as const,
-  promise: u("1581091215396-f3f4f1032d35", 1000, 700),
+  promise: BRANDED.privacySecure,
 } as const;
 
-export const CONTACT_HERO_IMAGE = u("1423666639047-7ec4463a33e8", 1200, 900);
-export const PROGRAMS_HERO_IMAGE = u("1523050854548-600962526ae0", 1200, 800);
-export const CONSULTATION_HERO_IMAGE = u("1606761568499-11d29da76008", 900, 1100);
-export const CAREERS_HERO_IMAGE = u("1522071820081-009f0129c71c", 1200, 800);
-export const LOGIN_HERO_IMAGE = u("1524178232363-1fb2b075b655", 1200, 900);
-export const HOME_PLATFORM_THUMB = u("1513258496099-48168024aec0", 200, 200);
-export const HOME_TESTIMONIALS_BG = u("1460925895917-afdab827c52f", 1280, 720);
+export const CONTACT_HERO_IMAGE = BRANDED.studyDesk;
+export const PROGRAMS_HERO_IMAGE = BRANDED.studentsCollab;
+export const CONSULTATION_HERO_IMAGE = BRANDED.tutoringSession;
+export const CAREERS_HERO_IMAGE = BRANDED.studentsGroup3;
+export const LOGIN_HERO_IMAGE = BRANDED.tutoringSession;
+export const PRIVACY_HERO_IMAGE = BRANDED.privacySecure;
+export const HOME_PLATFORM_THUMB = BRANDED.progressDashboard;
+export const HOME_TESTIMONIALS_BG = BRANDED.studyDesk;
 
-export const HOME_HERO_STUDENT_IMAGE = u("1523240795612-9a054b0db644", 960, 720, 70);
+export const HOME_HERO_STUDENT_IMAGE = BRANDED.studentsGroup3;
 
-/** Home hero carousel — local assets in /public/images/hero */
+/** Home hero carousel — rotates branded lifestyle photos. */
 export const HOME_HERO_CAROUSEL_IMAGES = [
-  "/images/hero/hero-1.png",
-  "/images/hero/hero-2.png",
-  "/images/hero/hero-3.png",
-  "/images/hero/hero-4.png",
+  BRANDED.studentsGroup3,
+  BRANDED.studentsCollab,
+  BRANDED.tutoringSession,
+  BRANDED.studyDesk,
 ] as const;
-export const HERO_STUDY_IMAGE = u("1524178232363-1fb2b075b655", 1280, 720);
-export const HERO_DESK_IMAGE = u("1497366811353-6870744d04b2", 1280, 720);
+
+export const HERO_STUDY_IMAGE = BRANDED.progressDashboard;
+export const HERO_DESK_IMAGE = BRANDED.studyDesk;
 
 export const PROGRAM_CARD_IMAGES = [
-  u("1509062522246-3755977927d7", 800, 600),
-  u("1427504494785-3a9ca7044f45", 800, 600),
-  u("1516321318423-f06f85e504b3", 800, 600),
+  BRANDED.tutoringSession,
+  BRANDED.studentsGroup3,
+  BRANDED.subjectBooks,
 ] as const;
 
 export const PROGRAMS_PAGE_CARD_IMAGES = [
-  u("1522071820081-009f0129c71c", 600, 400),
-  u("1523240795612-9a054b0db644", 600, 400),
-  u("1516321318423-f06f85e504b3", 600, 400),
+  BRANDED.tutoringSession,
+  BRANDED.studentsCollab,
+  BRANDED.subjectBooks,
 ] as const;
 
-export const SUBJECTS_HERO_IMAGE = u("1522202176988-66273c2fd55f", 1200, 800);
+export const SUBJECTS_HERO_IMAGE = BRANDED.subjectBooks;
 
 export const ABOUT_TEAM_IMAGES = [
   face("1507003211164-0a1dd7e784aa"),
@@ -74,16 +88,18 @@ export const LOGIN_AVATAR_IMAGES = [
   face("1472099645785-5658abf4ff4e"),
 ] as const;
 
+const SUBJECT_CARD_PHOTO = BRANDED.subjectBooks;
+
 export const SUBJECT_IMAGE_BY_ID: Record<string, string> = {
-  math: u("1635070041078-e363dbe005cb", 800, 500),
-  english: u("1517245386807-bb43f82c33c4", 800, 500),
-  german: u("1481627834876-b7833e8f5570", 800, 500),
-  physics: u("1532094349884-543bc11b234d", 800, 500),
-  chemistry: u("1582719478250-c89cae4dc85b", 800, 500),
-  biology: u("1530026405186-ed142f37545b", 800, 500),
-  business: u("1454165804606-c3d57bc86b40", 800, 500),
-  "computer-science": u("1517694712202-14dd9538aa97", 800, 500),
-  "technical-drawing": u("1503387762-592deb58ef4e", 800, 500),
+  math: SUBJECT_CARD_PHOTO,
+  english: SUBJECT_CARD_PHOTO,
+  german: SUBJECT_CARD_PHOTO,
+  physics: SUBJECT_CARD_PHOTO,
+  chemistry: SUBJECT_CARD_PHOTO,
+  biology: BRANDED.studyDesk,
+  business: BRANDED.progressDashboard,
+  "computer-science": BRANDED.tutoringSession,
+  "technical-drawing": BRANDED.studyDesk,
 };
 
 const SUBJECT_ALIASES: Record<string, string> = {

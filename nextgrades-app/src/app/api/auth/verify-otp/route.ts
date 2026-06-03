@@ -1,6 +1,43 @@
 import { NextResponse } from "next/server";
+import { normalizeEmail, EMAIL_REGEX, logRegistrationAttempt } from "@/lib/auth/registration";
+import { isEmailVerificationRequired } from "@/lib/auth/config";
+import { verifyRegistrationOtp } from "@/lib/auth/registration-otp";
+import { enforceRateLimit } from "@/lib/security/rate-limit";
 
-/** @deprecated OTP registration removed — use POST /api/auth/signup with email link verification */
-export async function POST() {
-  return NextResponse.json({ error: "OTP verification is no longer used." }, { status: 410 });
+/** Confirm signup with the 6-digit code from email. */
+export async function POST(request: Request) {
+  const limited = enforceRateLimit(request, { bucket: "auth:verify-otp", limit: 20, windowSec: 3600 });
+  if (limited) return limited;
+
+  if (!isEmailVerificationRequired()) {
+    return NextResponse.json({ error: "Email verification is currently disabled." }, { status: 400 });
+  }
+
+  try {
+    const body = (await request.json()) as { email?: string; code?: string };
+    const email = normalizeEmail(body.email || "");
+    const code = String(body.code || "").trim();
+
+    if (!EMAIL_REGEX.test(email)) {
+      return NextResponse.json({ error: "Please enter a valid email address" }, { status: 400 });
+    }
+
+    const result = await verifyRegistrationOtp(email, code);
+
+    if (!result.success) {
+      await logRegistrationAttempt(email, "verify_otp", false, result.error, {}, request);
+      return NextResponse.json({ error: result.error }, { status: 400 });
+    }
+
+    await logRegistrationAttempt(email, "verify_otp", true, undefined, { userId: result.userId }, request);
+
+    return NextResponse.json({
+      success: true,
+      message: "Email verified. You can sign in now.",
+      userId: result.userId,
+    });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Verification failed";
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
 }

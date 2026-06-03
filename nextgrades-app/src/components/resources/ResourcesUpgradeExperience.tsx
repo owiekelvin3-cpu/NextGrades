@@ -1,14 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { MarketingImage } from "@/components/marketing/MarketingImage";
+import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { CheckCircle2, ChevronRight, Headphones, Shield, Clock, Lock, BarChart3, Calendar, Sparkles } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useLocalizedContent } from "@/hooks/useLocalizedContent";
 import { buildLoginUrl } from "@/lib/auth/redirect";
-import { getResourcesSubjectImage, RESOURCES_UPGRADE_HERO } from "@/lib/resources/images";
+import { getResourcesSubjectImage } from "@/lib/resources/images";
 import { appShell } from "@/lib/theme/shell";
 
 type LocalizedPlan = {
@@ -52,11 +52,8 @@ export function ResourcesUpgradeExperience() {
   return (
     <>
       <section className="relative overflow-hidden bg-[#0D1B2A] pb-16 pt-site-nav text-white md:pt-28">
-        <div className="absolute inset-0 opacity-20">
-          <MarketingImage src={heroImage} alt="" containerClassName="absolute inset-0" className="object-cover" />
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0D1B2A] via-[#0D1B2A]/95 to-transparent" />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <MarketingHeroBlend src={heroImage} alt="" variant="dark-full" priority sizes="100vw" opacity={0.75} />
+        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <p className="text-sm text-gray-400 mb-3">Home › Resources › English › Upgrade</p>
           <div className="grid lg:grid-cols-2 gap-10 items-center">
             <div>
@@ -83,10 +80,9 @@ export function ResourcesUpgradeExperience() {
                 ))}
               </div>
             </div>
-            <div className="relative hidden lg:block h-72">
-              <MarketingImage src={RESOURCES_UPGRADE_HERO} alt="" containerClassName="absolute inset-0 rounded-2xl" className="object-cover object-right rounded-2xl" />
-              <div className="absolute bottom-0 right-0 rounded-2xl bg-[#112240] p-4 shadow-2xl max-w-xs">
-                <Sparkles className="h-5 w-5 text-[#D4AF37] mb-2" />
+            <div className="relative z-10 hidden lg:flex lg:min-h-[280px] lg:items-end lg:justify-end">
+              <div className="max-w-xs rounded-2xl border border-white/10 bg-[#112240]/90 p-4 shadow-2xl backdrop-blur-sm">
+                <Sparkles className="mb-2 h-5 w-5 text-[#D4AF37]" />
                 <p className="text-sm font-semibold">Individual support. Real results.</p>
               </div>
             </div>

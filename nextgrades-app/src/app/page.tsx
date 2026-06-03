@@ -12,7 +12,7 @@ import { useTranslation } from "react-i18next";
 import { useCmsImages } from "@/hooks/useCmsImage";
 import { PROGRAM_CARD_IMAGES, HERO_STUDY_IMAGE, HOME_PLATFORM_THUMB, HOME_TESTIMONIALS_BG } from "@/lib/marketing-images";
 import { MarketingImage } from "@/components/marketing/MarketingImage";
-import { HeroImageCarousel } from "@/components/marketing/HeroImageCarousel";
+import { HeroBlendCarousel } from "@/components/marketing/HeroBlendCarousel";
 import { RevealOnScroll } from "@/components/marketing/RevealOnScroll";
 import { MobileCarousel, CarouselCard } from "@/components/mobile/MobileCarousel";
 import { MarketingQuickLinks } from "@/components/marketing/MarketingQuickLinks";
@@ -70,7 +70,8 @@ export default function Home() {
         {/* Hero — CSS-only entrance (no scroll observer) */}
         <section className="relative overflow-hidden bg-[#0D1B2A] pb-16 pt-site-nav text-white md:pb-20 md:pt-28">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(212,175,55,0.08)_0%,_transparent_55%)]" />
-          <div className="relative mx-auto w-full min-w-0 max-w-7xl px-4 sm:px-6 lg:px-8">
+          <HeroBlendCarousel alt={t("images.studentStudying")} className="hidden lg:block" />
+          <div className="relative z-10 mx-auto w-full min-w-0 max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="grid min-w-0 items-center gap-10 sm:gap-12 lg:grid-cols-2 lg:gap-16">
               <div className="min-w-0">
                 <p
@@ -135,18 +136,15 @@ export default function Home() {
 
                 <div
                   data-cms-field="cmsImages.home.heroStudent"
-                  className="hero-enter hero-enter-delay-2 relative mx-auto min-w-0 w-full max-w-full sm:max-w-lg lg:max-w-none"
+                  className="hero-enter hero-enter-delay-2 relative mx-auto min-w-0 w-full max-w-full sm:max-w-lg lg:max-w-none lg:min-h-[480px]"
                 >
-                <div className="relative aspect-[4/5] max-h-[520px] overflow-hidden rounded-2xl shadow-2xl ring-1 ring-white/10 sm:aspect-[5/6] lg:aspect-auto lg:h-[480px]">
-                  <HeroImageCarousel
-                    alt={t("images.studentStudying")}
-                    sizes="(max-width: 1024px) 90vw, 560px"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0D1B2A]/80 via-[#0D1B2A]/10 to-transparent" />
-                  <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-[#0D1B2A]/20" />
-                </div>
+                <HeroBlendCarousel
+                  alt={t("images.studentStudying")}
+                  className="lg:hidden"
+                  sizes="(max-width: 1024px) 90vw, 560px"
+                />
 
-                <div className="hero-enter hero-enter-delay-4 absolute -bottom-5 left-3 right-3 z-10 max-w-[min(280px,calc(100%-1.5rem))] sm:left-auto sm:right-4 lg:-bottom-6 lg:right-6">
+                <div className="hero-enter hero-enter-delay-4 relative z-10 mt-6 max-w-[min(280px,calc(100%-1.5rem))] sm:mt-8 lg:absolute lg:-bottom-6 lg:right-0 lg:mt-0">
                   <Card className="border border-[#D4AF37]/30 bg-[#0D1B2A]/95 p-4 shadow-xl backdrop-blur-sm sm:p-5">
                     <div className="flex items-start gap-3">
                       <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-[#D4AF37]/20">

@@ -46,19 +46,25 @@ export async function sendWelcomeEmail(email: string, userName?: string, role: "
 }
 
 export async function sendVerificationEmail(email: string, verifyUrl: string, userName?: string) {
+  const { accountVerificationEmailPlain } = await import("./templates/account-verification");
   return sendEmail({
     to: email,
-    subject: "Verify your NextGrades email",
+    subject: "NextGrades — Bitte bestätige deine E-Mail-Adresse",
     html: emailVerificationEmail(verifyUrl, userName),
+    text: accountVerificationEmailPlain(verifyUrl, userName),
     tags: [{ name: "category", value: "verification" }],
   });
 }
 
 export async function sendVerificationCodeEmail(email: string, code: string, userName?: string) {
+  const { accountVerificationCodeEmail, accountVerificationCodeEmailPlain } = await import(
+    "./templates/account-verification-code"
+  );
   return sendEmail({
     to: email,
-    subject: `${code} is your NextGrades verification code`,
-    html: verificationCodeEmail(code, userName),
+    subject: `NextGrades — Dein Bestätigungscode: ${code}`,
+    html: accountVerificationCodeEmail(code, userName),
+    text: accountVerificationCodeEmailPlain(code, userName),
     tags: [{ name: "category", value: "verification-code" }],
   });
 }

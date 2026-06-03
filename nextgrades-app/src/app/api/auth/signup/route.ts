@@ -8,10 +8,11 @@ import {
   validateSimpleRegistration,
   type SimpleRegistrationPayload,
 } from "@/lib/auth/registration";
-import { generateAuthLink, getAuthCallbackUrl, getAuthConfigError } from "@/lib/auth/auth-links";
+import { getAuthConfigError } from "@/lib/auth/auth-links";
 import { isEmailVerificationRequired } from "@/lib/auth/config";
 import { ensureRoleProfile } from "@/lib/auth/profile-setup";
-import { sendVerificationEmail, sendWelcomeEmail, isResendConfigured } from "@/lib/email";
+import { issueRegistrationOtp } from "@/lib/auth/registration-otp";
+import { sendWelcomeEmail, isResendConfigured } from "@/lib/email";
 import { enforceRateLimit } from "@/lib/security/rate-limit";
 
 export async function POST(request: Request) {
@@ -132,19 +133,18 @@ export async function POST(request: Request) {
       );
     }
 
-    const redirectTo = getAuthCallbackUrl();
-    const { actionLink: verifyUrl, userId, error: linkError } = await generateAuthLink({
-      type: "signup",
+    const admin = createAdminClient();
+    const { data: createData, error: createError } = await admin.auth.admin.createUser({
       email,
       password: body.password,
-      metadata: { full_name: fullName, role },
-      redirectTo,
+      email_confirm: false,
+      user_metadata: { full_name: fullName, role },
     });
 
-    if (linkError) {
-      const msg = linkError.toLowerCase();
+    if (createError) {
+      const msg = createError.message.toLowerCase();
       if (msg.includes("already") || msg.includes("exists") || msg.includes("registered")) {
-        await logRegistrationAttempt(email, "signup", false, linkError, {}, request);
+        await logRegistrationAttempt(email, "signup", false, createError.message, {}, request);
         return NextResponse.json(
           {
             error: "An account with this email already exists. Please sign in to continue.",
@@ -153,12 +153,12 @@ export async function POST(request: Request) {
           { status: 409 }
         );
       }
-      await logRegistrationAttempt(email, "signup", false, linkError, {}, request);
-      return NextResponse.json({ error: linkError }, { status: 500 });
+      await logRegistrationAttempt(email, "signup", false, createError.message, {}, request);
+      return NextResponse.json({ error: createError.message }, { status: 500 });
     }
 
+    const userId = createData.user?.id;
     if (userId) {
-      const admin = createAdminClient();
       await ensureRoleProfile(admin, userId, role, {
         fullName,
         email,
@@ -166,37 +166,34 @@ export async function POST(request: Request) {
       });
     }
 
-    if (!verifyUrl) {
-      await logRegistrationAttempt(email, "signup", false, "Missing verification link", {}, request);
-      return NextResponse.json({ error: "Failed to generate verification link" }, { status: 500 });
-    }
-
-    const emailResult = await sendVerificationEmail(email, verifyUrl, fullName);
-    if (!emailResult.success) {
+    const otpResult = await issueRegistrationOtp(email, fullName);
+    if (!otpResult.success) {
       await logRegistrationAttempt(
         email,
         "signup",
         true,
-        emailResult.error || "Email send failed",
+        otpResult.error || "Code email send failed",
         { userId, role, emailSent: false },
         request
       );
       return NextResponse.json({
         success: true,
-        message: "Account created! We could not deliver the verification email yet.",
+        message: "Account created! We could not deliver the verification code yet.",
         emailSent: false,
-        emailError: emailResult.error,
+        emailError: otpResult.error,
         warning: true,
         verificationRequired: true,
+        verificationMode: "code",
       });
     }
 
-    await logRegistrationAttempt(email, "signup", true, undefined, { userId, role }, request);
+    await logRegistrationAttempt(email, "signup", true, undefined, { userId, role, verificationMode: "code" }, request);
     return NextResponse.json({
       success: true,
-      message: "Account created! Check your email to verify your address.",
+      message: "Account created! We sent a 6-digit code to your email — enter it below to activate your account.",
       emailSent: true,
       verificationRequired: true,
+      verificationMode: "code",
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Registration failed";

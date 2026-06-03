@@ -22,6 +22,7 @@ import { useCmsImages } from "@/hooks/useCmsImage";
 import { useTheme } from "@/context/ThemeContext";
 import { PROGRAMS_HERO_IMAGE, PROGRAMS_PAGE_CARD_IMAGES } from "@/lib/marketing-images";
 import { MarketingImage } from "@/components/marketing/MarketingImage";
+import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
 
 const statIcons = [GraduationCap, Users, Star];
 const heroFeatureIcons = [Hexagon, BookOpen, Sparkles];
@@ -87,33 +88,25 @@ export default function ProgramsPage() {
       <Navbar />
 
       <main className="flex-1 overflow-x-hidden">
-        <section
-          className={`relative overflow-hidden pb-16 pt-site-nav md:pb-20 md:pt-28 ${
-            theme === "dark" ? "bg-[#0D1B2A] text-white" : "bg-white text-[#0D1B2A]"
-          }`}
-        >
+        <section className="relative overflow-hidden bg-[#0D1B2A] pb-16 pt-site-nav text-white md:pb-20 md:pt-28">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(212,175,55,0.15),transparent_45%)]" />
-          <div className="mx-auto w-full min-w-0 max-w-7xl px-4 sm:px-6 lg:px-8">
+          <MarketingHeroBlend
+            src={programsHeroImage}
+            alt={t("images.studentStudying")}
+            variant="dark-split-right"
+            priority
+          />
+          <div className="relative z-10 mx-auto w-full min-w-0 max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="grid min-w-0 items-center gap-10 sm:gap-12 lg:grid-cols-2 lg:gap-16">
               <div className="hero-enter min-w-0 max-w-xl">
-                <p
-                  className={`mb-4 text-xs font-semibold uppercase tracking-[0.22em] sm:text-sm ${
-                    theme === "dark" ? "text-[#D4AF37]" : "text-[#B8960C]"
-                  }`}
-                >
+                <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-[#D4AF37] sm:text-sm">
                   {t("programsPage.heroEyebrow")}
                 </p>
                 <h1 className="mb-6 text-4xl font-bold leading-[1.12] sm:text-5xl lg:text-[3.25rem]">
                   {t("programs.title")}{" "}
                   <span className="text-[#D4AF37]">{t("programs.subtitle")}</span>
                 </h1>
-                <p
-                  className={
-                    theme === "dark"
-                      ? "mb-8 max-w-lg text-base leading-relaxed text-gray-300 sm:text-lg"
-                      : "mb-8 max-w-lg text-base leading-relaxed text-gray-600 sm:text-lg"
-                  }
-                >
+                <p className="mb-8 max-w-lg text-base leading-relaxed text-gray-300 sm:text-lg">
                   {t("programsPage.heroSubtitle")}
                 </p>
                 <ul className="mb-8 flex flex-wrap gap-2.5 sm:gap-3">
@@ -121,13 +114,7 @@ export default function ProgramsPage() {
                     const Icon = heroFeatureIcons[index] ?? Hexagon;
                     return (
                       <li key={index}>
-                        <span
-                          className={`inline-flex items-center gap-2 rounded-full border px-3.5 py-2 text-sm font-medium ${
-                            theme === "dark"
-                              ? "border-white/15 bg-white/5 text-white/90"
-                              : "border-gray-200 bg-white text-[#0D1B2A] shadow-sm"
-                          }`}
-                        >
+                        <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3.5 py-2 text-sm font-medium text-white/90">
                           <Icon className="h-4 w-4 shrink-0 text-[#D4AF37]" aria-hidden />
                           {feature.title}
                         </span>
@@ -139,21 +126,7 @@ export default function ProgramsPage() {
                   {t("programsPage.freeConsultation")}
                 </Button>
               </div>
-              <div className="hero-enter hero-enter-delay-2">
-                <div
-                  className={`overflow-hidden rounded-2xl border shadow-2xl ${
-                    theme === "dark" ? "border-white/10 shadow-black/45" : "border-gray-200/80 shadow-gray-300/35"
-                  }`}
-                >
-                  <MarketingImage
-                    src={programsHeroImage}
-                    alt={t("images.studentStudying")}
-                    containerClassName="h-[260px] w-full sm:h-[340px] md:h-[420px]"
-                    priority
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                  />
-                </div>
-              </div>
+              <div className="hero-enter hero-enter-delay-2 hidden min-h-[320px] lg:block" aria-hidden />
             </div>
           </div>
         </section>

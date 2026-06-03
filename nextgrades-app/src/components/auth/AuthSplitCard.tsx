@@ -33,20 +33,24 @@ export function AuthSplitCard({ children, heroImage, heroCaption, className }: A
             <div className="mx-auto w-full max-w-[400px]">{children}</div>
           </div>
 
-          <div className={cn("relative hidden min-h-[640px] p-4 lg:block", isDark ? "bg-[#0D1B2A]/50" : "bg-[#F0F2F5]")}>
-            <div className="relative h-full w-full overflow-hidden rounded-[2rem] rounded-br-[3.5rem] rounded-tl-[3.5rem] shadow-inner">
-              <MarketingImage
-                src={heroImage}
-                alt=""
-                containerClassName="absolute inset-0"
-                sizes="45vw"
-                className="scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-br from-[#0D1B2A]/30 via-transparent to-[#0D1B2A]/45" />
-              <p className="absolute right-8 top-8 max-w-[220px] text-right text-lg font-semibold leading-snug text-white drop-shadow-md">
-                {heroCaption}
-              </p>
-            </div>
+          <div className={cn("relative hidden min-h-[640px] overflow-hidden lg:block", isDark ? "bg-[#0D1B2A]" : "bg-[#0D1B2A]")}>
+            <MarketingImage
+              src={heroImage}
+              alt=""
+              containerClassName="absolute inset-0"
+              sizes="45vw"
+              className="object-cover object-center"
+            />
+            <div
+              className="absolute inset-0"
+              style={{
+                background:
+                  "linear-gradient(to right, #0D1B2A 0%, #0D1B2A99 25%, transparent 55%), linear-gradient(to bottom, transparent 0%, #0D1B2Acc 70%, #0D1B2A 100%)",
+              }}
+            />
+            <p className="absolute right-8 top-8 z-10 max-w-[220px] text-right text-lg font-semibold leading-snug text-white drop-shadow-md">
+              {heroCaption}
+            </p>
           </div>
         </div>
       </div>
