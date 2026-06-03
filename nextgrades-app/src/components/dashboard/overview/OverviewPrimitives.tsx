@@ -49,7 +49,7 @@ export function OverviewHero({ eyebrow, title, subtitle, actions, aside, classNa
                   </>
                 );
                 const cls =
-                  "inline-flex items-center gap-1.5 rounded-xl border border-white/15 bg-white/10 px-3.5 py-2 text-xs font-semibold transition hover:border-[#D4AF37]/40 hover:bg-white/15 sm:text-sm";
+                  "inline-flex min-h-11 items-center gap-1.5 rounded-xl border border-white/15 bg-white/10 px-3.5 py-2.5 text-xs font-semibold transition hover:border-[#D4AF37]/40 hover:bg-white/15 touch-manipulation sm:text-sm";
                 return action.external ? (
                   <a key={action.label} href={action.href} target="_blank" rel="noopener noreferrer" className={cls}>
                     {inner}
@@ -91,7 +91,7 @@ export function OverviewStatCard({
   const inner = (
     <>
       <div className="flex items-start justify-between gap-3">
-        <p className="text-[11px] font-semibold uppercase tracking-wider text-text-muted">{label}</p>
+        <p className="text-xs font-semibold uppercase tracking-wider text-text-muted">{label}</p>
         <span
           className={cn(
             "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ring-1 ring-inset ring-black/5 dark:ring-white/10",

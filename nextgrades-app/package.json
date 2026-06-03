@@ -16,7 +16,9 @@
     "db:setup": "node scripts/apply-migrations.mjs",
     "db:apply-pdf": "node scripts/run-sql.mjs supabase/migrations/00017_pdf_alignment.sql supabase/migrations/00018_backfill_storage_paths.sql",
     "db:backfill-storage": "node scripts/backfill-storage-paths.mjs",
-    "stripe:setup-test": "node scripts/setup-stripe-test.mjs"
+    "stripe:setup-test": "node scripts/setup-stripe-test.mjs",
+    "test:e2e": "playwright test",
+    "test:responsive": "playwright test tests/e2e/responsive-audit.spec.ts"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^7.2.0",

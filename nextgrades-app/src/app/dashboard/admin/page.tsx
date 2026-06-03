@@ -175,15 +175,6 @@ export default function AdminDashboard() {
                       <DollarSign className="mr-3 h-5 w-5" />
                       {t("adminDashboard.managePayments")}
                     </Button>
-                    <Button
-                      variant="outline"
-                      size="md"
-                      href="/portal/admin/website-content"
-                      className="w-full justify-start border-border-default text-foreground hover:bg-black/5 dark:hover:bg-white/10"
-                    >
-                      <FileText className="mr-3 h-5 w-5" />
-                      {t("adminNav.websiteContent", { defaultValue: "Website content" })}
-                    </Button>
                   </div>
                 </Card>
 

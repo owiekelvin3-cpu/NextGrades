@@ -94,38 +94,50 @@ export default function ProgramsPage() {
         >
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(212,175,55,0.15),transparent_45%)]" />
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="grid items-center gap-10 lg:grid-cols-2">
-              <div className="hero-enter">
-                <h1 className="mb-6 text-4xl font-bold leading-[1.05] sm:text-5xl lg:text-[3.4rem]">
-                  {t("programs.title")}
-                  <br />
+            <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+              <div className="hero-enter max-w-xl">
+                <p
+                  className={`mb-4 text-xs font-semibold uppercase tracking-[0.22em] sm:text-sm ${
+                    theme === "dark" ? "text-[#D4AF37]" : "text-[#B8960C]"
+                  }`}
+                >
+                  {t("programsPage.heroEyebrow")}
+                </p>
+                <h1 className="mb-6 text-4xl font-bold leading-[1.12] sm:text-5xl lg:text-[3.25rem]">
+                  {t("programs.title")}{" "}
                   <span className="text-[#D4AF37]">{t("programs.subtitle")}</span>
                 </h1>
-                <p className={theme === "dark" ? "mb-8 max-w-xl text-base text-gray-300 sm:text-lg" : "mb-8 max-w-xl text-base text-gray-600 sm:text-lg"}>
-                  {t("home.programsSection.subtitle")}
+                <p
+                  className={
+                    theme === "dark"
+                      ? "mb-8 max-w-lg text-base leading-relaxed text-gray-300 sm:text-lg"
+                      : "mb-8 max-w-lg text-base leading-relaxed text-gray-600 sm:text-lg"
+                  }
+                >
+                  {t("programsPage.heroSubtitle")}
                 </p>
-                <div className="grid gap-4 sm:grid-cols-3">
+                <ul className="mb-8 flex flex-wrap gap-2.5 sm:gap-3">
                   {safeHeroFeatures.slice(0, 3).map((feature, index) => {
                     const Icon = heroFeatureIcons[index] ?? Hexagon;
                     return (
-                      <div key={index} className="flex items-start gap-2.5">
-                        <div
-                          className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border ${
-                            theme === "dark" ? "border-[#D4AF37]/45 bg-[#D4AF37]/10" : "border-[#D4AF37]/35 bg-[#D4AF37]/8"
+                      <li key={index}>
+                        <span
+                          className={`inline-flex items-center gap-2 rounded-full border px-3.5 py-2 text-sm font-medium ${
+                            theme === "dark"
+                              ? "border-white/15 bg-white/5 text-white/90"
+                              : "border-gray-200 bg-white text-[#0D1B2A] shadow-sm"
                           }`}
                         >
-                          <Icon className="h-4 w-4 text-[#D4AF37]" />
-                        </div>
-                        <div>
-                          <p className="text-sm font-semibold">{feature.title}</p>
-                          <p className={theme === "dark" ? "mt-1 text-xs text-gray-400" : "mt-1 text-xs text-gray-500"}>
-                            {feature.desc}
-                          </p>
-                        </div>
-                      </div>
+                          <Icon className="h-4 w-4 shrink-0 text-[#D4AF37]" aria-hidden />
+                          {feature.title}
+                        </span>
+                      </li>
                     );
                   })}
-                </div>
+                </ul>
+                <Button variant="gold" size="md" className="px-8" href="/consultation">
+                  {t("programsPage.freeConsultation")}
+                </Button>
               </div>
               <div className="hero-enter hero-enter-delay-2">
                 <div

@@ -1,4 +1,4 @@
-import { getPageGroupForKey, humanizeKey } from "./constants";
+import { getPageGroupForKey, humanizeKey, isCmsEditableKey } from "./constants";
 import type { CmsFieldType } from "./flatten";
 import { serializeCmsValue } from "./flatten";
 import { buildSeedEntries } from "./seed";
@@ -84,7 +84,9 @@ export function mergeCmsFields(dbRows: CmsContentRow[]): MergedCmsField[] {
     if (key) dbMap.set(key, { ...row, i18n_key: key });
   }
 
-  const allKeys = new Set<string>([...seedMap.keys(), ...dbMap.keys()]);
+  const allKeys = new Set<string>(
+    [...seedMap.keys(), ...dbMap.keys()].filter((key) => isCmsEditableKey(key))
+  );
 
   return Array.from(allKeys)
     .sort((a, b) => a.localeCompare(b))

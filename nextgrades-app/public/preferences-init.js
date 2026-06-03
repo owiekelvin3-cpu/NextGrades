@@ -4,6 +4,7 @@
     var theme = t === "light" ? "light" : "dark";
     document.documentElement.classList.toggle("dark", theme === "dark");
     document.documentElement.style.colorScheme = theme;
+    document.cookie = "theme=" + theme + ";path=/;max-age=31536000;SameSite=Lax";
 
     var l = localStorage.getItem("i18nextLng");
     if (l) {

@@ -10,20 +10,40 @@
     "germanyFlag": "Germany flag"
   },
   "aboutPage": {
-    "breadcrumb": "Home > About Us",
     "heroEyebrow": "ABOUT NEXTGRADES",
     "heroQuote": "Education is not the filling of a bucket, but the lighting of a fire.",
     "heroQuoteAuthor": "William Butler Yeats",
     "heroPillars": [
-      { "title": "Mission", "desc": "Make learning understandable, motivating, and accessible for every student." },
-      { "title": "Vision", "desc": "A new generation of learning — modern, structured, and results-driven." },
-      { "title": "Values", "desc": "Quality, empathy, and real progress for every learner." }
+      {
+        "title": "Mission",
+        "desc": "Make learning understandable, motivating, and accessible for every student."
+      },
+      {
+        "title": "Vision",
+        "desc": "A new generation of learning — modern, structured, and results-driven."
+      },
+      {
+        "title": "Values",
+        "desc": "Quality, empathy, and real progress for every learner."
+      }
     ],
     "heroFeatures": [
-      { "title": "More than tutoring", "desc": "Holistic learning support." },
-      { "title": "Real results", "desc": "Measurable progress & confidence." },
-      { "title": "Individual support", "desc": "Tailored to every student." },
-      { "title": "Shaping the future", "desc": "Skills for tomorrow." }
+      {
+        "title": "More than tutoring",
+        "desc": "Holistic learning support."
+      },
+      {
+        "title": "Real results",
+        "desc": "Measurable progress & confidence."
+      },
+      {
+        "title": "Individual support",
+        "desc": "Tailored to every student."
+      },
+      {
+        "title": "Shaping the future",
+        "desc": "Skills for tomorrow."
+      }
     ],
     "storyEyebrow": "OUR STORY",
     "storyTitle": "How it all began",
@@ -36,19 +56,46 @@
     "missionEyebrow": "OUR MISSION IN DETAIL",
     "missionTitle": "What we work for every day",
     "missionCards": [
-      { "title": "Make knowledge understandable", "desc": "Complex topics broken down clearly — so students truly grasp the material." },
-      { "title": "Provide high-quality materials", "desc": "Premium worksheets, videos, and guides created by experienced teachers." },
-      { "title": "Support individually", "desc": "Every student learns differently — we adapt to their pace and goals." },
-      { "title": "Achieve measurable results", "desc": "Better grades, more confidence, and skills that last beyond exams." }
+      {
+        "title": "Make knowledge understandable",
+        "desc": "Complex topics broken down clearly — so students truly grasp the material."
+      },
+      {
+        "title": "Provide high-quality materials",
+        "desc": "Premium worksheets, videos, and guides created by experienced teachers."
+      },
+      {
+        "title": "Support individually",
+        "desc": "Every student learns differently — we adapt to their pace and goals."
+      },
+      {
+        "title": "Achieve measurable results",
+        "desc": "Better grades, more confidence, and skills that last beyond exams."
+      }
     ],
     "principlesEyebrow": "WHY NEXTGRADES?",
     "principlesTitle": "Our principles for your success",
     "principles": [
-      { "title": "Personal approach", "desc": "Every student is unique — we tailor our support to individual needs and learning styles." },
-      { "title": "Experienced teachers", "desc": "Our team consists of qualified educators with passion and proven expertise." },
-      { "title": "Modern methods", "desc": "We combine proven pedagogy with digital tools for efficient, engaging learning." },
-      { "title": "Real results", "desc": "Our focus is on measurable progress — better grades and lasting confidence." },
-      { "title": "Passion for education", "desc": "We love what we do and invest heart and soul into every student's success." }
+      {
+        "title": "Personal approach",
+        "desc": "Every student is unique — we tailor our support to individual needs and learning styles."
+      },
+      {
+        "title": "Experienced teachers",
+        "desc": "Our team consists of qualified educators with passion and proven expertise."
+      },
+      {
+        "title": "Modern methods",
+        "desc": "We combine proven pedagogy with digital tools for efficient, engaging learning."
+      },
+      {
+        "title": "Real results",
+        "desc": "Our focus is on measurable progress — better grades and lasting confidence."
+      },
+      {
+        "title": "Passion for education",
+        "desc": "We love what we do and invest heart and soul into every student's success."
+      }
     ],
     "promiseEyebrow": "OUR PROMISE",
     "promiseTitle": "We always give our best — for your success.",
@@ -62,45 +109,120 @@
     "statsEyebrow": "OUR GOAL",
     "statsTitle": "A new generation of learning",
     "stats": [
-      { "value": "200+", "label": "happy students" },
-      { "value": "25+", "label": "experienced teachers" },
-      { "value": "95%", "label": "improved grades" },
-      { "value": "100%", "label": "passion & commitment" }
+      {
+        "value": "200+",
+        "label": "happy students"
+      },
+      {
+        "value": "25+",
+        "label": "experienced teachers"
+      },
+      {
+        "value": "95%",
+        "label": "improved grades"
+      },
+      {
+        "value": "100%",
+        "label": "passion & commitment"
+      }
     ],
     "teamEyebrow": "OUR TEAM",
     "teamSubtitle": "A team of passionate teachers, learning experts, and visionaries.",
     "team": [
-      { "name": "Adrian H.", "role": "Founder & CEO", "bio": "Passion for education and modern learning systems." },
-      { "name": "Lea Maria", "role": "Head of Pedagogy", "bio": "Expert in learning methods and lesson development." },
-      { "name": "David K.", "role": "Head of Online Tutoring", "bio": "Academic lead and point of contact for our teachers." },
-      { "name": "Julia W.", "role": "Learning Materials & Content", "bio": "Responsible for high-quality learning content and materials." },
-      { "name": "Michael T.", "role": "Technology & Platform", "bio": "Ensures the best digital learning experience." }
+      {
+        "name": "Adrian H.",
+        "role": "Founder & CEO",
+        "bio": "Passion for education and modern learning systems."
+      },
+      {
+        "name": "Lea Maria",
+        "role": "Head of Pedagogy",
+        "bio": "Expert in learning methods and lesson development."
+      },
+      {
+        "name": "David K.",
+        "role": "Head of Online Tutoring",
+        "bio": "Academic lead and point of contact for our teachers."
+      },
+      {
+        "name": "Julia W.",
+        "role": "Learning Materials & Content",
+        "bio": "Responsible for high-quality learning content and materials."
+      },
+      {
+        "name": "Michael T.",
+        "role": "Technology & Platform",
+        "bio": "Ensures the best digital learning experience."
+      }
     ],
     "milestonesEyebrow": "OUR JOURNEY",
     "milestones": [
-      { "year": "2021", "title": "The beginning", "desc": "NextGrades founded as a passion project to revolutionize tutoring." },
-      { "year": "2022", "title": "First 100 students", "desc": "Reached our first milestone with overwhelmingly positive feedback." },
-      { "year": "2023", "title": "Digital platform", "desc": "Launched our online learning platform with premium materials." },
-      { "year": "2024", "title": "200+ students", "desc": "Growing community and expanded subject offerings." },
-      { "year": "2025", "title": "AI & innovation", "desc": "Integrating AI-powered tools for personalized learning paths." }
+      {
+        "year": "2021",
+        "title": "The beginning",
+        "desc": "NextGrades founded as a passion project to revolutionize tutoring."
+      },
+      {
+        "year": "2022",
+        "title": "First 100 students",
+        "desc": "Reached our first milestone with overwhelmingly positive feedback."
+      },
+      {
+        "year": "2023",
+        "title": "Digital platform",
+        "desc": "Launched our online learning platform with premium materials."
+      },
+      {
+        "year": "2024",
+        "title": "200+ students",
+        "desc": "Growing community and expanded subject offerings."
+      },
+      {
+        "year": "2025",
+        "title": "AI & innovation",
+        "desc": "Integrating AI-powered tools for personalized learning paths."
+      }
     ],
     "communityTitle": "Become part of the NextGrades community",
     "communityDesc": "Start your journey toward better grades, more confidence, and real learning success.",
     "communityCta": "Book free consultation",
-    "communityTags": ["No obligation", "Free", "Individual consultation"]
+    "communityTags": [
+      "No obligation",
+      "Free",
+      "Individual consultation"
+    ]
   },
   "programsPage": {
-    "breadcrumb": "Home > Programs",
+    "heroEyebrow": "OUR PROGRAMS",
+    "heroSubtitle": "Choose the program that fits you best — personal support, modern methods, and flexible online learning.",
     "heroFeatures": [
-      { "title": "Premium support", "desc": "Personal, engaged, results-oriented." },
-      { "title": "Modern learning methods", "desc": "Efficient and systematic." },
-      { "title": "Flexible & online", "desc": "Learn where you want – when you want." }
+      {
+        "title": "Premium support",
+        "desc": "Personal, engaged, results-oriented."
+      },
+      {
+        "title": "Modern methods",
+        "desc": "Efficient and systematic."
+      },
+      {
+        "title": "Flexible & online",
+        "desc": "Learn where you want — when you want."
+      }
     ],
     "freeConsultation": "Free consultation",
     "stats": [
-      { "number": "200+", "label": "happy students" },
-      { "number": "25+", "label": "top teachers" },
-      { "number": "4.9/5", "label": "rating from parents & students" }
+      {
+        "number": "200+",
+        "label": "happy students"
+      },
+      {
+        "number": "25+",
+        "label": "top teachers"
+      },
+      {
+        "number": "4.9/5",
+        "label": "rating from parents & students"
+      }
     ],
     "sectionEyebrow": "OUR PROGRAMS",
     "sectionTitle": "Find the perfect program for you.",
@@ -112,37 +234,94 @@
         "type": "1:1",
         "title": "1:1 Premium Tutoring",
         "description": "Individual tutoring tailored 100% to you.",
-        "features": ["Individual 1:1 support", "Personal learning plans", "Exam preparation", "Flexible appointments", "Experienced focus"],
+        "features": [
+          "Individual 1:1 support",
+          "Personal learning plans",
+          "Exam preparation",
+          "Flexible appointments",
+          "Experienced teachers"
+        ],
         "price": "from €45 / hour"
       },
       {
         "type": "Group",
         "title": "Small Group Learning",
         "description": "Learning in small groups with a maximum of 3–5 students.",
-        "features": ["Max. 3–5 students", "Motivating atmosphere", "Exchange & collaboration", "More affordable than 1:1", "Shared progress"],
+        "features": [
+          "Max. 3–5 students",
+          "Motivating atmosphere",
+          "Exchange & collaboration",
+          "More affordable than 1:1",
+          "Shared progress"
+        ],
         "price": "from €30 / student"
       },
       {
         "type": "Signature",
         "title": "Math Excellence Program",
         "description": "Our premium program for mathematics and graduation exam preparation.",
-        "features": ["Weekly live sessions", "Premium materials", "Exercises, videos & PDFs", "Exam prep & strategies", "Support between sessions"],
+        "features": [
+          "Weekly live sessions",
+          "Premium materials",
+          "Exercises, videos & PDFs",
+          "Exam prep & strategies",
+          "Support between sessions"
+        ],
         "price": "from €99 / month"
       }
     ],
     "compareTitle": "Program comparison",
-    "compareHeaders": { "features": "Features", "oneOnOne": "1:1 Premium Tutoring", "group": "Small Group Learning", "math": "Math Excellence Program" },
+    "compareHeaders": {
+      "features": "Features",
+      "oneOnOne": "1:1 Premium Tutoring",
+      "group": "Small Group Learning",
+      "math": "Math Excellence Program"
+    },
     "compareRows": [
-      { "label": "Support", "c1": "Individual 1:1", "c2": "Max. 3–5 students", "c3": "Group + individual support" },
-      { "label": "Learning plans", "c1": true, "c2": true, "c3": true },
-      { "label": "Flexible appointments", "c1": true, "c2": true, "c3": "Fixed times (weekly)" },
-      { "label": "Learning materials", "c1": true, "c2": true, "c3": true },
-      { "label": "Graduation exam prep", "c1": true, "c2": true, "c3": true },
-      { "label": "Price", "c1": "from €45 / hour", "c2": "from €30 / student", "c3": "from €99 / month" }
+      {
+        "label": "Support",
+        "c1": "Individual 1:1",
+        "c2": "Max. 3–5 students",
+        "c3": "Group + individual support"
+      },
+      {
+        "label": "Learning plans",
+        "c1": true,
+        "c2": true,
+        "c3": true
+      },
+      {
+        "label": "Flexible appointments",
+        "c1": true,
+        "c2": true,
+        "c3": "Fixed times (weekly)"
+      },
+      {
+        "label": "Learning materials",
+        "c1": true,
+        "c2": true,
+        "c3": true
+      },
+      {
+        "label": "Graduation exam prep",
+        "c1": true,
+        "c2": true,
+        "c3": true
+      },
+      {
+        "label": "Price",
+        "c1": "from €45 / hour",
+        "c2": "from €30 / student",
+        "c3": "from €99 / month"
+      }
     ],
     "ctaTitle": "Not sure which program fits?",
     "ctaDesc": "Book a free consultation – we'll advise you and find the best path together.",
-    "ctaTags": ["No obligation & free", "Individual consultation", "The best options for you"],
+    "ctaTags": [
+      "No obligation & free",
+      "Individual consultation",
+      "The best options for you"
+    ],
     "ctaButton": "Book free consultation"
   },
   "subjectsPage": {
@@ -155,72 +334,288 @@
     "whyEyebrow": "WHY NEXTGRADES",
     "whyTitle": "Your advantage with us",
     "benefits": [
-      { "title": "Personal support", "desc": "Individual and tailored to your learning progress." },
-      { "title": "High-quality materials", "desc": "Exclusive learning content, videos, and worksheets." },
-      { "title": "Flexible & online", "desc": "Learn when and where you want – 100% online and flexible." },
-      { "title": "Better results", "desc": "More understanding, better grades, and more confidence." }
+      {
+        "title": "Personal support",
+        "desc": "Individual and tailored to your learning progress."
+      },
+      {
+        "title": "High-quality materials",
+        "desc": "Exclusive learning content, videos, and worksheets."
+      },
+      {
+        "title": "Flexible & online",
+        "desc": "Learn when and where you want – 100% online and flexible."
+      },
+      {
+        "title": "Better results",
+        "desc": "More understanding, better grades, and more confidence."
+      }
     ],
     "stats": [
-      { "value": "200+", "label": "happy students" },
-      { "value": "25+", "label": "experienced teachers" },
-      { "value": "4.9/5", "label": "rating from parents & students" },
-      { "value": "100%", "label": "online & flexible" }
+      {
+        "value": "200+",
+        "label": "happy students"
+      },
+      {
+        "value": "25+",
+        "label": "experienced teachers"
+      },
+      {
+        "value": "4.9/5",
+        "label": "rating from parents & students"
+      },
+      {
+        "value": "100%",
+        "label": "online & flexible"
+      }
     ],
     "ctaTitle": "Ready to improve your grades?",
     "ctaDesc": "Book your free consultation now and get started!",
     "ctaButton": "Book free consultation",
     "items": [
-      { "id": "math", "title": "Mathematics", "description": "From basics to graduation exams – we make math understandable and fun!", "features": ["All grade levels", "Exam preparation", "Worksheets", "Step-by-step explanations"] },
-      { "id": "english", "title": "English", "description": "Improve your understanding, conversation, and skills in all areas.", "features": ["Grammar & vocabulary", "Conversation", "Business English", "Essay writing"] },
-      { "id": "german", "title": "German", "description": "Understand texts, write correctly, and compose essays – we help you!", "features": ["Grammar & spelling", "Text analysis", "Essays & interpretation", "Exam preparation"] },
-      { "id": "physics", "title": "Physics", "description": "You truly understand physics when you apply it yourself – we show you how!", "features": ["Mechanics", "Electricity", "Optics & thermodynamics", "Exam preparation"] },
-      { "id": "chemistry", "title": "Chemistry", "description": "Understand and build chemistry knowledge – we show you how it works!", "features": ["Substances & reactions", "Organic chemistry", "Basics & exercises", "Exam preparation"] },
-      { "id": "business", "title": "Business Studies", "description": "Economics, accounting, and business fundamentals made clear for every grade level.", "features": ["Economics basics", "Accounting", "Case studies", "Exam preparation"] },
-      { "id": "computer-science", "title": "Computer Science", "description": "Programming, algorithms, and digital literacy with practical projects and exercises.", "features": ["Programming basics", "Algorithms", "Projects & labs", "Exam preparation"] },
-      { "id": "technical-drawing", "title": "Technical Drawing", "description": "Master technical drawing skills with guided practice and professional standards.", "features": ["Drafting fundamentals", "CAD basics", "Technical standards", "Exam preparation"] }
+      {
+        "id": "math",
+        "title": "Mathematics",
+        "description": "From basics to graduation exams – we make math understandable and fun!",
+        "features": [
+          "All grade levels",
+          "Exam preparation",
+          "Worksheets",
+          "Step-by-step explanations"
+        ]
+      },
+      {
+        "id": "english",
+        "title": "English",
+        "description": "Improve your understanding, conversation, and skills in all areas.",
+        "features": [
+          "Grammar & vocabulary",
+          "Conversation",
+          "Business English",
+          "Essay writing"
+        ]
+      },
+      {
+        "id": "german",
+        "title": "German",
+        "description": "Understand texts, write correctly, and compose essays – we help you!",
+        "features": [
+          "Grammar & spelling",
+          "Text analysis",
+          "Essays & interpretation",
+          "Exam preparation"
+        ]
+      },
+      {
+        "id": "physics",
+        "title": "Physics",
+        "description": "You truly understand physics when you apply it yourself – we show you how!",
+        "features": [
+          "Mechanics",
+          "Electricity",
+          "Optics & thermodynamics",
+          "Exam preparation"
+        ]
+      },
+      {
+        "id": "chemistry",
+        "title": "Chemistry",
+        "description": "Understand and build chemistry knowledge – we show you how it works!",
+        "features": [
+          "Substances & reactions",
+          "Organic chemistry",
+          "Basics & exercises",
+          "Exam preparation"
+        ]
+      },
+      {
+        "id": "business",
+        "title": "Business Studies",
+        "description": "Economics, accounting, and business fundamentals made clear for every grade level.",
+        "features": [
+          "Economics basics",
+          "Accounting",
+          "Case studies",
+          "Exam preparation"
+        ]
+      },
+      {
+        "id": "computer-science",
+        "title": "Computer Science",
+        "description": "Programming, algorithms, and digital literacy with practical projects and exercises.",
+        "features": [
+          "Programming basics",
+          "Algorithms",
+          "Projects & labs",
+          "Exam preparation"
+        ]
+      },
+      {
+        "id": "technical-drawing",
+        "title": "Technical Drawing",
+        "description": "Master technical drawing skills with guided practice and professional standards.",
+        "features": [
+          "Drafting fundamentals",
+          "CAD basics",
+          "Technical standards",
+          "Exam preparation"
+        ]
+      }
     ]
   },
   "resourcesPage": {
     "rating": "4.9/5 stars",
     "ratingDesc": "Rated by parents & students",
-    "tabs": ["All resources", "Learning materials", "Worksheets", "Explainer videos", "Guides & e-books", "Exam preparation", "Mini courses", "Formula collections"],
-    "materialTypes": ["Worksheets & exercises", "Summaries", "Guides & study plans", "Explainer videos", "Formula collections"],
+    "tabs": [
+      "All resources",
+      "Learning materials",
+      "Worksheets",
+      "Explainer videos",
+      "Guides & e-books",
+      "Exam preparation",
+      "Mini courses",
+      "Formula collections"
+    ],
+    "materialTypes": [
+      "Worksheets & exercises",
+      "Summaries",
+      "Guides & study plans",
+      "Explainer videos",
+      "Formula collections"
+    ],
     "resultsCount": "428 results",
     "sortNewest": "Sort by: Newest first",
     "freeResources": [
-      { "title": "Math formula collection", "subtitle": "Grades 1–5", "description": "All important formulas and rules clearly summarized.", "type": "PDF" },
-      { "title": "German spelling guide", "subtitle": "Free", "description": "The most important spelling rules explained simply.", "type": "PDF" },
-      { "title": "Study plan template", "subtitle": "Free", "description": "Plan your learning step by step and stay on track.", "type": "PDF" },
-      { "title": "5 tips against exam stress", "subtitle": "Free", "description": "Discover how to prepare for exams without stress.", "type": "Video" }
+      {
+        "title": "Math formula collection",
+        "subtitle": "Grades 1–5",
+        "description": "All important formulas and rules clearly summarized.",
+        "type": "PDF"
+      },
+      {
+        "title": "German spelling guide",
+        "subtitle": "Free",
+        "description": "The most important spelling rules explained simply.",
+        "type": "PDF"
+      },
+      {
+        "title": "Study plan template",
+        "subtitle": "Free",
+        "description": "Plan your learning step by step and stay on track.",
+        "type": "PDF"
+      },
+      {
+        "title": "5 tips against exam stress",
+        "subtitle": "Free",
+        "description": "Discover how to prepare for exams without stress.",
+        "type": "Video"
+      }
     ],
     "premiumResources": [
-      { "title": "Mathematics", "subtitle": "Grade 2, Semester 2", "description": "Complete learning materials, videos, worksheets and more.", "type": "PREMIUM" },
-      { "title": "German", "subtitle": "Grade 3, Semester 1", "description": "German learning materials, videos and worksheets.", "type": "PREMIUM" },
-      { "title": "English", "subtitle": "Grade 4, Semester 2", "description": "Grammar, vocabulary, materials and more.", "type": "PREMIUM" },
-      { "title": "Physics", "subtitle": "Grade 5, Semester 1", "description": "All topics, formulas, examples and exercises.", "type": "PREMIUM" }
+      {
+        "title": "Mathematics",
+        "subtitle": "Grade 2, Semester 2",
+        "description": "Complete learning materials, videos, worksheets and more.",
+        "type": "PREMIUM"
+      },
+      {
+        "title": "German",
+        "subtitle": "Grade 3, Semester 1",
+        "description": "German learning materials, videos and worksheets.",
+        "type": "PREMIUM"
+      },
+      {
+        "title": "English",
+        "subtitle": "Grade 4, Semester 2",
+        "description": "Grammar, vocabulary, materials and more.",
+        "type": "PREMIUM"
+      },
+      {
+        "title": "Physics",
+        "subtitle": "Grade 5, Semester 1",
+        "description": "All topics, formulas, examples and exercises.",
+        "type": "PREMIUM"
+      }
     ],
     "subjectsWithCounts": [
-      { "name": "All subjects", "count": 428 },
-      { "name": "Mathematics", "count": 98 },
-      { "name": "German", "count": 82 },
-      { "name": "English", "count": 76 },
-      { "name": "Physics", "count": 54 },
-      { "name": "Chemistry", "count": 48 },
-      { "name": "Biology", "count": 38 },
-      { "name": "Economics", "count": 32 }
+      {
+        "name": "All subjects",
+        "count": 428
+      },
+      {
+        "name": "Mathematics",
+        "count": 98
+      },
+      {
+        "name": "German",
+        "count": 82
+      },
+      {
+        "name": "English",
+        "count": 76
+      },
+      {
+        "name": "Physics",
+        "count": 54
+      },
+      {
+        "name": "Chemistry",
+        "count": 48
+      },
+      {
+        "name": "Biology",
+        "count": 38
+      },
+      {
+        "name": "Economics",
+        "count": 32
+      }
     ],
-    "subjectsFilter": ["All subjects", "Mathematics", "English", "German", "Physics", "Chemistry"],
-    "gradesFilter": ["All grades", "Grade 5", "Grade 6", "Grade 7", "Grade 8", "Grade 9", "Grade 10", "Grade 11", "Grade 12"],
-    "semestersFilter": ["All semesters", "Semester 1", "Semester 2"]
+    "subjectsFilter": [
+      "All subjects",
+      "Mathematics",
+      "English",
+      "German",
+      "Physics",
+      "Chemistry"
+    ],
+    "gradesFilter": [
+      "All grades",
+      "Grade 5",
+      "Grade 6",
+      "Grade 7",
+      "Grade 8",
+      "Grade 9",
+      "Grade 10",
+      "Grade 11",
+      "Grade 12"
+    ],
+    "semestersFilter": [
+      "All semesters",
+      "Semester 1",
+      "Semester 2"
+    ]
   },
   "pricingPage": {
     "plansEyebrow": "CHOOSE YOUR PLAN",
     "plansTitle": "Invest in your future — pick the support that fits you",
     "stats": [
-      { "value": "200+", "label": "active students" },
-      { "value": "4.9/5", "label": "average rating" },
-      { "value": "95%", "label": "grade improvement" },
-      { "value": "100%", "label": "online & flexible" }
+      {
+        "value": "200+",
+        "label": "active students"
+      },
+      {
+        "value": "4.9/5",
+        "label": "average rating"
+      },
+      {
+        "value": "95%",
+        "label": "grade improvement"
+      },
+      {
+        "value": "100%",
+        "label": "online & flexible"
+      }
     ],
     "trustedTitle": "Trusted by 200+ students",
     "trustedDesc": "4.9/5 average rating from real students and parents",
@@ -228,7 +623,11 @@
     "finalCtaTitle": "Together we achieve great things",
     "finalCtaDesc": "Not sure which plan fits? Book a free consultation — no obligation.",
     "finalCtaButton": "Book free consultation",
-    "finalCtaTags": ["No obligation", "Free", "Individual consultation"],
+    "finalCtaTags": [
+      "No obligation",
+      "Free",
+      "Individual consultation"
+    ],
     "plans": [
       {
         "id": "resource",
@@ -278,52 +677,126 @@
       }
     ],
     "faqs": [
-      { "question": "Can I switch plans at any time?", "answer": "Yes! You can upgrade or downgrade your plan at any time." },
-      { "question": "Is there a free trial?", "answer": "Yes! Contact us for a free consultation." },
-      { "question": "What payment methods do you accept?", "answer": "We accept credit cards, PayPal, and bank transfers." }
+      {
+        "question": "Can I switch plans at any time?",
+        "answer": "Yes! You can upgrade or downgrade your plan at any time."
+      },
+      {
+        "question": "Is there a free trial?",
+        "answer": "Yes! Contact us for a free consultation."
+      },
+      {
+        "question": "What payment methods do you accept?",
+        "answer": "We accept credit cards, PayPal, and bank transfers."
+      }
     ]
   },
   "dashboardNav": {
     "student": [
-      { "label": "Dashboard" },
-      { "label": "My courses" },
-      { "label": "Appointments" },
-      { "label": "Materials" },
-      { "label": "AI quizzes" },
-      { "label": "Progress" },
-      { "label": "NextGrades AI" },
-      { "label": "Settings" }
+      {
+        "label": "Dashboard"
+      },
+      {
+        "label": "My courses"
+      },
+      {
+        "label": "Appointments"
+      },
+      {
+        "label": "Materials"
+      },
+      {
+        "label": "AI quizzes"
+      },
+      {
+        "label": "Progress"
+      },
+      {
+        "label": "NextGrades AI"
+      },
+      {
+        "label": "Settings"
+      }
     ],
     "teacher": [
-      { "label": "Dashboard" },
-      { "label": "Students" },
-      { "label": "Schedule" },
-      { "label": "Resources" },
-      { "label": "AI generator" },
-      { "label": "Content" },
-      { "label": "Analytics" },
-      { "label": "Earnings" },
-      { "label": "NextGrades AI" },
-      { "label": "Settings" }
+      {
+        "label": "Dashboard"
+      },
+      {
+        "label": "Students"
+      },
+      {
+        "label": "Schedule"
+      },
+      {
+        "label": "Resources"
+      },
+      {
+        "label": "AI generator"
+      },
+      {
+        "label": "Content"
+      },
+      {
+        "label": "Analytics"
+      },
+      {
+        "label": "Earnings"
+      },
+      {
+        "label": "NextGrades AI"
+      },
+      {
+        "label": "Settings"
+      }
     ],
     "admin": [
-      { "label": "Dashboard" },
-      { "label": "Website content" },
-      { "label": "Students" },
-      { "label": "Teachers" },
-      { "label": "Users" },
-      { "label": "Notifications" },
-      { "label": "Quiz monitor" },
-      { "label": "Moderation" },
-      { "label": "Memberships" },
-      { "label": "Payments" },
-      { "label": "Resources" },
-      { "label": "AI Chatbot" },
-      { "label": "Analytics" },
-      { "label": "Zoom" }
+      {
+        "label": "Dashboard"
+      },
+      {
+        "label": "Website content"
+      },
+      {
+        "label": "Students"
+      },
+      {
+        "label": "Teachers"
+      },
+      {
+        "label": "Users"
+      },
+      {
+        "label": "Notifications"
+      },
+      {
+        "label": "Quiz monitor"
+      },
+      {
+        "label": "Moderation"
+      },
+      {
+        "label": "Memberships"
+      },
+      {
+        "label": "Payments"
+      },
+      {
+        "label": "Resources"
+      },
+      {
+        "label": "AI Chatbot"
+      },
+      {
+        "label": "Analytics"
+      },
+      {
+        "label": "Zoom"
+      }
     ],
     "logout": "Log out",
-    "backToSite": "Back to website"
+    "backToSite": "Back to website",
+    "backToHomepage": "Back to homepage"
   },
   "forgotPassword": {
     "title": "Forgot password?",
@@ -391,8 +864,28 @@
     "tip1": "Upload clear, structured PDFs",
     "tip2": "Choose the appropriate difficulty level",
     "tip3": "Review the generated quiz before use",
-    "subjects": ["Mathematics", "English", "German", "Physics"],
-    "grades": ["Grade 1", "Grade 2", "Grade 3", "Grade 4"]
+    "subjects": [
+      "Mathematics",
+      "English",
+      "German",
+      "Physics"
+    ],
+    "grades": [
+      "Grade 1",
+      "Grade 2",
+      "Grade 3",
+      "Grade 4"
+    ],
+    "yourMaterials": "Your materials",
+    "selectMaterial": "Select material",
+    "selectSubject": "Select subject",
+    "uploading": "Uploading…",
+    "uploadSuccess": "Upload successful",
+    "materialProcessing": "Processing material…",
+    "ready": "Ready",
+    "quizTitle": "Quiz title",
+    "deleted": "Deleted",
+    "viewAll": "View all"
   },
   "dashboardCommon": {
     "comingSoon": "Coming soon!",
@@ -404,33 +897,99 @@
     "minutes": "min",
     "joinZoom": "Join Zoom",
     "download": "Download",
-    "premium": "Premium"
+    "premium": "Premium",
+    "save": "Save changes",
+    "saved": "Settings saved",
+    "joined": "Joined",
+    "status": "Status",
+    "menu": "Menu"
   },
   "dashboardPages": {
     "student": {
-      "courses": { "title": "My courses", "description": "Overview of all your current and past courses" },
-      "appointments": { "title": "Appointments", "description": "Manage your tutoring appointments" },
-      "resources": { "title": "Materials", "description": "Access your learning materials" },
-      "quizzes": { "title": "AI quizzes", "description": "Practice with AI-generated quizzes" },
-      "progress": { "title": "Progress", "description": "Track your learning progress" },
-      "settings": { "title": "Settings", "description": "Manage your account settings" }
+      "courses": {
+        "title": "My courses",
+        "description": "Overview of all your current and past courses"
+      },
+      "appointments": {
+        "title": "Appointments",
+        "description": "Manage your tutoring appointments"
+      },
+      "resources": {
+        "title": "Materials",
+        "description": "Access your learning materials"
+      },
+      "quizzes": {
+        "title": "AI quizzes",
+        "description": "Practice with AI-generated quizzes"
+      },
+      "progress": {
+        "title": "Progress",
+        "description": "Track your learning progress"
+      },
+      "settings": {
+        "title": "Settings",
+        "description": "Manage your account settings"
+      }
     },
     "teacher": {
-      "students": { "title": "Students", "description": "Manage your assigned students" },
-      "schedule": { "title": "Schedule", "description": "Plan and manage your appointments" },
-      "resources": { "title": "Resources", "description": "Upload and manage learning materials" },
-      "aiGenerator": { "title": "AI generator", "description": "Create quizzes and learning content with AI" },
-      "earnings": { "title": "Earnings", "description": "Overview of your income and payouts" },
-      "settings": { "title": "Settings", "description": "Manage your teacher profile" }
+      "students": {
+        "title": "Students",
+        "description": "Manage your assigned students"
+      },
+      "schedule": {
+        "title": "Schedule",
+        "description": "Plan and manage your appointments"
+      },
+      "resources": {
+        "title": "Resources",
+        "description": "Upload and manage learning materials"
+      },
+      "aiGenerator": {
+        "title": "AI generator",
+        "description": "Create quizzes and learning content with AI"
+      },
+      "earnings": {
+        "title": "Earnings",
+        "description": "Overview of your income and payouts"
+      },
+      "settings": {
+        "title": "Settings",
+        "description": "Manage your teacher profile"
+      }
     },
     "admin": {
-      "websiteContent": { "title": "Website content", "description": "Edit public website content" },
-      "students": { "title": "Students", "description": "Manage all students on the platform" },
-      "teachers": { "title": "Teachers", "description": "Manage all teachers on the platform" },
-      "memberships": { "title": "Memberships", "description": "Manage subscriptions and memberships" },
-      "payments": { "title": "Payments", "description": "View and manage payments" },
-      "resources": { "title": "Resources", "description": "Manage platform learning resources" },
-      "analytics": { "title": "Analytics", "description": "Platform statistics and insights" }
+      "websiteContent": {
+        "title": "Website content",
+        "description": "Edit public website content"
+      },
+      "students": {
+        "title": "Students",
+        "description": "Manage all students on the platform"
+      },
+      "teachers": {
+        "title": "Teachers",
+        "description": "Manage all teachers on the platform"
+      },
+      "memberships": {
+        "title": "Memberships",
+        "description": "Manage subscriptions and memberships"
+      },
+      "payments": {
+        "title": "Payments",
+        "description": "View and manage payments"
+      },
+      "resources": {
+        "title": "Resources",
+        "description": "Manage platform learning resources"
+      },
+      "analytics": {
+        "title": "Analytics",
+        "description": "Platform statistics and insights"
+      },
+      "cookies": {
+        "title": "Cookie management",
+        "description": "Consent settings, tracking scripts, and exports"
+      }
     }
   },
   "chatbotAdmin": {
@@ -521,7 +1080,80 @@
     "liveClasses": "Live classes",
     "liveClassesDesc": "Join your upcoming live classes with one click.",
     "noLiveClasses": "No upcoming live classes scheduled.",
-    "joinClass": "Join class"
+    "joinClass": "Join class",
+    "appointmentsDesc": "View upcoming and past lessons, and request new appointments.",
+    "coursesDesc": "Track your learning progress across all enrolled courses.",
+    "materialsDesc": "Browse worksheets, videos, and study guides for your courses.",
+    "connectCalendar": "Connect calendar",
+    "requestAppointment": "Request new appointment",
+    "tabUpcoming": "Upcoming appointments",
+    "tabPast": "Past appointments",
+    "tabCalendar": "Calendar view",
+    "yourUpcoming": "Your upcoming appointments",
+    "yourPast": "Your past appointments",
+    "minShort": "min",
+    "howAppointmentsWork": "How your appointments work",
+    "stepStart": "Start appointment",
+    "stepOnTime": "Be on time",
+    "stepLearn": "Learn & progress",
+    "unitsLeftDesc": "{{remaining}} of {{total}} lesson units remaining",
+    "viewDetails": "View details",
+    "yourTeacher": "Your teacher",
+    "viewProfile": "View profile",
+    "continueLearning": "Continue learning",
+    "progressKeepGoing": "Keep it up!",
+    "tasksWaitingDesc": "{{count}} tasks waiting",
+    "lessonTopic": "Lesson",
+    "goToTasksBtn": "Go to tasks",
+    "viewAllMaterials": "View all materials",
+    "toMaterialLibraryBtn": "Library",
+    "motivationQuoteFull": "Every day is a new chance to grow.",
+    "tabAllMaterials": "All materials",
+    "tabByCourse": "By course",
+    "tabByType": "By type",
+    "tabFavorites": "Favorites",
+    "searchMaterials": "Search materials…",
+    "selectCourse": "Select course",
+    "selectType": "Select type",
+    "resetFilters": "Reset filters",
+    "colMaterial": "Material",
+    "colCourse": "Course",
+    "colType": "Type",
+    "colAdded": "Added",
+    "colActions": "Actions",
+    "ofTotal": "of {{total}} materials",
+    "storageSpace": "Storage space",
+    "storageUsed": "used",
+    "manageStorage": "Manage storage",
+    "myFavorites": "My favorites",
+    "showAll": "Show all",
+    "noFavorites": "No favorites yet.",
+    "materialNotFound": "Material not found?",
+    "materialNotFoundDesc": "If a material is missing, contact your teacher or our support team.",
+    "goToSupport": "Go to support",
+    "progressLabel": "Progress",
+    "unitsCompleted": "{{completed}} of {{total}} units completed",
+    "openCourse": "Open course",
+    "courseDetails": "Course details",
+    "goToAppointments": "Go to my appointments",
+    "tabAllCourses": "All courses",
+    "tabActiveCourses": "Active courses",
+    "tabCompletedCourses": "Completed courses",
+    "sortBy": "Sort by: Course name (A–Z)",
+    "keepGoingBanner": "You're on track — keep going!",
+    "yourLearningProgress": "Your learning progress",
+    "legendCompleted": "Completed",
+    "legendInProgress": "In progress",
+    "legendPlanned": "Planned",
+    "learnedHours": "Hours learned",
+    "detailedAnalysis": "Detailed analysis",
+    "activeCoursesCount": "{{count}} active courses",
+    "coursesOverview": "Courses overview",
+    "joinZoomMeeting": "Join Zoom meeting",
+    "typeVideo": "Video",
+    "typeImage": "Image",
+    "typeOther": "File",
+    "helpSupport": "Help & support"
   },
   "teacherDashboard": {
     "overviewTitle": "Teacher dashboard",
@@ -577,7 +1209,6 @@
     "noAppointments": "No appointments scheduled",
     "planWithStudents": "Students book lessons through the consultation page. Your schedule will appear here.",
     "myStudents": "My students",
-    "allStudents": "All students",
     "allStudents": "All students",
     "nextLesson": "Next lesson",
     "uploadMaterial": "Upload material",
@@ -703,7 +1334,8 @@
     "resources": "Resources",
     "chatbot": "AI Chatbot",
     "analytics": "Analytics",
-    "zoom": "Zoom"
+    "zoom": "Zoom",
+    "cookies": "Cookies"
   },
   "adminHub": {
     "featuredLabel": "Most important",
@@ -721,6 +1353,7 @@
     "chatbotDesc": "AI chatbot settings",
     "analyticsDesc": "Platform statistics",
     "zoomDesc": "Zoom meetings setup",
+    "cookiesDesc": "Consent banner, tracking scripts, and audit export",
     "backToOverview": "Dashboard overview",
     "browseAll": "Browse all admin sections",
     "choosePageTitle": "Choose a page to edit",
@@ -749,7 +1382,6 @@
     "websiteContent": "Website content",
     "activeStudents": "Active students",
     "activeTeachers": "Active teachers",
-    "activeCourses": "Active courses",
     "platformRevenue": "Platform revenue",
     "manageStudents": "Manage students",
     "manageTeachers": "Manage teachers",
@@ -998,6 +1630,104 @@
     "linkAiChat": "NextGrades AI",
     "nameRequired": "Please enter your full name",
     "passwordRequired": "Please enter a new password",
-    "loadError": "Could not load your profile. Please sign in again."
+    "loadError": "Could not load your profile. Please sign in again.",
+    "saveFailed": "Could not save settings"
+  },
+  "checkout": {
+    "title": "Complete your subscription",
+    "backToPricing": "Back to pricing",
+    "secure": "Secure checkout",
+    "cards": "Card, PayPal & bank transfer",
+    "payNow": "Pay now",
+    "secureNote": "Payments are processed securely via Stripe.",
+    "failed": "Checkout failed",
+    "successTitle": "Welcome to NextGrades!",
+    "successDesc": "Your subscription is active. You can start learning right away.",
+    "successHint": "Check your email for a receipt and next steps.",
+    "goDashboard": "Go to dashboard",
+    "browseResources": "Browse resources"
+  },
+  "adminPortal": {
+    "badge": "Admin Portal",
+    "signInTitle": "Administrator Sign In",
+    "signInSubtitle": "Sign in with your admin account to manage the platform.",
+    "signInButton": "Sign in to Admin Portal",
+    "studentTeacherLogin": "Student or teacher?",
+    "mainLogin": "Use main login",
+    "accessDenied": "You do not have permission to access the admin portal."
+  },
+  "consultation": {
+    "calendlyTitle": "Schedule your consultation",
+    "calendlySubtitle": "Pick a time that works for you — we'll confirm by email."
+  },
+  "pricing": {
+    "saveYearly": "Save with yearly billing"
+  },
+  "adminUsers": {
+    "title": "User Management",
+    "description": "Manage user accounts and permissions",
+    "refresh": "Refresh",
+    "searchPlaceholder": "Search users…",
+    "allRoles": "All roles",
+    "roleAdmin": "Admin",
+    "roleTeacher": "Teacher",
+    "roleStudent": "Student",
+    "allStatus": "All status",
+    "statusActive": "Active",
+    "statusSuspended": "Suspended",
+    "allVerified": "All verification",
+    "verified": "Verified",
+    "unverified": "Unverified",
+    "sortNewest": "Newest first",
+    "sortOldest": "Oldest first",
+    "sortName": "Name",
+    "never": "Never",
+    "fetchFailed": "Failed to fetch users",
+    "suspendConfirm": "Suspend this user? They will be signed out and unable to log in.",
+    "reactivateConfirm": "Reactivate this user? They will be able to log in again.",
+    "suspendSuccess": "User suspended — they can no longer sign in",
+    "reactivateSuccess": "User reactivated",
+    "updateFailed": "Failed to update user",
+    "deleteConfirm": "Permanently delete {{name}}?\n\nThis removes their account, profile, and all associated data. This cannot be undone.",
+    "deleteSuccess": "User permanently deleted",
+    "deleteFailed": "Failed to delete user",
+    "roleUpdated": "User role updated",
+    "roleUpdateFailed": "Failed to update user role",
+    "suspendTitle": "Suspend user",
+    "reactivateTitle": "Reactivate user",
+    "deleteTitle": "Permanently delete user",
+    "noUsers": "No users found",
+    "loading": "Loading users…"
+  },
+  "teacherContent": {
+    "searchPlaceholder": "Search resources…",
+    "deleteConfirm": "Are you sure you want to delete this resource?",
+    "deleteSuccess": "Resource deleted successfully",
+    "deleteFailed": "Failed to delete resource",
+    "archiveSuccess": "Resource archived",
+    "archiveFailed": "Failed to archive resource",
+    "loadFailed": "Failed to load resources",
+    "emptySearch": "Try adjusting your search or filters",
+    "emptyDefault": "Upload your first resource to get started",
+    "statusAll": "All status",
+    "statusPublished": "Published",
+    "statusDraft": "Draft",
+    "statusPending": "Pending review",
+    "statusArchived": "Archived",
+    "categoryAll": "All categories",
+    "sortNewest": "Newest",
+    "sortOldest": "Oldest",
+    "sortTitle": "Title",
+    "views": "views",
+    "downloads": "downloads",
+    "edit": "Edit",
+    "archive": "Archive",
+    "delete": "Delete",
+    "preview": "Preview"
+  },
+  "adminModeration": {
+    "approved": "Resource approved",
+    "rejected": "Resource rejected",
+    "actionFailed": "Action failed"
   }
 }

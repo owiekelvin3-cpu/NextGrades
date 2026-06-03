@@ -1,4 +1,4 @@
-import { CMS_EXCLUDED_PREFIXES, getPageGroupForKey } from "./constants";
+import { CMS_EXCLUDED_PREFIXES, getPageGroupForKey, isCmsEditableKey } from "./constants";
 
 export type CmsFieldType = "text" | "textarea" | "json" | "image" | "url";
 
@@ -25,6 +25,7 @@ function inferFieldType(value: unknown): CmsFieldType {
 }
 
 function shouldIncludeKey(key: string): boolean {
+  if (!isCmsEditableKey(key)) return false;
   return !CMS_EXCLUDED_PREFIXES.some((prefix) => key === prefix || key.startsWith(`${prefix}.`));
 }
 

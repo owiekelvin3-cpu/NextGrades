@@ -8,6 +8,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useMarketingTheme } from "@/lib/marketing-theme";
 import { cn } from "@/lib/utils";
+import { OpenCookieSettingsButton } from "@/components/cookies/OpenCookieSettingsButton";
 
 type LegalSection = {
   title: string;
@@ -16,7 +17,7 @@ type LegalSection = {
 };
 
 type LegalDocumentPageProps = {
-  namespace: "terms" | "privacy";
+  namespace: "terms" | "privacy" | "cookiesPolicy";
 };
 
 export function LegalDocumentPage({ namespace }: LegalDocumentPageProps) {
@@ -98,14 +99,19 @@ export function LegalDocumentPage({ namespace }: LegalDocumentPageProps) {
                 <p className={cn("font-semibold", mt.heading)}>{t(`${namespace}.contactTitle`)}</p>
                 <p className={cn("mt-1 text-sm", mt.body)}>{t(`${namespace}.contactNote`)}</p>
               </div>
-              <Link
-                href="/contact"
-                className="mt-4 inline-flex items-center gap-2 rounded-xl bg-[#D4AF37] px-5 py-2.5 text-sm font-semibold text-[#0D1B2A] transition-opacity hover:opacity-90 sm:mt-0"
-              >
-                <Mail className="h-4 w-4" />
-                {t(`${namespace}.contactCta`)}
-                <ArrowRight className="h-4 w-4" />
-              </Link>
+              <div className="mt-4 flex flex-col gap-3 sm:mt-0 sm:flex-row sm:flex-wrap sm:items-center">
+                {namespace === "cookiesPolicy" ? (
+                  <OpenCookieSettingsButton variant="button" className="w-full sm:w-auto" />
+                ) : null}
+                <Link
+                  href="/contact"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#D4AF37] px-5 py-2.5 text-sm font-semibold text-[#0D1B2A] transition-opacity hover:opacity-90"
+                >
+                  <Mail className="h-4 w-4" />
+                  {t(`${namespace}.contactCta`)}
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
             </div>
           </div>
         </section>

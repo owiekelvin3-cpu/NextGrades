@@ -9,7 +9,7 @@ import {
   migrateLegacyLanguagePreference,
 } from "@/lib/preferences";
 
-/** Applies stored theme + language before first paint (replaces inline bootstrap script). */
+/** Syncs stored theme + language on mount (head inline script handles first paint + cookie). */
 export function PreferencesBootstrap() {
   useLayoutEffect(() => {
     migrateLegacyLanguagePreference();

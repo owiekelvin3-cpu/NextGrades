@@ -35,6 +35,14 @@ export const HOME_PLATFORM_THUMB = u("1513258496099-48168024aec0", 200, 200);
 export const HOME_TESTIMONIALS_BG = u("1460925895917-afdab827c52f", 1280, 720);
 
 export const HOME_HERO_STUDENT_IMAGE = u("1523240795612-9a054b0db644", 960, 720, 70);
+
+/** Home hero carousel — local assets in /public/images/hero */
+export const HOME_HERO_CAROUSEL_IMAGES = [
+  "/images/hero/hero-1.png",
+  "/images/hero/hero-2.png",
+  "/images/hero/hero-3.png",
+  "/images/hero/hero-4.png",
+] as const;
 export const HERO_STUDY_IMAGE = u("1524178232363-1fb2b075b655", 1280, 720);
 export const HERO_DESK_IMAGE = u("1497366811353-6870744d04b2", 1280, 720);
 

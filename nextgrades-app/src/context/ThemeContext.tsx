@@ -27,20 +27,24 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-function readThemeFromDocument(): UiTheme {
-  if (typeof document === "undefined") return "dark";
-  return document.documentElement.classList.contains("dark") ? "dark" : "light";
-}
-
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<UiTheme>(readThemeFromDocument);
+export function ThemeProvider({
+  children,
+  initialTheme = "dark",
+}: {
+  children: React.ReactNode;
+  initialTheme?: UiTheme;
+}) {
+  const [theme, setThemeState] = useState<UiTheme>(initialTheme);
   const [isReady, setIsReady] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const transitioningRef = useRef(false);
 
   useEffect(() => {
     const stored = getStoredTheme();
-    setThemeState(stored);
+    if (stored !== initialTheme) {
+      setThemeState(stored);
+      setAppTheme(stored, { skipRemote: true });
+    }
     setIsReady(true);
 
     const onThemeChanged = (event: Event) => {
@@ -60,7 +64,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       window.removeEventListener(THEME_CHANGED_EVENT, onThemeChanged);
       window.removeEventListener("storage", onStorage);
     };
-  }, []);
+  }, [initialTheme]);
 
   const applyTheme = useCallback((next: UiTheme) => {
     setThemeState(next);

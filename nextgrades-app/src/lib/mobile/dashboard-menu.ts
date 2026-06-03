@@ -13,7 +13,6 @@ import {
   Bot,
   BarChart3,
   Video,
-  Layout,
 } from "lucide-react";
 import { studentNavItems } from "@/components/dashboard/student/StudentSidebarNav";
 import { teacherNavItems } from "@/components/dashboard/teacher/TeacherSidebarNav";
@@ -29,12 +28,6 @@ export type DashboardMenuItem = {
 
 const adminMenuItems: DashboardMenuItem[] = [
   { href: ADMIN_PORTAL_HOME, icon: LayoutDashboard, labelKey: "adminNav.dashboard" },
-  {
-    href: `${ADMIN_PORTAL_PREFIX}/website-content`,
-    icon: Layout,
-    labelKey: "adminNav.websiteContent",
-    matchPrefix: true,
-  },
   {
     href: `${ADMIN_PORTAL_PREFIX}/students`,
     icon: Users,

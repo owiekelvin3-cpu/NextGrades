@@ -61,10 +61,10 @@ export default function AdminModerationPage() {
         body: JSON.stringify({ moderation_status: status }),
       });
       if (!res.ok) throw new Error((await res.json()).error || "Failed");
-      toast.success(status === "approved" ? "Resource approved" : "Resource rejected");
+      toast.success(status === "approved" ? t("adminModeration.approved") : t("adminModeration.rejected"));
       await load();
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Action failed");
+      toast.error(e instanceof Error ? e.message : t("adminModeration.actionFailed"));
     } finally {
       setActing(null);
     }

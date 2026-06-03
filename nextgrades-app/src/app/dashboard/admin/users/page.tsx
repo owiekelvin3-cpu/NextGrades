@@ -21,6 +21,8 @@ import {
 } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
 import { useToast } from "@/context/ToastContext";
+import { useTranslation } from "react-i18next";
+import { getDateLocale } from "@/lib/i18n/locales";
 
 interface UserProfile {
   id: string;
@@ -42,6 +44,7 @@ interface UserProfile {
 
 export default function AdminUsersPage() {
   const { theme } = useTheme();
+  const { t, i18n } = useTranslation();
   const { success, error: toastError } = useToast();
   const [users, setUsers] = useState<UserProfile[]>([]);
   const [loading, setLoading] = useState(true);
@@ -71,7 +74,7 @@ export default function AdminUsersPage() {
       setTotalPages(data.pagination?.totalPages || 1);
     } catch (error) {
       console.error("Error fetching users:", error);
-      toastError("Failed to fetch users");
+      toastError(t("adminUsers.fetchFailed"));
     } finally {
       setLoading(false);
     }
@@ -83,7 +86,7 @@ export default function AdminUsersPage() {
 
   const handleSuspend = async (userId: string, currentStatus: boolean) => {
     const action = currentStatus ? "suspend" : "reactivate";
-    if (!confirm(currentStatus ? "Suspend this user? They will be signed out and unable to log in." : "Reactivate this user? They will be able to log in again.")) {
+    if (!confirm(currentStatus ? t("adminUsers.suspendConfirm") : t("adminUsers.reactivateConfirm"))) {
       return;
     }
 
@@ -95,19 +98,15 @@ export default function AdminUsersPage() {
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || `Failed to ${action} user`);
-      success(currentStatus ? "User suspended — they can no longer sign in" : "User reactivated");
+      success(currentStatus ? t("adminUsers.suspendSuccess") : t("adminUsers.reactivateSuccess"));
       fetchUsers();
     } catch (error) {
-      toastError(error instanceof Error ? error.message : "Failed to update user");
+      toastError(error instanceof Error ? error.message : t("adminUsers.updateFailed"));
     }
   };
 
   const handleDelete = async (userId: string, userName: string | null) => {
-    if (
-      !confirm(
-        `Permanently delete ${userName || "this user"}?\n\nThis removes their account, profile, and all associated data. This cannot be undone.`
-      )
-    ) {
+    if (!confirm(t("adminUsers.deleteConfirm", { name: userName || t("adminUsers.deleteTitle") }))) {
       return;
     }
 
@@ -117,10 +116,10 @@ export default function AdminUsersPage() {
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Failed to delete user");
-      success("User permanently deleted");
+      success(t("adminUsers.deleteSuccess"));
       fetchUsers();
     } catch (error) {
-      toastError(error instanceof Error ? error.message : "Failed to delete user");
+      toastError(error instanceof Error ? error.message : t("adminUsers.deleteFailed"));
     }
   };
 
@@ -132,11 +131,11 @@ export default function AdminUsersPage() {
         body: JSON.stringify({ role: newRole }),
       });
       if (response.ok) {
-        success("User role updated");
+        success(t("adminUsers.roleUpdated"));
         fetchUsers();
       }
     } catch (error) {
-      toastError("Failed to update user role");
+      toastError(t("adminUsers.roleUpdateFailed"));
     }
   };
 
@@ -150,8 +149,8 @@ export default function AdminUsersPage() {
   };
 
   const formatDate = (dateString: string | null) => {
-    if (!dateString) return "Never";
-    return new Date(dateString).toLocaleDateString("en-US", {
+    if (!dateString) return t("adminUsers.never");
+    return new Date(dateString).toLocaleDateString(getDateLocale(i18n.language), {
       month: "short",
       day: "numeric",
       year: "numeric",
@@ -168,18 +167,18 @@ export default function AdminUsersPage() {
         <main className="flex-1 overflow-x-hidden overflow-y-auto p-4 sm:p-6 lg:p-8">
         <div className="mx-auto max-w-7xl">
           <div className="mb-6 md:hidden">
-            <h1 className={appShell.dashboardTitle}>User Management</h1>
-            <p className={appShell.dashboardDescription}>Manage user accounts and permissions</p>
+            <h1 className={appShell.dashboardTitle}>{t("adminUsers.title")}</h1>
+            <p className={appShell.dashboardDescription}>{t("adminUsers.description")}</p>
           </div>
 
           {/* Header */}
           <div className="mb-8 hidden flex-col items-start justify-between gap-4 md:flex md:flex-row md:items-center">
             <div>
               <h1 className={`text-2xl md:text-3xl font-bold ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
-                User Management
+                {t("adminUsers.title")}
               </h1>
               <p className={`mt-1 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
-                Manage user accounts and permissions
+                {t("adminUsers.description")}
               </p>
             </div>
             <Button
@@ -190,7 +189,7 @@ export default function AdminUsersPage() {
               className={theme === "dark" ? "border-white/20 text-white hover:bg-white/10" : "border-gray-200 text-gray-700 hover:bg-gray-50"}
             >
               <RefreshCw className={`w-4 h-4 mr-2 ${loading ? "animate-spin" : ""}`} />
-              Refresh
+              {t("adminUsers.refresh")}
             </Button>
           </div>
 
@@ -202,7 +201,7 @@ export default function AdminUsersPage() {
                 <Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`} />
                 <input
                   type="text"
-                  placeholder="Search users..."
+                  placeholder={t("adminUsers.searchPlaceholder")}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && fetchUsers()}
@@ -225,10 +224,10 @@ export default function AdminUsersPage() {
                       : "bg-white border-gray-200 text-gray-900"
                   } focus:outline-none focus:ring-2 focus:ring-[#D4AF37]`}
                 >
-                  <option value="all">All Roles</option>
-                  <option value="admin">Admin</option>
-                  <option value="teacher">Teacher</option>
-                  <option value="student">Student</option>
+                  <option value="all">{t("adminUsers.allRoles")}</option>
+                  <option value="admin">{t("adminUsers.roleAdmin")}</option>
+                  <option value="teacher">{t("adminUsers.roleTeacher")}</option>
+                  <option value="student">{t("adminUsers.roleStudent")}</option>
                 </select>
                 <ChevronDown className={`absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`} />
               </div>
@@ -244,9 +243,9 @@ export default function AdminUsersPage() {
                       : "bg-white border-gray-200 text-gray-900"
                   } focus:outline-none focus:ring-2 focus:ring-[#D4AF37]`}
                 >
-                  <option value="all">All Status</option>
-                  <option value="active">Active</option>
-                  <option value="inactive">Suspended</option>
+                  <option value="all">{t("adminUsers.allStatus")}</option>
+                  <option value="active">{t("adminUsers.statusActive")}</option>
+                  <option value="inactive">{t("adminUsers.statusSuspended")}</option>
                 </select>
                 <ChevronDown className={`absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`} />
               </div>
@@ -262,9 +261,9 @@ export default function AdminUsersPage() {
                       : "bg-white border-gray-200 text-gray-900"
                   } focus:outline-none focus:ring-2 focus:ring-[#D4AF37]`}
                 >
-                  <option value="all">All Verification</option>
-                  <option value="verified">Email Verified</option>
-                  <option value="unverified">Unverified</option>
+                  <option value="all">{t("adminUsers.allVerified")}</option>
+                  <option value="verified">{t("adminUsers.verified")}</option>
+                  <option value="unverified">{t("adminUsers.unverified")}</option>
                 </select>
                 <ChevronDown className={`absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`} />
               </div>
@@ -280,10 +279,10 @@ export default function AdminUsersPage() {
                       : "bg-white border-gray-200 text-gray-900"
                   } focus:outline-none focus:ring-2 focus:ring-[#D4AF37]`}
                 >
-                  <option value="created_at">Newest First</option>
-                  <option value="created_at_asc">Oldest First</option>
-                  <option value="full_name">Name A–Z</option>
-                  <option value="email">Email A–Z</option>
+                  <option value="created_at">{t("adminUsers.sortNewest")}</option>
+                  <option value="created_at_asc">{t("adminUsers.sortOldest")}</option>
+                  <option value="full_name">{t("adminUsers.sortName")}</option>
+                  <option value="email">{t("login.email")}</option>
                 </select>
                 <ChevronDown className={`absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`} />
               </div>
@@ -346,7 +345,7 @@ export default function AdminUsersPage() {
                   ) : users.length === 0 ? (
                     <tr>
                       <td colSpan={7} className={`p-12 text-center ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>
-                        No users found
+                        {t("adminUsers.noUsers")}
                       </td>
                     </tr>
                   ) : (
@@ -389,12 +388,12 @@ export default function AdminUsersPage() {
                         </td>
                         <td className="p-4">
                           <Badge className={user.is_active ? "bg-green-500/10 text-green-500" : "bg-red-500/10 text-red-500"}>
-                            {user.is_active ? "Active" : "Suspended"}
+                            {user.is_active ? t("adminUsers.statusActive") : t("adminUsers.statusSuspended")}
                           </Badge>
                         </td>
                         <td className="p-4">
                           <Badge className={user.email_verified ? "bg-blue-500/10 text-blue-500" : "bg-amber-500/10 text-amber-600"}>
-                            {user.email_verified ? "Verified" : "Unverified"}
+                            {user.email_verified ? t("adminUsers.verified") : t("adminUsers.unverified")}
                           </Badge>
                         </td>
                         <td className={`p-4 text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
@@ -414,15 +413,15 @@ export default function AdminUsersPage() {
                                   : "bg-white border-gray-200 text-gray-900"
                               }`}
                             >
-                              <option value="student">Student</option>
-                              <option value="teacher">Teacher</option>
-                              <option value="admin">Admin</option>
+                              <option value="student">{t("adminUsers.roleStudent")}</option>
+                              <option value="teacher">{t("adminUsers.roleTeacher")}</option>
+                              <option value="admin">{t("adminUsers.roleAdmin")}</option>
                             </select>
                             <Button
                               variant="outline"
                               size="sm"
                               onClick={() => handleSuspend(user.id, user.is_active)}
-                              title={user.is_active ? "Suspend user" : "Reactivate user"}
+                              title={user.is_active ? t("adminUsers.suspendTitle") : t("adminUsers.reactivateTitle")}
                               className={theme === "dark" ? "border-white/20 text-white hover:bg-white/10" : "border-gray-200 text-gray-700 hover:bg-gray-50"}
                             >
                               {user.is_active ? <Ban className="w-4 h-4" /> : <CheckCircle className="w-4 h-4" />}
@@ -431,7 +430,7 @@ export default function AdminUsersPage() {
                               variant="outline"
                               size="sm"
                               onClick={() => handleDelete(user.id, user.full_name)}
-                              title="Permanently delete user"
+                              title={t("adminUsers.deleteTitle")}
                               className={`text-red-500 hover:bg-red-500/10 ${theme === "dark" ? "border-white/20" : "border-gray-200"}`}
                             >
                               <Trash2 className="w-4 h-4" />

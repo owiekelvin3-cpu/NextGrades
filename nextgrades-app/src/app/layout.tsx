@@ -1,8 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import Script from "next/script";
 import { cookies } from "next/headers";
 import { Poppins, Playfair_Display } from "next/font/google";
 import { normalizeLanguage } from "@/lib/i18n/locales";
+import { getThemeFromCookieValue, THEME_STORAGE_KEY } from "@/lib/preferences";
 import "./globals.css";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { I18nProvider } from "@/components/I18nProvider";
@@ -13,6 +13,7 @@ import { ToastProvider } from "@/context/ToastContext";
 import { DeferredCmsProvider } from "@/components/DeferredCmsProvider";
 import RouteTransition from "@/components/RouteTransition";
 import { DeferredCmsExtras } from "@/components/DeferredCmsExtras";
+import { ConsentShell } from "@/components/cookies/ConsentShell";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -79,15 +80,21 @@ export default async function RootLayout({
 }>) {
   const cookieStore = await cookies();
   const htmlLang = normalizeLanguage(cookieStore.get("i18nextLng")?.value ?? "de");
+  const initialTheme = getThemeFromCookieValue(cookieStore.get(THEME_STORAGE_KEY)?.value);
 
   return (
     <html
       lang={htmlLang}
       data-scroll-behavior="smooth"
-      className={`${poppins.variable} ${playfairDisplay.variable} dark h-full antialiased`}
+      className={`${poppins.variable} ${playfairDisplay.variable} ${initialTheme === "dark" ? "dark" : ""} h-full antialiased`}
       suppressHydrationWarning
     >
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem("theme");var theme=t==="light"?"light":"dark";document.documentElement.classList.toggle("dark",theme==="dark");document.documentElement.style.colorScheme=theme;document.cookie="theme="+theme+";path=/;max-age=31536000;SameSite=Lax";var l=localStorage.getItem("i18nextLng");if(l){var lang=l.toLowerCase().split("-")[0];document.documentElement.lang=lang==="en"?"en":"de";}}catch(e){document.documentElement.classList.add("dark");document.documentElement.style.colorScheme="dark";}})();`,
+          }}
+        />
         <link rel="preconnect" href="https://images.unsplash.com" />
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
         {supabaseHost && (
@@ -97,18 +104,19 @@ export default async function RootLayout({
           </>
         )}
       </head>
-      <body className="min-h-full flex flex-col overflow-x-hidden bg-background text-foreground touch-manipulation">
-        <Script src="/preferences-init.js" strategy="beforeInteractive" />
+      <body className="min-h-full flex flex-col overflow-x-hidden bg-background text-foreground touch-manipulation" suppressHydrationWarning>
         <PreferencesBootstrap />
-        <ThemeProvider>
+        <ThemeProvider initialTheme={initialTheme}>
           <I18nProvider>
             <PreferencesSync />
             <PwaRegister />
             <DeferredCmsProvider>
               <DeferredCmsExtras />
-              <ToastProvider>
-                <RouteTransition>{children}</RouteTransition>
-              </ToastProvider>
+              <ConsentShell>
+                <ToastProvider>
+                  <RouteTransition>{children}</RouteTransition>
+                </ToastProvider>
+              </ConsentShell>
             </DeferredCmsProvider>
           </I18nProvider>
         </ThemeProvider>

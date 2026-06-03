@@ -129,8 +129,6 @@ export default function AboutPage() {
           </div>
 
           <div className="relative mx-auto max-w-7xl px-4 pb-0 sm:px-6 lg:px-8">
-            <p className="mb-6 text-sm text-gray-400">{t("aboutPage.breadcrumb")}</p>
-
             <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
               <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
                 <Eyebrow className="mb-4">{t("aboutPage.heroEyebrow")}</Eyebrow>

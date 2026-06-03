@@ -10,10 +10,12 @@ import { Badge } from "@/components/ui/Badge";
 import { useTheme } from "@/context/ThemeContext";
 import { useTranslation } from "react-i18next";
 import { useCmsImages } from "@/hooks/useCmsImage";
-import { HOME_HERO_STUDENT_IMAGE, PROGRAM_CARD_IMAGES, HERO_STUDY_IMAGE, HOME_PLATFORM_THUMB, HOME_TESTIMONIALS_BG } from "@/lib/marketing-images";
+import { PROGRAM_CARD_IMAGES, HERO_STUDY_IMAGE, HOME_PLATFORM_THUMB, HOME_TESTIMONIALS_BG } from "@/lib/marketing-images";
 import { MarketingImage } from "@/components/marketing/MarketingImage";
+import { HeroImageCarousel } from "@/components/marketing/HeroImageCarousel";
 import { RevealOnScroll } from "@/components/marketing/RevealOnScroll";
 import { MobileCarousel, CarouselCard } from "@/components/mobile/MobileCarousel";
+import { MarketingQuickLinks } from "@/components/marketing/MarketingQuickLinks";
 import {
   ArrowRight,
   Users,
@@ -36,7 +38,6 @@ export default function Home() {
   const { t, i18n } = useTranslation();
   const { getImage } = useCmsImages();
 
-  const heroStudentImage = getImage("cmsImages.home.heroStudent", HOME_HERO_STUDENT_IMAGE);
   const studyBannerImage = getImage("cmsImages.home.studyBanner", HERO_STUDY_IMAGE);
   const platformThumb = getImage("cmsImages.home.platformThumb", HOME_PLATFORM_THUMB);
   const testimonialsBg = getImage("cmsImages.home.testimonialsBg", HOME_TESTIMONIALS_BG);
@@ -93,18 +94,21 @@ export default function Home() {
                 >
                   {t("home.heroSubtitle")}
                 </p>
-                <div className="hero-enter hero-enter-delay-3 mb-10 flex flex-col gap-4 sm:flex-row">
-                  <Button variant="gold" size="md" className="px-8" href="/consultation" data-cms-field="home.freeConsultation">
+                <div className="hero-enter hero-enter-delay-3 mb-6 flex flex-col gap-4 sm:mb-10 sm:flex-row">
+                  <Button variant="gold" size="md" className="w-full px-8 sm:w-auto" href="/consultation" data-cms-field="home.freeConsultation">
                     {t("home.freeConsultation")}
                   </Button>
                   <Link
                     data-cms-field="home.explorePrograms"
                     href="/programs"
-                    className="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-white/80 px-6 py-3 text-base font-semibold text-white transition-colors hover:bg-white hover:text-[#0D1B2A]"
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-xl border-2 border-white/80 px-6 py-3 text-base font-semibold text-white transition-colors hover:bg-white hover:text-[#0D1B2A] sm:w-auto"
                   >
                     {t("home.explorePrograms")}
                     <ArrowRight className="h-4 w-4" />
                   </Link>
+                </div>
+                <div className="hero-enter hero-enter-delay-3 mb-8 md:hidden">
+                  <MarketingQuickLinks />
                 </div>
                 <div className="hero-enter hero-enter-delay-4 flex flex-wrap items-center gap-5">
                   <div className="flex -space-x-3">
@@ -134,20 +138,15 @@ export default function Home() {
                   className="hero-enter hero-enter-delay-2 relative mx-auto w-full max-w-lg lg:max-w-none"
                 >
                 <div className="relative aspect-[4/5] max-h-[520px] overflow-hidden rounded-2xl shadow-2xl ring-1 ring-white/10 sm:aspect-[5/6] lg:aspect-auto lg:h-[480px]">
-                  <MarketingImage
-                    src={heroStudentImage}
-                    fallbackSrc={HOME_HERO_STUDENT_IMAGE}
+                  <HeroImageCarousel
                     alt={t("images.studentStudying")}
-                    priority
-                    containerClassName="absolute inset-0"
-                    className="object-cover object-[center_20%]"
                     sizes="(max-width: 1024px) 90vw, 560px"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0D1B2A]/80 via-[#0D1B2A]/10 to-transparent" />
                   <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-[#0D1B2A]/20" />
                 </div>
 
-                <div className="hero-enter hero-enter-delay-4 absolute -bottom-5 right-2 z-10 max-w-[280px] sm:right-4 lg:-bottom-6 lg:right-6">
+                <div className="hero-enter hero-enter-delay-4 absolute -bottom-5 left-3 right-3 z-10 max-w-[min(280px,calc(100%-1.5rem))] sm:left-auto sm:right-4 lg:-bottom-6 lg:right-6">
                   <Card className="border border-[#D4AF37]/30 bg-[#0D1B2A]/95 p-4 shadow-xl backdrop-blur-sm sm:p-5">
                     <div className="flex items-start gap-3">
                       <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-[#D4AF37]/20">

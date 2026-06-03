@@ -24,6 +24,17 @@ export function getStoredTheme(): UiTheme {
   return parseTheme(localStorage.getItem(THEME_STORAGE_KEY)) ?? "dark";
 }
 
+/** Theme for SSR — read from the `theme` cookie set by preferences-init / persistThemeLocally. */
+export function getThemeFromCookieValue(value: string | null | undefined): UiTheme {
+  return parseTheme(value) ?? "dark";
+}
+
+export function persistThemeCookie(theme: UiTheme): void {
+  if (typeof document === "undefined") return;
+  const maxAge = 60 * 60 * 24 * 365;
+  document.cookie = `${THEME_STORAGE_KEY}=${theme};path=/;max-age=${maxAge};SameSite=Lax`;
+}
+
 export function getStoredLanguage(): SupportedLanguage {
   if (typeof window === "undefined") return "de";
   const stored = localStorage.getItem(LANGUAGE_STORAGE_KEY);
@@ -67,6 +78,7 @@ export function applyLanguageToDocument(language: SupportedLanguage): void {
 
 export function persistThemeLocally(theme: UiTheme): void {
   localStorage.setItem(THEME_STORAGE_KEY, theme);
+  persistThemeCookie(theme);
   applyThemeToDocument(theme);
   window.dispatchEvent(new CustomEvent(THEME_CHANGED_EVENT, { detail: theme }));
 }

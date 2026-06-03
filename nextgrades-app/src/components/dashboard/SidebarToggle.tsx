@@ -1,6 +1,7 @@
 "use client";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { useSidebar, SIDEBAR_WIDTH } from "@/context/SidebarContext";
 import { cn } from "@/lib/utils";
 
@@ -46,6 +47,7 @@ export function SidebarToggle({ className }: { className?: string }) {
 
 /** Compact reveal tab when sidebar is fully hidden — top-left corner fallback */
 export function SidebarRevealTab() {
+  const { t } = useTranslation();
   const { collapsed, expand } = useSidebar();
   if (!collapsed) return null;
 
@@ -57,7 +59,7 @@ export function SidebarRevealTab() {
       className="fixed left-0 top-[4.5rem] z-[55] hidden items-center gap-1.5 rounded-r-xl border border-l-0 border-[#D4AF37]/30 bg-[#0D1B2A]/95 px-2.5 py-2 text-[#D4AF37] shadow-lg backdrop-blur-sm transition hover:bg-[#132942] md:flex"
     >
       <ChevronRight className="h-4 w-4" />
-      <span className="text-[11px] font-semibold">Menu</span>
+      <span className="text-[11px] font-semibold">{t("dashboardCommon.menu")}</span>
     </button>
   );
 }

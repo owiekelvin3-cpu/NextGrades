@@ -4,8 +4,32 @@ import de from "@/locales/de/common.json";
 import deSite from "@/locales/de/site.json";
 import { normalizeLanguage, SUPPORTED_LANGUAGES } from "@/lib/i18n/locales";
 
+function deepMergeLocale<T extends object, S extends object>(common: T, site: S): T & S {
+  const out = { ...common } as T & S;
+  for (const key of Object.keys(site) as (keyof S)[]) {
+    const siteVal = site[key];
+    const commonVal = (common as Record<string, unknown>)[key as string];
+    if (
+      siteVal &&
+      typeof siteVal === "object" &&
+      !Array.isArray(siteVal) &&
+      commonVal &&
+      typeof commonVal === "object" &&
+      !Array.isArray(commonVal)
+    ) {
+      (out as Record<string, unknown>)[key as string] = deepMergeLocale(
+        commonVal as object,
+        siteVal as object
+      );
+    } else {
+      (out as Record<string, unknown>)[key as string] = siteVal;
+    }
+  }
+  return out;
+}
+
 function mergeLocale<T extends object, S extends object>(common: T, site: S): T & S {
-  return { ...common, ...site };
+  return deepMergeLocale(common, site);
 }
 
 let englishBundleLoaded = false;

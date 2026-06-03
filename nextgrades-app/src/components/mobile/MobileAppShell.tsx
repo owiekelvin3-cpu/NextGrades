@@ -147,7 +147,13 @@ export function MobileAppShell({
             {headerAction && <div className="mt-6">{headerAction}</div>}
           </div>
 
-          <div className={cn("min-w-0 md:contents", mobile.sectionGap, "dashboard-mobile-content")}>
+          <div
+            className={cn(
+              "mx-auto min-w-0 w-full max-w-[1400px] md:contents",
+              mobile.sectionGap,
+              "dashboard-mobile-content"
+            )}
+          >
             {children}
           </div>
         </main>

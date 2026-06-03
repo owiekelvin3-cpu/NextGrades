@@ -1,6 +1,7 @@
 /** Shared Tailwind classes that respond to `.dark` on `<html>`. */
 
 export const appShell = {
+  siteContainer: "site-container",
   marketingPage: "marketing-page-root min-h-screen bg-background text-foreground",
   marketingPageMuted: "marketing-page-root min-h-screen bg-surface-muted text-foreground",
   marketingHero: "pt-site-nav md:pt-28",

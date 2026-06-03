@@ -1,4 +1,6 @@
 import { redirect } from "next/navigation";
+import { ADMIN_PORTAL_HOME } from "@/lib/admin/portal-paths";
+
 export default function WebsiteContentPage() {
-  redirect("/portal/admin/website-content");
+  redirect(ADMIN_PORTAL_HOME);
 }

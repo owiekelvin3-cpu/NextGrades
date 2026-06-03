@@ -80,11 +80,11 @@ export default function TeacherContentPage() {
       const response = await fetch(`/api/teacher/resources?${params}`);
       const data = await response.json();
       if (!response.ok) {
-        throw new Error(data.error || "Failed to load resources");
+        throw new Error(data.error || t("teacherContent.loadFailed"));
       }
       setResources(data.resources || []);
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Failed to load resources";
+      const message = error instanceof Error ? error.message : t("teacherContent.loadFailed");
       setFetchError(message);
       setResources([]);
     } finally {
@@ -103,18 +103,18 @@ export default function TeacherContentPage() {
   }, [fetchResources]);
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this resource?")) return;
+    if (!confirm(t("teacherContent.deleteConfirm"))) return;
 
     try {
       const response = await fetch(`/api/teacher/resources/${id}`, {
         method: "DELETE",
       });
       if (response.ok) {
-        success("Resource deleted successfully");
+        success(t("teacherContent.deleteSuccess"));
         fetchResources();
       }
     } catch (error) {
-      toastError("Failed to delete resource");
+      toastError(t("teacherContent.deleteFailed"));
     }
   };
 
@@ -126,11 +126,11 @@ export default function TeacherContentPage() {
         body: JSON.stringify({ action: "archive" }),
       });
       if (response.ok) {
-        success("Resource archived");
+        success(t("teacherContent.archiveSuccess"));
         fetchResources();
       }
     } catch {
-      toastError("Failed to archive resource");
+      toastError(t("teacherContent.archiveFailed"));
     }
   };
 
@@ -198,7 +198,7 @@ export default function TeacherContentPage() {
                 <Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`} />
                 <input
                   type="text"
-                  placeholder="Search resources..."
+                  placeholder={t("teacherContent.searchPlaceholder")}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className={`w-full pl-10 pr-4 py-2 rounded-lg border ${

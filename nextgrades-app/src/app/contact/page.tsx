@@ -68,19 +68,19 @@ export default function ContactPage() {
           email: formData.email,
           phone: formData.phone,
           message: formData.message,
-          subject: "Contact form",
+          subject: t("contact.formSubject"),
         }),
       });
       const data = await response.json().catch(() => ({}));
       if (response.ok) {
         setSubmitted(true);
-        toast.success(t("contact.success", { defaultValue: "Message sent successfully!" }));
+        toast.success(t("contact.success"));
       } else {
-        toast.error(data.error || t("misc.errorGeneric", { defaultValue: "Something went wrong." }));
+        toast.error(data.error || t("misc.errorGeneric"));
       }
     } catch (err) {
       console.error(err);
-      toast.error(t("misc.errorGeneric", { defaultValue: "Something went wrong." }));
+      toast.error(t("misc.errorGeneric"));
     } finally {
       setIsSubmitting(false);
     }
@@ -89,28 +89,28 @@ export default function ContactPage() {
   const contactCards = [
     {
       icon: Mail,
-      label: t("contact.emailAddress", { defaultValue: "Email" }),
+      label: t("contact.emailAddress"),
       value: "support@nextgrades.de",
       href: "mailto:support@nextgrades.de",
       color: "bg-[#D4AF37]/15 text-[#D4AF37]",
     },
     {
       icon: Phone,
-      label: t("contact.phoneNumber", { defaultValue: "Phone" }),
+      label: t("contact.phoneNumber"),
       value: "+49 (0) 30 1234 5678",
       href: "tel:+493012345678",
       color: "bg-[#4DA3FF]/15 text-[#4DA3FF]",
     },
     {
       icon: MapPin,
-      label: t("contact.officeLabel", { defaultValue: "Office" }),
-      value: t("contact.officeValue", { defaultValue: "Berlin, Germany" }),
+      label: t("contact.officeLabel"),
+      value: t("contact.officeValue"),
       color: "bg-emerald-500/15 text-emerald-500",
     },
     {
       icon: Clock,
-      label: t("contact.hoursLabel", { defaultValue: "Response time" }),
-      value: t("contact.hoursValue", { defaultValue: "Within 24 hours" }),
+      label: t("contact.hoursLabel"),
+      value: t("contact.hoursValue"),
       color: "bg-violet-500/15 text-violet-500",
     },
   ];
@@ -189,7 +189,7 @@ export default function ContactPage() {
                   <MarketingImage
                     src={contactHeroImage}
                     fallbackSrc={CONTACT_HERO_IMAGE}
-                    alt=""
+                    alt={t("contact.heroImageAlt")}
                     containerClassName="absolute inset-0"
                     className="object-cover"
                     sizes="(max-width: 1024px) 100vw, 40vw"
@@ -197,10 +197,10 @@ export default function ContactPage() {
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0D1B2A]/90 via-[#0D1B2A]/30 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
                     <p className="text-sm font-semibold text-[#D4AF37]">
-                      {t("contact.sideEyebrow", { defaultValue: "Premium support" })}
+                      {t("contact.sideEyebrow")}
                     </p>
                     <p className="mt-1 text-lg font-bold">
-                      {t("contact.sideTitle", { defaultValue: "We're here to help you succeed." })}
+                      {t("contact.sideTitle")}
                     </p>
                   </div>
                 </div>
@@ -222,19 +222,17 @@ export default function ContactPage() {
                       <h2 className={cn("text-2xl font-bold", mt.heading)}>{t("contact.successTitle")}</h2>
                       <p className={cn("mt-3 max-w-md", mt.body)}>{t("contact.successMessage")}</p>
                       <Button variant="gold" href="/" className="mt-8">
-                        {t("common.home", { defaultValue: "Home" })}
+                        {t("common.home")}
                       </Button>
                     </div>
                   ) : (
                     <>
                       <div className="mb-8">
                         <h2 className={cn("text-2xl font-bold", mt.heading)}>
-                          {t("contact.formTitle", { defaultValue: "Send us a message" })}
+                          {t("contact.formTitle")}
                         </h2>
                         <p className={cn("mt-2 text-sm", mt.body)}>
-                          {t("contact.formDesc", {
-                            defaultValue: "Fill out the form and our team will get back to you shortly.",
-                          })}
+                          {t("contact.formDesc")}
                         </p>
                       </div>
 
@@ -341,14 +339,14 @@ export default function ContactPage() {
               <div className="mb-2 flex items-center justify-center gap-2 sm:justify-start">
                 <Sparkles className="h-5 w-5 text-[#D4AF37]" />
                 <span className={cn("text-sm font-semibold text-[#D4AF37]", mt.heading)}>
-                  {t("contact.ctaEyebrow", { defaultValue: "Explore plans" })}
+                  {t("contact.ctaEyebrow")}
                 </span>
               </div>
               <h2 className={cn("text-xl font-bold sm:text-2xl", mt.heading)}>
-                {t("contact.ctaTitle", { defaultValue: "Looking for the right learning plan?" })}
+                {t("contact.ctaTitle")}
               </h2>
               <p className={cn("mt-2 text-sm", mt.body)}>
-                {t("contact.ctaDesc", { defaultValue: "Compare memberships and tutoring packages on our pricing page." })}
+                {t("contact.ctaDesc")}
               </p>
             </div>
             <div className="flex shrink-0 flex-wrap justify-center gap-3">
@@ -357,7 +355,7 @@ export default function ContactPage() {
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
               <Button variant="outline" href="/consultation" className={mt.isDark ? "border-white/20 text-white" : ""}>
-                {t("consultation.bookNow", { defaultValue: "Free consultation" })}
+                {t("contact.ctaConsultation")}
               </Button>
             </div>
           </div>

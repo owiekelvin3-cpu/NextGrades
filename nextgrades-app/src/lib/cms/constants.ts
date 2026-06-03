@@ -29,6 +29,13 @@ export const CMS_EXCLUDED_PREFIXES = [
   "admin.",
 ];
 
+/** Keys removed from the public site — hidden from CMS editors and seed. */
+const CMS_EXCLUDED_KEY_SUFFIXES = [".breadcrumb"];
+
+export function isCmsEditableKey(i18nKey: string): boolean {
+  return !CMS_EXCLUDED_KEY_SUFFIXES.some((suffix) => i18nKey.endsWith(suffix));
+}
+
 export function getPageGroupForKey(i18nKey: string): string {
   if (i18nKey.startsWith("cmsImages.")) {
     const segment = i18nKey.split(".")[1];

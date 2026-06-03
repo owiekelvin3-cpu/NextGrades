@@ -140,7 +140,7 @@ export default function ConsultationPage() {
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
                 <p className={`uppercase tracking-[0.2em] text-sm font-semibold mb-4 ${textMuted}`}>
-                  {t("consultation.breadcrumb")}
+                  {t("consultation.heroEyebrow")}
                 </p>
                 <h1 className={`text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight ${textPrimary}`}>
                   {t("consultation.title")}

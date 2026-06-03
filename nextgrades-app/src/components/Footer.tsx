@@ -10,6 +10,7 @@ import {
   FooterAccordionLink,
   FooterMobileAccordion,
 } from "@/components/marketing/mobile/FooterMobileAccordion";
+import { OpenCookieSettingsButton } from "@/components/cookies/OpenCookieSettingsButton";
 
 const programLinks = [
   { href: "/programs", key: "footer.program1" },
@@ -37,6 +38,7 @@ const companyLinks = [
 
 const legalLinks = [
   { href: "/privacy", key: "footer.privacy" },
+  { href: "/privacy/cookies", key: "footer.cookies" },
   { href: "/terms", key: "footer.terms" },
   { href: "/contact", key: "footer.imprint" },
 ] as const;
@@ -180,6 +182,7 @@ export default function Footer() {
             <FooterLink href="/contact" isDark={isDark} inline>
               {t("common.contact")}
             </FooterLink>
+            <OpenCookieSettingsButton className="text-xs sm:text-sm" />
           </div>
         </div>
       </div>

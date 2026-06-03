@@ -10,7 +10,6 @@ import {
   Bell,
   User,
   Sparkles,
-  Layout,
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -54,7 +53,7 @@ function buildItems(role: "student" | "teacher" | "admin"): NavItem[] {
     role === "teacher"
       ? "/dashboard/teacher/resources"
       : role === "admin"
-        ? `${ADMIN_PORTAL_PREFIX}/website-content`
+        ? `${ADMIN_PORTAL_PREFIX}/resources`
         : "/dashboard/student/resources";
 
   const studentAi: NavItem = {
@@ -79,12 +78,11 @@ function buildItems(role: "student" | "teacher" | "admin"): NavItem[] {
     { href: courses, icon: BookOpen, labelKey: "mobileNav.courses", match: (p) => p.startsWith(courses) },
     {
       href: resources,
-      icon: role === "admin" ? Layout : FolderOpen,
-      labelKey: role === "admin" ? "adminNav.websiteContent" : "mobileNav.resources",
+      icon: FolderOpen,
+      labelKey: role === "admin" ? "adminNav.resources" : "mobileNav.resources",
       match: (p) =>
         p.startsWith(resources) ||
-        (role === "student" && p.startsWith("/resources")) ||
-        (role === "admin" && p.startsWith(`${ADMIN_PORTAL_PREFIX}/website-content`)),
+        (role === "student" && p.startsWith("/resources")),
     },
   ];
 

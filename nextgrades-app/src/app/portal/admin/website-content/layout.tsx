@@ -1,5 +1,7 @@
-import { CmsShell } from "@/components/admin/cms/shell/CmsShell";
+import { redirect } from "next/navigation";
+import { ADMIN_PORTAL_HOME } from "@/lib/admin/portal-paths";
 
-export default function WebsiteContentLayout({ children }: { children: React.ReactNode }) {
-  return <CmsShell>{children}</CmsShell>;
+/** Website content CMS is disabled — send admins back to the portal home. */
+export default function WebsiteContentLayout() {
+  redirect(ADMIN_PORTAL_HOME);
 }

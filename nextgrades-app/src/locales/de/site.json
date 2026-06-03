@@ -10,7 +10,6 @@
     "germanyFlag": "Deutschland Flagge"
   },
   "aboutPage": {
-    "breadcrumb": "Startseite > Über uns",
     "heroEyebrow": "ÜBER NEXTGRADES",
     "heroQuote": "Bildung ist nicht die Befüllung eines Eimers, sondern das Entzünden eines Feuers.",
     "heroQuoteAuthor": "William Butler Yeats",
@@ -24,7 +23,7 @@
         "desc": "Eine neue Generation des Lernens – modern, strukturiert und ergebnisorientiert."
       },
       {
-        "title": "Values",
+        "title": "Werte",
         "desc": "Qualität, Empathie und echter Fortschritt für jeden Lernenden."
       }
     ],
@@ -208,14 +207,15 @@
     "teamTitle": "Unser großartiges Team"
   },
   "programsPage": {
-    "breadcrumb": "Startseite > Programme",
+    "heroEyebrow": "UNSERE PROGRAMME",
+    "heroSubtitle": "Finde das Programm, das zu dir passt — mit persönlicher Betreuung, modernen Methoden und flexiblem Online-Lernen.",
     "heroFeatures": [
       {
         "title": "Premium-Betreuung",
         "desc": "Persönlich, engagiert, ergebnisorientiert."
       },
       {
-        "title": "Moderne Lernmethoden",
+        "title": "Moderne Methoden",
         "desc": "Effizient und systematisch."
       },
       {
@@ -253,7 +253,7 @@
           "Persönliche Lernpläne",
           "Prüfungsvorbereitung",
           "Flexible Termine",
-          "Erfahrene Fokus-Betreuung"
+          "Erfahrene Lehrkräfte"
         ],
         "price": "ab 45 € / Stunde"
       },
@@ -720,23 +720,52 @@
       }
     ],
     "admin": [
-      { "label": "Dashboard" },
-      { "label": "Website-Inhalte" },
-      { "label": "Schüler:innen" },
-      { "label": "Lehrer:innen" },
-      { "label": "Benutzer" },
-      { "label": "Benachrichtigungen" },
-      { "label": "Quiz-Monitor" },
-      { "label": "Moderation" },
-      { "label": "Mitgliedschaften" },
-      { "label": "Zahlungen" },
-      { "label": "Ressourcen" },
-      { "label": "KI-Chatbot" },
-      { "label": "Analysen" },
-      { "label": "Zoom" }
+      {
+        "label": "Dashboard"
+      },
+      {
+        "label": "Website-Inhalte"
+      },
+      {
+        "label": "Schüler:innen"
+      },
+      {
+        "label": "Lehrer:innen"
+      },
+      {
+        "label": "Benutzer"
+      },
+      {
+        "label": "Benachrichtigungen"
+      },
+      {
+        "label": "Quiz-Monitor"
+      },
+      {
+        "label": "Moderation"
+      },
+      {
+        "label": "Mitgliedschaften"
+      },
+      {
+        "label": "Zahlungen"
+      },
+      {
+        "label": "Ressourcen"
+      },
+      {
+        "label": "KI-Chatbot"
+      },
+      {
+        "label": "Analysen"
+      },
+      {
+        "label": "Zoom"
+      }
     ],
     "logout": "Abmelden",
-    "backToSite": "Zur Website"
+    "backToSite": "Zur Website",
+    "backToHomepage": "Zur Startseite"
   },
   "forgotPassword": {
     "title": "Passwort vergessen?",
@@ -815,7 +844,17 @@
       "Klasse 2",
       "Klasse 3",
       "Klasse 4"
-    ]
+    ],
+    "yourMaterials": "Deine Materialien",
+    "selectMaterial": "Material auswählen",
+    "selectSubject": "Fach auswählen",
+    "uploading": "Wird hochgeladen…",
+    "uploadSuccess": "Upload erfolgreich",
+    "materialProcessing": "Material wird verarbeitet…",
+    "ready": "Bereit",
+    "quizTitle": "Quiz-Titel",
+    "deleted": "Gelöscht",
+    "viewAll": "Alle anzeigen"
   },
   "dashboardCommon": {
     "comingSoon": "Demnächst verfügbar!",
@@ -827,7 +866,12 @@
     "minutes": "Min",
     "joinZoom": "Zoom beitreten",
     "download": "Herunterladen",
-    "premium": "Premium"
+    "premium": "Premium",
+    "save": "Änderungen speichern",
+    "saved": "Einstellungen gespeichert",
+    "joined": "Beigetreten",
+    "status": "Status",
+    "menu": "Menü"
   },
   "dashboardPages": {
     "student": {
@@ -910,6 +954,10 @@
       "analytics": {
         "title": "Analysen",
         "description": "Plattform-Statistiken und Einblicke"
+      },
+      "cookies": {
+        "title": "Cookie-Verwaltung",
+        "description": "Einwilligungen, Tracking-Skripte und Export"
       }
     }
   },
@@ -1001,7 +1049,80 @@
     "liveClasses": "Live-Klassen",
     "liveClassesDesc": "Nimm mit einem Klick an deinen Live-Unterrichtsstunden teil.",
     "noLiveClasses": "Keine bevorstehenden Live-Klassen geplant.",
-    "joinClass": "Klasse beitreten"
+    "joinClass": "Klasse beitreten",
+    "appointmentsDesc": "Anstehende und vergangene Stunden einsehen und neue Termine anfragen.",
+    "coursesDesc": "Verfolge deinen Lernfortschritt in allen eingeschriebenen Kursen.",
+    "materialsDesc": "Arbeitsblätter, Videos und Lernhilfen für deine Kurse durchsuchen.",
+    "connectCalendar": "Kalender verbinden",
+    "requestAppointment": "Neuen Termin anfragen",
+    "tabUpcoming": "Anstehende Termine",
+    "tabPast": "Vergangene Termine",
+    "tabCalendar": "Kalenderansicht",
+    "yourUpcoming": "Deine anstehenden Termine",
+    "yourPast": "Deine vergangenen Termine",
+    "minShort": "Min.",
+    "howAppointmentsWork": "So funktionieren deine Termine",
+    "stepStart": "Termin starten",
+    "stepOnTime": "Pünktlich sein",
+    "stepLearn": "Lernen & Fortschritt",
+    "unitsLeftDesc": "Noch {{remaining}} von {{total}} Unterrichtseinheiten",
+    "viewDetails": "Details anzeigen",
+    "yourTeacher": "Deine Lehrkraft",
+    "viewProfile": "Profil anzeigen",
+    "continueLearning": "Weiterlernen",
+    "progressKeepGoing": "Weiter so!",
+    "tasksWaitingDesc": "{{count}} Aufgaben warten",
+    "lessonTopic": "Stunde",
+    "goToTasksBtn": "Zu den Aufgaben",
+    "viewAllMaterials": "Alle Materialien",
+    "toMaterialLibraryBtn": "Bibliothek",
+    "motivationQuoteFull": "Jeder Tag ist eine neue Chance, besser zu werden.",
+    "tabAllMaterials": "Alle Materialien",
+    "tabByCourse": "Nach Kurs",
+    "tabByType": "Nach Typ",
+    "tabFavorites": "Favoriten",
+    "searchMaterials": "Materialien suchen…",
+    "selectCourse": "Kurs wählen",
+    "selectType": "Typ wählen",
+    "resetFilters": "Filter zurücksetzen",
+    "colMaterial": "Material",
+    "colCourse": "Kurs",
+    "colType": "Typ",
+    "colAdded": "Hinzugefügt",
+    "colActions": "Aktionen",
+    "ofTotal": "von {{total}} Materialien",
+    "storageSpace": "Speicherplatz",
+    "storageUsed": "belegt",
+    "manageStorage": "Speicher verwalten",
+    "myFavorites": "Meine Favoriten",
+    "showAll": "Alle anzeigen",
+    "noFavorites": "Noch keine Favoriten.",
+    "materialNotFound": "Material nicht gefunden?",
+    "materialNotFoundDesc": "Fehlt ein Material? Wende dich an deine Lehrkraft oder unseren Support.",
+    "goToSupport": "Zum Support",
+    "progressLabel": "Fortschritt",
+    "unitsCompleted": "{{completed}} von {{total}} Einheiten abgeschlossen",
+    "openCourse": "Kurs öffnen",
+    "courseDetails": "Kursdetails",
+    "goToAppointments": "Zu meinen Terminen",
+    "tabAllCourses": "Alle Kurse",
+    "tabActiveCourses": "Aktive Kurse",
+    "tabCompletedCourses": "Abgeschlossene Kurse",
+    "sortBy": "Sortieren: Kursname (A–Z)",
+    "keepGoingBanner": "Du bist auf Kurs — weiter so!",
+    "yourLearningProgress": "Dein Lernfortschritt",
+    "legendCompleted": "Abgeschlossen",
+    "legendInProgress": "In Bearbeitung",
+    "legendPlanned": "Geplant",
+    "learnedHours": "Gelernte Stunden",
+    "detailedAnalysis": "Detaillierte Auswertung",
+    "activeCoursesCount": "{{count}} aktive Kurse",
+    "coursesOverview": "Kursübersicht",
+    "joinZoomMeeting": "Zoom-Meeting beitreten",
+    "typeVideo": "Video",
+    "typeImage": "Bild",
+    "typeOther": "Datei",
+    "helpSupport": "Hilfe & Support"
   },
   "teacherDashboard": {
     "overviewTitle": "Lehrer-Dashboard",
@@ -1182,7 +1303,8 @@
     "resources": "Ressourcen",
     "chatbot": "KI-Chatbot",
     "analytics": "Analysen",
-    "zoom": "Zoom"
+    "zoom": "Zoom",
+    "cookies": "Cookies"
   },
   "adminHub": {
     "featuredLabel": "Am wichtigsten",
@@ -1200,6 +1322,7 @@
     "chatbotDesc": "KI-Chatbot-Einstellungen",
     "analyticsDesc": "Plattform-Statistiken",
     "zoomDesc": "Zoom-Einrichtung",
+    "cookiesDesc": "Cookie-Banner, Tracking-Skripte und Export",
     "backToOverview": "Dashboard-Übersicht",
     "browseAll": "Alle Admin-Bereiche",
     "choosePageTitle": "Seite zum Bearbeiten wählen",
@@ -1476,9 +1599,107 @@
     "linkAiChat": "NextGrades KI",
     "nameRequired": "Bitte gib deinen vollständigen Namen ein",
     "passwordRequired": "Bitte gib ein neues Passwort ein",
-    "loadError": "Profil konnte nicht geladen werden. Bitte melde dich erneut an."
+    "loadError": "Profil konnte nicht geladen werden. Bitte melde dich erneut an.",
+    "saveFailed": "Einstellungen konnten nicht gespeichert werden"
   },
   "nav": {
     "home": "Startseite"
+  },
+  "checkout": {
+    "title": "Abonnement abschließen",
+    "backToPricing": "Zurück zu Preise",
+    "secure": "Sicherer Checkout",
+    "cards": "Karte, PayPal & Überweisung",
+    "payNow": "Jetzt bezahlen",
+    "secureNote": "Zahlungen werden sicher über Stripe abgewickelt.",
+    "failed": "Checkout fehlgeschlagen",
+    "successTitle": "Willkommen bei NextGrades!",
+    "successDesc": "Dein Abonnement ist aktiv. Du kannst sofort loslegen.",
+    "successHint": "Prüfe deine E-Mails für die Quittung und die nächsten Schritte.",
+    "goDashboard": "Zum Dashboard",
+    "browseResources": "Ressourcen durchsuchen"
+  },
+  "adminPortal": {
+    "badge": "Admin-Portal",
+    "signInTitle": "Administrator-Anmeldung",
+    "signInSubtitle": "Melde dich mit deinem Admin-Konto an, um die Plattform zu verwalten.",
+    "signInButton": "Im Admin-Portal anmelden",
+    "studentTeacherLogin": "Schüler:in oder Lehrkraft?",
+    "mainLogin": "Zur Hauptanmeldung",
+    "accessDenied": "Du hast keine Berechtigung für das Admin-Portal."
+  },
+  "consultation": {
+    "calendlyTitle": "Beratungstermin buchen",
+    "calendlySubtitle": "Wähle einen passenden Termin — wir bestätigen per E-Mail."
+  },
+  "pricing": {
+    "saveYearly": "Mit Jahresabo sparen"
+  },
+  "adminUsers": {
+    "title": "Benutzerverwaltung",
+    "description": "Benutzerkonten und Berechtigungen verwalten",
+    "refresh": "Aktualisieren",
+    "searchPlaceholder": "Benutzer suchen…",
+    "allRoles": "Alle Rollen",
+    "roleAdmin": "Admin",
+    "roleTeacher": "Lehrkraft",
+    "roleStudent": "Schüler:in",
+    "allStatus": "Alle Status",
+    "statusActive": "Aktiv",
+    "statusSuspended": "Gesperrt",
+    "allVerified": "Alle Verifizierungen",
+    "verified": "Verifiziert",
+    "unverified": "Nicht verifiziert",
+    "sortNewest": "Neueste zuerst",
+    "sortOldest": "Älteste zuerst",
+    "sortName": "Name",
+    "never": "Nie",
+    "fetchFailed": "Benutzer konnten nicht geladen werden",
+    "suspendConfirm": "Diesen Benutzer sperren? Er wird abgemeldet und kann sich nicht mehr anmelden.",
+    "reactivateConfirm": "Diesen Benutzer reaktivieren? Er kann sich wieder anmelden.",
+    "suspendSuccess": "Benutzer gesperrt — Anmeldung nicht mehr möglich",
+    "reactivateSuccess": "Benutzer reaktiviert",
+    "updateFailed": "Benutzer konnte nicht aktualisiert werden",
+    "deleteConfirm": "{{name}} dauerhaft löschen?\n\nKonto, Profil und alle zugehörigen Daten werden entfernt. Dies kann nicht rückgängig gemacht werden.",
+    "deleteSuccess": "Benutzer dauerhaft gelöscht",
+    "deleteFailed": "Benutzer konnte nicht gelöscht werden",
+    "roleUpdated": "Benutzerrolle aktualisiert",
+    "roleUpdateFailed": "Benutzerrolle konnte nicht aktualisiert werden",
+    "suspendTitle": "Benutzer sperren",
+    "reactivateTitle": "Benutzer reaktivieren",
+    "deleteTitle": "Benutzer dauerhaft löschen",
+    "noUsers": "Keine Benutzer gefunden",
+    "loading": "Benutzer werden geladen…"
+  },
+  "teacherContent": {
+    "searchPlaceholder": "Ressourcen suchen…",
+    "deleteConfirm": "Diese Ressource wirklich löschen?",
+    "deleteSuccess": "Ressource erfolgreich gelöscht",
+    "deleteFailed": "Ressource konnte nicht gelöscht werden",
+    "archiveSuccess": "Ressource archiviert",
+    "archiveFailed": "Ressource konnte nicht archiviert werden",
+    "loadFailed": "Ressourcen konnten nicht geladen werden",
+    "emptySearch": "Passe Suche oder Filter an",
+    "emptyDefault": "Lade deine erste Ressource hoch, um zu starten",
+    "statusAll": "Alle Status",
+    "statusPublished": "Veröffentlicht",
+    "statusDraft": "Entwurf",
+    "statusPending": "In Prüfung",
+    "statusArchived": "Archiviert",
+    "categoryAll": "Alle Kategorien",
+    "sortNewest": "Neueste",
+    "sortOldest": "Älteste",
+    "sortTitle": "Titel",
+    "views": "Aufrufe",
+    "downloads": "Downloads",
+    "edit": "Bearbeiten",
+    "archive": "Archivieren",
+    "delete": "Löschen",
+    "preview": "Vorschau"
+  },
+  "adminModeration": {
+    "approved": "Ressource freigegeben",
+    "rejected": "Ressource abgelehnt",
+    "actionFailed": "Aktion fehlgeschlagen"
   }
 }

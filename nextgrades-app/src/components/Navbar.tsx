@@ -1,10 +1,12 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, type ReactNode } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { LogOut, User as UserIcon, Menu, X } from "lucide-react";
 import { MobileDrawer } from "@/components/mobile/MobileDrawer";
+import { MarketingBottomNav } from "@/components/marketing/MarketingBottomNav";
+import { MARKETING_OPEN_MENU_EVENT } from "@/lib/marketing-nav";
 import { Button } from "./ui/Button";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { BrandLogo } from "./BrandLogo";
@@ -32,7 +34,14 @@ const navLinks = [
   { href: "/resources", key: "resources" },
   { href: "/pricing", key: "pricing" },
   { href: "/contact", key: "contact" },
-];
+] as const;
+
+const exploreNavKeys = ["home", "programs", "subjects", "resources"] as const;
+const companyNavKeys = ["about", "pricing", "contact"] as const;
+
+function navLinkByKey(key: (typeof navLinks)[number]["key"]) {
+  return navLinks.find((l) => l.key === key)!;
+}
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -72,6 +81,12 @@ export default function Navbar() {
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [pathname]);
+
+  useEffect(() => {
+    const open = () => setIsMobileMenuOpen(true);
+    window.addEventListener(MARKETING_OPEN_MENU_EVENT, open);
+    return () => window.removeEventListener(MARKETING_OPEN_MENU_EVENT, open);
+  }, []);
 
   useEffect(() => {
     if (!isSupabaseEnvConfigured()) return;
@@ -134,6 +149,7 @@ export default function Navbar() {
         );
 
   return (
+    <>
     <header
       className={cn("fixed inset-x-0 top-0 z-50 transition-all duration-300", headerBg)}
       style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
@@ -195,19 +211,53 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* Mobile menu toggle */}
-          <button
-            type="button"
-            className={cn(
-              "flex min-h-12 min-w-12 items-center justify-center rounded-2xl md:hidden touch-manipulation active:scale-95",
-              theme === "dark" ? "text-white" : "text-[#0D1B2A]"
+          {/* Mobile — Coursera-style: Login + Join + menu */}
+          <div className="flex shrink-0 items-center gap-1 sm:gap-2 md:hidden">
+            {session && user ? (
+              <Link
+                href={dashboardHref}
+                className={cn(
+                  "flex min-h-10 min-w-10 items-center justify-center rounded-xl border touch-manipulation",
+                  theme === "dark" ? "border-white/15 bg-white/5 text-white" : "border-gray-200 bg-gray-50 text-[#0D1B2A]"
+                )}
+                aria-label={t("common.dashboard")}
+              >
+                <UserIcon className="h-5 w-5 text-[#D4AF37]" />
+              </Link>
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  className={cn(
+                    "rounded-lg px-2.5 py-2 text-sm font-semibold touch-manipulation sm:px-3",
+                    theme === "dark" ? "text-white" : "text-[#0D1B2A]"
+                  )}
+                >
+                  {t("common.login")}
+                </Link>
+                <Button
+                  variant="gold"
+                  size="sm"
+                  className="!min-h-10 rounded-lg px-3 text-xs font-semibold sm:text-sm"
+                  href={buildLoginUrl(null, "signup")}
+                >
+                  {t("common.signup")}
+                </Button>
+              </>
             )}
-            onClick={() => setIsMobileMenuOpen((v) => !v)}
-            aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
-            aria-expanded={isMobileMenuOpen}
-          >
-            {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
+            <button
+              type="button"
+              className={cn(
+                "flex min-h-10 min-w-10 items-center justify-center rounded-xl touch-manipulation active:scale-95",
+                theme === "dark" ? "text-white" : "text-[#0D1B2A]"
+              )}
+              onClick={() => setIsMobileMenuOpen((v) => !v)}
+              aria-label={isMobileMenuOpen ? t("marketingNav.closeMenu") : t("marketingNav.openMenu")}
+              aria-expanded={isMobileMenuOpen}
+            >
+              {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -268,38 +318,112 @@ export default function Navbar() {
           </div>
         }
       >
-        <nav className="flex-1 overflow-y-auto overscroll-contain px-4 py-6">
+        <nav className="flex-1 overflow-y-auto overscroll-contain px-5 py-5">
           <Button
             variant="gold"
             size="lg"
-            className="mb-6 w-full min-h-[52px]"
+            className="mb-6 w-full min-h-[52px] text-base"
             href="/consultation"
           >
             {t("navbar.freeConsultation")}
           </Button>
-          <ul className="space-y-1">
-            {navLinks.map((link) => (
-              <li key={link.href}>
-                <Link
+
+          <MobileNavSection title={t("marketingNav.explore")} theme={theme}>
+            {exploreNavKeys.map((key) => {
+              const link = navLinkByKey(key);
+              return (
+                <MobileNavItem
+                  key={link.href}
                   href={link.href}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className={cn(
-                    "flex min-h-[52px] items-center rounded-2xl px-4 text-base font-medium transition-colors touch-manipulation",
-                    pathname === link.href
-                      ? "bg-[#D4AF37]/15 font-semibold text-[#D4AF37]"
-                      : theme === "dark"
-                        ? "text-white active:bg-white/5"
-                        : "text-[#0D1B2A] active:bg-gray-50"
-                  )}
-                >
-                  <span suppressHydrationWarning>{t(`common.${link.key}`)}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
+                  label={t(`common.${link.key}`)}
+                  active={pathname === link.href}
+                  theme={theme}
+                  onNavigate={() => setIsMobileMenuOpen(false)}
+                />
+              );
+            })}
+          </MobileNavSection>
+
+          <MobileNavSection title={t("marketingNav.company")} theme={theme} className="mt-6">
+            {companyNavKeys.map((key) => {
+              const link = navLinkByKey(key);
+              return (
+                <MobileNavItem
+                  key={link.href}
+                  href={link.href}
+                  label={t(`common.${link.key}`)}
+                  active={pathname === link.href}
+                  theme={theme}
+                  onNavigate={() => setIsMobileMenuOpen(false)}
+                />
+              );
+            })}
+          </MobileNavSection>
         </nav>
       </MobileDrawer>
+
     </header>
+    <MarketingBottomNav />
+    </>
+  );
+}
+
+function MobileNavSection({
+  title,
+  theme,
+  className,
+  children,
+}: {
+  title: string;
+  theme: "dark" | "light";
+  className?: string;
+  children: ReactNode;
+}) {
+  return (
+    <div className={className}>
+      <p
+        className={cn(
+          "mb-2 px-1 text-xs font-semibold uppercase tracking-wider",
+          theme === "dark" ? "text-gray-500" : "text-gray-400"
+        )}
+      >
+        {title}
+      </p>
+      <ul className="space-y-0.5">{children}</ul>
+    </div>
+  );
+}
+
+function MobileNavItem({
+  href,
+  label,
+  active,
+  theme,
+  onNavigate,
+}: {
+  href: string;
+  label: string;
+  active: boolean;
+  theme: "dark" | "light";
+  onNavigate: () => void;
+}) {
+  return (
+    <li>
+      <Link
+        href={href}
+        onClick={onNavigate}
+        className={cn(
+          "flex min-h-[48px] items-center rounded-xl px-4 text-[15px] font-medium transition-colors touch-manipulation",
+          active
+            ? "bg-[#D4AF37]/15 font-semibold text-[#D4AF37]"
+            : theme === "dark"
+              ? "text-white active:bg-white/5"
+              : "text-[#0D1B2A] active:bg-gray-50"
+        )}
+      >
+        <span suppressHydrationWarning>{label}</span>
+      </Link>
+    </li>
   );
 }
 

@@ -26,6 +26,7 @@ import {
   Bot,
   BarChart3,
   GraduationCap,
+  Cookie,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/context/ThemeContext";
@@ -85,7 +86,6 @@ const teacherConfig = [
 
 const adminConfig = [
   { href: ADMIN_PORTAL_HOME, icon: LayoutDashboard, labelKey: "adminNav.dashboard" },
-  { href: `${ADMIN_PORTAL_PREFIX}/website-content`, icon: Layout, labelKey: "adminNav.websiteContent", highlight: true },
   { href: `${ADMIN_PORTAL_PREFIX}/students`, icon: Users, labelKey: "adminNav.students" },
   { href: `${ADMIN_PORTAL_PREFIX}/teachers`, icon: GraduationCap, labelKey: "adminNav.teachers" },
   { href: `${ADMIN_PORTAL_PREFIX}/users`, icon: UserCog, labelKey: "adminNav.users" },
@@ -98,6 +98,7 @@ const adminConfig = [
   { href: `${ADMIN_PORTAL_PREFIX}/chatbot`, icon: Bot, labelKey: "adminNav.chatbot" },
   { href: `${ADMIN_PORTAL_PREFIX}/analytics`, icon: BarChart3, labelKey: "adminNav.analytics" },
   { href: `${ADMIN_PORTAL_PREFIX}/zoom`, icon: Video, labelKey: "adminNav.zoom" },
+  { href: `${ADMIN_PORTAL_PREFIX}/cookies`, icon: Cookie, labelKey: "adminNav.cookies" },
 ];
 
 function SidebarContent({

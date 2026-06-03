@@ -26,6 +26,14 @@
   "nav": {
     "home": "Home"
   },
+  "marketingNav": {
+    "bottomLabel": "Main navigation",
+    "more": "More",
+    "explore": "Explore",
+    "company": "Company",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
+  },
   "footer": {
     "programs": "Programs",
     "program1": "1:1 Tutoring",
@@ -41,6 +49,7 @@
     "legal": "Legal",
     "terms": "Terms & Conditions",
     "privacy": "Privacy Policy",
+    "cookies": "Cookies",
     "imprint": "Imprint",
     "madeInGermany": "Made with ♥ in Germany",
     "copyright": "© 2026 NextGrades. All rights reserved."
@@ -59,11 +68,26 @@
     "learnMore": "Learn more",
     "mostPopular": "Most popular program",
     "features": [
-      { "title": "Premium teachers", "desc": "Carefully selected, experienced educators focused on success." },
-      { "title": "Small learning groups", "desc": "Max. 3–5 students per group for intensive learning." },
-      { "title": "Modern learning platform", "desc": "Videos, exercises, PDFs and more — all in one place." },
-      { "title": "Structured learning systems", "desc": "Clear learning path, progress tracking & systematic preparation." },
-      { "title": "Flexible & online", "desc": "Learn where you want, when you want, on your schedule." }
+      {
+        "title": "Premium teachers",
+        "desc": "Carefully selected, experienced educators focused on success."
+      },
+      {
+        "title": "Small learning groups",
+        "desc": "Max. 3–5 students per group for intensive learning."
+      },
+      {
+        "title": "Modern learning platform",
+        "desc": "Videos, exercises, PDFs and more — all in one place."
+      },
+      {
+        "title": "Structured learning systems",
+        "desc": "Clear learning path, progress tracking & systematic preparation."
+      },
+      {
+        "title": "Flexible & online",
+        "desc": "Learn where you want, when you want, on your schedule."
+      }
     ],
     "programsSection": {
       "title": "Our Programs",
@@ -71,23 +95,51 @@
       "items": [
         {
           "title": "1:1 Premium Tutoring",
-          "features": ["Individual, personal, efficient.", "Personal 1:1 support", "Flexible appointments", "Tailored learning plan"]
+          "features": [
+            "Individual, personal, efficient.",
+            "Personal 1:1 support",
+            "Flexible appointments",
+            "Tailored learning plan"
+          ]
         },
         {
           "title": "Small Group Learning",
-          "features": ["Learn together with friends.", "Max. 3–5 students", "Interactive exchange", "Motivation through the group"]
+          "features": [
+            "Learn together with friends.",
+            "Max. 3–5 students",
+            "Interactive exchange",
+            "Motivation through the group"
+          ]
         },
         {
           "title": "Math Excellence Program",
-          "features": ["Our flagship program for math.", "Weekly live sessions", "Premium learning materials", "Graduation exam preparation", "Instructors from university & sessions"]
+          "features": [
+            "Our flagship program for math.",
+            "Weekly live sessions",
+            "Premium learning materials",
+            "Graduation exam preparation",
+            "Instructors from university & sessions"
+          ]
         }
       ]
     },
     "stats": [
-      { "number": "200+", "label": "happy students" },
-      { "number": "25+", "label": "top teachers" },
-      { "number": "1,000+", "label": "learning materials" },
-      { "number": "4.9/5", "label": "rating from parents & students" }
+      {
+        "number": "200+",
+        "label": "happy students"
+      },
+      {
+        "number": "25+",
+        "label": "top teachers"
+      },
+      {
+        "number": "1,000+",
+        "label": "learning materials"
+      },
+      {
+        "number": "4.9/5",
+        "label": "rating from parents & students"
+      }
     ],
     "platform": {
       "eyebrow": "Learning platform",
@@ -101,18 +153,39 @@
       "availabilityLabel": "Support available",
       "materials": "learning materials",
       "features": [
-        { "title": "Track progress", "desc": "Track your progress, complete lessons, and stay motivated!" },
-        { "title": "24/7 support", "desc": "Support available whenever you need it." },
-        { "title": "1,000+ materials", "desc": "Premium worksheets, videos, and guides in one place." },
-        { "title": "Structured learning", "desc": "Clear learning paths with progress tracking and exam prep." }
+        {
+          "title": "Track progress",
+          "desc": "Track your progress, complete lessons, and stay motivated!"
+        },
+        {
+          "title": "24/7 support",
+          "desc": "Support available whenever you need it."
+        },
+        {
+          "title": "1,000+ materials",
+          "desc": "Premium worksheets, videos, and guides in one place."
+        },
+        {
+          "title": "Structured learning",
+          "desc": "Clear learning paths with progress tracking and exam prep."
+        }
       ]
     },
     "testimonials": {
       "title": "What students and parents say",
       "items": [
-        { "quote": "Thanks to NextGrades I improved my math grade from C to A! The explanations are great and you understand right away!", "name": "Lena, Grade 10" },
-        { "quote": "The small learning group has really helped my son! He is more motivated and finally understands math.", "name": "Peter M., Father" },
-        { "quote": "The platform is super intuitive and the materials are perfect for graduation exam preparation!", "name": "Julia, Grade 12" }
+        {
+          "quote": "Thanks to NextGrades I improved my math grade from C to A! The explanations are great and you understand right away!",
+          "name": "Lena, Grade 10"
+        },
+        {
+          "quote": "The small learning group has really helped my son! He is more motivated and finally understands math.",
+          "name": "Peter M., Father"
+        },
+        {
+          "quote": "The platform is super intuitive and the materials are perfect for graduation exam preparation!",
+          "name": "Julia, Grade 12"
+        }
       ]
     },
     "cta": {
@@ -136,8 +209,23 @@
     "enterMessage": "Enter your message here...",
     "submitForm": "Submit Form",
     "submitting": "Sending...",
+    "success": "Message sent successfully!",
     "successTitle": "Thank you!",
     "successMessage": "We received your message and will get back to you soon.",
+    "officeLabel": "Office",
+    "officeValue": "Berlin, Germany",
+    "hoursLabel": "Response time",
+    "hoursValue": "Within 24 hours",
+    "sideEyebrow": "Premium support",
+    "sideTitle": "We're here to help you succeed.",
+    "formTitle": "Send us a message",
+    "formDesc": "Fill out the form and our team will get back to you shortly.",
+    "formSubject": "Contact form",
+    "heroImageAlt": "NextGrades support team",
+    "ctaEyebrow": "Explore plans",
+    "ctaTitle": "Looking for the right learning plan?",
+    "ctaDesc": "Compare memberships and tutoring packages on our pricing page.",
+    "ctaConsultation": "Free consultation",
     "validationRequired": "Please fill in all required fields.",
     "validationEmail": "Please enter a valid email address."
   },
@@ -288,8 +376,8 @@
       "feature2Desc": "Always up-to-date content.",
       "feature3Title": "Created by experts",
       "feature3Desc": "Created by educators and teachers.",
-      "feature4Title": "Safe & good",
-      "feature4Desc": "Optimally prepared for students."
+      "feature4Title": "Safe and reliable",
+      "feature4Desc": "Prepared clearly for students."
     },
     "filters": {
       "title": "Filters",
@@ -358,11 +446,12 @@
     "mostPopular": "Most Popular",
     "getStarted": "Get Started",
     "faqTitle": "Frequently Asked Questions",
-    "faqHeading": "Frequently asked questions."
+    "faqHeading": "Frequently asked questions.",
+    "saveYearly": "Save 2 months vs monthly"
   },
   "programs": {
-    "title": "Our Programs",
-    "subtitle": "The right support for every learning goal"
+    "title": "Our Programs.",
+    "subtitle": "The right support for every goal."
   },
   "subjects": {
     "title": "Our Subjects",
@@ -380,9 +469,18 @@
     "title": "Help Center",
     "subtitle": "Find answers to frequently asked questions",
     "faqs": [
-      { "question": "How does registration work?", "answer": "You can easily sign up or log in through our login page." },
-      { "question": "How can I book a program?", "answer": "Contact us or book a free consultation to learn more." },
-      { "question": "What payment methods are available?", "answer": "We accept credit cards, PayPal, and bank transfers via Stripe." }
+      {
+        "question": "How does registration work?",
+        "answer": "You can easily sign up or log in through our login page."
+      },
+      {
+        "question": "How can I book a program?",
+        "answer": "Contact us or book a free consultation to learn more."
+      },
+      {
+        "question": "What payment methods are available?",
+        "answer": "We accept credit cards, PayPal, and bank transfers via Stripe."
+      }
     ]
   },
   "aiGenerator": {
@@ -390,7 +488,7 @@
     "subtitle": "Create learning materials with AI"
   },
   "consultation": {
-    "breadcrumb": "Consultation",
+    "heroEyebrow": "FREE CONSULTATION",
     "title": "Free Consultation",
     "titleHighlight": "Your learning plan starts here.",
     "subtitle": "Speak with our education advisors and discover the right tutoring path — tailored to your goals, schedule, and budget.",
@@ -399,12 +497,28 @@
     "viewPrograms": "Explore programs",
     "cardTitle": "Book your free consultation",
     "cardSubtitle": "Tell us about your goals — we respond within one business day.",
-    "trustBadges": ["100% free", "No obligation", "30-minute session"],
+    "trustBadges": [
+      "100% free",
+      "No obligation",
+      "30-minute session"
+    ],
     "stats": [
-      { "value": "< 24h", "label": "Response time" },
-      { "value": "30 min", "label": "Consultation length" },
-      { "value": "1:1", "label": "Personal advisor" },
-      { "value": "DE", "label": "Germany-focused expertise" }
+      {
+        "value": "< 24h",
+        "label": "Response time"
+      },
+      {
+        "value": "30 min",
+        "label": "Consultation length"
+      },
+      {
+        "value": "1:1",
+        "label": "Personal advisor"
+      },
+      {
+        "value": "DE",
+        "label": "Germany-focused expertise"
+      }
     ],
     "processTitle": "How your consultation works",
     "processSubtitle": "A simple, structured process designed to give you clarity — not a sales pitch.",
@@ -477,13 +591,33 @@
     "phone": "Phone number",
     "gradeLevel": "Grade / level",
     "gradePlaceholder": "Select level",
-    "grades": ["Grade 5–7", "Grade 8–10", "Abitur / Oberstufe", "University / adult learner"],
+    "grades": [
+      "Grade 5–7",
+      "Grade 8–10",
+      "Abitur / Oberstufe",
+      "University / adult learner"
+    ],
     "subject": "Subject of interest",
     "subjectPlaceholder": "Select subject",
-    "subjects": ["Mathematics", "English", "German", "Physics", "Chemistry", "Business / Economics", "Computer science", "Other"],
+    "subjects": [
+      "Mathematics",
+      "English",
+      "German",
+      "Physics",
+      "Chemistry",
+      "Business / Economics",
+      "Computer science",
+      "Other"
+    ],
     "preferredTime": "Preferred contact time",
     "timePlaceholder": "Select preference",
-    "times": ["Morning (8–12)", "Afternoon (12–17)", "Evening (17–20)", "Weekend", "Flexible"],
+    "times": [
+      "Morning (8–12)",
+      "Afternoon (12–17)",
+      "Evening (17–20)",
+      "Weekend",
+      "Flexible"
+    ],
     "goals": "Your goals (optional)",
     "goalsPlaceholder": "e.g. Improve math grade before exams, prepare for Abitur, build study habits…",
     "privacyNote": "By submitting, you agree that we may contact you about your consultation request. We never share your data with third parties.",
@@ -571,8 +705,8 @@
       {
         "title": "Cookies and analytics",
         "paragraphs": [
-          "Our website uses cookies and similar technologies to keep you signed in, remember your preferences (such as language and theme), and understand how the site is used.",
-          "You can control cookies through your browser settings. Disabling essential cookies may limit certain features of the platform."
+          "Our website uses cookies and similar technologies to keep you signed in, remember your preferences (such as language and theme), and — only with your consent — understand how the site is used.",
+          "Use Cookie settings in the footer or our Cookie Policy to accept, reject, or customize categories. Disabling essential cookies may limit certain features."
         ]
       },
       {
@@ -762,10 +896,22 @@
       }
     ],
     "stats": [
-      { "value": "200+", "label": "students supported" },
-      { "value": "25+", "label": "teachers on the team" },
-      { "value": "100%", "label": "online & flexible" },
-      { "value": "4.9/5", "label": "parent satisfaction" }
+      {
+        "value": "200+",
+        "label": "students supported"
+      },
+      {
+        "value": "25+",
+        "label": "teachers on the team"
+      },
+      {
+        "value": "100%",
+        "label": "online & flexible"
+      },
+      {
+        "value": "4.9/5",
+        "label": "parent satisfaction"
+      }
     ],
     "positionsEyebrow": "Open roles",
     "positionsTitle": "Current opportunities",
@@ -834,5 +980,132 @@
     "schedule": "Schedule",
     "users": "Users",
     "content": "Content"
+  },
+  "cookies": {
+    "openSettings": "Cookie settings",
+    "banner": {
+      "title": "We value your privacy",
+      "description": "We use cookies to run NextGrades securely, remember your preferences, and — only with your consent — understand how our site is used.",
+      "learnMore": "Learn more",
+      "acceptAll": "Accept all",
+      "reject": "Reject non-essential",
+      "customize": "Customize"
+    },
+    "modal": {
+      "title": "Cookie preferences",
+      "intro": "Choose which cookies you allow. Essential cookies are required for the site to work and cannot be turned off.",
+      "legalNote": "Read our",
+      "privacyLink": "Privacy Policy",
+      "cookiesLink": "Cookie Policy",
+      "save": "Save preferences",
+      "close": "Close"
+    },
+    "categories": {
+      "essential": {
+        "title": "Essential cookies",
+        "description": "Authentication, security, session management, and core website functionality.",
+        "alwaysOn": "Always active"
+      },
+      "analytics": {
+        "title": "Analytics cookies",
+        "description": "Help us understand traffic and improve performance (e.g. Google Analytics)."
+      },
+      "marketing": {
+        "title": "Marketing cookies",
+        "description": "Advertising, retargeting, and conversion measurement."
+      },
+      "functional": {
+        "title": "Functional cookies",
+        "description": "Remember language, theme, and dashboard preferences."
+      }
+    },
+    "admin": {
+      "title": "Cookie management",
+      "description": "Configure tracking integrations and review consent records.",
+      "settingsTitle": "Integration settings",
+      "export": "Export CSV",
+      "save": "Save settings",
+      "saving": "Saving…",
+      "saved": "Settings saved",
+      "saveError": "Could not save settings",
+      "loadError": "Could not load cookie data",
+      "loading": "Loading…",
+      "gaId": "Google Analytics measurement ID",
+      "policyVersion": "Policy version",
+      "maxAge": "Cookie max age (days)",
+      "analyticsScript": "Custom analytics script URL",
+      "enableAnalytics": "Allow analytics integration",
+      "enableMarketing": "Allow marketing scripts",
+      "recentTitle": "Recent consent events",
+      "noRecords": "No consent records yet.",
+      "table": {
+        "action": "Action",
+        "locale": "Locale",
+        "date": "Date"
+      },
+      "stats": {
+        "total": "Total events",
+        "acceptAll": "Accept all",
+        "reject": "Reject non-essential",
+        "analytics": "Analytics opt-in"
+      }
+    }
+  },
+  "cookiesPolicy": {
+    "title": "Cookie Policy",
+    "subtitle": "How NextGrades uses cookies and similar technologies",
+    "eyebrow": "Legal · Cookies",
+    "lastUpdated": "Last updated: June 2026",
+    "intro": "This Cookie Policy explains what cookies are, which types NextGrades uses, and how you can manage your preferences. We comply with the GDPR, UK GDPR, CCPA, and the ePrivacy Directive by asking for consent before non-essential tracking.",
+    "contactTitle": "Manage your cookies",
+    "contactNote": "You can change your choices at any time using the button below or via your browser settings.",
+    "contactCta": "Contact us",
+    "sections": [
+      {
+        "title": "What are cookies?",
+        "paragraphs": [
+          "Cookies are small text files stored on your device when you visit a website. They help the site remember your login, preferences, and — if you agree — how you use our pages.",
+          "We also use similar technologies such as local storage for theme and language settings."
+        ]
+      },
+      {
+        "title": "Why NextGrades uses cookies",
+        "paragraphs": [
+          "We use cookies to keep you signed in, protect your account, deliver our learning platform, remember your language and theme, and — only with consent — measure site usage and marketing performance."
+        ]
+      },
+      {
+        "title": "Types of cookies we use",
+        "paragraphs": [
+          "We group cookies into four categories:"
+        ],
+        "bullets": [
+          "Essential — required for security, authentication, and core features (always on)",
+          "Analytics — optional; help us improve the website (e.g. Google Analytics)",
+          "Marketing — optional; used for ads and conversion tracking",
+          "Functional — optional; remember preferences beyond essential session data"
+        ]
+      },
+      {
+        "title": "Your rights",
+        "paragraphs": [
+          "Under the GDPR and similar laws you may withdraw consent at any time, access information about processing, and object to certain uses of data.",
+          "California residents may have additional rights under the CCPA, including knowing what data is collected and opting out of certain sharing."
+        ]
+      },
+      {
+        "title": "How to manage cookies",
+        "paragraphs": [
+          "Use the Cookie settings control on our website to accept, reject, or customize categories.",
+          "You can also block or delete cookies in your browser; essential features may not work if you disable all cookies."
+        ]
+      },
+      {
+        "title": "Contact",
+        "paragraphs": [
+          "Questions about this policy: support@nextgrades.de or our contact page."
+        ]
+      }
+    ]
   }
 }

@@ -4,7 +4,7 @@
     "login": "Anmelden",
     "signup": "Registrieren",
     "freeConsultation": "Kostenloses Erstgespräch",
-    "home": "Start",
+    "home": "Startseite",
     "about": "Über uns",
     "programs": "Programme",
     "subjects": "Fächer",
@@ -26,6 +26,14 @@
   "nav": {
     "home": "Startseite"
   },
+  "marketingNav": {
+    "bottomLabel": "Hauptnavigation",
+    "more": "Mehr",
+    "explore": "Entdecken",
+    "company": "Unternehmen",
+    "openMenu": "Menü öffnen",
+    "closeMenu": "Menü schließen"
+  },
   "footer": {
     "programs": "Programme",
     "program1": "1:1 Nachhilfe",
@@ -41,6 +49,7 @@
     "legal": "Rechtliches",
     "terms": "AGB",
     "privacy": "Datenschutz",
+    "cookies": "Cookies",
     "imprint": "Impressum",
     "madeInGermany": "Mit ♥ in Deutschland",
     "copyright": "© 2026 NextGrades. Alle Rechte vorbehalten."
@@ -59,7 +68,7 @@
     },
     "programs": {
       "title": "Unsere Programme",
-      "subtitle": "Für jede Lernziel die passende Unterstützung"
+      "subtitle": "Für jedes Lernziel die passende Unterstützung"
     },
     "statsBar": {
       "stat1": "200+",
@@ -189,26 +198,62 @@
       "trackProgress": "Fortschritt verfolgen",
       "trackProgressDesc": "Verfolge deinen Fortschritt, schließe Lektionen ab und bleib motiviert!",
       "weeks": "Wochen lang",
-      "materials": "Lernmaterialien"
+      "materials": "Lernmaterialien",
+      "availability": "24/7",
+      "availabilityLabel": "Support verfügbar",
+      "features": [
+        {
+          "title": "Fortschritt verfolgen",
+          "desc": "Verfolge deinen Fortschritt, schließe Lektionen ab und bleib motiviert!"
+        },
+        {
+          "title": "24/7 Support",
+          "desc": "Unterstützung, wann immer du sie brauchst."
+        },
+        {
+          "title": "1.000+ Materialien",
+          "desc": "Premium-Arbeitsblätter, Videos und Guides an einem Ort."
+        },
+        {
+          "title": "Strukturiertes Lernen",
+          "desc": "Klare Lernpfade mit Fortschrittsverfolgung und Prüfungsvorbereitung."
+        }
+      ],
+      "eyebrow": "Lernplattform"
     }
   },
   "contact": {
-    "title": "Komm mit uns in Kontakt.",
-    "subtitle": "Oder schreibe uns direkt an",
+    "title": "Nimm Kontakt mit uns auf.",
+    "subtitle": "Oder schreib uns direkt an",
     "firstName": "Vorname",
     "lastName": "Nachname",
-    "emailAddress": "E-Mail Adresse",
+    "emailAddress": "E-Mail-Adresse",
     "phoneNumber": "Telefonnummer",
     "message": "Nachricht",
     "enterFirstName": "Gib deinen Vornamen ein...",
     "enterLastName": "Gib deinen Nachnamen ein...",
-    "enterEmail": "Gib deine E-Mail Adresse ein...",
+    "enterEmail": "Gib deine E-Mail-Adresse ein...",
     "enterPhone": "Telefonnummer eingeben",
     "enterMessage": "Gib deine Nachricht hier ein...",
     "submitForm": "Formular absenden",
     "submitting": "Wird gesendet...",
+    "success": "Nachricht erfolgreich gesendet!",
     "successTitle": "Vielen Dank!",
     "successMessage": "Wir haben deine Nachricht erhalten und melden uns bald bei dir.",
+    "officeLabel": "Standort",
+    "officeValue": "Berlin, Deutschland",
+    "hoursLabel": "Antwortzeit",
+    "hoursValue": "Innerhalb von 24 Stunden",
+    "sideEyebrow": "Premium-Betreuung",
+    "sideTitle": "Wir helfen dir auf deinem Lernweg.",
+    "formTitle": "Schreib uns eine Nachricht",
+    "formDesc": "Fülle das Formular aus — unser Team meldet sich in Kürze bei dir.",
+    "formSubject": "Kontaktformular",
+    "heroImageAlt": "NextGrades Support-Team",
+    "ctaEyebrow": "Tarife entdecken",
+    "ctaTitle": "Suchst du den passenden Lernplan?",
+    "ctaDesc": "Vergleiche Mitgliedschaften und Nachhilfe-Pakete auf unserer Preisseite.",
+    "ctaConsultation": "Kostenloses Erstgespräch",
     "validationRequired": "Bitte fülle alle Pflichtfelder aus.",
     "validationEmail": "Bitte gib eine gültige E-Mail-Adresse ein."
   },
@@ -300,7 +345,7 @@
   "about": {
     "heroTitle": "Mehr als Nachhilfe.",
     "heroTitle2": "Eine neue Vision für Bildung.",
-    "heroSubtitle": "Wir haben uns die Aufgabe gemacht, um Schüler:innen eine moderne, strukturierte und motivierende Lernumgebung zu bieten – online, flexibel und auf höchstem Niveau.",
+    "heroSubtitle": "Wir haben es uns zur Aufgabe gemacht, Schüler:innen eine moderne, strukturierte und motivierende Lernumgebung zu bieten – online, flexibel und auf höchstem Niveau.",
     "heroFeature1": "Hochwertige Inhalte",
     "heroFeature1Desc": "Von erfahrenen Lehrer:innen erstellt.",
     "heroFeature2": "Kostenlos & hilfreich",
@@ -328,8 +373,8 @@
     "topBarResults": "Ergebnisse",
     "searchPlaceholder": "Materialien durchsuchen...",
     "sortBy": "Sortieren nach:",
-    "sortNewest": "Neuste zuerst",
-    "sortOldest": "Alteste zuerst",
+    "sortNewest": "Neueste zuerst",
+    "sortOldest": "Älteste zuerst",
     "sortPopular": "Beliebteste",
     "freeTitle": "Kostenlose Inhalte",
     "freeSubtitle": "Für alle verfügbar",
@@ -434,11 +479,12 @@
     "mostPopular": "Am beliebtesten",
     "getStarted": "Loslegen",
     "faqTitle": "Häufig gestellte Fragen",
-    "faqHeading": "Häufig gestellte Fragen."
+    "faqHeading": "Häufig gestellte Fragen.",
+    "saveYearly": "2 Monate sparen gegenüber monatlich"
   },
   "programs": {
-    "title": "Unsere Programme",
-    "subtitle": "Für jede Lernziel die passende Unterstützung"
+    "title": "Unsere Programme.",
+    "subtitle": "Die passende Unterstützung für jedes Lernziel."
   },
   "subjects": {
     "title": "Unsere Fächer",
@@ -480,7 +526,7 @@
     "cardTitle": "Buche dein kostenloses Erstgespräch",
     "cardSubtitle": "Nutze Calendly, um einen passenden Termin zu buchen.",
     "bookNow": "Jetzt Termin buchen",
-    "breadcrumb": "Startseite > Beratung",
+    "heroEyebrow": "KOSTENLOSE BERATUNG",
     "titleHighlight": "Dein Lernplan beginnt hier.",
     "heroDesc": "Unverbindlich. Ohne Druck. Klare Orientierung von Expert:innen, die das deutsche Schulsystem und die Studienvorbereitung kennen.",
     "viewPrograms": "Programme entdecken",
@@ -885,10 +931,22 @@
       }
     ],
     "stats": [
-      { "value": "200+", "label": "betreute Schüler:innen" },
-      { "value": "25+", "label": "Lehrkräfte im Team" },
-      { "value": "100%", "label": "online & flexibel" },
-      { "value": "4,9/5", "label": "Zufriedenheit der Eltern" }
+      {
+        "value": "200+",
+        "label": "betreute Schüler:innen"
+      },
+      {
+        "value": "25+",
+        "label": "Lehrkräfte im Team"
+      },
+      {
+        "value": "100%",
+        "label": "online & flexibel"
+      },
+      {
+        "value": "4,9/5",
+        "label": "Zufriedenheit der Eltern"
+      }
     ],
     "positionsEyebrow": "Offene Stellen",
     "positionsTitle": "Aktuelle Möglichkeiten",
@@ -944,7 +1002,7 @@
   },
   "mobileNav": {
     "main": "Hauptnavigation",
-    "home": "Start",
+    "home": "Startseite",
     "courses": "Kurse",
     "resources": "Ressourcen",
     "liveClasses": "Live",
@@ -957,5 +1015,132 @@
     "schedule": "Termine",
     "users": "Nutzer",
     "content": "Inhalt"
+  },
+  "cookies": {
+    "openSettings": "Cookie-Einstellungen",
+    "banner": {
+      "title": "Deine Privatsphäre ist uns wichtig",
+      "description": "Wir verwenden Cookies, um NextGrades sicher zu betreiben, deine Einstellungen zu speichern und — nur mit deiner Einwilligung — die Nutzung der Website zu verstehen.",
+      "learnMore": "Mehr erfahren",
+      "acceptAll": "Alle akzeptieren",
+      "reject": "Nur notwendige",
+      "customize": "Anpassen"
+    },
+    "modal": {
+      "title": "Cookie-Einstellungen",
+      "intro": "Wähle, welche Cookies du erlaubst. Notwendige Cookies sind für den Betrieb der Website erforderlich und können nicht deaktiviert werden.",
+      "legalNote": "Lies unsere",
+      "privacyLink": "Datenschutzerklärung",
+      "cookiesLink": "Cookie-Richtlinie",
+      "save": "Einstellungen speichern",
+      "close": "Schließen"
+    },
+    "categories": {
+      "essential": {
+        "title": "Notwendige Cookies",
+        "description": "Anmeldung, Sicherheit, Sitzungsverwaltung und grundlegende Website-Funktionen.",
+        "alwaysOn": "Immer aktiv"
+      },
+      "analytics": {
+        "title": "Analyse-Cookies",
+        "description": "Helfen uns, Traffic zu verstehen und die Website zu verbessern (z. B. Google Analytics)."
+      },
+      "marketing": {
+        "title": "Marketing-Cookies",
+        "description": "Werbung, Retargeting und Conversion-Messung."
+      },
+      "functional": {
+        "title": "Funktionale Cookies",
+        "description": "Sprache, Design und Dashboard-Einstellungen merken."
+      }
+    },
+    "admin": {
+      "title": "Cookie-Verwaltung",
+      "description": "Tracking-Integrationen konfigurieren und Einwilligungen einsehen.",
+      "settingsTitle": "Integrationen",
+      "export": "CSV exportieren",
+      "save": "Speichern",
+      "saving": "Wird gespeichert…",
+      "saved": "Einstellungen gespeichert",
+      "saveError": "Speichern fehlgeschlagen",
+      "loadError": "Daten konnten nicht geladen werden",
+      "loading": "Laden…",
+      "gaId": "Google-Analytics Mess-ID",
+      "policyVersion": "Richtlinienversion",
+      "maxAge": "Cookie-Gültigkeit (Tage)",
+      "analyticsScript": "Eigene Analyse-Script-URL",
+      "enableAnalytics": "Analyse-Integration erlauben",
+      "enableMarketing": "Marketing-Skripte erlauben",
+      "recentTitle": "Letzte Einwilligungen",
+      "noRecords": "Noch keine Einwilligungen.",
+      "table": {
+        "action": "Aktion",
+        "locale": "Sprache",
+        "date": "Datum"
+      },
+      "stats": {
+        "total": "Ereignisse gesamt",
+        "acceptAll": "Alle akzeptiert",
+        "reject": "Nur notwendige",
+        "analytics": "Analyse opt-in"
+      }
+    }
+  },
+  "cookiesPolicy": {
+    "title": "Cookie-Richtlinie",
+    "subtitle": "Wie NextGrades Cookies und ähnliche Technologien nutzt",
+    "eyebrow": "Rechtliches · Cookies",
+    "lastUpdated": "Zuletzt aktualisiert: Juni 2026",
+    "intro": "Diese Cookie-Richtlinie erklärt, was Cookies sind, welche Arten NextGrades verwendet und wie du deine Einstellungen verwalten kannst. Wir halten GDPR, UK GDPR, CCPA und die ePrivacy-Richtlinie ein und fragen vor nicht notwendigem Tracking um Einwilligung.",
+    "contactTitle": "Cookies verwalten",
+    "contactNote": "Du kannst deine Auswahl jederzeit über die Schaltfläche unten oder in den Browser-Einstellungen ändern.",
+    "contactCta": "Kontakt",
+    "sections": [
+      {
+        "title": "Was sind Cookies?",
+        "paragraphs": [
+          "Cookies sind kleine Textdateien, die beim Besuch einer Website auf deinem Gerät gespeichert werden. Sie helfen, dich angemeldet zu halten, Einstellungen zu speichern und — mit deiner Zustimmung — die Nutzung zu analysieren.",
+          "Wir nutzen auch localStorage für Design- und Spracheinstellungen."
+        ]
+      },
+      {
+        "title": "Warum NextGrades Cookies nutzt",
+        "paragraphs": [
+          "Cookies ermöglichen Anmeldung, Sicherheit, die Lernplattform, Sprache und Design — sowie optional Statistik und Marketing."
+        ]
+      },
+      {
+        "title": "Arten von Cookies",
+        "paragraphs": [
+          "Wir unterscheiden vier Kategorien:"
+        ],
+        "bullets": [
+          "Notwendig — Sicherheit, Anmeldung, Kernfunktionen (immer aktiv)",
+          "Analyse — optional; Verbesserung der Website (z. B. Google Analytics)",
+          "Marketing — optional; Werbung und Conversion-Tracking",
+          "Funktional — optional; Einstellungen über die Sitzung hinaus"
+        ]
+      },
+      {
+        "title": "Deine Rechte",
+        "paragraphs": [
+          "Nach DSGVO kannst du die Einwilligung jederzeit widerrufen und Auskunft verlangen.",
+          "In Kalifornien gelten zusätzliche Rechte nach CCPA."
+        ]
+      },
+      {
+        "title": "Cookies verwalten",
+        "paragraphs": [
+          "Nutze „Cookie-Einstellungen“ auf der Website, um Kategorien zu akzeptieren, abzulehnen oder anzupassen.",
+          "Im Browser kannst du Cookies blockieren; ohne notwendige Cookies funktionieren einige Features nicht."
+        ]
+      },
+      {
+        "title": "Kontakt",
+        "paragraphs": [
+          "Fragen: support@nextgrades.de oder unsere Kontaktseite."
+        ]
+      }
+    ]
   }
 }

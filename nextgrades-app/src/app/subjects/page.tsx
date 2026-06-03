@@ -134,7 +134,12 @@ export default function SubjectsPage() {
   );
 
   return (
-    <div className={cn("flex min-h-screen flex-col overflow-x-hidden", isDark ? "bg-[#0D1B2A]" : "bg-[#FAFAFA]")}>
+    <div
+      className={cn(
+        "marketing-page-root flex min-h-screen flex-col",
+        isDark ? "bg-[#0D1B2A]" : "bg-[#FAFAFA]"
+      )}
+    >
       <Navbar />
 
       <main className="flex-1">
