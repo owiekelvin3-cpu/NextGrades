@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
-import { emailExists, logRegistrationAttempt, normalizeEmail, EMAIL_REGEX } from "@/lib/auth/registration";
+import { logRegistrationAttempt, normalizeEmail, EMAIL_REGEX } from "@/lib/auth/registration";
 import { enforceRateLimit } from "@/lib/security/rate-limit";
 
+/** Returns a uniform response to prevent email enumeration. */
 export async function POST(request: Request) {
-  const limited = enforceRateLimit(request, { bucket: "auth:check-email", limit: 30, windowSec: 600 });
+  const limited = await enforceRateLimit(request, { bucket: "auth:check-email", limit: 30, windowSec: 600 });
   if (limited) return limited;
 
   try {
@@ -14,10 +15,12 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Invalid email address" }, { status: 400 });
     }
 
-    const exists = await emailExists(email);
-    await logRegistrationAttempt(email, "check_email", true, undefined, { exists }, request);
+    await logRegistrationAttempt(email, "check_email", true, undefined, {}, request);
 
-    return NextResponse.json({ exists, email });
+    return NextResponse.json({
+      ok: true,
+      message: "Continue with registration if this email belongs to you.",
+    });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Check failed";
     await logRegistrationAttempt(null, "check_email", false, message, {}, request);

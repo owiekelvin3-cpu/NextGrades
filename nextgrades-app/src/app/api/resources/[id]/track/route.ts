@@ -1,17 +1,32 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { enforceRateLimit } from "@/lib/security/rate-limit";
 
 export async function POST(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const limited = await enforceRateLimit(request, {
+    bucket: "resources:track",
+    limit: 60,
+    windowSec: 60,
+  });
+  if (limited) return limited;
+
   try {
     const { id } = await params;
     const body = await request.json().catch(() => ({}));
     const action = body.action === "download" ? "download" : "view";
 
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    const { data: material } = await supabase.from("materials").select("id").eq("id", id).maybeSingle();
+    if (!material) {
+      return NextResponse.json({ error: "Resource not found" }, { status: 404 });
+    }
 
     await supabase.from("resource_analytics").insert({
       resource_id: id,

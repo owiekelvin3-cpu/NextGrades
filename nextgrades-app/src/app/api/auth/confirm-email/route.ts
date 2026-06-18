@@ -8,7 +8,7 @@ import { enforceRateLimit } from "@/lib/security/rate-limit";
 
 /** Confirms a user's email when verification is disabled (dev / pre-domain). */
 export async function POST(request: Request) {
-  const limited = enforceRateLimit(request, { bucket: "auth:confirm-email", limit: 20, windowSec: 600 });
+  const limited = await enforceRateLimit(request, { bucket: "auth:confirm-email", limit: 20, windowSec: 600 });
   if (limited) return limited;
 
   if (isEmailVerificationRequired()) {

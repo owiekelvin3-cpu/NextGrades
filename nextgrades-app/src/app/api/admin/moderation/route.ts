@@ -23,7 +23,8 @@ export async function GET(request: Request) {
         category:resource_categories(id, name)
       `)
       .eq("moderation_status", status)
-      .order("created_at", { ascending: false });
+      .order("created_at", { ascending: false })
+      .limit(50);
 
     if (error) throw error;
 

@@ -14,6 +14,7 @@ import { useCmsImage } from "@/hooks/useCmsImage";
 import { useToast } from "@/context/ToastContext";
 import { CONSULTATION_HERO_IMAGE } from "@/lib/marketing-images";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
+import { COMPANY_PHONE_DISPLAY, COMPANY_PHONE_TEL } from "@/lib/company";
 import {
   Calendar,
   CheckCircle2,
@@ -35,7 +36,6 @@ const benefitIcons = [Target, Sparkles, Shield, GraduationCap, Clock, Users];
 const stepIcons = [MessageSquare, Video, CheckCircle2, Calendar];
 const audienceIcons = [GraduationCap, Users, Target];
 
-type StatItem = { value: string; label: string };
 type StepItem = { title: string; description: string };
 type BenefitItem = { title: string; description: string };
 type AudienceItem = { title: string; description: string };
@@ -48,7 +48,6 @@ export default function ConsultationPage() {
   const consultationHeroImage = useCmsImage("cmsImages.consultation.hero", CONSULTATION_HERO_IMAGE);
 
   const trustBadges = useLocalizedContent<string[]>("consultation.trustBadges");
-  const stats = useLocalizedContent<StatItem[]>("consultation.stats");
   const steps = useLocalizedContent<StepItem[]>("consultation.steps");
   const benefits = useLocalizedContent<BenefitItem[]>("consultation.benefits");
   const audiences = useLocalizedContent<AudienceItem[]>("consultation.audiences");
@@ -84,17 +83,30 @@ export default function ConsultationPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.firstName || !form.email) {
-      toast.error(t("misc.errorGeneric", { defaultValue: "Please fill in required fields." }));
+    if (
+      !form.firstName.trim() ||
+      !form.lastName.trim() ||
+      !form.email.trim() ||
+      !form.phone.trim() ||
+      !form.grade ||
+      !form.subject ||
+      !form.preferredTime ||
+      !form.goals.trim()
+    ) {
+      toast.error(t("consultation.validationRequired"));
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) {
+      toast.error(t("contact.validationEmail"));
       return;
     }
 
     const message = [
-      form.goals || "(No additional goals provided)",
+      form.goals.trim(),
       "",
-      `Grade/Level: ${form.grade || "—"}`,
-      `Subject: ${form.subject || "—"}`,
-      `Preferred contact time: ${form.preferredTime || "—"}`,
+      `Klasse / Niveau: ${form.grade}`,
+      `Fach: ${form.subject}`,
+      `Bevorzugte Zeit: ${form.preferredTime}`,
     ].join("\n");
 
     setIsSubmitting(true);
@@ -107,7 +119,7 @@ export default function ConsultationPage() {
           email: form.email,
           phone: form.phone,
           message,
-          subject: "Free Consultation Request",
+          subject: "Kostenlose Beratungsanfrage",
         }),
       });
       const data = await res.json().catch(() => ({}));
@@ -217,20 +229,6 @@ export default function ConsultationPage() {
               </motion.div>
             </div>
 
-            {/* Stats */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-16"
-            >
-              {stats.map((stat) => (
-                <Card key={stat.label} className={`p-6 text-center ${cardBg}`}>
-                  <p className={`text-2xl md:text-3xl font-bold text-[#D4AF37] mb-1`}>{stat.value}</p>
-                  <p className={`text-sm ${textMuted}`}>{stat.label}</p>
-                </Card>
-              ))}
-            </motion.div>
           </div>
         </section>
 
@@ -331,15 +329,21 @@ export default function ConsultationPage() {
 
                 <ul className="space-y-4">
                   {[
-                    { icon: Mail, text: "support@nextgrades.de" },
-                    { icon: Phone, text: t("contact.phoneNumber", { defaultValue: "Phone on request" }) },
-                    { icon: Clock, text: stats[0]?.label ?? "Fast response" },
-                  ].map(({ icon: Icon, text }) => (
+                    { icon: Mail, text: "support@nextgrades.de", href: "mailto:support@nextgrades.de" },
+                    { icon: Phone, text: COMPANY_PHONE_DISPLAY, href: COMPANY_PHONE_TEL },
+                    { icon: Clock, text: t("consultation.responseTime") },
+                  ].map(({ icon: Icon, text, href }) => (
                     <li key={text} className={`flex items-center gap-3 text-sm ${textMuted}`}>
                       <div className="w-9 h-9 rounded-lg bg-[#D4AF37]/15 flex items-center justify-center shrink-0">
                         <Icon className="w-4 h-4 text-[#D4AF37]" />
                       </div>
-                      {text}
+                      {href ? (
+                        <a href={href} className="font-medium hover:text-[#D4AF37]">
+                          {text}
+                        </a>
+                      ) : (
+                        text
+                      )}
                     </li>
                   ))}
                 </ul>
@@ -384,7 +388,7 @@ export default function ConsultationPage() {
                     <div className="grid sm:grid-cols-2 gap-5">
                       <div>
                         <label className={`block text-sm font-semibold mb-2 ${textPrimary}`}>
-                          {t("consultation.firstName")} *
+                          {t("consultation.firstName")}
                         </label>
                         <input
                           required
@@ -399,6 +403,7 @@ export default function ConsultationPage() {
                           {t("consultation.lastName")}
                         </label>
                         <input
+                          required
                           type="text"
                           className={inputClass}
                           value={form.lastName}
@@ -410,7 +415,7 @@ export default function ConsultationPage() {
                     <div className="grid sm:grid-cols-2 gap-5">
                       <div>
                         <label className={`block text-sm font-semibold mb-2 ${textPrimary}`}>
-                          {t("consultation.email")} *
+                          {t("consultation.email")}
                         </label>
                         <input
                           required
@@ -425,6 +430,7 @@ export default function ConsultationPage() {
                           {t("consultation.phone")}
                         </label>
                         <input
+                          required
                           type="tel"
                           className={inputClass}
                           value={form.phone}
@@ -439,6 +445,7 @@ export default function ConsultationPage() {
                           {t("consultation.gradeLevel")}
                         </label>
                         <select
+                          required
                           className={inputClass}
                           value={form.grade}
                           onChange={(e) => setForm({ ...form, grade: e.target.value })}
@@ -456,6 +463,7 @@ export default function ConsultationPage() {
                           {t("consultation.subject")}
                         </label>
                         <select
+                          required
                           className={inputClass}
                           value={form.subject}
                           onChange={(e) => setForm({ ...form, subject: e.target.value })}
@@ -473,6 +481,7 @@ export default function ConsultationPage() {
                           {t("consultation.preferredTime")}
                         </label>
                         <select
+                          required
                           className={inputClass}
                           value={form.preferredTime}
                           onChange={(e) => setForm({ ...form, preferredTime: e.target.value })}
@@ -492,6 +501,7 @@ export default function ConsultationPage() {
                         {t("consultation.goals")}
                       </label>
                       <textarea
+                        required
                         rows={4}
                         className={`${inputClass} resize-none`}
                         placeholder={t("consultation.goalsPlaceholder")}

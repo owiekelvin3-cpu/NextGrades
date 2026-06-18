@@ -39,6 +39,21 @@ export async function POST(request: Request) {
 
     const admin = isSupabaseServiceRoleConfigured() ? createAdminClient() : null;
 
+    if (admin) {
+      try {
+        const { error: idempotencyError } = await admin.from("stripe_webhook_events").insert({
+          id: event.id,
+          event_type: event.type,
+        });
+
+        if (idempotencyError?.code === "23505") {
+          return NextResponse.json({ received: true, duplicate: true });
+        }
+      } catch {
+        /* stripe_webhook_events table pending migration */
+      }
+    }
+
     switch (event.type) {
       case "checkout.session.completed": {
         const session = event.data.object as Stripe.Checkout.Session;

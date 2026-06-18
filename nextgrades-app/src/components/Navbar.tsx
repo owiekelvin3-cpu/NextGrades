@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect, useCallback, type ReactNode } from "react";
+import { useState, useEffect, useCallback, useRef, type ReactNode } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { LogOut, User as UserIcon, Menu, X } from "lucide-react";
+import { LogOut, User as UserIcon, Menu, X, ChevronDown } from "lucide-react";
 import { MobileDrawer } from "@/components/mobile/MobileDrawer";
 import { MarketingBottomNav } from "@/components/marketing/MarketingBottomNav";
 import { MARKETING_OPEN_MENU_EVENT } from "@/lib/marketing-nav";
@@ -17,7 +17,8 @@ import { supabase, isSupabaseEnvConfigured } from "@/lib/supabase/client";
 import { getCachedSession, updateSessionCache, invalidateSessionCache } from "@/lib/supabase/session-cache";
 import type { Session, User, AuthChangeEvent } from "@supabase/supabase-js";
 import { cn } from "@/lib/utils";
-import { buildLoginUrl, getDashboardPathForRole } from "@/lib/auth/redirect";
+import { getDashboardPathForRole } from "@/lib/auth/redirect";
+import { isPublicSignupEnabled } from "@/lib/auth/public-signup";
 import type { AppRole } from "@/lib/auth/roles";
 
 type NavProfile = {
@@ -26,21 +27,28 @@ type NavProfile = {
   avatar_url: string | null;
 };
 
-const navLinks = [
+const primaryNavLinks = [
   { href: "/", key: "home" },
   { href: "/programs", key: "programs" },
   { href: "/subjects", key: "subjects" },
-  { href: "/about", key: "about" },
   { href: "/resources", key: "resources" },
   { href: "/pricing", key: "pricing" },
+] as const;
+
+const secondaryNavLinks = [
+  { href: "/about", key: "about" },
   { href: "/contact", key: "contact" },
 ] as const;
 
-const exploreNavKeys = ["home", "programs", "subjects", "resources"] as const;
-const companyNavKeys = ["about", "pricing", "contact"] as const;
+const allNavLinks = [...primaryNavLinks, ...secondaryNavLinks] as const;
 
-function navLinkByKey(key: (typeof navLinks)[number]["key"]) {
-  return navLinks.find((l) => l.key === key)!;
+function isNavLinkActive(pathname: string, href: string): boolean {
+  if (href === "/") return pathname === "/";
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
+function isSecondaryNavActive(pathname: string): boolean {
+  return secondaryNavLinks.some((link) => isNavLinkActive(pathname, link.href));
 }
 
 export default function Navbar() {
@@ -48,6 +56,8 @@ export default function Navbar() {
   const router = useRouter();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMoreOpen, setIsMoreOpen] = useState(false);
+  const moreRef = useRef<HTMLDivElement>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<NavProfile | null>(null);
@@ -80,6 +90,7 @@ export default function Navbar() {
 
   useEffect(() => {
     setIsMobileMenuOpen(false);
+    setIsMoreOpen(false);
   }, [pathname]);
 
   useEffect(() => {
@@ -87,6 +98,29 @@ export default function Navbar() {
     window.addEventListener(MARKETING_OPEN_MENU_EVENT, open);
     return () => window.removeEventListener(MARKETING_OPEN_MENU_EVENT, open);
   }, []);
+
+  useEffect(() => {
+    if (!isMoreOpen) return;
+
+    const onPointerDown = (event: MouseEvent | TouchEvent) => {
+      if (moreRef.current && !moreRef.current.contains(event.target as Node)) {
+        setIsMoreOpen(false);
+      }
+    };
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsMoreOpen(false);
+    };
+
+    document.addEventListener("mousedown", onPointerDown);
+    document.addEventListener("touchstart", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", onPointerDown);
+      document.removeEventListener("touchstart", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [isMoreOpen]);
 
   useEffect(() => {
     if (!isSupabaseEnvConfigured()) return;
@@ -120,8 +154,8 @@ export default function Navbar() {
             return () => window.cancelIdleCallback(id);
           })()
         : (() => {
-            const t = window.setTimeout(start, 600);
-            return () => window.clearTimeout(t);
+            const tid = window.setTimeout(start, 600);
+            return () => window.clearTimeout(tid);
           })();
 
     return () => {
@@ -137,124 +171,187 @@ export default function Navbar() {
     router.refresh();
   };
 
-  const headerBg =
-    theme === "dark"
-      ? cn(
-          "border-b border-white/5 bg-[#0D1B2A]",
-          isScrolled && "md:shadow-xl md:shadow-black/30 md:backdrop-blur-lg md:bg-[#0D1B2A]/97"
-        )
-      : cn(
-          "border-b border-gray-100 bg-white",
-          isScrolled && "md:shadow-lg md:shadow-gray-300/20 md:backdrop-blur-lg md:bg-white/98"
-        );
+  const isDark = theme === "dark";
+  const secondaryActive = isSecondaryNavActive(pathname);
+
+  const headerBg = isDark
+    ? cn(
+        "border-b border-white/[0.06] bg-[#0D1B2A]",
+        isScrolled && "shadow-xl shadow-black/25 backdrop-blur-xl bg-[#0D1B2A]/98"
+      )
+    : cn(
+        "border-b border-[#0D1B2A]/[0.06] bg-white",
+        isScrolled && "shadow-[0_4px_24px_rgba(13,27,42,0.08)] backdrop-blur-xl bg-white/98"
+      );
+
+  const guestAuthDesktop = (
+    <div className="flex items-center gap-2">
+      <Link
+        href="/login"
+        className={cn(
+          "rounded-lg px-3 py-2 text-sm font-semibold transition-colors hover:text-[#D4AF37]",
+          isDark ? "text-white/90" : "text-[#0D1B2A]"
+        )}
+      >
+        {t("common.login")}
+      </Link>
+      {isPublicSignupEnabled() && (
+        <Link
+          href="/signup"
+          className={cn(
+            "rounded-xl border px-3.5 py-2 text-sm font-semibold transition-colors",
+            isDark
+              ? "border-white/15 text-white hover:border-[#D4AF37]/50 hover:text-[#D4AF37]"
+              : "border-[#0D1B2A]/10 text-[#0D1B2A] hover:border-[#D4AF37]/50 hover:text-[#B8962E]"
+          )}
+        >
+          {t("navbar.signupShort")}
+        </Link>
+      )}
+      <Button variant="gold" size="sm" className="rounded-xl px-4 text-sm font-semibold" href="/consultation">
+        {t("navbar.consultationShort")}
+      </Button>
+    </div>
+  );
 
   return (
     <>
-    <header
-      className={cn(
-        "fixed inset-x-0 top-0 z-50 max-w-[100vw] overflow-x-clip transition-all duration-300",
-        headerBg
-      )}
-      style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
-    >
-      <div className="mx-auto w-full min-w-0 max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-[4.5rem] min-w-0 items-center justify-between gap-2 md:h-20">
-          <div className="min-w-0 shrink">
-            <BrandLogo size="md" priority={pathname === "/"} />
-          </div>
+      <header
+        className={cn("site-header fixed inset-x-0 top-0 z-50 transition-all duration-300", headerBg)}
+        style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
+      >
+        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex h-[var(--site-nav-height)] items-center gap-3 lg:gap-4">
+            {/* Logo */}
+            <div className="flex shrink-0 items-center">
+              <BrandLogo size="nav" priority={pathname === "/"} />
+            </div>
 
-          {/* Desktop — lg+ only so tablet uses drawer (avoids cramped nav overflow) */}
-          <nav className="hidden min-w-0 flex-1 items-center justify-center gap-0.5 overflow-hidden lg:flex">
-            {navLinks.map((link) => (
-              <NavLink key={link.href} href={link.href} active={pathname === link.href} theme={theme}>
-                <span suppressHydrationWarning>{t(`common.${link.key}`)}</span>
-              </NavLink>
-            ))}
-          </nav>
-
-          <div className="hidden shrink-0 items-center gap-2 lg:flex lg:gap-3">
-            <LanguageSwitcher />
-            <ThemeToggle />
-            {session && user ? (
-              <>
-                <Link
-                  href={dashboardHref}
-                  className="flex flex-shrink-0 items-center gap-2 whitespace-nowrap rounded-lg px-3 py-2 text-sm font-semibold transition-colors hover:text-[#D4AF37]"
-                  style={{ color: theme === "dark" ? "white" : "#0D1B2A" }}
+            {/* Desktop navigation */}
+            <nav
+              className="hidden min-w-0 flex-1 items-center justify-center gap-0.5 lg:flex"
+              aria-label={t("marketingNav.bottomLabel")}
+            >
+              {primaryNavLinks.map((link) => (
+                <NavLink
+                  key={link.href}
+                  href={link.href}
+                  active={isNavLinkActive(pathname, link.href)}
+                  theme={theme}
                 >
-                  <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-[#D4AF37]/40 bg-[#D4AF37]/15">
-                    <UserIcon className="h-4 w-4 text-[#D4AF37]" />
-                  </div>
-                  {t("common.dashboard")}
-                </Link>
+                  {t(`common.${link.key}`)}
+                </NavLink>
+              ))}
+
+              <div ref={moreRef} className="relative">
                 <button
-                  onClick={handleLogout}
-                  className="flex items-center gap-2 rounded-lg border px-4 py-2 text-sm font-semibold transition-all"
-                  style={{
-                    backgroundColor: theme === "dark" ? "rgba(255,255,255,0.08)" : "#f5f5f5",
-                    borderColor: theme === "dark" ? "rgba(255,255,255,0.15)" : "#e5e7eb",
-                    color: theme === "dark" ? "white" : "#0D1B2A",
-                  }}
-                >
-                  <LogOut className="h-4 w-4" />
-                  {t("common.logout")}
-                </button>
-              </>
-            ) : (
-              <>
-                <Link
-                  href="/login"
-                  className="flex-shrink-0 whitespace-nowrap px-4 py-2 text-sm font-semibold transition-colors hover:text-[#D4AF37]"
-                  style={{ color: theme === "dark" ? "white" : "#0D1B2A" }}
-                >
-                  {t("common.login")}
-                </Link>
-                <Button variant="gold" size="md" className="rounded-lg text-sm font-semibold" href={buildLoginUrl(null, "signup")}>
-                  {t("common.signup")}
-                </Button>
-              </>
-            )}
-          </div>
-
-          {/* Mobile — Coursera-style: Login + Join + menu */}
-          <div className="flex shrink-0 items-center gap-1 sm:gap-2 lg:hidden">
-            {session && user ? (
-              <Link
-                href={dashboardHref}
-                className={cn(
-                  "flex min-h-10 min-w-10 items-center justify-center rounded-xl border touch-manipulation",
-                  theme === "dark" ? "border-white/15 bg-white/5 text-white" : "border-gray-200 bg-gray-50 text-[#0D1B2A]"
-                )}
-                aria-label={t("common.dashboard")}
-              >
-                <UserIcon className="h-5 w-5 text-[#D4AF37]" />
-              </Link>
-            ) : (
-              <>
-                <Link
-                  href="/login"
+                  type="button"
+                  onClick={() => setIsMoreOpen((open) => !open)}
+                  aria-expanded={isMoreOpen}
+                  aria-haspopup="true"
                   className={cn(
-                    "rounded-lg px-2.5 py-2 text-sm font-semibold touch-manipulation sm:px-3",
-                    theme === "dark" ? "text-white" : "text-[#0D1B2A]"
+                    "inline-flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+                    secondaryActive || isMoreOpen
+                      ? "bg-[#D4AF37]/12 font-semibold text-[#D4AF37]"
+                      : isDark
+                        ? "text-white/90 hover:bg-white/5 hover:text-[#D4AF37]"
+                        : "text-[#0D1B2A]/85 hover:bg-[#0D1B2A]/[0.04] hover:text-[#B8962E]"
                   )}
                 >
-                  {t("common.login")}
-                </Link>
-                <Button
-                  variant="gold"
-                  size="sm"
-                  className="!min-h-10 rounded-lg px-3 text-xs font-semibold sm:text-sm"
-                  href={buildLoginUrl(null, "signup")}
-                >
-                  {t("common.signup")}
-                </Button>
-              </>
-            )}
+                  {t("marketingNav.more")}
+                  <ChevronDown
+                    className={cn("h-4 w-4 transition-transform duration-200", isMoreOpen && "rotate-180")}
+                    aria-hidden
+                  />
+                </button>
+
+                {isMoreOpen && (
+                  <div
+                    className={cn(
+                      "absolute left-1/2 top-full z-50 mt-2 min-w-[11rem] -translate-x-1/2 rounded-2xl border p-1.5 shadow-xl",
+                      isDark
+                        ? "border-white/10 bg-[#112240] shadow-black/40"
+                        : "border-[#0D1B2A]/[0.08] bg-white shadow-[0_12px_40px_rgba(13,27,42,0.12)]"
+                    )}
+                  >
+                    {secondaryNavLinks.map((link) => (
+                      <Link
+                        key={link.href}
+                        href={link.href}
+                        onClick={() => setIsMoreOpen(false)}
+                        className={cn(
+                          "flex rounded-xl px-3.5 py-2.5 text-sm font-medium transition-colors",
+                          isNavLinkActive(pathname, link.href)
+                            ? "bg-[#D4AF37]/15 font-semibold text-[#D4AF37]"
+                            : isDark
+                              ? "text-white hover:bg-white/5"
+                              : "text-[#0D1B2A] hover:bg-[#0D1B2A]/[0.04]"
+                        )}
+                      >
+                        {t(`common.${link.key}`)}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </nav>
+
+            {/* Desktop actions */}
+            <div className="hidden shrink-0 items-center gap-2 lg:flex">
+              <div
+                className={cn(
+                  "flex items-center gap-1 rounded-xl border px-1 py-1",
+                  isDark ? "border-white/10 bg-white/[0.03]" : "border-[#0D1B2A]/[0.06] bg-[#0D1B2A]/[0.02]"
+                )}
+              >
+                <LanguageSwitcher />
+                <ThemeToggle size="sm" />
+              </div>
+
+              <div
+                className={cn("mx-1 hidden h-6 w-px xl:block", isDark ? "bg-white/10" : "bg-[#0D1B2A]/10")}
+                aria-hidden
+              />
+
+              {session && user ? (
+                <div className="flex items-center gap-2">
+                  <Link
+                    href={dashboardHref}
+                    className={cn(
+                      "flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition-colors hover:text-[#D4AF37]",
+                      isDark ? "text-white" : "text-[#0D1B2A]"
+                    )}
+                  >
+                    <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-[#D4AF37]/35 bg-[#D4AF37]/12">
+                      <UserIcon className="h-4 w-4 text-[#D4AF37]" />
+                    </div>
+                    <span className="hidden xl:inline">{t("common.dashboard")}</span>
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className={cn(
+                      "flex items-center gap-2 rounded-xl border px-3 py-2 text-sm font-semibold transition-colors",
+                      isDark
+                        ? "border-white/15 bg-white/[0.06] text-white hover:bg-white/10"
+                        : "border-[#0D1B2A]/10 bg-[#0D1B2A]/[0.03] text-[#0D1B2A] hover:bg-[#0D1B2A]/[0.06]"
+                    )}
+                  >
+                    <LogOut className="h-4 w-4" />
+                    <span className="hidden xl:inline">{t("common.logout")}</span>
+                  </button>
+                </div>
+              ) : (
+                guestAuthDesktop
+              )}
+            </div>
+
+            {/* Mobile menu toggle */}
             <button
               type="button"
               className={cn(
-                "flex min-h-10 min-w-10 items-center justify-center rounded-xl touch-manipulation active:scale-95",
-                theme === "dark" ? "text-white" : "text-[#0D1B2A]"
+                "ml-auto flex min-h-11 min-w-11 items-center justify-center rounded-xl touch-manipulation active:scale-95 lg:hidden",
+                isDark ? "text-white" : "text-[#0D1B2A]"
               )}
               onClick={() => setIsMobileMenuOpen((v) => !v)}
               aria-label={isMobileMenuOpen ? t("marketingNav.closeMenu") : t("marketingNav.openMenu")}
@@ -264,111 +361,93 @@ export default function Navbar() {
             </button>
           </div>
         </div>
-      </div>
 
-      <MobileDrawer
-        open={isMobileMenuOpen}
-        onClose={() => setIsMobileMenuOpen(false)}
-        ariaLabel="Site navigation"
-        panelClassName={theme === "dark" ? "bg-[#0D1B2A]" : "bg-white"}
-        header={<BrandLogo size="md" />}
-        footer={
-          <div className="space-y-3">
-            <LanguageSwitcher layout="drawer" />
-            <ThemeToggle variant="full" />
-            {session && user ? (
-              <>
-                <Link
-                  href={dashboardHref}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className={cn(
-                    "flex min-h-[52px] w-full items-center justify-center rounded-2xl border font-semibold touch-manipulation",
-                    theme === "dark" ? "border-white/20 text-white" : "border-gray-200 text-[#0D1B2A]"
+        <MobileDrawer
+          open={isMobileMenuOpen}
+          onClose={() => setIsMobileMenuOpen(false)}
+          ariaLabel="Site navigation"
+          panelClassName={isDark ? "bg-[#0D1B2A]" : "bg-white"}
+          header={<BrandLogo size="nav" />}
+          footer={
+            <div className="space-y-3">
+              <LanguageSwitcher layout="drawer" />
+              <ThemeToggle variant="full" />
+              {session && user ? (
+                <>
+                  <Link
+                    href={dashboardHref}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={cn(
+                      "flex min-h-[52px] w-full items-center justify-center rounded-2xl border font-semibold touch-manipulation",
+                      isDark ? "border-white/20 text-white" : "border-gray-200 text-[#0D1B2A]"
+                    )}
+                  >
+                    {t("common.dashboard")}
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      void handleLogout();
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className={cn(
+                      "flex min-h-[52px] w-full items-center justify-center gap-2 rounded-2xl border font-semibold touch-manipulation",
+                      isDark ? "border-white/20 text-white" : "border-gray-200 text-[#0D1B2A]"
+                    )}
+                  >
+                    <LogOut className="h-4 w-4" />
+                    {t("common.logout")}
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Button variant="gold" size="lg" className="w-full min-h-[52px]" href="/consultation">
+                    {t("navbar.freeConsultation")}
+                  </Button>
+                  {isPublicSignupEnabled() && (
+                    <Link
+                      href="/signup"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className={cn(
+                        "flex min-h-[52px] w-full items-center justify-center rounded-2xl border font-semibold touch-manipulation",
+                        isDark ? "border-[#D4AF37]/40 text-[#D4AF37]" : "border-[#D4AF37]/50 text-[#0D1B2A]"
+                      )}
+                    >
+                      {t("navbar.signup")}
+                    </Link>
                   )}
-                >
-                  {t("common.dashboard")}
-                </Link>
-                <button
-                  type="button"
-                  onClick={() => {
-                    void handleLogout();
-                    setIsMobileMenuOpen(false);
-                  }}
-                  className={cn(
-                    "flex min-h-[52px] w-full items-center justify-center gap-2 rounded-2xl border font-semibold touch-manipulation",
-                    theme === "dark" ? "border-white/20 text-white" : "border-gray-200 text-[#0D1B2A]"
-                  )}
-                >
-                  <LogOut className="h-4 w-4" />
-                  {t("common.logout")}
-                </button>
-              </>
-            ) : (
-              <>
-                <Link
-                  href="/login"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className={cn(
-                    "flex min-h-[52px] w-full items-center justify-center rounded-2xl border font-semibold touch-manipulation",
-                    theme === "dark" ? "border-white/20 text-white" : "border-gray-200 text-[#0D1B2A]"
-                  )}
-                >
-                  {t("common.login")}
-                </Link>
-                <Button variant="gold" size="lg" className="w-full min-h-[52px]" href={buildLoginUrl(null, "signup")}>
-                  {t("common.signup")}
-                </Button>
-              </>
-            )}
-          </div>
-        }
-      >
-        <nav className="flex-1 overflow-y-auto overscroll-contain px-5 py-5">
-          <Button
-            variant="gold"
-            size="lg"
-            className="mb-6 w-full min-h-[52px] text-base"
-            href="/consultation"
-          >
-            {t("navbar.freeConsultation")}
-          </Button>
-
-          <MobileNavSection title={t("marketingNav.explore")} theme={theme}>
-            {exploreNavKeys.map((key) => {
-              const link = navLinkByKey(key);
-              return (
+                  <Link
+                    href="/login"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={cn(
+                      "flex min-h-[52px] w-full items-center justify-center rounded-2xl border font-semibold touch-manipulation",
+                      isDark ? "border-white/20 text-white" : "border-gray-200 text-[#0D1B2A]"
+                    )}
+                  >
+                    {t("common.login")}
+                  </Link>
+                </>
+              )}
+            </div>
+          }
+        >
+          <nav className="flex-1 overflow-y-auto overscroll-contain px-5 py-5">
+            <MobileNavSection title={t("marketingNav.explore")} theme={theme}>
+              {allNavLinks.map((link) => (
                 <MobileNavItem
                   key={link.href}
                   href={link.href}
                   label={t(`common.${link.key}`)}
-                  active={pathname === link.href}
+                  active={isNavLinkActive(pathname, link.href)}
                   theme={theme}
                   onNavigate={() => setIsMobileMenuOpen(false)}
                 />
-              );
-            })}
-          </MobileNavSection>
-
-          <MobileNavSection title={t("marketingNav.company")} theme={theme} className="mt-6">
-            {companyNavKeys.map((key) => {
-              const link = navLinkByKey(key);
-              return (
-                <MobileNavItem
-                  key={link.href}
-                  href={link.href}
-                  label={t(`common.${link.key}`)}
-                  active={pathname === link.href}
-                  theme={theme}
-                  onNavigate={() => setIsMobileMenuOpen(false)}
-                />
-              );
-            })}
-          </MobileNavSection>
-        </nav>
-      </MobileDrawer>
-
-    </header>
-    <MarketingBottomNav />
+              ))}
+            </MobileNavSection>
+          </nav>
+        </MobileDrawer>
+      </header>
+      <MarketingBottomNav />
     </>
   );
 }
@@ -443,17 +522,18 @@ function NavLink({
   active?: boolean;
   theme: "dark" | "light";
 }) {
+  const isDark = theme === "dark";
+
   return (
     <Link
       href={href}
       className={cn(
-        "relative shrink-0 whitespace-nowrap rounded-md px-3 py-2 text-[13px] font-medium transition-colors duration-200 md:text-sm",
-        "after:absolute after:inset-x-2 after:bottom-1 after:h-0.5 after:rounded-full after:bg-[#D4AF37] after:transition-opacity after:duration-200",
-        active ? "font-semibold text-[#D4AF37] after:opacity-100" : "after:opacity-0",
-        !active &&
-          (theme === "dark"
-            ? "text-white/90 hover:text-[#D4AF37]"
-            : "text-[#0D1B2A]/85 hover:text-[#B8962E]")
+        "rounded-lg px-2.5 py-2 text-sm font-medium transition-colors duration-200 xl:px-3",
+        active
+          ? "bg-[#D4AF37]/12 font-semibold text-[#D4AF37]"
+          : isDark
+            ? "text-white/90 hover:bg-white/5 hover:text-[#D4AF37]"
+            : "text-[#0D1B2A]/85 hover:bg-[#0D1B2A]/[0.04] hover:text-[#B8962E]"
       )}
     >
       {children}

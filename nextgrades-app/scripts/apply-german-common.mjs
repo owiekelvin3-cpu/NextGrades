@@ -139,7 +139,7 @@ c.help.faqs = [
   },
   {
     question: "Welche Zahlungsmethoden gibt es?",
-    answer: "Wir akzeptieren Kreditkarten, PayPal und Banküberweisung über Stripe.",
+    answer: "Wir akzeptieren Kreditkarten, PayPal und Banküberweisung. Kontaktiere uns, um dein Abonnement abzuschließen.",
   },
 ];
 

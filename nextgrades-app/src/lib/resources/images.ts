@@ -1,12 +1,8 @@
 /**
- * Resources-section images — branded marketing photos + Unsplash for content-type tiles.
+ * Resources-section images — branded marketing photos.
  */
 
 import { BRANDED } from "@/lib/marketing-images";
-
-function u(id: string, w = 800, h = 500) {
-  return `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&h=${h}&q=85`;
-}
 
 export const RESOURCES_HUB_HERO = BRANDED.subjectBooks;
 export const RESOURCES_UPGRADE_HERO = BRANDED.tutoringSession;

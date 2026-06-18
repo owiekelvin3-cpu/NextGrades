@@ -51,7 +51,7 @@ export default function ContactPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.firstName.trim() || !formData.lastName.trim() || !formData.email.trim() || !formData.message.trim()) {
+    if (!formData.firstName.trim() || !formData.email.trim() || !formData.message.trim()) {
       toast.error(t("contact.validationRequired"));
       return;
     }
@@ -65,7 +65,7 @@ export default function ContactPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name: `${formData.firstName} ${formData.lastName}`.trim(),
+          name: [formData.firstName, formData.lastName].filter(Boolean).join(" ").trim(),
           email: formData.email,
           phone: formData.phone,
           message: formData.message,
@@ -200,6 +200,14 @@ export default function ContactPage() {
                 <Card className={cn("hidden p-6 lg:block", mt.card)}>
                   <p className="text-sm font-semibold text-[#D4AF37]">{t("contact.sideEyebrow")}</p>
                   <p className={cn("mt-2 text-lg font-bold", mt.heading)}>{t("contact.sideTitle")}</p>
+                  <ul className="mt-5 space-y-3">
+                    {[1, 2, 3, 4].map((n) => (
+                      <li key={n} className={cn("flex items-start gap-2 text-sm", mt.body)}>
+                        <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#D4AF37]" />
+                        {t(`contact.sidePoint${n}`)}
+                      </li>
+                    ))}
+                  </ul>
                 </Card>
               </motion.div>
 
@@ -237,7 +245,7 @@ export default function ContactPage() {
                         <div className="grid gap-5 sm:grid-cols-2">
                           <div>
                             <label className={cn("mb-2 block text-sm font-medium", mt.heading)}>
-                              {t("contact.firstName")} *
+                              {t("contact.firstName")}
                             </label>
                             <input
                               type="text"
@@ -250,11 +258,10 @@ export default function ContactPage() {
                           </div>
                           <div>
                             <label className={cn("mb-2 block text-sm font-medium", mt.heading)}>
-                              {t("contact.lastName")} *
+                              {t("contact.lastNameOptional")}
                             </label>
                             <input
                               type="text"
-                              required
                               value={formData.lastName}
                               onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
                               placeholder={t("contact.enterLastName")}
@@ -265,7 +272,7 @@ export default function ContactPage() {
 
                         <div>
                           <label className={cn("mb-2 block text-sm font-medium", mt.heading)}>
-                            {t("contact.emailAddress")} *
+                            {t("contact.emailAddress")}
                           </label>
                           <input
                             type="email"
@@ -279,7 +286,7 @@ export default function ContactPage() {
 
                         <div>
                           <label className={cn("mb-2 block text-sm font-medium", mt.heading)}>
-                            {t("contact.phoneNumber")}
+                            {t("contact.phoneOptional")}
                           </label>
                           <input
                             type="tel"
@@ -292,7 +299,7 @@ export default function ContactPage() {
 
                         <div>
                           <label className={cn("mb-2 block text-sm font-medium", mt.heading)}>
-                            {t("contact.message")} *
+                            {t("contact.message")}
                           </label>
                           <div className="relative">
                             <textarea
@@ -346,13 +353,10 @@ export default function ContactPage() {
                 {t("contact.ctaDesc")}
               </p>
             </div>
-            <div className="flex shrink-0 flex-wrap justify-center gap-3">
+            <div className="flex shrink-0 flex-wrap justify-center">
               <Button variant="gold" href="/pricing">
                 {t("common.pricing")}
                 <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-              <Button variant="outline" href="/consultation" className={mt.isDark ? "border-white/20 text-white" : ""}>
-                {t("contact.ctaConsultation")}
               </Button>
             </div>
           </div>

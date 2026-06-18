@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  MessageSquare,
+  Bot,
   X,
   Plus,
   Trash2,
@@ -424,9 +424,9 @@ export function FloatingChatButton({ onClick, unread }: { onClick: () => void; u
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       className="fixed bottom-[calc(5.5rem+env(safe-area-inset-bottom,0px))] right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[#D4AF37] to-[#F5A623] text-[#0D1B2A] shadow-lg shadow-[#D4AF37]/30 md:bottom-6 md:right-6"
-      aria-label="Open AI chat"
+      aria-label="Open AI chatbot"
     >
-      <MessageSquare className="h-6 w-6" />
+      <Bot className="h-6 w-6" strokeWidth={2} />
       {unread ? (
         <span className="absolute -right-0.5 -top-0.5 h-4 w-4 rounded-full bg-red-500 ring-2 ring-white" />
       ) : null}

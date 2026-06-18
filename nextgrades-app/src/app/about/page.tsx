@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
@@ -15,7 +16,6 @@ import {
   TrendingUp,
   User,
   Heart,
-  Rocket,
   Quote,
   Smile,
   Globe,
@@ -24,6 +24,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { useLocalizedContent } from "@/hooks/useLocalizedContent";
 import { useCmsImages } from "@/hooks/useCmsImage";
+import { useCmsTeam } from "@/hooks/useCmsTeam";
 import { useMarketingTheme } from "@/lib/marketing-theme";
 import { MarketingImage } from "@/components/marketing/MarketingImage";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
@@ -37,11 +38,10 @@ import {
 } from "@/lib/marketing-images";
 
 const PILLAR_ICONS = [Target, Eye, Sparkles];
-const FEATURE_ICONS = [GraduationCap, Target, Users, Rocket];
+const FEATURE_ICONS = [GraduationCap, Target, Users, Sparkles];
 const PRINCIPLE_ICONS = [User, GraduationCap, BookOpen, TrendingUp, Heart];
 const MISSION_ICONS = [BookOpen, FileText, Users, TrendingUp];
 const STAT_ICONS = [Smile, GraduationCap, TrendingUp, Heart];
-const MILESTONE_ICONS = [Rocket, Users, BookOpen, TrendingUp, Sparkles];
 
 function Eyebrow({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
@@ -80,6 +80,8 @@ export default function AboutPage() {
   const { t } = useTranslation();
   const { getImage } = useCmsImages();
 
+  const { team: cmsTeam } = useCmsTeam();
+
   const heroImage = getImage("cmsImages.about.hero", ABOUT_IMAGES.hero);
   const storyImage = getImage("cmsImages.about.story", ABOUT_IMAGES.story);
   const promiseImage = getImage("cmsImages.about.promise", ABOUT_IMAGES.promise);
@@ -98,7 +100,6 @@ export default function AboutPage() {
   const promiseItems = useLocalizedContent<string[]>("aboutPage.promiseItems");
   const stats = useLocalizedContent<{ value: string; label: string }[]>("aboutPage.stats");
   const team = useLocalizedContent<{ name: string; role: string; bio: string }[]>("aboutPage.team");
-  const milestones = useLocalizedContent<{ year: string; title: string; desc: string }[]>("aboutPage.milestones");
   const communityTags = useLocalizedContent<string[]>("aboutPage.communityTags");
 
   const safePillars = Array.isArray(pillars) ? pillars : [];
@@ -109,8 +110,24 @@ export default function AboutPage() {
   const safePromise = Array.isArray(promiseItems) ? promiseItems : [];
   const safeStats = Array.isArray(stats) ? stats : [];
   const safeTeam = Array.isArray(team) ? team : [];
-  const safeMilestones = Array.isArray(milestones) ? milestones : [];
   const safeTags = Array.isArray(communityTags) ? communityTags : [];
+
+  const displayTeam = useMemo(() => {
+    if (cmsTeam.length > 0) {
+      return [...cmsTeam]
+        .sort((a, b) => a.sort_order - b.sort_order)
+        .map((member, i) => ({
+          name: member.name,
+          role: member.role,
+          bio: member.bio ?? "",
+          photo: member.photo_url ?? teamImages[i] ?? teamImages[0],
+        }));
+    }
+    return safeTeam.map((member, i) => ({
+      ...member,
+      photo: teamImages[i] ?? teamImages[0],
+    }));
+  }, [cmsTeam, safeTeam, teamImages]);
 
   const cardClass = cn(
     "rounded-2xl border transition-shadow hover:shadow-lg",
@@ -141,7 +158,8 @@ export default function AboutPage() {
                 <Eyebrow className="mb-4">{t("aboutPage.heroEyebrow")}</Eyebrow>
                 <h1 className="text-4xl font-extrabold leading-tight tracking-tight md:text-5xl lg:text-[3.25rem]">
                   {t("about.heroTitle")}{" "}
-                  <span className="text-[#D4AF37]">{t("about.heroTitle2")}</span>
+                  <span className="text-[#D4AF37]">{t("about.heroTitleHighlight")}</span>{" "}
+                  {t("about.heroTitle2")}
                 </h1>
                 <p className="mt-5 max-w-xl text-lg leading-relaxed text-gray-300">{t("about.heroSubtitle")}</p>
 
@@ -157,7 +175,7 @@ export default function AboutPage() {
                     );
                   })}
                 </div>
-                <div className="mt-8 rounded-xl border border-white/10 bg-[#0D1B2A]/90 p-5 shadow-xl backdrop-blur-md lg:hidden">
+                <div className="mt-8 hidden rounded-xl border border-white/10 bg-[#0D1B2A]/90 p-5 shadow-xl backdrop-blur-md lg:block">
                   <Quote className="mb-2 h-6 w-6 text-[#D4AF37]" />
                   <p className="text-sm italic leading-relaxed text-gray-200">&ldquo;{t("aboutPage.heroQuote")}&rdquo;</p>
                   <p className="mt-2 text-xs text-gray-500">— {t("aboutPage.heroQuoteAuthor")}</p>
@@ -169,13 +187,8 @@ export default function AboutPage() {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.7, delay: 0.15 }}
                 className="relative hidden min-h-[360px] lg:block"
-              >
-                <div className="mt-4 max-w-none rounded-xl border border-white/10 bg-[#0D1B2A]/90 p-5 shadow-xl backdrop-blur-md lg:absolute lg:-bottom-6 lg:-left-8 lg:mt-0 lg:max-w-xs">
-                  <Quote className="mb-2 h-6 w-6 text-[#D4AF37]" />
-                  <p className="text-sm italic leading-relaxed text-gray-200">&ldquo;{t("aboutPage.heroQuote")}&rdquo;</p>
-                  <p className="mt-2 text-xs text-gray-500">— {t("aboutPage.heroQuoteAuthor")}</p>
-                </div>
-              </motion.div>
+                aria-hidden
+              />
             </div>
           </div>
 
@@ -341,11 +354,6 @@ export default function AboutPage() {
                     </li>
                   ))}
                 </ul>
-                <div className="mt-10 rounded-xl border border-[#D4AF37]/30 bg-[#D4AF37]/5 p-6">
-                  <Quote className="mb-3 h-8 w-8 text-[#D4AF37]" />
-                  <p className="text-lg italic leading-relaxed text-gray-200">&ldquo;{t("aboutPage.heroQuote")}&rdquo;</p>
-                  <p className="mt-3 text-sm text-gray-500">— {t("aboutPage.heroQuoteAuthor")}</p>
-                </div>
               </motion.div>
             </div>
           </div>
@@ -386,9 +394,9 @@ export default function AboutPage() {
               mt={mt}
             />
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
-              {safeTeam.map((member, i) => (
+              {displayTeam.map((member, i) => (
                 <motion.div
-                  key={member.name}
+                  key={`${member.name}-${i}`}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -397,7 +405,7 @@ export default function AboutPage() {
                 >
                   <div className="aspect-square overflow-hidden">
                     <MarketingImage
-                      src={teamImages[i] ?? teamImages[0]}
+                      src={member.photo}
                       alt={`${member.name} – ${t("images.teamMember")}`}
                       containerClassName="aspect-square w-full"
                       sizes="(max-width: 768px) 50vw, 20vw"
@@ -431,42 +439,6 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Milestones */}
-        <section className={cn("py-20 lg:py-24", mt.sectionAlt)}>
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <SectionHeading
-              eyebrow={t("aboutPage.milestonesEyebrow")}
-              title={t("about.milestonesTitle")}
-              center
-              mt={mt}
-            />
-            <div className="relative">
-              <div className="absolute left-0 right-0 top-8 hidden h-0.5 bg-[#D4AF37]/30 lg:block" />
-              <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-5">
-                {safeMilestones.map((ms, i) => {
-                  const Icon = MILESTONE_ICONS[i] ?? Rocket;
-                  return (
-                    <motion.div
-                      key={ms.year}
-                      initial={{ opacity: 0, y: 16 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: i * 0.08 }}
-                      className="relative text-center"
-                    >
-                      <div className="relative z-10 mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#0D1B2A] shadow-lg ring-4 ring-[#D4AF37]/20">
-                        <Icon className="h-7 w-7 text-[#D4AF37]" />
-                      </div>
-                      <p className="text-lg font-bold text-[#D4AF37]">{ms.year}</p>
-                      <h3 className={cn("mt-1 font-bold", mt.heading)}>{ms.title}</h3>
-                      <p className={cn("mt-2 text-xs leading-relaxed", mt.body)}>{ms.desc}</p>
-                    </motion.div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* CTA */}
         <section className="px-4 py-16 sm:px-6 lg:px-8">

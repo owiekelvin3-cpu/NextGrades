@@ -12,6 +12,12 @@ import { fetchProfileRole, sanitizeRedirect } from "@/lib/auth/redirect";
 import { ADMIN_PORTAL_HOME } from "@/lib/admin/portal-paths";
 import { authSurface } from "@/components/auth/auth-ui";
 import { AuthGuestGuard } from "@/components/auth/AuthGuestGuard";
+import { VerificationCodePanel } from "@/components/auth/VerificationCodePanel";
+import {
+  isAuthUserEmailVerified,
+  isClientEmailVerificationRequired,
+} from "@/lib/auth/config";
+import { isEmailNotConfirmedError } from "@/lib/auth/auth-errors";
 import { cn } from "@/lib/utils";
 
 function AdminPortalLoginContent() {
@@ -20,6 +26,7 @@ function AdminPortalLoginContent() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [pendingVerification, setPendingVerification] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
   const { t } = useTranslation();
@@ -48,11 +55,38 @@ function AdminPortalLoginContent() {
     e.preventDefault();
     setLoading(true);
     setError(null);
+    setPendingVerification(false);
 
     try {
       const result = await supabase.auth.signInWithPassword({ email: email.trim(), password });
-      if (result.error) throw new Error(result.error.message);
+      if (result.error) {
+        if (isEmailNotConfirmedError(result.error)) {
+          setPendingVerification(true);
+          setError(
+            t("login.emailNotVerified", {
+              defaultValue: "Please verify your email with the code we sent you.",
+            })
+          );
+          return;
+        }
+        throw new Error(result.error.message);
+      }
       if (!result.data.user) throw new Error("Authentication failed");
+
+      if (
+        isClientEmailVerificationRequired() &&
+        !isAuthUserEmailVerified(result.data.user)
+      ) {
+        await supabase.auth.signOut();
+        setPendingVerification(true);
+        setError(
+          t("login.emailNotVerified", {
+            defaultValue: "Please verify your email with the code we sent you.",
+          })
+        );
+        return;
+      }
+
       await finishLogin(result.data.user.id);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Sign in failed");
@@ -85,8 +119,23 @@ function AdminPortalLoginContent() {
           </p>
         </div>
 
-        {error && (
-          <div className={cn("mb-6 rounded-2xl border px-4 py-3 text-sm", s.errorBox)}>{error}</div>
+        {(error || pendingVerification) && (
+          <div className={cn("mb-6 space-y-4 rounded-2xl border px-4 py-3 text-sm", s.errorBox)}>
+            {error && <p>{error}</p>}
+            {pendingVerification && (
+              <VerificationCodePanel
+                email={email}
+                password={password}
+                variant="inline"
+                onVerified={async (userId) => {
+                  setPendingVerification(false);
+                  setError(null);
+                  await finishLogin(userId);
+                }}
+                onError={(msg) => setError(msg)}
+              />
+            )}
+          </div>
         )}
 
         <form className="space-y-4" onSubmit={handleSubmit}>

@@ -49,15 +49,21 @@ export function checkRateLimit(
 }
 
 /** Returns a 429 response when limited, otherwise null. */
-export function enforceRateLimit(request: Request, options: RateLimitOptions): NextResponse | null {
+export async function enforceRateLimit(
+  request: Request,
+  options: RateLimitOptions
+): Promise<NextResponse | null> {
   const ip = getClientIp(request);
-  const key = `${options.bucket}:${ip}`;
+  const key = `ratelimit:${options.bucket}:${ip}`;
   const result = checkRateLimit(key, options.limit, options.windowSec);
 
   if (result.allowed) return null;
 
   return NextResponse.json(
-    { error: "Too many requests. Please try again later.", retryAfterSec: result.retryAfterSec },
+    {
+      error: "Zu viele Anfragen. Bitte versuche es später erneut.",
+      retryAfterSec: result.retryAfterSec,
+    },
     {
       status: 429,
       headers: {
@@ -67,4 +73,9 @@ export function enforceRateLimit(request: Request, options: RateLimitOptions): N
       },
     }
   );
+}
+
+/** Global API throttle — applied at the edge proxy for /api/* routes. */
+export async function enforceGlobalApiRateLimit(request: Request): Promise<NextResponse | null> {
+  return enforceRateLimit(request, { bucket: "api:global", limit: 180, windowSec: 60 });
 }

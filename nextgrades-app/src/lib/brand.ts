@@ -3,9 +3,9 @@
 import { ADMIN_PORTAL_HOME } from "@/lib/admin/portal-paths";
 
 export const BRAND_LOGO = {
-  /** Dark mode / navy backgrounds — `dark mode logo.png` */
+  /** Dark mode / navy backgrounds — `when website on dark mode.png` */
   dark: "/logo-dark.png",
-  /** Light mode / white backgrounds — `light mode logo.png` */
+  /** Light mode / white backgrounds — `when website on light mode.png` */
   light: "/logo-light.png",
   icon192: "/icon-192.png",
   icon512: "/icon-512.png",

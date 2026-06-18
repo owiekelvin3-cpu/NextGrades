@@ -1,11 +1,11 @@
 {
   "images": {
     "logo": "NextGrades Logo",
-    "studentStudying": "Schüler:in beim Lernen",
+    "studentStudying": "SchülerIn beim Lernen",
     "modernLearning": "Moderne Lernumgebung",
     "nextGradesLearning": "NextGrades Lernplattform",
     "teamMember": "Teammitglied Foto",
-    "studentsCollaborating": "Schüler:innen arbeiten zusammen",
+    "studentsCollaborating": "SchülerInnen arbeiten zusammen",
     "germanBuilding": "Modernes Gebäude in Deutschland",
     "germanyFlag": "Deutschland Flagge"
   },
@@ -16,7 +16,7 @@
     "heroPillars": [
       {
         "title": "Mission",
-        "desc": "Lernen verständlich, motivierend und zugänglich machen – für jeden Schüler."
+        "desc": "Lernen verständlich, motivierend und zugänglich machen – für alle SchülerInnen."
       },
       {
         "title": "Vision",
@@ -38,7 +38,7 @@
       },
       {
         "title": "Individuelle Förderung",
-        "desc": "Auf jeden Schüler zugeschnitten."
+        "desc": "Auf SchülerInnen zugeschnitten."
       },
       {
         "title": "Zukunft gestalten",
@@ -48,17 +48,16 @@
     "storyEyebrow": "UNSERE GESCHICHTE",
     "storyTitle": "Wie alles begann",
     "storyParagraphs": [
-      "NextGrades entstand 2021 als Leidenschaftsprojekt – aus Frustration mit veralteten Nachhilfe-Methoden und dem Glauben, dass jeder Schüler Besseres verdient.",
-      "Was als Hilfe für ein paar Freund:innen begann, wuchs schnell zu einer Plattform, der Hunderte Schüler:innen in Deutschland vertrauen. Wir verbinden Live-Nachhilfe mit strukturierten digitalen Inhalten.",
-      "Heute bauen wir die Lernerfahrung, die wir uns immer gewünscht haben: persönlich, professionell und für den echten Alltag gemacht."
+      "NextGrades ist entstanden, weil Lernen nicht an fehlender Motivation scheitern sollte, sondern oft an fehlender Struktur und der passenden Unterstützung.",
+      "Deshalb verbinden wir persönliche Betreuung, moderne Lernmethoden und klare Lernsysteme - damit SchülerInnen selbstbewusster lernen und nachhaltige Fortschritte erzielen."
     ],
     "storyCta": "Mehr über unsere Mission",
     "missionEyebrow": "UNSERE MISSION IM DETAIL",
-    "missionTitle": "Wofür wir jeden Tag arbeiten",
+    "missionTitle": "Lernen einfacher machen. Ergebnisse besser machen.",
     "missionCards": [
       {
         "title": "Wissen verständlich machen",
-        "desc": "Komplexe Themen klar aufbereiten – damit Schüler:innen wirklich verstehen."
+        "desc": "Komplexe Themen klar aufbereiten – damit SchülerInnen wirklich verstehen."
       },
       {
         "title": "Hochwertige Materialien bereitstellen",
@@ -78,11 +77,11 @@
     "principles": [
       {
         "title": "Persönliche Betreuung",
-        "desc": "Jeder Schüler ist einzigartig – wir passen uns individuellen Bedürfnissen an."
+        "desc": "SchülerInnen sind einzigartig – wir passen uns individuellen Bedürfnissen an."
       },
       {
         "title": "Erfahrene Lehrkräfte",
-        "desc": "Qualifizierte Pädagogen mit Leidenschaft und nachweisbarer Expertise."
+        "desc": "Qualifizierte PädagogInnen mit Leidenschaft und nachweisbarer Expertise."
       },
       {
         "title": "Moderne Methoden",
@@ -101,25 +100,25 @@
     "promiseTitle": "Wir geben immer unser Bestes – für deinen Erfolg.",
     "promiseItems": [
       "Hochwertige Lernmaterialien von erfahrenen Lehrkräften",
-      "Sorgfältig ausgewählte, qualifizierte Tutor:innen",
+      "Sorgfältig ausgewählte, qualifizierte TutorInnen",
       "Moderne, erprobte Lernmethoden",
-      "Individuelle Betreuung für jeden Schüler",
-      "Transparente Kommunikation mit Schüler:innen und Eltern"
+      "Individuelle Betreuung für SchülerInnen",
+      "Transparente Kommunikation mit SchülerInnen und Eltern"
     ],
     "statsEyebrow": "UNSER ZIEL",
     "statsTitle": "Eine neue Generation des Lernens",
     "stats": [
       {
-        "value": "200+",
-        "label": "glückliche Schüler:innen"
+        "value": "100+",
+        "label": "SchülerInnen"
       },
       {
         "value": "25+",
-        "label": "erfahrene Lehrkräfte"
+        "label": "LehrerInnen"
       },
       {
-        "value": "95%",
-        "label": "verbesserte Noten"
+        "value": "500+",
+        "label": "Lernmaterialien"
       },
       {
         "value": "100%",
@@ -127,7 +126,7 @@
       }
     ],
     "teamEyebrow": "UNSER TEAM",
-    "teamSubtitle": "Ein Team aus leidenschaftlichen Lehrkräften, Lernexpert:innen und Visionär:innen.",
+    "teamSubtitle": "Ein Team aus leidenschaftlichen Lehrkräften, LernexpertInnen und VisionärInnen.",
     "team": [
       {
         "name": "Adrian H.",
@@ -154,7 +153,7 @@
       },
       {
         "year": "2022",
-        "title": "Erste 100 Schüler:innen",
+        "title": "Erste 100 SchülerInnen",
         "desc": "Erster Meilenstein mit überwältigend positivem Feedback."
       },
       {
@@ -164,8 +163,8 @@
       },
       {
         "year": "2024",
-        "title": "200+ Schüler:innen",
-        "desc": "Wachsende Community und erweiterte Fachangebote."
+        "title": "500+ Lernmaterialien",
+        "desc": "Wachsende Lernbibliothek und erweiterte Fachangebote."
       },
       {
         "year": "2025",
@@ -173,8 +172,8 @@
         "desc": "KI-gestützte Tools für personalisierte Lernpfade."
       }
     ],
-    "communityTitle": "Werde Teil der NextGrades Community",
-    "communityDesc": "Starte mit deinen Zielen, Lernerfahrungen und deinem Wachstum – gemeinsam schaffen wir etwas Besonderes.",
+    "communityTitle": "Bereit für den nächsten Schritt?",
+    "communityDesc": "Buche ein kostenloses Erstgespräch und finde gemeinsam mit uns die passende Lernlösung.",
     "communityCta": "Kostenloses Erstgespräch buchen",
     "communityTags": [
       "Unverbindlich",
@@ -189,7 +188,7 @@
     "story": [
       {
         "title": "Bescheidene Anfänge",
-        "desc": "Unsere Reise begann 2021 als Leidenschaftsprojekt aus Frustration mit traditioneller Nachhilfe. Was als Hilfe für ein paar Freund:innen begann, ist heute eine Plattform, der Tausende vertrauen."
+        "desc": "Unsere Reise begann 2021 als Leidenschaftsprojekt aus Frustration mit traditioneller Nachhilfe. Was als Hilfe für ein paar FreundInnen begann, ist heute eine Plattform, der Tausende vertrauen."
       },
       {
         "title": "Innovation und Wachstum",
@@ -197,7 +196,7 @@
       },
       {
         "title": "Unsere Reichweite",
-        "desc": "Heute betreut NextGrades Schüler:innen in Deutschland und darüber hinaus. Über 10.000 Schüler:innen haben ihre Noten verbessert und Selbstvertrauen aufgebaut."
+        "desc": "Heute betreut NextGrades SchülerInnen in Deutschland und darüber hinaus. Über 10.000 SchülerInnen haben ihre Noten verbessert und Selbstvertrauen aufgebaut."
       },
       {
         "title": "Blick nach vorn",
@@ -208,7 +207,7 @@
   },
   "programsPage": {
     "heroEyebrow": "UNSERE PROGRAMME",
-    "heroSubtitle": "Finde das Programm, das zu dir passt — mit persönlicher Betreuung, modernen Methoden und flexiblem Online-Lernen.",
+    "heroSubtitle": "Strukturierte Lernsysteme, Premium-Betreuung und digitale Lernmaterialien für nachhaltigen Lernerfolg.",
     "heroFeatures": [
       {
         "title": "Premium-Betreuung",
@@ -223,19 +222,19 @@
         "desc": "Lerne wo und wann du willst."
       }
     ],
-    "freeConsultation": "Kostenloses Erstgespräch",
+    "freeConsultation": "Kostenloses Erstgespräch buchen",
     "stats": [
       {
-        "number": "200+",
-        "label": "glückliche Schüler:innen"
+        "number": "100+",
+        "label": "SchülerInnen"
       },
       {
         "number": "25+",
-        "label": "Top-Lehrer:innen"
+        "label": "LehrerInnen"
       },
       {
-        "number": "4.9/5",
-        "label": "Bewertung von Eltern & Schüler:innen"
+        "number": "4,9/5",
+        "label": "Bewertung"
       }
     ],
     "sectionEyebrow": "UNSERE PROGRAMME",
@@ -251,82 +250,92 @@
         "features": [
           "Individuelle 1:1 Betreuung",
           "Persönliche Lernpläne",
-          "Prüfungsvorbereitung",
+          "Gezielte Prüfungsvorbereitung",
           "Flexible Termine",
           "Erfahrene Lehrkräfte"
         ],
-        "price": "ab 45 € / Stunde"
+        "price": "39 € pro Stunde"
       },
       {
         "type": "Gruppe",
         "title": "Kleine Lerngruppen",
-        "description": "Lernen in kleinen Gruppen mit maximal 3–5 Schüler:innen.",
+        "description": "Lernen in kleinen Gruppen mit maximal 3-5 SchülerInnen.",
         "features": [
-          "Max. 3–5 Schüler:innen",
+          "Max. 3-5 SchülerInnen",
+          "Strukturierte Live-Sessions",
           "Motivierende Atmosphäre",
-          "Austausch & Zusammenarbeit",
-          "Günstiger als 1:1",
           "Gemeinsamer Fortschritt"
         ],
-        "price": "ab 30 € / Schüler:in"
+        "price": "29 € pro Stunde & SchülerIn"
       },
       {
-        "type": "Signature",
-        "title": "Mathe Excellence Programm",
-        "description": "Unser Premium-Programm für Mathematik und Abiturvorbereitung.",
+        "type": "Bibliothek",
+        "title": "Lernbibliothek",
+        "description": "Strukturierte Lernmaterialien, Videos und Prüfungsvorbereitung an einem Ort.",
         "features": [
-          "Wöchentliche Live-Sessions",
-          "Premium-Materialien",
-          "Übungen, Videos & PDFs",
-          "Prüfungsvorbereitung & Strategien",
-          "Betreuung zwischen den Sessions"
+          "500+ Lernmaterialien",
+          "Lehrplankonform",
+          "Sofort verfügbar",
+          "Für Schule & Matura"
         ],
-        "price": "ab 99 € / Monat"
+        "price": "49 € ab pro Fach & Semester"
+      },
+      {
+        "type": "Matura",
+        "title": "Mathe Matura Komplettpaket",
+        "description": "Gezielte Matura-Prüfungsvorbereitung mit strukturierten Live-Sessions.",
+        "features": [
+          "Matura-Prüfungsvorbereitung",
+          "Gezielte Prüfungsvorbereitung",
+          "Strukturierte Live-Sessions",
+          "Schritt-für-Schritt-Erklärungen"
+        ],
+        "price": "149 € einmalig"
       }
     ],
     "compareTitle": "Programmvergleich",
     "compareHeaders": {
       "features": "Merkmale",
-      "oneOnOne": "1:1 Premium-Nachhilfe",
-      "group": "Kleine Lerngruppen",
-      "math": "Mathe Excellence Programm"
+      "oneOnOne": "1:1 Premium",
+      "group": "Lerngruppe",
+      "library": "Lernbibliothek",
+      "math": "Mathe Matura Komplettpaket"
     },
     "compareRows": [
       {
         "label": "Betreuung",
         "c1": "Individuell 1:1",
-        "c2": "Max. 3–5 Schüler:innen",
-        "c3": "Gruppe + Einzelbetreuung"
+        "c2": "Max. 3-5 SchülerInnen",
+        "c3": "Selbstständig",
+        "c4": "Gruppe + Begleitung"
       },
       {
-        "label": "Lernpläne",
+        "label": "Live-Sessions",
         "c1": true,
         "c2": true,
-        "c3": true
-      },
-      {
-        "label": "Flexible Termine",
-        "c1": true,
-        "c2": true,
-        "c3": "Feste Zeiten (wöchentlich)"
+        "c3": false,
+        "c4": true
       },
       {
         "label": "Lernmaterialien",
         "c1": true,
         "c2": true,
-        "c3": true
+        "c3": true,
+        "c4": true
       },
       {
-        "label": "Abiturvorbereitung",
+        "label": "Matura-Vorbereitung",
         "c1": true,
         "c2": true,
-        "c3": true
+        "c3": true,
+        "c4": true
       },
       {
         "label": "Preis",
-        "c1": "ab 45 € / Stunde",
-        "c2": "ab 30 € / Schüler:in",
-        "c3": "ab 99 € / Monat"
+        "c1": "39 € / Stunde",
+        "c2": "29 € / SchülerIn",
+        "c3": "49 € ab / Fach",
+        "c4": "149 € einmalig"
       }
     ],
     "ctaTitle": "Unsicher, welches Programm passt?",
@@ -367,20 +376,20 @@
     ],
     "stats": [
       {
-        "value": "200+",
-        "label": "glückliche Schüler:innen"
+        "value": "100+",
+        "label": "SchülerInnen"
       },
       {
         "value": "25+",
-        "label": "erfahrene Lehrer:innen"
+        "label": "LehrerInnen"
       },
       {
-        "value": "4.9/5",
-        "label": "Bewertung von Eltern & Schüler:innen"
+        "value": "500+",
+        "label": "Lernmaterialien"
       },
       {
-        "value": "100%",
-        "label": "online & flexibel"
+        "value": "4,9/5",
+        "label": "Bewertung"
       }
     ],
     "ctaTitle": "Bereit, deine Noten zu verbessern?",
@@ -390,7 +399,7 @@
       {
         "id": "math",
         "title": "Mathematik",
-        "description": "Von Grundlagen bis Abitur – wir machen Mathe verständlich und spannend!",
+        "description": "Von den Grundlagen bis zur Matura - verständlich erklärt, Schritt für Schritt.",
         "features": [
           "Alle Klassenstufen",
           "Prüfungsvorbereitung",
@@ -400,13 +409,13 @@
       },
       {
         "id": "english",
-        "title": "Englisch",
-        "description": "Verbessere Verständnis, Konversation und Skills in allen Bereichen.",
+        "title": "Englisch / Reading",
+        "description": "Bessere Noten durch Grammatik, Wortschatz und sicheres Schreiben.",
         "features": [
           "Grammatik & Wortschatz",
-          "Konversation",
-          "Business English",
-          "Aufsätze schreiben"
+          "Reading & Listening",
+          "Sicheres Schreiben",
+          "Prüfungsvorbereitung"
         ]
       },
       {
@@ -418,6 +427,17 @@
           "Textanalyse",
           "Aufsätze & Interpretation",
           "Prüfungsvorbereitung"
+        ]
+      },
+      {
+        "id": "latin",
+        "title": "Latein",
+        "description": "Latein verstehen, übersetzen und erfolgreich anwenden.",
+        "features": [
+          "Grammatik & Übersetzung",
+          "Textverständnis",
+          "Prüfungsvorbereitung",
+          "Schritt-für-Schritt Erklärungen"
         ]
       },
       {
@@ -445,8 +465,6 @@
     ]
   },
   "resourcesPage": {
-    "rating": "4,9/5 Sterne",
-    "ratingDesc": "Bewertet von Eltern & Schüler:innen",
     "tabs": [
       "Alle Ressourcen",
       "Lernmaterialien",
@@ -463,143 +481,33 @@
       "Guides & Lernpläne",
       "Erklärvideos",
       "Formelsammlungen"
-    ],
-    "resultsCount": "428 Ergebnisse",
-    "sortNewest": "Sortieren: Neueste zuerst",
-    "freeResources": [
-      {
-        "title": "Mathe-Formelsammlung",
-        "subtitle": "Klassen 1–5",
-        "description": "Alle wichtigen Formeln und Regeln übersichtlich zusammengefasst.",
-        "type": "PDF"
-      },
-      {
-        "title": "Deutsch-Rechtschreibguide",
-        "subtitle": "Kostenlos",
-        "description": "Die wichtigsten Rechtschreibregeln einfach erklärt.",
-        "type": "PDF"
-      },
-      {
-        "title": "Lernplan-Vorlage",
-        "subtitle": "Kostenlos",
-        "description": "Plane dein Lernen Schritt für Schritt und bleib am Ball.",
-        "type": "PDF"
-      },
-      {
-        "title": "5 Tipps gegen Prüfungsstress",
-        "subtitle": "Kostenlos",
-        "description": "So bereitest du dich stressfrei auf Prüfungen vor.",
-        "type": "Video"
-      }
-    ],
-    "premiumResources": [
-      {
-        "title": "Mathematik",
-        "subtitle": "Klasse 2, Semester 2",
-        "description": "Komplette Lernmaterialien, Videos, Arbeitsblätter und mehr.",
-        "type": "PREMIUM"
-      },
-      {
-        "title": "Deutsch",
-        "subtitle": "Klasse 3, Semester 1",
-        "description": "Deutsch-Lernmaterialien, Videos und Arbeitsblätter.",
-        "type": "PREMIUM"
-      },
-      {
-        "title": "Englisch",
-        "subtitle": "Klasse 4, Semester 2",
-        "description": "Grammatik, Wortschatz, Materialien und mehr.",
-        "type": "PREMIUM"
-      },
-      {
-        "title": "Physik",
-        "subtitle": "Klasse 5, Semester 1",
-        "description": "Alle Themen, Formeln, Beispiele und Übungen.",
-        "type": "PREMIUM"
-      }
-    ],
-    "subjectsWithCounts": [
-      {
-        "name": "Alle Fächer",
-        "count": 428
-      },
-      {
-        "name": "Mathematik",
-        "count": 98
-      },
-      {
-        "name": "Deutsch",
-        "count": 82
-      },
-      {
-        "name": "Englisch",
-        "count": 76
-      },
-      {
-        "name": "Physik",
-        "count": 54
-      },
-      {
-        "name": "Chemie",
-        "count": 48
-      },
-      {
-        "name": "Biologie",
-        "count": 38
-      },
-      {
-        "name": "Wirtschaft",
-        "count": 32
-      }
-    ],
-    "subjectsFilter": [
-      "Alle Fächer",
-      "Mathematik",
-      "Englisch",
-      "Deutsch",
-      "Physik",
-      "Chemie"
-    ],
-    "gradesFilter": [
-      "Alle Klassen",
-      "Klasse 5",
-      "Klasse 6",
-      "Klasse 7",
-      "Klasse 8",
-      "Klasse 9",
-      "Klasse 10",
-      "Klasse 11",
-      "Klasse 12"
-    ],
-    "semestersFilter": [
-      "Alle Semester",
-      "Semester 1",
-      "Semester 2"
     ]
   },
   "pricingPage": {
-    "plansEyebrow": "WÄHLE DEIN PAKET",
-    "plansTitle": "Investiere in deine Zukunft — wähle die passende Unterstützung",
+    "plansEyebrow": "PREISE & TARIFE",
+    "plansTitle": "Preise & Tarife",
+    "plansSubtitle": "Transparente Preise. Keine versteckten Kosten. Wähle das passende Angebot für deine Ziele.",
+    "valueProposition": "Individuelle Lösungen für jedes Budget und jede Lernsituation.",
     "stats": [
       {
-        "value": "200+",
-        "label": "aktive Schüler:innen"
+        "value": "100+",
+        "label": "SchülerInnen"
       },
       {
         "value": "4,9/5",
-        "label": "Durchschnittsbewertung"
+        "label": "Bewertung"
       },
       {
-        "value": "95%",
-        "label": "Notenverbesserung"
+        "value": "500+",
+        "label": "Lernmaterialien"
       },
       {
-        "value": "100%",
-        "label": "online & flexibel"
+        "value": "100+",
+        "label": "Bewertungen"
       }
     ],
-    "trustedTitle": "Vertraut von 200+ Schüler:innen",
-    "trustedDesc": "Durchschnittlich 4,9/5 von echten Schüler:innen und Eltern",
+    "trustedTitle": "Vertraut von 100+ SchülerInnen",
+    "trustedDesc": "Durchschnittlich 4,9/5 von echten SchülerInnen und Eltern",
     "loading": "Laden...",
     "finalCtaTitle": "Unsicher, welches Paket das Richtige ist?",
     "finalCtaDesc": "Buche ein kostenloses Erstgespräch – wir finden gemeinsam die perfekte Lösung!",
@@ -611,49 +519,63 @@
     ],
     "plans": [
       {
-        "id": "resource",
-        "name": "Ressourcen-Mitgliedschaft",
-        "description": "Zugang zu allen Premium-Lernmaterialien",
-        "monthlyPrice": 29,
-        "yearlyPrice": 249,
+        "id": "library",
+        "name": "Lernbibliothek",
+        "description": "Strukturierte Lernmaterialien pro Fach & Semester",
+        "monthlyPrice": 49,
+        "yearlyPrice": 49,
+        "priceLabel": "49 € ab pro Fach & Semester",
         "highlighted": false,
         "features": [
-          "Alle Premium-Ressourcen",
-          "Lernvideos",
-          "Übungsblätter",
-          "Zusammenfassungen",
-          "Crashkurse"
+          "500+ Lernmaterialien",
+          "Lehrplankonform",
+          "Übungsblätter & Videos",
+          "Sofort verfügbar"
         ]
       },
       {
         "id": "group",
-        "name": "Gruppen-Nachhilfe",
-        "description": "Lerne in kleinen Gruppen mit anderen Schüler:innen",
-        "monthlyPrice": 99,
-        "yearlyPrice": 949,
-        "highlighted": true,
+        "name": "Lerngruppe",
+        "description": "Kleine Lerngruppen mit maximal 3-5 SchülerInnen",
+        "monthlyPrice": 29,
+        "yearlyPrice": 29,
+        "priceLabel": "29 € pro Stunde & SchülerIn",
+        "highlighted": false,
         "features": [
-          "Alles aus Ressourcen-Mitgliedschaft",
-          "Wöchentliche Gruppenstunden",
-          "Max. 5 Schüler:innen pro Gruppe",
-          "Hausaufgabenbetreuung",
-          "Fortschrittsverfolgung"
+          "Strukturierte Live-Sessions",
+          "Max. 3-5 SchülerInnen",
+          "Gemeinsamer Fortschritt",
+          "Motivierende Atmosphäre"
         ]
       },
       {
         "id": "premium",
-        "name": "1:1 Premium-Nachhilfe",
-        "description": "Individuelle Betreuung für maximale Erfolge",
-        "monthlyPrice": 249,
-        "yearlyPrice": 2399,
+        "name": "1:1 Premium",
+        "description": "Individuelle Nachhilfe mit persönlicher Betreuung",
+        "monthlyPrice": 39,
+        "yearlyPrice": 39,
+        "priceLabel": "39 € pro Stunde",
+        "highlighted": true,
+        "features": [
+          "Persönliche 1:1 Betreuung",
+          "Gezielte Prüfungsvorbereitung",
+          "Flexible Termine",
+          "Maßgeschneiderter Lernplan"
+        ]
+      },
+      {
+        "id": "matura",
+        "name": "Mathe Matura Komplettpaket",
+        "description": "Komplette Matura-Vorbereitung in Mathematik",
+        "monthlyPrice": 149,
+        "yearlyPrice": 149,
+        "priceLabel": "149 € einmalig",
         "highlighted": false,
         "features": [
-          "Alles aus Gruppen-Nachhilfe",
-          "Individuelle 1:1 Stunden",
-          "Persönlicher Lernplan",
-          "Flexible Terminvereinbarung",
-          "Priority Support",
-          "Eltern-Reports"
+          "Matura-Prüfungsvorbereitung",
+          "Strukturierte Live-Sessions",
+          "Schritt-für-Schritt-Erklärungen",
+          "Premium-Lernmaterialien"
         ]
       }
     ],
@@ -670,7 +592,29 @@
         "question": "Welche Zahlungsmethoden akzeptiert ihr?",
         "answer": "Wir akzeptieren Kreditkarten, PayPal und Banküberweisung."
       }
-    ]
+    ],
+    "compareHeaders": {
+      "features": "Merkmale",
+      "library": "Lernbibliothek",
+      "group": "Lerngruppe",
+      "premium": "1:1 Premium",
+      "matura": "Mathe Matura"
+    },
+    "compareRows": [
+      { "label": "Live-Unterricht", "library": false, "group": true, "premium": true, "matura": true },
+      { "label": "Lernmaterialien", "library": true, "group": true, "premium": true, "matura": true },
+      { "label": "Persönliche Betreuung", "library": false, "group": false, "premium": true, "matura": true },
+      { "label": "Matura-Vorbereitung", "library": false, "group": false, "premium": false, "matura": true },
+      { "label": "Flexible Termine", "library": false, "group": true, "premium": true, "matura": true },
+      { "label": "Gruppengröße max. 5", "library": false, "group": true, "premium": false, "matura": false }
+    ],
+    "planActions": {
+      "library": "Zur Lernbibliothek",
+      "group": "Lerngruppe starten",
+      "premium": "Premium buchen",
+      "matura": "Matura-Paket anfragen",
+      "resource": "Mitgliedschaft starten"
+    }
   },
   "dashboardNav": {
     "student": [
@@ -701,7 +645,7 @@
         "label": "Dashboard"
       },
       {
-        "label": "Schüler:innen"
+        "label": "SchülerInnen"
       },
       {
         "label": "Stundenplan"
@@ -727,10 +671,10 @@
         "label": "Website-Inhalte"
       },
       {
-        "label": "Schüler:innen"
+        "label": "SchülerInnen"
       },
       {
-        "label": "Lehrer:innen"
+        "label": "LehrerInnen"
       },
       {
         "label": "Benutzer"
@@ -797,7 +741,7 @@
   "loginPage": {
     "emailConfirm": "Prüfe deine E-Mails zur Bestätigung!",
     "continueGmail": "Mit Gmail fortfahren",
-    "studentAvatar": "Schüler:innen-Profil"
+    "studentAvatar": "SchülerInnen-Profil"
   },
   "aiGeneratorPage": {
     "title": "KI-Quiz-Generator",
@@ -902,8 +846,8 @@
     },
     "teacher": {
       "students": {
-        "title": "Schüler:innen",
-        "description": "Verwalte deine zugewiesenen Schüler:innen"
+        "title": "SchülerInnen",
+        "description": "Verwalte deine zugewiesenen SchülerInnen"
       },
       "schedule": {
         "title": "Stundenplan",
@@ -923,7 +867,7 @@
       },
       "settings": {
         "title": "Einstellungen",
-        "description": "Verwalte dein Lehrer:innen-Profil"
+        "description": "Verwalte dein LehrerInnen-Profil"
       }
     },
     "admin": {
@@ -932,12 +876,12 @@
         "description": "Öffentliche Website-Inhalte bearbeiten"
       },
       "students": {
-        "title": "Schüler:innen",
-        "description": "Alle Schüler:innen auf der Plattform verwalten"
+        "title": "SchülerInnen",
+        "description": "Alle SchülerInnen auf der Plattform verwalten"
       },
       "teachers": {
-        "title": "Lehrer:innen",
-        "description": "Alle Lehrer:innen auf der Plattform verwalten"
+        "title": "LehrerInnen",
+        "description": "Alle LehrerInnen auf der Plattform verwalten"
       },
       "memberships": {
         "title": "Mitgliedschaften",
@@ -1045,7 +989,7 @@
     "recentMaterials": "Neueste Materialien",
     "allMaterials": "Alle Materialien",
     "sidebarHello": "Hallo, {{name}}!",
-    "sidebarRole": "Schüler:in",
+    "sidebarRole": "SchülerIn",
     "liveClasses": "Live-Klassen",
     "liveClassesDesc": "Nimm mit einem Klick an deinen Live-Unterrichtsstunden teil.",
     "noLiveClasses": "Keine bevorstehenden Live-Klassen geplant.",
@@ -1125,12 +1069,12 @@
     "helpSupport": "Hilfe & Support"
   },
   "teacherDashboard": {
-    "overviewTitle": "Lehrer-Dashboard",
-    "overviewSubtitle": "Dein Lehr-Hub — Stunden planen, Einnahmen verfolgen und mit Schülern verbinden.",
-    "signInRequired": "Bitte melde dich an, um dein Lehrer-Dashboard zu sehen.",
+    "overviewTitle": "LehrerInnen-Dashboard",
+    "overviewSubtitle": "Dein Lehr-Hub — Stunden planen, Einnahmen verfolgen und mit SchülerInnen verbinden.",
+    "signInRequired": "Bitte melde dich an, um dein LehrerInnen-Dashboard zu sehen.",
     "sidebarHello": "Hallo, {{name}}!",
     "sidebarGuest": "Willkommen, Lehrkraft",
-    "sidebarRole": "Lehrer",
+    "sidebarRole": "LehrerIn",
     "nav": {
       "overview": "Übersicht",
       "teaching": "Unterricht",
@@ -1139,7 +1083,7 @@
       "insights": "Auswertung",
       "account": "Konto",
       "dashboard": "Übersicht",
-      "students": "Schüler",
+      "students": "SchülerInnen",
       "appointments": "Meine Termine",
       "calendar": "Kalender",
       "payments": "Zahlungen",
@@ -1168,7 +1112,7 @@
     "hoursToday": "{{count}} Stunden heute",
     "lessonsShort": "Stunden",
     "lessonsThisWeek": "Stunden diese Woche",
-    "assignedStudents": "Zugewiesene Schüler:innen",
+    "assignedStudents": "Zugewiesene SchülerInnen",
     "hoursThisWeek": "Stunden diese Woche",
     "earningsMonth": "Monatliche Einnahmen",
     "nextJumpLevel": "NextJump Level {{level}}",
@@ -1176,9 +1120,9 @@
     "upcomingAppointments": "Nächste Termine",
     "upcomingLessons": "Kommende Stunden",
     "noAppointments": "Keine Termine geplant",
-    "planWithStudents": "Du kannst Termine mit deinen Schüler:innen planen",
-    "myStudents": "Meine Schüler:innen",
-    "allStudents": "Alle Schüler:innen",
+    "planWithStudents": "Du kannst Termine mit deinen SchülerInnen planen",
+    "myStudents": "Meine SchülerInnen",
+    "allStudents": "Alle SchülerInnen",
     "nextLesson": "Nächste Stunde",
     "uploadMaterial": "Material hochladen",
     "manageContent": "Alle Inhalte verwalten",
@@ -1186,7 +1130,7 @@
     "editResource": "Bearbeiten",
     "views": "Aufrufe",
     "welcomeBack": "Willkommen zurück, {{name}}!",
-    "welcomeSubtitle": "Stunden, Schüler:innen und Einnahmen an einem Ort verwalten.",
+    "welcomeSubtitle": "Stunden, SchülerInnen und Einnahmen an einem Ort verwalten.",
     "openAi": "NextGrades KI",
     "aiGenerator": "KI-Generator",
     "notifications": "Benachrichtigungen",
@@ -1208,7 +1152,7 @@
     "learnMore": "Mehr erfahren",
     "colDate": "Datum",
     "colSubject": "Fach",
-    "colStudent": "Schüler:in",
+    "colStudent": "SchülerIn",
     "colTime": "Uhrzeit",
     "colStatus": "Status",
     "colAction": "Aktion",
@@ -1216,11 +1160,11 @@
     "startLesson": "Stunde starten",
     "noZoom": "Kein Zoom-Link",
     "syncCalendar": "Kalender synchronisieren",
-    "studentList": "Schüler:innenliste",
-    "noStudents": "Noch keine Schüler:innen zugewiesen",
+    "studentList": "SchülerInnenliste",
+    "noStudents": "Noch keine SchülerInnen zugewiesen",
     "units": "Einheiten",
     "createForStudent": "Planen",
-    "addStudent": "Alle Schüler:innen",
+    "addStudent": "Alle SchülerInnen",
     "recentPayments": "Letzte Zahlungen",
     "viewAll": "Alle ansehen",
     "noPayments": "Keine Zahlungen in diesem Monat",
@@ -1229,11 +1173,14 @@
     "createNewAppointment": "Neuen Termin erstellen",
     "netLabel": "Netto",
     "colDuration": "Dauer",
-    "addNewStudent": "+ Neuen Schüler hinzufügen",
+    "addNewStudent": "+ Neue SchülerIn hinzufügen",
     "messagesTitle": "Nachrichten",
-    "studentsSubtitle": "Verwalte deine Schüler, Termine und Fortschritt.",
+    "studentsSubtitle": "Verwalte deine SchülerInnen, Termine und Fortschritt.",
     "export": "Exportieren",
-    "searchStudents": "Schüler suchen…",
+    "searchStudents": "SchülerInnen suchen…",
+    "mobileTodayOverview": "Heutiger Unterricht",
+    "mobileQuickStats": "Unterrichtsstatus",
+    "viewDetails": "Details anzeigen",
     "statusActive": "Aktiv",
     "hoursBooked": "Gebuchte Stunden",
     "hoursRemaining": "Verbleibende Stunden",
@@ -1282,7 +1229,7 @@
     "faq3q": "Wie erreiche ich das nächste Level?",
     "faq3a": "Unterrichte mehr Stunden pro Monat, um das nächste Bonus-Level freizuschalten.",
     "bonusTips": "Tipps für mehr Bonus",
-    "tip1": "Plane regelmäßige Stunden mit deinen Schülern.",
+    "tip1": "Plane regelmäßige Stunden mit deinen SchülerInnen.",
     "tip2": "Nutze freie Zeiten am Wochenende für zusätzliche Termine.",
     "tip3": "Halte deinen Kalender aktuell für bessere Sichtbarkeit.",
     "paymentsSubtitle": "Übersicht deiner Einnahmen und Zahlungen.",
@@ -1292,8 +1239,8 @@
   "adminNav": {
     "dashboard": "Dashboard",
     "websiteContent": "Website-Inhalte",
-    "students": "Schüler:innen",
-    "teachers": "Lehrer:innen",
+    "students": "SchülerInnen",
+    "teachers": "LehrerInnen",
     "users": "Benutzer",
     "notifications": "Benachrichtigungen",
     "quizMonitor": "Quiz-Monitor",
@@ -1310,7 +1257,7 @@
     "featuredLabel": "Am wichtigsten",
     "websiteDesc": "Texte, Bilder und SEO auf der öffentlichen Website ändern. Seite wählen, bearbeiten, veröffentlichen.",
     "openEditor": "Website-Editor öffnen",
-    "studentsDesc": "Schülerkonten verwalten",
+    "studentsDesc": "SchülerInnen-Konten verwalten",
     "teachersDesc": "Lehrkräfte verwalten",
     "usersDesc": "Alle Benutzer und Rollen",
     "notificationsDesc": "Benachrichtigungen senden",
@@ -1337,10 +1284,10 @@
     "title": "Admin-Bereich",
     "subtitle": "Übersicht über die gesamte Plattform",
     "newUser": "Neuer Benutzer",
-    "students": "Schüler:innen",
-    "totalStudents": "Schüler:innen gesamt",
-    "teachers": "Lehrer:innen",
-    "totalTeachers": "Lehrer:innen gesamt",
+    "students": "SchülerInnen",
+    "totalStudents": "SchülerInnen gesamt",
+    "teachers": "LehrerInnen",
+    "totalTeachers": "LehrerInnen gesamt",
     "activeCourses": "Aktive Kurse",
     "totalRevenue": "Gesamtumsatz",
     "recentActivity": "Letzte Aktivität",
@@ -1349,11 +1296,11 @@
     "manageUsers": "Benutzer verwalten",
     "managePayments": "Zahlungen verwalten",
     "websiteContent": "Website-Inhalte",
-    "activeStudents": "Aktive Schüler:innen",
-    "activeTeachers": "Aktive Lehrer:innen",
+    "activeStudents": "Aktive SchülerInnen",
+    "activeTeachers": "Aktive LehrerInnen",
     "platformRevenue": "Plattformumsatz",
-    "manageStudents": "Schüler:innen verwalten",
-    "manageTeachers": "Lehrer:innen verwalten",
+    "manageStudents": "SchülerInnen verwalten",
+    "manageTeachers": "LehrerInnen verwalten",
     "viewPayments": "Zahlungen anzeigen",
     "manageResources": "Ressourcen verwalten",
     "totalRevenueMonthly": "Monatlicher Gesamtumsatz",
@@ -1386,7 +1333,7 @@
     "tokenExpired": "Sitzung abgelaufen — erneut verbinden.",
     "connectedSince": "Verbunden seit {{date}}",
     "createLiveClass": "Live-Klasse erstellen",
-    "classCreated": "Live-Klasse erstellt und Schüler benachrichtigt!",
+    "classCreated": "Live-Klasse erstellt und SchülerInnen benachrichtigt!",
     "meetingTitle": "Titel",
     "description": "Beschreibung",
     "meetingType": "Meeting-Typ",
@@ -1395,10 +1342,10 @@
     "startTime": "Startzeit",
     "duration": "Dauer (Minuten)",
     "subject": "Fach",
-    "student": "Schüler:in",
-    "studentOptional": "Schüler:in (optional)",
+    "student": "SchülerIn",
+    "studentOptional": "SchülerIn (optional)",
     "selectSubject": "Fach wählen",
-    "selectStudent": "Schüler:in wählen",
+    "selectStudent": "SchülerIn wählen",
     "types": {
       "live_class": "Live-Klasse",
       "webinar": "Webinar",
@@ -1407,7 +1354,7 @@
     },
     "scheduleDesc": "Live-Klassen planen, Einladungen automatisch senden und von einem Ort aus starten.",
     "scheduleNew": "Live-Klasse planen",
-    "scheduleNewDesc": "Typ wählen, Zeit festlegen — Schüler erhalten automatisch eine Einladung.",
+    "scheduleNewDesc": "Typ wählen, Zeit festlegen — SchülerInnen erhalten automatisch eine Einladung.",
     "setupRequired": "Zoom verbinden, um zu planen",
     "setupRequiredDesc": "Ein schneller Schritt — Zoom verbinden, dann die erste Live-Klasse erstellen.",
     "readyToSchedule": "Bereit zum Planen",
@@ -1415,9 +1362,9 @@
     "when": "Wann",
     "minShort": "Min.",
     "titlePlaceholder": "z. B. Algebra — Quadratische Gleichungen",
-    "descriptionPlaceholder": "Optionale Hinweise für Schüler…",
+    "descriptionPlaceholder": "Optionale Hinweise für SchülerInnen…",
     "moreOptions": "Weitere Optionen",
-    "createAndNotify": "Erstellen & Schüler benachrichtigen",
+    "createAndNotify": "Erstellen & SchülerInnen benachrichtigen",
     "getStarted": "In 3 Schritten starten",
     "stepConnect": "Zoom verbinden",
     "stepSchedule": "Klasse planen",
@@ -1432,8 +1379,8 @@
     "emptyDescConnect": "Verbinde zuerst Zoom, dann plane deine erste Sitzung.",
     "cancelMeeting": "Meeting absagen",
     "typesDesc": {
-      "live_class": "Offene Sitzung für eingeschriebene Schüler",
-      "private_session": "1:1 mit einem Schüler",
+      "live_class": "Offene Sitzung für eingeschriebene SchülerInnen",
+      "private_session": "1:1 mit einer Schülerin oder einem Schüler",
       "group_session": "Kleine Gruppenstunde",
       "webinar": "Präsentation für großes Publikum"
     },
@@ -1515,7 +1462,7 @@
     },
     "admin": {
       "title": "Benachrichtigungszentrale",
-      "subtitle": "Ankündigungen an Schüler, Lehrer oder alle Nutzer senden.",
+      "subtitle": "Ankündigungen an SchülerInnen, LehrerInnen oder alle Nutzer senden.",
       "compose": "Ankündigung verfassen",
       "audience": "Zielgruppe",
       "titlePlaceholder": "Titel der Ankündigung",
@@ -1550,8 +1497,8 @@
     "phone": "Telefonnummer",
     "phoneHint": "Optional — für Terminerinnerungen",
     "bio": "Über dich",
-    "bioHint": "Für Schüler:innen sichtbar — Erfahrung, Fächer, Unterrichtsstil",
-    "bioPlaceholder": "Erzähle Schüler:innen von deiner Unterrichtserfahrung…",
+    "bioHint": "Für SchülerInnen sichtbar — Erfahrung, Fächer, Unterrichtsstil",
+    "bioPlaceholder": "Erzähle SchülerInnen von deiner Unterrichtserfahrung…",
     "goalHint": "Wird in deinem Dashboard angezeigt",
     "goalPlaceholder": "z.B. Abitur in Mathematik mit Note 1 bestehen…",
     "accountInfo": "Konto",
@@ -1592,7 +1539,7 @@
     "teachingTools": "Unterrichts-Tools",
     "teachingToolsDesc": "Schnellzugriff auf deinen Lehrbereich",
     "linkSchedule": "Stundenplan & Kalender",
-    "linkStudents": "Meine Schüler:innen",
+    "linkStudents": "Meine SchülerInnen",
     "linkAiGen": "KI-Quiz-Generator",
     "linkUpload": "Materialien hochladen",
     "linkEarnings": "Einnahmen & Zahlungen",
@@ -1624,7 +1571,7 @@
     "signInTitle": "Administrator-Anmeldung",
     "signInSubtitle": "Melde dich mit deinem Admin-Konto an, um die Plattform zu verwalten.",
     "signInButton": "Im Admin-Portal anmelden",
-    "studentTeacherLogin": "Schüler:in oder Lehrkraft?",
+    "studentTeacherLogin": "SchülerIn oder Lehrkraft?",
     "mainLogin": "Zur Hauptanmeldung",
     "accessDenied": "Du hast keine Berechtigung für das Admin-Portal."
   },
@@ -1643,7 +1590,7 @@
     "allRoles": "Alle Rollen",
     "roleAdmin": "Admin",
     "roleTeacher": "Lehrkraft",
-    "roleStudent": "Schüler:in",
+    "roleStudent": "SchülerIn",
     "allStatus": "Alle Status",
     "statusActive": "Aktiv",
     "statusSuspended": "Gesperrt",

@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { requireAuthenticatedApi } from "@/lib/auth/api-auth";
 
 export async function POST() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const gate = await requireAuthenticatedApi();
+  if (gate.error) return gate.error;
+
+  const supabase = gate.auth!.supabase;
+  const user = gate.auth!.user;
 
   const { error } = await supabase
     .from("notifications")

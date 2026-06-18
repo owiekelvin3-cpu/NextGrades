@@ -2,12 +2,13 @@
 
 import { MobileAppShell } from "@/components/mobile/MobileAppShell";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Card } from "@/components/ui/Card";
 import { appShell } from "@/lib/theme/shell";
 import { useTranslation } from "react-i18next";
 import { Construction, ArrowLeft } from "lucide-react";
 import { TeacherDashboardLayout } from "@/components/dashboard/teacher/TeacherDashboardLayout";
-import { ADMIN_PORTAL_HOME } from "@/lib/admin/portal-paths";
+import { ADMIN_PORTAL_HOME, isAdminPortalPath } from "@/lib/admin/portal-paths";
 
 interface DashboardPageProps {
   role: "student" | "teacher" | "admin";
@@ -18,6 +19,8 @@ interface DashboardPageProps {
 
 export function DashboardPage({ role, titleKey, descriptionKey, children }: DashboardPageProps) {
   const { t } = useTranslation();
+  const pathname = usePathname();
+  const inAdminPortal = role === "admin" && isAdminPortalPath(pathname);
   const title = t(titleKey);
   const description = descriptionKey ? t(descriptionKey) : undefined;
 
@@ -67,6 +70,10 @@ export function DashboardPage({ role, titleKey, descriptionKey, children }: Dash
   }
 
   const shellRole = role === "admin" ? "admin" : "student";
+
+  if (inAdminPortal) {
+    return <div className="mx-auto max-w-7xl">{body}</div>;
+  }
 
   return (
     <MobileAppShell role={shellRole} title={title} description={description}>

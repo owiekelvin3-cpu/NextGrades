@@ -1,10 +1,6 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { motion } from "framer-motion";
-import { Sidebar } from "@/components/dashboard/Sidebar";
-import { MobileTopBar } from "@/components/mobile/MobileTopBar";
-import { MobileBottomNav, MOBILE_BOTTOM_NAV_PADDING } from "@/components/mobile/MobileBottomNav";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
@@ -19,9 +15,7 @@ import {
 } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
 import { useToast } from "@/context/ToastContext";
-import { appShell } from "@/lib/theme/shell";
 import { cn } from "@/lib/utils";
-import { useSidebar } from "@/context/SidebarContext";
 
 interface UserProfile {
   id: string;
@@ -43,11 +37,11 @@ interface UserProfile {
 
 export default function AdminUsersPage() {
   const { theme } = useTheme();
-  const { width: sidebarWidth } = useSidebar();
   const { success, error: toastError } = useToast();
   const [users, setUsers] = useState<UserProfile[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
   const [verifiedFilter, setVerifiedFilter] = useState("all");
@@ -61,7 +55,7 @@ export default function AdminUsersPage() {
       const params = new URLSearchParams({
         page: page.toString(),
         limit: "20",
-        search: searchQuery,
+        search: debouncedSearch,
         role: roleFilter,
         status: statusFilter,
         verified: verifiedFilter,
@@ -77,7 +71,12 @@ export default function AdminUsersPage() {
     } finally {
       setLoading(false);
     }
-  }, [page, roleFilter, statusFilter, verifiedFilter, sortBy, searchQuery, toastError]);
+  }, [page, roleFilter, statusFilter, verifiedFilter, sortBy, debouncedSearch, toastError]);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setDebouncedSearch(searchQuery.trim()), 400);
+    return () => window.clearTimeout(timer);
+  }, [searchQuery]);
 
   useEffect(() => {
     void fetchUsers();
@@ -161,22 +160,7 @@ export default function AdminUsersPage() {
   };
 
   return (
-    <div
-      className={cn(appShell.dashboardShell, theme === "dark" ? "bg-[#0D1B2A]" : "bg-[#FAFAFA]")}
-      style={{ ["--sidebar-width" as string]: `${sidebarWidth}px` }}
-    >
-      <Sidebar role="admin" />
-
-      <div
-        className={cn(
-          "flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden transition-[margin-left] duration-300 ease-out md:ml-[var(--sidebar-width)]",
-          MOBILE_BOTTOM_NAV_PADDING
-        )}
-      >
-        <MobileTopBar role="admin" />
-
-        <main className="flex-1 overflow-y-auto overflow-x-hidden p-4 sm:p-6 lg:p-8">
-        <div className="mx-auto max-w-7xl">
+    <div className="mx-auto max-w-7xl">
           {/* Header */}
           <div className="mb-8 flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
             <div>
@@ -355,12 +339,9 @@ export default function AdminUsersPage() {
                       </td>
                     </tr>
                   ) : (
-                    users.map((user, index) => (
-                      <motion.tr
+                    users.map((user) => (
+                      <tr
                         key={user.id}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.05 * index }}
                         className={`border-b ${theme === "dark" ? "border-white/5 hover:bg-white/5" : "border-gray-100 hover:bg-gray-50"}`}
                       >
                         <td className="p-4">
@@ -443,7 +424,7 @@ export default function AdminUsersPage() {
                             </Button>
                           </div>
                         </td>
-                      </motion.tr>
+                      </tr>
                     ))
                   )}
                 </tbody>
@@ -479,10 +460,6 @@ export default function AdminUsersPage() {
               </div>
             )}
           </Card>
-        </div>
-        </main>
-      </div>
-      <MobileBottomNav role="admin" />
     </div>
   );
 }

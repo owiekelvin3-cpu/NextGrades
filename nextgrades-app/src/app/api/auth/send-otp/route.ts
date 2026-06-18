@@ -8,7 +8,7 @@ import { enforceRateLimit } from "@/lib/security/rate-limit";
 
 /** Send or resend the 6-digit signup verification code. */
 export async function POST(request: Request) {
-  const limited = enforceRateLimit(request, { bucket: "auth:send-otp", limit: 5, windowSec: 3600 });
+  const limited = await enforceRateLimit(request, { bucket: "auth:send-otp", limit: 5, windowSec: 3600 });
   if (limited) return limited;
 
   if (!isEmailVerificationRequired()) {

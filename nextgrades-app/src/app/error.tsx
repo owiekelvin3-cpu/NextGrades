@@ -3,8 +3,9 @@
 import { useEffect } from "react";
 import Link from "next/link";
 import { BrandLogo } from "@/components/BrandLogo";
+import { Button } from "@/components/ui/Button";
 
-export default function GlobalError({
+export default function Error({
   error,
   reset,
 }: {
@@ -16,29 +17,28 @@ export default function GlobalError({
   }, [error]);
 
   return (
-    <html lang="en">
-      <body className="flex min-h-screen flex-col items-center justify-center bg-[#0D1B2A] px-4 text-white">
-        <BrandLogo size="lg" linked={false} onDarkBackground />
-        <h1 className="mt-8 text-2xl font-bold">Something went wrong</h1>
-        <p className="mt-2 max-w-md text-center text-sm text-gray-400">
-          An unexpected error occurred. Please try again or return to the homepage.
-        </p>
-        <div className="mt-8 flex flex-wrap justify-center gap-3">
-          <button
-            type="button"
-            onClick={() => reset()}
-            className="rounded-xl bg-[#D4AF37] px-6 py-3 text-sm font-bold text-[#0D1B2A] hover:opacity-90"
-          >
-            Try again
-          </button>
-          <Link
-            href="/"
-            className="rounded-xl border border-white/20 px-6 py-3 text-sm font-semibold hover:bg-white/10"
-          >
-            Back to Homepage
-          </Link>
-        </div>
-      </body>
-    </html>
+    <main className="flex min-h-[calc(100vh-var(--site-nav-height))] flex-col items-center justify-center bg-[#0D1B2A] px-4 py-16 text-center text-white">
+      <BrandLogo size="lg" linked={false} onDarkBackground />
+      <h1 className="mt-8 text-2xl font-bold sm:text-3xl">Etwas ist schiefgelaufen</h1>
+      <p className="mt-3 max-w-md text-sm leading-relaxed text-gray-400">
+        Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es erneut oder kehre zur Startseite
+        zurück.
+      </p>
+      <div className="mt-8 flex flex-wrap justify-center gap-3">
+        <button
+          type="button"
+          onClick={() => reset()}
+          className="inline-flex min-h-12 items-center justify-center rounded-2xl bg-[#D4AF37] px-6 py-3 text-sm font-bold text-[#0D1B2A] transition hover:opacity-90"
+        >
+          Erneut versuchen
+        </button>
+        <Button variant="secondary" size="md" href="/" className="border-white/20 bg-white/5 text-white">
+          Zur Startseite
+        </Button>
+      </div>
+      <Link href="/contact" className="mt-6 text-sm text-gray-500 transition hover:text-[#D4AF37]">
+        Support kontaktieren
+      </Link>
+    </main>
   );
 }

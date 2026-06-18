@@ -2,12 +2,21 @@ import { ONLINE_IMAGE_FALLBACK } from "@/lib/marketing-images";
 
 const INVALID_OVERRIDE = /^(none|null|undefined|#|javascript:|data:,|\s*$)/i;
 
+/** Ignore stale CMS uploads (generic placeholder rectangles) — use branded defaults instead. */
+const LEGACY_CMS_PLACEHOLDER = /Rectangle_40443|resource-thumbnails\/cms\/\d+-Rectangle/i;
+
+export function isLegacyCmsPlaceholderImage(src?: string | null): boolean {
+  if (!src || typeof src !== "string") return false;
+  return LEGACY_CMS_PLACEHOLDER.test(src);
+}
+
 /** Returns true when a string is a usable image src (http(s) or site-relative path). */
 export function isValidImageSrc(src?: string | null): src is string {
   if (!src || typeof src !== "string") return false;
   const trimmed = src.trim();
   if (!trimmed || trimmed === "null" || trimmed === "undefined" || trimmed === "#") return false;
   if (INVALID_OVERRIDE.test(trimmed)) return false;
+  if (isLegacyCmsPlaceholderImage(trimmed)) return false;
   return (
     trimmed.startsWith("http://") ||
     trimmed.startsWith("https://") ||

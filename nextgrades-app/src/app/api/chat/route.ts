@@ -3,7 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getAuthProfile, requireRole } from "@/lib/quiz/auth";
 import { buildSystemPrompt } from "@/lib/chat/prompts";
 import { loadChatContext, titleFromMessage } from "@/lib/chat/context";
-import { checkRateLimit, sanitizeInput, validateMessage } from "@/lib/chat/rate-limit";
+import { checkUserRateLimit, sanitizeInput, validateMessage } from "@/lib/chat/rate-limit";
 import { streamChatCompletion, getAvailableModels, isAiConfigured } from "@/lib/chat/ai-client";
 import { resolveModelId } from "@/lib/chat/models";
 import { parseChatResponseLanguage } from "@/lib/chat/languages";
@@ -44,7 +44,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Chatbot is currently disabled" }, { status: 503 });
   }
 
-  const rate = checkRateLimit(user.id, settings.max_messages_per_minute ?? 20);
+  const rate = checkUserRateLimit(user.id, settings.max_messages_per_minute ?? 20);
   if (!rate.allowed) {
     return NextResponse.json(
       { error: `Rate limit exceeded. Try again in ${rate.retryAfterSec}s.` },

@@ -23,6 +23,22 @@ export function securityHeaders(): NonNullable<NextConfig["headers"]> {
       key: "Strict-Transport-Security",
       value: "max-age=63072000; includeSubDomains; preload",
     });
+
+    const csp = [
+      "default-src 'self'",
+      "script-src 'self' 'unsafe-inline' https://js.stripe.com https://challenges.cloudflare.com",
+      "style-src 'self' 'unsafe-inline'",
+      "img-src 'self' data: blob: https: *.supabase.co",
+      "font-src 'self' data:",
+      "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.stripe.com https://challenges.cloudflare.com",
+      "frame-src 'self' https://js.stripe.com https://hooks.stripe.com https://challenges.cloudflare.com",
+      "object-src 'none'",
+      "base-uri 'self'",
+      "form-action 'self'",
+      "frame-ancestors 'self'",
+    ].join("; ");
+
+    headers.push({ key: "Content-Security-Policy", value: csp });
   }
 
   const staticCache: { key: string; value: string }[] = [

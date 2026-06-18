@@ -75,7 +75,7 @@ export function VerificationCodePanel({
     setResendLoading(true);
     setLocalError(null);
     try {
-      const res = await fetch("/api/auth/resend-verification", {
+      const res = await fetch("/api/auth/send-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: email.trim().toLowerCase() }),

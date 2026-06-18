@@ -1,9 +1,14 @@
-import type { SupabaseClient } from "@supabase/supabase-js";
+import type { SupabaseClient, User } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
 import { resolveUserRole, type AppRole } from "@/lib/auth/roles";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { isSupabaseServiceRoleConfigured } from "@/lib/supabase/env";
 import { createClient } from "@/lib/supabase/server";
+import {
+  isAuthUserEmailVerified,
+  isSignupEmailVerificationRequired,
+} from "@/lib/auth/config";
+import { isLoginMfaSatisfied } from "@/lib/auth/mfa-cookies";
 
 export type { AppRole } from "@/lib/auth/roles";
 
@@ -16,13 +21,13 @@ export type AuthProfile = {
 };
 
 type ApiAuthContext = {
-  user: { id: string };
+  user: User;
   profile: AuthProfile;
   supabase: SupabaseClient;
 };
 
 export async function getApiAuth(supabase?: SupabaseClient): Promise<{
-  user: { id: string } | null;
+  user: User | null;
   profile: AuthProfile | null;
   supabase: SupabaseClient;
 }> {
@@ -37,7 +42,7 @@ export async function getApiAuth(supabase?: SupabaseClient): Promise<{
   }
 
   const profileClient = isSupabaseServiceRoleConfigured() ? createAdminClient() : client;
-  const { data: profile, error: profileError } = await profileClient
+  const { data: profile } = await profileClient
     .from("profiles")
     .select("id, role, full_name, email, is_active")
     .eq("id", user.id)
@@ -50,11 +55,11 @@ export async function getApiAuth(supabase?: SupabaseClient): Promise<{
   const resolvedRole = resolveUserRole(profile?.role, user.user_metadata);
 
   if (!resolvedRole) {
-    return { user: { id: user.id }, profile: null, supabase: client };
+    return { user, profile: null, supabase: client };
   }
 
   return {
-    user: { id: user.id },
+    user,
     profile: {
       id: user.id,
       role: resolvedRole,
@@ -82,12 +87,28 @@ export type AuthGateResult =
   | { error: NextResponse; auth: null }
   | { error: null; auth: ApiAuthContext };
 
+async function enforceSecureSession(user: User): Promise<NextResponse | null> {
+  if (isSignupEmailVerificationRequired() && !isAuthUserEmailVerified(user)) {
+    return forbidden("Email verification required");
+  }
+
+  if (!(await isLoginMfaSatisfied(user.id))) {
+    return forbidden("Login verification required");
+  }
+
+  return null;
+}
+
 export async function requireAdminApi(): Promise<AuthGateResult> {
   const auth = await getApiAuth();
   if (!auth.user) return { error: unauthorized(), auth: null };
   if (!auth.profile || auth.profile.role !== "admin") {
     return { error: forbidden(), auth: null };
   }
+
+  const secureError = await enforceSecureSession(auth.user);
+  if (secureError) return { error: secureError, auth: null };
+
   return { error: null, auth: auth as ApiAuthContext };
 }
 
@@ -97,6 +118,10 @@ export async function requireTeacherOrAdminApi(): Promise<AuthGateResult> {
   if (!auth.profile || !requireApiRole(auth.profile, ["teacher", "admin"])) {
     return { error: forbidden(), auth: null };
   }
+
+  const secureError = await enforceSecureSession(auth.user);
+  if (secureError) return { error: secureError, auth: null };
+
   return { error: null, auth: auth as ApiAuthContext };
 }
 
@@ -105,5 +130,9 @@ export async function requireAuthenticatedApi(): Promise<AuthGateResult> {
   if (!auth.user || !auth.profile) {
     return { error: unauthorized("Unauthorized or profile incomplete"), auth: null };
   }
+
+  const secureError = await enforceSecureSession(auth.user);
+  if (secureError) return { error: secureError, auth: null };
+
   return { error: null, auth: auth as ApiAuthContext };
 }

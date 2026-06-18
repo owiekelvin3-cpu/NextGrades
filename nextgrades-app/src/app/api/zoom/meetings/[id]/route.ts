@@ -18,7 +18,7 @@ export async function DELETE(
 
   const { data: lesson, error: fetchError } = await db
     .from("lessons")
-    .select("*")
+    .select("id, zoom_meeting_id, status")
     .eq("id", lessonId)
     .eq("teacher_id", teacherId)
     .maybeSingle();
@@ -27,25 +27,33 @@ export async function DELETE(
     return NextResponse.json({ error: "Meeting not found" }, { status: 404 });
   }
 
-  const meetingId = lesson.zoom_meeting_id as string | null;
-  if (meetingId) {
-    try {
-      await deleteZoomMeetingOAuth(teacherId, meetingId);
-    } catch (e) {
-      console.warn("[zoom delete]", e);
-    }
-
-    await db
-      .from("lessons")
-      .update({ status: "cancelled", updated_at: new Date().toISOString() })
-      .eq("zoom_meeting_id", meetingId)
-      .eq("teacher_id", teacherId);
-  } else {
-    await db
-      .from("lessons")
-      .update({ status: "cancelled", updated_at: new Date().toISOString() })
-      .eq("id", lessonId);
+  if (lesson.status === "cancelled") {
+    return NextResponse.json({ success: true });
   }
+
+  const meetingId = lesson.zoom_meeting_id as string | null;
+
+  if (meetingId) {
+    const { count } = await db
+      .from("lessons")
+      .select("id", { count: "exact", head: true })
+      .eq("zoom_meeting_id", meetingId)
+      .eq("teacher_id", teacherId)
+      .neq("status", "cancelled");
+
+    if (count === 1) {
+      try {
+        await deleteZoomMeetingOAuth(teacherId, meetingId);
+      } catch (e) {
+        console.warn("[zoom delete]", e);
+      }
+    }
+  }
+
+  await db
+    .from("lessons")
+    .update({ status: "cancelled", updated_at: new Date().toISOString() })
+    .eq("id", lessonId);
 
   return NextResponse.json({ success: true });
 }

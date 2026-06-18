@@ -24,15 +24,6 @@ After deploy, open `https://YOUR-DOMAIN/api/health` — should return `"status":
 | `RESEND_SENDER_NAME` | e.g. `NextGrades` |
 | `CONTACT_FORM_TO_EMAIL` | Inbox for contact form |
 
-## Stripe (if using payments)
-
-| Variable | Notes |
-|----------|--------|
-| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Live `pk_live_...` |
-| `STRIPE_SECRET_KEY` | Live `sk_live_...` |
-| `STRIPE_WEBHOOK_SECRET` | From Stripe → Webhooks → `https://YOUR-DOMAIN/api/stripe/webhook` |
-| `STRIPE_PRICE_*` | Live price IDs |
-
 ## Auth (Supabase dashboard)
 
 1. **Authentication → URL configuration**
@@ -43,6 +34,7 @@ After deploy, open `https://YOUR-DOMAIN/api/health` — should return `"status":
 
 ## Recommended production settings
 
+- `NEXT_PUBLIC_ALLOW_PUBLIC_SIGNUP=false` | Invite-only accounts (admin creates users)
 - `REQUIRE_EMAIL_VERIFICATION=true` (or omit — default is on in production)
 - Remove `ADMIN_BOOTSTRAP_EMAIL` after first admin exists
 - Do **not** set `ALLOW_ADMIN_BOOTSTRAP=true` in production

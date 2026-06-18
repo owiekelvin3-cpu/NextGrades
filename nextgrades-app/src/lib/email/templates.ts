@@ -27,35 +27,35 @@ export function welcomeEmail(userName?: string, role: "student" | "teacher" = "s
   const name = displayName(userName);
   const dashboard = role === "teacher" ? `${appUrl()}/dashboard/teacher` : `${appUrl()}/dashboard/student`;
   const content = [
-    emailHeading("Welcome to NextGrades!"),
-    emailParagraph(`Hi ${name},`),
+    emailHeading("Willkommen bei NextGrades!"),
+    emailParagraph(`Hallo ${name},`),
     emailParagraph(
-      "We're thrilled to have you on board! You've joined a community of learners and educators passionate about growth and excellence."
+      "Schön, dass du dabei bist! Du bist Teil einer Community aus Lernenden und PädagogInnen, die Wachstum und Erfolg ernst nehmen."
     ),
-    emailSubheading("What's waiting for you"),
+    emailSubheading("Das erwartet dich"),
     emailFeatureList([
-      "<strong>Personalized learning paths</strong> tailored to your goals",
-      "<strong>Interactive lessons & AI-powered quizzes</strong>",
-      "<strong>Expert teacher support</strong> whenever you need help",
-      "<strong>Progress tracking</strong> with detailed analytics",
+      "<strong>Individuelle Lernwege</strong> passend zu deinen Zielen",
+      "<strong>Interaktive Lektionen & KI-gestützte Quizze</strong>",
+      "<strong>Unterstützung durch erfahrene LehrerInnen</strong>, wenn du Hilfe brauchst",
+      "<strong>Fortschrittsverfolgung</strong> mit klaren Einblicken",
     ]),
-    emailButton(dashboard, "Go to Your Dashboard"),
-    emailNotice("info", "<strong>Pro tip:</strong> Complete your profile to unlock personalized recommendations."),
+    emailButton(dashboard, "Zum Dashboard"),
+    emailNotice("info", "<strong>Tipp:</strong> Vervollständige dein Profil für personalisierte Empfehlungen."),
     emailSignature(),
   ].join("");
-  return wrapEmail(content, "Welcome to NextGrades — your learning journey starts here");
+  return wrapEmail(content, "Willkommen bei NextGrades — deine Lernreise beginnt jetzt");
 }
 
 export { accountVerificationEmail as emailVerificationEmail } from "./templates/account-verification";
 
-export function verificationCodeEmail(code: string, userName?: string, purpose = "verify your identity") {
+export function verificationCodeEmail(code: string, userName?: string, purpose = "deine Identität zu bestätigen") {
   const name = displayName(userName);
   const content = [
-    emailHeading("Your Verification Code"),
-    emailParagraph(`Hi ${name},`),
-    emailParagraph(`Use the code below to ${escapeHtml(purpose)}:`),
+    emailHeading("Dein Bestätigungscode"),
+    emailParagraph(`Hallo ${name},`),
+    emailParagraph(`Nutze den folgenden Code, um ${escapeHtml(purpose)}:`),
     emailCodeBlock(code),
-    emailNotice("security", "<strong>Never share this code.</strong> NextGrades staff will never ask for it. This code expires in <strong>10 minutes</strong>."),
+    emailNotice("security", "<strong>Teile diesen Code niemals.</strong> NextGrades-Mitarbeitende fragen nie danach. Der Code läuft in <strong>10 Minuten</strong> ab."),
     emailSignature(),
   ].join("");
   return wrapEmail(content, `Your NextGrades verification code: ${code}`);

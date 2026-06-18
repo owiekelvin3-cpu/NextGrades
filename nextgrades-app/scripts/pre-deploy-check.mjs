@@ -62,9 +62,17 @@ if (env.RESEND_SENDER_EMAIL?.includes("resend.dev")) {
 req("CONTACT_FORM_TO_EMAIL", "Contact form recipient");
 
 // Auth
+if (env.NEXT_PUBLIC_ALLOW_PUBLIC_SIGNUP === "true") {
+  warnings.push("NEXT_PUBLIC_ALLOW_PUBLIC_SIGNUP=true — set to false for invite-only registration");
+}
 if (env.REQUIRE_EMAIL_VERIFICATION === "false") {
   warnings.push("REQUIRE_EMAIL_VERIFICATION=false — verification disabled (not recommended for production)");
 }
+req("AUTH_SESSION_SECRET", "Auth session signing secret (32+ chars)");
+if (env.AUTH_SESSION_SECRET && env.AUTH_SESSION_SECRET.length < 32) {
+  errors.push("AUTH_SESSION_SECRET must be at least 32 characters");
+}
+warn("HEALTH_OPS_TOKEN", "Detailed /api/health diagnostics in production");
 if (env.ALLOW_ADMIN_BOOTSTRAP === "true") {
   warnings.push("ALLOW_ADMIN_BOOTSTRAP=true — disable after creating admin account");
 }
@@ -76,6 +84,12 @@ if (env.ADMIN_BOOTSTRAP_EMAIL) {
 warn("STRIPE_SECRET_KEY", "Stripe live payments");
 warn("STRIPE_WEBHOOK_SECRET", "Stripe webhooks");
 warn("NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY", "Stripe checkout");
+warn("STRIPE_PRICE_RESOURCE_MONTHLY", "Stripe resource monthly price");
+warn("STRIPE_PRICE_RESOURCE_YEARLY", "Stripe resource yearly price");
+warn("STRIPE_PRICE_GROUP_MONTHLY", "Stripe group monthly price");
+warn("STRIPE_PRICE_GROUP_YEARLY", "Stripe group yearly price");
+warn("STRIPE_PRICE_PREMIUM_MONTHLY", "Stripe premium monthly price");
+warn("STRIPE_PRICE_PREMIUM_YEARLY", "Stripe premium yearly price");
 
 // AI
 if (!env.GROQ_API_KEY && !env.OPENROUTER_API_KEY && !env.TOGETHER_API_KEY) {
@@ -99,8 +113,8 @@ console.log("     Redirect URLs include: https://yourdomain.de/auth/callback");
 console.log("  2. Run supabase/FIX_ADMIN_DELETE_USER.sql in Supabase SQL Editor");
 console.log("  3. Apply all migrations in supabase/migrations/");
 console.log("  4. Resend: verify sending domain, update RESEND_SENDER_EMAIL");
-console.log("  5. Stripe: live keys + webhook pointing to /api/stripe/webhook");
-console.log("  6. Zoom (optional): update ZOOM_REDIRECT_URI to production callback\n");
+console.log("  5. Stripe: live keys + webhook → https://YOUR-DOMAIN/api/stripe/webhook");
+console.log("  6. Apply migration 00032_meeting_links.sql for manual meeting links\n");
 
 if (warnings.length) {
   console.log("WARNINGS:");

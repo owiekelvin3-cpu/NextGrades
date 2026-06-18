@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { getApiAuth } from "@/lib/auth/api-auth";
+import { requireAuthenticatedApi } from "@/lib/auth/api-auth";
 import { isSupabaseServiceRoleConfigured } from "@/lib/supabase/env";
 import {
   canStudentAccessLessonMeeting,
@@ -11,10 +11,9 @@ import {
 /** Authenticated access to Zoom join (student) or start (teacher) URLs. */
 export async function GET(_request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id: lessonId } = await params;
-  const auth = await getApiAuth();
-  if (!auth.user || !auth.profile) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const gate = await requireAuthenticatedApi();
+  if (gate.error) return gate.error;
+  const auth = gate.auth!;
 
   const db = isSupabaseServiceRoleConfigured() ? createAdminClient() : auth.supabase;
   const lesson = await fetchLessonForMeetingAccess(db, lessonId);

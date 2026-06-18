@@ -2,19 +2,14 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { Mail, CheckCircle2, AlertCircle } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { useTheme } from "@/context/ThemeContext";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import { Button } from "@/components/ui/Button";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faEnvelope,
-  faCheckCircle,
-  faArrowLeft,
-  faExclamationCircle,
-} from "@fortawesome/free-solid-svg-icons";
+import { AuthPageShell } from "@/components/auth/AuthPageShell";
+import { CompactFooter } from "@/components/CompactFooter";
+import { AuthField, AuthPrimaryButton } from "@/components/auth/AuthSplitCard";
+import { authSurface } from "@/components/auth/auth-ui";
 import { cn } from "@/lib/utils";
-import { FontAwesomeSetup } from "@/components/auth/FontAwesomeSetup";
 import { AuthGuestGuard } from "@/components/auth/AuthGuestGuard";
 
 function ForgotPasswordContent() {
@@ -24,17 +19,17 @@ function ForgotPasswordContent() {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { theme } = useTheme();
+  const { t } = useTranslation();
+  const isDark = theme === "dark";
+  const s = authSurface(isDark);
 
-  const validateEmail = (email: string): boolean => {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(email);
-  };
+  const validateEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!email || !validateEmail(email)) {
-      setError("Please enter a valid email address");
+      setError(t("login.enterValidEmail"));
       return;
     }
 
@@ -46,226 +41,98 @@ function ForgotPasswordContent() {
       const res = await fetch("/api/auth/forgot-password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email: email.trim().toLowerCase() }),
       });
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.error || data.details || "Failed to send reset email");
+        throw new Error(data.error || t("forgotPasswordPage.sendFailed"));
       }
 
-      setSubmittedEmail(email);
+      setSubmittedEmail(email.trim().toLowerCase());
       setSuccess(true);
       setEmail("");
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : "Failed to send reset email");
+      setError(err instanceof Error ? err.message : t("forgotPasswordPage.sendFailed"));
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <>
-      <FontAwesomeSetup />
-    <div className={cn(
-      "min-h-screen flex flex-col",
-      theme === "dark"
-        ? "bg-gradient-to-br from-[#0D1B2A] via-[#112240] to-[#0D1B2A]"
-        : "bg-gradient-to-br from-[#FAFAFA] via-white to-[#D4AF37]/10"
-    )}>
-      <Navbar />
-
-      <main className="flex-1 flex items-center justify-center py-24 px-4">
-        <div className="w-full max-w-md">
-          {/* Main Card */}
-          <div className={`bg-gradient-to-br ${
-            theme === "dark"
-              ? "from-[#0D1B2A]/90 to-[#1a2e4a]/90"
-              : "from-white/95 to-white/90"
-          } backdrop-blur-xl rounded-2xl shadow-2xl border ${
-            theme === "dark"
-              ? "border-[#D4AF37]/20"
-              : "border-[#D4AF37]/10"
-          } overflow-hidden transition-all duration-300`}>
-            
-            <div className="p-8 sm:p-12">
-              {/* Header */}
-              <div className="text-center mb-8">
-                <div className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 ${
-                  success
-                    ? "bg-green-500/20"
-                    : "bg-[#D4AF37]/20"
-                }`}>
-                  <FontAwesomeIcon
-                    icon={success ? faCheckCircle : faEnvelope}
-                    className={`w-8 h-8 ${
-                      success
-                        ? "text-green-500"
-                        : "text-[#D4AF37]"
-                    }`}
-                  />
-                </div>
-                
-                <h1 className={`text-3xl font-bold mb-2 bg-gradient-to-r ${
-                  theme === "dark"
-                    ? "from-white to-[#D4AF37]"
-                    : "from-[#0D1B2A] to-[#D4AF37]"
-                } bg-clip-text text-transparent`}>
-                  {success
-                    ? "Check Your Email"
-                    : "Reset Password"}
-                </h1>
-                
-                <p className={`text-sm ${
-                  theme === "dark"
-                    ? "text-gray-300"
-                    : "text-gray-600"
-                }`}>
-                  {success
-                    ? "We&apos;ve sent password reset instructions to your email"
-                    : "Enter your email and we&apos;ll send you a link to reset your password"}
-                </p>
-              </div>
-
-              {/* Error Message */}
-              {error && (
-                <div className={`mb-6 p-4 rounded-xl text-sm border-l-4 flex items-start gap-3 animate-in fade-in slide-in-from-top-2 ${
-                  theme === "dark"
-                    ? "bg-red-500/10 border-red-500 text-red-300"
-                    : "bg-red-50 border-red-500 text-red-700"
-                }`}>
-                  <FontAwesomeIcon icon={faExclamationCircle} className="w-5 h-5 mt-0.5 flex-shrink-0" />
-                  <span>{error}</span>
-                </div>
+    <AuthPageShell footer={<CompactFooter />}>
+      <div className="flex flex-1 items-center justify-center px-4 py-10 sm:py-14">
+        <div
+          className={cn(
+            "w-full max-w-md rounded-[2rem] border p-8 shadow-xl sm:p-10",
+            s.card,
+            isDark ? "shadow-black/40" : "shadow-gray-300/30"
+          )}
+        >
+          <div className="mb-8 text-center">
+            <div
+              className={cn(
+                "mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl",
+                success ? "bg-green-500/15" : "bg-[#D4AF37]/15"
               )}
-
-              {/* Success State */}
+            >
               {success ? (
-                <div className="space-y-6 text-center animate-in fade-in">
-                  <div className={`p-6 rounded-xl border-2 ${
-                    theme === "dark"
-                      ? "border-green-500/30 bg-green-500/5"
-                      : "border-green-200 bg-green-50"
-                  }`}>
-                    <p className={`text-sm leading-relaxed mb-4 ${
-                      theme === "dark"
-                        ? "text-gray-300"
-                        : "text-gray-600"
-                    }`}>
-                      We&apos;ve sent a password reset link to <strong>{submittedEmail}</strong>.
-                      Click the link in the email to reset your password.
-                    </p>
-                    <p className={`text-xs ${
-                      theme === "dark"
-                        ? "text-gray-400"
-                        : "text-gray-500"
-                    }`}>
-                      The link expires in <strong>1 hour</strong> for security reasons. 
-                      Don&apos;t forget to check your spam folder!
-                    </p>
-                  </div>
-
-                  <Link href="/login" className="block">
-                    <Button variant="gold" size="lg" className="w-full !rounded-xl">
-                      Back to Login
-                    </Button>
-                  </Link>
-                </div>
+                <CheckCircle2 className="h-7 w-7 text-green-500" />
               ) : (
-                /* Reset Form */
-                <form className="space-y-5" onSubmit={handleSubmit}>
-                  <div className="space-y-2 animate-in fade-in slide-in-from-left-2">
-                    <label className={`text-sm font-semibold ${
-                      theme === "dark"
-                        ? "text-gray-300"
-                        : "text-gray-700"
-                    }`}>
-                      Email Address
-                    </label>
-                    <div className="relative">
-                      <FontAwesomeIcon
-                        icon={faEnvelope}
-                        className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
-                      />
-                      <input
-                        type="email"
-                        placeholder="you@example.com"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className={`w-full pl-12 pr-4 py-3 rounded-xl border-2 transition-all duration-200 ${
-                          theme === "dark"
-                            ? "border-white/10 bg-[#112240]/50"
-                            : "border-gray-200 bg-white"
-                        } ${
-                          theme === "dark"
-                            ? "text-white placeholder:text-gray-500"
-                            : "text-[#0D1B2A] placeholder:text-gray-400"
-                        } focus:outline-none focus:border-[#D4AF37] focus:ring-2 focus:ring-[#D4AF37]/20 focus:bg-white dark:focus:bg-[#1a2e4a]`}
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <Button
-                    variant="gold"
-                    size="xl"
-                    className="w-full !rounded-xl mt-7 transform hover:scale-105 transition-all duration-200 flex items-center justify-center gap-2"
-                    disabled={loading}
-                  >
-                    {loading ? (
-                      <>
-                        <div className="w-5 h-5 border-2 border-[#0D1B2A] border-t-transparent rounded-full animate-spin" />
-                        Sending...
-                      </>
-                    ) : (
-                      "Send Reset Link"
-                    )}
-                  </Button>
-                </form>
+                <Mail className="h-7 w-7 text-[#D4AF37]" />
               )}
-
-              {/* Footer Link */}
-              <div className={`mt-8 text-center pt-6 border-t ${
-                theme === "dark"
-                  ? "border-white/10"
-                  : "border-gray-200"
-              }`}>
-                <Link
-                  href="/login"
-                  className={`inline-flex items-center gap-2 text-sm font-semibold ${
-                    theme === "dark"
-                      ? "text-gray-400 hover:text-[#D4AF37]"
-                      : "text-gray-500 hover:text-[#D4AF37]"
-                  } transition-colors duration-200`}
-                >
-                  <FontAwesomeIcon icon={faArrowLeft} className="w-4 h-4" />
-                  Back to Login
-                </Link>
-              </div>
             </div>
-          </div>
-
-          {/* Security Info */}
-          <div className={`mt-8 p-4 rounded-xl border ${
-            theme === "dark"
-              ? "border-white/10 bg-white/5"
-              : "border-gray-200 bg-gray-50"
-          }`}>
-            <p className={`text-xs text-center ${
-              theme === "dark"
-                ? "text-gray-400"
-                : "text-gray-600"
-            }`}>
-              🔒 Your password reset link is secure and valid for 1 hour. 
-              If you didn&apos;t request this, you can safely ignore this email.
+            <h1 className={cn("text-2xl font-bold sm:text-3xl", s.heading)}>
+              {success ? t("forgotPasswordPage.successTitle") : t("forgotPasswordPage.title")}
+            </h1>
+            <p className={cn("mt-2 text-sm leading-relaxed", s.body)}>
+              {success ? t("forgotPasswordPage.successSubtitle") : t("forgotPasswordPage.subtitle")}
             </p>
           </div>
-        </div>
-      </main>
 
-      <Footer />
-    </div>
-    </>
+          {error && (
+            <div className={cn("mb-6 flex items-start gap-2 rounded-2xl border px-4 py-3 text-sm", s.errorBox)}>
+              <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
+              <span>{error}</span>
+            </div>
+          )}
+
+          {success ? (
+            <div className="space-y-6">
+              <p className={cn("rounded-2xl border px-4 py-4 text-sm leading-relaxed", s.body)}>
+                {t("forgotPasswordPage.successBody", { email: submittedEmail })}
+              </p>
+              <Link
+                href="/login"
+                className="flex w-full items-center justify-center rounded-2xl bg-[#D4AF37] px-4 py-3.5 text-sm font-semibold text-[#0D1B2A] transition hover:bg-[#e5c158]"
+              >
+                {t("forgotPasswordPage.backToLogin")}
+              </Link>
+            </div>
+          ) : (
+            <form className="space-y-5" onSubmit={handleSubmit}>
+              <AuthField
+                id="forgot-email"
+                label={t("login.email")}
+                type="email"
+                value={email}
+                onChange={setEmail}
+                placeholder={t("login.emailPlaceholder")}
+              />
+              <AuthPrimaryButton loading={loading} variant="gold">
+                {t("forgotPasswordPage.submit")}
+              </AuthPrimaryButton>
+            </form>
+          )}
+
+          <p className={cn("mt-8 text-center text-sm", s.body)}>
+            <Link href="/login" className={s.link}>
+              {t("forgotPasswordPage.backToLogin")}
+            </Link>
+          </p>
+        </div>
+      </div>
+    </AuthPageShell>
   );
 }
 

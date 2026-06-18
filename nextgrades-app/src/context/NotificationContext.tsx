@@ -215,7 +215,7 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
       window.addEventListener("click", unlock, { once: true });
     };
 
-    const cancelIdle = runWhenIdle(start, 1500);
+    const cancelIdle = runWhenIdle(start, 2500);
 
     return () => {
       cancelIdle();
@@ -225,7 +225,12 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
     };
   }, [refresh, fetchUnreadCount]);
 
+  const categoryFilterBootstrapped = useRef(false);
   useEffect(() => {
+    if (!categoryFilterBootstrapped.current) {
+      categoryFilterBootstrapped.current = true;
+      return;
+    }
     offsetRef.current = 0;
     void refresh();
   }, [categoryFilter, refresh]);

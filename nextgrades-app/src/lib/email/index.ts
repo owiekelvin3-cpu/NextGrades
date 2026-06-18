@@ -70,10 +70,12 @@ export async function sendVerificationCodeEmail(email: string, code: string, use
 }
 
 export async function sendLoginVerificationCodeEmail(email: string, code: string, userName?: string) {
+  const name = userName?.trim() || "there";
   return sendEmail({
     to: email,
     subject: `${code} is your NextGrades login code`,
     html: loginVerificationCodeEmail(code, userName),
+    text: `Hi ${name},\n\nYour NextGrades login code is: ${code}\n\nThis code expires in 10 minutes. If you did not try to sign in, you can ignore this email.\n\nNextGrades`,
     tags: [{ name: "category", value: "2fa" }],
   });
 }

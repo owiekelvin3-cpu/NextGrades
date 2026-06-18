@@ -4,6 +4,8 @@ import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { supabase } from "@/lib/supabase/client";
 import { fetchProfileRole, resolvePostAuthRedirect, sanitizeRedirect } from "@/lib/auth/redirect";
+import { isAuthUserEmailVerified, isClientEmailVerificationRequired, isClientLoginOtpRequired } from "@/lib/auth/config";
+import { buildVerifyUrl, savePendingVerification } from "@/lib/auth/pending-verification-storage";
 
 function AuthGuestGuardInner({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -15,16 +17,45 @@ function AuthGuestGuardInner({ children }: { children: React.ReactNode }) {
 
     const redirectIfSignedIn = async () => {
       const {
-        data: { session },
-      } = await supabase.auth.getSession();
+        data: { user },
+      } = await supabase.auth.getUser();
 
-      if (!session?.user) {
+      if (!user) {
         if (!cancelled) setAllowed(true);
         return;
       }
 
       const redirectTo = sanitizeRedirect(searchParams.get("redirect"));
-      const role = await fetchProfileRole(session.user.id);
+
+      if (isClientEmailVerificationRequired() && !isAuthUserEmailVerified(user)) {
+        savePendingVerification({
+          step: "signup",
+          email: user.email || "",
+          redirect: redirectTo,
+        });
+        router.replace(buildVerifyUrl("signup", user.email || "", redirectTo));
+        return;
+      }
+
+      if (isClientLoginOtpRequired()) {
+        try {
+          const res = await fetch("/api/auth/login/status");
+          const data = (await res.json()) as { mfaRequired?: boolean };
+          if (data.mfaRequired) {
+            savePendingVerification({
+              step: "login",
+              email: user.email || "",
+              redirect: redirectTo,
+            });
+            router.replace(buildVerifyUrl("login", user.email || "", redirectTo));
+            return;
+          }
+        } catch {
+          /* continue */
+        }
+      }
+
+      const role = await fetchProfileRole(user.id);
       const target = role ? resolvePostAuthRedirect(role, redirectTo) : "/choose-role";
       router.replace(target);
       router.refresh();
@@ -57,7 +88,7 @@ function AuthGuestGuardInner({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
-/** Blocks auth pages for signed-in users — redirects to their dashboard. */
+/** Blocks auth pages for fully verified signed-in users. */
 export function AuthGuestGuard({ children }: { children: React.ReactNode }) {
   return (
     <Suspense

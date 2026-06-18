@@ -8,7 +8,7 @@ import { enforceRateLimit } from "@/lib/security/rate-limit";
 
 /** Resend the 6-digit signup verification code via Resend. */
 export async function POST(request: Request) {
-  const limited = enforceRateLimit(request, { bucket: "auth:resend-verification", limit: 5, windowSec: 3600 });
+  const limited = await enforceRateLimit(request, { bucket: "auth:resend-verification", limit: 5, windowSec: 3600 });
   if (limited) return limited;
 
   if (!isEmailVerificationRequired()) {

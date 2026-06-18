@@ -67,6 +67,38 @@ const CONFIGS: Record<string, Config> = {
     ],
     empty: { title_en: "New resource", resource_type: "article", is_published: true, sort_order: 0 },
   },
+  testimonials: {
+    title: "Testimonials",
+    endpoint: "/api/cms/testimonials",
+    fields: [
+      { key: "name", label: "Name" },
+      { key: "role", label: "Role / school" },
+      { key: "content", label: "Quote", textarea: true },
+      { key: "rating", label: "Rating (1-5)" },
+    ],
+    empty: { name: "", role: "", content: "", rating: 5, is_active: true, sort_order: 0 },
+  },
+  team: {
+    title: "Team members",
+    endpoint: "/api/cms/team",
+    fields: [
+      { key: "name", label: "Name" },
+      { key: "role", label: "Role" },
+      { key: "bio", label: "Bio", textarea: true },
+      { key: "photo_url", label: "Photo URL" },
+    ],
+    empty: { name: "", role: "", bio: "", photo_url: "", is_active: true, sort_order: 0 },
+  },
+  faqs: {
+    title: "FAQs",
+    endpoint: "/api/cms/faqs",
+    fields: [
+      { key: "question", label: "Question" },
+      { key: "answer", label: "Answer", textarea: true },
+      { key: "category", label: "Category" },
+    ],
+    empty: { question: "", answer: "", category: "general", is_active: true, sort_order: 0 },
+  },
 };
 
 export function CmsStructuredDataPage({ kind }: { kind: keyof typeof CONFIGS }) {

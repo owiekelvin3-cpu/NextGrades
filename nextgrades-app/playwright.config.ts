@@ -18,7 +18,7 @@ export default defineConfig({
   webServer: process.env.PLAYWRIGHT_SKIP_WEBSERVER
     ? undefined
     : {
-        command: "npm run dev",
+        command: process.env.PLAYWRIGHT_PRODUCTION === "1" ? "npm run start" : "npm run dev",
         url: baseURL,
         reuseExistingServer: true,
         timeout: 120_000,

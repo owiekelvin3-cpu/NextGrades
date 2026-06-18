@@ -55,36 +55,37 @@ export default function AuthCallbackPage() {
         const user = session.user;
 
         if (user.email_confirmed_at) {
-          await fetch("/api/auth/sync-email-verified", { method: "POST" });
+          void fetch("/api/auth/sync-email-verified", { method: "POST" });
           void fetch("/api/auth/welcome", { method: "POST" });
+          void fetch("/api/auth/signup-session-ready", { method: "POST" });
         }
 
-        await syncPreferencesAfterAuth((lang) => changeAppLanguage(lang));
-
-        const dashboardRole = await fetchProfileRole(user.id);
+        const dashboardRole = await fetchProfileRole(user.id, user.user_metadata);
         if (!dashboardRole) {
           router.replace("/choose-role");
-          router.refresh();
           return;
         }
 
         const portalOAuth = params.get("portal") === "1" || sessionStorage.getItem("nextgrades_admin_oauth") === "1";
         sessionStorage.removeItem("nextgrades_admin_oauth");
 
-        if (portalOAuth) {
-          if (dashboardRole !== "admin") {
-            await supabase.auth.signOut();
-            router.replace("/portal/login?error=access_denied");
-            router.refresh();
-            return;
-          }
-          router.replace(ADMIN_PORTAL_HOME);
-          router.refresh();
+        const target = portalOAuth
+          ? dashboardRole === "admin"
+            ? ADMIN_PORTAL_HOME
+            : null
+          : resolvePostAuthRedirect(dashboardRole, null);
+
+        if (portalOAuth && dashboardRole !== "admin") {
+          await supabase.auth.signOut();
+          router.replace("/portal/login?error=access_denied");
           return;
         }
 
-        router.replace(resolvePostAuthRedirect(dashboardRole, null));
-        router.refresh();
+        if (target) {
+          router.replace(target);
+        }
+
+        void syncPreferencesAfterAuth((lang) => changeAppLanguage(lang));
       } catch (err) {
         setError(err instanceof Error ? err.message : "Authentication failed");
         setIsLoading(false);
@@ -109,10 +110,10 @@ export default function AuthCallbackPage() {
                 </div>
                 <div className="mx-auto mb-6 h-16 w-16 animate-spin rounded-full border-4 border-[#D4AF37] border-t-transparent" />
                 <h2 className={`mb-2 text-xl font-bold ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
-                  Verifying your account…
+                  Konto wird bestätigt…
                 </h2>
                 <p className={theme === "dark" ? "text-gray-400" : "text-gray-600"}>
-                  Please wait while we sign you in
+                  Gleich geht es weiter zu deinem Dashboard
                 </p>
               </>
             ) : error ? (
@@ -123,14 +124,14 @@ export default function AuthCallbackPage() {
                   <span className="text-2xl text-red-500">✕</span>
                 </div>
                 <h2 className={`mb-2 text-xl font-bold ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
-                  Verification failed
+                  Bestätigung fehlgeschlagen
                 </h2>
                 <p className={`mb-6 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>{error}</p>
                 <button
                   onClick={() => router.push("/login")}
                   className="w-full rounded-2xl bg-[#D4AF37] px-6 py-3 font-bold text-[#0D1B2A] transition-all hover:opacity-90"
                 >
-                  Go to Login
+                  Zum Login
                 </button>
               </>
             ) : null}

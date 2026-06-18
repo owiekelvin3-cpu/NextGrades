@@ -9,27 +9,33 @@ import { authSurface } from "@/components/auth/auth-ui";
 type AuthSplitCardProps = {
   children: React.ReactNode;
   heroImage: string;
-  heroCaption: string;
+  heroCaption?: string;
+  heroPanel?: React.ReactNode;
   className?: string;
 };
 
 /** Havenix-style split auth card — form left, curved hero right (desktop). */
-export function AuthSplitCard({ children, heroImage, heroCaption, className }: AuthSplitCardProps) {
+export function AuthSplitCard({ children, heroImage, heroCaption, heroPanel, className }: AuthSplitCardProps) {
   const { theme } = useTheme();
   const isDark = theme === "dark";
   const s = authSurface(isDark);
 
   return (
-    <div className={cn("px-4 py-8 sm:px-6 sm:py-10 lg:px-8", s.pageBg, className)}>
-      <div className="mx-auto flex min-h-[560px] max-w-[1120px] items-center">
+    <div className={cn("px-4 py-6 sm:px-6 sm:py-10 lg:px-8", s.pageBg, className)}>
+      {heroPanel && (
+        <div className="mx-auto mb-6 max-w-[1120px] overflow-hidden rounded-3xl bg-[#0D1B2A] p-6 shadow-xl lg:hidden">
+          {heroPanel}
+        </div>
+      )}
+      <div className="mx-auto flex min-h-[480px] max-w-[1120px] items-center">
         <div
           className={cn(
-            "grid w-full overflow-hidden rounded-[2.5rem] border shadow-[0_24px_80px_rgba(13,27,42,0.08)] lg:min-h-[640px] lg:grid-cols-[minmax(0,1fr)_minmax(0,0.95fr)]",
+            "grid w-full overflow-hidden rounded-[2rem] border shadow-[0_24px_80px_rgba(13,27,42,0.08)] sm:rounded-[2.5rem] lg:min-h-[640px] lg:grid-cols-[minmax(0,1fr)_minmax(0,0.95fr)]",
             s.card,
             isDark && "shadow-black/30"
           )}
         >
-          <div className="flex flex-col justify-center px-6 py-10 sm:px-10 sm:py-12 lg:px-12 lg:py-14">
+          <div className="flex flex-col justify-center px-5 py-8 sm:px-10 sm:py-12 lg:px-12 lg:py-14">
             <div className="mx-auto w-full max-w-[400px]">{children}</div>
           </div>
 
@@ -48,9 +54,13 @@ export function AuthSplitCard({ children, heroImage, heroCaption, className }: A
                   "linear-gradient(to right, #0D1B2A 0%, #0D1B2A99 25%, transparent 55%), linear-gradient(to bottom, transparent 0%, #0D1B2Acc 70%, #0D1B2A 100%)",
               }}
             />
-            <p className="absolute right-8 top-8 z-10 max-w-[220px] text-right text-lg font-semibold leading-snug text-white drop-shadow-md">
-              {heroCaption}
-            </p>
+            {heroPanel ? (
+              <div className="absolute inset-0 z-10 flex flex-col justify-end p-10">{heroPanel}</div>
+            ) : heroCaption ? (
+              <p className="absolute right-8 top-8 z-10 max-w-[220px] text-right text-lg font-semibold leading-snug text-white drop-shadow-md">
+                {heroCaption}
+              </p>
+            ) : null}
           </div>
         </div>
       </div>

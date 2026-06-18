@@ -1,6 +1,7 @@
 import { createAdminClient } from "@/lib/supabase/admin";
 import { isSupabaseServiceRoleConfigured } from "@/lib/supabase/env";
 import { getAppUrl } from "@/lib/email/config";
+import { findAuthUserByEmail } from "@/lib/auth/lookup-email";
 
 export type AuthLinkType = "signup" | "recovery" | "magiclink" | "invite";
 
@@ -20,13 +21,7 @@ export function getAuthConfigError(): string | null {
 }
 
 export async function findUserByEmail(email: string) {
-  const admin = createAdminClient();
-  const normalized = email.trim().toLowerCase();
-
-  const { data, error } = await admin.auth.admin.listUsers({ page: 1, perPage: 1000 });
-  if (error) throw new Error(error.message);
-
-  return data.users.find((u) => u.email?.toLowerCase() === normalized) ?? null;
+  return findAuthUserByEmail(email);
 }
 
 export async function generateAuthLink(params: {

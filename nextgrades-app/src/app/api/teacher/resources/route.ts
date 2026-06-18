@@ -96,7 +96,9 @@ export async function POST(request: Request) {
     }
 
     const ct = content_type as ContentType;
-    const isPublished = status === "published";
+    const wantsPublish = status === "published";
+    const isAdmin = auth.profile?.role === "admin";
+    const isPublished = wantsPublish && isAdmin;
 
     const { data: resource, error: resourceError } = await supabase
       .from("materials")
@@ -112,7 +114,7 @@ export async function POST(request: Request) {
         file_size,
         category_id,
         tags,
-        status,
+        status: isPublished ? "published" : wantsPublish && !isAdmin ? "draft" : status,
         access_type,
         price: access_type === "premium" ? price : 0,
         is_premium: access_type === "premium",
@@ -121,7 +123,7 @@ export async function POST(request: Request) {
         estimated_minutes,
         language,
         created_by: auth.user.id,
-        moderation_status: isPublished ? "approved" : "pending",
+        moderation_status: isPublished ? "approved" : wantsPublish ? "pending" : "pending",
         publish_date: isPublished ? new Date().toISOString() : null,
       })
       .select()

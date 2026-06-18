@@ -12,6 +12,9 @@ import {
   Palette,
   History,
   LayoutGrid,
+  MessageSquareQuote,
+  Users,
+  HelpCircle,
   type LucideIcon,
 } from "lucide-react";
 import { ADMIN_PORTAL_PREFIX } from "@/lib/admin/portal-paths";
@@ -38,6 +41,9 @@ export const CMS_SIDEBAR_PAGES: CmsNavItem[] = [
 
 export const CMS_SIDEBAR_TOOLS: CmsNavItem[] = [
   { id: "programs-data", label: "Program cards", href: `${BASE}/programs`, icon: LayoutGrid, description: "Add, edit, reorder programs" },
+  { id: "testimonials-data", label: "Testimonials", href: `${BASE}/testimonials`, icon: MessageSquareQuote },
+  { id: "team-data", label: "Team members", href: `${BASE}/team`, icon: Users },
+  { id: "faqs-data", label: "FAQs", href: `${BASE}/faqs`, icon: HelpCircle },
   { id: "subjects-data", label: "Subject cards", href: `${BASE}/subjects`, icon: BookOpen },
   { id: "pricing-data", label: "Pricing plans", href: `${BASE}/pricing`, icon: CreditCard },
   { id: "resources-data", label: "Resource library", href: `${BASE}/resources`, icon: FolderOpen },

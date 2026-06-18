@@ -9,7 +9,8 @@
     "programs": "Programme",
     "subjects": "Fächer",
     "pricing": "Preise",
-    "resources": "Ressourcen",
+    "resources": "Lernbibliothek",
+    "resourcesShort": "Bibliothek",
     "contact": "Kontakt",
     "careers": "Karriere",
     "help": "Hilfe",
@@ -21,7 +22,10 @@
   },
   "navbar": {
     "login": "Anmelden",
-    "freeConsultation": "Kostenloses Erstgespräch"
+    "signup": "Konto erstellen",
+    "signupShort": "Registrieren",
+    "freeConsultation": "Kostenloses Erstgespräch",
+    "consultationShort": "Beratung"
   },
   "nav": {
     "home": "Startseite"
@@ -38,20 +42,23 @@
     "programs": "Programme",
     "program1": "1:1 Nachhilfe",
     "program2": "Kleine Lerngruppen",
-    "program3": "Mathe Excellence Programm",
-    "program4": "Prüfungsvorbereitung",
-    "resources": "Ressourcen",
-    "resource1": "Lernmaterialien",
+    "program3": "Mathe Matura Komplettpaket",
+    "program4": "Lernbibliothek",
+    "resources": "Lernbibliothek",
+    "resource1": "Alle Materialien",
+    "tagline": "Die Zukunft des Lernens.",
+    "description": "Premium Online-Nachhilfe und Lernmaterialien für SchülerInnen in Österreich.",
     "resource2": "Übungsblätter",
     "resource3": "Erklärvideos",
     "resource4": "Prüfungsvorbereitung",
     "company": "Unternehmen",
+    "explore": "Entdecken",
     "legal": "Rechtliches",
     "terms": "AGB",
     "privacy": "Datenschutz",
     "cookies": "Cookies",
     "imprint": "Impressum",
-    "madeInGermany": "Mit ♥ in Deutschland",
+    "madeInGermany": "Mit ♥ in Österreich",
     "countryAustria": "Österreich",
     "location": "Mit ♥ in {{country}}",
     "copyright": "© 2026 NextGrades. Alle Rechte vorbehalten."
@@ -59,12 +66,12 @@
   "home": {
     "heroTitle1": "Nachhilfe neu gedacht.",
     "heroTitle2": "Dein Erfolg beginnt hier.",
-    "heroSubtitle": "Individuelle 1:1 Betreuung, strukturierte Lernsysteme und moderne Digitaltools für nachhaltige Ergebnisse.",
+    "heroSubtitle": "Premium Online-Nachhilfe, kleine Lerngruppen und strukturierte Lernmaterialien - alles an einem Ort.",
     "getStarted": "Loslegen",
     "learnMore": "Mehr erfahren",
     "featuresStrip": {
       "feature1": "Strukturierte Lernsysteme",
-      "feature2": "Erfahrene Lehrer:innen",
+      "feature2": "Erfahrene LehrerInnen",
       "feature3": "Flexible Termine",
       "feature4": "Erfolge messbar"
     },
@@ -73,59 +80,132 @@
       "subtitle": "Für jedes Lernziel die passende Unterstützung"
     },
     "statsBar": {
-      "stat1": "200+",
-      "stat2": "glückliche Schüler:innen",
+      "stat1": "100+",
+      "stat2": "SchülerInnen",
       "stat3": "25+",
-      "stat4": "erfahrene Lehrer:innen",
-      "stat5": "4.9/5",
-      "stat6": "Bewertungen",
-      "stat7": "100%",
-      "stat8": "online & flexibel"
+      "stat4": "LehrerInnen",
+      "stat5": "500+",
+      "stat6": "Lernmaterialien",
+      "stat7": "4,9/5",
+      "stat8": "Bewertung"
     },
     "platformPreview": {
       "title": "ALLES AN EINEM ORT",
       "subtitle": "Deine komplette Lernplattform"
     },
     "testimonials": {
-      "title": "Das sagen Schüler:innen und Eltern",
+      "title": "Das sagen SchülerInnen und Eltern",
       "items": [
         {
-          "quote": "Dank NextGrades habe ich in Mathe von Note 3 auf 1 verbessert! Die Erklärungen sind super und man versteht sofort!",
-          "name": "Lena, Klasse 10"
+          "quote": "Dank NextGrades habe ich in Mathe von Note 3 auf 1 verbessert! Die Erklärungen sind klar und ich verstehe endlich die Zusammenhänge.",
+          "name": "Lena M.",
+          "role": "Schülerin",
+          "school": "BRG Wien"
         },
         {
-          "quote": "Die kleine Lerngruppe hat meinem Sohn wirklich geholfen! Er ist motivierter und versteht Mathe endlich.",
-          "name": "Peter M., Vater"
+          "quote": "Die kleine Lerngruppe hat mir wirklich geholfen. Endlich verstehe ich Mathe und gehe selbstbewusster in Prüfungen.",
+          "name": "Lukas",
+          "role": "3. Klasse HTL"
         },
         {
-          "quote": "Die Plattform ist super intuitiv und die Materialien perfekt für die Abiturvorbereitung!",
-          "name": "Julia, Klasse 12"
+          "quote": "Die Plattform ist intuitiv und die Materialien perfekt für die Matura-Vorbereitung. Absolute Empfehlung!",
+          "name": "Julia",
+          "role": "4. Klasse Gymnasium"
         }
       ]
     },
+    "whySection": {
+      "eyebrow": "WARUM NEXTGRADES",
+      "title": "Mehr als Nachhilfe — ein ganzheitliches Lernsystem",
+      "subtitle": "Wir verbinden persönliche Betreuung, moderne Technologie und strukturierte Materialien für messbare Ergebnisse.",
+      "items": [
+        {
+          "title": "Persönliche Betreuung",
+          "desc": "Jede Schülerin und jeder Schüler erhält individuelle Aufmerksamkeit — kein Einheitsunterricht."
+        },
+        {
+          "title": "Erfahrene LehrerInnen",
+          "desc": "Sorgfältig ausgewählte PädagogInnen mit nachweislicher Expertise und Leidenschaft für Bildung."
+        },
+        {
+          "title": "Moderne Lernplattform",
+          "desc": "Videos, Übungen und Fortschrittsverfolgung — alles an einem Ort, jederzeit verfügbar."
+        }
+      ]
+    },
+    "howItWorks": {
+      "eyebrow": "SO FUNKTIONIERT'S",
+      "title": "In vier Schritten zum Lernerfolg",
+      "subtitle": "Vom ersten Gespräch bis zur bestandenen Prüfung — klar strukturiert und transparent.",
+      "steps": [
+        {
+          "title": "Kostenloses Erstgespräch",
+          "desc": "Wir lernen dich kennen, analysieren deine Ziele und finden die passende Lösung."
+        },
+        {
+          "title": "Programm wählen",
+          "desc": "1:1 Nachhilfe, Lerngruppe oder Lernbibliothek — individuell auf dich abgestimmt."
+        },
+        {
+          "title": "Strukturiert lernen",
+          "desc": "Mit klarem Lernplan, Premium-Materialien und regelmäßigem Feedback."
+        },
+        {
+          "title": "Ergebnisse feiern",
+          "desc": "Bessere Noten, mehr Selbstvertrauen und nachhaltige Lernerfolge."
+        }
+      ]
+    },
+    "faq": {
+      "eyebrow": "HÄUFIGE FRAGEN",
+      "title": "Alles, was du wissen musst",
+      "items": [
+        {
+          "question": "Für wen ist NextGrades geeignet?",
+          "answer": "Für SchülerInnen aller Klassenstufen in Österreich — von der Volksschule bis zur Matura. Wir unterstützen bei allen wichtigen Schulfächern."
+        },
+        {
+          "question": "Wie läuft das kostenlose Erstgespräch ab?",
+          "answer": "In einem unverbindlichen Online-Gespräch besprechen wir deine Ziele, analysieren den Lernstand und empfehlen das passende Programm — völlig kostenlos."
+        },
+        {
+          "question": "Findet die Nachhilfe online statt?",
+          "answer": "Ja, alle Sessions finden bequem online statt. Du brauchst nur einen Laptop oder Tablet und eine stabile Internetverbindung."
+        },
+        {
+          "question": "Was kostet NextGrades?",
+          "answer": "Die Preise variieren je nach Programm. Im Erstgespräch erhältst du ein transparentes Angebot — ohne versteckte Kosten."
+        },
+        {
+          "question": "Kann ich die Lernbibliothek auch ohne Nachhilfe nutzen?",
+          "answer": "Ja, die Lernbibliothek steht als eigenständiges Programm zur Verfügung — mit hunderten kostenlosen und Premium-Materialien."
+        }
+      ]
+    },
+    "viewAllPrograms": "Alle Programme ansehen",
     "cta": {
       "title": "Bereit für den nächsten Schritt?",
-      "subtitle": "Buche jetzt dein kostenloses Erstgespräch und finde heraus, welches Programm zu dir passt.",
+      "subtitle": "Buche ein kostenloses Erstgespräch und finde gemeinsam mit uns die passende Lernlösung.",
       "button": "Kostenloses Erstgespräch buchen"
     },
     "heroEyebrow": "DIE ZUKUNFT DES LERNENS BEGINNT HIER.",
     "heroTitle": "Smarter lernen.",
     "heroTitleHighlight": "Bessere Ergebnisse.",
-    "freeConsultation": "Kostenloses Erstgespräch",
-    "explorePrograms": "Programme entdecken →",
+    "freeConsultation": "Kostenloses Erstgespräch buchen",
+    "explorePrograms": "Programme entdecken",
     "rating": "4,9/5",
-    "reviewsFrom": "aus 200+ Bewertungen",
+    "reviewsFrom": "aus 100+ Bewertungen",
     "floatingCardTitle": "Individuelle Betreuung.",
     "floatingCardDesc": "Echte Ergebnisse.",
     "mostPopular": "Beliebtestes Programm",
     "features": [
       {
-        "title": "Premium-Lehrer:innen",
+        "title": "Premium-LehrerInnen",
         "desc": "Sorgfältig ausgewählt, erfahren und erfolgsorientiert."
       },
       {
         "title": "Kleine Lerngruppen",
-        "desc": "Max. 3–5 Schüler:innen pro Gruppe für intensives Lernen."
+        "desc": "Max. 3-5 SchülerInnen pro Gruppe für intensives Lernen."
       },
       {
         "title": "Moderne Lernplattform",
@@ -137,59 +217,74 @@
       },
       {
         "title": "Flexibel & online",
-        "desc": "Lerne wo und wann du willst — nach deinem Zeitplan."
+        "desc": "Lerne, wo und wann du möchtest - nach deinem Zeitplan."
       }
     ],
     "programsSection": {
+      "eyebrow": "UNSERE PROGRAMME",
       "title": "Unsere Programme",
       "subtitle": "Wähle das Programm, das am besten zu dir passt.",
       "items": [
         {
           "title": "1:1 Premium-Nachhilfe",
+          "price": "ab 39 € / Stunde",
           "features": [
             "Individuell, persönlich, effizient.",
             "Persönliche 1:1 Betreuung",
+            "Gezielte Prüfungsvorbereitung",
             "Flexible Termine",
             "Maßgeschneiderter Lernplan"
           ]
         },
         {
           "title": "Kleine Lerngruppen",
+          "price": "ab 29 € / SchülerIn",
           "features": [
-            "Gemeinsam mit Freund:innen lernen.",
-            "Max. 3–5 Schüler:innen",
+            "Gemeinsam mit FreundInnen lernen.",
+            "Max. 3-5 SchülerInnen",
+            "Strukturierte Live-Sessions",
             "Interaktiver Austausch",
             "Motivation durch die Gruppe"
           ]
         },
         {
-          "title": "Mathe Excellence Programm",
+          "title": "Mathe Matura Komplettpaket",
+          "price": "149 € einmalig",
           "features": [
-            "Unser Flaggschiff für Mathematik.",
-            "Wöchentliche Live-Sessions",
-            "Premium-Lernmaterialien",
-            "Abiturvorbereitung",
-            "Dozent:innen aus der Uni & Sessions"
+            "Matura-Prüfungsvorbereitung",
+            "Gezielte Prüfungsvorbereitung",
+            "Strukturierte Live-Sessions",
+            "Schritt-für-Schritt-Erklärungen"
+          ]
+        },
+        {
+          "title": "Lernbibliothek",
+          "price": "ab 49 € / Semester",
+          "features": [
+            "500+ Lernmaterialien",
+            "Lehrplankonform & strukturiert",
+            "Übungsblätter, Videos & Zusammenfassungen",
+            "Sofort verfügbar"
           ]
         }
       ]
     },
     "stats": [
       {
-        "number": "200+",
-        "label": "glückliche Schüler:innen"
+        "number": "100+",
+        "label": "SchülerInnen"
       },
       {
         "number": "25+",
-        "label": "Top-Lehrer:innen"
+        "label": "LehrerInnen"
       },
       {
-        "number": "1.000+",
+        "number": "500+",
         "label": "Lernmaterialien"
       },
       {
         "number": "4,9/5",
-        "label": "Bewertung von Eltern & Schüler:innen"
+        "label": "Bewertung"
       }
     ],
     "platform": {
@@ -205,28 +300,28 @@
       "availabilityLabel": "Support verfügbar",
       "features": [
         {
-          "title": "Fortschritt verfolgen",
-          "desc": "Verfolge deinen Fortschritt, schließe Lektionen ab und bleib motiviert!"
+          "title": "Fortschrittsübersicht",
+          "desc": "Behalte deine Entwicklung im Blick."
         },
         {
-          "title": "24/7 Support",
-          "desc": "Unterstützung, wann immer du sie brauchst."
+          "title": "Lernbibliothek",
+          "desc": "Zugriff auf alle Materialien & Videos."
         },
         {
-          "title": "1.000+ Materialien",
-          "desc": "Premium-Arbeitsblätter, Videos und Guides an einem Ort."
+          "title": "Lernpläne",
+          "desc": "Individuelle Pläne für deine Ziele."
         },
         {
-          "title": "Strukturiertes Lernen",
-          "desc": "Klare Lernpfade mit Fortschrittsverfolgung und Prüfungsvorbereitung."
+          "title": "Aufgaben & Übungen",
+          "desc": "Interaktive Übungen mit Lösungen."
         }
       ],
       "eyebrow": "Lernplattform"
     }
   },
   "contact": {
-    "title": "Nimm Kontakt mit uns auf.",
-    "subtitle": "Oder schreib uns direkt an",
+    "title": "Nicht sicher, welches Programm passt?",
+    "subtitle": "Wir beraten dich kostenlos und finden gemeinsam die beste Lösung.",
     "firstName": "Vorname",
     "lastName": "Nachname",
     "emailAddress": "E-Mail-Adresse",
@@ -245,9 +340,15 @@
     "officeLabel": "Standort",
     "officeValue": "Österreich",
     "hoursLabel": "Antwortzeit",
-    "hoursValue": "Innerhalb von 24 Stunden",
-    "sideEyebrow": "Premium-Betreuung",
-    "sideTitle": "Wir helfen dir auf deinem Lernweg.",
+    "hoursValue": "Meist innerhalb weniger Stunden",
+    "sideEyebrow": "Warum Eltern uns wählen",
+    "sideTitle": "Warum Eltern uns wählen",
+    "sidePoint1": "Persönliche Betreuung",
+    "sidePoint2": "Erfahrene Lehrkräfte",
+    "sidePoint3": "Klare Lernstruktur",
+    "sidePoint4": "Messbare Fortschritte",
+    "lastNameOptional": "Nachname (optional)",
+    "phoneOptional": "Telefonnummer (optional)",
     "formTitle": "Schreib uns eine Nachricht",
     "formDesc": "Fülle das Formular aus — unser Team meldet sich in Kürze bei dir.",
     "formSubject": "Kontaktformular",
@@ -255,7 +356,7 @@
     "ctaEyebrow": "Tarife entdecken",
     "ctaTitle": "Suchst du den passenden Lernplan?",
     "ctaDesc": "Vergleiche Mitgliedschaften und Nachhilfe-Pakete auf unserer Preisseite.",
-    "ctaConsultation": "Kostenloses Erstgespräch",
+    "ctaConsultation": "Preise",
     "validationRequired": "Bitte fülle alle Pflichtfelder aus.",
     "validationEmail": "Bitte gib eine gültige E-Mail-Adresse ein."
   },
@@ -266,11 +367,11 @@
     "signupDescription": "Registriere dich und erhalte Premium Nachhilfe",
     "iAmLoggingInAs": "Ich melde mich an als...",
     "iAmA": "Ich bin ein/e...",
-    "student": "Schüler:in",
-    "studentLogin": "Schüler:in Login",
+    "student": "SchülerIn",
+    "studentLogin": "SchülerIn Login",
     "iWantToLearn": "Ich möchte lernen",
-    "teacher": "Lehrer:in",
-    "teacherLogin": "Lehrer:in Login",
+    "teacher": "LehrerIn",
+    "teacherLogin": "LehrerIn Login",
     "iWantToTeach": "Ich möchte unterrichten",
     "fullName": "Vollständiger Name",
     "email": "E-Mail",
@@ -309,6 +410,14 @@
     "welcomeBackTitle": "Willkommen zurück",
     "loginSubtitle": "Melde dich an, um deine Lernreise fortzusetzen.",
     "heroCaption": "Premium-Nachhilfe, digitale Materialien und strukturiertes Lernen — alles an einem Ort.",
+    "heroHeadline": "DEIN LERNERFOLG. UNSER ZIEL.",
+    "heroTagline": "Lerne smarter. Erreiche mehr.",
+    "heroDesc": "Greife auf Nachhilfe, Lernmaterialien, Lernvideos und Prüfungsvorbereitung zu - alles an einem Ort.",
+    "heroBenefit1": "Nachhilfe & Kurse",
+    "heroBenefit2": "Lernbibliothek",
+    "heroBenefit3": "Lernvideos",
+    "heroBenefit4": "Bessere Ergebnisse",
+    "inviteOnlyNote": "Konten werden nur auf Einladung erstellt. Bei Fragen: support@nextgrades.de",
     "goToLogin": "Zur Anmeldung",
     "noAccount": "Du hast noch kein Konto?",
     "haveAccount": "Du hast bereits ein Konto?",
@@ -316,6 +425,7 @@
     "showPassword": "Passwort anzeigen",
     "hidePassword": "Passwort verbergen",
     "backToHome": "Zur Startseite",
+    "completeSecurityCheck": "Bitte schließe die Sicherheitsprüfung ab.",
     "registeringAs": "Ich registriere mich als",
     "nameLabel": "Name",
     "confirmPassword": "Passwort bestätigen",
@@ -324,7 +434,7 @@
     "teachAndInspire": "Unterrichten & inspirieren",
     "validationFullName": "Bitte gib deinen vollständigen Namen ein",
     "validationEmail": "Bitte gib eine gültige E-Mail ein",
-    "validationPasswordLength": "Mindestens 8 Zeichen",
+    "validationPasswordLength": "Mindestens 12 Zeichen mit Groß-, Kleinbuchstaben, Zahl und Sonderzeichen",
     "validationPasswordMatch": "Passwörter stimmen nicht überein",
     "invalidServerResponse": "Ungültige Serverantwort. Bitte versuche es erneut.",
     "registrationApiUnavailable": "Registrierungs-API nicht verfügbar. Starte den Dev-Server neu und versuche es erneut.",
@@ -358,12 +468,47 @@
     "fullNamePlaceholder": "Dein vollständiger Name",
     "passwordPlaceholder": "Mindestens 8 Zeichen"
   },
+  "forgotPasswordPage": {
+    "title": "Passwort zurücksetzen",
+    "subtitle": "Gib deine E-Mail ein — wir senden dir einen sicheren Link.",
+    "submit": "Link senden",
+    "sendFailed": "E-Mail konnte nicht gesendet werden.",
+    "successTitle": "E-Mail gesendet",
+    "successSubtitle": "Wir haben dir Anweisungen zum Zurücksetzen deines Passworts gesendet.",
+    "successBody": "Wir haben einen Link an {{email}} gesendet. Der Link ist 1 Stunde gültig.",
+    "backToLogin": "Zurück zur Anmeldung"
+  },
+  "verify": {
+    "signupTitle": "E-Mail bestätigen",
+    "signupSubtitle": "Wir haben dir einen 6-stelligen Code geschickt. Gib ihn unten ein, um dein Konto zu aktivieren.",
+    "loginTitle": "Bestätige deine Identität",
+    "loginSubtitle": "Zu deiner Sicherheit gib den Anmeldecode ein, den wir dir per E-Mail gesendet haben.",
+    "verifyButton": "Bestätigen und fortfahren",
+    "verifying": "Wird geprüft…",
+    "resendCode": "Code erneut senden",
+    "resending": "Wird gesendet…",
+    "resendIn": "Erneut senden in {{seconds}}s",
+    "resendSuccess": "Neuer Code gesendet — bitte Posteingang und Spam prüfen.",
+    "resendFailed": "Senden fehlgeschlagen. Bitte warten und erneut versuchen.",
+    "sendFailed": "Bestätigungscode konnte nicht gesendet werden. Bitte erneut versuchen.",
+    "invalidCode": "Ungültiger oder abgelaufener Code. Bitte erneut versuchen.",
+    "sessionExpired": "Sitzung abgelaufen. Bitte erneut anmelden.",
+    "changeEmail": "Andere E-Mail verwenden",
+    "successTitle": "Bestätigt",
+    "successSubtitle": "Du wirst zu deinem Dashboard weitergeleitet…",
+    "welcomeNew": "Willkommen bei NextGrades!",
+    "sendingCode": "Code wird gesendet…",
+    "securityNote": "NextGrades wird dich niemals bitten, diesen Code weiterzugeben. Wenn du ihn nicht angefordert hast, kannst du die E-Mail ignorieren.",
+    "redirectHint": "Nach der Bestätigung kehrst du dorthin zurück, wo du aufgehört hast.",
+    "needHelp": "Hilfe benötigt?"
+  },
   "about": {
-    "heroTitle": "Mehr als Nachhilfe.",
-    "heroTitle2": "Eine neue Vision für Bildung.",
-    "heroSubtitle": "Wir haben es uns zur Aufgabe gemacht, Schüler:innen eine moderne, strukturierte und motivierende Lernumgebung zu bieten – online, flexibel und auf höchstem Niveau.",
+    "heroTitle": "Wir helfen SchülerInnen, ihr",
+    "heroTitleHighlight": "volles Potenzial",
+    "heroTitle2": "zu entfalten.",
+    "heroSubtitle": "Nicht durch Druck. Sondern durch Struktur, Verständnis und die richtige Unterstützung.",
     "heroFeature1": "Hochwertige Inhalte",
-    "heroFeature1Desc": "Von erfahrenen Lehrer:innen erstellt.",
+    "heroFeature1Desc": "Von erfahrenen LehrerInnen erstellt.",
     "heroFeature2": "Kostenlos & hilfreich",
     "heroFeature2Desc": "Fürs Lernen entwickelt.",
     "heroFeature3": "Für alle Fächer",
@@ -371,22 +516,48 @@
     "storyTitle": "Wie alles begann",
     "principlesTitle": "Unsere Prinzipien für deinen Erfolg",
     "teamTitle": "Die Menschen hinter NextGrades",
-    "teamSubtitle": "Ein Team aus leidenschaftlichen Lehrer:innen, Lernexpert:innen und Visionär:innen.",
+    "teamSubtitle": "Ein Team aus leidenschaftlichen LehrerInnen, LernexpertInnen und VisionärInnen.",
     "milestonesTitle": "Meilensteine",
     "ctaTitle": "Noch mehr exklusive Inhalte freischalten",
     "ctaSubtitle": "Entdecke Zugriff auf alle Premium-Materialien, Lernvideos, Dutzende Mini-Kurse und vieles mehr.",
     "ctaButton": "Jetzt Mitglied werden"
   },
   "resources": {
-    "heroTitle": "Wissen, das dich weiterbringt.",
-    "heroSubtitle": "Entdecke kostenlose Materialien, nützliche Guides und wertvolle Tipps, die dich beim Lernen unterstützen.",
+    "heroTitle": "Lernmaterialien, die wirklich Ergebnisse bringen.",
+    "heroSubtitle": "Greife auf strukturierte Zusammenfassungen, Übungsblätter, Erklärvideos und Prüfungsvorbereitungen zu - entwickelt von erfahrenen Lehrkräften.",
+    "unlockCta": "Lernbibliothek freischalten",
+    "benefits": [
+      { "title": "Lehrplankonform", "desc": "Inhalte passend zum österreichischen Lehrplan." },
+      { "title": "Strukturiert aufgebaut", "desc": "Klare Kapitel, Übungen und Lernpfade." },
+      { "title": "Sofort verfügbar", "desc": "Direkt online nutzen - ohne Wartezeit." },
+      { "title": "Für Schule & Matura", "desc": "Von der Volksschule bis zur Matura." }
+    ],
     "heroFeature1": "Hochwertige Inhalte",
-    "heroFeature1Desc": "Von erfahrenen Lehrer:innen erstellt.",
+    "heroFeature1Desc": "Von erfahrenen LehrerInnen erstellt.",
     "heroFeature2": "Kostenlos & hilfreich",
     "heroFeature2Desc": "Fürs Lernen entwickelt.",
     "heroFeature3": "Für alle Fächer",
     "heroFeature3Desc": "Materialien für alle wichtigen Schulfächer.",
     "topBarResults": "Ergebnisse",
+    "allSubjects": "Alle Fächer",
+    "allClasses": "Alle Klassen",
+    "accessAll": "Alle Inhalte",
+    "accessFree": "Kostenlos",
+    "accessPremium": "Premium",
+    "resetFilters": "Filter zurücksetzen",
+    "sortDownloads": "Meist heruntergeladen",
+    "featuredEyebrow": "EMPFOHLEN",
+    "featuredTitle": "Beliebte Lernmaterialien",
+    "featuredSubtitle": "Die meistgenutzten Inhalte unserer SchülerInnen",
+    "gridTitle": "Alle Materialien",
+    "searchResultsFor": "Suchergebnisse für „{{query}}\"",
+    "tabs": {
+      "all": "Alle",
+      "free": "Kostenlos",
+      "premium": "Premium",
+      "video": "Videos",
+      "pdf": "PDFs"
+    },
     "searchPlaceholder": "Materialien durchsuchen...",
     "sortBy": "Sortieren nach:",
     "sortNewest": "Neueste zuerst",
@@ -411,7 +582,7 @@
       "feature3Title": "Von Experten erstellt",
       "feature3Desc": "Von Pädagogen und Lehrkräften erstellt.",
       "feature4Title": "Sicher & gut",
-      "feature4Desc": "Für Schüler:innen optimal aufbereitet."
+      "feature4Desc": "Für SchülerInnen optimal aufbereitet."
     },
     "filtersLabel": "Filter",
     "filters": {
@@ -448,10 +619,127 @@
     "premium": "Premium",
     "applyFilters": "Ergebnisse anzeigen",
     "noResults": "Keine Ressourcen entsprechen deinen Filtern.",
+    "sidebar": {
+      "catalogTitle": "In dieser Ansicht",
+      "totalMaterials": "Materialien",
+      "signInForProgress": "Melde dich an, um deinen Fortschritt zu verfolgen"
+    },
     "premiumRequired": "Premium-Mitgliedschaft oder Einschreibung erforderlich.",
     "downloadStarted": "„{{title}}“ wird geöffnet…",
     "saved": "Gespeichert",
-    "premiumCta": "Freischalten"
+    "premiumCta": "Freischalten",
+    "upgrade": {
+      "breadcrumb": "Startseite › Ressourcen › {{subject}} › Upgrade oder Zugang sichern",
+      "title": "Schalte alle Inhalte frei und",
+      "titleHighlight": "erreiche deine Ziele.",
+      "subtitle": "Wähle den passenden Zugang zu Materialien, Übungen und Videos – passend zu deiner Klasse und deinem Fortschritt.",
+      "benefitUnlock": "Alle Inhalte freischalten",
+      "benefitProgress": "Dein Fortschritt",
+      "benefitPlan": "Strukturierter Lernplan",
+      "benefitSupport": "Persönlicher Support",
+      "cardTitle": "Individuelle Betreuung. Echte Ergebnisse.",
+      "steps": [
+        "Klasse & Semester wählen",
+        "Zugang wählen",
+        "Zahlung",
+        "Loslegen"
+      ],
+      "subjectLabel": "Fach",
+      "gradeLabel": "Klasse",
+      "semesterLabel": "Semester",
+      "subjects": {
+        "english": "Englisch",
+        "math": "Mathematik",
+        "german": "Deutsch",
+        "physics": "Physik"
+      },
+      "gradeOption": "Klasse {{grade}}",
+      "semesterOption": "Semester {{semester}}",
+      "accessSummary": "Du erhältst Zugriff auf alle Inhalte für <strong>{{subject}}</strong> – Klasse {{grade}}, Semester {{semester}}.",
+      "chooseAccess": "Wähle deinen Zugang",
+      "cancelAnytime": "Jederzeit kündbar",
+      "trust1Title": "14 Tage Geld-zurück",
+      "trust1Desc": "Risikofrei testen",
+      "trust2Title": "Sicher & zuverlässig",
+      "trust2Desc": "Verschlüsselte Zahlungen",
+      "trust3Title": "Jederzeit kündbar",
+      "trust3Desc": "Keine langfristige Bindung",
+      "faqTitle": "Häufig gestellte Fragen",
+      "faqs": [
+        {
+          "question": "Kann ich jederzeit kündigen?",
+          "answer": "Ja — alle Tarife sind monatlich kündbar."
+        },
+        {
+          "question": "Welche Zahlungsmethoden gibt es?",
+          "answer": "Kreditkarte, PayPal und Banküberweisung."
+        },
+        {
+          "question": "Bekomme ich alle Fächer?",
+          "answer": "Premium schaltet alle Materialien für dein gewähltes Fach und deine Klassenstufe frei."
+        },
+        {
+          "question": "Gibt es eine kostenlose Testphase?",
+          "answer": "Kostenlose Materialien sind auch ohne Abo verfügbar."
+        },
+        {
+          "question": "Wie schnell erhalte ich Zugang?",
+          "answer": "Sofort nach erfolgreicher Zahlung."
+        },
+        {
+          "question": "Kann ich den Tarif wechseln?",
+          "answer": "Ja — upgrade oder downgrade jederzeit in deinem Dashboard."
+        }
+      ],
+      "supportPrompt": "Noch Fragen? Unser Team hilft dir gerne.",
+      "contactCta": "Kontakt",
+      "consultationCta": "Kostenloses Erstgespräch vereinbaren",
+      "unlockCta": "Upgrade oder Zugang sichern"
+    },
+    "subjectPage": {
+      "breadcrumbHome": "Startseite",
+      "breadcrumbResources": "Ressourcen",
+      "breadcrumbMaterials": "Lernmaterialien",
+      "heroDesc": "Alle Lernmaterialien, Übungen, Erklärungen und Prüfungsvorbereitungen für {{subject}}{{classInfo}}.",
+      "heroDescClassInfo": " – {{className}}{{semesterInfo}}",
+      "heroDescSemester": " – {{semester}}. Semester",
+      "benefitAgeAppropriate": "Altersgerecht",
+      "benefitProtected": "Geschützt",
+      "benefitStructured": "Strukturiert",
+      "benefitDownloadable": "Downloadbar",
+      "classContent": "{{className}} Inhalte",
+      "allContent": "Alle Inhalte – {{subject}}",
+      "statChapters": "Kapitel",
+      "statMaterials": "Materialien",
+      "statExercises": "Übungen",
+      "statVideos": "Videos",
+      "chapterOverview": "Kapitelübersicht",
+      "materialsInChapter": "{{count}} Materialien",
+      "itemCount": "{{count}} Einträge",
+      "latestMaterials": "Aktuelle Materialien",
+      "colTitle": "Titel",
+      "colType": "Typ",
+      "colChapter": "Kapitel",
+      "colGrade": "Klasse",
+      "colAccess": "Zugang",
+      "colAction": "Aktion",
+      "download": "Herunterladen",
+      "watch": "Ansehen",
+      "progressTitle": "Dein Lernfortschritt",
+      "progressCta": "Fortschritt anzeigen",
+      "unlockTitle": "Exklusive Inhalte",
+      "unlockDesc": "Diese Inhalte sind für registrierte SchülerInnen freigeschaltet.",
+      "unlockItems": [
+        "Alle Premium-Materialien",
+        "Lernvideos",
+        "Prüfungsvorbereitung",
+        "Persönliche Betreuung"
+      ],
+      "tipTitle": "Wusstest du schon?",
+      "tipBody": "Regelmäßige kurze Lerneinheiten sind effektiver als Bulimie-Lernen vor Prüfungen.",
+      "tipLink": "Lerntipps",
+      "supportPrompt": "Fragen zu den Materialien? Unser Team hilft dir gerne."
+    }
   },
   "dashboard": {
     "student": {
@@ -466,7 +754,7 @@
     "teacher": {
       "welcomeBack": "Willkommen zurück!",
       "overview": "Übersicht",
-      "myStudents": "Meine Schüler:innen",
+      "myStudents": "Meine SchülerInnen",
       "mySchedule": "Mein Stundenplan",
       "materials": "Materialien",
       "settings": "Einstellungen"
@@ -496,11 +784,20 @@
     "getStarted": "Loslegen",
     "faqTitle": "Häufig gestellte Fragen",
     "faqHeading": "Häufig gestellte Fragen.",
-    "saveYearly": "2 Monate sparen gegenüber monatlich"
+    "saveYearly": "2 Monate sparen gegenüber monatlich",
+    "includesHeading": "Enthält:",
+    "planBadges": {
+      "library": "Bibliothek",
+      "resource": "Bibliothek",
+      "group": "Gruppe",
+      "premium": "Premium",
+      "matura": "Matura"
+    },
+    "compareTitle": "Tarife im Vergleich"
   },
   "programs": {
-    "title": "Unsere Programme.",
-    "subtitle": "Die passende Unterstützung für jedes Lernziel."
+    "title": "Mehr als Nachhilfe.",
+    "subtitle": ""
   },
   "subjects": {
     "title": "Unsere Fächer",
@@ -519,8 +816,8 @@
     "subtitle": "Finde Antworten auf deine Fragen",
     "faqs": [
       {
-        "question": "Wie funktioniert die Registrierung?",
-        "answer": "Du kannst dich einfach über unsere Anmeldeseite registrieren oder anmelden."
+        "question": "Wie funktioniert die Anmeldung?",
+        "answer": "Dein Konto wird von uns eingerichtet. Du erhältst eine Einladung per E-Mail und legst dein Passwort fest."
       },
       {
         "question": "Wie kann ich ein Programm buchen?",
@@ -530,6 +827,99 @@
         "question": "Welche Zahlungsmethoden gibt es?",
         "answer": "Wir akzeptieren Kreditkarten, PayPal und Banküberweisung über Stripe."
       }
+    ]
+  },
+  "helpPage": {
+    "title": "Hilfe-Center",
+    "titleHighlight": "Wir sind für dich da.",
+    "subtitle": "Finde Antworten auf häufige Fragen, Anleitungen und hilfreiche Tipps rund um NextGrades.",
+    "searchPlaceholder": "Suche nach Hilfeartikeln...",
+    "allCategories": "Alle Hilfe-Kategorien",
+    "showAllArticles": "Alle {{count}} Artikel anzeigen",
+    "popularTitle": "Beliebte Artikel",
+    "supportTitle": "Immer noch Fragen?",
+    "supportDesc": "Unser Support-Team hilft dir gerne persönlich weiter.",
+    "supportPoint1": "Persönliche Betreuung",
+    "supportPoint2": "Schnelle Antwort (Mo–Fr)",
+    "supportPoint3": "Echte Menschen, keine Bots",
+    "contactCta": "Kontakt aufnehmen",
+    "bannerTitle": "Wir sind für dich da!",
+    "bannerDesc": "Unser Support-Team hilft dir gerne weiter – schnell, persönlich und unkompliziert.",
+    "bannerCta": "Zum Kontaktformular",
+    "categories": [
+      {
+        "id": "erste-schritte",
+        "title": "Erste Schritte",
+        "desc": "Alles für den Einstieg bei NextGrades.",
+        "articles": [
+          { "title": "So funktioniert NextGrades" },
+          { "title": "Dein erstes Erstgespräch buchen" },
+          { "title": "Programme im Überblick" },
+          { "title": "Lernbibliothek nutzen" }
+        ]
+      },
+      {
+        "id": "konto",
+        "title": "Konto & Zugang",
+        "desc": "Anmeldung, Passwort und Profil.",
+        "articles": [
+          { "title": "Einladung und Passwort einrichten" },
+          { "title": "Passwort zurücksetzen" },
+          { "title": "Profil bearbeiten" },
+          { "title": "Zwei-Faktor-Anmeldung" }
+        ]
+      },
+      {
+        "id": "zahlung",
+        "title": "Zahlung & Abo",
+        "desc": "Preise, Rechnungen und Kündigung.",
+        "articles": [
+          { "title": "Preise und Tarife" },
+          { "title": "Zahlungsmethoden" },
+          { "title": "Rechnungen herunterladen" },
+          { "title": "Abo kündigen oder pausieren" }
+        ]
+      },
+      {
+        "id": "materialien",
+        "title": "Lernmaterialien",
+        "desc": "Downloads, Videos und Übungen.",
+        "articles": [
+          { "title": "Materialien finden und filtern" },
+          { "title": "PDFs herunterladen" },
+          { "title": "Erklärvideos ansehen" },
+          { "title": "Premium-Inhalte freischalten" }
+        ]
+      },
+      {
+        "id": "nachhilfe",
+        "title": "Nachhilfe & Termine",
+        "desc": "Online-Sessions und Zoom.",
+        "articles": [
+          { "title": "Termine und Zoom-Links" },
+          { "title": "Termin verschieben oder absagen" },
+          { "title": "1:1 vs. Lerngruppe" },
+          { "title": "Vorbereitung auf die Session" }
+        ]
+      },
+      {
+        "id": "technik",
+        "title": "Technik & Geräte",
+        "desc": "Browser, App und Fehlerbehebung.",
+        "articles": [
+          { "title": "Systemanforderungen" },
+          { "title": "Zoom-Probleme beheben" },
+          { "title": "Mobilgerät nutzen" },
+          { "title": "Cookies und Datenschutz" }
+        ]
+      }
+    ],
+    "popular": [
+      { "title": "Wie buche ich ein Erstgespräch?", "views": "12,4K" },
+      { "title": "Lernbibliothek freischalten", "views": "9,8K" },
+      { "title": "Passwort vergessen", "views": "7,2K" },
+      { "title": "Zoom-Meeting beitreten", "views": "6,1K" },
+      { "title": "Preise und Programme", "views": "5,4K" }
     ]
   },
   "aiGenerator": {
@@ -544,7 +934,7 @@
     "bookNow": "Jetzt Termin buchen",
     "heroEyebrow": "KOSTENLOSE BERATUNG",
     "titleHighlight": "Dein Lernplan beginnt hier.",
-    "heroDesc": "Unverbindlich. Ohne Druck. Klare Orientierung von Expert:innen, die das deutsche Schulsystem und die Studienvorbereitung kennen.",
+    "heroDesc": "Unverbindlich. Ohne Druck. Klare Orientierung von ExpertInnen, die das österreichische Schulsystem und die Matura-Prüfungsvorbereitung kennen.",
     "viewPrograms": "Programme entdecken",
     "trustBadges": [
       "100 % kostenlos",
@@ -562,7 +952,7 @@
       },
       {
         "value": "1:1",
-        "label": "Persönliche Berater:in"
+        "label": "Persönliche BeraterIn"
       },
       {
         "value": "DE",
@@ -577,7 +967,7 @@
         "description": "Erzähl uns von Klassenstufe, Fächern, anstehenden Prüfungen und deinen Zielen."
       },
       {
-        "title": "Deine Berater:in kennenlernen",
+        "title": "Deine BeraterIn kennenlernen",
         "description": "In einem entspannten 30-minütigen Gespräch hören wir zu und stellen die richtigen Fragen."
       },
       {
@@ -605,8 +995,8 @@
         "description": "Verstehe Tarife, Einheiten und Mehrwert, bevor du dich entscheidest."
       },
       {
-        "title": "Prüfungs- & Studienberatung",
-        "description": "Abitur, Studienvorbereitung und MINT-Pfade verständlich erklärt."
+        "title": "Matura-Prüfungsvorbereitung",
+        "description": "Gezielte Vorbereitung auf die Matura mit klaren Lernschritten."
       },
       {
         "title": "Flexible Terminoptionen",
@@ -614,26 +1004,28 @@
       },
       {
         "title": "Qualifizierte deutsche Lehrkräfte",
-        "description": "Betreuung durch Tutor:innen, die lokale Lehrpläne und Anforderungen kennen."
+        "description": "Betreuung durch TutorInnen, die lokale Lehrpläne und Anforderungen kennen."
       }
     ],
     "audienceTitle": "Für wen ist das gedacht?",
     "audiences": [
       {
-        "title": "Schüler:innen",
-        "description": "Von der Mittelstufe bis zur Studienvorbereitung — Selbstvertrauen und stabile Ergebnisse."
+        "title": "SchülerInnen",
+        "description": "Von der Volksschule bis zur Matura."
       },
       {
         "title": "Eltern",
         "description": "Transparenz zu Fortschritt, Terminen und dem richtigen Unterstützungsniveau."
       },
       {
-        "title": "Quereinsteiger:innen",
+        "title": "QuereinsteigerInnen",
         "description": "Mathe, Sprachen oder Wirtschaft auffrischen für Studium und Bewerbungen."
       }
     ],
     "formTitle": "Kostenlose Beratung anfragen",
     "formSubtitle": "Fülle das Formular aus — unser Team meldet sich zur Terminvereinbarung.",
+    "responseTime": "Antwortzeit: < 24h",
+    "validationRequired": "Bitte fülle alle Felder aus.",
     "firstName": "Vorname",
     "lastName": "Nachname",
     "email": "E-Mail-Adresse",
@@ -667,7 +1059,7 @@
       "Wochenende",
       "Flexibel"
     ],
-    "goals": "Deine Ziele (optional)",
+    "goals": "Deine Ziele",
     "goalsPlaceholder": "z. B. Mathenote vor Prüfungen verbessern, Abitur vorbereiten, Lernroutine aufbauen…",
     "privacyNote": "Mit dem Absenden erlaubst du uns, dich wegen deiner Beratungsanfrage zu kontaktieren. Wir geben deine Daten nicht an Dritte weiter.",
     "submit": "Beratung anfragen",
@@ -690,7 +1082,7 @@
       },
       {
         "question": "Müssen Eltern dabei sein?",
-        "answer": "Unter 16 Jahren empfehlen wir die Anwesenheit eines Erziehungsberechtigten. Ältere Schüler:innen können allein teilnehmen."
+        "answer": "Unter 16 Jahren empfehlen wir die Anwesenheit eines Erziehungsberechtigten. Ältere SchülerInnen können allein teilnehmen."
       },
       {
         "question": "Was soll ich vorbereiten?",
@@ -724,7 +1116,7 @@
           "Wir erheben nur Daten, die zur Bereitstellung unserer Leistungen, zur Verbesserung deiner Nutzererfahrung und zur Erfüllung gesetzlicher Pflichten erforderlich sind. Je nach Nutzung können dies sein:"
         ],
         "bullets": [
-          "Kontodaten wie Name, E-Mail-Adresse und Rolle (Schüler:in, Lehrkraft oder Admin)",
+          "Kontodaten wie Name, E-Mail-Adresse und Rolle (SchülerIn, Lehrkraft oder Admin)",
           "Profilangaben, die du freiwillig hinterlegst, z. B. Avatar, Bio und Lernpräferenzen",
           "Buchungs- und Beratungsinformationen wie Klassenstufe, Fächer und Lernziele",
           "Zahlungsbezogene Daten über unseren Zahlungsdienstleister (keine vollständigen Kartennummern)",
@@ -798,7 +1190,7 @@
       {
         "title": "Kinder und Minderjährige",
         "paragraphs": [
-          "NextGrades richtet sich auch an Schüler:innen unter 18 Jahren. Wo erforderlich, empfehlen wir die Beteiligung eines Erziehungsberechtigten bei Registrierung und Beratung.",
+          "NextGrades richtet sich auch an SchülerInnen unter 18 Jahren. Wo erforderlich, empfehlen wir die Beteiligung eines Erziehungsberechtigten bei Registrierung und Beratung.",
           "Wir erheben wissentlich keine personenbezogenen Daten von Kindern ohne die nach geltendem Recht erforderliche Einwilligung."
         ]
       },
@@ -825,7 +1217,7 @@
         "title": "Geltungsbereich und Vertragspartner",
         "paragraphs": [
           "Diese AGB gelten für alle über die Website und Online-Plattform von NextGrades angebotenen Leistungen, einschließlich Nachhilfeprogramme, Lernmaterialien, Beratungen und zugehöriger digitaler Services.",
-          "Vertragspartner ist NextGrades. Auf der Plattform gelistete Tutor:innen und Lehrkräfte erbringen Leistungen im Rahmen der von NextGrades definierten Strukturen."
+          "Vertragspartner ist NextGrades. Auf der Plattform gelistete TutorInnen und Lehrkräfte erbringen Leistungen im Rahmen der von NextGrades definierten Strukturen."
         ]
       },
       {
@@ -842,7 +1234,7 @@
           "Bei Verdacht auf unbefugten Zugriff informiere uns umgehend. NextGrades kann Konten sperren oder kündigen, die gegen diese AGB oder geltendes Recht verstoßen."
         ],
         "bullets": [
-          "Schüler:innen und Eltern können Lernleistungen registrieren",
+          "SchülerInnen und Eltern können Lernleistungen registrieren",
           "Lehrkräfte registrieren sich separat und unterliegen zusätzlichen Anforderungen",
           "Kontozugang darf nicht an unbefugte Dritte weitergegeben werden"
         ]
@@ -864,13 +1256,13 @@
         ]
       },
       {
-        "title": "Pflichten der Nutzer:innen",
+        "title": "Pflichten der NutzerInnen",
         "paragraphs": [
           "Du verpflichtest dich, NextGrades rechtmäßig und respektvoll zu nutzen. Folgendes ist untersagt:"
         ],
         "bullets": [
           "Weitergabe von Zugangsdaten oder urheberrechtlich geschützten Materialien ohne Erlaubnis",
-          "Belästigung von Lehrkräften, Mitarbeitenden oder anderen Nutzer:innen",
+          "Belästigung von Lehrkräften, Mitarbeitenden oder anderen NutzerInnen",
           "Upload schädlicher, illegaler oder irreführender Inhalte",
           "Störung oder Reverse Engineering der Plattform",
           "Nutzung zu anderen als persönlichen Lernzwecken ohne Genehmigung"
@@ -919,19 +1311,19 @@
     "relatedHint": "Lies auch unsere weiteren rechtlichen Hinweise für volle Transparenz."
   },
   "careersPage": {
-    "title": "Karriere bei NextGrades",
-    "subtitle": "Hilf Schüler:innen zum Erfolg — unterrichte online mit einem Team, das Qualität, Flexibilität und Entwicklung schätzt.",
+    "title": "Werde NachhilfelehrerIn bei NextGrades",
+    "subtitle": "Bewirb dich als NachhilfelehrerIn und unterstütze SchülerInnen mit strukturiertem Online-Unterricht.",
     "eyebrow": "Werde Teil des Teams",
-    "heroDesc": "Wir bauen eine moderne Lernplattform für Schüler:innen in Deutschland. Wenn du Begeisterung fürs Unterrichten mitbringst und echten Impact willst, freuen wir uns auf deine Bewerbung.",
+    "heroDesc": "Wir bauen eine moderne Lernplattform für SchülerInnen in Österreich. Wenn du Begeisterung fürs Unterrichten mitbringst und echten Impact willst, freuen wir uns auf deine Bewerbung.",
     "viewPositions": "Offene Stellen ansehen",
     "applyNow": "Jetzt bewerben",
     "whyEyebrow": "Warum NextGrades",
     "whyTitle": "Mit Sinn unterrichten",
-    "whyDesc": "Werde Teil einer wachsenden Bildungsmarke mit strukturiertem Lernen, hochwertigen Materialien und messbaren Ergebnissen für Schüler:innen.",
+    "whyDesc": "Werde Teil einer wachsenden Bildungsmarke mit strukturiertem Lernen, hochwertigen Materialien und messbaren Ergebnissen für SchülerInnen.",
     "benefits": [
       {
         "title": "Echter Impact",
-        "description": "Unterstütze Schüler:innen bei Prüfungen, Selbstvertrauen und langfristigem Lernerfolg."
+        "description": "Unterstütze SchülerInnen bei Prüfungen, Selbstvertrauen und langfristigem Lernerfolg."
       },
       {
         "title": "Moderne Plattform",
@@ -939,7 +1331,7 @@
       },
       {
         "title": "Starkes Team",
-        "description": "Arbeite mit erfahrenen Pädagog:innen und einem Team, das dich bestmöglich unterstützt."
+        "description": "Arbeite mit erfahrenen PädagogInnen und einem Team, das dich bestmöglich unterstützt."
       },
       {
         "title": "Flexible Arbeit",
@@ -948,25 +1340,25 @@
     ],
     "stats": [
       {
-        "value": "200+",
-        "label": "betreute Schüler:innen"
+        "value": "100+",
+        "label": "SchülerInnen"
       },
       {
         "value": "25+",
-        "label": "Lehrkräfte im Team"
+        "label": "LehrerInnen"
       },
       {
-        "value": "100%",
-        "label": "online & flexibel"
+        "value": "500+",
+        "label": "Lernmaterialien"
       },
       {
         "value": "4,9/5",
-        "label": "Zufriedenheit der Eltern"
+        "label": "Bewertung"
       }
     ],
     "positionsEyebrow": "Offene Stellen",
     "positionsTitle": "Aktuelle Möglichkeiten",
-    "positionsDesc": "Wir suchen engagierte Tutor:innen. Dein Fach ist nicht dabei? Sende eine Initiativbewerbung — wir wachsen stetig.",
+    "positionsDesc": "Wir suchen engagierte TutorInnen. Dein Fach ist nicht dabei? Sende eine Initiativbewerbung — wir wachsen stetig.",
     "processEyebrow": "So funktioniert's",
     "processTitle": "Dein Weg zu uns",
     "stepLabel": "Schritt {{number}}",
@@ -981,7 +1373,7 @@
       },
       {
         "title": "Loslegen",
-        "description": "Nach dem Onboarding erhältst du Schüler:innen, Materialien und Zugang zur Plattform."
+        "description": "Nach dem Onboarding erhältst du SchülerInnen, Materialien und Zugang zur Plattform."
       }
     ],
     "ctaTitle": "Passende Stelle nicht dabei?",
@@ -990,29 +1382,60 @@
     "jobs": [
       {
         "id": "math",
-        "title": "Mathe-Nachhilfelehrer:in",
-        "description": "Wir suchen erfahrene Mathe-Tutor:innen für Schüler:innen von der Mittelstufe bis zur Abiturvorbereitung. Du erklärst verständlich, stärkst Selbstvertrauen und passt dich dem Niveau an.",
+        "title": "Mathe-NachhilfelehrerIn",
+        "description": "Wir suchen erfahrene Mathe-TutorInnen für SchülerInnen von der Mittelstufe bis zur Abiturvorbereitung. Du erklärst verständlich, stärkst Selbstvertrauen und passt dich dem Niveau an.",
         "type": "Teilzeit / Freiberuflich",
-        "location": "Remote (Deutschland)",
+        "location": "Remote (Österreich)",
         "highlights": [
           "Erfahrung im Unterrichten von Schulmathematik",
           "Klare Kommunikation auf Deutsch und/oder Englisch",
           "Sicher im Umgang mit Online-Tools (Zoom)",
-          "Strukturiert, geduldig und schüler:innenorientiert"
+          "Strukturiert, geduldig und schülerInnenorientiert"
         ]
       },
       {
         "id": "english",
-        "title": "Englisch-Nachhilfelehrer:in",
+        "title": "Englisch-NachhilfelehrerIn",
         "description": "Verstärke unser Englisch-Team und hilf beim Grammatik-, Schreib- und Konversationstraining sowie bei Prüfungsvorbereitung. Du gestaltest motivierende Stunden mit sichtbarem Fortschritt.",
         "type": "Teilzeit / Freiberuflich",
-        "location": "Remote (Deutschland)",
+        "location": "Remote (Österreich)",
         "highlights": [
-          "Native or near-native Englischkenntnisse",
-          "Erfahrung mit dem deutschen Schul-Englisch",
+          "Sehr gute Englischkenntnisse (native oder nahezu native)",
+          "Erfahrung mit dem österreichischen Schul-Englisch",
           "Vorbereitung auf Tests und Aufsätze",
           "Zuverlässige Verfügbarkeit für wiederkehrende Online-Termine"
         ]
+      }
+    ],
+    "applicationTitle": "Bewirb dich als NachhilfelehrerIn",
+    "applicationDesc": "Sende uns deine Bewerbung mit Fach, Erfahrung und Verfügbarkeit. Wir melden uns innerhalb weniger Tage.",
+    "applicationSubject": "Karriere-Bewerbung",
+    "applicationSuccess": "Bewerbung erfolgreich gesendet!",
+    "applicationSuccessTitle": "Vielen Dank für deine Bewerbung!",
+    "applicationSuccessMessage": "Wir haben deine Unterlagen erhalten und melden uns in Kürze bei dir.",
+    "validationRequired": "Bitte fülle alle Pflichtfelder aus.",
+    "fieldSubject": "Fach / Rolle",
+    "fieldSubjectPlaceholder": "z. B. Mathematik-Nachhilfe",
+    "fieldExperience": "Unterrichtserfahrung",
+    "fieldExperiencePlaceholder": "z. B. 3 Jahre Nachhilfe, Matura-Vorbereitung",
+    "fieldMessage": "Motivation & Verfügbarkeit",
+    "fieldMessagePlaceholder": "Erzähl uns kurz von dir, deiner Erfahrung und wann du unterrichten kannst…",
+    "submitApplication": "Bewerbung absenden",
+    "supportTitle": "Support",
+    "supportDesc": "Unser Team hilft dir gerne bei Fragen zum Bewerbungsprozess oder zu offenen Stellen.",
+    "faqTitle": "Häufige Fragen zur Bewerbung",
+    "faqs": [
+      {
+        "question": "Welche Qualifikationen brauche ich?",
+        "answer": "Du solltest Erfahrung im Unterrichten deines Fachs mitbringen, klar kommunizieren können und zuverlässig online verfügbar sein. Pädagogische Ausbildung ist von Vorteil, aber nicht zwingend."
+      },
+      {
+        "question": "Wie flexibel ist die Arbeit?",
+        "answer": "Du bestimmst weitgehend deine Verfügbarkeit. Die meisten Stunden finden online statt — Teilzeit oder freiberuflich ist möglich."
+      },
+      {
+        "question": "Wie läuft das Onboarding ab?",
+        "answer": "Nach dem Kennenlerngespräch erhältst du Zugang zur Plattform, Materialien und deine ersten SchülerInnen-Zuweisungen."
       }
     ]
   },
@@ -1027,7 +1450,7 @@
     "notifications": "Hinweise",
     "profile": "Profil",
     "settings": "Einstellungen",
-    "students": "Schüler",
+    "students": "SchülerInnen",
     "schedule": "Termine",
     "users": "Nutzer",
     "content": "Inhalt"

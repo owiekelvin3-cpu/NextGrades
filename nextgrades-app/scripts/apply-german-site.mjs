@@ -190,8 +190,6 @@ Object.assign(site.subjectsPage, {
 });
 
 Object.assign(site.resourcesPage, {
-  rating: "4,9/5 Sterne",
-  ratingDesc: "Bewertet von Eltern & Schüler:innen",
   tabs: [
     "Alle Ressourcen",
     "Lernmaterialien",
@@ -203,83 +201,6 @@ Object.assign(site.resourcesPage, {
     "Formelsammlungen",
   ],
   materialTypes: ["Arbeitsblätter & Übungen", "Zusammenfassungen", "Guides & Lernpläne", "Erklärvideos", "Formelsammlungen"],
-  resultsCount: "428 Ergebnisse",
-  sortNewest: "Sortieren: Neueste zuerst",
-  freeResources: [
-    {
-      title: "Mathe-Formelsammlung",
-      subtitle: "Klassen 1–5",
-      description: "Alle wichtigen Formeln und Regeln übersichtlich zusammengefasst.",
-      type: "PDF",
-    },
-    {
-      title: "Deutsch-Rechtschreibguide",
-      subtitle: "Kostenlos",
-      description: "Die wichtigsten Rechtschreibregeln einfach erklärt.",
-      type: "PDF",
-    },
-    {
-      title: "Lernplan-Vorlage",
-      subtitle: "Kostenlos",
-      description: "Plane dein Lernen Schritt für Schritt und bleib am Ball.",
-      type: "PDF",
-    },
-    {
-      title: "5 Tipps gegen Prüfungsstress",
-      subtitle: "Kostenlos",
-      description: "So bereitest du dich stressfrei auf Prüfungen vor.",
-      type: "Video",
-    },
-  ],
-  premiumResources: [
-    {
-      title: "Mathematik",
-      subtitle: "Klasse 2, Semester 2",
-      description: "Komplette Lernmaterialien, Videos, Arbeitsblätter und mehr.",
-      type: "PREMIUM",
-    },
-    {
-      title: "Deutsch",
-      subtitle: "Klasse 3, Semester 1",
-      description: "Deutsch-Lernmaterialien, Videos und Arbeitsblätter.",
-      type: "PREMIUM",
-    },
-    {
-      title: "Englisch",
-      subtitle: "Klasse 4, Semester 2",
-      description: "Grammatik, Wortschatz, Materialien und mehr.",
-      type: "PREMIUM",
-    },
-    {
-      title: "Physik",
-      subtitle: "Klasse 5, Semester 1",
-      description: "Alle Themen, Formeln, Beispiele und Übungen.",
-      type: "PREMIUM",
-    },
-  ],
-  subjectsWithCounts: [
-    { name: "Alle Fächer", count: 428 },
-    { name: "Mathematik", count: 98 },
-    { name: "Deutsch", count: 82 },
-    { name: "Englisch", count: 76 },
-    { name: "Physik", count: 54 },
-    { name: "Chemie", count: 48 },
-    { name: "Biologie", count: 38 },
-    { name: "Wirtschaft", count: 32 },
-  ],
-  subjectsFilter: ["Alle Fächer", "Mathematik", "Englisch", "Deutsch", "Physik", "Chemie"],
-  gradesFilter: [
-    "Alle Klassen",
-    "Klasse 5",
-    "Klasse 6",
-    "Klasse 7",
-    "Klasse 8",
-    "Klasse 9",
-    "Klasse 10",
-    "Klasse 11",
-    "Klasse 12",
-  ],
-  semestersFilter: ["Alle Semester", "Semester 1", "Semester 2"],
 });
 
 Object.assign(site.pricingPage, {

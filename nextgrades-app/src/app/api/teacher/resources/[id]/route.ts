@@ -80,8 +80,13 @@ export async function PUT(request: Request, { params }: RouteParams) {
     }
 
     if (body.status === "published") {
-      updateData.moderation_status = "approved";
-      updateData.publish_date = body.publish_date || new Date().toISOString();
+      if (auth.profile?.role === "admin") {
+        updateData.moderation_status = "approved";
+        updateData.publish_date = body.publish_date || new Date().toISOString();
+      } else {
+        updateData.moderation_status = "pending";
+        updateData.status = "draft";
+      }
     } else if (body.status === "archived") {
       updateData.status = "archived";
     }

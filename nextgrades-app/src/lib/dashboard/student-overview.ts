@@ -1,5 +1,6 @@
 import { supabase } from "@/lib/supabase/client";
 import type { Material } from "@/lib/api/client";
+import { LESSON_QUERY_LIMIT, lessonHistorySinceIso } from "@/lib/dashboard/limits";
 import {
   fetchStudentEnrollments,
   fetchStudentLessons,
@@ -71,10 +72,12 @@ async function fetchAllStudentLessons(studentId: string): Promise<DashboardLesso
 
   const { data, error } = await supabase
     .from("lessons")
-    .select("*")
+    .select("id, teacher_id, subject_id, start_time, duration, zoom_link, status")
     .eq("student_id", studentId)
     .neq("status", "cancelled")
-    .order("start_time", { ascending: true });
+    .gte("start_time", lessonHistorySinceIso())
+    .order("start_time", { ascending: true })
+    .limit(LESSON_QUERY_LIMIT);
 
   if (error || !data) return [];
 

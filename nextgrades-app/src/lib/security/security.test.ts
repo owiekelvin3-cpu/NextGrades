@@ -2,7 +2,10 @@ import { describe, it, expect, vi, afterEach } from "vitest";
 import { isEmailVerificationRequired } from "@/lib/auth/config";
 import { canRoleAccessPath, getDashboardPathForRole } from "@/lib/auth/redirect";
 import { checkRateLimit } from "@/lib/security/rate-limit";
-import { isAdminBootstrapAllowed, isProduction } from "@/lib/security/env";
+import { isAdminBootstrapAllowed, isProduction, validateProductionEnv } from "@/lib/security/env";
+import { resolveCheckoutStripePrice, isApprovedStripePriceId } from "@/lib/stripe/prices";
+import { validateStrongPassword } from "@/lib/auth/password-policy";
+import { hashOtpCode, verifyOtpHash } from "@/lib/auth/otp-crypto";
 
 describe("auth config", () => {
   afterEach(() => {
@@ -62,5 +65,65 @@ describe("production security env", () => {
     expect(isProduction()).toBe(true);
     vi.stubEnv("NODE_ENV", "development");
     expect(isProduction()).toBe(false);
+  });
+
+  it("requires AUTH_SESSION_SECRET in production validation", () => {
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("NEXT_PUBLIC_APP_URL", "https://www.example.com");
+    vi.stubEnv("NEXT_PUBLIC_SUPABASE_URL", "https://abc.supabase.co");
+    vi.stubEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY", "anon");
+    vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", "service");
+    vi.stubEnv("AUTH_SESSION_SECRET", "");
+    const errors = validateProductionEnv().filter((i) => i.level === "error");
+    expect(errors.some((e) => e.message.includes("AUTH_SESSION_SECRET"))).toBe(true);
+  });
+});
+
+describe("stripe price resolution", () => {
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
+  it("never trusts a client price that differs from server mapping", () => {
+    vi.stubEnv("STRIPE_PRICE_GROUP_MONTHLY", "price_server_monthly");
+    const result = resolveCheckoutStripePrice({
+      planId: "group",
+      billing: "monthly",
+      clientPriceId: "price_attacker_cheap",
+    });
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.reason).toBe("price_mismatch");
+  });
+
+  it("resolves price from plan and billing only", () => {
+    vi.stubEnv("STRIPE_PRICE_GROUP_YEARLY", "price_group_yearly");
+    const result = resolveCheckoutStripePrice({ planId: "group", billing: "yearly" });
+    expect(result.ok).toBe(true);
+    if (result.ok) expect(result.priceId).toBe("price_group_yearly");
+  });
+
+  it("rejects unknown client price ids", () => {
+    vi.stubEnv("STRIPE_PRICE_GROUP_MONTHLY", "price_server");
+    expect(isApprovedStripePriceId("price_unknown")).toBe(false);
+  });
+});
+
+describe("password policy", () => {
+  it("enforces 12+ character complexity", () => {
+    expect(validateStrongPassword("short").valid).toBe(false);
+    expect(validateStrongPassword("LongEnough1!").valid).toBe(true);
+  });
+});
+
+describe("otp hashing", () => {
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
+  it("hashes and verifies registration codes", () => {
+    vi.stubEnv("AUTH_SESSION_SECRET", "test-secret-with-enough-length-for-dev");
+    const hash = hashOtpCode("123456", "user@example.com");
+    expect(verifyOtpHash("123456", "user@example.com", hash)).toBe(true);
+    expect(verifyOtpHash("000000", "user@example.com", hash)).toBe(false);
   });
 });

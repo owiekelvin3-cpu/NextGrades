@@ -43,6 +43,7 @@ const SECTIONS = [
       { href: `${ADMIN_PORTAL_PREFIX}/analytics`, icon: BarChart3, labelKey: "adminNav.analytics", descKey: "adminHub.analyticsDesc" },
       { href: `${ADMIN_PORTAL_PREFIX}/zoom`, icon: Video, labelKey: "adminNav.zoom", descKey: "adminHub.zoomDesc" },
       { href: `${ADMIN_PORTAL_PREFIX}/cookies`, icon: Cookie, labelKey: "adminNav.cookies", descKey: "adminHub.cookiesDesc" },
+      { href: `${ADMIN_PORTAL_PREFIX}/security`, icon: Shield, labelKey: "adminNav.security", descKey: "adminHub.securityDesc" },
     ],
   },
 ] as const;

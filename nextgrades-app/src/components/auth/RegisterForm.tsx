@@ -11,8 +11,18 @@ import { changeAppLanguage } from "@/components/I18nProvider";
 import { useTheme } from "@/context/ThemeContext";
 import { Button } from "@/components/ui/Button";
 import { authSurface } from "@/components/auth/auth-ui";
-import { VerificationCodePanel } from "@/components/auth/VerificationCodePanel";
+import { TurnstileWidget, isTurnstileEnabled } from "@/components/auth/TurnstileWidget";
+import { PASSWORD_MIN_LENGTH } from "@/lib/auth/password-policy";
+import {
+  buildVerifyUrl,
+  savePendingVerification,
+} from "@/lib/auth/pending-verification-storage";
 import { cn } from "@/lib/utils";
+import {
+  AuthMobileField,
+  AuthMobilePrimaryButton,
+  AuthRolePicker,
+} from "@/components/auth/AuthMobileField";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUser,
@@ -31,8 +41,10 @@ type RegisterFormProps = {
   onSwitchToLogin?: () => void;
   compact?: boolean;
   /** Sheet styling for mobile auth bottom card */
-  appearance?: "default" | "sheet";
+  appearance?: "default" | "sheet" | "mobile";
   hideFooterLink?: boolean;
+  /** Skip role picker when role was chosen on a prior mobile step */
+  hideRolePicker?: boolean;
   /** Hide inline errors — parent shows them (login page) */
   hideInlineError?: boolean;
   onError?: (message: string | null, duplicateEmail?: boolean) => void;
@@ -47,12 +59,14 @@ export function RegisterForm({
   compact = false,
   appearance = "default",
   hideFooterLink = false,
+  hideRolePicker = false,
   hideInlineError = false,
   onError,
 }: RegisterFormProps) {
   const { t } = useTranslation();
   const { theme } = useTheme();
   const isSheet = appearance === "sheet";
+  const isMobile = appearance === "mobile";
   const isDark = theme === "dark";
   const s = authSurface(isDark);
   const router = useRouter();
@@ -68,8 +82,8 @@ export function RegisterForm({
   const [duplicateEmail, setDuplicateEmail] = useState(false);
   const [success, setSuccess] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
-  const [verificationPending, setVerificationPending] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
 
   const inputClass = cn(
     "w-full py-3 rounded-2xl border transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20",
@@ -122,7 +136,7 @@ export function RegisterForm({
     if (!email.trim() || !EMAIL_REGEX.test(email.trim())) {
       next.email = t("login.validationEmail");
     }
-    if (password.length < 8) {
+    if (password.length < PASSWORD_MIN_LENGTH) {
       next.password = t("login.validationPasswordLength");
     }
     if (password !== confirmPassword) {
@@ -143,6 +157,11 @@ export function RegisterForm({
     reportError(null, false);
     if (!validate()) return;
 
+    if (isTurnstileEnabled() && !turnstileToken) {
+      reportError(t("login.completeSecurityCheck", { defaultValue: "Please complete the security check." }));
+      return;
+    }
+
     setLoading(true);
     try {
       const res = await fetch("/api/auth/signup", {
@@ -154,6 +173,7 @@ export function RegisterForm({
           password,
           confirmPassword,
           role,
+          turnstileToken,
         }),
       });
 
@@ -192,15 +212,16 @@ export function RegisterForm({
       const verificationRequired = data.verificationRequired === true;
 
       if (verificationRequired) {
-        setVerificationPending(true);
-        setSuccessMessage(
-          typeof data.message === "string" ? data.message : t("login.verifyEmailMessage")
-        );
-        setSuccess(true);
+        const normalized = email.trim().toLowerCase();
+        savePendingVerification({
+          step: "signup",
+          email: normalized,
+          password,
+          redirect: redirectTo,
+        });
+        router.push(buildVerifyUrl("signup", normalized, redirectTo));
         return;
       }
-
-      setVerificationPending(false);
 
       const signIn = await supabase.auth.signInWithPassword({
         email: email.trim().toLowerCase(),
@@ -239,26 +260,16 @@ export function RegisterForm({
               <p className="font-semibold">{t("login.accountCreatedTitle")}</p>
               <p className="mt-1 opacity-90">{successMessage}</p>
             </div>
-            {verificationPending ? (
-              <VerificationCodePanel
-                email={email}
-                password={password}
-                variant="inline"
-                onVerified={finishAndRedirect}
-                onError={(msg) => reportError(msg)}
-              />
-            ) : (
-              <Link
-                href={
-                  redirectTo
-                    ? `/login?redirect=${encodeURIComponent(redirectTo)}&email=${encodeURIComponent(email)}`
-                    : `/login?email=${encodeURIComponent(email)}`
-                }
-                className="inline-flex items-center gap-2 rounded-lg bg-[#D4AF37] px-4 py-2 text-sm font-semibold text-[#0D1B2A] hover:opacity-90"
-              >
-                {t("login.signInNow")} <FontAwesomeIcon icon={faArrowRight} className="h-3 w-3" />
-              </Link>
-            )}
+            <Link
+              href={
+                redirectTo
+                  ? `/login?redirect=${encodeURIComponent(redirectTo)}&email=${encodeURIComponent(email)}`
+                  : `/login?email=${encodeURIComponent(email)}`
+              }
+              className="inline-flex items-center gap-2 rounded-lg bg-[#D4AF37] px-4 py-2 text-sm font-semibold text-[#0D1B2A] hover:opacity-90"
+            >
+              {t("login.signInNow")} <FontAwesomeIcon icon={faArrowRight} className="h-3 w-3" />
+            </Link>
           </div>
         </div>
       </div>
@@ -296,7 +307,21 @@ export function RegisterForm({
         </div>
       )}
 
-      {isSheet ? (
+      {isMobile ? (
+        !hideRolePicker && (
+          <div className="space-y-3">
+            <p className={cn("text-sm font-medium", isDark ? "text-gray-300" : "text-gray-600")}>
+              {t("login.registeringAs")}
+            </p>
+            <AuthRolePicker
+              value={role}
+              onChange={setRole}
+              studentLabel={t("login.student")}
+              teacherLabel={t("login.teacher")}
+            />
+          </div>
+        )
+      ) : isSheet ? (
         <div className={cn("grid grid-cols-2 gap-1 rounded-2xl p-1", s.tabTrack)}>
           {(["student", "teacher"] as const).map((r) => (
             <button
@@ -344,6 +369,78 @@ export function RegisterForm({
       </div>
       )}
 
+      {isMobile ? (
+        <>
+          <AuthMobileField
+            id="reg-full-name"
+            label={t("login.fullName")}
+            value={fullName}
+            onChange={setFullName}
+            placeholder={t("login.fullNamePlaceholder")}
+            error={fieldErrors.fullName}
+            autoComplete="name"
+          />
+          <AuthMobileField
+            id="reg-email"
+            label={t("login.email")}
+            type="email"
+            value={email}
+            onChange={setEmail}
+            placeholder={t("login.emailPlaceholder")}
+            error={fieldErrors.email}
+            autoComplete="email"
+          />
+          <AuthMobileField
+            id="reg-password"
+            label={t("login.password")}
+            type={showPassword ? "text" : "password"}
+            value={password}
+            onChange={setPassword}
+            placeholder={t("login.passwordPlaceholder")}
+            error={fieldErrors.password}
+            autoComplete="new-password"
+            trailing={
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#D4AF37]"
+                aria-label={showPassword ? t("login.hidePassword") : t("login.showPassword")}
+              >
+                {showPassword ? (
+                  <FontAwesomeIcon icon={faEyeSlash} className="h-5 w-5" />
+                ) : (
+                  <FontAwesomeIcon icon={faEye} className="h-5 w-5" />
+                )}
+              </button>
+            }
+          />
+          <AuthMobileField
+            id="reg-confirm"
+            label={t("login.confirmPassword")}
+            type={showConfirm ? "text" : "password"}
+            value={confirmPassword}
+            onChange={setConfirmPassword}
+            placeholder={t("login.confirmPasswordPlaceholder")}
+            error={fieldErrors.confirmPassword}
+            autoComplete="new-password"
+            trailing={
+              <button
+                type="button"
+                onClick={() => setShowConfirm(!showConfirm)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#D4AF37]"
+                aria-label={showConfirm ? t("login.hideConfirmPassword") : t("login.showConfirmPassword")}
+              >
+                {showConfirm ? (
+                  <FontAwesomeIcon icon={faEyeSlash} className="h-5 w-5" />
+                ) : (
+                  <FontAwesomeIcon icon={faEye} className="h-5 w-5" />
+                )}
+              </button>
+            }
+          />
+        </>
+      ) : (
+      <>
       <div className="space-y-1.5">
         <label htmlFor="reg-full-name" className={cn("text-sm font-medium", isSheet ? s.label : isDark ? "text-gray-300" : "text-gray-700", !isSheet && "font-semibold")}>
           {isSheet ? t("login.nameLabel") : t("login.fullName")}
@@ -439,8 +536,14 @@ export function RegisterForm({
         </div>
         {fieldErrors.confirmPassword && <p className="text-xs text-red-500">{fieldErrors.confirmPassword}</p>}
       </div>
+      </>
+      )}
 
-      {isSheet ? (
+      <TurnstileWidget onToken={setTurnstileToken} theme={isDark ? "dark" : "light"} className="flex justify-center" />
+
+      {isMobile ? (
+        <AuthMobilePrimaryButton loading={loading}>{t("login.createAccountBtn")}</AuthMobilePrimaryButton>
+      ) : isSheet ? (
         <button
           type="submit"
           disabled={loading}

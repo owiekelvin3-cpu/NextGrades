@@ -10,6 +10,7 @@ export type PricingPlanCardPlan = {
   description: string;
   monthlyPrice: number;
   yearlyPrice: number;
+  priceLabel?: string;
   highlighted: boolean;
   features: string[];
 };
@@ -28,23 +29,23 @@ type Props = {
     mostPopular: string;
     includesPrefix: string;
     saveYearly: string;
+    includesHeading: string;
+    planBadges: Record<string, string>;
   };
   isDark?: boolean;
 };
 
-const PLAN_BADGE: Record<string, string> = {
-  resource: "RESOURCES",
-  group: "GROUP",
-  premium: "PREMIUM",
-};
-
 const TOP_GRADIENT: Record<string, string> = {
+  library:
+    "from-[#F8F9FB] via-white to-[#D4AF37]/[0.07] dark:from-[#112240] dark:via-[#0D1B2A] dark:to-[#D4AF37]/10",
   resource:
     "from-[#F8F9FB] via-white to-[#D4AF37]/[0.07] dark:from-[#112240] dark:via-[#0D1B2A] dark:to-[#D4AF37]/10",
   group:
     "from-[#D4AF37]/20 via-[#F5A623]/10 to-white dark:from-[#D4AF37]/25 dark:via-[#112240] dark:to-[#0D1B2A]",
   premium:
     "from-[#0D1B2A]/[0.06] via-[#F5F6F8] to-[#D4AF37]/10 dark:from-[#0D1B2A] dark:via-[#112240] dark:to-[#D4AF37]/15",
+  matura:
+    "from-[#112240]/10 via-white to-[#D4AF37]/10 dark:from-[#112240] dark:via-[#0D1B2A] dark:to-[#D4AF37]/12",
 };
 
 function incrementalFeatures(features: string[]) {
@@ -62,7 +63,7 @@ export function PricingPlanCard({
   isDark = false,
 }: Props) {
   const price = isYearly ? plan.yearlyPrice : plan.monthlyPrice;
-  const badge = PLAN_BADGE[plan.id] ?? plan.name.toUpperCase();
+  const badge = labels.planBadges?.[plan.id] ?? plan.name.toUpperCase();
   const gradient = TOP_GRADIENT[plan.id] ?? TOP_GRADIENT.resource;
   const listedFeatures = previousPlanName
     ? incrementalFeatures(plan.features)
@@ -106,20 +107,33 @@ export function PricingPlanCard({
         </div>
 
         <div className="relative mb-1 flex min-w-0 flex-wrap items-baseline gap-x-1.5 gap-y-1">
-          <span
-            className={cn(
-              "text-4xl font-extrabold tracking-tight sm:text-5xl",
-              isDark ? "text-white" : "text-[#0D1B2A]"
-            )}
-          >
-            €{price}
-          </span>
-          <span className={cn("text-sm font-medium", isDark ? "text-gray-400" : "text-gray-500")}>
-            /{isYearly ? labels.perYear : labels.perMonth}
-            {isYearly && (
-              <span className="ml-1 hidden sm:inline">({labels.billedAnnually})</span>
-            )}
-          </span>
+          {plan.priceLabel ? (
+            <span
+              className={cn(
+                "text-2xl font-extrabold leading-tight tracking-tight sm:text-3xl",
+                isDark ? "text-white" : "text-[#0D1B2A]"
+              )}
+            >
+              {plan.priceLabel}
+            </span>
+          ) : (
+            <>
+              <span
+                className={cn(
+                  "text-4xl font-extrabold tracking-tight sm:text-5xl",
+                  isDark ? "text-white" : "text-[#0D1B2A]"
+                )}
+              >
+                €{price}
+              </span>
+              <span className={cn("text-sm font-medium", isDark ? "text-gray-400" : "text-gray-500")}>
+                /{isYearly ? labels.perYear : labels.perMonth}
+                {isYearly && (
+                  <span className="ml-1 hidden sm:inline">({labels.billedAnnually})</span>
+                )}
+              </span>
+            </>
+          )}
         </div>
 
         {isYearly && (
@@ -167,7 +181,7 @@ export function PricingPlanCard({
           </p>
         ) : (
           <p className={cn("mb-4 text-xs font-semibold", isDark ? "text-gray-400" : "text-gray-500")}>
-            {plan.features.length > 0 ? "Includes:" : ""}
+            {plan.features.length > 0 ? labels.includesHeading : ""}
           </p>
         )}
 

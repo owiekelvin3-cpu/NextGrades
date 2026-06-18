@@ -190,7 +190,9 @@ export async function POST(request: Request) {
     }
 
     const legacyType = LEGACY_TYPE_MAP[contentType] || "other";
-    const isPublished = status === "published";
+    const wantsPublish = status === "published";
+    const isAdmin = auth.profile?.role === "admin";
+    const isPublished = wantsPublish && isAdmin;
     const payload = {
       title,
       description: shortDescription || fullDescription || null,
@@ -211,12 +213,12 @@ export async function POST(request: Request) {
       age_range: ageRange,
       estimated_minutes: estimatedMinutes,
       language,
-      status,
+      status: isPublished ? "published" : wantsPublish && !isAdmin ? "draft" : status || "draft",
       access_type: accessType,
       price,
       is_premium: accessType === "premium",
       created_by: auth.user.id,
-      moderation_status: isPublished ? "approved" : "pending",
+      moderation_status: isPublished ? "approved" : wantsPublish ? "pending" : "pending",
       publish_date: isPublished ? new Date().toISOString() : null,
     };
 

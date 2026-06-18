@@ -20,7 +20,7 @@ A world-class premium SaaS education platform built with Next.js, Tailwind CSS, 
 - **Language Switcher** - English and German support
 - **AI Quiz Generator** - Futuristic AI generation interface
 - **Responsive Design** - Perfect on desktop, tablet, and mobile
-- **Premium UI** - Apple/Stripe/Linear inspired design
+- **Premium UI** - Apple/Linear inspired design
 
 ## 🛠️ Tech Stack
 

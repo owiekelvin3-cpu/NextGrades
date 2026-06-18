@@ -2,11 +2,20 @@ import { supabase } from "@/lib/supabase/client";
 import type { AppRole } from "@/lib/auth/roles";
 import { resolveUserRole } from "@/lib/auth/roles";
 import { ADMIN_PORTAL_HOME, ADMIN_PORTAL_LOGIN, isAdminPortalPath } from "@/lib/admin/portal-paths";
+import type { User } from "@supabase/supabase-js";
 
 /** Safe redirect path — only internal app routes. */
 export function sanitizeRedirect(path: string | null | undefined): string | null {
   if (!path || !path.startsWith("/") || path.startsWith("//")) return null;
-  if (path.startsWith("/login") || path.startsWith("/signin") || path.startsWith("/register") || path.startsWith("/auth")) return null;
+  if (
+    path.startsWith("/login") ||
+    path.startsWith("/signin") ||
+    path.startsWith("/signup") ||
+    path.startsWith("/register") ||
+    path.startsWith("/auth")
+  ) {
+    return null;
+  }
   if (path.startsWith(ADMIN_PORTAL_LOGIN)) return null;
   return path;
 }
@@ -35,24 +44,43 @@ export function resolvePostAuthRedirect(role: AppRole, redirectTo: string | null
   return getDashboardPathForRole(role);
 }
 
-export function buildLoginUrl(redirectTo?: string | null, mode?: "signup"): string {
+export function buildLoginUrl(redirectTo?: string | null): string {
   const params = new URLSearchParams();
   const safe = sanitizeRedirect(redirectTo);
   if (safe) params.set("redirect", safe);
-  if (mode === "signup") params.set("mode", "signup");
   const q = params.toString();
   return q ? `/login?${q}` : "/login";
 }
 
-export async function fetchProfileRole(userId: string): Promise<AppRole | null> {
+export function buildSignupUrl(redirectTo?: string | null): string {
+  const params = new URLSearchParams();
+  const safe = sanitizeRedirect(redirectTo);
+  if (safe) params.set("redirect", safe);
+  const q = params.toString();
+  return q ? `/signup?${q}` : "/signup";
+}
+
+export async function fetchProfileRole(
+  userId: string,
+  userMetadata?: User["user_metadata"] | null
+): Promise<AppRole | null> {
   const { data: profile } = await supabase
     .from("profiles")
     .select("role")
     .eq("id", userId)
     .maybeSingle();
 
+  if (profile?.role) {
+    return resolveUserRole(profile.role, userMetadata ?? undefined);
+  }
+
+  if (userMetadata) {
+    return resolveUserRole(null, userMetadata);
+  }
+
   const { data: { user } } = await supabase.auth.getUser();
-  return resolveUserRole(profile?.role, user?.user_metadata);
+  if (user?.id !== userId) return null;
+  return resolveUserRole(profile?.role, user.user_metadata);
 }
 
 export async function getDashboardPathForUser(): Promise<string> {

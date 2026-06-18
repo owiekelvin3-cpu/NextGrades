@@ -117,14 +117,53 @@ function NavTab({
   active,
   label,
   unread,
+  pillStyle = false,
 }: {
   item: NavItem;
   active: boolean;
   label: string;
   unread: number;
+  pillStyle?: boolean;
 }) {
   const Icon = item.icon;
   const showBadge = item.badge === "notifications" && unread > 0;
+
+  if (pillStyle) {
+    return (
+      <li className="min-w-0 flex-1 basis-0">
+        <Link
+          href={item.href}
+          aria-current={active ? "page" : undefined}
+          aria-label={label}
+          className="relative flex min-h-[56px] flex-col items-center justify-center gap-1 px-0.5 touch-manipulation active:opacity-80"
+        >
+          <span
+            className={cn(
+              "relative flex h-10 w-14 items-center justify-center rounded-2xl transition-all",
+              active
+                ? "bg-[#0D1B2A] text-white shadow-md dark:bg-[#D4AF37] dark:text-[#0D1B2A]"
+                : "text-text-muted"
+            )}
+          >
+            <Icon className="h-5 w-5" strokeWidth={active ? 2.25 : 1.75} />
+            {showBadge && (
+              <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 px-0.5 text-[9px] font-bold text-white">
+                {unread > 9 ? "9+" : unread}
+              </span>
+            )}
+          </span>
+          <span
+            className={cn(
+              "max-w-full truncate text-[10px] leading-tight",
+              active ? "font-semibold text-[#0D1B2A] dark:text-[#D4AF37]" : "font-medium text-text-muted"
+            )}
+          >
+            {label}
+          </span>
+        </Link>
+      </li>
+    );
+  }
 
   return (
     <li className="min-w-0 flex-1 basis-0">
@@ -170,6 +209,7 @@ export function MobileBottomNav({ role: roleProp }: Props) {
   if (!role) return null;
 
   const items = buildItems(role);
+  const usePillNav = role === "teacher";
 
   return (
     <nav
@@ -177,8 +217,15 @@ export function MobileBottomNav({ role: roleProp }: Props) {
       className="fixed inset-x-0 bottom-0 z-50 md:hidden"
       style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
     >
-      <div className="mx-2 mb-2 overflow-hidden rounded-3xl border border-border-default bg-surface-elevated shadow-[0_8px_32px_rgba(13,27,42,0.12)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.4)] sm:mx-3 sm:mb-3">
-        <ul className="flex items-stretch px-0.5 py-1">
+      <div
+        className={cn(
+          "mx-3 mb-3 overflow-hidden rounded-[1.75rem] border shadow-[0_8px_32px_rgba(13,27,42,0.14)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.45)] sm:mx-4",
+          usePillNav
+            ? "border-gray-100 bg-white dark:border-white/10 dark:bg-[#112240]"
+            : "border-border-default bg-surface-elevated"
+        )}
+      >
+        <ul className="flex items-stretch px-1 py-1.5">
           {items.map((item) => {
             const active = item.match ? item.match(pathname) : pathname === item.href;
             return (
@@ -188,6 +235,7 @@ export function MobileBottomNav({ role: roleProp }: Props) {
                 active={active}
                 label={t(item.labelKey, { defaultValue: item.labelKey })}
                 unread={unread}
+                pillStyle={usePillNav}
               />
             );
           })}

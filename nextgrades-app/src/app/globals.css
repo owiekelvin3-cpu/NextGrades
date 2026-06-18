@@ -377,14 +377,25 @@ body {
   min-width: 0;
 }
 
-.pt-site-nav {
-  padding-top: calc(4.5rem + env(safe-area-inset-top, 0px));
+:root {
+  --site-nav-height: 4.25rem;
+  --marketing-bottom-nav-height: 3.25rem;
 }
 
 @media (min-width: 768px) {
-  .pt-site-nav {
-    padding-top: 5rem;
+  :root {
+    --site-nav-height: 4.75rem;
   }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --site-nav-height: 5.5rem;
+  }
+}
+
+.pt-site-nav {
+  padding-top: calc(var(--site-nav-height) + env(safe-area-inset-top, 0px));
 }
 
 /* Dashboard tables & wide content on small screens */
@@ -455,11 +466,6 @@ body {
   min-width: 0;
   max-width: 100%;
   overflow-x: clip;
-}
-
-/* Coursera-style sticky bottom nav on marketing pages */
-:root {
-  --marketing-bottom-nav-height: 3.25rem;
 }
 
 @media (max-width: 767px) {

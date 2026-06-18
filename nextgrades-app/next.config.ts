@@ -1,5 +1,13 @@
 import type { NextConfig } from "next";
+import bundleAnalyzer from "@next/bundle-analyzer";
 import { securityHeaders } from "./src/lib/security/headers";
+import { assertProductionEnvReady } from "./src/lib/security/env";
+
+if (process.env.NODE_ENV === "production") {
+  assertProductionEnvReady();
+}
+
+const lucideShim = "./src/lib/icons/lucide-react.tsx";
 
 function supabaseImagePatterns(): { protocol: "https"; hostname: string }[] {
   const patterns: { protocol: "https"; hostname: string }[] = [
@@ -39,7 +47,6 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     optimizePackageImports: [
-      "lucide-react",
       "framer-motion",
       "@fortawesome/free-solid-svg-icons",
       "@fortawesome/free-brands-svg-icons",
@@ -49,10 +56,22 @@ const nextConfig: NextConfig = {
       "react-i18next",
     ],
   },
+  turbopack: {
+    resolveAlias: {
+      "lucide-react": lucideShim,
+    },
+  },
+  webpack: (config) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      "lucide-react": require("path").join(__dirname, "src/lib/icons/lucide-react.tsx"),
+    };
+    return config;
+  },
   compiler: {
     removeConsole:
       process.env.NODE_ENV === "production" ? { exclude: ["error", "warn"] } : false,
   },
 };
 
-export default nextConfig;
+export default bundleAnalyzer({ enabled: process.env.ANALYZE === "true" })(nextConfig);

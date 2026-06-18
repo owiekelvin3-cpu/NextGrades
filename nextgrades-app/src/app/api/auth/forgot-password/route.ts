@@ -3,14 +3,21 @@ import { normalizeEmail, EMAIL_REGEX } from "@/lib/auth/registration";
 import { findUserByEmail, generateAuthLink, getAuthConfigError, getPasswordResetRedirectUrl } from "@/lib/auth/auth-links";
 import { isResendConfigured, sendPasswordResetEmail } from "@/lib/email";
 import { enforceRateLimit } from "@/lib/security/rate-limit";
+import { verifyTurnstileToken } from "@/lib/security/turnstile";
+import { logSecurityEvent } from "@/lib/auth/audit-log";
 
 /** Password reset via Resend (not Supabase SMTP). */
 export async function POST(request: Request) {
-  const limited = enforceRateLimit(request, { bucket: "auth:forgot-password", limit: 5, windowSec: 3600 });
+  const limited = await enforceRateLimit(request, { bucket: "auth:forgot-password", limit: 5, windowSec: 3600 });
   if (limited) return limited;
 
   try {
-    const body = (await request.json()) as { email?: string };
+    const body = (await request.json()) as { email?: string; turnstileToken?: string };
+    const turnstile = await verifyTurnstileToken(body.turnstileToken, request);
+    if (!turnstile.ok) {
+      return NextResponse.json({ error: turnstile.error }, { status: 400 });
+    }
+
     const email = normalizeEmail(body.email || "");
 
     if (!EMAIL_REGEX.test(email)) {
@@ -64,6 +71,11 @@ export async function POST(request: Request) {
     if (!result.success) {
       return NextResponse.json({ error: result.error || "Failed to send reset email" }, { status: 500 });
     }
+
+    void logSecurityEvent(
+      { eventType: "password_reset_requested", success: true, userId: user.id, email },
+      request
+    );
 
     return NextResponse.json({
       success: true,

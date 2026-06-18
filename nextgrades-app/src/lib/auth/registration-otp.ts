@@ -3,13 +3,10 @@ import { isSupabaseServiceRoleConfigured } from "@/lib/supabase/env";
 import { sendVerificationCodeEmail, isResendConfigured } from "@/lib/email";
 import { findUserByEmail } from "@/lib/auth/auth-links";
 import { normalizeEmail } from "@/lib/auth/registration";
+import { generateSixDigitCode, hashOtpCode, verifyOtpHash } from "@/lib/auth/otp-crypto";
 
 const OTP_TTL_MINUTES = 10;
 const MAX_VERIFY_ATTEMPTS = 5;
-
-function generateSixDigitCode(): string {
-  return String(Math.floor(100000 + Math.random() * 900000));
-}
 
 export async function issueRegistrationOtp(email: string, fullName?: string) {
   if (!isSupabaseServiceRoleConfigured() || !isResendConfigured()) {
@@ -18,6 +15,7 @@ export async function issueRegistrationOtp(email: string, fullName?: string) {
 
   const normalized = normalizeEmail(email);
   const code = generateSixDigitCode();
+  const codeHash = hashOtpCode(code, normalized);
   const expiresAt = new Date(Date.now() + OTP_TTL_MINUTES * 60 * 1000).toISOString();
 
   const admin = createAdminClient();
@@ -26,7 +24,7 @@ export async function issueRegistrationOtp(email: string, fullName?: string) {
 
   const { error: insertError } = await admin.from("registration_otps").insert({
     email: normalized,
-    code,
+    code: codeHash,
     verified: false,
     attempts: 0,
     expires_at: expiresAt,
@@ -88,7 +86,12 @@ export async function verifyRegistrationOtp(email: string, code: string) {
     return { success: false, error: "Too many attempts. Request a new code." };
   }
 
-  if (otpRow.code !== trimmedCode) {
+  const codeMatches =
+    otpRow.code.length === 64 && /^[a-f0-9]+$/.test(otpRow.code)
+      ? verifyOtpHash(trimmedCode, normalized, otpRow.code)
+      : otpRow.code === trimmedCode;
+
+  if (!codeMatches) {
     await admin
       .from("registration_otps")
       .update({ attempts: otpRow.attempts + 1 })
@@ -128,11 +131,11 @@ export async function verifyRegistrationOtp(email: string, code: string) {
     (typeof meta.full_name === "string" && meta.full_name) ||
     (typeof meta.name === "string" && meta.name) ||
     undefined;
-  const role = meta.role === "teacher" ? "teacher" : "student";
+  const role = meta.role === "teacher" ? "teacher" : meta.role === "admin" ? "admin" : "student";
 
   if (isResendConfigured()) {
     const { sendWelcomeEmail } = await import("@/lib/email");
-    void sendWelcomeEmail(normalized, fullName, role);
+    void sendWelcomeEmail(normalized, fullName, role === "teacher" ? "teacher" : "student");
   }
 
   const { notifyAdminNewRegistration, notifyAccountVerification } = await import(
@@ -141,5 +144,5 @@ export async function verifyRegistrationOtp(email: string, code: string) {
   void notifyAdminNewRegistration({ userId: user.id, role, name: fullName });
   void notifyAccountVerification(user.id);
 
-  return { success: true, userId: user.id };
+  return { success: true, userId: user.id, role };
 }

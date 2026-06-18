@@ -1,5 +1,7 @@
 import { createAdminClient } from "@/lib/supabase/admin";
 import { isSupabaseServiceRoleConfigured } from "@/lib/supabase/env";
+import { passwordPolicyError } from "@/lib/auth/password-policy";
+import { emailExistsInAuth } from "@/lib/auth/lookup-email";
 
 export const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -16,42 +18,26 @@ export function normalizeEmail(email: string): string {
 }
 
 export function validatePassword(password: string): string | null {
-  if (password.length < 8) return "Password must be at least 8 characters";
-  return null;
+  return passwordPolicyError(password);
 }
 
 export function validateSimpleRegistration(data: SimpleRegistrationPayload): string | null {
   if (!data.fullName?.trim() || data.fullName.trim().length < 2) {
-    return "Please enter your full name";
+    return "Bitte gib deinen vollständigen Namen ein.";
   }
   if (!EMAIL_REGEX.test(normalizeEmail(data.email))) {
-    return "Please enter a valid email address";
+    return "Bitte gib eine gültige E-Mail-Adresse ein.";
   }
   const pwdErr = validatePassword(data.password);
   if (pwdErr) return pwdErr;
-  if (data.password !== data.confirmPassword) return "Passwords do not match";
-  if (data.role !== "student" && data.role !== "teacher") return "Please select a valid role";
+  if (data.password !== data.confirmPassword) return "Die Passwörter stimmen nicht überein.";
+  if (data.role !== "student" && data.role !== "teacher") return "Bitte wähle eine gültige Rolle.";
   return null;
 }
 
 export async function emailExists(email: string): Promise<boolean> {
-  const normalized = normalizeEmail(email);
-
-  if (isSupabaseServiceRoleConfigured()) {
-    const admin = createAdminClient();
-    const { data, error } = await admin.auth.admin.listUsers({ page: 1, perPage: 1000 });
-    if (!error && data.users.some((u) => u.email?.toLowerCase() === normalized)) return true;
-
-    const { data: profile } = await admin
-      .from("profiles")
-      .select("id")
-      .ilike("email", normalized)
-      .maybeSingle();
-    if (profile) return true;
-    return false;
-  }
-
-  return false;
+  if (!isSupabaseServiceRoleConfigured()) return false;
+  return emailExistsInAuth(email);
 }
 
 export async function logRegistrationAttempt(

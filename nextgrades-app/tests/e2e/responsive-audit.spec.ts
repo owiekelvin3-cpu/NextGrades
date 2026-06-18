@@ -80,6 +80,44 @@ async function preparePage(page: Page) {
   });
 }
 
+async function detectSmallTouchTargets(page: Page, maxWidth: number) {
+  if (page.viewportSize()!.width > maxWidth) return [] as string[];
+
+  return page.evaluate(() => {
+    const small: string[] = [];
+    const interactive = document.querySelectorAll(
+      'a[href], button:not([disabled]), input:not([type="hidden"]), select, textarea, [role="button"]'
+    );
+
+    for (const el of interactive) {
+      if (!(el instanceof HTMLElement)) continue;
+      const style = getComputedStyle(el);
+      if (style.display === "none" || style.visibility === "hidden") continue;
+      if (parseFloat(style.opacity) === 0) continue;
+
+      const rect = el.getBoundingClientRect();
+      if (rect.width < 4 || rect.height < 4) continue;
+      if (rect.bottom < 0 || rect.top > window.innerHeight) continue;
+
+      const parentLabel = el.closest("label");
+      if (parentLabel instanceof HTMLElement) {
+        const labelRect = parentLabel.getBoundingClientRect();
+        if (Math.min(labelRect.width, labelRect.height) >= 44) continue;
+      }
+
+      const minDim = Math.min(rect.width, rect.height);
+      if (minDim >= 44) continue;
+
+      let label = el.tagName.toLowerCase();
+      if (el.getAttribute("aria-label")) label += `[${el.getAttribute("aria-label")}]`;
+      else if (el.textContent?.trim()) label += `: ${el.textContent.trim().slice(0, 24)}`;
+      small.push(`${label} (${Math.round(rect.width)}×${Math.round(rect.height)}px)`);
+    }
+
+    return small.slice(0, 12);
+  });
+}
+
 async function detectOverflow(page: Page) {
   return page.evaluate(() => {
     const doc = document.documentElement;
@@ -202,6 +240,17 @@ async function scanRoutes(page: Page, routes: typeof MARKETING_ROUTES, issues: A
         });
       }
 
+      const smallTargets = await detectSmallTouchTargets(page, 480);
+      if (smallTargets.length > 0) {
+        issues.push({
+          type: "small-touch-target",
+          viewport: vp.name,
+          route: route.path,
+          slug: route.slug,
+          details: smallTargets.join("; "),
+        });
+      }
+
       if (response && response.status() >= 500) {
         issues.push({
           type: "page-overflow",
@@ -246,7 +295,10 @@ test.describe("responsive audit", () => {
     const reportPath = writeReport(issues);
     console.log(`Marketing scan: ${issues.length} issues → ${reportPath}`);
     const critical = issues.filter(
-      (i) => i.type === "page-overflow" || i.type === "horizontal-overflow"
+      (i) =>
+        i.type === "page-overflow" ||
+        i.type === "horizontal-overflow" ||
+        i.type === "small-touch-target"
     );
     expect(critical).toEqual([]);
   });

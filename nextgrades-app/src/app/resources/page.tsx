@@ -1,59 +1,50 @@
 "use client";
 
-import { Suspense } from "react";
-import { motion } from "framer-motion";
-import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
+import { Suspense, useMemo } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { ResourcesHubExperience } from "@/components/resources/ResourcesHubExperience";
+import { ResourcesMarketplaceExperience } from "@/components/resources/ResourcesMarketplaceExperience";
+import { MockupPageHero } from "@/components/mockup/MockupPageHero";
+import { MockupFeatureStrip } from "@/components/mockup/MockupFeatureStrip";
 import { useTranslation } from "react-i18next";
-import { GraduationCap, Users, BookOpen } from "lucide-react";
-import { HUB_HERO_IMAGE } from "@/lib/resources/ui-config";
-import { appShell } from "@/lib/theme/shell";
+import { useCmsImage } from "@/hooks/useCmsImage";
+import { RESOURCES_HERO_IMAGE } from "@/lib/marketing-images";
+import { BookOpen, Sparkles, Shield, Layers } from "lucide-react";
+
+const BENEFIT_ICONS = [BookOpen, Sparkles, Shield, Layers];
 
 export default function ResourcesPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const heroImage = useCmsImage("cmsImages.resources.hero", RESOURCES_HERO_IMAGE);
+
+  const benefits = useMemo(() => {
+    const data = t("resources.benefits", { returnObjects: true });
+    const items = Array.isArray(data) ? (data as { title: string; desc: string }[]) : [];
+    return items.map((item, i) => ({ ...item, icon: BENEFIT_ICONS[i] ?? BookOpen }));
+  }, [t, i18n.language]);
 
   return (
-    <div className={appShell.marketingPageMuted}>
+    <div className="marketing-page-root flex min-h-screen flex-col bg-[#FAF8F5]">
       <Navbar />
 
       <main className="flex-1">
-        <section className="relative overflow-hidden bg-[#0D1B2A] pb-16 text-white md:pb-20">
-          <MarketingHeroBlend src={HUB_HERO_IMAGE} alt="" variant="dark-full" priority sizes="100vw" opacity={0.85} />
-          <div className="relative z-10 mx-auto w-full min-w-0 max-w-7xl px-4 pt-site-nav sm:px-6 md:pt-28 lg:px-8">
-            <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="grid min-w-0 items-center gap-10 lg:grid-cols-2">
-              <div className="min-w-0">
-                <p className="text-xs font-bold uppercase tracking-widest text-[#D4AF37] mb-3">
-                  {t("common.resources").toUpperCase()}
-                </p>
-                <h1 className="text-4xl md:text-5xl font-bold mb-5 leading-tight">{t("resources.heroTitle")}</h1>
-                <p className="text-gray-300 text-lg mb-8 max-w-xl">{t("resources.heroSubtitle")}</p>
-                <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
-                  {[
-                    { icon: GraduationCap, title: t("resources.heroFeature1"), desc: t("resources.heroFeature1Desc") },
-                    { icon: Users, title: t("resources.heroFeature2"), desc: t("resources.heroFeature2Desc") },
-                    { icon: BookOpen, title: t("resources.heroFeature3"), desc: t("resources.heroFeature3Desc") },
-                  ].map(({ icon: Icon, title, desc }) => (
-                    <div key={title} className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 p-3 text-left sm:flex-col sm:text-center">
-                      <div className="mx-auto flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/10 sm:mb-2">
-                        <Icon className="h-5 w-5 text-[#D4AF37]" />
-                      </div>
-                      <div className="min-w-0">
-                        <p className="text-sm font-semibold">{title}</p>
-                        <p className="mt-0.5 text-xs text-gray-400">{desc}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div className="hidden min-h-[280px] lg:block" aria-hidden />
-            </motion.div>
-          </div>
-        </section>
+        <MockupPageHero
+          breadcrumbs={[
+            { label: t("common.home"), href: "/" },
+            { label: t("common.resources") },
+          ]}
+          eyebrow={t("common.resources").toUpperCase()}
+          title={t("resources.heroTitle")}
+          subtitle={t("resources.heroSubtitle")}
+          heroImage={heroImage}
+        />
+
+        {benefits.length > 0 && (
+          <MockupFeatureStrip items={benefits} columns={4} className="bg-[#FAF8F5]" />
+        )}
 
         <Suspense fallback={null}>
-          <ResourcesHubExperience />
+          <ResourcesMarketplaceExperience />
         </Suspense>
       </main>
 

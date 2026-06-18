@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import {
-  Users,
+  UserRound,
   Calendar,
   Star,
   CheckCircle2,
@@ -24,7 +24,7 @@ import { PROGRAMS_HERO_IMAGE, PROGRAMS_PAGE_CARD_IMAGES } from "@/lib/marketing-
 import { MarketingImage } from "@/components/marketing/MarketingImage";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
 
-const statIcons = [GraduationCap, Users, Star];
+const statIcons = [GraduationCap, UserRound, Star];
 const heroFeatureIcons = [Hexagon, BookOpen, Sparkles];
 
 type ProgramItem = {
@@ -40,6 +40,7 @@ type CompareRow = {
   c1: string | boolean;
   c2: string | boolean;
   c3: string | boolean;
+  c4?: string | boolean;
 };
 
 function CompareCell({ value, dark }: { value: string | boolean; dark: boolean }) {
@@ -66,12 +67,13 @@ export default function ProgramsPage() {
     features: string;
     oneOnOne: string;
     group: string;
+    library?: string;
     math: string;
   }>("programsPage.compareHeaders");
   const compareHeaders =
     compareHeadersRaw && typeof compareHeadersRaw === "object" && "features" in compareHeadersRaw
       ? compareHeadersRaw
-      : { features: "Features", oneOnOne: "1:1", group: "Group", math: "Math Program" };
+      : { features: "Merkmale", oneOnOne: "1:1 Premium", group: "Lerngruppe", library: "Lernbibliothek", math: "Mathe Matura" };
 
   const safePrograms = Array.isArray(programs) ? programs : [];
   const safeStats = Array.isArray(stats) ? stats : [];
@@ -103,8 +105,7 @@ export default function ProgramsPage() {
                   {t("programsPage.heroEyebrow")}
                 </p>
                 <h1 className="mb-6 text-4xl font-bold leading-[1.12] sm:text-5xl lg:text-[3.25rem]">
-                  {t("programs.title")}{" "}
-                  <span className="text-[#D4AF37]">{t("programs.subtitle")}</span>
+                  {t("programs.title")}
                 </h1>
                 <p className="mb-8 max-w-lg text-base leading-relaxed text-gray-300 sm:text-lg">
                   {t("programsPage.heroSubtitle")}
@@ -191,9 +192,9 @@ export default function ProgramsPage() {
                 {t("programsPage.sectionDesc")}
               </p>
             </div>
-            <div className="grid gap-6 md:grid-cols-3">
+            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
               {safePrograms.map((program, index) => {
-                const featured = index === 2;
+                const featured = index === 3;
                 return (
                   <Card
                     key={program.title}
@@ -273,12 +274,13 @@ export default function ProgramsPage() {
                 theme === "dark" ? "border-white/10" : "border-gray-200"
               }`}
             >
-              <table className="w-full min-w-[640px] text-sm">
+              <table className="w-full min-w-[760px] text-sm">
                 <thead className={theme === "dark" ? "bg-[#112240]" : "bg-gray-50"}>
                   <tr>
                     <th className="px-3 py-3 text-left text-xs font-semibold sm:px-6 sm:py-4 sm:text-sm">{compareHeaders.features}</th>
                     <th className="px-3 py-3 text-center text-xs font-semibold sm:px-6 sm:py-4 sm:text-sm">{compareHeaders.oneOnOne}</th>
                     <th className="px-3 py-3 text-center text-xs font-semibold sm:px-6 sm:py-4 sm:text-sm">{compareHeaders.group}</th>
+                    <th className="px-3 py-3 text-center text-xs font-semibold sm:px-6 sm:py-4 sm:text-sm">{compareHeaders.library ?? "Lernbibliothek"}</th>
                     <th className="bg-[#D4AF37]/10 px-3 py-3 text-center text-xs font-semibold text-[#D4AF37] sm:px-6 sm:py-4 sm:text-sm">
                       {compareHeaders.math}
                     </th>
@@ -307,18 +309,11 @@ export default function ProgramsPage() {
                       <td className="px-3 py-3 text-center sm:px-6 sm:py-4">
                         <CompareCell value={row.c2} dark={theme === "dark"} />
                       </td>
+                      <td className="px-3 py-3 text-center sm:px-6 sm:py-4">
+                        <CompareCell value={row.c3} dark={theme === "dark"} />
+                      </td>
                       <td className="bg-[#D4AF37]/5 px-3 py-3 text-center sm:px-6 sm:py-4">
-                        {row.c3 === true ? (
-                          <CheckCircle2 className="w-5 h-5 text-[#D4AF37] mx-auto" />
-                        ) : (
-                          <span
-                            className={`text-sm font-medium ${
-                              theme === "dark" ? "text-white" : "text-[#0D1B2A]"
-                            }`}
-                          >
-                            {row.c3}
-                          </span>
-                        )}
+                        <CompareCell value={row.c4 ?? false} dark={theme === "dark"} />
                       </td>
                     </tr>
                   ))}

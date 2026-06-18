@@ -13,25 +13,42 @@ export async function GET() {
   const since = new Date();
   since.setDate(since.getDate() - 30);
 
-  const [settingsRes, logsRes, sessionsRes, messagesRes] = await Promise.all([
+  const sinceIso = since.toISOString();
+
+  const [settingsRes, totalLogsRes, successLogsRes, latencySampleRes, sessionsRes, messagesRes] = await Promise.all([
     supabase.from("chatbot_settings").select("*").limit(1).maybeSingle(),
-    supabase.from("chat_usage_logs").select("id, success, latency_ms, created_at").gte("created_at", since.toISOString()),
-    supabase.from("chat_sessions").select("id", { count: "exact", head: true }).gte("created_at", since.toISOString()),
-    supabase.from("chat_messages").select("id", { count: "exact", head: true }).gte("created_at", since.toISOString()),
+    supabase
+      .from("chat_usage_logs")
+      .select("id", { count: "exact", head: true })
+      .gte("created_at", sinceIso),
+    supabase
+      .from("chat_usage_logs")
+      .select("id", { count: "exact", head: true })
+      .gte("created_at", sinceIso)
+      .eq("success", true),
+    supabase
+      .from("chat_usage_logs")
+      .select("latency_ms")
+      .gte("created_at", sinceIso)
+      .not("latency_ms", "is", null)
+      .limit(200),
+    supabase.from("chat_sessions").select("id", { count: "exact", head: true }).gte("created_at", sinceIso),
+    supabase.from("chat_messages").select("id", { count: "exact", head: true }).gte("created_at", sinceIso),
   ]);
 
-  const logs = (logsRes.data ?? []) as { success: boolean; latency_ms: number | null }[];
-  const successCount = logs.filter((l) => l.success).length;
+  const totalRequests = totalLogsRes.count ?? 0;
+  const successCount = successLogsRes.count ?? 0;
+  const latencyRows = (latencySampleRes.data ?? []) as { latency_ms: number | null }[];
   const avgLatency =
-    logs.length > 0
-      ? Math.round(logs.reduce((s, l) => s + (l.latency_ms ?? 0), 0) / logs.length)
+    latencyRows.length > 0
+      ? Math.round(latencyRows.reduce((s, l) => s + (l.latency_ms ?? 0), 0) / latencyRows.length)
       : 0;
 
   return NextResponse.json({
     settings: settingsRes.data,
     stats: {
-      totalRequests30d: logs.length,
-      successRate: logs.length ? Math.round((successCount / logs.length) * 100) : 100,
+      totalRequests30d: totalRequests,
+      successRate: totalRequests ? Math.round((successCount / totalRequests) * 100) : 100,
       avgLatencyMs: avgLatency,
       sessions30d: sessionsRes.count ?? 0,
       messages30d: messagesRes.count ?? 0,

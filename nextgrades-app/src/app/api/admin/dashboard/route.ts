@@ -14,7 +14,7 @@ export async function GET(request: Request) {
     db.from("profiles").select("*", { count: "exact", head: true }).eq("role", "student"),
     db.from("profiles").select("*", { count: "exact", head: true }).eq("role", "teacher"),
     db.from("enrollments").select("*", { count: "exact", head: true }).eq("status", "active"),
-    db.from("teacher_stats").select("earnings_mtd"),
+    db.from("teacher_stats").select("earnings_mtd").limit(500),
     db
       .from("activity_logs")
       .select("id, action, metadata, created_at")

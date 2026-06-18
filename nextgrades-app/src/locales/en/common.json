@@ -10,6 +10,7 @@
     "subjects": "Subjects",
     "pricing": "Pricing",
     "resources": "Resources",
+    "resourcesShort": "Library",
     "contact": "Contact",
     "careers": "Careers",
     "help": "Help",
@@ -21,7 +22,10 @@
   },
   "navbar": {
     "login": "Login",
-    "freeConsultation": "Free Consultation"
+    "signup": "Create account",
+    "signupShort": "Sign up",
+    "freeConsultation": "Free Consultation",
+    "consultationShort": "Consult"
   },
   "nav": {
     "home": "Home"
@@ -41,11 +45,14 @@
     "program3": "Math Excellence Program",
     "program4": "Exam Preparation",
     "resources": "Resources",
-    "resource1": "Study Materials",
+    "resource1": "All materials",
+    "tagline": "The future of learning.",
+    "description": "Premium online tutoring and learning materials for students in Austria.",
     "resource2": "Worksheets",
     "resource3": "Explainer Videos",
     "resource4": "Exam Prep",
     "company": "Company",
+    "explore": "Explore",
     "legal": "Legal",
     "terms": "Terms & Conditions",
     "privacy": "Privacy Policy",
@@ -62,9 +69,9 @@
     "heroTitleHighlight": "Better results.",
     "heroSubtitle": "Premium online tutoring, modern learning systems, and structured learning support for ambitious students.",
     "freeConsultation": "Free Consultation",
-    "explorePrograms": "Explore programs →",
+    "explorePrograms": "Explore programs",
     "rating": "4.9/5",
-    "reviewsFrom": "from 200+ reviews",
+    "reviewsFrom": "from 100+ reviews",
     "floatingCardTitle": "Individual support.",
     "floatingCardDesc": "Real results.",
     "learnMore": "Learn more",
@@ -92,11 +99,13 @@
       }
     ],
     "programsSection": {
+      "eyebrow": "OUR PROGRAMS",
       "title": "Our Programs",
       "subtitle": "Choose the program that fits you best.",
       "items": [
         {
           "title": "1:1 Premium Tutoring",
+          "price": "from €39 / hour",
           "features": [
             "Individual, personal, efficient.",
             "Personal 1:1 support",
@@ -106,6 +115,7 @@
         },
         {
           "title": "Small Group Learning",
+          "price": "from €29 / student",
           "features": [
             "Learn together with friends.",
             "Max. 3–5 students",
@@ -114,34 +124,32 @@
           ]
         },
         {
-          "title": "Math Excellence Program",
+          "title": "Math Graduation Package",
+          "price": "€149 one-time",
           "features": [
-            "Our flagship program for math.",
-            "Weekly live sessions",
-            "Premium learning materials",
             "Graduation exam preparation",
-            "Instructors from university & sessions"
+            "Structured live sessions",
+            "Step-by-step explanations",
+            "Premium learning materials"
+          ]
+        },
+        {
+          "title": "Learning Library",
+          "price": "from €49 / semester",
+          "features": [
+            "500+ learning materials",
+            "Curriculum-aligned content",
+            "Worksheets, videos & summaries",
+            "Available instantly"
           ]
         }
       ]
     },
     "stats": [
-      {
-        "number": "200+",
-        "label": "happy students"
-      },
-      {
-        "number": "25+",
-        "label": "top teachers"
-      },
-      {
-        "number": "1,000+",
-        "label": "learning materials"
-      },
-      {
-        "number": "4.9/5",
-        "label": "rating from parents & students"
-      }
+      { "number": "100+", "label": "students" },
+      { "number": "25+", "label": "teachers" },
+      { "number": "500+", "label": "learning materials" },
+      { "number": "4.9/5", "label": "rating" }
     ],
     "platform": {
       "eyebrow": "Learning platform",
@@ -177,19 +185,58 @@
       "title": "What students and parents say",
       "items": [
         {
-          "quote": "Thanks to NextGrades I improved my math grade from C to A! The explanations are great and you understand right away!",
-          "name": "Lena, Grade 10"
+          "quote": "Thanks to NextGrades I improved my math grade from C to A! The explanations are clear and I finally understand the concepts.",
+          "name": "Lena M.",
+          "role": "Student",
+          "school": "BRG Vienna"
         },
         {
-          "quote": "The small learning group has really helped my son! He is more motivated and finally understands math.",
-          "name": "Peter M., Father"
+          "quote": "The small learning group has really helped my son. He is more motivated and finally understands math.",
+          "name": "Peter K.",
+          "role": "Parent",
+          "school": "HTL Linz"
         },
         {
-          "quote": "The platform is super intuitive and the materials are perfect for graduation exam preparation!",
-          "name": "Julia, Grade 12"
+          "quote": "The platform is intuitive and the materials are perfect for graduation exam preparation!",
+          "name": "Julia S.",
+          "role": "Student",
+          "school": "Gymnasium Salzburg"
         }
       ]
     },
+    "whySection": {
+      "eyebrow": "WHY NEXTGRADES",
+      "title": "More than tutoring — a complete learning system",
+      "subtitle": "We combine personal support, modern technology, and structured materials for measurable results.",
+      "items": [
+        { "title": "Personal support", "desc": "Every student gets individual attention — no one-size-fits-all teaching." },
+        { "title": "Experienced teachers", "desc": "Carefully selected educators with proven expertise and passion." },
+        { "title": "Modern learning platform", "desc": "Videos, exercises, and progress tracking — all in one place." }
+      ]
+    },
+    "howItWorks": {
+      "eyebrow": "HOW IT WORKS",
+      "title": "Four steps to learning success",
+      "subtitle": "From first conversation to exam success — clear and transparent.",
+      "steps": [
+        { "title": "Free consultation", "desc": "We learn about your goals and recommend the right program." },
+        { "title": "Choose a program", "desc": "1:1 tutoring, group learning, or the learning library." },
+        { "title": "Learn with structure", "desc": "Clear learning plans, premium materials, and regular feedback." },
+        { "title": "Celebrate results", "desc": "Better grades, more confidence, and lasting success." }
+      ]
+    },
+    "faq": {
+      "eyebrow": "FAQ",
+      "title": "Everything you need to know",
+      "items": [
+        { "question": "Who is NextGrades for?", "answer": "Students of all levels in Austria — from primary school to graduation exams." },
+        { "question": "How does the free consultation work?", "answer": "A no-obligation online call to discuss goals and recommend the right program." },
+        { "question": "Is tutoring online?", "answer": "Yes, all sessions take place online. You only need a laptop or tablet." },
+        { "question": "What does NextGrades cost?", "answer": "Prices vary by program. You receive a transparent quote in the consultation." },
+        { "question": "Can I use the library without tutoring?", "answer": "Yes, the learning library is available as a standalone program." }
+      ]
+    },
+    "viewAllPrograms": "View all programs",
     "cta": {
       "title": "Ready for the next step?",
       "subtitle": "Book your free consultation now and find out which program fits you best.",
@@ -296,7 +343,7 @@
     "teachAndInspire": "Teach & inspire",
     "validationFullName": "Enter your full name",
     "validationEmail": "Enter a valid email",
-    "validationPasswordLength": "At least 8 characters",
+    "validationPasswordLength": "At least 12 characters with upper, lower, number, and special character",
     "validationPasswordMatch": "Passwords do not match",
     "invalidServerResponse": "Invalid response from server. Please try again.",
     "registrationApiUnavailable": "Registration API is unavailable. Restart the dev server and try again.",
@@ -330,6 +377,30 @@
     "fullNamePlaceholder": "Your full name",
     "passwordPlaceholder": "At least 8 characters"
   },
+  "verify": {
+    "signupTitle": "Verify your email",
+    "signupSubtitle": "We sent a 6-digit code to your inbox. Enter it below to activate your account.",
+    "loginTitle": "Confirm it's you",
+    "loginSubtitle": "For your security, enter the login code we sent to your email.",
+    "verifyButton": "Verify and continue",
+    "verifying": "Verifying…",
+    "resendCode": "Resend code",
+    "resending": "Sending…",
+    "resendIn": "Resend in {{seconds}}s",
+    "resendSuccess": "New code sent — check your inbox and spam folder.",
+    "resendFailed": "Could not resend. Please wait and try again.",
+    "sendFailed": "Could not send verification code. Please try again.",
+    "invalidCode": "Invalid or expired code. Please try again.",
+    "sessionExpired": "Session expired. Please sign in again.",
+    "changeEmail": "Use a different email",
+    "successTitle": "You're verified",
+    "successSubtitle": "Taking you to your dashboard…",
+    "welcomeNew": "Welcome to NextGrades!",
+    "sendingCode": "Sending your code…",
+    "securityNote": "NextGrades will never ask you to share this code. If you didn't request it, you can safely ignore the email.",
+    "redirectHint": "You'll return to where you left off after verification.",
+    "needHelp": "Need help?"
+  },
   "about": {
     "heroTitle": "More than tutoring.",
     "heroTitle2": "A new vision for education.",
@@ -359,6 +430,25 @@
     "heroFeature3": "For all subjects",
     "heroFeature3Desc": "Materials for all important school subjects.",
     "topBarResults": "Results",
+    "allSubjects": "All subjects",
+    "allClasses": "All grades",
+    "accessAll": "All content",
+    "accessFree": "Free",
+    "accessPremium": "Premium",
+    "resetFilters": "Reset filters",
+    "sortDownloads": "Most downloaded",
+    "featuredEyebrow": "FEATURED",
+    "featuredTitle": "Popular learning materials",
+    "featuredSubtitle": "Most used content by our students",
+    "gridTitle": "All materials",
+    "searchResultsFor": "Results for \"{{query}}\"",
+    "tabs": {
+      "all": "All",
+      "free": "Free",
+      "premium": "Premium",
+      "video": "Videos",
+      "pdf": "PDFs"
+    },
     "searchPlaceholder": "Search materials...",
     "sortBy": "Sort by:",
     "sortNewest": "Newest first",
@@ -411,6 +501,11 @@
       "allSemesters": "All semesters",
       "semester1": "Semester 1",
       "semester2": "Semester 2"
+    },
+    "sidebar": {
+      "catalogTitle": "In this view",
+      "totalMaterials": "Materials",
+      "signInForProgress": "Sign in to track your progress"
     },
     "video": {
       "back": "Back to resources",
@@ -913,7 +1008,7 @@
     ],
     "stats": [
       {
-        "value": "200+",
+        "value": "100+",
         "label": "students supported"
       },
       {

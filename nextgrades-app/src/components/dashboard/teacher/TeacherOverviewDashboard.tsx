@@ -25,9 +25,9 @@ import {
   type TeacherOverviewData,
 } from "@/lib/dashboard/teacher-overview";
 import { TeacherDashboardLayout } from "./TeacherDashboardLayout";
+import { TeacherMobileDashboard } from "./TeacherMobileDashboard";
 import { TEACHER_AVATAR_COLORS, formatTeacherEuro, studentInitials } from "./teacher-ui";
 import { SwipeableCardRow, SwipeableCard } from "@/components/mobile/SwipeableCardRow";
-import { TeacherMobileQuickActions } from "@/components/mobile/MobileQuickActions";
 import { ZoomSetupStrip } from "@/components/zoom/ZoomSetupStrip";
 import { ZoomMeetingButton } from "@/components/zoom/ZoomMeetingButton";
 import {
@@ -102,10 +102,14 @@ export function TeacherOverviewDashboard() {
   const firstName = getTeacherFirstName(data.profile.fullName);
 
   return (
-    <TeacherDashboardLayout title={t("teacherDashboard.nav.dashboard")} topRightAction={createAppointmentBtn}>
-      <div className="content-ready mx-auto flex max-w-6xl flex-col gap-6">
-        <TeacherMobileQuickActions />
+    <TeacherDashboardLayout
+      title={t("teacherDashboard.nav.dashboard")}
+      topRightAction={createAppointmentBtn}
+      suppressMobileTitle
+    >
+      <TeacherMobileDashboard data={data} />
 
+      <div className="hidden md:block content-ready mx-auto flex max-w-6xl flex-col gap-6">
         <OverviewHero
           eyebrow={todayLabel}
           title={t("teacherDashboard.welcomeBack", { name: firstName || t("teacherDashboard.sidebarGuest") })}

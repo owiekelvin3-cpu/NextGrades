@@ -110,7 +110,7 @@
     "statsTitle": "A new generation of learning",
     "stats": [
       {
-        "value": "200+",
+        "value": "100+",
         "label": "happy students"
       },
       {
@@ -118,7 +118,7 @@
         "label": "experienced teachers"
       },
       {
-        "value": "95%",
+        "value": "100%",
         "label": "improved grades"
       },
       {
@@ -174,7 +174,7 @@
       },
       {
         "year": "2024",
-        "title": "200+ students",
+        "title": "100+ students",
         "desc": "Growing community and expanded subject offerings."
       },
       {
@@ -212,7 +212,7 @@
     "freeConsultation": "Free consultation",
     "stats": [
       {
-        "number": "200+",
+        "number": "100+",
         "label": "happy students"
       },
       {
@@ -353,7 +353,7 @@
     ],
     "stats": [
       {
-        "value": "200+",
+        "value": "100+",
         "label": "happy students"
       },
       {
@@ -464,8 +464,6 @@
     ]
   },
   "resourcesPage": {
-    "rating": "4.9/5 stars",
-    "ratingDesc": "Rated by parents & students",
     "tabs": [
       "All resources",
       "Learning materials",
@@ -482,118 +480,6 @@
       "Guides & study plans",
       "Explainer videos",
       "Formula collections"
-    ],
-    "resultsCount": "428 results",
-    "sortNewest": "Sort by: Newest first",
-    "freeResources": [
-      {
-        "title": "Math formula collection",
-        "subtitle": "Grades 1–5",
-        "description": "All important formulas and rules clearly summarized.",
-        "type": "PDF"
-      },
-      {
-        "title": "German spelling guide",
-        "subtitle": "Free",
-        "description": "The most important spelling rules explained simply.",
-        "type": "PDF"
-      },
-      {
-        "title": "Study plan template",
-        "subtitle": "Free",
-        "description": "Plan your learning step by step and stay on track.",
-        "type": "PDF"
-      },
-      {
-        "title": "5 tips against exam stress",
-        "subtitle": "Free",
-        "description": "Discover how to prepare for exams without stress.",
-        "type": "Video"
-      }
-    ],
-    "premiumResources": [
-      {
-        "title": "Mathematics",
-        "subtitle": "Grade 2, Semester 2",
-        "description": "Complete learning materials, videos, worksheets and more.",
-        "type": "PREMIUM"
-      },
-      {
-        "title": "German",
-        "subtitle": "Grade 3, Semester 1",
-        "description": "German learning materials, videos and worksheets.",
-        "type": "PREMIUM"
-      },
-      {
-        "title": "English",
-        "subtitle": "Grade 4, Semester 2",
-        "description": "Grammar, vocabulary, materials and more.",
-        "type": "PREMIUM"
-      },
-      {
-        "title": "Physics",
-        "subtitle": "Grade 5, Semester 1",
-        "description": "All topics, formulas, examples and exercises.",
-        "type": "PREMIUM"
-      }
-    ],
-    "subjectsWithCounts": [
-      {
-        "name": "All subjects",
-        "count": 428
-      },
-      {
-        "name": "Mathematics",
-        "count": 98
-      },
-      {
-        "name": "German",
-        "count": 82
-      },
-      {
-        "name": "English",
-        "count": 76
-      },
-      {
-        "name": "Physics",
-        "count": 54
-      },
-      {
-        "name": "Chemistry",
-        "count": 48
-      },
-      {
-        "name": "Biology",
-        "count": 38
-      },
-      {
-        "name": "Economics",
-        "count": 32
-      }
-    ],
-    "subjectsFilter": [
-      "All subjects",
-      "Mathematics",
-      "English",
-      "German",
-      "Physics",
-      "Chemistry"
-    ],
-    "gradesFilter": [
-      "All grades",
-      "Grade 5",
-      "Grade 6",
-      "Grade 7",
-      "Grade 8",
-      "Grade 9",
-      "Grade 10",
-      "Grade 11",
-      "Grade 12"
-    ],
-    "semestersFilter": [
-      "All semesters",
-      "Semester 1",
-      "Semester 2"
     ]
   },
   "pricingPage": {
@@ -601,7 +487,7 @@
     "plansTitle": "Invest in your future — pick the support that fits you",
     "stats": [
       {
-        "value": "200+",
+        "value": "100+",
         "label": "active students"
       },
       {
@@ -609,7 +495,7 @@
         "label": "average rating"
       },
       {
-        "value": "95%",
+        "value": "100%",
         "label": "grade improvement"
       },
       {
@@ -617,7 +503,7 @@
         "label": "online & flexible"
       }
     ],
-    "trustedTitle": "Trusted by 200+ students",
+    "trustedTitle": "Trusted by 100+ students",
     "trustedDesc": "4.9/5 average rating from real students and parents",
     "loading": "Loading...",
     "finalCtaTitle": "Together we achieve great things",
@@ -1265,6 +1151,9 @@
     "studentsSubtitle": "Manage your students, appointments, and progress.",
     "export": "Export",
     "searchStudents": "Search students…",
+    "mobileTodayOverview": "Today's teaching",
+    "mobileQuickStats": "Teaching status",
+    "viewDetails": "View details",
     "statusActive": "Active",
     "hoursBooked": "Hours booked",
     "hoursRemaining": "Hours remaining",

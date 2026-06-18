@@ -416,7 +416,8 @@ export async function fetchProfilesByRole(role: "student" | "teacher" | "admin")
     .from("profiles")
     .select("id, full_name, role, avatar_url, created_at")
     .eq("role", role)
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false })
+    .limit(100);
 
   if (error || !data) return [];
   return data as DashboardProfile[];

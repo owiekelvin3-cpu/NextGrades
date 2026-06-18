@@ -1,22 +1,8 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { requireAdminApi } from "@/lib/auth/api-auth";
 import { isSupabaseServiceRoleConfigured } from "@/lib/supabase/env";
 import { notifyAnnouncement } from "@/lib/notifications/triggers";
-
-async function requireAdmin() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) return { error: NextResponse.json({ error: "Unauthorized" }, { status: 401 }) };
-
-  const { data: profile } = await supabase.from("profiles").select("role").eq("id", user.id).maybeSingle();
-  if (profile?.role !== "admin") {
-    return { error: NextResponse.json({ error: "Forbidden" }, { status: 403 }) };
-  }
-  return { user, supabase };
-}
 
 async function dispatchAnnouncement(announcement: {
   id: string;
@@ -47,10 +33,10 @@ async function dispatchAnnouncement(announcement: {
 }
 
 export async function GET() {
-  const auth = await requireAdmin();
-  if ("error" in auth && auth.error) return auth.error;
+  const gate = await requireAdminApi();
+  if (gate.error) return gate.error;
 
-  const admin = isSupabaseServiceRoleConfigured() ? createAdminClient() : auth.supabase!;
+  const admin = isSupabaseServiceRoleConfigured() ? createAdminClient() : gate.auth!.supabase;
   const { data, error } = await admin
     .from("scheduled_announcements")
     .select("*")
@@ -62,9 +48,9 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const auth = await requireAdmin();
-  if ("error" in auth && auth.error) return auth.error;
-  const { user } = auth;
+  const gate = await requireAdminApi();
+  if (gate.error) return gate.error;
+  const user = gate.auth!.user;
 
   const body = (await request.json()) as {
     title?: string;
@@ -82,11 +68,11 @@ export async function POST(request: Request) {
   const scheduledAt = body.scheduledAt ? new Date(body.scheduledAt) : null;
   const sendNow = !scheduledAt || scheduledAt.getTime() <= Date.now();
 
-  const admin = isSupabaseServiceRoleConfigured() ? createAdminClient() : auth.supabase!;
+  const admin = isSupabaseServiceRoleConfigured() ? createAdminClient() : gate.auth!.supabase;
   const { data: row, error } = await admin
     .from("scheduled_announcements")
     .insert({
-      created_by: user!.id,
+      created_by: user.id,
       title: body.title.trim(),
       message: body.message.trim(),
       action_url: body.actionUrl?.trim() || null,
@@ -109,8 +95,8 @@ export async function POST(request: Request) {
 
 /** Process due scheduled announcements */
 export async function PATCH() {
-  const auth = await requireAdmin();
-  if ("error" in auth && auth.error) return auth.error;
+  const gate = await requireAdminApi();
+  if (gate.error) return gate.error;
 
   if (!isSupabaseServiceRoleConfigured()) {
     return NextResponse.json({ processed: 0 });

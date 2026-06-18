@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createServerReadClient } from "@/lib/supabase/admin";
 import { requireAdminApi } from "@/lib/auth/api-auth";
+import { publicCacheHeaders } from "@/lib/cache/public-cache";
 
 export async function GET() {
   try {
@@ -13,7 +14,7 @@ export async function GET() {
       .order("sort_order", { ascending: true });
 
     if (error) throw error;
-    return NextResponse.json(data);
+    return NextResponse.json(data, { headers: publicCacheHeaders() });
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : "Request failed";
     return NextResponse.json({ error: message }, { status: 500 });

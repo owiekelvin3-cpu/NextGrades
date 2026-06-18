@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { MobileTopBar } from "@/components/mobile/MobileTopBar";
+import { TeacherMobileHeader } from "@/components/dashboard/teacher/TeacherMobileHeader";
 import { MobileBottomNav, MOBILE_BOTTOM_NAV_PADDING } from "@/components/mobile/MobileBottomNav";
 import { NotificationBell } from "@/components/notifications/NotificationBell";
 import Link from "next/link";
@@ -25,6 +26,7 @@ type Props = {
   topRightAction?: React.ReactNode;
   hideBottomNav?: boolean;
   hideTopBar?: boolean;
+  suppressMobileTitle?: boolean;
   studentName?: string;
   teacherName?: string;
 };
@@ -43,6 +45,7 @@ export function MobileAppShell({
   topRightAction,
   hideBottomNav = false,
   hideTopBar = false,
+  suppressMobileTitle = false,
   studentName: studentNameProp,
   teacherName: teacherNameProp,
 }: Props) {
@@ -94,7 +97,12 @@ export function MobileAppShell({
           !hideBottomNav && MOBILE_BOTTOM_NAV_PADDING
         )}
       >
-        {!hideTopBar && <MobileTopBar role={role} />}
+        {!hideTopBar &&
+          (role === "teacher" ? (
+            <TeacherMobileHeader displayName={displayName} />
+          ) : (
+            <MobileTopBar role={role} />
+          ))}
 
         {/* Desktop header */}
         <header
@@ -136,22 +144,23 @@ export function MobileAppShell({
         <main
           className={cn(
             "flex-1 overflow-y-auto overflow-x-hidden",
-            mobile.pageX,
-            "pb-6 pt-2 md:py-6 lg:py-8"
+            suppressMobileTitle ? "px-0 pt-0" : mobile.pageX,
+            "pb-6 pt-2 md:px-6 md:py-6 lg:py-8"
           )}
         >
-          {/* Mobile page hero — Pathora-style hierarchy */}
-          <div className="mb-8 md:hidden">
-            <h1 className={mobile.pageTitle}>{title}</h1>
-            {description && <p className={cn(mobile.caption, "mt-3 max-w-prose")}>{description}</p>}
-            {headerAction && <div className="mt-6">{headerAction}</div>}
-          </div>
+          {!suppressMobileTitle && (
+            <div className="mb-8 md:hidden">
+              <h1 className={mobile.pageTitle}>{title}</h1>
+              {description && <p className={cn(mobile.caption, "mt-3 max-w-prose")}>{description}</p>}
+              {headerAction && <div className="mt-6">{headerAction}</div>}
+            </div>
+          )}
 
           <div
             className={cn(
-              "mx-auto min-w-0 w-full max-w-[1400px] md:contents",
-              mobile.sectionGap,
-              "dashboard-mobile-content"
+              suppressMobileTitle ? "w-full" : "mx-auto min-w-0 w-full max-w-[1400px]",
+              !suppressMobileTitle && mobile.sectionGap,
+              "md:contents dashboard-mobile-content"
             )}
           >
             {children}

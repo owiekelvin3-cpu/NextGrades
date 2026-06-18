@@ -1,26 +1,26 @@
 /**
- * Marketing images — branded photos in /public/images/marketing.
- * Unsplash URLs remain as remote fallbacks only.
+ * Marketing images — branded NextGrades photography in /public/images/marketing.
  */
-
-function u(id: string, w = 800, h = 533, q = 75) {
-  return `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&h=${h}&q=${q}`;
-}
-
-function face(id: string) {
-  return `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=400&h=400&crop=faces&q=80`;
-}
 
 /** Branded NextGrades photography (see /public/images/marketing). */
 export const BRANDED = {
-  studentsGroup3: "/images/marketing/students-group-3.png",
-  studentsGroup4: "/images/marketing/students-group-4.png",
-  studentsCollab: "/images/marketing/students-collab.png",
-  tutoringSession: "/images/marketing/tutoring-session.png",
+  /** Girl studying at desk — primary lifestyle hero */
   studyDesk: "/images/marketing/study-desk.png",
+  /** 1:1 online tutoring session on laptop */
+  tutoringSession: "/images/marketing/tutoring-session.png",
+  /** Branded subject textbooks + notes */
   subjectBooks: "/images/marketing/subject-books.png",
-  progressDashboard: "/images/marketing/progress-dashboard.png",
+  /** Laptop: “Deine Daten in sicheren Händen.” */
   privacySecure: "/images/marketing/privacy-secure.png",
+  /** Laptop with NextGrades platform tagline UI */
+  progressDashboard: "/images/marketing/progress-dashboard.png",
+  /** Fortschritt dashboard close-up on desk */
+  platformLaptop: "/images/marketing/platform-laptop.png",
+  /** Four students collaborating */
+  studentsGroup4: "/images/marketing/students-group-4.png",
+  /** Three students with laptop */
+  studentsGroup3: "/images/marketing/students-group-3.png",
+  studentsCollab: "/images/marketing/students-collab.png",
 } as const;
 
 export const ONLINE_IMAGE_FALLBACK = BRANDED.studyDesk;
@@ -28,12 +28,12 @@ export const LOCAL_IMAGE_FALLBACK = ONLINE_IMAGE_FALLBACK;
 
 export const ABOUT_IMAGES = {
   hero: BRANDED.studentsGroup4,
-  story: BRANDED.studentsGroup3,
+  story: BRANDED.studyDesk,
   mission: [
-    BRANDED.studyDesk,
-    BRANDED.subjectBooks,
     BRANDED.tutoringSession,
-    BRANDED.progressDashboard,
+    BRANDED.subjectBooks,
+    BRANDED.platformLaptop,
+    BRANDED.privacySecure,
   ] as const,
   promise: BRANDED.privacySecure,
 } as const;
@@ -41,51 +41,62 @@ export const ABOUT_IMAGES = {
 export const CONTACT_HERO_IMAGE = BRANDED.studyDesk;
 export const PROGRAMS_HERO_IMAGE = BRANDED.studentsCollab;
 export const CONSULTATION_HERO_IMAGE = BRANDED.tutoringSession;
-export const CAREERS_HERO_IMAGE = BRANDED.studentsGroup3;
+export const CAREERS_HERO_IMAGE = BRANDED.studentsGroup4;
+export const HELP_HERO_IMAGE = BRANDED.platformLaptop;
+export const RESOURCES_HERO_IMAGE = BRANDED.studentsGroup3;
 export const LOGIN_HERO_IMAGE = BRANDED.tutoringSession;
 export const PRIVACY_HERO_IMAGE = BRANDED.privacySecure;
-export const HOME_PLATFORM_THUMB = BRANDED.progressDashboard;
-export const HOME_TESTIMONIALS_BG = BRANDED.studyDesk;
+export const HOME_PLATFORM_THUMB = BRANDED.platformLaptop;
+export const HOME_TESTIMONIALS_BG = BRANDED.studentsCollab;
 
-export const HOME_HERO_STUDENT_IMAGE = BRANDED.studentsGroup3;
+/** Primary homepage hero — 1:1 tutoring session */
+export const HOME_HERO_STUDENT_IMAGE = BRANDED.tutoringSession;
 
-/** Home hero carousel — rotates branded lifestyle photos. */
+/** Home hero carousel — all branded lifestyle photos */
 export const HOME_HERO_CAROUSEL_IMAGES = [
-  BRANDED.studentsGroup3,
-  BRANDED.studentsCollab,
-  BRANDED.tutoringSession,
   BRANDED.studyDesk,
+  BRANDED.tutoringSession,
+  BRANDED.studentsCollab,
+  BRANDED.studentsGroup4,
+  BRANDED.subjectBooks,
+  BRANDED.platformLaptop,
+  BRANDED.progressDashboard,
+  BRANDED.privacySecure,
 ] as const;
 
-export const HERO_STUDY_IMAGE = BRANDED.progressDashboard;
+export const HERO_STUDY_IMAGE = BRANDED.platformLaptop;
 export const HERO_DESK_IMAGE = BRANDED.studyDesk;
 
 export const PROGRAM_CARD_IMAGES = [
   BRANDED.tutoringSession,
-  BRANDED.studentsGroup3,
+  BRANDED.studentsCollab,
   BRANDED.subjectBooks,
+  BRANDED.platformLaptop,
 ] as const;
 
 export const PROGRAMS_PAGE_CARD_IMAGES = [
   BRANDED.tutoringSession,
   BRANDED.studentsCollab,
   BRANDED.subjectBooks,
+  BRANDED.platformLaptop,
 ] as const;
 
 export const SUBJECTS_HERO_IMAGE = BRANDED.subjectBooks;
 
+/** Team portrait fallbacks when CMS has no photo — branded lifestyle shots */
 export const ABOUT_TEAM_IMAGES = [
-  face("1507003211164-0a1dd7e784aa"),
-  face("1494790108377-be9c29b293d2"),
-  face("1560250097-0b93528c311a"),
-  face("1573496359142-b8d87734a921"),
-  face("1472099645785-5658abf4ff4e"),
+  BRANDED.tutoringSession,
+  BRANDED.studentsGroup4,
+  BRANDED.platformLaptop,
+  BRANDED.studyDesk,
+  BRANDED.studentsGroup3,
 ] as const;
 
+/** Login page social-proof avatars — cropped branded photos */
 export const LOGIN_AVATAR_IMAGES = [
-  face("1507003211164-0a1dd7e784aa"),
-  face("1544005313-94ddf0286df2"),
-  face("1472099645785-5658abf4ff4e"),
+  BRANDED.studentsGroup3,
+  BRANDED.studentsCollab,
+  BRANDED.studentsGroup4,
 ] as const;
 
 const SUBJECT_CARD_PHOTO = BRANDED.subjectBooks;
@@ -97,7 +108,7 @@ export const SUBJECT_IMAGE_BY_ID: Record<string, string> = {
   physics: SUBJECT_CARD_PHOTO,
   chemistry: SUBJECT_CARD_PHOTO,
   biology: BRANDED.studyDesk,
-  business: BRANDED.progressDashboard,
+  business: BRANDED.platformLaptop,
   "computer-science": BRANDED.tutoringSession,
   "technical-drawing": BRANDED.studyDesk,
 };

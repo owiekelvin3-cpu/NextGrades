@@ -28,18 +28,34 @@ export type NotificationPrefs = {
 
 const NOTIF_KEY = "nextgrades_notification_prefs";
 
+const PROFILE_CACHE_MS = 5 * 60 * 1000;
+let profileCache: { data: UserProfileSettings; at: number } | null = null;
+
+export function invalidateProfileCache(): void {
+  profileCache = null;
+}
+
 export function notifyProfileUpdated(profile?: Partial<UserProfileSettings>) {
+  if (profileCache?.data && profile) {
+    profileCache = { data: { ...profileCache.data, ...profile }, at: profileCache.at };
+  }
   if (typeof window !== "undefined") {
     window.dispatchEvent(new CustomEvent("nextgrades:profile-updated", { detail: profile }));
   }
 }
 
-export async function fetchProfileSettings(): Promise<UserProfileSettings | null> {
+export async function fetchProfileSettings(force = false): Promise<UserProfileSettings | null> {
+  if (!force && profileCache && Date.now() - profileCache.at < PROFILE_CACHE_MS) {
+    return profileCache.data;
+  }
+
   try {
     const res = await fetch("/api/profile", { cache: "no-store" });
     if (!res.ok) return null;
     const data = (await res.json()) as { profile?: UserProfileSettings };
-    return data.profile ?? null;
+    const profile = data.profile ?? null;
+    if (profile) profileCache = { data: profile, at: Date.now() };
+    return profile;
   } catch {
     return null;
   }
@@ -56,6 +72,7 @@ export async function updateProfileSettings(
     });
     const data = (await res.json()) as { error?: string; profile?: UserProfileSettings };
     if (!res.ok) return { error: data.error ?? "Failed to save profile" };
+    invalidateProfileCache();
     notifyProfileUpdated(data.profile ?? undefined);
     return { error: null, profile: data.profile ?? null };
   } catch {

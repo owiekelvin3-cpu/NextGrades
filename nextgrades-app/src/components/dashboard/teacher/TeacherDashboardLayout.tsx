@@ -9,6 +9,7 @@ interface TeacherDashboardLayoutProps {
   headerAction?: React.ReactNode;
   topRightAction?: React.ReactNode;
   hideBottomNav?: boolean;
+  suppressMobileTitle?: boolean;
 }
 
 export function TeacherDashboardLayout({
@@ -18,6 +19,7 @@ export function TeacherDashboardLayout({
   headerAction,
   topRightAction,
   hideBottomNav,
+  suppressMobileTitle,
 }: TeacherDashboardLayoutProps) {
   return (
     <MobileAppShell
@@ -27,6 +29,7 @@ export function TeacherDashboardLayout({
       headerAction={headerAction}
       topRightAction={topRightAction}
       hideBottomNav={hideBottomNav}
+      suppressMobileTitle={suppressMobileTitle}
     >
       {children}
     </MobileAppShell>

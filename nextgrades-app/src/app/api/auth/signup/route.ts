@@ -14,13 +14,30 @@ import { ensureRoleProfile } from "@/lib/auth/profile-setup";
 import { issueRegistrationOtp } from "@/lib/auth/registration-otp";
 import { sendWelcomeEmail, isResendConfigured } from "@/lib/email";
 import { enforceRateLimit } from "@/lib/security/rate-limit";
+import { verifyTurnstileToken } from "@/lib/security/turnstile";
+import { logSecurityEvent } from "@/lib/auth/audit-log";
 
 export async function POST(request: Request) {
-  const limited = enforceRateLimit(request, { bucket: "auth:signup", limit: 10, windowSec: 3600 });
+  if (process.env.NEXT_PUBLIC_ALLOW_PUBLIC_SIGNUP !== "true") {
+    return NextResponse.json(
+      {
+        error:
+          "Konten werden nur auf Einladung erstellt. Bitte wende dich an support@nextgrades.de, wenn du Zugang benötigst.",
+      },
+      { status: 403 }
+    );
+  }
+
+  const limited = await enforceRateLimit(request, { bucket: "auth:signup", limit: 10, windowSec: 3600 });
   if (limited) return limited;
 
   try {
-    const body = (await request.json()) as SimpleRegistrationPayload;
+    const body = (await request.json()) as SimpleRegistrationPayload & { turnstileToken?: string };
+    const turnstile = await verifyTurnstileToken(body.turnstileToken, request);
+    if (!turnstile.ok) {
+      return NextResponse.json({ error: turnstile.error }, { status: 400 });
+    }
+
     const email = normalizeEmail(body.email || "");
     const role = body.role === "teacher" ? "teacher" : "student";
     const fullName = body.fullName?.trim() || "";
@@ -36,7 +53,7 @@ export async function POST(request: Request) {
       await logRegistrationAttempt(email, "signup", false, "Duplicate email", {}, request);
       return NextResponse.json(
         {
-          error: "An account with this email already exists. Please sign in to continue.",
+          error: "Für diese E-Mail existiert bereits ein Konto. Bitte melde dich an.",
           code: "EMAIL_EXISTS",
         },
         { status: 409 }
@@ -59,7 +76,7 @@ export async function POST(request: Request) {
           await logRegistrationAttempt(email, "signup", false, error.message, {}, request);
           return NextResponse.json(
             {
-              error: "An account with this email already exists. Please sign in to continue.",
+              error: "Für diese E-Mail existiert bereits ein Konto. Bitte melde dich an.",
               code: "EMAIL_EXISTS",
             },
             { status: 409 }
@@ -147,7 +164,7 @@ export async function POST(request: Request) {
         await logRegistrationAttempt(email, "signup", false, createError.message, {}, request);
         return NextResponse.json(
           {
-            error: "An account with this email already exists. Please sign in to continue.",
+            error: "Für diese E-Mail existiert bereits ein Konto. Bitte melde dich an.",
             code: "EMAIL_EXISTS",
           },
           { status: 409 }
@@ -188,6 +205,7 @@ export async function POST(request: Request) {
     }
 
     await logRegistrationAttempt(email, "signup", true, undefined, { userId, role, verificationMode: "code" }, request);
+    void logSecurityEvent({ eventType: "signup_otp_sent", success: true, userId, email }, request);
     return NextResponse.json({
       success: true,
       message: "Account created! We sent a 6-digit code to your email — enter it below to activate your account.",

@@ -188,41 +188,9 @@ export default function SubjectsPage() {
                 <Button variant="gold" size="lg" className="w-full sm:w-auto" href="/consultation">
                   {t("subjectsPage.ctaButton")} <ArrowRight className="h-5 w-5" />
                 </Button>
-
-                <div className="hero-enter hero-enter-delay-4 mt-8 max-w-xs lg:hidden">
-                  <Card className="border border-[#D4AF37]/30 bg-[#0D1B2A]/95 p-4 shadow-xl backdrop-blur-sm">
-                    <div className="flex items-center gap-3">
-                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-[#D4AF37]/20">
-                        <Star className="h-5 w-5 fill-[#D4AF37] text-[#D4AF37]" />
-                      </div>
-                      <div>
-                        <p className="font-semibold text-white">{stats[2]?.value ?? "4.9/5"}</p>
-                        <p className="text-sm text-gray-400">
-                          {stats[2]?.label ?? "rating from parents & students"}
-                        </p>
-                      </div>
-                    </div>
-                  </Card>
-                </div>
               </div>
 
-              <div className="hero-enter hero-enter-delay-2 relative mx-auto hidden min-h-[360px] w-full max-w-lg lg:block lg:max-w-none">
-                <div className="hero-enter hero-enter-delay-4 absolute -bottom-6 left-4 right-4 sm:left-6 sm:right-auto sm:max-w-xs lg:left-auto">
-                  <Card className="border border-[#D4AF37]/30 bg-[#0D1B2A]/95 p-4 shadow-xl backdrop-blur-sm">
-                    <div className="flex items-center gap-3">
-                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-[#D4AF37]/20">
-                        <Star className="h-5 w-5 fill-[#D4AF37] text-[#D4AF37]" />
-                      </div>
-                      <div>
-                        <p className="font-semibold text-white">{stats[2]?.value ?? "4.9/5"}</p>
-                        <p className="text-sm text-gray-400">
-                          {stats[2]?.label ?? "rating from parents & students"}
-                        </p>
-                      </div>
-                    </div>
-                  </Card>
-                </div>
-              </div>
+              <div className="hero-enter hero-enter-delay-2 relative hidden min-h-[360px] w-full max-w-lg lg:block lg:max-w-none" aria-hidden />
             </div>
           </div>
         </section>

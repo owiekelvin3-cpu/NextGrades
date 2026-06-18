@@ -12,7 +12,7 @@ import { enforceRateLimit } from "@/lib/security/rate-limit";
  * Disabled in production unless ALLOW_ADMIN_BOOTSTRAP=true.
  */
 export async function POST(request: Request) {
-  const limited = enforceRateLimit(request, { bucket: "admin:bootstrap", limit: 5, windowSec: 3600 });
+  const limited = await enforceRateLimit(request, { bucket: "admin:bootstrap", limit: 5, windowSec: 3600 });
   if (limited) return limited;
 
   if (!isAdminBootstrapAllowed()) {

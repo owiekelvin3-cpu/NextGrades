@@ -2,11 +2,12 @@ import { NextResponse } from "next/server";
 import { normalizeEmail, EMAIL_REGEX, logRegistrationAttempt } from "@/lib/auth/registration";
 import { isEmailVerificationRequired } from "@/lib/auth/config";
 import { verifyRegistrationOtp } from "@/lib/auth/registration-otp";
+import { setMfaVerifiedCookie } from "@/lib/auth/mfa-cookies";
 import { enforceRateLimit } from "@/lib/security/rate-limit";
 
 /** Confirm signup with the 6-digit code from email. */
 export async function POST(request: Request) {
-  const limited = enforceRateLimit(request, { bucket: "auth:verify-otp", limit: 20, windowSec: 3600 });
+  const limited = await enforceRateLimit(request, { bucket: "auth:verify-otp", limit: 20, windowSec: 3600 });
   if (limited) return limited;
 
   if (!isEmailVerificationRequired()) {
@@ -31,10 +32,16 @@ export async function POST(request: Request) {
 
     await logRegistrationAttempt(email, "verify_otp", true, undefined, { userId: result.userId }, request);
 
+    // Signup OTP counts as login MFA — skip a second code email after registration.
+    if (result.userId) {
+      await setMfaVerifiedCookie(result.userId);
+    }
+
     return NextResponse.json({
       success: true,
       message: "Email verified. You can sign in now.",
       userId: result.userId,
+      role: result.role,
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Verification failed";

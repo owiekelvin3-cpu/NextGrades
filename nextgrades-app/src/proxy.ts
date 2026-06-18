@@ -10,6 +10,14 @@ import {
   mapLegacyAdminPath,
 } from "@/lib/admin/portal-paths";
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
+import {
+  isAuthUserEmailVerified,
+  isSignupEmailVerificationRequired,
+  isLoginEmailVerificationRequired,
+} from "@/lib/auth/config";
+import { isLoginMfaSatisfiedFromRequest } from "@/lib/auth/mfa-cookies";
+import { isVerificationPath, redirectToVerification } from "@/lib/auth/verification-routes";
+import { enforceGlobalApiRateLimit } from "@/lib/security/rate-limit";
 
 const DASHBOARD_ROLE_PREFIXES: Record<string, AppRole[]> = {
   "/dashboard/student": ["student"],
@@ -17,6 +25,11 @@ const DASHBOARD_ROLE_PREFIXES: Record<string, AppRole[]> = {
 };
 
 const AUTHENTICATED_DASHBOARD_PREFIXES = ["/dashboard"];
+const PROTECTED_APP_PREFIXES = ["/dashboard", "/portal", "/checkout", "/ai-generator"];
+
+function isProtectedAppPath(path: string): boolean {
+  return PROTECTED_APP_PREFIXES.some((p) => path.startsWith(p));
+}
 
 export async function proxy(request: NextRequest) {
   let response = NextResponse.next({
@@ -24,6 +37,12 @@ export async function proxy(request: NextRequest) {
   });
 
   const requestedPath = request.nextUrl.pathname;
+
+  if (requestedPath.startsWith("/api/")) {
+    const limited = await enforceGlobalApiRateLimit(request);
+    if (limited) return limited;
+    return NextResponse.next({ request: { headers: request.headers } });
+  }
 
   // /signin → /login (preserve query string)
   if (requestedPath === "/signin") {
@@ -102,6 +121,34 @@ export async function proxy(request: NextRequest) {
       redirectUrl.searchParams.delete("redirect");
       return NextResponse.redirect(redirectUrl);
     }
+
+    if (isSignupEmailVerificationRequired() && !isAuthUserEmailVerified(user)) {
+      const needsVerifiedSession =
+        isProtectedAppPath(requestedPath) ||
+        requestedPath === "/choose-role";
+
+      if (needsVerifiedSession && !isVerificationPath(requestedPath)) {
+        const redirectUrl = redirectToVerification(request, "signup", {
+          email: user.email,
+          redirect: requestedPath !== "/choose-role" ? requestedPath : null,
+        });
+        return NextResponse.redirect(redirectUrl);
+      }
+    }
+
+    if (
+      isLoginEmailVerificationRequired() &&
+      isAuthUserEmailVerified(user) &&
+      isProtectedAppPath(requestedPath) &&
+      !(await isLoginMfaSatisfiedFromRequest(request, user.id)) &&
+      !isVerificationPath(requestedPath)
+    ) {
+      const redirectUrl = redirectToVerification(request, "login", {
+        email: user.email,
+        redirect: requestedPath,
+      });
+      return NextResponse.redirect(redirectUrl);
+    }
   }
 
   // Legacy admin dashboard URLs → admin portal
@@ -116,6 +163,16 @@ export async function proxy(request: NextRequest) {
   if (requestedPath.startsWith("/portal")) {
     if (requestedPath === ADMIN_PORTAL_LOGIN) {
       if (user) {
+        if (
+          isLoginEmailVerificationRequired() &&
+          !(await isLoginMfaSatisfiedFromRequest(request, user.id))
+        ) {
+          const redirectUrl = redirectToVerification(request, "login", {
+            email: user.email,
+          });
+          return NextResponse.redirect(redirectUrl);
+        }
+
         const redirectUrl = request.nextUrl.clone();
         if (userRole === "admin") {
           redirectUrl.pathname = ADMIN_PORTAL_HOME;
@@ -218,7 +275,44 @@ export async function proxy(request: NextRequest) {
     return response;
   }
 
+  if (
+    !user &&
+    (requestedPath.startsWith("/checkout") || requestedPath.startsWith("/ai-generator"))
+  ) {
+    const redirectUrl = request.nextUrl.clone();
+    redirectUrl.pathname = "/login";
+    redirectUrl.searchParams.set("redirect", requestedPath);
+    return NextResponse.redirect(redirectUrl);
+  }
+
+  if (user && isVerificationPath(requestedPath)) {
+    return response;
+  }
+
   if (user && isGuestAuthPath(requestedPath)) {
+    const needsSignupVerify =
+      isSignupEmailVerificationRequired() && !isAuthUserEmailVerified(user);
+    const needsLoginMfa =
+      isLoginEmailVerificationRequired() &&
+      isAuthUserEmailVerified(user) &&
+      !(await isLoginMfaSatisfiedFromRequest(request, user.id));
+
+    if (needsSignupVerify) {
+      const redirectUrl = redirectToVerification(request, "signup", {
+        email: user.email,
+        redirect: request.nextUrl.searchParams.get("redirect"),
+      });
+      return NextResponse.redirect(redirectUrl);
+    }
+
+    if (needsLoginMfa) {
+      const redirectUrl = redirectToVerification(request, "login", {
+        email: user.email,
+        redirect: request.nextUrl.searchParams.get("redirect"),
+      });
+      return NextResponse.redirect(redirectUrl);
+    }
+
     const redirectUrl = request.nextUrl.clone();
     if (userRole) {
       const redirectParam = request.nextUrl.searchParams.get("redirect");
@@ -236,9 +330,14 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
+    "/api/:path*",
     "/dashboard/:path*",
     "/portal/:path*",
     "/admin/:path*",
+    "/checkout/:path*",
+    "/checkout",
+    "/ai-generator/:path*",
+    "/ai-generator",
     "/login",
     "/register",
     "/signup",
@@ -247,5 +346,6 @@ export const config = {
     "/reset-password",
     "/admin-access",
     "/choose-role",
+    "/verify",
   ],
 };

@@ -12,6 +12,8 @@ export function isMarketingRoute(pathname: string | null): boolean {
     "/admin-access",
     "/checkout",
     "/forgot-password",
+    "/verify",
+    "/choose-role",
   ];
   return !excludedPrefixes.some((p) => pathname.startsWith(p));
 }

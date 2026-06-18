@@ -46,7 +46,7 @@ export function accountVerificationEmail(verifyUrl: string, userName?: string) {
         "Wenn du kein Konto erstellt hast, kannst du diese Nachricht ignorieren."
     ),
     emailParagraph(
-      `<span style="font-size:13px;color:${C.textMuted};">Questions? Visit <a href="${appUrl}/contact" style="color:${C.gold};text-decoration:none;">${escapeHtml(EMAIL_BRAND.supportEmail)}</a></span>`
+      `<span style="font-size:13px;color:${C.textMuted};">Fragen? Schreib uns an <a href="${appUrl}/contact" style="color:${C.gold};text-decoration:none;">${escapeHtml(EMAIL_BRAND.supportEmail)}</a></span>`
     ),
     emailSignature(),
   ].join("");

@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe/client";
 import { requireAuthenticatedApi } from "@/lib/auth/api-auth";
-import { resolveStripePriceId } from "@/lib/stripe/prices";
+import { resolveCheckoutStripePrice } from "@/lib/stripe/prices";
+import { logSecurityEvent } from "@/lib/auth/audit-log";
+import { getAppUrl } from "@/lib/app-url";
 
 export async function POST(request: Request) {
   const gate = await requireAuthenticatedApi();
@@ -24,37 +26,60 @@ export async function POST(request: Request) {
       courseName,
     } = body;
 
-    const priceId =
-      rawPriceId && String(rawPriceId).startsWith("price_")
-        ? rawPriceId
-        : resolveStripePriceId(planId || "group", billing || "monthly");
+    const resolution = resolveCheckoutStripePrice({
+      planId,
+      billing,
+      clientPriceId: rawPriceId,
+    });
 
-    if (!priceId) {
-      return NextResponse.json(
-        { error: "Stripe price not configured for this plan. Set STRIPE_PRICE_* environment variables." },
-        { status: 503 }
+    if (!resolution.ok) {
+      void logSecurityEvent(
+        {
+          eventType: "suspicious_activity",
+          success: false,
+          userId: gate.auth!.profile!.id,
+          metadata: {
+            action: "stripe_checkout_invalid_price",
+            reason: resolution.reason,
+            planId: planId ?? null,
+            billing: billing ?? null,
+            clientPriceId: rawPriceId ?? null,
+          },
+        },
+        request
       );
+
+      const message =
+        resolution.reason === "unconfigured"
+          ? "Stripe price not configured for this plan. Set STRIPE_PRICE_* environment variables."
+          : "Invalid checkout plan or price.";
+
+      const status = resolution.reason === "unconfigured" ? 503 : 400;
+      return NextResponse.json({ error: message }, { status });
     }
 
+    const { priceId, plan, billing: resolvedBilling } = resolution;
     const userId = gate.auth!.profile!.id;
+    const appUrl = getAppUrl();
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: [{ price: priceId, quantity: 1 }],
       mode: productType === "subscription" ? "subscription" : "payment",
-      success_url: `${request.headers.get("origin")}/checkout/success?plan=${planId || "group"}&billing=${billing || "monthly"}`,
-      cancel_url: `${request.headers.get("origin")}/pricing`,
+      success_url: `${appUrl}/checkout/success?plan=${plan}&billing=${resolvedBilling}`,
+      cancel_url: `${appUrl}/pricing`,
       metadata: {
         userId,
         productType: productType || "",
-        planId: planId || "",
-        billing: billing || "",
+        planId: plan,
+        billing: resolvedBilling,
         subjectId: subjectId || "",
         classId: classId || "",
         semester: semester ? String(semester) : "",
         courseName: courseName || "",
-        planName: planId === "resource" ? "Resource Membership" : planId || "Premium",
-        billingCycle: billing === "yearly" ? "Yearly" : "Monthly",
+        planName: plan === "resource" ? "Resource Membership" : plan,
+        billingCycle: resolvedBilling === "yearly" ? "Yearly" : "Monthly",
+        stripePriceId: priceId,
       },
     });
 

@@ -40,12 +40,19 @@ export function validateProductionEnv(): EnvIssue[] {
     });
   }
 
-  if (process.env.REQUIRE_EMAIL_VERIFICATION === "false") {
+  const signupVerificationOff =
+    process.env.REQUIRE_SIGNUP_EMAIL_VERIFICATION === "false" ||
+    (process.env.REQUIRE_SIGNUP_EMAIL_VERIFICATION !== "true" &&
+      process.env.REQUIRE_EMAIL_VERIFICATION === "false");
+
+  if (signupVerificationOff) {
     issues.push({
       level: "warn",
-      message: "REQUIRE_EMAIL_VERIFICATION=false — accounts can activate without email verification.",
+      message:
+        "Signup email verification is disabled — set REQUIRE_SIGNUP_EMAIL_VERIFICATION=true in production.",
     });
   }
+
 
   if (process.env.ALLOW_ADMIN_BOOTSTRAP === "true") {
     issues.push({
@@ -75,6 +82,15 @@ export function validateProductionEnv(): EnvIssue[] {
     });
   }
 
+  const authSecret = process.env.AUTH_SESSION_SECRET?.trim();
+  if (!authSecret || authSecret.length < 32) {
+    issues.push({
+      level: "error",
+      message:
+        "AUTH_SESSION_SECRET must be set to a random string of at least 32 characters in production.",
+    });
+  }
+
   if (process.env.ZOOM_CLIENT_ID && (process.env.ZOOM_REDIRECT_URI?.includes("localhost") ?? false)) {
     issues.push({
       level: "warn",
@@ -83,4 +99,17 @@ export function validateProductionEnv(): EnvIssue[] {
   }
 
   return issues;
+}
+
+/** Throws on blocking production misconfiguration (used at build time). */
+export function assertProductionEnvReady(): void {
+  if (!isProduction()) return;
+
+  const issues = validateProductionEnv();
+  const blockers = issues.filter((i) => i.level === "error");
+  if (blockers.length > 0) {
+    throw new Error(
+      `Production environment misconfigured:\n${blockers.map((b) => `- ${b.message}`).join("\n")}`
+    );
+  }
 }

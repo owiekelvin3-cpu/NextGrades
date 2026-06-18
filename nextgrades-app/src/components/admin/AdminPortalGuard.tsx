@@ -11,7 +11,28 @@ type Props = {
   children: React.ReactNode;
 };
 
-const VERIFY_TIMEOUT_MS = 12_000;
+const VERIFY_TIMEOUT_MS = 8_000;
+const ADMIN_CACHE_KEY = "ng_admin_verified_v1";
+const ADMIN_CACHE_MS = 20 * 60 * 1000;
+
+function readAdminCache(userId: string): boolean {
+  try {
+    const raw = sessionStorage.getItem(ADMIN_CACHE_KEY);
+    if (!raw) return false;
+    const parsed = JSON.parse(raw) as { userId?: string; at?: number };
+    return parsed.userId === userId && typeof parsed.at === "number" && Date.now() - parsed.at < ADMIN_CACHE_MS;
+  } catch {
+    return false;
+  }
+}
+
+function writeAdminCache(userId: string): void {
+  try {
+    sessionStorage.setItem(ADMIN_CACHE_KEY, JSON.stringify({ userId, at: Date.now() }));
+  } catch {
+    /* ignore */
+  }
+}
 
 /** Client-side admin session check before rendering portal content. */
 export function AdminPortalGuard({ children }: Props) {
@@ -47,6 +68,11 @@ export function AdminPortalGuard({ children }: Props) {
         } = await supabase.auth.getSession();
 
         if (!session?.user) {
+          try {
+            sessionStorage.removeItem(ADMIN_CACHE_KEY);
+          } catch {
+            /* ignore */
+          }
           if (!cancelled) {
             setStatus("denied");
             router.replace(`${ADMIN_PORTAL_LOGIN}?redirect=${encodeURIComponent(window.location.pathname)}`);
@@ -54,15 +80,30 @@ export function AdminPortalGuard({ children }: Props) {
           return;
         }
 
+        if (readAdminCache(session.user.id)) {
+          if (!cancelled) {
+            resolved = true;
+            setStatus("allowed");
+          }
+          return;
+        }
+
         const role = await fetchProfileRole(session.user.id);
         if (role !== "admin") {
           await supabase.auth.signOut();
+          try {
+            sessionStorage.removeItem(ADMIN_CACHE_KEY);
+          } catch {
+            /* ignore */
+          }
           if (!cancelled) {
             setStatus("denied");
             router.replace("/admin-access?return=" + encodeURIComponent(window.location.pathname));
           }
           return;
         }
+
+        writeAdminCache(session.user.id);
 
         if (!cancelled) {
           resolved = true;

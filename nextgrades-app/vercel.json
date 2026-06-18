@@ -2,5 +2,23 @@
   "buildCommand": "npm run build",
   "outputDirectory": ".next",
   "framework": "nextjs",
-  "installCommand": "npm install"
+  "installCommand": "npm install",
+  "functions": {
+    "src/app/api/chat/route.ts": {
+      "maxDuration": 60,
+      "memory": 1024
+    },
+    "src/app/api/quiz/generate/route.ts": {
+      "maxDuration": 60,
+      "memory": 1024
+    },
+    "src/app/api/teacher/publish/route.ts": {
+      "maxDuration": 60,
+      "memory": 1024
+    },
+    "src/app/api/stripe/webhook/route.ts": {
+      "maxDuration": 30,
+      "memory": 512
+    }
+  }
 }

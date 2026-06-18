@@ -7,20 +7,22 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { brandLogoForSurface, BRAND_LOGO } from "@/lib/brand";
 
-export type BrandLogoSize = "sm" | "md" | "lg" | "xl";
+export type BrandLogoSize = "sm" | "md" | "nav" | "lg" | "xl";
 
 const SIZE_STYLES: Record<BrandLogoSize, string> = {
-  sm: "h-9 w-auto max-w-[150px] sm:h-10",
-  md: "h-10 w-auto max-w-[190px] sm:h-11",
-  lg: "h-11 w-auto max-w-[220px] sm:h-12 md:h-14",
-  xl: "h-14 w-auto max-w-[260px] sm:h-[3.75rem] md:h-16 md:max-w-[300px]",
+  sm: "h-10 w-auto max-w-[180px] sm:h-11",
+  md: "h-12 w-auto max-w-[220px] sm:h-[3.25rem]",
+  nav: "h-12 w-auto max-w-[240px] sm:h-[3.25rem] sm:max-w-[280px] lg:h-16 lg:max-w-[360px]",
+  lg: "h-[3.25rem] w-auto max-w-[280px] sm:h-14 md:h-16",
+  xl: "h-[4.25rem] w-auto max-w-[340px] sm:h-[4.5rem] md:h-[4.75rem] md:max-w-[400px]",
 };
 
 const SIZE_PROPS: Record<BrandLogoSize, { width: number; height: number; sizes: string }> = {
-  sm: { width: 150, height: 40, sizes: "150px" },
-  md: { width: 190, height: 44, sizes: "190px" },
-  lg: { width: 220, height: 56, sizes: "(max-width: 768px) 200px, 220px" },
-  xl: { width: 300, height: 64, sizes: "(max-width: 768px) 260px, 300px" },
+  sm: { width: 180, height: 44, sizes: "180px" },
+  md: { width: 220, height: 52, sizes: "220px" },
+  nav: { width: 360, height: 64, sizes: "(max-width: 1024px) 260px, 360px" },
+  lg: { width: 280, height: 64, sizes: "(max-width: 768px) 240px, 280px" },
+  xl: { width: 400, height: 80, sizes: "(max-width: 768px) 320px, 400px" },
 };
 
 interface BrandLogoProps {

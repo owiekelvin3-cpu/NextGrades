@@ -4,6 +4,7 @@ import { createServerReadClient } from "@/lib/supabase/admin";
 import { getApiAuth } from "@/lib/auth/api-auth";
 import { loadAccessContext, sanitizePublicMaterial } from "@/lib/resources/access";
 import { sortOrderForSlug, enrichSubject } from "@/lib/catalog/subjects";
+import { publicCacheHeaders } from "@/lib/cache/public-cache";
 
 export async function GET(request: Request) {
   try {
@@ -173,6 +174,24 @@ export async function GET(request: Request) {
           .toLowerCase();
         return haystack.includes(q);
       });
+    }
+
+    const isPublicCatalog =
+      !user &&
+      !search &&
+      !teacherId &&
+      !categoryId &&
+      !contentType &&
+      !difficulty &&
+      !ageRange &&
+      !language &&
+      !subjectSlug &&
+      !classLevel &&
+      !semester &&
+      sort === "recent";
+
+    if (isPublicCatalog) {
+      return NextResponse.json(results, { headers: publicCacheHeaders(120) });
     }
 
     return NextResponse.json(results);

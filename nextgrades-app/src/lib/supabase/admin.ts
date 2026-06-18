@@ -28,13 +28,10 @@ export function createAdminClient(): SupabaseClient {
   return adminClient;
 }
 
-/** Prefer service role for server reads; fall back to the user-scoped client. */
+/** Prefer the caller's Supabase client so RLS applies on public reads. */
 export async function createServerReadClient(
   userClient: SupabaseClient
 ): Promise<SupabaseClient> {
-  if (isSupabaseServiceRoleConfigured()) {
-    return createAdminClient();
-  }
   return userClient;
 }
 
