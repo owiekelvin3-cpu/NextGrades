@@ -228,9 +228,131 @@ function StudentDetailPanel({
             </>
           )}
 
-          {activeTab !== "overview" && (
-            <div className={`${teacherPanel()} p-8 text-center`}>
-              <p className="text-sm text-gray-500">{t("teacherDashboard.tabComingSoon")}</p>
+          {activeTab === "appointments" && (
+            <div className={teacherPanel()}>
+              <div className="flex items-center justify-between border-b border-gray-100 px-5 py-4">
+                <h3 className="text-sm font-semibold text-[#0D1B2A]">{t("teacherDashboard.allAppointments", { defaultValue: "All appointments" })}</h3>
+                <Link href={`/dashboard/teacher/schedule?student=${student.id}`} className="text-xs font-medium text-[#D4AF37] hover:underline">
+                  + {t("teacherDashboard.createNewAppointment")}
+                </Link>
+              </div>
+              {data.upcomingLessons.filter((l) => l.student_id === student.id).length === 0 ? (
+                <p className="px-5 py-8 text-sm text-gray-500">{t("teacherDashboard.noAppointments")}</p>
+              ) : (
+                <ul className="divide-y divide-gray-50">
+                  {data.upcomingLessons.filter((l) => l.student_id === student.id).map((lesson) => (
+                    <li key={lesson.id} className="flex items-center justify-between gap-3 px-5 py-3.5">
+                      <div>
+                        <p className="text-sm font-medium text-[#0D1B2A]">
+                          {new Date(lesson.start_time).toLocaleDateString(locale, { weekday: "short", day: "numeric", month: "short" })}
+                          {" · "}{lesson.subject_name || "—"}
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          {formatTimeRange(lesson.start_time, lesson.duration, locale)} · {lesson.duration} min
+                          {" · "}
+                          <span className={`capitalize font-medium ${lesson.status === "completed" ? "text-green-600" : "text-blue-500"}`}>
+                            {lesson.status}
+                          </span>
+                        </p>
+                      </div>
+                      {(lesson.zoom_meeting_id || lesson.zoom_link) && (
+                        <ZoomMeetingButton lessonId={lesson.id} mode="start" size="sm" />
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          )}
+
+          {activeTab === "progress" && (
+            <div className={teacherPanel()}>
+              <div className="border-b border-gray-100 px-5 py-4">
+                <h3 className="text-sm font-semibold text-[#0D1B2A]">{t("teacherDashboard.progressLabel")}</h3>
+              </div>
+              <div className="space-y-5 p-5">
+                <div className="grid gap-3 sm:grid-cols-3">
+                  <div className="rounded-xl bg-gray-50 px-4 py-3">
+                    <p className="text-xs text-gray-500">{t("teacherDashboard.hoursBooked")}</p>
+                    <p className="text-xl font-bold text-[#0D1B2A]">{bookedHours}h</p>
+                  </div>
+                  <div className="rounded-xl bg-gray-50 px-4 py-3">
+                    <p className="text-xs text-gray-500">{t("teacherDashboard.completedLessons", { defaultValue: "Completed lessons" })}</p>
+                    <p className="text-xl font-bold text-[#0D1B2A]">{student.lessonCount}</p>
+                  </div>
+                  <div className="rounded-xl bg-gray-50 px-4 py-3">
+                    <p className="text-xs text-gray-500">{t("teacherDashboard.progressLabel")}</p>
+                    <p className="text-xl font-bold text-green-600">{progressPct}%</p>
+                  </div>
+                </div>
+                <div>
+                  <p className="mb-2 text-xs font-medium text-gray-500">{t("teacherDashboard.overallProgress", { defaultValue: "Overall progress" })}</p>
+                  <div className="h-3 overflow-hidden rounded-full bg-gray-200">
+                    <div className="h-full rounded-full bg-green-500 transition-all" style={{ width: `${progressPct}%` }} />
+                  </div>
+                  <p className="mt-1 text-right text-xs text-gray-500">{progressPct}%</p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === "payments" && (
+            <div className={teacherPanel()}>
+              <div className="border-b border-gray-100 px-5 py-4">
+                <h3 className="text-sm font-semibold text-[#0D1B2A]">{t("teacherDashboard.tabs.payments")}</h3>
+              </div>
+              {data.recentPayments.filter((p) => p.studentName === student.name).length === 0 ? (
+                <p className="px-5 py-8 text-sm text-gray-500">{t("teacherDashboard.noPayments", { defaultValue: "No payment records yet." })}</p>
+              ) : (
+                <ul className="divide-y divide-gray-50">
+                  {data.recentPayments.filter((p) => p.studentName === student.name).map((p) => (
+                    <li key={p.id} className="flex items-center justify-between gap-3 px-5 py-3.5">
+                      <div>
+                        <p className="text-sm font-medium text-[#0D1B2A]">{formatTeacherEuro(p.amount)}</p>
+                        <p className="text-xs text-gray-500">{new Date(p.date).toLocaleDateString(locale)} · {p.method}</p>
+                      </div>
+                      <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${
+                        p.status === "paid" ? "bg-green-50 text-green-700" : "bg-yellow-50 text-yellow-700"
+                      }`}>
+                        {p.status === "paid" ? t("teacherDashboard.paid") : t("teacherDashboard.pending", { defaultValue: "Pending" })}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          )}
+
+          {activeTab === "materials" && (
+            <div className={teacherPanel()}>
+              <div className="flex items-center justify-between border-b border-gray-100 px-5 py-4">
+                <h3 className="text-sm font-semibold text-[#0D1B2A]">{t("teacherDashboard.availableMaterials")}</h3>
+                <Link href="/dashboard/teacher/content" className="text-xs font-medium text-[#D4AF37] hover:underline">
+                  {t("teacherDashboard.manageContent")}
+                </Link>
+              </div>
+              <div className="grid grid-cols-2 gap-3 p-5 sm:grid-cols-3">
+                {["PDF", "Excel", "Video"].map((type) => (
+                  <div key={type} className="flex flex-col items-center rounded-xl border border-gray-100 bg-gray-50 p-4 text-center">
+                    <FileText className="h-8 w-8 text-gray-400" />
+                    <p className="mt-2 text-xs font-medium text-[#0D1B2A]">{student.subject} — {type}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {activeTab === "notes" && (
+            <div className={teacherPanel()}>
+              <div className="border-b border-gray-100 px-5 py-4">
+                <h3 className="text-sm font-semibold text-[#0D1B2A]">{t("teacherDashboard.tabs.notes")}</h3>
+              </div>
+              <div className="p-5">
+                <p className="text-sm text-gray-500">{t("teacherDashboard.sampleNote")}</p>
+                <button type="button" className="mt-4 text-xs font-medium text-[#D4AF37] hover:underline">
+                  + {t("teacherDashboard.addNote")}
+                </button>
+              </div>
             </div>
           )}
         </div>

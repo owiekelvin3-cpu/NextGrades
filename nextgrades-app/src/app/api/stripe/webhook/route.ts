@@ -3,6 +3,7 @@ import Stripe from "stripe";
 import { stripe } from "@/lib/stripe/client";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { isSupabaseServiceRoleConfigured } from "@/lib/supabase/env";
+import { createNotification } from "@/lib/notifications/server";
 import {
   sendSubscriptionConfirmationEmail,
   sendPaymentReceiptEmail,
@@ -180,6 +181,80 @@ export async function POST(request: Request) {
               ? new Date(invoice.next_payment_attempt * 1000).toLocaleDateString("de-DE")
               : undefined,
           });
+        }
+        break;
+      }
+
+      case "customer.subscription.deleted": {
+        // Subscription cancelled or lapsed — revoke access
+        const subscription = event.data.object as Stripe.Subscription;
+        const customerId = typeof subscription.customer === "string"
+          ? subscription.customer
+          : subscription.customer?.id;
+
+        if (customerId && admin) {
+          // Find user by Stripe customer ID stored in profiles or via customer email
+          const stripeCustomer = await stripe!.customers.retrieve(customerId);
+          const customerEmail = !("deleted" in stripeCustomer) ? stripeCustomer.email : null;
+
+          if (customerEmail) {
+            const { data: profile } = await admin
+              .from("profiles")
+              .select("id, full_name")
+              .ilike("email", customerEmail)
+              .maybeSingle();
+
+            if (profile?.id) {
+              await admin
+                .from("profiles")
+                .update({ subscription_status: "inactive", updated_at: new Date().toISOString() })
+                .eq("id", profile.id);
+
+              // Notify the user
+              const { notifyPaymentReceived } = await import("@/lib/notifications/triggers");
+              void createNotification({
+                userId: profile.id,
+                type: "warning",
+                category: "account",
+                title: "Subscription cancelled",
+                message: "Your subscription has ended. Renew to regain access to premium content.",
+                actionUrl: "/pricing",
+              });
+            }
+          }
+        }
+        break;
+      }
+
+      case "customer.subscription.updated": {
+        // Handle subscription paused or reactivated
+        const subscription = event.data.object as Stripe.Subscription;
+        const customerId = typeof subscription.customer === "string"
+          ? subscription.customer
+          : subscription.customer?.id;
+
+        if (customerId && admin) {
+          const stripeCustomer = await stripe!.customers.retrieve(customerId);
+          const customerEmail = !("deleted" in stripeCustomer) ? stripeCustomer.email : null;
+
+          if (customerEmail) {
+            const { data: profile } = await admin
+              .from("profiles")
+              .select("id")
+              .ilike("email", customerEmail)
+              .maybeSingle();
+
+            if (profile?.id) {
+              const isActive = subscription.status === "active" || subscription.status === "trialing";
+              await admin
+                .from("profiles")
+                .update({
+                  subscription_status: isActive ? "active" : "inactive",
+                  updated_at: new Date().toISOString(),
+                })
+                .eq("id", profile.id);
+            }
+          }
         }
         break;
       }

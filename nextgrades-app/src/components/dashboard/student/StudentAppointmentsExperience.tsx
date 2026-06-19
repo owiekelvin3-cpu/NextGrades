@@ -9,6 +9,8 @@ import {
   User,
   Plus,
   MoreHorizontal,
+  Send,
+  X,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { getDateLocale } from "@/lib/i18n/locales";
@@ -21,6 +23,7 @@ import {
 import { StudentDashboardLayout } from "./StudentDashboardLayout";
 import { studentPanel, formatTimeRange, lessonDateParts, st } from "./student-ui";
 import { ZoomMeetingButton } from "@/components/zoom/ZoomMeetingButton";
+import { useToast } from "@/context/ToastContext";
 import { cn } from "@/lib/utils";
 
 type Tab = "upcoming" | "past" | "calendar";
@@ -81,6 +84,10 @@ export function StudentAppointmentsExperience() {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<StudentAppointmentsData | null>(null);
   const [tab, setTab] = useState<Tab>("upcoming");
+  const [showRequestModal, setShowRequestModal] = useState(false);
+  const [requesting, setRequesting] = useState(false);
+  const [requestForm, setRequestForm] = useState({ date: "", time: "", message: "" });
+  const toast = useToast();
 
   useEffect(() => {
     fetchStudentAppointmentsData()
@@ -127,15 +134,121 @@ export function StudentAppointmentsExperience() {
         <Calendar className="h-4 w-4" />
         {t("studentDashboard.connectCalendar", { defaultValue: "Connect calendar" })}
       </Button>
-      <Button variant="gold" size="sm" href="/consultation" className="gap-2">
+      <Button variant="gold" size="sm" onClick={() => setShowRequestModal(true)} className="gap-2">
         <Plus className="h-4 w-4" />
         {t("studentDashboard.requestAppointment", { defaultValue: "Request new appointment" })}
       </Button>
     </div>
   );
 
+  const handleRequestSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setRequesting(true);
+    try {
+      const res = await fetch("/api/appointments/request", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          preferredDate: requestForm.date || undefined,
+          preferredTime: requestForm.time || undefined,
+          message: requestForm.message || undefined,
+        }),
+      });
+      const json = await res.json().catch(() => ({}));
+      if (res.ok) {
+        toast.success(t("studentDashboard.requestSent", { defaultValue: "Request sent! Your teacher will be in touch." }));
+        setShowRequestModal(false);
+        setRequestForm({ date: "", time: "", message: "" });
+      } else {
+        toast.error(json.error || t("misc.errorGeneric", { defaultValue: "Something went wrong." }));
+      }
+    } catch {
+      toast.error(t("misc.errorGeneric", { defaultValue: "Something went wrong." }));
+    } finally {
+      setRequesting(false);
+    }
+  };
+
   return (
     <StudentDashboardLayout title={title} description={description} topRightAction={headerActions}>
+      {/* Request Appointment Modal */}
+      {showRequestModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className={cn("w-full max-w-md rounded-2xl p-6 shadow-xl", st.panel)}>
+            <div className="mb-5 flex items-center justify-between">
+              <h2 className={cn("text-lg font-bold", st.textPrimary)}>
+                {t("studentDashboard.requestAppointment", { defaultValue: "Request new appointment" })}
+              </h2>
+              <button
+                type="button"
+                onClick={() => setShowRequestModal(false)}
+                className={cn("rounded-lg p-1.5", st.iconBtn)}
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            <form onSubmit={handleRequestSubmit} className="space-y-4">
+              <div>
+                <label className={cn("mb-1.5 block text-sm font-medium", st.textPrimary)}>
+                  {t("studentDashboard.preferredDate", { defaultValue: "Preferred date" })}
+                </label>
+                <input
+                  type="date"
+                  className={cn("w-full rounded-xl border px-4 py-2.5 text-sm outline-none focus:border-[#D4AF37]", st.input)}
+                  value={requestForm.date}
+                  min={new Date().toISOString().slice(0, 10)}
+                  onChange={(e) => setRequestForm((f) => ({ ...f, date: e.target.value }))}
+                />
+              </div>
+              <div>
+                <label className={cn("mb-1.5 block text-sm font-medium", st.textPrimary)}>
+                  {t("studentDashboard.preferredTime", { defaultValue: "Preferred time" })}
+                </label>
+                <input
+                  type="time"
+                  className={cn("w-full rounded-xl border px-4 py-2.5 text-sm outline-none focus:border-[#D4AF37]", st.input)}
+                  value={requestForm.time}
+                  onChange={(e) => setRequestForm((f) => ({ ...f, time: e.target.value }))}
+                />
+              </div>
+              <div>
+                <label className={cn("mb-1.5 block text-sm font-medium", st.textPrimary)}>
+                  {t("studentDashboard.message", { defaultValue: "Message (optional)" })}
+                </label>
+                <textarea
+                  rows={3}
+                  className={cn("w-full resize-none rounded-xl border px-4 py-2.5 text-sm outline-none focus:border-[#D4AF37]", st.input)}
+                  placeholder={t("studentDashboard.messagePlaceholder", { defaultValue: "Any specific topic or notes for your teacher..." })}
+                  value={requestForm.message}
+                  onChange={(e) => setRequestForm((f) => ({ ...f, message: e.target.value }))}
+                />
+              </div>
+              <div className="flex gap-3 pt-1">
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="flex-1"
+                  onClick={() => setShowRequestModal(false)}
+                  disabled={requesting}
+                >
+                  {t("misc.cancel", { defaultValue: "Cancel" })}
+                </Button>
+                <Button
+                  type="submit"
+                  variant="gold"
+                  className="flex-1 gap-2"
+                  disabled={requesting}
+                >
+                  <Send className="h-4 w-4" />
+                  {requesting
+                    ? t("misc.sending", { defaultValue: "Sending..." })
+                    : t("misc.send", { defaultValue: "Send request" })}
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
       <div className="mx-auto grid max-w-[1400px] gap-6 xl:grid-cols-[1fr_320px]">
         <div className="space-y-6">
           {/* Tabs */}
