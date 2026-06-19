@@ -198,8 +198,8 @@ export async function proxy(request: NextRequest) {
 
     if (userRole !== "admin") {
       const redirectUrl = request.nextUrl.clone();
-      redirectUrl.pathname = "/admin-access";
-      redirectUrl.searchParams.set("return", requestedPath);
+      redirectUrl.pathname = userRole ? `/dashboard/${userRole}` : "/login";
+      redirectUrl.search = "";
       return NextResponse.redirect(redirectUrl);
     }
 
@@ -254,8 +254,8 @@ export async function proxy(request: NextRequest) {
       return NextResponse.redirect(redirectUrl);
     }
     if (userRole !== "admin") {
-      redirectUrl.pathname = "/admin-access";
-      redirectUrl.searchParams.set("return", ADMIN_PORTAL_HOME);
+      redirectUrl.pathname = userRole ? `/dashboard/${userRole}` : "/login";
+      redirectUrl.search = "";
       return NextResponse.redirect(redirectUrl);
     }
     redirectUrl.pathname = ADMIN_PORTAL_HOME;
