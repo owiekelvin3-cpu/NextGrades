@@ -53,7 +53,7 @@ export default function AdminDashboard() {
           <h1 className={appShell.dashboardTitle}>{t("adminDashboard.title")}</h1>
           <p className={appShell.dashboardDescription}>{t("adminDashboard.subtitle")}</p>
         </div>
-        <Button variant="gold" size="md" href="/portal/admin/students">
+        <Button variant="gold" size="md" href="/portal/admin/users?create=1">
           <Plus className="mr-2 h-4 w-4" />
           {t("adminDashboard.newUser")}
         </Button>
@@ -62,7 +62,7 @@ export default function AdminDashboard() {
       <div className="md:hidden">
         <h1 className={appShell.dashboardTitle}>{t("adminDashboard.title")}</h1>
         <p className={appShell.dashboardDescription}>{t("adminDashboard.subtitle")}</p>
-        <Button variant="gold" size="md" className="mt-4 w-full sm:w-auto" href="/portal/admin/students">
+        <Button variant="gold" size="md" className="mt-4 w-full sm:w-auto" href="/portal/admin/users?create=1">
           <Plus className="mr-2 h-4 w-4" />
           {t("adminDashboard.newUser")}
         </Button>

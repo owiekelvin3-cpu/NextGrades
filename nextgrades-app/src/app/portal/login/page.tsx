@@ -12,7 +12,6 @@ import { fetchProfileRole, sanitizeRedirect } from "@/lib/auth/redirect";
 import { ADMIN_PORTAL_HOME } from "@/lib/admin/portal-paths";
 import { authSurface } from "@/components/auth/auth-ui";
 import { AuthGuestGuard } from "@/components/auth/AuthGuestGuard";
-import { VerificationCodePanel } from "@/components/auth/VerificationCodePanel";
 import {
   isAuthUserEmailVerified,
   isClientEmailVerificationRequired,
@@ -26,7 +25,6 @@ function AdminPortalLoginContent() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [pendingVerification, setPendingVerification] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
   const { t } = useTranslation();
@@ -55,16 +53,14 @@ function AdminPortalLoginContent() {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    setPendingVerification(false);
 
     try {
       const result = await supabase.auth.signInWithPassword({ email: email.trim(), password });
       if (result.error) {
         if (isEmailNotConfirmedError(result.error)) {
-          setPendingVerification(true);
           setError(
             t("login.emailNotVerified", {
-              defaultValue: "Please verify your email with the code we sent you.",
+              defaultValue: "This account is not verified yet. Contact support.",
             })
           );
           return;
@@ -78,10 +74,9 @@ function AdminPortalLoginContent() {
         !isAuthUserEmailVerified(result.data.user)
       ) {
         await supabase.auth.signOut();
-        setPendingVerification(true);
         setError(
           t("login.emailNotVerified", {
-            defaultValue: "Please verify your email with the code we sent you.",
+            defaultValue: "This account is not verified yet. Contact support.",
           })
         );
         return;
@@ -119,22 +114,9 @@ function AdminPortalLoginContent() {
           </p>
         </div>
 
-        {(error || pendingVerification) && (
-          <div className={cn("mb-6 space-y-4 rounded-2xl border px-4 py-3 text-sm", s.errorBox)}>
-            {error && <p>{error}</p>}
-            {pendingVerification && (
-              <VerificationCodePanel
-                email={email}
-                password={password}
-                variant="inline"
-                onVerified={async (userId) => {
-                  setPendingVerification(false);
-                  setError(null);
-                  await finishLogin(userId);
-                }}
-                onError={(msg) => setError(msg)}
-              />
-            )}
+        {error && (
+          <div className={cn("mb-6 rounded-2xl border px-4 py-3 text-sm", s.errorBox)}>
+            <p>{error}</p>
           </div>
         )}
 
@@ -212,7 +194,7 @@ function AdminPortalLoginContent() {
 
 export default function AdminPortalLoginPage() {
   return (
-    <AuthGuestGuard>
+    <AuthGuestGuard skipLoginOtp adminPortal>
       <Suspense
         fallback={
           <div className="flex min-h-[100dvh] items-center justify-center bg-[#0D1B2A] text-gray-400">

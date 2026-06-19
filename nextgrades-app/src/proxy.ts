@@ -140,6 +140,7 @@ export async function proxy(request: NextRequest) {
       isLoginEmailVerificationRequired() &&
       isAuthUserEmailVerified(user) &&
       isProtectedAppPath(requestedPath) &&
+      !(userRole === "admin" && requestedPath.startsWith("/portal")) &&
       !(await isLoginMfaSatisfiedFromRequest(request, user.id)) &&
       !isVerificationPath(requestedPath)
     ) {
@@ -165,6 +166,7 @@ export async function proxy(request: NextRequest) {
       if (user) {
         if (
           isLoginEmailVerificationRequired() &&
+          userRole !== "admin" &&
           !(await isLoginMfaSatisfiedFromRequest(request, user.id))
         ) {
           const redirectUrl = redirectToVerification(request, "login", {

@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
 import { MockupBreadcrumbs, type BreadcrumbItem } from "./MockupBreadcrumbs";
 import { cn } from "@/lib/utils";
-import { section } from "@/lib/premium/tokens";
+import { hero } from "@/lib/premium/tokens";
 
 type Props = {
   breadcrumbs?: BreadcrumbItem[];
@@ -36,7 +36,7 @@ export function MockupPageHero({
   return (
     <section
       className={cn(
-        "relative overflow-hidden pt-site-nav pb-14 md:pb-20 md:pt-28",
+        hero.section,
         isDark ? "bg-[#0D1B2A] text-white" : "bg-white text-[#0D1B2A]",
         className
       )}
@@ -48,7 +48,7 @@ export function MockupPageHero({
         backgroundColor={bg}
         priority
       />
-      <div className={`${section.container} relative z-10`}>
+      <div className={hero.inner}>
         {breadcrumbs && breadcrumbs.length > 0 && (
           <MockupBreadcrumbs items={breadcrumbs} light={isDark} />
         )}

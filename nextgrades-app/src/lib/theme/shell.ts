@@ -1,10 +1,12 @@
 /** Shared Tailwind classes that respond to `.dark` on `<html>`. */
 
+import { hero } from "@/lib/premium/tokens";
+
 export const appShell = {
   siteContainer: "site-container",
   marketingPage: "marketing-page-root min-h-screen bg-background text-foreground",
   marketingPageMuted: "marketing-page-root min-h-screen bg-surface-muted text-foreground",
-  marketingHero: "pt-site-nav md:pt-28",
+  marketingHero: hero.inner,
   marketingMain: "site-main flex min-w-0 flex-1 flex-col",
   sectionAlt: "bg-surface-muted dark:bg-[#112240]",
   sectionSubtle: "bg-surface-subtle",

@@ -10,6 +10,8 @@ import { useLocalizedContent } from "@/hooks/useLocalizedContent";
 import { buildLoginUrl } from "@/lib/auth/redirect";
 import { getResourcesSubjectImage } from "@/lib/resources/images";
 import { appShell } from "@/lib/theme/shell";
+import { hero } from "@/lib/premium/tokens";
+import { cn } from "@/lib/utils";
 
 type LocalizedPlan = {
   id: string;
@@ -71,9 +73,9 @@ export function ResourcesUpgradeExperience() {
 
   return (
     <>
-      <section className="relative overflow-hidden bg-[#0D1B2A] pb-16 pt-site-nav text-white md:pt-28">
+      <section className={cn("bg-[#0D1B2A] text-white", hero.section)}>
         <MarketingHeroBlend src={heroImage} alt="" variant="dark-full" priority sizes="100vw" opacity={0.75} />
-        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className={hero.inner}>
           <p className="mb-3 text-sm text-gray-400">
             {t("resources.upgrade.breadcrumb", { subject: subjectLabel })}
           </p>

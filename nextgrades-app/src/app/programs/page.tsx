@@ -23,6 +23,8 @@ import { useTheme } from "@/context/ThemeContext";
 import { PROGRAMS_HERO_IMAGE, PROGRAMS_PAGE_CARD_IMAGES } from "@/lib/marketing-images";
 import { MarketingImage } from "@/components/marketing/MarketingImage";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
+import { hero } from "@/lib/premium/tokens";
+import { cn } from "@/lib/utils";
 
 const statIcons = [GraduationCap, UserRound, Star];
 const heroFeatureIcons = [Hexagon, BookOpen, Sparkles];
@@ -90,7 +92,7 @@ export default function ProgramsPage() {
       <Navbar />
 
       <main className="flex-1 overflow-x-hidden">
-        <section className="relative overflow-hidden bg-[#0D1B2A] pb-16 pt-site-nav text-white md:pb-20 md:pt-28">
+        <section className={cn("bg-[#0D1B2A] text-white", hero.section)}>
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(212,175,55,0.15),transparent_45%)]" />
           <MarketingHeroBlend
             src={programsHeroImage}
@@ -98,7 +100,7 @@ export default function ProgramsPage() {
             variant="dark-split-right"
             priority
           />
-          <div className="relative z-10 mx-auto w-full min-w-0 max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className={hero.inner}>
             <div className="grid min-w-0 items-center gap-10 sm:gap-12 lg:grid-cols-2 lg:gap-16">
               <div className="hero-enter min-w-0 max-w-xl">
                 <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-[#D4AF37] sm:text-sm">

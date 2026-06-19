@@ -5,8 +5,6 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { LogOut, User as UserIcon, Menu, X, ChevronDown } from "lucide-react";
 import { MobileDrawer } from "@/components/mobile/MobileDrawer";
-import { MarketingBottomNav } from "@/components/marketing/MarketingBottomNav";
-import { MARKETING_OPEN_MENU_EVENT } from "@/lib/marketing-nav";
 import { Button } from "./ui/Button";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { BrandLogo } from "./BrandLogo";
@@ -92,12 +90,6 @@ export default function Navbar() {
     setIsMobileMenuOpen(false);
     setIsMoreOpen(false);
   }, [pathname]);
-
-  useEffect(() => {
-    const open = () => setIsMobileMenuOpen(true);
-    window.addEventListener(MARKETING_OPEN_MENU_EVENT, open);
-    return () => window.removeEventListener(MARKETING_OPEN_MENU_EVENT, open);
-  }, []);
 
   useEffect(() => {
     if (!isMoreOpen) return;
@@ -447,7 +439,6 @@ export default function Navbar() {
           </nav>
         </MobileDrawer>
       </header>
-      <MarketingBottomNav />
     </>
   );
 }

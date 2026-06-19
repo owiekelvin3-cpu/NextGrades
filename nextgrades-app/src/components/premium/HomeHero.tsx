@@ -4,8 +4,8 @@ import Link from "next/link";
 import { ArrowRight, Shield, MapPin } from "lucide-react";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
 import { Button } from "@/components/ui/Button";
-import { type } from "@/lib/premium/tokens";
-import { section } from "@/lib/premium/tokens";
+import { type, hero } from "@/lib/premium/tokens";
+import { cn } from "@/lib/utils";
 
 type HomeHeroProps = {
   eyebrow: string;
@@ -28,7 +28,7 @@ export function HomeHero({
   heroImage,
 }: HomeHeroProps) {
   return (
-    <section className="relative min-h-[520px] overflow-hidden bg-[#0D1B2A] text-white md:min-h-[600px] lg:min-h-[680px]">
+    <section className={cn("relative overflow-hidden bg-[#0D1B2A] text-white", hero.section)}>
       <MarketingHeroBlend
         src={heroImage}
         alt=""
@@ -37,7 +37,7 @@ export function HomeHero({
         priority
       />
 
-      <div className={`${section.container} relative z-10 flex min-h-[520px] flex-col justify-center pb-16 pt-site-nav md:min-h-[600px] md:pb-20 md:pt-28 lg:min-h-[680px]`}>
+      <div className={hero.inner}>
         <div className="max-w-xl">
           <p className={`${type.eyebrow} mb-5`}>{eyebrow}</p>
           <h1 className={type.h1}>

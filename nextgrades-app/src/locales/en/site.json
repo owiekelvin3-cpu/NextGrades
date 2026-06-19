@@ -1586,7 +1586,22 @@
     "reactivateTitle": "Reactivate user",
     "deleteTitle": "Permanently delete user",
     "noUsers": "No users found",
-    "loading": "Loading users…"
+    "loading": "Loading users…",
+    "addUser": "Add user",
+    "optional": "optional",
+    "createTitle": "Add user",
+    "createDescription": "Enter email and password. The user will receive an email with their login credentials.",
+    "createEmail": "Email",
+    "createPassword": "Password",
+    "createPasswordHint": "At least {{min}} characters with uppercase, lowercase, number, and special character",
+    "createFullName": "Full name",
+    "createRole": "Role",
+    "createSend": "Send credentials",
+    "createSending": "Sending…",
+    "createCancel": "Cancel",
+    "createClose": "Close",
+    "createSuccess": "User created — credentials sent by email",
+    "createFailed": "Failed to create user"
   },
   "teacherContent": {
     "searchPlaceholder": "Search resources…",

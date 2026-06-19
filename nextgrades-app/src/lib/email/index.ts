@@ -28,6 +28,10 @@ import magicLinkEmail from "./templates/magic-link";
 import inviteEmail from "./templates/invite";
 import changeEmailEmail from "./templates/change-email";
 import signupConfirmationEmail from "./templates/signup-confirmation";
+import {
+  accountCredentialsEmail,
+  accountCredentialsEmailPlain,
+} from "./templates/account-credentials";
 import type { PaymentLineItem, SecurityAlertDetails, SubscriptionDetails } from "./types";
 
 export { isResendConfigured };
@@ -285,6 +289,22 @@ export async function sendInviteEmail(
     subject: `${inviterName} invited you to NextGrades`,
     html: inviteEmail(acceptUrl, inviterName, inviteMessage, role),
     tags: [{ name: "category", value: "invite" }],
+  });
+}
+
+export async function sendAccountCredentialsEmail(params: {
+  email: string;
+  password: string;
+  userName?: string;
+  role: "student" | "teacher";
+  loginUrl: string;
+}) {
+  return sendEmail({
+    to: params.email,
+    subject: "Deine NextGrades Zugangsdaten",
+    html: accountCredentialsEmail(params),
+    text: accountCredentialsEmailPlain(params),
+    tags: [{ name: "category", value: "admin-credentials" }],
   });
 }
 

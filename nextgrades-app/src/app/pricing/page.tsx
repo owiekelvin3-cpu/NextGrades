@@ -26,7 +26,7 @@ import { useLocalizedContent } from "@/hooks/useLocalizedContent";
 import { useToast } from "@/context/ToastContext";
 import { buildLoginUrl } from "@/lib/auth/redirect";
 import { cn } from "@/lib/utils";
-import { section } from "@/lib/premium/tokens";
+import { section, hero } from "@/lib/premium/tokens";
 import { Badge } from "@/components/ui/Badge";
 
 type CompareRow = {
@@ -146,10 +146,10 @@ function PricingContent() {
 
       <main className="flex-1">
         {/* Hero */}
-        <section className="relative overflow-hidden bg-[#0D1B2A] pb-14 pt-site-nav text-white md:pb-20 md:pt-28">
+        <section className={cn("bg-[#0D1B2A] text-white", hero.section)}>
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(212,175,55,0.18),transparent_50%)]" />
           <div className="pointer-events-none absolute -left-32 top-20 h-96 w-96 rounded-full bg-[#D4AF37]/10 blur-3xl" />
-          <div className={cn("relative z-10", section.container)}>
+          <div className={hero.innerCentered}>
             <motion.div
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}

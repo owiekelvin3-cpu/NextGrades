@@ -17,6 +17,8 @@ import { ResourcesCtaBanner, ResourcesFeatureRow } from "@/components/resources/
 import { tabContentTypes, getSubjectUi, type ResourceTabId } from "@/lib/resources/ui-config";
 import { LoadingBlock } from "@/components/dashboard/LoadingBlock";
 import { appShell } from "@/lib/theme/shell";
+import { hero } from "@/lib/premium/tokens";
+import { cn } from "@/lib/utils";
 import { supabase } from "@/lib/supabase/client";
 
 type Props = {
@@ -90,9 +92,9 @@ export function ResourcesSubjectExperience({ subjectSlug, subjectName, classLeve
 
   return (
     <>
-      <section className="relative overflow-hidden bg-[#0D1B2A] text-white">
+      <section className={cn("bg-[#0D1B2A] text-white", hero.section)}>
         <MarketingHeroBlend src={ui.heroImage} alt="" variant="dark-full" priority sizes="100vw" opacity={0.8} />
-        <div className="relative z-10 mx-auto max-w-7xl px-4 pb-12 pt-site-nav sm:px-6 md:pt-28 lg:px-8">
+        <div className={hero.inner}>
           <p className="mb-2 text-sm text-gray-400">
             {t("resources.subjectPage.breadcrumbHome")} › {t("resources.subjectPage.breadcrumbResources")} ›{" "}
             {t("resources.subjectPage.breadcrumbMaterials")} › {breadcrumbTail}

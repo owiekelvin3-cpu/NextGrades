@@ -7,7 +7,15 @@ import { fetchProfileRole, resolvePostAuthRedirect, sanitizeRedirect } from "@/l
 import { isAuthUserEmailVerified, isClientEmailVerificationRequired, isClientLoginOtpRequired } from "@/lib/auth/config";
 import { buildVerifyUrl, savePendingVerification } from "@/lib/auth/pending-verification-storage";
 
-function AuthGuestGuardInner({ children }: { children: React.ReactNode }) {
+function AuthGuestGuardInner({
+  children,
+  skipLoginOtp = false,
+  adminPortal = false,
+}: {
+  children: React.ReactNode;
+  skipLoginOtp?: boolean;
+  adminPortal?: boolean;
+}) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [allowed, setAllowed] = useState(false);
@@ -37,7 +45,7 @@ function AuthGuestGuardInner({ children }: { children: React.ReactNode }) {
         return;
       }
 
-      if (isClientLoginOtpRequired()) {
+      if (!skipLoginOtp && isClientLoginOtpRequired()) {
         try {
           const res = await fetch("/api/auth/login/status");
           const data = (await res.json()) as { mfaRequired?: boolean };
@@ -56,7 +64,15 @@ function AuthGuestGuardInner({ children }: { children: React.ReactNode }) {
       }
 
       const role = await fetchProfileRole(user.id);
-      const target = role ? resolvePostAuthRedirect(role, redirectTo) : "/choose-role";
+      const target = adminPortal
+        ? role === "admin"
+          ? sanitizeRedirect(searchParams.get("redirect")) ?? "/portal/admin"
+          : role
+            ? resolvePostAuthRedirect(role, redirectTo)
+            : "/choose-role"
+        : role
+          ? resolvePostAuthRedirect(role, redirectTo)
+          : "/choose-role";
       router.replace(target);
       router.refresh();
     };
@@ -75,7 +91,7 @@ function AuthGuestGuardInner({ children }: { children: React.ReactNode }) {
       cancelled = true;
       subscription.unsubscribe();
     };
-  }, [router, searchParams]);
+  }, [router, searchParams, skipLoginOtp, adminPortal]);
 
   if (!allowed) {
     return (
@@ -89,7 +105,15 @@ function AuthGuestGuardInner({ children }: { children: React.ReactNode }) {
 }
 
 /** Blocks auth pages for fully verified signed-in users. */
-export function AuthGuestGuard({ children }: { children: React.ReactNode }) {
+export function AuthGuestGuard({
+  children,
+  skipLoginOtp = false,
+  adminPortal = false,
+}: {
+  children: React.ReactNode;
+  skipLoginOtp?: boolean;
+  adminPortal?: boolean;
+}) {
   return (
     <Suspense
       fallback={
@@ -98,7 +122,9 @@ export function AuthGuestGuard({ children }: { children: React.ReactNode }) {
         </div>
       }
     >
-      <AuthGuestGuardInner>{children}</AuthGuestGuardInner>
+      <AuthGuestGuardInner skipLoginOtp={skipLoginOtp} adminPortal={adminPortal}>
+        {children}
+      </AuthGuestGuardInner>
     </Suspense>
   );
 }

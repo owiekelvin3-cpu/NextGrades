@@ -29,6 +29,7 @@ import { useToast } from "@/context/ToastContext";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
 import { CAREERS_HERO_IMAGE } from "@/lib/marketing-images";
 import { StatGrid } from "@/components/premium/StatGrid";
+import { hero } from "@/lib/premium/tokens";
 import { cn } from "@/lib/utils";
 
 const BENEFIT_ICONS = [Heart, Laptop, Users, Clock];
@@ -158,7 +159,7 @@ export function CareersPageContent() {
       <Navbar />
 
       <main className="flex-1">
-        <section className="relative overflow-hidden bg-[#0D1B2A] pb-16 pt-site-nav text-white md:pb-24 md:pt-28">
+        <section className={cn("bg-[#0D1B2A] text-white", hero.section)}>
           <MarketingHeroBlend
             src={heroImage}
             alt=""
@@ -166,7 +167,7 @@ export function CareersPageContent() {
             backgroundColor="#0D1B2A"
             priority
           />
-          <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className={hero.inner}>
             <div className="grid items-center gap-12 lg:grid-cols-2">
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
                 <Badge variant="gold" className="mb-5">

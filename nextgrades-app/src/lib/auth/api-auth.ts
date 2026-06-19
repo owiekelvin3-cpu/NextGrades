@@ -87,12 +87,15 @@ export type AuthGateResult =
   | { error: NextResponse; auth: null }
   | { error: null; auth: ApiAuthContext };
 
-async function enforceSecureSession(user: User): Promise<NextResponse | null> {
+async function enforceSecureSession(
+  user: User,
+  options?: { skipLoginOtp?: boolean }
+): Promise<NextResponse | null> {
   if (isSignupEmailVerificationRequired() && !isAuthUserEmailVerified(user)) {
     return forbidden("Email verification required");
   }
 
-  if (!(await isLoginMfaSatisfied(user.id))) {
+  if (!options?.skipLoginOtp && !(await isLoginMfaSatisfied(user.id))) {
     return forbidden("Login verification required");
   }
 
@@ -106,7 +109,7 @@ export async function requireAdminApi(): Promise<AuthGateResult> {
     return { error: forbidden(), auth: null };
   }
 
-  const secureError = await enforceSecureSession(auth.user);
+  const secureError = await enforceSecureSession(auth.user, { skipLoginOtp: true });
   if (secureError) return { error: secureError, auth: null };
 
   return { error: null, auth: auth as ApiAuthContext };

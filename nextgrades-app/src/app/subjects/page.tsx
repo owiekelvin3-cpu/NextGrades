@@ -37,6 +37,7 @@ import { SUBJECTS_HERO_IMAGE, getSubjectImage } from "@/lib/marketing-images";
 import { MarketingImage } from "@/components/marketing/MarketingImage";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
 import { cn } from "@/lib/utils";
+import { hero } from "@/lib/premium/tokens";
 
 const SUBJECT_ICONS: Record<string, typeof Calculator> = {
   math: Calculator,
@@ -145,7 +146,7 @@ export default function SubjectsPage() {
 
       <main className="flex-1">
         {/* Hero */}
-        <section className="relative overflow-hidden bg-[#0D1B2A] pb-16 pt-site-nav text-white md:pb-20 md:pt-28">
+        <section className={cn("bg-[#0D1B2A] text-white", hero.section)}>
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(212,175,55,0.12)_0%,_transparent_55%)]" />
           <MarketingHeroBlend
             src={subjectsHeroImage}
@@ -153,7 +154,7 @@ export default function SubjectsPage() {
             variant="dark-split-right"
             priority
           />
-          <div className="relative z-10 mx-auto w-full min-w-0 max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className={hero.inner}>
             <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
               <div className="hero-enter">
                 <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-[#D4AF37] sm:text-sm">

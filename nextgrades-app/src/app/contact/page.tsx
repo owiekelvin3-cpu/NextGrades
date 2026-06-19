@@ -23,6 +23,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { hero } from "@/lib/premium/tokens";
 import { useCmsImage } from "@/hooks/useCmsImage";
 import { CONTACT_HERO_IMAGE } from "@/lib/marketing-images";
 import { COMPANY_PHONE_DISPLAY, COMPANY_PHONE_TEL } from "@/lib/company";
@@ -124,7 +125,7 @@ export default function ContactPage() {
         {/* Hero — photo blends into background (mockup) */}
         <section
           className={cn(
-            "relative overflow-hidden pt-site-nav pb-16 md:pb-20 md:pt-28",
+            hero.section,
             mt.isDark ? "bg-[#0D1B2A] text-white" : "bg-white text-[#0D1B2A]"
           )}
         >
@@ -135,7 +136,7 @@ export default function ContactPage() {
             backgroundColor={mt.isDark ? "#0D1B2A" : "#FFFFFF"}
             priority
           />
-          <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className={hero.inner}>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}

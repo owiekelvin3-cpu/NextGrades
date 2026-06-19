@@ -379,7 +379,6 @@ body {
 
 :root {
   --site-nav-height: 4.25rem;
-  --marketing-bottom-nav-height: 3.25rem;
 }
 
 @media (min-width: 768px) {
@@ -466,20 +465,6 @@ body {
   min-width: 0;
   max-width: 100%;
   overflow-x: clip;
-}
-
-@media (max-width: 767px) {
-  html.marketing-has-bottom-nav main.flex-1 {
-    padding-bottom: calc(var(--marketing-bottom-nav-height) + env(safe-area-inset-bottom, 0px) + 0.75rem);
-  }
-
-  html.marketing-has-bottom-nav footer {
-    margin-bottom: calc(var(--marketing-bottom-nav-height) + env(safe-area-inset-bottom, 0px));
-  }
-
-  html.marketing-has-bottom-nav .cookie-banner-enter {
-    margin-bottom: calc(var(--marketing-bottom-nav-height) + env(safe-area-inset-bottom, 0px));
-  }
 }
 
 @keyframes cookie-banner-slide-up {

@@ -31,6 +31,8 @@ import {
   Phone,
   Mail,
 } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { hero } from "@/lib/premium/tokens";
 
 const benefitIcons = [Target, Sparkles, Shield, GraduationCap, Clock, Users];
 const stepIcons = [MessageSquare, Video, CheckCircle2, Calendar];
@@ -143,7 +145,10 @@ export default function ConsultationPage() {
       <main className="flex-1">
         {/* Hero */}
         <section
-          className={`relative overflow-hidden pt-site-nav pb-16 md:pt-28 ${isDark ? "bg-[#0D1B2A] text-white" : "bg-white text-[#0D1B2A]"}`}
+          className={cn(
+            hero.section,
+            isDark ? "bg-[#0D1B2A] text-white" : "bg-white text-[#0D1B2A]"
+          )}
         >
           <MarketingHeroBlend
             src={consultationHeroImage}
@@ -152,7 +157,7 @@ export default function ConsultationPage() {
             backgroundColor={isDark ? "#0D1B2A" : "#FFFFFF"}
             priority
           />
-          <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className={hero.inner}>
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
                 <p className={`uppercase tracking-[0.2em] text-sm font-semibold mb-4 ${textMuted}`}>

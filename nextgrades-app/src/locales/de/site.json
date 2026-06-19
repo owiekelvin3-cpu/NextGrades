@@ -1616,7 +1616,22 @@
     "reactivateTitle": "Benutzer reaktivieren",
     "deleteTitle": "Benutzer dauerhaft löschen",
     "noUsers": "Keine Benutzer gefunden",
-    "loading": "Benutzer werden geladen…"
+    "loading": "Benutzer werden geladen…",
+    "addUser": "Benutzer hinzufügen",
+    "optional": "optional",
+    "createTitle": "Benutzer hinzufügen",
+    "createDescription": "E-Mail und Passwort eingeben. Der Benutzer erhält eine E-Mail mit seinen Zugangsdaten.",
+    "createEmail": "E-Mail",
+    "createPassword": "Passwort",
+    "createPasswordHint": "Mindestens {{min}} Zeichen mit Groß-, Kleinbuchstaben, Zahl und Sonderzeichen",
+    "createFullName": "Vollständiger Name",
+    "createRole": "Rolle",
+    "createSend": "Zugangsdaten senden",
+    "createSending": "Wird gesendet…",
+    "createCancel": "Abbrechen",
+    "createClose": "Schließen",
+    "createSuccess": "Benutzer erstellt — Zugangsdaten per E-Mail gesendet",
+    "createFailed": "Benutzer konnte nicht erstellt werden"
   },
   "teacherContent": {
     "searchPlaceholder": "Ressourcen suchen…",

@@ -8,6 +8,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useMarketingTheme } from "@/lib/marketing-theme";
 import { cn } from "@/lib/utils";
+import { hero } from "@/lib/premium/tokens";
 import { OpenCookieSettingsButton } from "@/components/cookies/OpenCookieSettingsButton";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
 import { useCmsImage } from "@/hooks/useCmsImage";
@@ -42,7 +43,8 @@ export function LegalDocumentPage({ namespace }: LegalDocumentPageProps) {
         {/* Hero */}
         <section
           className={cn(
-            "relative overflow-hidden border-b pt-site-nav pb-12 md:pt-28",
+            hero.section,
+            "border-b",
             showPrivacyHero
               ? "border-white/10 bg-[#0D1B2A] text-white"
               : mt.isDark
@@ -59,7 +61,7 @@ export function LegalDocumentPage({ namespace }: LegalDocumentPageProps) {
               priority
             />
           )}
-          <div className="relative z-10 mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
+          <div className={hero.innerCentered}>
             <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#D4AF37]/30 bg-[#D4AF37]/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-[#D4AF37]">
               <FileText className="h-3.5 w-3.5" />
               {t(`${namespace}.eyebrow`)}

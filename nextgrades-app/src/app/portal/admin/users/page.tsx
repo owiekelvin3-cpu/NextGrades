@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { Suspense, useEffect, useState, useCallback } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
@@ -12,10 +13,13 @@ import {
   User,
   ChevronDown,
   RefreshCw,
+  Plus,
 } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
 import { useToast } from "@/context/ToastContext";
+import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
+import { AdminCreateUserModal } from "@/components/admin/AdminCreateUserModal";
 
 interface UserProfile {
   id: string;
@@ -36,8 +40,24 @@ interface UserProfile {
 }
 
 export default function AdminUsersPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="mx-auto max-w-7xl p-8 text-center text-gray-500">Loading…</div>
+      }
+    >
+      <AdminUsersPageContent />
+    </Suspense>
+  );
+}
+
+function AdminUsersPageContent() {
   const { theme } = useTheme();
   const { success, error: toastError } = useToast();
+  const { t } = useTranslation();
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const [createOpen, setCreateOpen] = useState(false);
   const [users, setUsers] = useState<UserProfile[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
@@ -81,6 +101,18 @@ export default function AdminUsersPage() {
   useEffect(() => {
     void fetchUsers();
   }, [fetchUsers]);
+
+  useEffect(() => {
+    if (searchParams.get("create") === "1") {
+      setCreateOpen(true);
+      router.replace("/portal/admin/users", { scroll: false });
+    }
+  }, [searchParams, router]);
+
+  const handleCreateSuccess = () => {
+    success(t("adminUsers.createSuccess"));
+    void fetchUsers();
+  };
 
   const handleSuspend = async (userId: string, currentStatus: boolean) => {
     const action = currentStatus ? "suspend" : "reactivate";
@@ -171,17 +203,29 @@ export default function AdminUsersPage() {
                 Manage user accounts and permissions
               </p>
             </div>
-            <Button
-              variant="outline"
-              size="md"
-              onClick={fetchUsers}
-              disabled={loading}
-              className={theme === "dark" ? "border-white/20 text-white hover:bg-white/10" : "border-gray-200 text-gray-700 hover:bg-gray-50"}
-            >
-              <RefreshCw className={`w-4 h-4 mr-2 ${loading ? "animate-spin" : ""}`} />
-              Refresh
-            </Button>
+            <div className="flex flex-wrap gap-2">
+              <Button variant="gold" size="md" onClick={() => setCreateOpen(true)}>
+                <Plus className="mr-2 h-4 w-4" />
+                {t("adminUsers.addUser")}
+              </Button>
+              <Button
+                variant="outline"
+                size="md"
+                onClick={fetchUsers}
+                disabled={loading}
+                className={theme === "dark" ? "border-white/20 text-white hover:bg-white/10" : "border-gray-200 text-gray-700 hover:bg-gray-50"}
+              >
+                <RefreshCw className={`w-4 h-4 mr-2 ${loading ? "animate-spin" : ""}`} />
+                Refresh
+              </Button>
+            </div>
           </div>
+
+          <AdminCreateUserModal
+            open={createOpen}
+            onClose={() => setCreateOpen(false)}
+            onSuccess={handleCreateSuccess}
+          />
 
           {/* Filters */}
           <Card className={`p-4 mb-6 ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>

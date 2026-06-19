@@ -12,8 +12,23 @@ type Props = {
 };
 
 const VERIFY_TIMEOUT_MS = 8_000;
+const AUTH_TIMEOUT_MS = 6_000;
 const ADMIN_CACHE_KEY = "ng_admin_verified_v1";
 const ADMIN_CACHE_MS = 20 * 60 * 1000;
+
+async function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T | null> {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  try {
+    return await Promise.race([
+      promise,
+      new Promise<null>((resolve) => {
+        timer = setTimeout(() => resolve(null), ms);
+      }),
+    ]);
+  } finally {
+    if (timer) clearTimeout(timer);
+  }
+}
 
 function readAdminCache(userId: string): boolean {
   try {
@@ -63,11 +78,10 @@ export function AdminPortalGuard({ children }: Props) {
           return;
         }
 
-        const {
-          data: { session },
-        } = await supabase.auth.getSession();
+        const userResult = await withTimeout(supabase.auth.getUser(), AUTH_TIMEOUT_MS);
+        const activeUser = userResult?.data?.user ?? null;
 
-        if (!session?.user) {
+        if (!activeUser) {
           try {
             sessionStorage.removeItem(ADMIN_CACHE_KEY);
           } catch {
@@ -80,7 +94,7 @@ export function AdminPortalGuard({ children }: Props) {
           return;
         }
 
-        if (readAdminCache(session.user.id)) {
+        if (readAdminCache(activeUser.id)) {
           if (!cancelled) {
             resolved = true;
             setStatus("allowed");
@@ -88,7 +102,7 @@ export function AdminPortalGuard({ children }: Props) {
           return;
         }
 
-        const role = await fetchProfileRole(session.user.id);
+        const role = await fetchProfileRole(activeUser.id);
         if (role !== "admin") {
           await supabase.auth.signOut();
           try {
@@ -103,7 +117,7 @@ export function AdminPortalGuard({ children }: Props) {
           return;
         }
 
-        writeAdminCache(session.user.id);
+        writeAdminCache(activeUser.id);
 
         if (!cancelled) {
           resolved = true;
@@ -121,7 +135,7 @@ export function AdminPortalGuard({ children }: Props) {
       cancelled = true;
       window.clearTimeout(timeout);
     };
-  }, [router]);
+  }, []);
 
   if (status === "loading") {
     return (
