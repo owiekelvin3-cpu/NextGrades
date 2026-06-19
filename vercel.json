@@ -1,0 +1,6 @@
+{
+  "buildCommand": "cd nextgrades-app && npm run build",
+  "outputDirectory": "nextgrades-app/.next",
+  "installCommand": "cd nextgrades-app && npm install",
+  "framework": "nextjs"
+}
