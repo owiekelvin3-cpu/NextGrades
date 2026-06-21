@@ -7,7 +7,6 @@ import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/Button";
 import { useTheme } from "@/context/ThemeContext";
 import { cn } from "@/lib/utils";
-import { PASSWORD_MIN_LENGTH } from "@/lib/auth/password-policy";
 
 type AdminCreateUserModalProps = {
   open: boolean;
@@ -21,7 +20,6 @@ export function AdminCreateUserModal({ open, onClose, onSuccess }: AdminCreateUs
   const panelRef = useRef<HTMLDivElement>(null);
   const [mounted, setMounted] = useState(false);
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [role, setRole] = useState<"student" | "teacher">("student");
   const [submitting, setSubmitting] = useState(false);
@@ -32,7 +30,6 @@ export function AdminCreateUserModal({ open, onClose, onSuccess }: AdminCreateUs
   useEffect(() => {
     if (!open) return;
     setEmail("");
-    setPassword("");
     setFullName("");
     setRole("student");
     setError(null);
@@ -73,7 +70,6 @@ export function AdminCreateUserModal({ open, onClose, onSuccess }: AdminCreateUs
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email: email.trim(),
-          password,
           fullName: fullName.trim() || undefined,
           role,
         }),
@@ -169,25 +165,6 @@ export function AdminCreateUserModal({ open, onClose, onSuccess }: AdminCreateUs
               className={inputClass}
               placeholder="name@example.com"
             />
-          </div>
-
-          <div>
-            <label htmlFor="create-user-password" className={labelClass}>
-              {t("adminUsers.createPassword")}
-            </label>
-            <input
-              id="create-user-password"
-              type="text"
-              required
-              autoComplete="new-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className={inputClass}
-              placeholder={t("adminUsers.createPasswordHint", { min: PASSWORD_MIN_LENGTH })}
-            />
-            <p className={cn("mt-1 text-xs", theme === "dark" ? "text-gray-500" : "text-gray-500")}>
-              {t("adminUsers.createPasswordHint", { min: PASSWORD_MIN_LENGTH })}
-            </p>
           </div>
 
           <div>

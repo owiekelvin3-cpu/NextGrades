@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import Link from "next/link";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
 import { Search, Shield, BookOpen, Download, Star } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useResourcesCatalog } from "@/hooks/useResourcesCatalog";
-import { ResourcesFilterSidebar } from "@/components/resources/shared/ResourcesFilterSidebar";
+import { useResourceMemberAccess } from "@/hooks/useResourceMemberAccess";
 import { ResourcesCategoryTabs } from "@/components/resources/shared/ResourcesCategoryTabs";
 import {
   ResourcesChapterList,
@@ -17,9 +18,8 @@ import { ResourcesCtaBanner, ResourcesFeatureRow } from "@/components/resources/
 import { tabContentTypes, getSubjectUi, type ResourceTabId } from "@/lib/resources/ui-config";
 import { LoadingBlock } from "@/components/dashboard/LoadingBlock";
 import { appShell } from "@/lib/theme/shell";
-import { hero } from "@/lib/premium/tokens";
+import { hero, section } from "@/lib/premium/tokens";
 import { cn } from "@/lib/utils";
-import { supabase } from "@/lib/supabase/client";
 
 type Props = {
   subjectSlug: string;
@@ -32,7 +32,7 @@ type Props = {
 export function ResourcesSubjectExperience({ subjectSlug, subjectName, classLevel, className, semester }: Props) {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<ResourceTabId>("all");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { loggedIn, hasMemberAccess } = useResourceMemberAccess();
   const ui = getSubjectUi(subjectSlug);
 
   const catalog = useResourcesCatalog({
@@ -40,22 +40,6 @@ export function ResourcesSubjectExperience({ subjectSlug, subjectName, classLeve
     classLevel: classLevel ?? "",
     semester: semester ?? "",
   });
-
-  useEffect(() => {
-    let mounted = true;
-    void supabase.auth.getSession().then(({ data }) => {
-      if (mounted) setIsLoggedIn(Boolean(data.session?.user));
-    });
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setIsLoggedIn(Boolean(session?.user));
-    });
-    return () => {
-      mounted = false;
-      subscription.unsubscribe();
-    };
-  }, []);
 
   const handleTabChange = (tab: ResourceTabId) => {
     setActiveTab(tab);
@@ -72,9 +56,7 @@ export function ResourcesSubjectExperience({ subjectSlug, subjectName, classLeve
     : "";
   const heroDesc = t("resources.subjectPage.heroDesc", { subject: subjectName, classInfo });
 
-  const breadcrumbTail = className
-    ? `${subjectName} › ${className}`
-    : subjectName;
+  const breadcrumbTail = className ? `${subjectName} › ${className}` : subjectName;
 
   const heroBenefits = [
     { icon: BookOpen, label: t("resources.subjectPage.benefitAgeAppropriate") },
@@ -90,6 +72,12 @@ export function ResourcesSubjectExperience({ subjectSlug, subjectName, classLeve
     videos: t("resources.subjectPage.statVideos"),
   };
 
+  const accessOptions: { value: "all" | "free" | "premium"; label: string }[] = [
+    { value: "all", label: t("resources.accessAll") },
+    { value: "free", label: t("resources.accessFree") },
+    { value: "premium", label: t("resources.accessPremium") },
+  ];
+
   return (
     <>
       <section className={cn("bg-[#0D1B2A] text-white", hero.section)}>
@@ -102,7 +90,8 @@ export function ResourcesSubjectExperience({ subjectSlug, subjectName, classLeve
           <div className="grid items-center gap-8 lg:grid-cols-2">
             <div>
               <h1 className="mb-4 text-4xl font-bold md:text-5xl">{title}</h1>
-              <p className="mb-8 max-w-xl text-gray-300">{heroDesc}</p>
+              <p className="mb-4 max-w-xl text-gray-300">{heroDesc}</p>
+              <p className="mb-8 text-sm font-medium text-[#D4AF37]">500+ Lernmaterialien</p>
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
                 {heroBenefits.map(({ icon: Icon, label }) => (
                   <div key={label} className="text-center">
@@ -121,49 +110,88 @@ export function ResourcesSubjectExperience({ subjectSlug, subjectName, classLeve
 
       <ResourcesCategoryTabs active={activeTab} onChange={handleTabChange} />
 
-      <section className={`${appShell.sectionSubtle} py-10`}>
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-8 lg:grid-cols-12">
-            <div className="lg:col-span-3">
-              <ResourcesFilterSidebar
-                subjects={catalog.subjects}
-                classes={catalog.classes}
-                subjectSlug={subjectSlug}
-                classLevel={catalog.classLevel}
-                semester={catalog.semester}
-                accessFilter={catalog.accessFilter}
-                materialTypes={catalog.materialTypes}
-                subjectCounts={catalog.subjectCounts}
-                onSubjectChange={catalog.setSubjectSlug}
-                onClassChange={catalog.setClassLevel}
-                onSemesterChange={catalog.setSemester}
-                onAccessChange={catalog.setAccessFilter}
-                onMaterialTypesChange={catalog.setMaterialTypes}
-                onReset={catalog.resetFilters}
-                subjectLinkBase="/resources"
+      <section className={`${appShell.sectionSubtle} py-8 md:py-10`}>
+        <div className={`${section.container} space-y-6`}>
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+            <div>
+              <h2 className="text-lg font-bold text-[#0D1B2A]">
+                {className
+                  ? t("resources.subjectPage.classContent", { className })
+                  : t("resources.subjectPage.allContent", { subject: subjectName })}
+              </h2>
+              <p className="mt-1 text-sm text-gray-500">{t("resources.topBarResults")}: {catalog.resources.length}</p>
+            </div>
+            <div className="relative w-full lg:max-w-md">
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+              <input
+                type="search"
+                value={catalog.search}
+                onChange={(e) => catalog.setSearch(e.target.value)}
+                placeholder={t("resources.searchPlaceholder")}
+                className="w-full rounded-xl border border-gray-200 bg-white py-2.5 pl-10 pr-4 text-sm"
               />
             </div>
+          </div>
 
-            <div className="space-y-6 lg:col-span-6">
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <h2 className="text-lg font-bold text-[#0D1B2A]">
-                  {className
-                    ? t("resources.subjectPage.classContent", { className })
-                    : t("resources.subjectPage.allContent", { subject: subjectName })}
-                </h2>
-                <div className="relative flex-1 sm:max-w-xs">
-                  <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-                  <input
-                    type="search"
-                    value={catalog.search}
-                    onChange={(e) => catalog.setSearch(e.target.value)}
-                    placeholder={t("resources.searchPlaceholder")}
-                    className="w-full rounded-xl border border-gray-200 bg-white py-2 pl-10 pr-4 text-sm"
-                  />
-                </div>
-              </div>
+          {catalog.classes.length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={() => catalog.setClassLevel("")}
+                className={cn(
+                  "rounded-full px-4 py-2 text-sm font-medium transition",
+                  !catalog.classLevel
+                    ? "bg-[#0D1B2A] text-white"
+                    : "border border-gray-200 bg-white text-gray-600 hover:border-[#D4AF37]/40"
+                )}
+              >
+                {t("resources.allClasses")}
+              </button>
+              {catalog.classes.map((cls) => (
+                <Link
+                  key={cls.id}
+                  href={`/resources/${subjectSlug}/${cls.level}`}
+                  className={cn(
+                    "rounded-full px-4 py-2 text-sm font-medium transition",
+                    String(cls.level) === catalog.classLevel
+                      ? "bg-[#0D1B2A] text-white"
+                      : "border border-gray-200 bg-white text-gray-600 hover:border-[#D4AF37]/40"
+                  )}
+                >
+                  {cls.name}
+                </Link>
+              ))}
+            </div>
+          )}
 
-              {isLoggedIn && classLevel && (
+          <div className="flex flex-wrap items-center gap-2">
+            {accessOptions.map((option) => (
+              <button
+                key={option.value}
+                type="button"
+                onClick={() => catalog.setAccessFilter(option.value)}
+                className={cn(
+                  "rounded-full px-4 py-2 text-sm font-medium transition",
+                  catalog.accessFilter === option.value
+                    ? "bg-[#D4AF37] text-[#0D1B2A]"
+                    : "border border-gray-200 bg-white text-gray-600 hover:border-[#D4AF37]/40"
+                )}
+              >
+                {option.label}
+              </button>
+            ))}
+            <button
+              type="button"
+              onClick={catalog.resetFilters}
+              className="ml-auto text-sm font-medium text-[#D4AF37] hover:underline"
+            >
+              {t("resources.resetFilters")}
+            </button>
+          </div>
+
+          <div className="grid gap-8 lg:grid-cols-12">
+            <div className="space-y-6 lg:col-span-8 xl:col-span-9">
+              {hasMemberAccess && classLevel && (
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                   {[
                     { label: statLabels.chapters, value: catalog.chapters.length },
@@ -189,7 +217,7 @@ export function ResourcesSubjectExperience({ subjectSlug, subjectName, classLeve
                 <LoadingBlock />
               ) : (
                 <>
-                  {isLoggedIn && <ResourcesChapterList chapters={catalog.chapters} />}
+                  {hasMemberAccess && <ResourcesChapterList chapters={catalog.chapters} />}
                   <ResourcesMaterialsTable resources={catalog.resources} onOpen={(r) => void catalog.openResource(r)} />
                   <ResourcesCtaBanner />
                   <ResourcesFeatureRow />
@@ -197,10 +225,15 @@ export function ResourcesSubjectExperience({ subjectSlug, subjectName, classLeve
               )}
             </div>
 
-            <div className="lg:col-span-3">
-              <ResourcesRightSidebar resources={catalog.resources} showAccountPanels={isLoggedIn} />
+            <div className="lg:col-span-4 xl:col-span-3">
+              <ResourcesRightSidebar
+                resources={catalog.resources}
+                showAccountPanels={hasMemberAccess}
+                loggedIn={loggedIn}
+              />
             </div>
           </div>
+
           <ResourcesSupportBar />
         </div>
       </section>

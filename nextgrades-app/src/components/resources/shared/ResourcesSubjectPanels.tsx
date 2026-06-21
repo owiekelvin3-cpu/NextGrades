@@ -10,9 +10,10 @@ import { isFreeResource, isPremiumResource } from "@/lib/resources/ui-config";
 type SidebarProps = {
   resources: LearningResource[];
   showAccountPanels?: boolean;
+  loggedIn?: boolean;
 };
 
-export function ResourcesRightSidebar({ resources, showAccountPanels = false }: SidebarProps) {
+export function ResourcesRightSidebar({ resources, showAccountPanels = false, loggedIn = false }: SidebarProps) {
   const { t } = useTranslation();
   const total = resources.length;
   const freeCount = resources.filter(isFreeResource).length;
@@ -44,7 +45,10 @@ export function ResourcesRightSidebar({ resources, showAccountPanels = false }: 
               </li>
             )}
           </ul>
-          <Link href="/login" className="mt-4 block text-center text-xs font-semibold text-[#D4AF37] hover:underline">
+          <Link
+            href={loggedIn ? "/dashboard/student/resources" : "/login"}
+            className="mt-4 block text-center text-xs font-semibold text-[#D4AF37] hover:underline"
+          >
             {t("resources.sidebar.signInForProgress")} →
           </Link>
         </div>

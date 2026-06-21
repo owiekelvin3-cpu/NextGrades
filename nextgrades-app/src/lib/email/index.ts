@@ -32,6 +32,10 @@ import {
   accountCredentialsEmail,
   accountCredentialsEmailPlain,
 } from "./templates/account-credentials";
+import {
+  accountInvitationEmail,
+  accountInvitationEmailPlain,
+} from "./templates/account-invitation";
 import type { PaymentLineItem, SecurityAlertDetails, SubscriptionDetails } from "./types";
 
 export { isResendConfigured };
@@ -305,6 +309,21 @@ export async function sendAccountCredentialsEmail(params: {
     html: accountCredentialsEmail(params),
     text: accountCredentialsEmailPlain(params),
     tags: [{ name: "category", value: "admin-credentials" }],
+  });
+}
+
+export async function sendAccountInvitationEmail(params: {
+  email: string;
+  userName?: string;
+  role: "student" | "teacher" | "admin";
+  setupUrl: string;
+}) {
+  return sendEmail({
+    to: params.email,
+    subject: "Deine NextGrades Einladung — Passwort festlegen",
+    html: accountInvitationEmail(params),
+    text: accountInvitationEmailPlain(params),
+    tags: [{ name: "category", value: "admin-invitation" }],
   });
 }
 

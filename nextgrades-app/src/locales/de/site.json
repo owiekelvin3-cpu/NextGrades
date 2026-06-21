@@ -144,34 +144,6 @@
         "bio": "Digitales Lernen & EdTech"
       }
     ],
-    "milestonesEyebrow": "UNSER WEG",
-    "milestones": [
-      {
-        "year": "2021",
-        "title": "Der Anfang",
-        "desc": "NextGrades als Leidenschaftsprojekt gegründet."
-      },
-      {
-        "year": "2022",
-        "title": "Erste 100 SchülerInnen",
-        "desc": "Erster Meilenstein mit überwältigend positivem Feedback."
-      },
-      {
-        "year": "2023",
-        "title": "Digitale Plattform",
-        "desc": "Launch der Online-Lernplattform mit Premium-Materialien."
-      },
-      {
-        "year": "2024",
-        "title": "500+ Lernmaterialien",
-        "desc": "Wachsende Lernbibliothek und erweiterte Fachangebote."
-      },
-      {
-        "year": "2025",
-        "title": "KI & Innovation",
-        "desc": "KI-gestützte Tools für personalisierte Lernpfade."
-      }
-    ],
     "communityTitle": "Bereit für den nächsten Schritt?",
     "communityDesc": "Buche ein kostenloses Erstgespräch und finde gemeinsam mit uns die passende Lernlösung.",
     "communityCta": "Kostenloses Erstgespräch buchen",
@@ -179,31 +151,7 @@
       "Unverbindlich",
       "Kostenlos",
       "Individuelle Beratung"
-    ],
-    "introEyebrow": "NextGrades Challenge",
-    "introTitle": "Entdecke NextGrades – Wo Innovation auf Bildung trifft",
-    "introDesc": "NextGrades transformiert Bildung mit innovativen Konzepten. Entdecke unsere Geschichte und erstklassige Nachhilfe, die modernes Lernen inspiriert.",
-    "journeyTitle": "Die NextGrades Reise",
-    "journeySubtitle": "Von bescheidenen Anfängen zu Bildungsexzellenz.",
-    "story": [
-      {
-        "title": "Bescheidene Anfänge",
-        "desc": "Unsere Reise begann 2021 als Leidenschaftsprojekt aus Frustration mit traditioneller Nachhilfe. Was als Hilfe für ein paar FreundInnen begann, ist heute eine Plattform, der Tausende vertrauen."
-      },
-      {
-        "title": "Innovation und Wachstum",
-        "desc": "Innovation stand immer im Mittelpunkt. 2023 führten wir unsere digitale Lernplattform ein – Live-Nachhilfe kombiniert mit strukturierten, ergebnisorientierten Inhalten."
-      },
-      {
-        "title": "Unsere Reichweite",
-        "desc": "Heute betreut NextGrades SchülerInnen in Deutschland und darüber hinaus. Über 10.000 SchülerInnen haben ihre Noten verbessert und Selbstvertrauen aufgebaut."
-      },
-      {
-        "title": "Blick nach vorn",
-        "desc": "Unser Ziel ist es, Bildung weiter zu revolutionieren – mit KI-gestützten Lernpfaden und erweiterten Fachangeboten."
-      }
-    ],
-    "teamTitle": "Unser großartiges Team"
+    ]
   },
   "programsPage": {
     "heroEyebrow": "UNSERE PROGRAMME",
@@ -219,7 +167,7 @@
       },
       {
         "title": "Flexibel & online",
-        "desc": "Lerne wo und wann du willst."
+        "desc": "Lerne, wo und wann du möchtest - nach deinem Zeitplan."
       }
     ],
     "freeConsultation": "Kostenloses Erstgespräch buchen",
@@ -1620,17 +1568,15 @@
     "addUser": "Benutzer hinzufügen",
     "optional": "optional",
     "createTitle": "Benutzer hinzufügen",
-    "createDescription": "E-Mail und Passwort eingeben. Der Benutzer erhält eine E-Mail mit seinen Zugangsdaten.",
+    "createDescription": "Gib die E-Mail-Adresse ein. Der Benutzer erhält eine Einladung mit einem sicheren Link zum Passwort-Festlegen.",
     "createEmail": "E-Mail",
-    "createPassword": "Passwort",
-    "createPasswordHint": "Mindestens {{min}} Zeichen mit Groß-, Kleinbuchstaben, Zahl und Sonderzeichen",
     "createFullName": "Vollständiger Name",
     "createRole": "Rolle",
-    "createSend": "Zugangsdaten senden",
-    "createSending": "Wird gesendet…",
+    "createSend": "Einladung senden",
+    "createSending": "Einladung wird gesendet…",
     "createCancel": "Abbrechen",
     "createClose": "Schließen",
-    "createSuccess": "Benutzer erstellt — Zugangsdaten per E-Mail gesendet",
+    "createSuccess": "Benutzer erstellt — Einladung per E-Mail gesendet",
     "createFailed": "Benutzer konnte nicht erstellt werden"
   },
   "teacherContent": {

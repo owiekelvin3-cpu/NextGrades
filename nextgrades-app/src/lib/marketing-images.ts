@@ -46,7 +46,7 @@ export const HELP_HERO_IMAGE = BRANDED.platformLaptop;
 export const RESOURCES_HERO_IMAGE = BRANDED.studentsGroup3;
 export const LOGIN_HERO_IMAGE = BRANDED.tutoringSession;
 export const PRIVACY_HERO_IMAGE = BRANDED.privacySecure;
-export const HOME_PLATFORM_THUMB = BRANDED.platformLaptop;
+export const HOME_PLATFORM_THUMB = BRANDED.progressDashboard;
 export const HOME_TESTIMONIALS_BG = BRANDED.studentsCollab;
 
 /** Primary homepage hero — 1:1 tutoring session */

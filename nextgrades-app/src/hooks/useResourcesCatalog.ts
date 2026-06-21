@@ -147,13 +147,13 @@ export function useResourcesCatalog(initial?: FetchParams) {
         return;
       }
       if (!res.ok || !data.url) {
-        toast.info(t("resources.premiumRequired", { defaultValue: "Premium membership required." }));
+        toast.info(t("resources.premiumRequired"));
         return;
       }
       void trackAction(resource.id, "download");
       window.open(data.url, "_blank", "noopener,noreferrer");
     } catch {
-      toast.error(t("misc.errorGeneric", { defaultValue: "Something went wrong." }));
+      toast.error(t("misc.errorGeneric"));
     }
   };
 

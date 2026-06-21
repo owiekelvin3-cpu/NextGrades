@@ -27,7 +27,6 @@ import { useToast } from "@/context/ToastContext";
 import { buildLoginUrl } from "@/lib/auth/redirect";
 import { cn } from "@/lib/utils";
 import { section, hero } from "@/lib/premium/tokens";
-import { Badge } from "@/components/ui/Badge";
 
 type CompareRow = {
   label: string;
@@ -90,8 +89,6 @@ function PricingContent() {
   const compareRows = useLocalizedContent<CompareRow[]>("pricingPage.compareRows");
   const compareHeaders = useLocalizedContent<Record<string, string>>("pricingPage.compareHeaders");
   const planActions = useLocalizedContent<Record<string, string>>("pricingPage.planActions");
-  const ctaTags = useLocalizedContent<string[]>("pricingPage.finalCtaTags");
-
   const hasSubscriptionPlans = plans.some((p) => !p.priceLabel && CHECKOUT_PLANS.has(p.id === "library" ? "resource" : p.id));
 
   const handlePlanSelect = async (plan: PricingPlanCardPlan) => {
@@ -392,19 +389,6 @@ function PricingContent() {
         </section>
 
         {/* CTA */}
-        <section className={cn("pb-4", mt.isDark ? "bg-[#0D1B2A]" : "bg-white")}>
-          <div className={section.container}>
-            {Array.isArray(ctaTags) && ctaTags.length > 0 && (
-              <div className="mb-6 flex flex-wrap justify-center gap-2">
-                {ctaTags.map((tag) => (
-                  <Badge key={tag} variant="gold" className="text-xs">
-                    {tag}
-                  </Badge>
-                ))}
-              </div>
-            )}
-          </div>
-        </section>
         <CTABand
           title={t("pricingPage.finalCtaTitle")}
           subtitle={t("pricingPage.finalCtaDesc")}

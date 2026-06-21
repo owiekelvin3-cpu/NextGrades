@@ -1,15 +1,15 @@
 import { NextResponse } from "next/server";
 import { requireAdminApi } from "@/lib/auth/api-auth";
-import { emailExists, normalizeEmail, validatePassword, EMAIL_REGEX } from "@/lib/auth/registration";
+import { emailExists, normalizeEmail, EMAIL_REGEX } from "@/lib/auth/registration";
+import { generateTemporaryPassword } from "@/lib/auth/generate-temp-password";
+import { generateAuthLink, getPasswordResetRedirectUrl } from "@/lib/auth/auth-links";
 import { ensureRoleProfile } from "@/lib/auth/profile-setup";
-import { sendAccountCredentialsEmail, isResendConfigured } from "@/lib/email";
-import { getAppUrl } from "@/lib/app-url";
+import { sendAccountInvitationEmail, isResendConfigured } from "@/lib/email";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { isSupabaseServiceRoleConfigured } from "@/lib/supabase/env";
 
 type CreateUserBody = {
   email?: string;
-  password?: string;
   fullName?: string;
   role?: "student" | "teacher";
 };
@@ -99,17 +99,12 @@ export async function POST(request: Request) {
   try {
     const body = (await request.json()) as CreateUserBody;
     const email = normalizeEmail(body.email || "");
-    const password = body.password || "";
+    const password = generateTemporaryPassword();
     const role = body.role === "teacher" ? "teacher" : "student";
     const fullName = body.fullName?.trim() || email.split("@")[0] || "User";
 
     if (!EMAIL_REGEX.test(email)) {
       return NextResponse.json({ error: "Bitte gib eine gültige E-Mail-Adresse ein." }, { status: 400 });
-    }
-
-    const pwdErr = validatePassword(password);
-    if (pwdErr) {
-      return NextResponse.json({ error: pwdErr }, { status: 400 });
     }
 
     if (await emailExists(email)) {
@@ -149,13 +144,25 @@ export async function POST(request: Request) {
       verified: true,
     });
 
-    const loginUrl = `${getAppUrl()}/login`;
-    const emailResult = await sendAccountCredentialsEmail({
+    const { actionLink, error: linkError } = await generateAuthLink({
+      type: "recovery",
       email,
-      password,
+      redirectTo: getPasswordResetRedirectUrl(),
+    });
+
+    if (linkError || !actionLink) {
+      await admin.auth.admin.deleteUser(userId);
+      return NextResponse.json(
+        { error: linkError || "Einladungslink konnte nicht erstellt werden." },
+        { status: 500 }
+      );
+    }
+
+    const emailResult = await sendAccountInvitationEmail({
+      email,
       userName: fullName,
       role,
-      loginUrl,
+      setupUrl: actionLink,
     });
 
     if (!emailResult.success) {

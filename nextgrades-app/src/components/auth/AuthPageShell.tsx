@@ -2,9 +2,12 @@
 
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { BrandLogo } from "@/components/BrandLogo";
 import { useTheme } from "@/context/ThemeContext";
+import { changeAppLanguage } from "@/components/I18nProvider";
+import { normalizeLanguage } from "@/lib/i18n/locales";
 import { cn } from "@/lib/utils";
 
 type AuthPageShellProps = {
@@ -16,8 +19,14 @@ type AuthPageShellProps = {
 /** Minimal chrome for login, verify, and password flows — no marketing nav clutter. */
 export function AuthPageShell({ children, footer, className }: AuthPageShellProps) {
   const { theme } = useTheme();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const isDark = theme === "dark";
+
+  useEffect(() => {
+    if (normalizeLanguage(i18n.language) !== "de") {
+      void changeAppLanguage("de");
+    }
+  }, [i18n.language]);
 
   return (
     <div
