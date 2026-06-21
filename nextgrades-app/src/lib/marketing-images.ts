@@ -81,6 +81,10 @@ export const PROGRAMS_PAGE_CARD_IMAGES = [
   BRANDED.platformLaptop,
 ] as const;
 
+export const PRICING_HERO_IMAGE = BRANDED.platformLaptop;
+
+export const PRICING_PLAN_IMAGES = PROGRAMS_PAGE_CARD_IMAGES;
+
 export const SUBJECTS_HERO_IMAGE = BRANDED.subjectBooks;
 
 /** Team portrait fallbacks when CMS has no photo — branded lifestyle shots */
