@@ -1,9 +1,8 @@
 "use client";
 
-import Link from "next/link";
-import { ArrowRight, Shield, MapPin } from "lucide-react";
+import { Shield, MapPin } from "lucide-react";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
-import { Button } from "@/components/ui/Button";
+import { MarketingCtaButtons } from "@/components/premium/MarketingCtaButtons";
 import { type, hero } from "@/lib/premium/tokens";
 import { cn } from "@/lib/utils";
 
@@ -46,18 +45,11 @@ export function HomeHero({
           </h1>
           <p className="mt-6 max-w-lg text-lg leading-relaxed text-gray-300 sm:text-xl">{subtitle}</p>
 
-          <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
-            <Button variant="gold" size="lg" href="/consultation" className="min-h-[52px] w-full px-8 sm:w-auto">
-              {primaryCta}
-            </Button>
-            <Link
-              href="/programs"
-              className="inline-flex min-h-[52px] w-full items-center justify-center gap-2 rounded-2xl border border-white/25 bg-white/5 px-8 text-base font-semibold text-white backdrop-blur-sm transition hover:border-white/40 hover:bg-white/10 sm:w-auto"
-            >
-              {secondaryCta}
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
+          <MarketingCtaButtons
+            className="mt-10"
+            primaryLabel={primaryCta}
+            secondaryLabel={secondaryCta}
+          />
 
           <div className="mt-10 flex flex-wrap gap-6 text-sm text-gray-400">
             <span className="inline-flex items-center gap-2">

@@ -104,7 +104,7 @@ export function HomePagePremium() {
   }));
 
   return (
-    <main className="flex-1 bg-[#FAF8F5]">
+    <main className="flex-1 bg-background">
       <HomeHero
         eyebrow={t("home.heroEyebrow")}
         title={t("home.heroTitle")}

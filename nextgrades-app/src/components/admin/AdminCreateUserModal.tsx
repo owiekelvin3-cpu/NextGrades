@@ -5,8 +5,6 @@ import { createPortal } from "react-dom";
 import { X, Mail, Plus } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/Button";
-import { useTheme } from "@/context/ThemeContext";
-import { cn } from "@/lib/utils";
 
 type AdminCreateUserModalProps = {
   open: boolean;
@@ -16,7 +14,6 @@ type AdminCreateUserModalProps = {
 
 export function AdminCreateUserModal({ open, onClose, onSuccess }: AdminCreateUserModalProps) {
   const { t } = useTranslation();
-  const { theme } = useTheme();
   const panelRef = useRef<HTMLDivElement>(null);
   const [mounted, setMounted] = useState(false);
   const [email, setEmail] = useState("");
@@ -89,14 +86,10 @@ export function AdminCreateUserModal({ open, onClose, onSuccess }: AdminCreateUs
 
   if (!mounted || !open) return null;
 
-  const inputClass = cn(
-    "w-full rounded-lg border px-3 py-2.5 text-sm outline-none transition focus:ring-2 focus:ring-[#D4AF37]/50",
-    theme === "dark"
-      ? "border-white/15 bg-[#0D1B2A] text-white placeholder:text-gray-500"
-      : "border-gray-200 bg-white text-gray-900 placeholder:text-gray-400"
-  );
+  const inputClass =
+    "theme-input w-full rounded-lg px-3 py-2.5 text-sm outline-none transition focus:ring-2 focus:ring-[var(--input-focus-ring)]";
 
-  const labelClass = cn("mb-1.5 block text-sm font-medium", theme === "dark" ? "text-gray-200" : "text-gray-700");
+  const labelClass = "mb-1.5 block text-sm font-medium text-foreground-secondary";
 
   return createPortal(
     <>
@@ -112,23 +105,12 @@ export function AdminCreateUserModal({ open, onClose, onSuccess }: AdminCreateUs
         aria-modal="true"
         aria-labelledby="admin-create-user-title"
         tabIndex={-1}
-        className={cn(
-          "fixed inset-x-4 top-1/2 z-[110] max-h-[90dvh] -translate-y-1/2 overflow-y-auto rounded-2xl border shadow-2xl sm:inset-x-auto sm:left-1/2 sm:w-full sm:max-w-md sm:-translate-x-1/2",
-          theme === "dark" ? "border-white/10 bg-[#112240]" : "border-gray-200 bg-white"
-        )}
+        className="theme-modal-panel fixed inset-x-4 top-1/2 z-[110] max-h-[90dvh] -translate-y-1/2 overflow-y-auto rounded-2xl border shadow-2xl sm:inset-x-auto sm:left-1/2 sm:w-full sm:max-w-md sm:-translate-x-1/2"
       >
-        <div
-          className={cn(
-            "flex items-center justify-between border-b px-5 py-4",
-            theme === "dark" ? "border-white/10" : "border-gray-100"
-          )}
-        >
+        <div className="flex items-center justify-between border-b border-border-default px-5 py-4">
           <div className="flex items-center gap-2">
-            <Plus className="h-5 w-5 text-[#D4AF37]" aria-hidden />
-            <h2
-              id="admin-create-user-title"
-              className={cn("text-lg font-bold", theme === "dark" ? "text-white" : "text-[#0D1B2A]")}
-            >
+            <Plus className="h-5 w-5 text-[var(--brand-gold)]" aria-hidden />
+            <h2 id="admin-create-user-title" className="text-lg font-bold text-foreground">
               {t("adminUsers.createTitle")}
             </h2>
           </div>
@@ -136,10 +118,7 @@ export function AdminCreateUserModal({ open, onClose, onSuccess }: AdminCreateUs
             type="button"
             onClick={onClose}
             disabled={submitting}
-            className={cn(
-              "flex min-h-10 min-w-10 items-center justify-center rounded-lg",
-              theme === "dark" ? "text-gray-400 hover:bg-white/10" : "text-gray-500 hover:bg-gray-100"
-            )}
+            className="flex min-h-10 min-w-10 items-center justify-center rounded-lg text-text-muted hover:bg-[var(--table-row-hover)]"
             aria-label={t("adminUsers.createClose")}
           >
             <X className="h-5 w-5" />
@@ -147,7 +126,7 @@ export function AdminCreateUserModal({ open, onClose, onSuccess }: AdminCreateUs
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4 p-5">
-          <p className={cn("text-sm", theme === "dark" ? "text-gray-400" : "text-gray-600")}>
+          <p className="text-sm text-text-muted">
             {t("adminUsers.createDescription")}
           </p>
 

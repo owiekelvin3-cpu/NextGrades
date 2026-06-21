@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
-import { ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type HeroAction = {
@@ -25,19 +24,17 @@ export function OverviewHero({ eyebrow, title, subtitle, actions, aside, classNa
   return (
     <section
       className={cn(
-        "relative overflow-hidden rounded-2xl border border-[#D4AF37]/20 bg-gradient-to-br from-[#0D1B2A] via-[#152a45] to-[#1a3354] p-5 text-white shadow-lg sm:p-6 lg:p-8",
+        "relative overflow-hidden rounded-2xl border border-border-default bg-surface-elevated p-5 shadow-[var(--card-shadow)] sm:p-6 lg:p-8",
         className
       )}
     >
-      <div className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full bg-[#D4AF37]/10 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-16 left-1/3 h-32 w-32 rounded-full bg-[#4DA3FF]/10 blur-3xl" />
       <div className="relative flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
         <div className="min-w-0 flex-1">
           {eyebrow && (
-            <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#D4AF37]">{eyebrow}</p>
+            <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--brand-gold)]">{eyebrow}</p>
           )}
-          <h2 className="text-2xl font-bold leading-tight sm:text-3xl">{title}</h2>
-          {subtitle && <p className="mt-2 max-w-xl text-sm leading-relaxed text-gray-300 sm:text-base">{subtitle}</p>}
+          <h2 className="text-2xl font-bold leading-tight text-foreground sm:text-3xl">{title}</h2>
+          {subtitle && <p className="mt-2 max-w-xl text-sm leading-relaxed text-text-muted sm:text-base">{subtitle}</p>}
           {actions && actions.length > 0 && (
             <div className="mt-5 flex flex-wrap gap-2">
               {actions.map((action) => {
@@ -49,7 +46,7 @@ export function OverviewHero({ eyebrow, title, subtitle, actions, aside, classNa
                   </>
                 );
                 const cls =
-                  "inline-flex min-h-11 items-center gap-1.5 rounded-xl border border-white/15 bg-white/10 px-3.5 py-2.5 text-xs font-semibold transition hover:border-[#D4AF37]/40 hover:bg-white/15 touch-manipulation sm:text-sm";
+                  "inline-flex min-h-11 items-center gap-1.5 rounded-xl border border-border-default bg-surface-subtle px-3.5 py-2.5 text-xs font-semibold text-foreground transition hover:border-[var(--brand-gold)]/35 hover:bg-surface-muted touch-manipulation sm:text-sm";
                 return action.external ? (
                   <a key={action.label} href={action.href} target="_blank" rel="noopener noreferrer" className={cls}>
                     {inner}
@@ -107,7 +104,7 @@ export function OverviewStatCard({
   );
 
   const cardCls = cn(
-    "flex h-full min-h-[160px] flex-col rounded-2xl border border-border-default bg-surface-elevated p-5 shadow-sm transition hover:border-[#D4AF37]/30 hover:shadow-md dark:hover:border-[#D4AF37]/25",
+    "flex h-full min-h-[160px] flex-col rounded-2xl border border-border-default bg-surface-elevated p-5 shadow-[var(--card-shadow)] transition hover:border-[var(--border-strong)] hover:shadow-md",
     className
   );
 
@@ -143,19 +140,21 @@ export function OverviewPanel({
 }: OverviewPanelProps) {
   return (
     <div className={cn("overflow-hidden rounded-2xl border border-border-default bg-surface-elevated shadow-sm", className)}>
-      <div className="flex items-center justify-between gap-3 border-b border-border-default bg-surface-subtle/80 px-5 py-4 dark:bg-white/[0.03]">
-        <div className="flex items-center gap-2.5">
+      <div className="flex items-center justify-between gap-3 border-b border-border-default px-5 py-3.5">
+        <div className="flex min-w-0 items-center gap-2.5">
           {Icon && (
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#D4AF37]/10 text-[#D4AF37]">
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-surface-subtle text-text-muted dark:bg-white/[0.06]">
               <Icon className="h-4 w-4" />
             </span>
           )}
-          <h2 className="text-sm font-semibold text-foreground">{title}</h2>
+          <h2 className="truncate text-sm font-semibold text-foreground">{title}</h2>
         </div>
         {href && linkLabel && (
-          <Link href={href} className="inline-flex items-center gap-0.5 text-xs font-semibold text-[#D4AF37] hover:underline">
+          <Link
+            href={href}
+            className="shrink-0 text-xs font-medium text-text-muted transition hover:text-[#D4AF37]"
+          >
             {linkLabel}
-            <ChevronRight className="h-3.5 w-3.5" />
           </Link>
         )}
       </div>
@@ -176,12 +175,12 @@ export function OverviewGoalCard({
   actionLabel: string;
 }) {
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/5 p-5 ring-1 ring-inset ring-white/10 backdrop-blur-sm">
-      <p className="text-xs font-semibold uppercase tracking-wide text-[#D4AF37]">{label}</p>
-      <p className="mt-2 text-sm font-medium leading-relaxed text-white">{value}</p>
+    <div className="rounded-2xl border border-border-default bg-surface-subtle p-5">
+      <p className="text-xs font-semibold uppercase tracking-wide text-[var(--brand-gold)]">{label}</p>
+      <p className="mt-2 text-sm font-medium leading-relaxed text-foreground">{value}</p>
       <Link
         href={actionHref}
-        className="mt-4 inline-flex items-center justify-center rounded-xl border border-[#D4AF37]/40 bg-[#D4AF37]/10 px-4 py-2 text-sm font-semibold text-[#D4AF37] transition hover:bg-[#D4AF37]/20"
+        className="mt-4 inline-flex items-center justify-center rounded-xl border border-[var(--brand-gold)]/35 bg-[var(--brand-gold-muted)] px-4 py-2 text-sm font-semibold text-[var(--brand-gold)] transition hover:bg-[var(--brand-gold-muted)]"
       >
         {actionLabel}
       </Link>

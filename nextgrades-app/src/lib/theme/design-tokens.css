@@ -1,0 +1,348 @@
+/**
+ * NextGrades design tokens — enterprise-grade light/dark system.
+ * Inspired by Linear, Stripe, Notion: soft light surfaces, deep dark elevation, no harsh contrast.
+ */
+
+:root {
+  color-scheme: light;
+
+  /* ── Brand (constant) ── */
+  --brand-navy: #0d1b2a;
+  --brand-navy-muted: #152535;
+  --brand-navy-soft: #1a2a3d;
+  --brand-gold: #d4af37;
+  --brand-gold-hover: #c9a030;
+  --brand-gold-light: #e5c158;
+  --brand-gold-muted: rgba(212, 175, 55, 0.12);
+  --brand-gold-ring: rgba(212, 175, 55, 0.35);
+
+  /* Legacy aliases (keep components working) */
+  --color-deep-navy: var(--brand-navy);
+  --color-gold: var(--brand-gold);
+  --color-gold-light: #f5a623;
+  --color-orange: #ffa500;
+  --color-white: #ffffff;
+  --color-accent-blue: #4da3ff;
+  --color-gray-light: #f5f5f4;
+  --color-gray-very-light: #fafaf9;
+  --color-gray-dark: #1c1917;
+  --color-green: #16a34a;
+  --color-orange-badge: #ea580c;
+  --color-gray-border: #e7e5e4;
+
+  /* ── Semantic: Light ── */
+  --background: #fafaf9;
+  --foreground: #1c1917;
+  --foreground-secondary: #44403c;
+  --text-muted: #78716c;
+  --text-subtle: #a8a29e;
+
+  --surface-base: #fafaf9;
+  --surface-muted: #f5f5f4;
+  --surface-subtle: #efefed;
+  --surface-elevated: #ffffff;
+  --surface-dashboard: #f5f5f4;
+  --surface-overlay: rgba(28, 25, 23, 0.45);
+  --surface-inset: #efefed;
+
+  --border-default: #e7e5e4;
+  --border-strong: #d6d3d1;
+  --border-subtle: #f0f0ee;
+
+  --card-background: #ffffff;
+  --card-foreground: #1c1917;
+  --card-border: #e7e5e4;
+  --card-shadow: 0 1px 2px rgba(28, 25, 23, 0.04), 0 4px 16px rgba(28, 25, 23, 0.05);
+
+  --input-background: #ffffff;
+  --input-foreground: #1c1917;
+  --input-border: #d6d3d1;
+  --input-placeholder: #a8a29e;
+  --input-focus-ring: var(--brand-gold-ring);
+
+  --button-primary-background: var(--brand-gold);
+  --button-primary-foreground: var(--brand-navy);
+  --button-secondary-background: #ffffff;
+  --button-secondary-foreground: #1c1917;
+  --button-outline-background: transparent;
+  --button-outline-foreground: #44403c;
+  --button-outline-border: #d6d3d1;
+
+  --nav-background: rgba(255, 255, 255, 0.88);
+  --nav-border: #e7e5e4;
+  --nav-text: #57534e;
+  --nav-text-active: #1c1917;
+  --nav-dropdown: #ffffff;
+
+  --sidebar-background: var(--brand-navy);
+  --sidebar-border: rgba(255, 255, 255, 0.06);
+  --sidebar-text: #9ca3af;
+  --sidebar-text-active: #f5f5f4;
+  --sidebar-surface: rgba(255, 255, 255, 0.05);
+
+  --modal-background: #ffffff;
+  --modal-border: #e7e5e4;
+  --modal-overlay: rgba(28, 25, 23, 0.5);
+
+  --table-header: #f5f5f4;
+  --table-row-hover: rgba(28, 25, 23, 0.03);
+  --table-border: #e7e5e4;
+
+  --chart-grid: #e7e5e4;
+  --chart-text: #78716c;
+  --chart-line: var(--brand-gold);
+
+  --alert-success-bg: #ecfdf5;
+  --alert-success-fg: #065f46;
+  --alert-success-border: #a7f3d0;
+  --alert-warning-bg: #fffbeb;
+  --alert-warning-fg: #92400e;
+  --alert-warning-border: #fde68a;
+  --alert-error-bg: #fef2f2;
+  --alert-error-fg: #991b1b;
+  --alert-error-border: #fecaca;
+  --alert-info-bg: #eff6ff;
+  --alert-info-fg: #1e40af;
+  --alert-info-border: #bfdbfe;
+
+  --focus-ring: var(--brand-gold-ring);
+  --ring-offset: #fafaf9;
+
+  --transition-theme: background-color 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+    fill 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+    stroke 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dark {
+  color-scheme: dark;
+
+  --background: #0c0e12;
+  --foreground: #ececf0;
+  --foreground-secondary: #c4c4cc;
+  --text-muted: #9494a0;
+  --text-subtle: #6e6e7a;
+
+  --surface-base: #0c0e12;
+  --surface-muted: #0f1117;
+  --surface-subtle: #141820;
+  --surface-elevated: #181c24;
+  --surface-dashboard: #0f1117;
+  --surface-overlay: rgba(0, 0, 0, 0.62);
+  --surface-inset: #0a0c10;
+
+  --border-default: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.12);
+  --border-subtle: rgba(255, 255, 255, 0.05);
+
+  --card-background: #181c24;
+  --card-foreground: #ececf0;
+  --card-border: rgba(255, 255, 255, 0.08);
+  --card-shadow: 0 1px 2px rgba(0, 0, 0, 0.28), 0 8px 24px rgba(0, 0, 0, 0.32);
+
+  --input-background: #141820;
+  --input-foreground: #ececf0;
+  --input-border: rgba(255, 255, 255, 0.1);
+  --input-placeholder: #6e6e7a;
+
+  --button-primary-background: var(--brand-gold);
+  --button-primary-foreground: var(--brand-navy);
+  --button-secondary-background: rgba(255, 255, 255, 0.06);
+  --button-secondary-foreground: #ececf0;
+  --button-outline-background: transparent;
+  --button-outline-foreground: #ececf0;
+  --button-outline-border: rgba(255, 255, 255, 0.14);
+
+  --nav-background: rgba(12, 14, 18, 0.92);
+  --nav-border: rgba(255, 255, 255, 0.08);
+  --nav-text: #9494a0;
+  --nav-text-active: #ececf0;
+  --nav-dropdown: #181c24;
+
+  --sidebar-background: #0a1018;
+  --sidebar-border: rgba(255, 255, 255, 0.06);
+  --sidebar-text: #8b93a1;
+  --sidebar-text-active: #f0f0f2;
+  --sidebar-surface: rgba(255, 255, 255, 0.04);
+
+  --modal-background: #181c24;
+  --modal-border: rgba(255, 255, 255, 0.08);
+  --modal-overlay: rgba(0, 0, 0, 0.72);
+
+  --table-header: #141820;
+  --table-row-hover: rgba(255, 255, 255, 0.04);
+  --table-border: rgba(255, 255, 255, 0.08);
+
+  --chart-grid: rgba(255, 255, 255, 0.08);
+  --chart-text: #9494a0;
+
+  --alert-success-bg: rgba(16, 185, 129, 0.12);
+  --alert-success-fg: #6ee7b7;
+  --alert-success-border: rgba(16, 185, 129, 0.22);
+  --alert-warning-bg: rgba(245, 158, 11, 0.12);
+  --alert-warning-fg: #fcd34d;
+  --alert-warning-border: rgba(245, 158, 11, 0.22);
+  --alert-error-bg: rgba(239, 68, 68, 0.12);
+  --alert-error-fg: #fca5a5;
+  --alert-error-border: rgba(239, 68, 68, 0.22);
+  --alert-info-bg: rgba(59, 130, 246, 0.12);
+  --alert-info-fg: #93c5fd;
+  --alert-info-border: rgba(59, 130, 246, 0.22);
+
+  --ring-offset: #0c0e12;
+}
+
+/* Smooth theme switching */
+html.theme-animate,
+html.theme-animate *,
+html.theme-animate *::before,
+html.theme-animate *::after {
+  transition: var(--transition-theme) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.theme-animate,
+  html.theme-animate *,
+  html.theme-animate *::before,
+  html.theme-animate *::after {
+    transition: none !important;
+  }
+}
+
+/* ── Component primitives (use var() for automatic theme adaptation) ── */
+
+.theme-surface {
+  background: var(--surface-elevated);
+  color: var(--foreground);
+  border: 1px solid var(--border-default);
+}
+
+.theme-panel {
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-default);
+  border-radius: 1rem;
+  box-shadow: var(--card-shadow);
+}
+
+.theme-input {
+  width: 100%;
+  border-radius: 0.75rem;
+  border: 1px solid var(--input-border);
+  background: var(--input-background);
+  color: var(--input-foreground);
+  transition: var(--transition-theme);
+}
+
+.theme-input::placeholder {
+  color: var(--input-placeholder);
+}
+
+.theme-input:focus {
+  outline: none;
+  border-color: var(--brand-gold);
+  box-shadow: 0 0 0 3px var(--input-focus-ring);
+}
+
+.theme-nav-bar {
+  background: var(--nav-background);
+  border-bottom: 1px solid var(--nav-border);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.theme-nav-link {
+  color: var(--nav-text);
+  transition: var(--transition-theme);
+}
+
+.theme-nav-link:hover,
+.theme-nav-link[data-active="true"] {
+  color: var(--nav-text-active);
+}
+
+.theme-table-wrap {
+  border: 1px solid var(--table-border);
+  background: var(--surface-elevated);
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.theme-table-head {
+  background: var(--table-header);
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--table-border);
+}
+
+.theme-table-row:hover {
+  background: var(--table-row-hover);
+}
+
+.theme-modal-overlay {
+  background: var(--modal-overlay);
+}
+
+.theme-modal-panel {
+  background: var(--modal-background);
+  border: 1px solid var(--modal-border);
+  box-shadow: var(--card-shadow);
+}
+
+.theme-alert-success {
+  background: var(--alert-success-bg);
+  color: var(--alert-success-fg);
+  border: 1px solid var(--alert-success-border);
+}
+
+.theme-alert-warning {
+  background: var(--alert-warning-bg);
+  color: var(--alert-warning-fg);
+  border: 1px solid var(--alert-warning-border);
+}
+
+.theme-alert-error {
+  background: var(--alert-error-bg);
+  color: var(--alert-error-fg);
+  border: 1px solid var(--alert-error-border);
+}
+
+.theme-alert-info {
+  background: var(--alert-info-bg);
+  color: var(--alert-info-fg);
+  border: 1px solid var(--alert-info-border);
+}
+
+.theme-sidebar {
+  background: var(--sidebar-background);
+  color: var(--sidebar-text-active);
+  border-color: var(--sidebar-border);
+}
+
+/* Marketing site header — dark brand bar overrides nav tokens */
+.site-header-dark {
+  --nav-text: rgba(255, 255, 255, 0.78);
+  --nav-text-active: #ffffff;
+  --nav-dropdown: #141820;
+}
+
+.glass {
+  background: color-mix(in srgb, var(--surface-elevated) 78%, transparent);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-default);
+}
+
+.glass-dark {
+  background: color-mix(in srgb, var(--sidebar-background) 88%, transparent);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.gradient-gold {
+  background: linear-gradient(135deg, var(--brand-gold) 0%, var(--color-gold-light) 100%);
+}
+
+.gradient-navy {
+  background: linear-gradient(135deg, var(--brand-navy) 0%, var(--brand-navy-soft) 100%);
+}

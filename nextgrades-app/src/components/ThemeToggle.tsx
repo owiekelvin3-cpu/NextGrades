@@ -8,11 +8,11 @@ import { cn } from "@/lib/utils";
 type Props = {
   className?: string;
   size?: "sm" | "md";
-  /** Full-width row for mobile menus */
   variant?: "icon" | "full";
+  onDark?: boolean;
 };
 
-export function ThemeToggle({ className, size = "md", variant = "icon" }: Props) {
+export function ThemeToggle({ className, size = "md", variant = "icon", onDark = false }: Props) {
   const { theme, toggleTheme, isTransitioning } = useTheme();
   const { t } = useTranslation();
   const isDark = theme === "dark";
@@ -27,21 +27,13 @@ export function ThemeToggle({ className, size = "md", variant = "icon" }: Props)
         disabled={isTransitioning}
         aria-label={isDark ? t("common.lightMode") : t("common.darkMode")}
         className={cn(
-          "flex w-full items-center justify-center gap-3 rounded-xl border py-3 font-semibold transition-all duration-300",
-          "active:scale-[0.98] disabled:cursor-wait disabled:opacity-70",
-          isDark
-            ? "border-white/30 bg-white/5 text-white hover:border-[#D4AF37]/50 hover:bg-[#D4AF37]/10"
-            : "border-gray-200 bg-gray-50 text-[#0D1B2A] hover:border-[#D4AF37]/50 hover:bg-[#D4AF37]/10",
+          "flex w-full items-center justify-center gap-3 rounded-xl border border-border-default bg-surface-subtle py-3 font-semibold text-foreground transition-colors",
+          "hover:border-[var(--brand-gold)]/35 hover:bg-[var(--brand-gold-muted)] active:scale-[0.98] disabled:cursor-wait disabled:opacity-70",
           className
         )}
       >
-        <span
-          className={cn(
-            "flex items-center justify-center transition-transform duration-500",
-            isTransitioning && "scale-110 rotate-180"
-          )}
-        >
-          {isDark ? <Sun className="h-5 w-5 text-[#D4AF37]" /> : <Moon className="h-5 w-5 text-[#D4AF37]" />}
+        <span className={cn("flex items-center justify-center", isTransitioning && "scale-110 rotate-90")}>
+          {isDark ? <Sun className="h-5 w-5 text-[var(--brand-gold)]" /> : <Moon className="h-5 w-5 text-[var(--brand-gold)]" />}
         </span>
         {isDark ? t("common.lightMode") : t("common.darkMode")}
       </button>
@@ -56,19 +48,16 @@ export function ThemeToggle({ className, size = "md", variant = "icon" }: Props)
       aria-label={isDark ? t("common.lightMode") : t("common.darkMode")}
       className={cn(
         dim,
-        "flex shrink-0 items-center justify-center rounded-lg border transition-all duration-300",
+        "flex shrink-0 items-center justify-center rounded-lg border transition-colors",
         "active:scale-95 disabled:cursor-wait disabled:opacity-70",
-        "border-border-default bg-surface-elevated text-foreground",
-        "hover:border-[#D4AF37]/40 hover:bg-[#D4AF37]/10 hover:text-[#D4AF37]",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--ring-offset)]",
+        onDark
+          ? "border-white/10 bg-white/5 text-white/90 hover:border-white/20 hover:bg-white/10"
+          : "border-border-default bg-surface-elevated text-foreground hover:border-[var(--border-strong)] hover:bg-surface-subtle",
         className
       )}
     >
-      <span
-        className={cn(
-          "flex items-center justify-center transition-transform duration-500",
-          isTransitioning && "scale-110 rotate-90"
-        )}
-      >
+      <span className={cn("flex items-center justify-center", isTransitioning && "rotate-90 scale-110")}>
         {isDark ? <Sun className={icon} /> : <Moon className={icon} />}
       </span>
     </button>

@@ -5,7 +5,7 @@ import { Toggle } from "@/components/ui/Toggle";
 import { cn } from "@/lib/utils";
 
 const fieldInput =
-  "w-full rounded-xl border border-border-default bg-surface-subtle px-4 py-2.5 text-sm text-foreground outline-none transition placeholder:text-text-muted/70 focus:border-[#D4AF37] focus:ring-2 focus:ring-[#D4AF37]/20 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-[#0D1B2A]";
+  "w-full rounded-xl border border-input-border bg-input-background px-4 py-2.5 text-sm text-input-foreground outline-none transition placeholder:text-input-placeholder focus:border-[var(--brand-gold)] focus:ring-2 focus:ring-[var(--input-focus-ring)] disabled:cursor-not-allowed disabled:opacity-60";
 
 export function SettingsCard({
   title,

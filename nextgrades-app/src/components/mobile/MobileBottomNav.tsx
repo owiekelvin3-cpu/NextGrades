@@ -9,7 +9,7 @@ import {
   FolderOpen,
   Bell,
   User,
-  Sparkles,
+  CalendarDays,
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -56,11 +56,12 @@ function buildItems(role: "student" | "teacher" | "admin"): NavItem[] {
         ? `${ADMIN_PORTAL_PREFIX}/resources`
         : "/dashboard/student/resources";
 
-  const studentAi: NavItem = {
-    href: "/dashboard/chat",
-    icon: Sparkles,
-    labelKey: "mobileNav.aiChat",
-    match: (p) => p.startsWith("/dashboard/chat"),
+  const studentAppointments: NavItem = {
+    href: "/dashboard/student/appointments",
+    icon: CalendarDays,
+    labelKey: "studentDashboard.nav.appointments",
+    match: (p) =>
+      p.startsWith("/dashboard/student/appointments") || p.startsWith("/dashboard/student/live-classes"),
   };
 
   const notifications: NavItem = {
@@ -87,7 +88,7 @@ function buildItems(role: "student" | "teacher" | "admin"): NavItem[] {
   ];
 
   if (role === "student") {
-    return [...base, studentAi, { href: profile, icon: User, labelKey: "mobileNav.profile", match: (p) => p.startsWith(profile) }];
+    return [...base.slice(0, 1), studentAppointments, ...base.slice(1), { href: profile, icon: User, labelKey: "mobileNav.profile", match: (p) => p.startsWith(profile) }];
   }
 
   return [
@@ -141,7 +142,7 @@ function NavTab({
             className={cn(
               "relative flex h-10 w-14 items-center justify-center rounded-2xl transition-all",
               active
-                ? "bg-[#0D1B2A] text-white shadow-md dark:bg-[#D4AF37] dark:text-[#0D1B2A]"
+                ? "bg-foreground text-background shadow-md dark:bg-[var(--brand-gold)] dark:text-[var(--brand-navy)]"
                 : "text-text-muted"
             )}
           >
@@ -155,7 +156,7 @@ function NavTab({
           <span
             className={cn(
               "max-w-full truncate text-[10px] leading-tight",
-              active ? "font-semibold text-[#0D1B2A] dark:text-[#D4AF37]" : "font-medium text-text-muted"
+              active ? "font-semibold text-foreground dark:text-[var(--brand-gold)]" : "font-medium text-text-muted"
             )}
           >
             {label}
@@ -221,7 +222,7 @@ export function MobileBottomNav({ role: roleProp }: Props) {
         className={cn(
           "mx-3 mb-3 overflow-hidden rounded-[1.75rem] border shadow-[0_8px_32px_rgba(13,27,42,0.14)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.45)] sm:mx-4",
           usePillNav
-            ? "border-gray-100 bg-white dark:border-white/10 dark:bg-[#112240]"
+            ? "border-border-default bg-surface-elevated dark:bg-surface-elevated"
             : "border-border-default bg-surface-elevated"
         )}
       >

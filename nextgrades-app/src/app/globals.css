@@ -1,82 +1,8 @@
 @import "tailwindcss";
+@import "../lib/theme/design-tokens.css";
 
 /* Class-based dark mode (matches ThemeContext toggling .dark on <html>) */
 @custom-variant dark (&:where(.dark, .dark *));
-
-:root {
-  color-scheme: light;
-  --color-deep-navy: #0D1B2A;
-  --color-gold: #D4AF37;
-  --color-gold-light: #F5A623;
-  --color-orange: #FFA500;
-  --color-white: #FFFFFF;
-  --color-accent-blue: #4DA3FF;
-  --color-gray-light: #F5F5F5;
-  --color-gray-very-light: #FAFAFA;
-  --color-gray-dark: #111827;
-  --color-green: #22C55E;
-  --color-orange-badge: #F97316;
-  --color-gray-border: #E5E7EB;
-  
-  --background: #FFFFFF;
-  --foreground: #0D1B2A;
-  
-  --card-background: #FFFFFF;
-  --card-foreground: #0D1B2A;
-  --card-border: #E5E7EB;
-  --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  
-  --input-background: #FFFFFF;
-  --input-foreground: #0D1B2A;
-  --input-border: #E5E7EB;
-  --input-placeholder: #9CA3AF;
-  
-  --button-primary-background: #D4AF37;
-  --button-primary-foreground: #0D1B2A;
-  --button-secondary-background: #0D1B2A;
-  --button-secondary-foreground: #FFFFFF;
-  --button-outline-background: transparent;
-  --button-outline-foreground: #0D1B2A;
-  --button-outline-border: #0D1B2A;
-
-  --surface-muted: #FAFAFA;
-  --surface-subtle: #F5F6F8;
-  --surface-dashboard: #F0F2F5;
-  --surface-elevated: #FFFFFF;
-  --text-muted: #6B7280;
-  --border-default: #E5E7EB;
-}
-
-.dark {
-  color-scheme: dark;
-  --background: #0D1B2A;
-  --foreground: #FFFFFF;
-  
-  --card-background: #112240;
-  --card-foreground: #FFFFFF;
-  --card-border: rgba(255, 255, 255, 0.1);
-  --card-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 40px rgba(212, 175, 55, 0.1);
-  
-  --input-background: #0D1B2A;
-  --input-foreground: #FFFFFF;
-  --input-border: rgba(255, 255, 255, 0.15);
-  --input-placeholder: #64748B;
-  
-  --button-primary-background: linear-gradient(135deg, #D4AF37 0%, #F5A623 100%);
-  --button-primary-foreground: #0D1B2A;
-  --button-secondary-background: linear-gradient(135deg, #1E3A5F 0%, #0D1B2A 100%);
-  --button-secondary-foreground: #FFFFFF;
-  --button-outline-background: transparent;
-  --button-outline-foreground: #FFFFFF;
-  --button-outline-border: rgba(255, 255, 255, 0.3);
-
-  --surface-muted: #0D1B2A;
-  --surface-subtle: #0A1628;
-  --surface-dashboard: #0A1628;
-  --surface-elevated: #112240;
-  --text-muted: #9CA3AF;
-  --border-default: rgba(255, 255, 255, 0.1);
-}
 
 @theme inline {
   --color-deep-navy: var(--color-deep-navy);
@@ -91,9 +17,13 @@
   --color-green: var(--color-green);
   --color-orange-badge: var(--color-orange-badge);
   --color-gray-border: var(--color-gray-border);
-  
+
+  --color-brand-navy: var(--brand-navy);
+  --color-brand-gold: var(--brand-gold);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-foreground-secondary: var(--foreground-secondary);
   --color-card-background: var(--card-background);
   --color-card-foreground: var(--card-foreground);
   --color-card-border: var(--card-border);
@@ -108,7 +38,7 @@
   --color-surface-elevated: var(--surface-elevated);
   --color-text-muted: var(--text-muted);
   --color-border-default: var(--border-default);
-  
+
   --font-sans: var(--font-geist-sans);
   --font-poppins: var(--font-poppins);
   --font-playfair: var(--font-playfair-display);
@@ -142,7 +72,6 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
-  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 .scrollbar-none {
@@ -285,43 +214,16 @@ body {
 .stagger-children > :nth-child(9) { animation-delay: 0.9s; }
 .stagger-children > :nth-child(10) { animation-delay: 1s; }
 
-.gradient-gold {
-  background: linear-gradient(135deg, #D4AF37 0%, #F5A623 100%);
-}
-
-.gradient-navy {
-  background: linear-gradient(135deg, #0D1B2A 0%, #1A2F42 100%);
-}
-
-.glass {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-}
-
+.gradient-gold,
+.gradient-navy,
+.glass,
 .glass-dark {
-  background: rgba(13, 27, 42, 0.8);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-20px); }
-}
-
-.animate-float {
-  animation: float 6s ease-in-out infinite;
-}
-
-.animate-float-delayed {
-  animation: float 6s ease-in-out infinite;
-  animation-delay: -3s;
+  /* Defined in design-tokens.css */
 }
 
 @keyframes glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(212, 175, 55, 0.3); }
-  50% { box-shadow: 0 0 40px rgba(212, 175, 55, 0.6); }
+  0%, 100% { box-shadow: 0 0 16px rgba(212, 175, 55, 0.15); }
+  50% { box-shadow: 0 0 24px rgba(212, 175, 55, 0.22); }
 }
 
 @keyframes publish-shimmer {
@@ -378,18 +280,18 @@ body {
 }
 
 :root {
-  --site-nav-height: 4.25rem;
+  --site-nav-height: 4rem;
 }
 
 @media (min-width: 768px) {
   :root {
-    --site-nav-height: 4.75rem;
+    --site-nav-height: 4.5rem;
   }
 }
 
 @media (min-width: 1024px) {
   :root {
-    --site-nav-height: 5.5rem;
+    --site-nav-height: 5rem;
   }
 }
 
@@ -698,11 +600,11 @@ body {
 }
 
 .btn-card-secondary--light {
-  @apply border-gray-200/90 bg-white text-[#0D1B2A] hover:border-[#D4AF37]/50 hover:bg-[#FAFAFA];
+  @apply border-border-default bg-surface-elevated text-foreground hover:border-[var(--brand-gold)]/40 hover:bg-surface-muted;
 }
 
 .btn-card-secondary--dark {
-  @apply border-white/15 bg-white/5 text-white hover:border-[#D4AF37]/40 hover:bg-[#D4AF37]/10 hover:text-[#D4AF37];
+  @apply border-border-default bg-[var(--sidebar-surface)] text-foreground hover:border-[var(--brand-gold)]/35 hover:bg-[var(--brand-gold-muted)];
 }
 
 /* Premium pill / chip buttons (subjects, filters) */

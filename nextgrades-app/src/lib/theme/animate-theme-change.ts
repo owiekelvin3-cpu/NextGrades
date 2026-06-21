@@ -1,27 +1,19 @@
 import type { MouseEvent } from "react";
 import type { UiTheme } from "@/lib/preferences";
+import { beginThemeAnimation, endThemeAnimation } from "@/lib/preferences";
 
 export type ThemeTransitionOrigin = { x: number; y: number };
 
 function getMaxRadius(origin: ThemeTransitionOrigin): number {
   const { innerWidth: w, innerHeight: h } = window;
-  return Math.hypot(Math.max(origin.x, w - origin.x), Math.max(origin.y, h - origin.y)) * 1.12;
+  return Math.hypot(Math.max(origin.x, w - origin.x), Math.max(origin.y, h - origin.y)) * 1.08;
 }
 
-function overlayBackground(theme: UiTheme, origin: ThemeTransitionOrigin): string {
-  if (theme === "dark") {
-    return [
-      `radial-gradient(circle at ${origin.x}px ${origin.y}px, rgba(212,175,55,0.28) 0%, transparent 42%)`,
-      "linear-gradient(165deg, #0D1B2A 0%, #112240 55%, #0A1628 100%)",
-    ].join(", ");
-  }
-  return [
-    `radial-gradient(circle at ${origin.x}px ${origin.y}px, rgba(212,175,55,0.18) 0%, transparent 38%)`,
-    "linear-gradient(165deg, #FFFFFF 0%, #FAFAFA 100%)",
-  ].join(", ");
+function overlayBackground(theme: UiTheme): string {
+  return theme === "dark" ? "var(--background)" : "var(--background)";
 }
 
-/** Circular reveal that covers the screen before applying the new theme. */
+/** Circular reveal before applying the new theme — subtle, no gold flash. */
 export async function runThemeTransition(
   nextTheme: UiTheme,
   origin: ThemeTransitionOrigin,
@@ -37,10 +29,12 @@ export async function runThemeTransition(
     return;
   }
 
+  beginThemeAnimation();
+
   const overlay = document.createElement("div");
   overlay.setAttribute("aria-hidden", "true");
   overlay.className = "theme-transition-overlay";
-  overlay.style.background = overlayBackground(nextTheme, origin);
+  overlay.style.background = overlayBackground(nextTheme);
   overlay.style.clipPath = `circle(0px at ${origin.x}px ${origin.y}px)`;
   document.body.appendChild(overlay);
 
@@ -49,23 +43,24 @@ export async function runThemeTransition(
   try {
     const expand = overlay.animate(
       [
-        { clipPath: `circle(0px at ${origin.x}px ${origin.y}px)` },
-        { clipPath: `circle(${maxRadius}px at ${origin.x}px ${origin.y}px)` },
+        { clipPath: `circle(0px at ${origin.x}px ${origin.y}px)`, opacity: 0.92 },
+        { clipPath: `circle(${maxRadius}px at ${origin.x}px ${origin.y}px)`, opacity: 1 },
       ],
-      { duration: 520, easing: "cubic-bezier(0.32, 0.72, 0, 1)", fill: "forwards" }
+      { duration: 480, easing: "cubic-bezier(0.32, 0.72, 0, 1)", fill: "forwards" }
     );
 
     await expand.finished.catch(() => undefined);
     applyTheme();
 
     const fade = overlay.animate([{ opacity: 1 }, { opacity: 0 }], {
-      duration: 220,
+      duration: 280,
       easing: "ease-out",
       fill: "forwards",
     });
     await fade.finished.catch(() => undefined);
   } finally {
     overlay.remove();
+    endThemeAnimation(400);
   }
 }
 

@@ -71,6 +71,19 @@ export function applyThemeToDocument(theme: UiTheme): void {
   document.documentElement.style.colorScheme = theme;
 }
 
+/** Adds global transition class during theme switch (see design-tokens.css). */
+export function beginThemeAnimation(): void {
+  if (typeof document === "undefined") return;
+  document.documentElement.classList.add("theme-animate");
+}
+
+export function endThemeAnimation(delayMs = 360): void {
+  if (typeof document === "undefined") return;
+  window.setTimeout(() => {
+    document.documentElement.classList.remove("theme-animate");
+  }, delayMs);
+}
+
 export function applyLanguageToDocument(language: SupportedLanguage): void {
   if (typeof document === "undefined") return;
   document.documentElement.lang = language;

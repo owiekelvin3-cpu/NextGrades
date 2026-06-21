@@ -886,6 +886,9 @@
     "overviewTitle": "Overview",
     "nav": {
       "overview": "Overview",
+      "sectionMain": "Main",
+      "sectionLearning": "Learning",
+      "sectionMore": "More",
       "appointments": "My appointments",
       "liveClasses": "Live classes",
       "courses": "My courses",

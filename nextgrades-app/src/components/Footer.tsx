@@ -28,7 +28,7 @@ export default function Footer() {
   const consent = useConsentOptional();
 
   return (
-    <footer className="border-t border-white/10 bg-[#0D1B2A] text-white">
+    <footer className="border-t border-border-default bg-[var(--brand-navy)] text-[var(--sidebar-text-active)]">
       <div
         className={cn(
           section.container,

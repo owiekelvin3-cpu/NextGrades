@@ -49,6 +49,17 @@ function isSecondaryNavActive(pathname: string): boolean {
   return secondaryNavLinks.some((link) => isNavLinkActive(pathname, link.href));
 }
 
+function navLinkClass(active: boolean, onDark: boolean) {
+  return cn(
+    "relative rounded-lg px-2.5 py-2 text-[13px] font-medium transition-colors xl:px-3 xl:text-sm",
+    active
+      ? "font-semibold text-[var(--brand-gold)]"
+      : onDark
+        ? "text-[var(--nav-text)] hover:bg-white/5 hover:text-[var(--nav-text-active)]"
+        : "text-foreground/75 hover:bg-surface-subtle hover:text-foreground"
+  );
+}
+
 export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
@@ -62,6 +73,7 @@ export default function Navbar() {
   const { theme } = useTheme();
   const { t } = useTranslation();
 
+  const onDark = theme === "dark";
   const dashboardHref = profile?.role
     ? getDashboardPathForRole(profile.role as AppRole)
     : "/dashboard/student";
@@ -80,7 +92,7 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 15);
+    const handleScroll = () => setIsScrolled(window.scrollY > 8);
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
@@ -163,91 +175,65 @@ export default function Navbar() {
     router.refresh();
   };
 
-  const isDark = theme === "dark";
   const secondaryActive = isSecondaryNavActive(pathname);
-
-  const headerBg = isDark
-    ? cn(
-        "border-b border-white/[0.06] bg-[#0D1B2A]",
-        isScrolled && "shadow-xl shadow-black/25 backdrop-blur-xl bg-[#0D1B2A]/98"
-      )
-    : cn(
-        "border-b border-[#0D1B2A]/[0.06] bg-white",
-        isScrolled && "shadow-[0_4px_24px_rgba(13,27,42,0.08)] backdrop-blur-xl bg-white/98"
-      );
-
-  const guestAuthDesktop = (
-    <div className="flex items-center gap-2">
-      <Link
-        href="/login"
-        className={cn(
-          "rounded-lg px-3 py-2 text-sm font-semibold transition-colors hover:text-[#D4AF37]",
-          isDark ? "text-white/90" : "text-[#0D1B2A]"
-        )}
-      >
-        {t("common.login")}
-      </Link>
-      {isPublicSignupEnabled() && (
-        <Link
-          href="/signup"
-          className={cn(
-            "rounded-xl border px-3.5 py-2 text-sm font-semibold transition-colors",
-            isDark
-              ? "border-white/15 text-white hover:border-[#D4AF37]/50 hover:text-[#D4AF37]"
-              : "border-[#0D1B2A]/10 text-[#0D1B2A] hover:border-[#D4AF37]/50 hover:text-[#B8962E]"
-          )}
-        >
-          {t("navbar.signupShort")}
-        </Link>
-      )}
-      <Button variant="gold" size="sm" className="rounded-xl px-4 text-sm font-semibold" href="/consultation">
-        {t("navbar.consultationShort")}
-      </Button>
-    </div>
-  );
 
   return (
     <>
       <header
-        className={cn("site-header fixed inset-x-0 top-0 z-50 transition-all duration-300", headerBg)}
+        className={cn(
+          "site-header fixed inset-x-0 top-0 z-50 border-b backdrop-blur-xl transition-[background-color,box-shadow,border-color]",
+          onDark
+            ? cn("site-header-dark bg-[var(--brand-navy)]", isScrolled && "shadow-lg shadow-black/25")
+            : cn("theme-nav-bar bg-[var(--nav-background)]", isScrolled && "shadow-sm"),
+          onDark ? "text-white" : "text-foreground"
+        )}
         style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
       >
         <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-[var(--site-nav-height)] items-center gap-3 lg:gap-4">
-            {/* Logo */}
+          <div className="flex h-[var(--site-nav-height)] items-center gap-3 lg:gap-5">
             <div className="flex shrink-0 items-center">
-              <BrandLogo size="nav" priority={pathname === "/"} />
+              <BrandLogo size="md" priority={pathname === "/"} onDarkBackground={onDark} className="lg:hidden" />
+              <BrandLogo
+                size="nav"
+                priority={pathname === "/"}
+                onDarkBackground={onDark}
+                className="hidden lg:block"
+              />
             </div>
 
-            {/* Desktop navigation */}
             <nav
-              className="hidden min-w-0 flex-1 items-center justify-center gap-0.5 lg:flex"
+              className="hidden min-w-0 flex-1 items-center justify-center gap-0.5 lg:flex xl:gap-1"
               aria-label={t("marketingNav.bottomLabel")}
             >
               {primaryNavLinks.map((link) => (
-                <NavLink
+                <Link
                   key={link.href}
                   href={link.href}
-                  active={isNavLinkActive(pathname, link.href)}
-                  theme={theme}
+                  className={navLinkClass(isNavLinkActive(pathname, link.href), onDark)}
                 >
                   {t(`common.${link.key}`)}
-                </NavLink>
+                </Link>
               ))}
 
-              <div ref={moreRef} className="relative">
+              {secondaryNavLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={cn(navLinkClass(isNavLinkActive(pathname, link.href), onDark), "hidden xl:inline-flex")}
+                >
+                  {t(`common.${link.key}`)}
+                </Link>
+              ))}
+
+              <div ref={moreRef} className="relative xl:hidden">
                 <button
                   type="button"
                   onClick={() => setIsMoreOpen((open) => !open)}
                   aria-expanded={isMoreOpen}
                   aria-haspopup="true"
                   className={cn(
-                    "inline-flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
-                    secondaryActive || isMoreOpen
-                      ? "bg-[#D4AF37]/12 font-semibold text-[#D4AF37]"
-                      : isDark
-                        ? "text-white/90 hover:bg-white/5 hover:text-[#D4AF37]"
-                        : "text-[#0D1B2A]/85 hover:bg-[#0D1B2A]/[0.04] hover:text-[#B8962E]"
+                    navLinkClass(secondaryActive || isMoreOpen, onDark),
+                    "inline-flex items-center gap-1"
                   )}
                 >
                   {t("marketingNav.more")}
@@ -258,26 +244,19 @@ export default function Navbar() {
                 </button>
 
                 {isMoreOpen && (
-                  <div
-                    className={cn(
-                      "absolute left-1/2 top-full z-50 mt-2 min-w-[11rem] -translate-x-1/2 rounded-2xl border p-1.5 shadow-xl",
-                      isDark
-                        ? "border-white/10 bg-[#112240] shadow-black/40"
-                        : "border-[#0D1B2A]/[0.08] bg-white shadow-[0_12px_40px_rgba(13,27,42,0.12)]"
-                    )}
-                  >
+                  <div className="absolute left-1/2 top-full z-50 mt-2 min-w-[11rem] -translate-x-1/2 rounded-xl border border-border-default bg-[var(--nav-dropdown)] p-1 shadow-lg">
                     {secondaryNavLinks.map((link) => (
                       <Link
                         key={link.href}
                         href={link.href}
                         onClick={() => setIsMoreOpen(false)}
                         className={cn(
-                          "flex rounded-xl px-3.5 py-2.5 text-sm font-medium transition-colors",
+                          "flex rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
                           isNavLinkActive(pathname, link.href)
-                            ? "bg-[#D4AF37]/15 font-semibold text-[#D4AF37]"
-                            : isDark
-                              ? "text-white hover:bg-white/5"
-                              : "text-[#0D1B2A] hover:bg-[#0D1B2A]/[0.04]"
+                            ? "bg-[var(--brand-gold-muted)] font-semibold text-[var(--brand-gold)]"
+                            : onDark
+                              ? "text-white/90 hover:bg-white/5"
+                              : "text-foreground hover:bg-[var(--table-row-hover)]"
                         )}
                       >
                         {t(`common.${link.key}`)}
@@ -288,20 +267,14 @@ export default function Navbar() {
               </div>
             </nav>
 
-            {/* Desktop actions */}
             <div className="hidden shrink-0 items-center gap-2 lg:flex">
-              <div
-                className={cn(
-                  "flex items-center gap-1 rounded-xl border px-1 py-1",
-                  isDark ? "border-white/10 bg-white/[0.03]" : "border-[#0D1B2A]/[0.06] bg-[#0D1B2A]/[0.02]"
-                )}
-              >
-                <LanguageSwitcher />
-                <ThemeToggle size="sm" />
+              <div className="flex items-center gap-1.5">
+                <LanguageSwitcher compact onDark={onDark} />
+                <ThemeToggle size="sm" onDark={onDark} />
               </div>
 
               <div
-                className={cn("mx-1 hidden h-6 w-px xl:block", isDark ? "bg-white/10" : "bg-[#0D1B2A]/10")}
+                className={cn("mx-0.5 hidden h-5 w-px xl:block", onDark ? "bg-white/10" : "bg-border-default")}
                 aria-hidden
               />
 
@@ -310,23 +283,32 @@ export default function Navbar() {
                   <Link
                     href={dashboardHref}
                     className={cn(
-                      "flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition-colors hover:text-[#D4AF37]",
-                      isDark ? "text-white" : "text-[#0D1B2A]"
+                      "flex items-center gap-2 rounded-lg px-2.5 py-2 text-sm font-semibold transition-colors hover:text-[var(--brand-gold)]",
+                      onDark ? "text-white/90" : "text-foreground"
                     )}
                   >
-                    <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-[#D4AF37]/35 bg-[#D4AF37]/12">
-                      <UserIcon className="h-4 w-4 text-[#D4AF37]" />
-                    </div>
+                    {profile?.avatar_url ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={profile.avatar_url}
+                        alt=""
+                        className="h-8 w-8 rounded-lg object-cover ring-1 ring-[var(--brand-gold)]/30"
+                      />
+                    ) : (
+                      <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--brand-gold-muted)]">
+                        <UserIcon className="h-4 w-4 text-[var(--brand-gold)]" />
+                      </span>
+                    )}
                     <span className="hidden xl:inline">{t("common.dashboard")}</span>
                   </Link>
                   <button
                     type="button"
                     onClick={handleLogout}
                     className={cn(
-                      "flex items-center gap-2 rounded-xl border px-3 py-2 text-sm font-semibold transition-colors",
-                      isDark
-                        ? "border-white/15 bg-white/[0.06] text-white hover:bg-white/10"
-                        : "border-[#0D1B2A]/10 bg-[#0D1B2A]/[0.03] text-[#0D1B2A] hover:bg-[#0D1B2A]/[0.06]"
+                      "flex items-center gap-1.5 rounded-lg border px-2.5 py-2 text-sm font-medium transition-colors",
+                      onDark
+                        ? "border-white/10 bg-white/5 text-white/90 hover:bg-white/10"
+                        : "border-border-default bg-surface-subtle text-foreground hover:bg-surface-muted"
                     )}
                   >
                     <LogOut className="h-4 w-4" />
@@ -334,23 +316,54 @@ export default function Navbar() {
                   </button>
                 </div>
               ) : (
-                guestAuthDesktop
+                <div className="flex items-center gap-2">
+                  <Link
+                    href="/login"
+                    className={cn(
+                      "rounded-lg px-2.5 py-2 text-sm font-semibold transition-colors hover:text-[var(--brand-gold)]",
+                      onDark ? "text-white/85" : "text-foreground/80"
+                    )}
+                  >
+                    {t("common.login")}
+                  </Link>
+                  {isPublicSignupEnabled() && (
+                    <Link
+                      href="/signup"
+                      className={cn(
+                        "hidden rounded-lg border px-3 py-2 text-sm font-semibold transition-colors xl:inline-flex",
+                        onDark
+                          ? "border-white/12 text-white/90 hover:border-[var(--brand-gold)]/40"
+                          : "border-border-default text-foreground hover:border-[var(--brand-gold)]/40"
+                      )}
+                    >
+                      {t("navbar.signupShort")}
+                    </Link>
+                  )}
+                  <Button variant="gold" size="sm" className="rounded-lg px-4 text-sm" href="/consultation">
+                    {t("navbar.consultationShort")}
+                  </Button>
+                </div>
               )}
             </div>
 
-            {/* Mobile menu toggle */}
-            <button
-              type="button"
-              className={cn(
-                "ml-auto flex min-h-11 min-w-11 items-center justify-center rounded-xl touch-manipulation active:scale-95 lg:hidden",
-                isDark ? "text-white" : "text-[#0D1B2A]"
-              )}
-              onClick={() => setIsMobileMenuOpen((v) => !v)}
-              aria-label={isMobileMenuOpen ? t("marketingNav.closeMenu") : t("marketingNav.openMenu")}
-              aria-expanded={isMobileMenuOpen}
-            >
-              {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </button>
+            <div className="ml-auto flex items-center gap-1.5 lg:hidden">
+              <LanguageSwitcher compact onDark={onDark} />
+              <ThemeToggle size="sm" onDark={onDark} />
+              <button
+                type="button"
+                className={cn(
+                  "flex min-h-10 min-w-10 items-center justify-center rounded-lg border transition-colors touch-manipulation active:scale-95",
+                  onDark
+                    ? "border-white/10 bg-white/5 text-white hover:bg-white/10"
+                    : "border-border-default bg-surface-elevated text-foreground hover:bg-surface-subtle"
+                )}
+                onClick={() => setIsMobileMenuOpen((v) => !v)}
+                aria-label={isMobileMenuOpen ? t("marketingNav.closeMenu") : t("marketingNav.openMenu")}
+                aria-expanded={isMobileMenuOpen}
+              >
+                {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              </button>
+            </div>
           </div>
         </div>
 
@@ -358,21 +371,15 @@ export default function Navbar() {
           open={isMobileMenuOpen}
           onClose={() => setIsMobileMenuOpen(false)}
           ariaLabel="Site navigation"
-          panelClassName={isDark ? "bg-[#0D1B2A]" : "bg-white"}
-          header={<BrandLogo size="nav" />}
+          header={<BrandLogo size="md" onDarkBackground={onDark} />}
           footer={
             <div className="space-y-3">
-              <LanguageSwitcher layout="drawer" />
-              <ThemeToggle variant="full" />
               {session && user ? (
                 <>
                   <Link
                     href={dashboardHref}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className={cn(
-                      "flex min-h-[52px] w-full items-center justify-center rounded-2xl border font-semibold touch-manipulation",
-                      isDark ? "border-white/20 text-white" : "border-gray-200 text-[#0D1B2A]"
-                    )}
+                    className="flex min-h-[48px] w-full items-center justify-center rounded-xl border border-border-default bg-surface-subtle text-sm font-semibold text-foreground touch-manipulation"
                   >
                     {t("common.dashboard")}
                   </Link>
@@ -382,10 +389,7 @@ export default function Navbar() {
                       void handleLogout();
                       setIsMobileMenuOpen(false);
                     }}
-                    className={cn(
-                      "flex min-h-[52px] w-full items-center justify-center gap-2 rounded-2xl border font-semibold touch-manipulation",
-                      isDark ? "border-white/20 text-white" : "border-gray-200 text-[#0D1B2A]"
-                    )}
+                    className="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl border border-border-default text-sm font-semibold text-foreground touch-manipulation hover:bg-surface-subtle"
                   >
                     <LogOut className="h-4 w-4" />
                     {t("common.logout")}
@@ -393,45 +397,38 @@ export default function Navbar() {
                 </>
               ) : (
                 <>
-                  <Button variant="gold" size="lg" className="w-full min-h-[52px]" href="/consultation">
+                  <Button variant="gold" size="md" className="w-full min-h-[48px]" href="/consultation">
                     {t("navbar.freeConsultation")}
                   </Button>
+                  <Link
+                    href="/login"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="flex min-h-[48px] w-full items-center justify-center rounded-xl border border-border-default text-sm font-semibold text-foreground touch-manipulation hover:bg-surface-subtle"
+                  >
+                    {t("common.login")}
+                  </Link>
                   {isPublicSignupEnabled() && (
                     <Link
                       href="/signup"
                       onClick={() => setIsMobileMenuOpen(false)}
-                      className={cn(
-                        "flex min-h-[52px] w-full items-center justify-center rounded-2xl border font-semibold touch-manipulation",
-                        isDark ? "border-[#D4AF37]/40 text-[#D4AF37]" : "border-[#D4AF37]/50 text-[#0D1B2A]"
-                      )}
+                      className="flex min-h-[48px] w-full items-center justify-center rounded-xl border border-[var(--brand-gold)]/35 text-sm font-semibold text-[var(--brand-gold)] touch-manipulation"
                     >
                       {t("navbar.signup")}
                     </Link>
                   )}
-                  <Link
-                    href="/login"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className={cn(
-                      "flex min-h-[52px] w-full items-center justify-center rounded-2xl border font-semibold touch-manipulation",
-                      isDark ? "border-white/20 text-white" : "border-gray-200 text-[#0D1B2A]"
-                    )}
-                  >
-                    {t("common.login")}
-                  </Link>
                 </>
               )}
             </div>
           }
         >
-          <nav className="flex-1 overflow-y-auto overscroll-contain px-5 py-5">
-            <MobileNavSection title={t("marketingNav.explore")} theme={theme}>
+          <nav className="flex-1 overflow-y-auto overscroll-contain px-4 py-4">
+            <MobileNavSection title={t("marketingNav.explore")}>
               {allNavLinks.map((link) => (
                 <MobileNavItem
                   key={link.href}
                   href={link.href}
                   label={t(`common.${link.key}`)}
                   active={isNavLinkActive(pathname, link.href)}
-                  theme={theme}
                   onNavigate={() => setIsMobileMenuOpen(false)}
                 />
               ))}
@@ -443,27 +440,10 @@ export default function Navbar() {
   );
 }
 
-function MobileNavSection({
-  title,
-  theme,
-  className,
-  children,
-}: {
-  title: string;
-  theme: "dark" | "light";
-  className?: string;
-  children: ReactNode;
-}) {
+function MobileNavSection({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <div className={className}>
-      <p
-        className={cn(
-          "mb-2 px-1 text-xs font-semibold uppercase tracking-wider",
-          theme === "dark" ? "text-gray-500" : "text-gray-400"
-        )}
-      >
-        {title}
-      </p>
+    <div>
+      <p className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-text-muted">{title}</p>
       <ul className="space-y-0.5">{children}</ul>
     </div>
   );
@@ -473,13 +453,11 @@ function MobileNavItem({
   href,
   label,
   active,
-  theme,
   onNavigate,
 }: {
   href: string;
   label: string;
   active: boolean;
-  theme: "dark" | "light";
   onNavigate: () => void;
 }) {
   return (
@@ -488,46 +466,14 @@ function MobileNavItem({
         href={href}
         onClick={onNavigate}
         className={cn(
-          "flex min-h-[48px] items-center rounded-xl px-4 text-[15px] font-medium transition-colors touch-manipulation",
+          "flex min-h-[44px] items-center rounded-lg px-3 text-[15px] font-medium transition-colors touch-manipulation",
           active
-            ? "bg-[#D4AF37]/15 font-semibold text-[#D4AF37]"
-            : theme === "dark"
-              ? "text-white active:bg-white/5"
-              : "text-[#0D1B2A] active:bg-gray-50"
+            ? "bg-[var(--brand-gold-muted)] font-semibold text-[var(--brand-gold)]"
+            : "text-foreground hover:bg-surface-subtle active:bg-surface-muted"
         )}
       >
         <span suppressHydrationWarning>{label}</span>
       </Link>
     </li>
-  );
-}
-
-function NavLink({
-  href,
-  children,
-  active = false,
-  theme,
-}: {
-  href: string;
-  children: React.ReactNode;
-  active?: boolean;
-  theme: "dark" | "light";
-}) {
-  const isDark = theme === "dark";
-
-  return (
-    <Link
-      href={href}
-      className={cn(
-        "rounded-lg px-2.5 py-2 text-sm font-medium transition-colors duration-200 xl:px-3",
-        active
-          ? "bg-[#D4AF37]/12 font-semibold text-[#D4AF37]"
-          : isDark
-            ? "text-white/90 hover:bg-white/5 hover:text-[#D4AF37]"
-            : "text-[#0D1B2A]/85 hover:bg-[#0D1B2A]/[0.04] hover:text-[#B8962E]"
-      )}
-    >
-      {children}
-    </Link>
   );
 }

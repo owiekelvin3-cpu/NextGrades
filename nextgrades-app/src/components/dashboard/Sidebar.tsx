@@ -193,15 +193,11 @@ function SidebarContent({
       )}
 
       {isStudent && studentFirst && (
-        <div className="mb-4 flex shrink-0 items-center gap-3 rounded-xl border border-white/10 bg-white/5 p-3">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#D4AF37]/20 text-sm font-bold text-[#D4AF37]">
-            {studentFirst.charAt(0).toUpperCase()}
-          </div>
-          <div className="min-w-0">
-            <p className="truncate text-sm font-semibold text-white">
-              {t("studentDashboard.sidebarHello", { name: studentFirst, defaultValue: `Hi, ${studentFirst}!` })}
-            </p>
-          </div>
+        <div className="mb-4 shrink-0 px-1">
+          <p className="truncate text-sm font-semibold text-white">
+            {t("studentDashboard.sidebarHello", { name: studentFirst, defaultValue: `Hi, ${studentFirst}!` })}
+          </p>
+          <p className="mt-0.5 text-xs text-gray-500">{t("studentDashboard.overviewTitle", { defaultValue: "Overview" })}</p>
         </div>
       )}
 
@@ -287,8 +283,8 @@ export function Sidebar({
     role === "teacher" || role === "student" || role === "admin" || theme === "dark";
 
   const sidebarClass = useDarkSidebar
-    ? "bg-[#0D1B2A] text-white"
-    : "bg-white text-[#0D1B2A] border-r border-gray-100";
+    ? "bg-[var(--sidebar-background)] text-[var(--sidebar-text-active)]"
+    : "border-r border-border-default bg-surface-elevated text-foreground";
 
   return (
     <>
@@ -297,7 +293,7 @@ export function Sidebar({
           "hidden md:fixed md:inset-y-0 md:left-0 md:z-40 md:flex md:flex-col md:overflow-hidden",
           "transition-[width,box-shadow] duration-300 ease-out",
           sidebarClass,
-          collapsed ? "shadow-none" : "shadow-[4px_0_24px_rgba(0,0,0,0.12)]"
+          collapsed ? "shadow-none" : "shadow-[4px_0_24px_rgba(0,0,0,0.08)] dark:shadow-[4px_0_24px_rgba(0,0,0,0.35)]"
         )}
         style={{ width: collapsed ? 0 : SIDEBAR_WIDTH }}
         aria-hidden={collapsed}

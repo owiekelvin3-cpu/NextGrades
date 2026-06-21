@@ -861,6 +861,9 @@
     "overviewTitle": "Übersicht",
     "nav": {
       "overview": "Übersicht",
+      "sectionMain": "Hauptmenü",
+      "sectionLearning": "Lernen",
+      "sectionMore": "Mehr",
       "appointments": "Meine Termine",
       "liveClasses": "Live-Klassen",
       "courses": "Meine Kurse",

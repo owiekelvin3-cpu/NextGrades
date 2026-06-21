@@ -22,7 +22,7 @@ interface ThemeContextType {
   isReady: boolean;
   isTransitioning: boolean;
   toggleTheme: (event?: React.MouseEvent<HTMLElement>) => void;
-  setTheme: (theme: UiTheme) => void;
+  setTheme: (theme: UiTheme, event?: React.MouseEvent<HTMLElement>) => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -90,9 +90,21 @@ export function ThemeProvider({
   );
 
   const setThemeExplicit = useCallback(
-    (next: UiTheme) => {
+    (next: UiTheme, event?: React.MouseEvent<HTMLElement>) => {
       if (next === theme) return;
-      applyTheme(next);
+      if (transitioningRef.current) {
+        applyTheme(next);
+        return;
+      }
+
+      const origin = getClickOrigin(event);
+      transitioningRef.current = true;
+      setIsTransitioning(true);
+
+      void runThemeTransition(next, origin, () => applyTheme(next)).finally(() => {
+        transitioningRef.current = false;
+        setIsTransitioning(false);
+      });
     },
     [applyTheme, theme]
   );

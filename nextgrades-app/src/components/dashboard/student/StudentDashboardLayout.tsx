@@ -9,6 +9,7 @@ interface StudentDashboardLayoutProps {
   headerAction?: React.ReactNode;
   topRightAction?: React.ReactNode;
   hideBottomNav?: boolean;
+  suppressMobileTitle?: boolean;
 }
 
 export function StudentDashboardLayout({
@@ -18,6 +19,7 @@ export function StudentDashboardLayout({
   headerAction,
   topRightAction,
   hideBottomNav,
+  suppressMobileTitle,
 }: StudentDashboardLayoutProps) {
   return (
     <MobileAppShell
@@ -27,6 +29,7 @@ export function StudentDashboardLayout({
       headerAction={headerAction}
       topRightAction={topRightAction}
       hideBottomNav={hideBottomNav}
+      suppressMobileTitle={suppressMobileTitle}
     >
       {children}
     </MobileAppShell>

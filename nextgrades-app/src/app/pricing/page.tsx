@@ -101,7 +101,7 @@ function PricingContent() {
   const planColumns = plans.map((p) => p.id);
 
   return (
-    <div className="marketing-page-root flex min-h-screen flex-col bg-[#FAF8F5]">
+    <div className="marketing-page-root flex min-h-screen flex-col bg-background">
       <Navbar />
 
       <main className="flex-1">
@@ -158,7 +158,7 @@ function PricingContent() {
               <div className="overflow-x-auto rounded-2xl border border-gray-200 bg-white">
                 <table className="w-full min-w-[640px] border-collapse text-left text-sm">
                   <thead>
-                    <tr className="border-b border-gray-100 bg-[#FAF8F5]">
+                    <tr className="border-b border-border-default bg-surface-muted">
                       <th className="px-5 py-4 font-semibold text-[#0D1B2A]">
                         {compareHeaders?.features ?? "Merkmale"}
                       </th>
@@ -173,7 +173,7 @@ function PricingContent() {
                     {compareRows.map((row, i) => (
                       <tr
                         key={row.label}
-                        className={cn("border-b border-gray-50 last:border-0", i % 2 === 1 && "bg-[#FAF8F5]/60")}
+                        className={cn("border-b border-border-default last:border-0", i % 2 === 1 && "bg-surface-muted/60")}
                       >
                         <td className="px-5 py-3.5 font-medium text-gray-800">{row.label}</td>
                         {planColumns.map((col) => (

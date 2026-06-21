@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { BrandLogo } from "@/components/BrandLogo";
 import { useTheme } from "@/context/ThemeContext";
 import { cn } from "@/lib/utils";
+import { theme as t } from "@/lib/theme/tokens";
 
 type AuthPageShellProps = {
   children: React.ReactNode;
@@ -16,21 +17,15 @@ type AuthPageShellProps = {
 /** Minimal chrome for login, verify, and password flows — no marketing nav clutter. */
 export function AuthPageShell({ children, footer, className }: AuthPageShellProps) {
   const { theme } = useTheme();
-  const { t } = useTranslation();
+  const { t: translate } = useTranslation();
   const isDark = theme === "dark";
 
   return (
-    <div
-      className={cn(
-        "flex min-h-screen flex-col",
-        isDark ? "bg-[#0D1B2A] text-white" : "bg-gradient-to-b from-[#EEF1F6] via-[#F4F6F9] to-[#F0F2F5] text-[#0D1B2A]",
-        className
-      )}
-    >
+    <div className={cn("flex min-h-screen flex-col", t.dashboard, className)}>
       <header
         className={cn(
-          "sticky top-0 z-40 border-b backdrop-blur-md",
-          isDark ? "border-white/10 bg-[#0D1B2A]/90" : "border-gray-200/80 bg-white/90"
+          "sticky top-0 z-40 border-b border-border-default backdrop-blur-md",
+          "bg-surface-elevated/90"
         )}
         style={{ paddingTop: "max(0.75rem, env(safe-area-inset-top))" }}
       >
@@ -39,12 +34,12 @@ export function AuthPageShell({ children, footer, className }: AuthPageShellProp
           <Link
             href="/"
             className={cn(
-              "inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:text-[#D4AF37]",
-              isDark ? "text-gray-300" : "text-gray-600"
+              "inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:text-[var(--brand-gold)]",
+              t.textMuted
             )}
           >
             <ArrowLeft className="h-4 w-4 shrink-0" />
-            {t("login.backToHome", { defaultValue: "Zur Startseite" })}
+            {translate("login.backToHome", { defaultValue: "Zur Startseite" })}
           </Link>
         </div>
       </header>

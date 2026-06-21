@@ -1,15 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useTheme } from "@/context/ThemeContext";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 
 /** Minimal footer for login/auth pages (owner spec P11-06). */
 export function CompactFooter() {
-  const { theme } = useTheme();
   const { t } = useTranslation();
-  const isDark = theme === "dark";
 
   const links = [
     { href: "/privacy", label: t("footer.privacy") },
@@ -21,8 +18,7 @@ export function CompactFooter() {
   return (
     <footer
       className={cn(
-        "border-t px-4 py-4 pb-[max(1rem,env(safe-area-inset-bottom))]",
-        isDark ? "border-white/10 bg-[#0D1B2A] text-gray-400" : "border-gray-200 bg-white text-gray-600"
+        "border-t border-border-default bg-surface-elevated px-4 py-4 text-text-muted pb-[max(1rem,env(safe-area-inset-bottom))]"
       )}
     >
       <div className="mx-auto flex max-w-7xl flex-col items-center gap-3 sm:flex-row sm:justify-between">
