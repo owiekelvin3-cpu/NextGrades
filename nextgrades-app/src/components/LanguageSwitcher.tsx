@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { ChevronDown, Check } from "lucide-react";
+import { ChevronDown, Check, Languages } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
 import { changeAppLanguage } from "@/components/I18nProvider";
 import { setAppLanguage } from "@/lib/preferences";
@@ -85,7 +85,9 @@ export function LanguageSwitcher({ layout = "dropdown" }: LanguageSwitcherProps)
         }`}
         type="button"
         title={currentLang.label}
+        aria-label={currentLang.label}
       >
+        <Languages className="h-4 w-4 shrink-0 opacity-80" />
         <span className="uppercase">{currentLang.code}</span>
         <ChevronDown className="w-4 h-4" />
       </button>

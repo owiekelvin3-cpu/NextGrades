@@ -17,9 +17,6 @@ import type { Session, User, AuthChangeEvent } from "@supabase/supabase-js";
 import { cn } from "@/lib/utils";
 import { getDashboardPathForRole } from "@/lib/auth/redirect";
 import { isPublicSignupEnabled } from "@/lib/auth/public-signup";
-import { isPublicMarketingPath } from "@/lib/marketing/public-routes";
-import { changeAppLanguage } from "@/components/I18nProvider";
-import { normalizeLanguage } from "@/lib/i18n/locales";
 import type { AppRole } from "@/lib/auth/roles";
 
 type NavProfile = {
@@ -63,14 +60,7 @@ export default function Navbar() {
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<NavProfile | null>(null);
   const { theme } = useTheme();
-  const { t, i18n } = useTranslation();
-  const marketingGermanOnly = isPublicMarketingPath(pathname);
-
-  useEffect(() => {
-    if (marketingGermanOnly && normalizeLanguage(i18n.language) !== "de") {
-      void changeAppLanguage("de");
-    }
-  }, [marketingGermanOnly, i18n.language]);
+  const { t } = useTranslation();
 
   const dashboardHref = profile?.role
     ? getDashboardPathForRole(profile.role as AppRole)
@@ -306,7 +296,7 @@ export default function Navbar() {
                   isDark ? "border-white/10 bg-white/[0.03]" : "border-[#0D1B2A]/[0.06] bg-[#0D1B2A]/[0.02]"
                 )}
               >
-                {!marketingGermanOnly && <LanguageSwitcher />}
+                <LanguageSwitcher />
                 <ThemeToggle size="sm" />
               </div>
 
@@ -372,7 +362,7 @@ export default function Navbar() {
           header={<BrandLogo size="nav" />}
           footer={
             <div className="space-y-3">
-              {!marketingGermanOnly && <LanguageSwitcher layout="drawer" />}
+              <LanguageSwitcher layout="drawer" />
               <ThemeToggle variant="full" />
               {session && user ? (
                 <>
