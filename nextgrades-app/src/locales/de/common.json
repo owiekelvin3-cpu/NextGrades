@@ -38,6 +38,15 @@
     "openMenu": "Menü öffnen",
     "closeMenu": "Menü schließen"
   },
+  "navBar": {
+    "home": "Start",
+    "programs": "Programme",
+    "subjects": "Fächer",
+    "resources": "Bibliothek",
+    "pricing": "Preise",
+    "about": "Über uns",
+    "contact": "Kontakt"
+  },
   "footer": {
     "programs": "Programme",
     "program1": "1:1 Nachhilfe",

@@ -51,13 +51,17 @@ function isSecondaryNavActive(pathname: string): boolean {
 
 function navLinkClass(active: boolean, onDark: boolean) {
   return cn(
-    "relative rounded-lg px-2.5 py-2 text-[13px] font-medium transition-colors xl:px-3 xl:text-sm",
+    "relative shrink-0 whitespace-nowrap rounded-lg px-2 py-2 text-[12px] font-medium transition-colors lg:px-2.5 lg:text-[13px] 2xl:px-3 2xl:text-sm",
     active
       ? "font-semibold text-[var(--brand-gold)]"
       : onDark
         ? "text-[var(--nav-text)] hover:bg-white/5 hover:text-[var(--nav-text-active)]"
         : "text-foreground/75 hover:bg-surface-subtle hover:text-foreground"
   );
+}
+
+function navLabel(t: (key: string) => string, key: string) {
+  return t(`navBar.${key}`);
 }
 
 export default function Navbar() {
@@ -189,20 +193,20 @@ export default function Navbar() {
         )}
         style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
       >
-        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-[var(--site-nav-height)] items-center gap-3 lg:gap-5">
+        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-5 xl:px-6 2xl:px-8">
+          <div className="flex h-[var(--site-nav-height)] items-center gap-2 lg:gap-3 2xl:gap-5">
             <div className="flex shrink-0 items-center">
-              <BrandLogo size="md" priority={pathname === "/"} onDarkBackground={onDark} className="lg:hidden" />
+              <BrandLogo size="md" priority={pathname === "/"} onDarkBackground={onDark} className="2xl:hidden" />
               <BrandLogo
                 size="nav"
                 priority={pathname === "/"}
                 onDarkBackground={onDark}
-                className="hidden lg:block"
+                className="hidden 2xl:block"
               />
             </div>
 
             <nav
-              className="hidden min-w-0 flex-1 items-center justify-center gap-0.5 lg:flex xl:gap-1"
+              className="hidden min-w-0 flex-1 items-center justify-center gap-0 lg:flex lg:gap-0.5 2xl:gap-1"
               aria-label={t("marketingNav.bottomLabel")}
             >
               {primaryNavLinks.map((link) => (
@@ -210,8 +214,9 @@ export default function Navbar() {
                   key={link.href}
                   href={link.href}
                   className={navLinkClass(isNavLinkActive(pathname, link.href), onDark)}
+                  title={t(`common.${link.key}`)}
                 >
-                  {t(`common.${link.key}`)}
+                  {navLabel(t, link.key)}
                 </Link>
               ))}
 
@@ -219,13 +224,14 @@ export default function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={cn(navLinkClass(isNavLinkActive(pathname, link.href), onDark), "hidden xl:inline-flex")}
+                  className={cn(navLinkClass(isNavLinkActive(pathname, link.href), onDark), "hidden 2xl:inline-flex")}
+                  title={t(`common.${link.key}`)}
                 >
-                  {t(`common.${link.key}`)}
+                  {navLabel(t, link.key)}
                 </Link>
               ))}
 
-              <div ref={moreRef} className="relative xl:hidden">
+              <div ref={moreRef} className="relative 2xl:hidden">
                 <button
                   type="button"
                   onClick={() => setIsMoreOpen((open) => !open)}
@@ -267,14 +273,14 @@ export default function Navbar() {
               </div>
             </nav>
 
-            <div className="hidden shrink-0 items-center gap-2 lg:flex">
-              <div className="flex items-center gap-1.5">
+            <div className="hidden shrink-0 items-center gap-1.5 lg:flex 2xl:gap-2">
+              <div className="flex items-center gap-1">
                 <LanguageSwitcher compact onDark={onDark} />
                 <ThemeToggle size="sm" onDark={onDark} />
               </div>
 
               <div
-                className={cn("mx-0.5 hidden h-5 w-px xl:block", onDark ? "bg-white/10" : "bg-border-default")}
+                className={cn("mx-0.5 hidden h-5 w-px 2xl:block", onDark ? "bg-white/10" : "bg-border-default")}
                 aria-hidden
               />
 
@@ -299,7 +305,7 @@ export default function Navbar() {
                         <UserIcon className="h-4 w-4 text-[var(--brand-gold)]" />
                       </span>
                     )}
-                    <span className="hidden xl:inline">{t("common.dashboard")}</span>
+                    <span className="hidden 2xl:inline">{t("common.dashboard")}</span>
                   </Link>
                   <button
                     type="button"
@@ -312,7 +318,7 @@ export default function Navbar() {
                     )}
                   >
                     <LogOut className="h-4 w-4" />
-                    <span className="hidden xl:inline">{t("common.logout")}</span>
+                    <span className="hidden 2xl:inline">{t("common.logout")}</span>
                   </button>
                 </div>
               ) : (
@@ -320,7 +326,7 @@ export default function Navbar() {
                   <Link
                     href="/login"
                     className={cn(
-                      "rounded-lg px-2.5 py-2 text-sm font-semibold transition-colors hover:text-[var(--brand-gold)]",
+                      "shrink-0 whitespace-nowrap rounded-lg px-2 py-2 text-[13px] font-semibold transition-colors hover:text-[var(--brand-gold)] 2xl:px-2.5 2xl:text-sm",
                       onDark ? "text-white/85" : "text-foreground/80"
                     )}
                   >
@@ -330,7 +336,7 @@ export default function Navbar() {
                     <Link
                       href="/signup"
                       className={cn(
-                        "hidden rounded-lg border px-3 py-2 text-sm font-semibold transition-colors xl:inline-flex",
+                        "hidden shrink-0 whitespace-nowrap rounded-lg border px-2.5 py-2 text-[13px] font-semibold transition-colors 2xl:inline-flex 2xl:text-sm",
                         onDark
                           ? "border-white/12 text-white/90 hover:border-[var(--brand-gold)]/40"
                           : "border-border-default text-foreground hover:border-[var(--brand-gold)]/40"
@@ -339,7 +345,12 @@ export default function Navbar() {
                       {t("navbar.signupShort")}
                     </Link>
                   )}
-                  <Button variant="gold" size="sm" className="rounded-lg px-4 text-sm" href="/consultation">
+                  <Button
+                    variant="gold"
+                    size="sm"
+                    className="shrink-0 whitespace-nowrap rounded-lg px-3 text-[13px] 2xl:px-4 2xl:text-sm"
+                    href="/consultation"
+                  >
                     {t("navbar.consultationShort")}
                   </Button>
                 </div>

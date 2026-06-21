@@ -38,6 +38,15 @@
     "openMenu": "Open menu",
     "closeMenu": "Close menu"
   },
+  "navBar": {
+    "home": "Home",
+    "programs": "Programs",
+    "subjects": "Subjects",
+    "resources": "Library",
+    "pricing": "Pricing",
+    "about": "About",
+    "contact": "Contact"
+  },
   "footer": {
     "programs": "Programs",
     "program1": "1:1 Tutoring",
