@@ -5,8 +5,10 @@ import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { PricingPlanCard, type PricingPlanCardPlan } from "@/components/pricing/PricingPlanCard";
+import { PricingCompareMobile } from "@/components/pricing/PricingCompareMobile";
 import { MarketingCtaButtons } from "@/components/premium/MarketingCtaButtons";
 import { SectionHeader } from "@/components/premium/SectionHeader";
+import { MarketingImage } from "@/components/marketing/MarketingImage";
 import { Card } from "@/components/ui/Card";
 import { CheckCircle2, ChevronDown, Loader2, Star, Users, BookOpen } from "lucide-react";
 import { supabase } from "@/lib/supabase/client";
@@ -21,7 +23,7 @@ import {
   PRICING_PLAN_IMAGES,
 } from "@/lib/marketing-images";
 import { cn } from "@/lib/utils";
-import { section, hero } from "@/lib/premium/tokens";
+import { section } from "@/lib/premium/tokens";
 
 type CompareRow = {
   label: string;
@@ -64,7 +66,7 @@ function CompareCell({ value }: { value: string | boolean | undefined }) {
   if (value === false || value === undefined) {
     return <span className="text-gray-300" aria-hidden>—</span>;
   }
-  return <span className="text-sm text-gray-600">{value}</span>;
+  return <span className="text-xs text-gray-600 sm:text-sm">{value}</span>;
 }
 
 function PricingContent() {
@@ -88,6 +90,9 @@ function PricingContent() {
   const stats = Array.isArray(statsRaw) ? statsRaw : [];
   const ctaTagsRaw = useLocalizedContent<string[]>("pricingPage.finalCtaTags");
   const ctaTags = Array.isArray(ctaTagsRaw) ? ctaTagsRaw : [];
+
+  const safeCompareHeaders =
+    compareHeaders && typeof compareHeaders === "object" ? compareHeaders : {};
 
   const handlePlanSelect = async (plan: PricingPlanCardPlan) => {
     const action = planActionType(plan.id);
@@ -123,55 +128,82 @@ function PricingContent() {
   const planColumns = plans.map((p) => p.id);
 
   return (
-    <div className="marketing-page-root flex min-h-screen flex-col bg-[#FAF8F5]">
+    <div className="marketing-page-root flex min-h-screen flex-col overflow-x-hidden bg-[#FAF8F5]">
       <Navbar />
 
-      <main className="flex-1">
-        {/* Hero — aligned with Programme page */}
-        <section className={cn("relative bg-[#0D1B2A] text-white", hero.section)}>
-          <MarketingHeroBlend
-            src={heroImage}
-            alt=""
-            variant="dark-split-right"
-            backgroundColor="#0D1B2A"
-            priority
+      <main className="flex-1 overflow-x-hidden">
+        {/* Hero */}
+        <section className="relative overflow-hidden bg-[#0D1B2A] text-white">
+          <div className="pointer-events-none absolute inset-0 hidden md:block">
+            <MarketingHeroBlend
+              src={heroImage}
+              alt=""
+              variant="dark-split-right"
+              backgroundColor="#0D1B2A"
+              priority
+              sizes="(max-width: 1024px) 100vw, 55vw"
+            />
+          </div>
+          <div
+            className="pointer-events-none absolute inset-0 bg-[#0D1B2A] md:hidden"
+            aria-hidden
           />
-          <div className={hero.inner}>
-            <div className="grid min-w-0 items-center gap-10 lg:grid-cols-2 lg:gap-16">
+          <div className="relative z-10 mx-auto w-full max-w-7xl px-5 pb-8 pt-[calc(var(--site-nav-height,4rem)+1.25rem)] sm:px-6 md:min-h-[600px] md:pb-20 md:pt-28 lg:min-h-[680px] lg:px-8">
+            <div className="grid min-w-0 items-center gap-8 lg:grid-cols-2 lg:gap-16">
               <div className="max-w-xl">
-                <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-[#D4AF37]">
+                <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#D4AF37] sm:mb-4 sm:text-xs sm:tracking-[0.22em]">
                   {t("pricingPage.plansEyebrow")}
                 </p>
-                <h1 className="text-4xl font-bold leading-[1.1] tracking-tight sm:text-5xl lg:text-[3.25rem]">
+                <h1 className="text-[1.75rem] font-bold leading-[1.12] tracking-tight sm:text-4xl md:text-5xl lg:text-[3.25rem]">
                   {t("pricingPage.plansTitle")}
                 </h1>
-                <p className="mt-6 max-w-lg text-base leading-relaxed text-gray-300 sm:text-lg">
+                <p className="mt-4 max-w-lg text-[15px] leading-relaxed text-gray-300 sm:mt-6 sm:text-base md:text-lg">
                   {t("pricingPage.plansSubtitle")}
                 </p>
-                <p className="mt-4 text-sm text-gray-400">{t("pricingPage.valueProposition")}</p>
+                <p className="mt-3 text-sm text-gray-400">{t("pricingPage.valueProposition")}</p>
+              </div>
+              <div className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-white/10 shadow-lg md:hidden">
+                <MarketingImage
+                  src={heroImage}
+                  alt=""
+                  containerClassName="h-full w-full"
+                  sizes="100vw"
+                  priority
+                  className="object-cover"
+                />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0D1B2A]/50 to-transparent" />
               </div>
               <div className="hidden min-h-[280px] lg:block" aria-hidden />
             </div>
           </div>
         </section>
 
-        {/* Stats strip */}
+        {/* Stats */}
         {stats.length > 0 && (
-          <section className="-mt-8 pb-2 md:-mt-10">
-            <div className="mx-auto max-w-4xl px-5 sm:px-6">
-              <Card className="rounded-2xl border border-gray-200/80 bg-white p-5 shadow-[0_8px_30px_rgba(13,27,42,0.06)] sm:p-6">
-                <div className="grid grid-cols-2 gap-6 sm:grid-cols-4 sm:gap-4">
+          <section className="-mt-5 px-5 pb-1 sm:-mt-8 sm:px-6 md:-mt-10">
+            <div className="mx-auto max-w-4xl">
+              <Card className="rounded-2xl border border-gray-200/80 bg-white p-4 shadow-[0_8px_30px_rgba(13,27,42,0.06)] sm:p-6">
+                <div className="grid grid-cols-2 gap-x-4 gap-y-5 sm:grid-cols-4 sm:gap-4">
                   {stats.slice(0, 4).map((stat, index) => {
                     const Icon = STAT_ICONS[index] ?? Star;
                     return (
-                      <div key={stat.label} className="text-center sm:text-left">
-                        <div className="mb-2 inline-flex h-9 w-9 items-center justify-center rounded-full bg-[#0D1B2A]/5">
-                          <Icon className="h-4 w-4 text-[#0D1B2A]" aria-hidden />
+                      <div
+                        key={stat.label}
+                        className={cn(
+                          "min-w-0 text-center sm:text-left",
+                          index % 2 === 0 && "border-r border-gray-100 pr-4 sm:border-0 sm:pr-0",
+                          index < 2 && "pb-1 sm:pb-0"
+                        )}
+                      >
+                        <div className="mb-1.5 inline-flex h-8 w-8 items-center justify-center rounded-full bg-[#0D1B2A]/5 sm:mb-2 sm:h-9 sm:w-9">
+                          <Icon className="h-3.5 w-3.5 text-[#0D1B2A] sm:h-4 sm:w-4" aria-hidden />
                         </div>
-                        <p className="text-2xl font-bold tracking-tight text-[#0D1B2A] sm:text-3xl">
+                        <p className="text-xl font-bold tracking-tight text-[#0D1B2A] sm:text-2xl md:text-3xl">
                           {stat.value}
                         </p>
-                        <p className="mt-0.5 text-xs text-gray-500 sm:text-sm">{stat.label}</p>
+                        <p className="mt-0.5 text-[11px] leading-snug text-gray-500 sm:text-sm">
+                          {stat.label}
+                        </p>
                       </div>
                     );
                   })}
@@ -182,16 +214,16 @@ function PricingContent() {
         )}
 
         {/* Plans */}
-        <section className={cn(section.pyCompact, "pt-12 md:pt-16")}>
+        <section className="py-10 sm:py-14 md:py-16 lg:py-20">
           <div className={section.container}>
             <SectionHeader
               eyebrow={t("pricing.badge")}
               title={t("pricing.choosePlan")}
               subtitle={t("pricingPage.trustedDesc")}
               align="center"
-              className="mb-10 md:mb-12"
+              className="!mb-8 sm:!mb-10 md:!mb-12"
             />
-            <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 xl:grid-cols-4">
               {plans.map((plan) => (
                 <PricingPlanCard
                   key={plan.id}
@@ -212,26 +244,33 @@ function PricingContent() {
 
         {/* Comparison */}
         {Array.isArray(compareRows) && compareRows.length > 0 && (
-          <section className="border-t border-gray-200/80 bg-white py-16 md:py-20">
+          <section className="border-t border-gray-200/80 bg-white py-10 sm:py-14 md:py-16">
             <div className={section.container}>
               <SectionHeader
                 title={t("pricing.compareTitle")}
                 align="center"
-                className="mb-8 md:mb-10"
+                className="!mb-6 sm:!mb-8 md:!mb-10"
               />
-              <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm">
+
+              <PricingCompareMobile
+                rows={compareRows}
+                planColumns={planColumns}
+                headers={safeCompareHeaders}
+              />
+
+              <div className="responsive-table-wrap hidden rounded-xl border border-gray-200 bg-white shadow-sm md:block">
                 <table className="w-full min-w-[680px] border-collapse text-left text-sm">
                   <thead>
                     <tr className="bg-[#0D1B2A] text-white">
-                      <th className="px-5 py-4 text-xs font-semibold uppercase tracking-wide text-gray-300">
-                        {compareHeaders?.features ?? "Merkmale"}
+                      <th className="sticky left-0 z-10 bg-[#0D1B2A] px-4 py-3.5 text-left text-xs font-semibold uppercase tracking-wide text-gray-300 sm:px-5 sm:py-4">
+                        {safeCompareHeaders.features ?? "Merkmale"}
                       </th>
                       {planColumns.map((col) => (
                         <th
                           key={col}
-                          className="px-4 py-4 text-center text-xs font-semibold uppercase tracking-wide"
+                          className="px-3 py-3.5 text-center text-[10px] font-semibold uppercase tracking-wide sm:px-4 sm:py-4 sm:text-xs"
                         >
-                          {compareHeaders?.[col] ?? col}
+                          {safeCompareHeaders[col] ?? col}
                         </th>
                       ))}
                     </tr>
@@ -245,9 +284,16 @@ function PricingContent() {
                           i % 2 === 1 && "bg-[#FAF8F5]/80"
                         )}
                       >
-                        <td className="px-5 py-3.5 font-medium text-[#0D1B2A]">{row.label}</td>
+                        <td
+                          className={cn(
+                            "sticky left-0 z-10 px-4 py-3 font-medium text-[#0D1B2A] sm:px-5 sm:py-3.5",
+                            i % 2 === 1 ? "bg-[#FAF8F5]/80" : "bg-white"
+                          )}
+                        >
+                          {row.label}
+                        </td>
                         {planColumns.map((col) => (
-                          <td key={col} className="px-4 py-3.5 text-center">
+                          <td key={col} className="px-3 py-3 text-center sm:px-4 sm:py-3.5">
                             <CompareCell value={row[col as keyof CompareRow] as string | boolean | undefined} />
                           </td>
                         ))}
@@ -260,15 +306,15 @@ function PricingContent() {
           </section>
         )}
 
-        {/* FAQ — minimal dividers */}
+        {/* FAQ */}
         {faqs.length > 0 && (
-          <section className="border-t border-gray-200/80 bg-[#FAF8F5] py-16 md:py-20">
+          <section className="border-t border-gray-200/80 bg-[#FAF8F5] py-10 sm:py-14 md:py-16">
             <div className={cn(section.container, "max-w-3xl")}>
               <SectionHeader
                 eyebrow={t("pricing.faqEyebrow", { defaultValue: "FAQ" })}
                 title={t("pricing.faqHeading")}
                 align="center"
-                className="mb-8"
+                className="!mb-6 sm:!mb-8"
               />
               <div className="divide-y divide-gray-200 rounded-xl border border-gray-200 bg-white">
                 {faqs.map((item, index) => {
@@ -278,19 +324,21 @@ function PricingContent() {
                       <button
                         type="button"
                         onClick={() => setOpenFaq(isOpen ? null : index)}
-                        className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left sm:px-6 sm:py-5"
+                        className="flex w-full items-start justify-between gap-3 px-4 py-4 text-left touch-manipulation sm:items-center sm:gap-4 sm:px-6 sm:py-5"
                         aria-expanded={isOpen}
                       >
-                        <span className="font-semibold text-[#0D1B2A]">{item.question}</span>
+                        <span className="text-sm font-semibold leading-snug text-[#0D1B2A] sm:text-base">
+                          {item.question}
+                        </span>
                         <ChevronDown
                           className={cn(
-                            "h-5 w-5 shrink-0 text-gray-400 transition-transform",
+                            "mt-0.5 h-5 w-5 shrink-0 text-gray-400 transition-transform sm:mt-0",
                             isOpen && "rotate-180"
                           )}
                         />
                       </button>
                       {isOpen && (
-                        <div className="border-t border-gray-100 px-5 pb-5 pt-3 sm:px-6">
+                        <div className="border-t border-gray-100 px-4 pb-4 pt-3 sm:px-6 sm:pb-5">
                           <p className="text-sm leading-relaxed text-gray-600">{item.answer}</p>
                         </div>
                       )}
@@ -302,21 +350,21 @@ function PricingContent() {
           </section>
         )}
 
-        {/* CTA — flat, no decorative blobs */}
-        <section className="border-t border-white/10 bg-[#0D1B2A] py-16 md:py-20">
+        {/* CTA */}
+        <section className="border-t border-white/10 bg-[#0D1B2A] py-12 sm:py-16 md:py-20">
           <div className={cn(section.container, "max-w-3xl text-center")}>
-            <h2 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
+            <h2 className="text-xl font-bold leading-snug tracking-tight text-white sm:text-2xl md:text-3xl">
               {t("pricingPage.finalCtaTitle")}
             </h2>
-            <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-gray-400">
+            <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-gray-400 sm:mt-4 sm:text-base">
               {t("pricingPage.finalCtaDesc")}
             </p>
             {ctaTags.length > 0 && (
-              <ul className="mt-6 flex flex-wrap items-center justify-center gap-2">
+              <ul className="mt-5 flex flex-wrap items-center justify-center gap-2 sm:mt-6">
                 {ctaTags.map((tag) => (
                   <li
                     key={tag}
-                    className="rounded-full border border-white/15 px-3 py-1 text-xs font-medium text-gray-300"
+                    className="rounded-full border border-white/15 px-2.5 py-1 text-[11px] font-medium text-gray-300 sm:px-3 sm:text-xs"
                   >
                     {tag}
                   </li>
@@ -324,7 +372,7 @@ function PricingContent() {
               </ul>
             )}
             <MarketingCtaButtons
-              className="mt-8"
+              className="mt-6 w-full sm:mt-8"
               align="center"
               primaryLabel={t("pricingPage.finalCtaButton")}
               secondaryLabel={t("home.explorePrograms")}
