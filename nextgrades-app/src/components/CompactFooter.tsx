@@ -11,7 +11,7 @@ export function CompactFooter() {
   const links = [
     { href: "/privacy", label: t("footer.privacy") },
     { href: "/terms", label: t("footer.terms") },
-    { href: "/contact", label: t("footer.imprint") },
+    { href: "/imprint", label: t("footer.imprint") },
     { href: "/contact", label: t("common.contact") },
   ] as const;
 

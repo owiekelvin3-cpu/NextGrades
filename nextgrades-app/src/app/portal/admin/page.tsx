@@ -15,6 +15,7 @@ import { useTranslation } from "react-i18next";
 import { fetchAdminDashboard, type ActivityLogRow, type AdminStats } from "@/lib/dashboard/data";
 import { appShell } from "@/lib/theme/shell";
 import { AdminNavHub } from "@/components/admin/AdminNavHub";
+import { AdminAccessGuide } from "@/components/admin/AdminAccessGuide";
 import { DashboardStatsSkeleton, ListRowSkeleton, DashboardHubSkeleton } from "@/components/ui/Skeleton";
 
 export default function AdminDashboard() {
@@ -82,6 +83,7 @@ export default function AdminDashboard() {
         </>
       ) : (
         <div className="content-ready space-y-6">
+          <AdminAccessGuide />
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
             <Card className="p-6">
               <div className="mb-4 flex items-center justify-between">

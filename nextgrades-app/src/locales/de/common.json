@@ -526,7 +526,6 @@
     "principlesTitle": "Unsere Prinzipien für deinen Erfolg",
     "teamTitle": "Die Menschen hinter NextGrades",
     "teamSubtitle": "Ein Team aus leidenschaftlichen LehrerInnen, LernexpertInnen und VisionärInnen.",
-    "milestonesTitle": "Meilensteine",
     "ctaTitle": "Noch mehr exklusive Inhalte freischalten",
     "ctaSubtitle": "Entdecke Zugriff auf alle Premium-Materialien, Lernvideos, Dutzende Mini-Kurse und vieles mehr.",
     "ctaButton": "Jetzt Mitglied werden"
@@ -612,7 +611,7 @@
       "semester2": "Semester 2"
     },
     "video": {
-      "back": "Zurück zu Ressourcen",
+      "back": "Zurück zur Lernbibliothek",
       "watch": "Ansehen",
       "notFound": "Video nicht gefunden.",
       "loadFailed": "Video konnte nicht geladen werden.",
@@ -700,15 +699,15 @@
           "answer": "Ja — upgrade oder downgrade jederzeit in deinem Dashboard."
         }
       ],
-      "supportPrompt": "Noch Fragen? Unser Team hilft dir gerne.",
+      "supportPrompt": "Support — unser Team hilft dir gerne.",
       "contactCta": "Kontakt",
       "consultationCta": "Kostenloses Erstgespräch vereinbaren",
       "unlockCta": "Upgrade oder Zugang sichern"
     },
     "subjectPage": {
       "breadcrumbHome": "Startseite",
-      "breadcrumbResources": "Ressourcen",
-      "breadcrumbMaterials": "Lernmaterialien",
+      "breadcrumbResources": "Lernbibliothek",
+      "breadcrumbMaterials": "Lernbibliothek",
       "heroDesc": "Alle Lernmaterialien, Übungen, Erklärungen und Prüfungsvorbereitungen für {{subject}}{{classInfo}}.",
       "heroDescClassInfo": " – {{className}}{{semesterInfo}}",
       "heroDescSemester": " – {{semester}}. Semester",
@@ -846,7 +845,7 @@
     "allCategories": "Alle Hilfe-Kategorien",
     "showAllArticles": "Alle {{count}} Artikel anzeigen",
     "popularTitle": "Beliebte Artikel",
-    "supportTitle": "Immer noch Fragen?",
+    "supportTitle": "Support",
     "supportDesc": "Unser Support-Team hilft dir gerne persönlich weiter.",
     "supportPoint1": "Persönliche Betreuung",
     "supportPoint2": "Schnelle Antwort (Mo–Fr)",
@@ -1212,6 +1211,52 @@
     ],
     "body": "Hier findest du unsere Datenschutzerklärung."
   },
+  "imprint": {
+    "title": "Impressum",
+    "subtitle": "Angaben gemäß § 5 E-Commerce-Gesetz (ECG) und § 25 Mediengesetz (MedienG)",
+    "eyebrow": "Rechtliches",
+    "lastUpdated": "Stand: Juni 2026",
+    "intro": "Verantwortlich für den Inhalt dieser Website und der NextGrades-Lernplattform:",
+    "contactTitle": "Kontakt",
+    "contactNote": "Bei Fragen zu Impressum, AGB oder Datenschutz erreichst du uns unter support@nextgrades.de oder über das Kontaktformular.",
+    "contactCta": "Kontakt aufnehmen",
+    "sections": [
+      {
+        "title": "Diensteanbieter",
+        "paragraphs": [
+          "NextGrades",
+          "Österreich",
+          "E-Mail: support@nextgrades.de",
+          "Telefon: +43 670 206 4399"
+        ]
+      },
+      {
+        "title": "Unternehmensgegenstand",
+        "paragraphs": [
+          "Online-Nachhilfe, Lernplattform, digitale Lernmaterialien und Bildungsberatung für SchülerInnen in Österreich."
+        ]
+      },
+      {
+        "title": "Haftung für Inhalte",
+        "paragraphs": [
+          "Als Diensteanbieter sind wir für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Wir sind nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen."
+        ]
+      },
+      {
+        "title": "Haftung für Links",
+        "paragraphs": [
+          "Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber verantwortlich."
+        ]
+      },
+      {
+        "title": "Urheberrecht",
+        "paragraphs": [
+          "Die auf dieser Website veröffentlichten Inhalte und Werke unterliegen dem österreichischen Urheberrecht. Vervielfältigung, Bearbeitung und Verbreitung bedürfen der schriftlichen Zustimmung von NextGrades."
+        ]
+      }
+    ],
+    "body": "Impressum und Anbieterkennzeichnung für NextGrades."
+  },
   "terms": {
     "title": "Allgemeine Geschäftsbedingungen",
     "subtitle": "AGB für die Nutzung von NextGrades",
@@ -1232,7 +1277,7 @@
       {
         "title": "Leistungsbeschreibung",
         "paragraphs": [
-          "NextGrades bietet Online- und Hybrid-Nachhilfe, Bildungsressourcen, Fortschrittsverfolgung, KI-gestützte Lernwerkzeuge und Beratungsleistungen mit Fokus auf deutsches Schul- und Studiumsvorbereitung.",
+          "NextGrades bietet Online-Nachhilfe, Bildungsressourcen, Fortschrittsverfolgung, KI-gestützte Lernwerkzeuge und Beratungsleistungen mit Fokus auf das österreichische Schulsystem und die Matura-Prüfungsvorbereitung.",
           "Der genaue Leistungsumfang richtet sich nach dem gewählten Programm oder Tarif. Beschreibungen, Preise und Funktionen sind auf unserer Website veröffentlicht und können aktualisiert werden."
         ]
       },
@@ -1307,8 +1352,8 @@
       {
         "title": "Anwendbares Recht und Gerichtsstand",
         "paragraphs": [
-          "Es gilt das Recht der Bundesrepublik Deutschland unter Ausschluss des UN-Kaufrechts (CISG).",
-          "Bist du Verbraucher:in in der EU, können zwingende Verbraucherschutzvorschriften deines Wohnsitzlandes gelten. Gerichtsstand ist — soweit gesetzlich zulässig — Deutschland."
+          "Es gilt österreichisches Recht unter Ausschluss des UN-Kaufrechts (CISG).",
+          "Bist du VerbraucherIn in der EU, können zwingende Verbraucherschutzvorschriften deines Wohnsitzlandes gelten. Gerichtsstand ist — soweit gesetzlich zulässig — Österreich."
         ]
       }
     ],

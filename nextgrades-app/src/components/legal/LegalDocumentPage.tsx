@@ -21,7 +21,7 @@ type LegalSection = {
 };
 
 type LegalDocumentPageProps = {
-  namespace: "terms" | "privacy" | "cookiesPolicy";
+  namespace: "terms" | "privacy" | "cookiesPolicy" | "imprint";
 };
 
 export function LegalDocumentPage({ namespace }: LegalDocumentPageProps) {

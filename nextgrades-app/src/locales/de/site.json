@@ -1256,7 +1256,19 @@
     "manageResources": "Ressourcen verwalten",
     "totalRevenueMonthly": "Monatlicher Gesamtumsatz",
     "courses": "Kurse",
-    "revenue": "Umsatz"
+    "revenue": "Umsatz",
+    "accessGuideTitle": "CMS & Website-Zugang",
+    "accessGuideIntro": "So prüfst du Frontend, Benutzerflüsse und Website-Inhalte:",
+    "accessGuideSteps": [
+      "Öffentliche Website unter www.nextgrades.at — alle Marketingseiten sind auf Deutsch.",
+      "SchülerInnen- und Lehrkraft-Anmeldung unter /login (Konten legst du als Admin an).",
+      "Admin-Portal unter /portal/login mit deinem Administrator-Konto.",
+      "Website-Inhalte (CMS): Admin-Portal → Website-Inhalte — Texte, Bilder, Team, FAQs und Testimonials bearbeiten.",
+      "Neue NutzerInnen: Admin-Portal → Benutzer → Neuer Benutzer — Einladung mit Passwort-Link per E-Mail."
+    ],
+    "accessGuideCmsLink": "Website-Inhalte öffnen",
+    "accessGuideUsersLink": "Benutzer verwalten",
+    "accessGuidePublicLink": "Öffentliche Website öffnen"
   },
   "misc": {
     "loading": "Laden...",
@@ -1522,6 +1534,10 @@
     "signInTitle": "Administrator-Anmeldung",
     "signInSubtitle": "Melde dich mit deinem Admin-Konto an, um die Plattform zu verwalten.",
     "signInButton": "Im Admin-Portal anmelden",
+    "handoffTitle": "Erstzugang & CMS",
+    "handoffDesc": "Admin-Konten werden vom NextGrades-Team eingerichtet. Nach der Anmeldung findest du unter Website-Inhalte das CMS für Texte, Bilder und Team — unter Benutzer legst du SchülerInnen und Lehrkräfte an.",
+    "handoffCms": "CMS nach Anmeldung: /portal/admin/website-content",
+    "handoffUsers": "Nutzer anlegen: /portal/admin/users",
     "studentTeacherLogin": "SchülerIn oder Lehrkraft?",
     "mainLogin": "Zur Hauptanmeldung",
     "accessDenied": "Du hast keine Berechtigung für das Admin-Portal."

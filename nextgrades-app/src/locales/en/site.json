@@ -1281,7 +1281,19 @@
     "manageResources": "Manage resources",
     "totalRevenueMonthly": "Total monthly revenue",
     "courses": "Courses",
-    "revenue": "Revenue"
+    "revenue": "Revenue",
+    "accessGuideTitle": "CMS & website access",
+    "accessGuideIntro": "How to review the frontend, user flows, and website content:",
+    "accessGuideSteps": [
+      "Public website at www.nextgrades.at — marketing pages in German.",
+      "Student and teacher login at /login (accounts are created by admins).",
+      "Admin portal at /portal/login with your administrator account.",
+      "Website content (CMS): Admin portal → Website content — edit copy, images, team, FAQs, and testimonials.",
+      "New users: Admin portal → Users → New user — invitation email with password setup link."
+    ],
+    "accessGuideCmsLink": "Open website content",
+    "accessGuideUsersLink": "Manage users",
+    "accessGuidePublicLink": "Open public website"
   },
   "misc": {
     "loading": "Loading...",
@@ -1544,6 +1556,10 @@
     "signInTitle": "Administrator Sign In",
     "signInSubtitle": "Sign in with your admin account to manage the platform.",
     "signInButton": "Sign in to Admin Portal",
+    "handoffTitle": "First access & CMS",
+    "handoffDesc": "Admin accounts are set up by the NextGrades team. After sign-in, use Website content for CMS (text, images, team) and Users to create student and teacher accounts.",
+    "handoffCms": "CMS after sign-in: /portal/admin/website-content",
+    "handoffUsers": "Create users: /portal/admin/users",
     "studentTeacherLogin": "Student or teacher?",
     "mainLogin": "Use main login",
     "accessDenied": "You do not have permission to access the admin portal."

@@ -177,6 +177,16 @@ function AdminPortalLoginContent() {
         </form>
 
         <div className="mt-8 space-y-3 border-t border-white/10 pt-6 text-center text-sm">
+          <div className={cn("rounded-2xl border px-4 py-3 text-left", isDark ? "border-white/10 bg-white/5" : "border-gray-100 bg-gray-50")}>
+            <p className={cn("text-xs font-semibold uppercase tracking-wide text-[#D4AF37]", s.heading)}>
+              {t("adminPortal.handoffTitle")}
+            </p>
+            <p className={cn("mt-2 text-sm leading-relaxed", s.body)}>{t("adminPortal.handoffDesc")}</p>
+            <ul className={cn("mt-3 space-y-1.5 text-xs", s.body)}>
+              <li>{t("adminPortal.handoffCms")}</li>
+              <li>{t("adminPortal.handoffUsers")}</li>
+            </ul>
+          </div>
           <Link href="/" className={cn("block font-medium", s.link)}>
             {t("dashboardNav.backToHomepage", { defaultValue: "Back to Homepage" })}
           </Link>

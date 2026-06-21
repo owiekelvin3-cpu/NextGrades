@@ -91,7 +91,7 @@ export function ResourcesHubExperience() {
                   >
                     <option value="recent">{t("resources.sortNewest", { defaultValue: "Newest first" })}</option>
                     <option value="popular">{t("resources.sortPopular", { defaultValue: "Most popular" })}</option>
-                    <option value="downloads">Most downloaded</option>
+                    <option value="downloads">{t("resources.sortDownloads")}</option>
                   </select>
                 </div>
               </div>

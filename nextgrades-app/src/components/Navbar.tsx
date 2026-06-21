@@ -17,6 +17,9 @@ import type { Session, User, AuthChangeEvent } from "@supabase/supabase-js";
 import { cn } from "@/lib/utils";
 import { getDashboardPathForRole } from "@/lib/auth/redirect";
 import { isPublicSignupEnabled } from "@/lib/auth/public-signup";
+import { isPublicMarketingPath } from "@/lib/marketing/public-routes";
+import { changeAppLanguage } from "@/components/I18nProvider";
+import { normalizeLanguage } from "@/lib/i18n/locales";
 import type { AppRole } from "@/lib/auth/roles";
 
 type NavProfile = {
@@ -75,7 +78,14 @@ export default function Navbar() {
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<NavProfile | null>(null);
   const { theme } = useTheme();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const marketingGermanOnly = isPublicMarketingPath(pathname);
+
+  useEffect(() => {
+    if (marketingGermanOnly && normalizeLanguage(i18n.language) !== "de") {
+      void changeAppLanguage("de");
+    }
+  }, [marketingGermanOnly, i18n.language]);
 
   const onDark = theme === "dark";
   const dashboardHref = profile?.role
@@ -275,7 +285,7 @@ export default function Navbar() {
 
             <div className="hidden shrink-0 items-center gap-1.5 lg:flex 2xl:gap-2">
               <div className="flex items-center gap-1">
-                <LanguageSwitcher compact onDark={onDark} />
+                {!marketingGermanOnly && <LanguageSwitcher compact onDark={onDark} />}
                 <ThemeToggle size="sm" onDark={onDark} />
               </div>
 
@@ -358,7 +368,7 @@ export default function Navbar() {
             </div>
 
             <div className="ml-auto flex items-center gap-1.5 lg:hidden">
-              <LanguageSwitcher compact onDark={onDark} />
+              {!marketingGermanOnly && <LanguageSwitcher compact onDark={onDark} />}
               <ThemeToggle size="sm" onDark={onDark} />
               <button
                 type="button"
