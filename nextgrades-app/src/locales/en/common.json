@@ -880,6 +880,52 @@
       }
     ]
   },
+  "imprint": {
+    "title": "Imprint",
+    "subtitle": "Legal notice pursuant to Austrian e-commerce and media law",
+    "eyebrow": "Legal",
+    "lastUpdated": "As of June 2026",
+    "intro": "Responsible for the content of this website and the NextGrades learning platform:",
+    "contactTitle": "Contact",
+    "contactNote": "For questions about imprint, terms, or privacy, contact us at support@nextgrades.de or via the contact form.",
+    "contactCta": "Contact us",
+    "sections": [
+      {
+        "title": "Service provider",
+        "paragraphs": [
+          "NextGrades",
+          "Austria",
+          "Email: support@nextgrades.de",
+          "Phone: +43 670 206 4399"
+        ]
+      },
+      {
+        "title": "Business activity",
+        "paragraphs": [
+          "Online tutoring, learning platform, digital learning materials, and educational consulting for students in Austria."
+        ]
+      },
+      {
+        "title": "Liability for content",
+        "paragraphs": [
+          "As a service provider, we are responsible for our own content on these pages under general laws. We are not obliged to monitor transmitted or stored third-party information or to investigate circumstances indicating illegal activity."
+        ]
+      },
+      {
+        "title": "Liability for links",
+        "paragraphs": [
+          "Our offer contains links to external third-party websites over whose content we have no influence. The respective provider or operator is always responsible for the content of linked pages."
+        ]
+      },
+      {
+        "title": "Copyright",
+        "paragraphs": [
+          "Content and works published on this website are subject to Austrian copyright law. Reproduction, editing, and distribution require written consent from NextGrades."
+        ]
+      }
+    ],
+    "body": "Imprint and provider information for NextGrades."
+  },
   "terms": {
     "title": "Terms & Conditions",
     "subtitle": "General Terms and Conditions for using NextGrades",

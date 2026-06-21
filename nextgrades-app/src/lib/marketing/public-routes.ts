@@ -1,4 +1,4 @@
-/** Public marketing pages use German-only UI per owner change list (G-06). */
+/** Routes that use the public marketing shell (navbar, footer, CMS pages). */
 export function isPublicMarketingPath(pathname: string): boolean {
   if (
     pathname.startsWith("/dashboard") ||
