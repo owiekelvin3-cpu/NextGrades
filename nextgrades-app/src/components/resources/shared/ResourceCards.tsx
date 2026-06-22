@@ -50,7 +50,7 @@ export function ResourceHubCard({ resource, onOpen, variant, subjectSlug }: HubC
 
   return (
     <article className={cn("group flex flex-col overflow-hidden transition hover:shadow-md", appShell.elevatedCard)}>
-      <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
+      <div className="relative aspect-[4/3] overflow-hidden bg-[var(--surface-subtle)]">
         {locked ? (
           <ResourceThumb src={thumb} alt={resource.title} locked />
         ) : isVideo ? (
@@ -72,10 +72,10 @@ export function ResourceHubCard({ resource, onOpen, variant, subjectSlug }: HubC
         )}
       </div>
       <div className="flex flex-1 flex-col p-4">
-        <p className="text-xs font-medium text-gray-500">
+        <p className="text-xs font-medium text-[var(--text-muted)]">
           {resource.class?.name || resource.subject?.name || "—"}
         </p>
-        <h3 className="mt-1 line-clamp-2 text-sm font-bold text-foreground">
+        <h3 className="mt-1 line-clamp-2 text-sm font-bold text-[var(--foreground)]">
           {isVideo && !locked ? (
             <Link href={resourceWatchPath(resource.id)} className="hover:text-[#D4AF37] transition">
               {resource.title}
@@ -84,7 +84,7 @@ export function ResourceHubCard({ resource, onOpen, variant, subjectSlug }: HubC
             resource.title
           )}
         </h3>
-        <p className="mt-2 line-clamp-2 flex-1 text-xs text-gray-500">
+        <p className="mt-2 line-clamp-2 flex-1 text-xs text-[var(--text-muted)]">
           {resource.short_description || resource.description || ""}
         </p>
         <div className="mt-4 flex items-center justify-between">
@@ -100,14 +100,14 @@ export function ResourceHubCard({ resource, onOpen, variant, subjectSlug }: HubC
           {locked ? (
             <Link
               href="/resources/upgrade"
-              className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 text-gray-500 hover:border-[#D4AF37] hover:text-[#D4AF37]"
+              className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-[var(--border-default)] text-[var(--text-muted)] hover:border-[var(--brand-gold)] hover:text-[var(--brand-gold)]"
             >
               <Lock className="h-4 w-4" />
             </Link>
           ) : isVideo ? (
             <Link
               href={resourceWatchPath(resource.id)}
-              className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 text-gray-500 hover:border-[#D4AF37] hover:text-[#D4AF37]"
+              className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-[var(--border-default)] text-[var(--text-muted)] hover:border-[var(--brand-gold)] hover:text-[var(--brand-gold)]"
             >
               <Play className="h-4 w-4" />
             </Link>
@@ -115,7 +115,7 @@ export function ResourceHubCard({ resource, onOpen, variant, subjectSlug }: HubC
             <button
               type="button"
               onClick={onOpen}
-              className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 text-gray-500 hover:border-[#D4AF37] hover:text-[#D4AF37]"
+              className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-[var(--border-default)] text-[var(--text-muted)] hover:border-[var(--brand-gold)] hover:text-[var(--brand-gold)]"
             >
               <Download className="h-4 w-4" />
             </button>

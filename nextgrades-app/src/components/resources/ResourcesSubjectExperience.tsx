@@ -114,21 +114,21 @@ export function ResourcesSubjectExperience({ subjectSlug, subjectName, classLeve
         <div className={`${section.container} space-y-6`}>
           <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div>
-              <h2 className="text-lg font-bold text-[#0D1B2A]">
+              <h2 className="text-lg font-bold text-[var(--foreground)]">
                 {className
                   ? t("resources.subjectPage.classContent", { className })
                   : t("resources.subjectPage.allContent", { subject: subjectName })}
               </h2>
-              <p className="mt-1 text-sm text-gray-500">{t("resources.topBarResults")}: {catalog.resources.length}</p>
+              <p className="mt-1 text-sm text-[var(--text-muted)]">{t("resources.topBarResults")}: {catalog.resources.length}</p>
             </div>
             <div className="relative w-full lg:max-w-md">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--text-subtle)]" />
               <input
                 type="search"
                 value={catalog.search}
                 onChange={(e) => catalog.setSearch(e.target.value)}
                 placeholder={t("resources.searchPlaceholder")}
-                className="w-full rounded-xl border border-gray-200 bg-white py-2.5 pl-10 pr-4 text-sm"
+                className="w-full rounded-xl border border-[var(--input-border)] bg-[var(--input-background)] py-2.5 pl-10 pr-4 text-sm text-[var(--input-foreground)] outline-none focus:border-[var(--brand-gold)] focus:ring-2 focus:ring-[var(--brand-gold-ring)]"
               />
             </div>
           </div>
@@ -141,8 +141,8 @@ export function ResourcesSubjectExperience({ subjectSlug, subjectName, classLeve
                 className={cn(
                   "rounded-full px-4 py-2 text-sm font-medium transition",
                   !catalog.classLevel
-                    ? "bg-[#0D1B2A] text-white"
-                    : "border border-gray-200 bg-white text-gray-600 hover:border-[#D4AF37]/40"
+                    ? "bg-[var(--brand-navy)] text-white dark:bg-[var(--brand-gold)] dark:text-[var(--brand-navy)]"
+                    : "border border-[var(--border-default)] bg-[var(--surface-elevated)] text-[var(--text-muted)] hover:border-[var(--brand-gold)]/40"
                 )}
               >
                 {t("resources.allClasses")}
@@ -154,8 +154,8 @@ export function ResourcesSubjectExperience({ subjectSlug, subjectName, classLeve
                   className={cn(
                     "rounded-full px-4 py-2 text-sm font-medium transition",
                     String(cls.level) === catalog.classLevel
-                      ? "bg-[#0D1B2A] text-white"
-                      : "border border-gray-200 bg-white text-gray-600 hover:border-[#D4AF37]/40"
+                      ? "bg-[var(--brand-navy)] text-white dark:bg-[var(--brand-gold)] dark:text-[var(--brand-navy)]"
+                      : "border border-[var(--border-default)] bg-[var(--surface-elevated)] text-[var(--text-muted)] hover:border-[var(--brand-gold)]/40"
                   )}
                 >
                   {cls.name}
@@ -173,8 +173,8 @@ export function ResourcesSubjectExperience({ subjectSlug, subjectName, classLeve
                 className={cn(
                   "rounded-full px-4 py-2 text-sm font-medium transition",
                   catalog.accessFilter === option.value
-                    ? "bg-[#D4AF37] text-[#0D1B2A]"
-                    : "border border-gray-200 bg-white text-gray-600 hover:border-[#D4AF37]/40"
+                    ? "bg-[var(--brand-gold)] text-[var(--brand-navy)]"
+                    : "border border-[var(--border-default)] bg-[var(--surface-elevated)] text-[var(--text-muted)] hover:border-[var(--brand-gold)]/40"
                 )}
               >
                 {option.label}
@@ -205,9 +205,9 @@ export function ResourcesSubjectExperience({ subjectSlug, subjectName, classLeve
                       value: catalog.resources.filter((r) => (r.content_type || "").includes("video")).length,
                     },
                   ].map((s) => (
-                    <div key={s.label} className="rounded-xl border border-gray-100 bg-white p-4 text-center shadow-sm">
-                      <p className="text-2xl font-bold text-[#0D1B2A]">{s.value}</p>
-                      <p className="text-xs text-gray-500">{s.label}</p>
+                    <div key={s.label} className="rounded-xl border border-[var(--border-default)] bg-[var(--card-background)] p-4 text-center shadow-sm">
+                      <p className="text-2xl font-bold text-[var(--foreground)]">{s.value}</p>
+                      <p className="text-xs text-[var(--text-muted)]">{s.label}</p>
                     </div>
                   ))}
                 </div>

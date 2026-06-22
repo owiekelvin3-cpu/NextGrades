@@ -1,6 +1,8 @@
 "use client";
 
 import { Suspense, useMemo } from "react";
+import Link from "next/link";
+import { ArrowRight, Crown } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { ResourcesMarketplaceExperience } from "@/components/resources/ResourcesMarketplaceExperience";
@@ -40,7 +42,24 @@ export default function ResourcesPage() {
           title={t("resources.heroTitle")}
           subtitle={t("resources.heroSubtitle")}
           heroImage={heroImage}
-        />
+        >
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <Link
+              href="/resources/upgrade"
+              className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-xl bg-[#D4AF37] px-6 py-3 text-sm font-bold text-[#0D1B2A] transition hover:bg-[#C9A030]"
+            >
+              <Crown className="h-4 w-4" />
+              {t("resources.unlockCta")}
+            </Link>
+            <Link
+              href="/subjects"
+              className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-xl border border-white/30 px-6 py-3 text-sm font-semibold text-white transition hover:border-[#D4AF37]/50 hover:bg-white/5"
+            >
+              {t("resources.browseBySubject")}
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </MockupPageHero>
 
         {benefits.length > 0 && (
           <MockupFeatureStrip items={benefits} columns={4} className={mt.sectionAlt} />
