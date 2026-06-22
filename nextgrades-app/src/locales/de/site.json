@@ -297,6 +297,9 @@
   },
   "subjectsPage": {
     "learnMore": "Mehr erfahren",
+    "bookTutoring": "Nachhilfe buchen",
+    "viewMaterials": "Materialien ansehen",
+    "gridIntro": "Wir helfen dir, in jedem Fach besser zu werden – individuell, verständlich und effektiv.",
     "browseMaterials": "Materialien",
     "browseHint": "Wähle Klassenstufe und Semester, um passende Materialien zu sehen.",
     "selectGrade": "Klassenstufe",
@@ -347,23 +350,12 @@
       {
         "id": "math",
         "title": "Mathematik",
-        "description": "Von den Grundlagen bis zur Matura - verständlich erklärt, Schritt für Schritt.",
+        "description": "Von den Grundlagen bis zur Matura – verständlich erklärt, Schritt für Schritt.",
         "features": [
           "Alle Klassenstufen",
-          "Prüfungsvorbereitung",
-          "Arbeitsblätter",
-          "Schritt-für-Schritt Erklärungen"
-        ]
-      },
-      {
-        "id": "english",
-        "title": "Englisch / Reading",
-        "description": "Bessere Noten durch Grammatik, Wortschatz und sicheres Schreiben.",
-        "features": [
-          "Grammatik & Wortschatz",
-          "Reading & Listening",
-          "Sicheres Schreiben",
-          "Prüfungsvorbereitung"
+          "Übungsblätter & Lösungen",
+          "Matura-Vorbereitung",
+          "Videos & Erklärungen"
         ]
       },
       {
@@ -378,14 +370,58 @@
         ]
       },
       {
+        "id": "english",
+        "title": "Englisch",
+        "description": "Bessere Noten durch Grammatik, Wortschatz und sicheres Schreiben.",
+        "features": [
+          "Grammatik & Wortschatz",
+          "Konversation & Ausdruck",
+          "Business English",
+          "Aufsätze & Texte"
+        ]
+      },
+      {
+        "id": "french",
+        "title": "Französisch",
+        "description": "Französisch verstehen, sprechen und sicher anwenden – Schritt für Schritt.",
+        "features": [
+          "Grammatik leicht erklärt",
+          "Wortschatz & Redewendungen",
+          "Hörverständnis",
+          "Aufsätze & Texte"
+        ]
+      },
+      {
+        "id": "italian",
+        "title": "Italienisch",
+        "description": "Italienisch lernen mit Struktur, Übungen und persönlicher Begleitung.",
+        "features": [
+          "Grammatik & Wortschatz",
+          "Hörverständnis",
+          "Konversation",
+          "Aufsätze & Texte"
+        ]
+      },
+      {
         "id": "latin",
         "title": "Latein",
         "description": "Latein verstehen, übersetzen und erfolgreich anwenden.",
         "features": [
           "Grammatik & Übersetzung",
-          "Textverständnis",
-          "Prüfungsvorbereitung",
-          "Schritt-für-Schritt Erklärungen"
+          "Vokabeltraining",
+          "Klausurvorbereitung",
+          "Originaltexte"
+        ]
+      },
+      {
+        "id": "chemistry",
+        "title": "Chemie",
+        "description": "Chemie verstehen und aufbauen – wir zeigen dir, wie es funktioniert!",
+        "features": [
+          "Stoffe & Reaktionen",
+          "Organische Chemie",
+          "Übungen & Lösungen",
+          "Prüfungsvorbereitung"
         ]
       },
       {
@@ -400,13 +436,35 @@
         ]
       },
       {
-        "id": "chemistry",
-        "title": "Chemie",
-        "description": "Chemie verstehen und aufbauen – wir zeigen dir, wie es funktioniert!",
+        "id": "biology",
+        "title": "Biologie",
+        "description": "Biologie verstehen – von der Zelle bis zum Ökosystem.",
         "features": [
-          "Stoffe & Reaktionen",
-          "Organische Chemie",
-          "Grundlagen & Übungen",
+          "Zellbiologie",
+          "Genetik & Evolution",
+          "Ökologie",
+          "Prüfungsvorbereitung"
+        ]
+      },
+      {
+        "id": "accounting",
+        "title": "Rechnungswesen",
+        "description": "Buchhaltung und Bilanzierung sicher beherrschen – Schritt für Schritt.",
+        "features": [
+          "Buchhaltung & Bilanzierung",
+          "Kostenrechnung",
+          "Jahresabschluss",
+          "Übungen & Klausurtraining"
+        ]
+      },
+      {
+        "id": "business-admin",
+        "title": "Betriebswirtschaft",
+        "description": "BWL-Grundlagen verständlich erklärt – für Schule und Prüfung.",
+        "features": [
+          "BWL Grundlagen",
+          "Marketing & Management",
+          "Investition & Finanzierung",
           "Prüfungsvorbereitung"
         ]
       }

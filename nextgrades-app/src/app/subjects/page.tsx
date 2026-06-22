@@ -1,20 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import { RevealOnScroll } from "@/components/marketing/RevealOnScroll";
 import Footer from "@/components/Footer";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
-import { Badge } from "@/components/ui/Badge";
 import {
   Calculator,
   Atom,
   FlaskConical,
   PenTool,
-  CheckCircle2,
   ArrowRight,
   Users,
   TrendingUp,
@@ -28,13 +25,18 @@ import {
   Cpu,
   Ruler,
   X,
+  Languages,
+  Globe,
+  Library,
+  Leaf,
+  BarChart3,
 } from "lucide-react";
+import { SubjectProgramCard } from "@/components/subjects/SubjectProgramCard";
 import { useMarketingTheme } from "@/lib/marketing-theme";
 import { useTranslation } from "react-i18next";
 import { useLocalizedContent } from "@/hooks/useLocalizedContent";
 import { useCmsImages } from "@/hooks/useCmsImage";
 import { SUBJECTS_HERO_IMAGE, getSubjectImage } from "@/lib/marketing-images";
-import { MarketingImage } from "@/components/marketing/MarketingImage";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
 import { cn } from "@/lib/utils";
 import { hero } from "@/lib/premium/tokens";
@@ -43,8 +45,14 @@ const SUBJECT_ICONS: Record<string, typeof Calculator> = {
   math: Calculator,
   english: BookOpen,
   german: PenTool,
+  french: Languages,
+  italian: Globe,
+  latin: Library,
   physics: Atom,
   chemistry: FlaskConical,
+  biology: Leaf,
+  accounting: Calculator,
+  "business-admin": BarChart3,
   business: Briefcase,
   "computer-science": Cpu,
   "technical-drawing": Ruler,
@@ -76,7 +84,6 @@ export default function SubjectsPage() {
   const [browseSubject, setBrowseSubject] = useState<SubjectItem | null>(null);
   const [browseGrade, setBrowseGrade] = useState("");
   const [browseSemester, setBrowseSemester] = useState("");
-  const [activeSubjectId, setActiveSubjectId] = useState<string | null>(null);
   const [catalogClasses, setCatalogClasses] = useState<Array<{ id: string; name: string; level: number }>>([]);
 
   useEffect(() => {
@@ -100,24 +107,6 @@ export default function SubjectsPage() {
     setBrowseGrade("");
     setBrowseSemester("");
   };
-
-  const scrollToSubject = (subjectId: string) => {
-    setActiveSubjectId(subjectId);
-    document.getElementById(`subject-${subjectId}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
-  };
-
-  const subjectPillCls = (subjectId: string) =>
-    cn(
-      "btn-chip shrink-0 rounded-full border px-5 py-2.5 text-xs sm:text-sm",
-      activeSubjectId === subjectId
-        ? "border-[#D4AF37] bg-[#D4AF37] text-[#0D1B2A] shadow-lg shadow-[#D4AF37]/30"
-        : cn(
-            "hover:border-[#D4AF37] hover:bg-[#D4AF37]/10 hover:text-[#D4AF37] hover:shadow-md",
-            isDark
-              ? "border-white/15 bg-white/5 text-gray-200"
-              : "border-[var(--border-default)] bg-[var(--surface-elevated)] text-[var(--foreground)] shadow-sm"
-          )
-    );
 
   const goToResources = () => {
     if (!browseSubject) return;
@@ -213,107 +202,29 @@ export default function SubjectsPage() {
           </div>
         </section>
 
-        {/* Subject cards */}
-        <section className={cn("py-20", mt.sectionAlt)}>
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="mb-8 text-center sm:mb-14">
-              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--brand-gold)]">
-                {t("subjects.eyebrow")}
-              </p>
-              <h2 className="text-2xl font-bold text-[var(--foreground)] sm:text-3xl md:text-4xl">
-                {t("subjects.subtitle", { defaultValue: "Choose your subject" })}
-              </h2>
-            </div>
+        {/* Subject cards — owner mockup grid */}
+        <section className="bg-[#0D1B2A] py-14 text-white md:py-20">
+          <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8">
+            <p className="mx-auto mb-10 max-w-3xl text-center text-base leading-relaxed text-gray-300 sm:mb-12 sm:text-lg">
+              {t("subjectsPage.gridIntro")}
+            </p>
 
-            <div className="scrollbar-none mb-8 flex gap-2 overflow-x-auto pb-2 sm:mb-10 sm:flex-wrap sm:justify-center sm:overflow-visible sm:pb-0">
-              {subjects.map((subject) => (
-                <button
-                  key={subject.id}
-                  type="button"
-                  onClick={() => scrollToSubject(subject.id)}
-                  className={subjectPillCls(subject.id)}
-                >
-                  {subject.title}
-                </button>
-              ))}
-            </div>
-
-            <div className="grid gap-6 sm:gap-8 md:grid-cols-2 xl:grid-cols-3">
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
               {subjects.map((subject, index) => {
                 const Icon = SUBJECT_ICONS[subject.id] ?? BookOpen;
                 const { src: image, fallback: imageFallback } = resolveSubjectImage(subject.id, index);
                 return (
-                  <RevealOnScroll
-                    key={subject.id}
-                    delay={index * 80}
-                    className="h-full"
-                  >
+                  <RevealOnScroll key={subject.id} delay={index * 60} className="h-full">
                     <div id={`subject-${subject.id}`} className="h-full">
-                    <Card
-                      className={cn(
-                        "group flex h-full flex-col overflow-hidden border border-[var(--border-default)] bg-[var(--card-background)] transition-shadow hover:shadow-xl"
-                      )}
-                    >
-                      <div className="relative h-44 overflow-hidden sm:h-52">
-                        <MarketingImage
-                          src={image}
-                          fallbackSrc={imageFallback}
-                          alt={subject.title}
-                          containerClassName="absolute inset-0"
-                          sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                          className="transition-transform duration-700 group-hover:scale-105"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#0D1B2A]/90 via-[#0D1B2A]/20 to-transparent" />
-                        <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between">
-                          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#D4AF37] shadow-lg">
-                            <Icon className="h-6 w-6 text-[#0D1B2A]" />
-                          </div>
-                          <Badge variant="gold" className="bg-[#D4AF37]/90 text-[#0D1B2A]">
-                            {subject.features[0]}
-                          </Badge>
-                        </div>
-                      </div>
-
-                      <div className="flex flex-1 flex-col p-5 sm:p-6">
-                        <h3 className="mb-2 text-lg font-bold text-[var(--foreground)] sm:text-xl">
-                          {subject.title}
-                        </h3>
-                        <p className="mb-4 text-sm leading-relaxed text-[var(--text-muted)] sm:mb-5">
-                          {subject.description}
-                        </p>
-                        <ul className="mb-5 space-y-2 sm:mb-6">
-                          {subject.features.map((feature, i) => (
-                            <li key={i} className="flex items-start gap-2 text-sm">
-                              <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[var(--brand-gold)]" />
-                              <span className="text-[var(--foreground-secondary)]">{feature}</span>
-                            </li>
-                          ))}
-                        </ul>
-                        <div className="mt-auto flex flex-col gap-2 border-t border-[var(--border-default)] pt-5">
-                          <button
-                            type="button"
-                            onClick={() => openBrowse(subject)}
-                            className="btn-card-primary group"
-                          >
-                            <span className="min-w-0 truncate pr-1">
-                              {t("subjectsPage.browseMaterials", { defaultValue: "View materials" })}
-                            </span>
-                            <span className="btn-card-primary-icon" aria-hidden>
-                              <ArrowRight className="h-4 w-4" />
-                            </span>
-                          </button>
-                          <Link
-                            href="/consultation"
-                            className={cn(
-                              "btn-card-secondary",
-                              isDark ? "btn-card-secondary--dark" : "btn-card-secondary--light"
-                            )}
-                          >
-                            {t("subjectsPage.learnMore")}
-                          </Link>
-                        </div>
-                      </div>
-                    </Card>
+                      <SubjectProgramCard
+                        subject={subject}
+                        imageSrc={image}
+                        imageFallback={imageFallback}
+                        icon={Icon}
+                        bookTutoringLabel={t("subjectsPage.bookTutoring")}
+                        viewMaterialsLabel={t("subjectsPage.viewMaterials")}
+                        onViewMaterials={() => openBrowse(subject)}
+                      />
                     </div>
                   </RevealOnScroll>
                 );

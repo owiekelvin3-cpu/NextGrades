@@ -607,6 +607,11 @@ body {
   @apply border-border-default bg-[var(--sidebar-surface)] text-foreground hover:border-[var(--brand-gold)]/35 hover:bg-[var(--brand-gold-muted)];
 }
 
+.btn-card-secondary--navy {
+  @apply border-white/30 bg-transparent text-white;
+  @apply hover:border-white/45 hover:bg-white/5;
+}
+
 /* Premium pill / chip buttons (subjects, filters) */
 .btn-chip {
   @apply inline-flex items-center justify-center font-semibold transition-all duration-[250ms] ease-out;

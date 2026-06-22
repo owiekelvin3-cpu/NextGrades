@@ -113,6 +113,11 @@ export const SUBJECT_IMAGE_BY_ID: Record<string, string> = {
   chemistry: SUBJECT_CARD_PHOTO,
   biology: BRANDED.studyDesk,
   business: BRANDED.platformLaptop,
+  "business-admin": BRANDED.platformLaptop,
+  accounting: BRANDED.platformLaptop,
+  french: SUBJECT_CARD_PHOTO,
+  italian: SUBJECT_CARD_PHOTO,
+  latin: SUBJECT_CARD_PHOTO,
   "computer-science": BRANDED.tutoringSession,
   "technical-drawing": BRANDED.studyDesk,
 };
@@ -125,6 +130,13 @@ const SUBJECT_ALIASES: Record<string, string> = {
   chemie: "chemistry",
   biologie: "biology",
   wirtschaft: "business",
+  franzoesisch: "french",
+  französisch: "french",
+  italienisch: "italian",
+  latein: "latin",
+  rechnungswesen: "accounting",
+  betriebswirtschaft: "business-admin",
+  bwl: "business-admin",
   informatik: "computer-science",
 };
 

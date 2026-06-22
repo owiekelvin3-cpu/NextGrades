@@ -326,6 +326,9 @@
   },
   "subjectsPage": {
     "learnMore": "Learn more",
+    "bookTutoring": "Book tutoring",
+    "viewMaterials": "View materials",
+    "gridIntro": "We help you improve in every subject – individually, clearly, and effectively.",
     "browseMaterials": "View materials",
     "browseHint": "Choose grade and semester to see matching materials.",
     "selectGrade": "Grade",
@@ -376,23 +379,12 @@
       {
         "id": "math",
         "title": "Mathematics",
-        "description": "From basics to graduation exams – we make math understandable and fun!",
+        "description": "From basics to graduation exams – explained clearly, step by step.",
         "features": [
           "All grade levels",
-          "Exam preparation",
-          "Worksheets",
-          "Step-by-step explanations"
-        ]
-      },
-      {
-        "id": "english",
-        "title": "English",
-        "description": "Improve your understanding, conversation, and skills in all areas.",
-        "features": [
-          "Grammar & vocabulary",
-          "Conversation",
-          "Business English",
-          "Essay writing"
+          "Worksheets & solutions",
+          "Graduation exam prep",
+          "Videos & explanations"
         ]
       },
       {
@@ -407,9 +399,64 @@
         ]
       },
       {
+        "id": "english",
+        "title": "English",
+        "description": "Better grades through grammar, vocabulary, and confident writing.",
+        "features": [
+          "Grammar & vocabulary",
+          "Conversation & expression",
+          "Business English",
+          "Essays & texts"
+        ]
+      },
+      {
+        "id": "french",
+        "title": "French",
+        "description": "Understand, speak, and apply French with confidence – step by step.",
+        "features": [
+          "Grammar made simple",
+          "Vocabulary & phrases",
+          "Listening comprehension",
+          "Essays & texts"
+        ]
+      },
+      {
+        "id": "italian",
+        "title": "Italian",
+        "description": "Learn Italian with structure, practice, and personal support.",
+        "features": [
+          "Grammar & vocabulary",
+          "Listening comprehension",
+          "Conversation",
+          "Essays & texts"
+        ]
+      },
+      {
+        "id": "latin",
+        "title": "Latin",
+        "description": "Understand, translate, and apply Latin successfully.",
+        "features": [
+          "Grammar & translation",
+          "Vocabulary training",
+          "Exam preparation",
+          "Original texts"
+        ]
+      },
+      {
+        "id": "chemistry",
+        "title": "Chemistry",
+        "description": "Understand and build chemistry knowledge – we show you how!",
+        "features": [
+          "Substances & reactions",
+          "Organic chemistry",
+          "Exercises & solutions",
+          "Exam preparation"
+        ]
+      },
+      {
         "id": "physics",
         "title": "Physics",
-        "description": "You truly understand physics when you apply it yourself – we show you how!",
+        "description": "You truly understand physics when you apply it – we show you how!",
         "features": [
           "Mechanics",
           "Electricity",
@@ -418,46 +465,35 @@
         ]
       },
       {
-        "id": "chemistry",
-        "title": "Chemistry",
-        "description": "Understand and build chemistry knowledge – we show you how it works!",
+        "id": "biology",
+        "title": "Biology",
+        "description": "Understand biology – from the cell to ecosystems.",
         "features": [
-          "Substances & reactions",
-          "Organic chemistry",
-          "Basics & exercises",
+          "Cell biology",
+          "Genetics & evolution",
+          "Ecology",
           "Exam preparation"
         ]
       },
       {
-        "id": "business",
-        "title": "Business Studies",
-        "description": "Economics, accounting, and business fundamentals made clear for every grade level.",
+        "id": "accounting",
+        "title": "Accounting",
+        "description": "Master bookkeeping and financial statements – step by step.",
         "features": [
-          "Economics basics",
-          "Accounting",
-          "Case studies",
-          "Exam preparation"
+          "Bookkeeping & balance sheets",
+          "Cost accounting",
+          "Annual financial statements",
+          "Exercises & exam prep"
         ]
       },
       {
-        "id": "computer-science",
-        "title": "Computer Science",
-        "description": "Programming, algorithms, and digital literacy with practical projects and exercises.",
+        "id": "business-admin",
+        "title": "Business Administration",
+        "description": "Business fundamentals explained clearly – for school and exams.",
         "features": [
-          "Programming basics",
-          "Algorithms",
-          "Projects & labs",
-          "Exam preparation"
-        ]
-      },
-      {
-        "id": "technical-drawing",
-        "title": "Technical Drawing",
-        "description": "Master technical drawing skills with guided practice and professional standards.",
-        "features": [
-          "Drafting fundamentals",
-          "CAD basics",
-          "Technical standards",
+          "Business basics",
+          "Marketing & management",
+          "Investment & finance",
           "Exam preparation"
         ]
       }
