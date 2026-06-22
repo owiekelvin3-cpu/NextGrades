@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useTranslation } from "react-i18next";
 import { ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -21,8 +20,8 @@ export function FooterMobileAccordion({
   return (
     <div
       className={cn(
-        "overflow-hidden rounded-2xl border border-[var(--footer-border)]",
-        open ? "bg-[var(--footer-card)]" : "bg-[var(--footer-card)]/60"
+        "overflow-hidden rounded-xl border border-[var(--footer-border)]",
+        open ? "bg-[rgba(212,175,55,0.06)]" : "bg-white/[0.03]"
       )}
     >
       <button
@@ -31,7 +30,9 @@ export function FooterMobileAccordion({
         className="flex min-h-[48px] w-full items-center justify-between gap-3 px-4 py-3 text-left touch-manipulation"
         aria-expanded={open}
       >
-        <span className="text-sm font-semibold tracking-tight text-[var(--footer-foreground)]">{title}</span>
+        <span className="text-sm font-semibold tracking-tight text-[var(--footer-foreground)]">
+          {title}
+        </span>
         <ChevronDown
           className={cn(
             "h-4 w-4 shrink-0 text-[var(--brand-gold)] transition-transform duration-200",
@@ -48,7 +49,9 @@ export function FooterMobileAccordion({
             transition={{ duration: 0.2 }}
             className="overflow-hidden"
           >
-            <ul className="space-y-0.5 border-t border-[var(--footer-border)] px-3 py-2">{children}</ul>
+            <ul className="space-y-0.5 border-t border-[var(--footer-border)] px-3 py-2">
+              {children}
+            </ul>
           </motion.div>
         )}
       </AnimatePresence>
@@ -67,7 +70,7 @@ export function FooterAccordionLink({
     <li>
       <Link
         href={href}
-        className="footer-nav-link block min-h-10 rounded-xl px-2 py-2.5 touch-manipulation hover:bg-[var(--brand-gold-muted)]"
+        className="footer-nav-link block min-h-10 rounded-lg px-2 py-2.5 touch-manipulation hover:bg-white/[0.04]"
       >
         {children}
       </Link>
