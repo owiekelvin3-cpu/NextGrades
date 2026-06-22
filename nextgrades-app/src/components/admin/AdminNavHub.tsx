@@ -16,10 +16,11 @@ import {
   Video,
   ChevronRight,
   Cookie,
+  Globe,
 } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { useTranslation } from "react-i18next";
-import { ADMIN_PORTAL_PREFIX } from "@/lib/admin/portal-paths";
+import { ADMIN_CMS_PREFIX, ADMIN_PORTAL_PREFIX } from "@/lib/admin/portal-paths";
 
 const SECTIONS = [
   {
@@ -28,6 +29,12 @@ const SECTIONS = [
       { href: `${ADMIN_PORTAL_PREFIX}/students`, icon: Users, labelKey: "adminNav.students", descKey: "adminHub.studentsDesc" },
       { href: `${ADMIN_PORTAL_PREFIX}/teachers`, icon: GraduationCap, labelKey: "adminNav.teachers", descKey: "adminHub.teachersDesc" },
       { href: `${ADMIN_PORTAL_PREFIX}/users`, icon: UserCog, labelKey: "adminNav.users", descKey: "adminHub.usersDesc" },
+    ],
+  },
+  {
+    title: "Content",
+    items: [
+      { href: ADMIN_CMS_PREFIX, icon: Globe, labelKey: "adminNav.websiteContent", descKey: "adminHub.websiteDesc" },
     ],
   },
   {

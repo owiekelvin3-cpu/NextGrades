@@ -3,6 +3,8 @@
 export const ADMIN_PORTAL_LOGIN = "/portal/login";
 export const ADMIN_PORTAL_HOME = "/portal/admin";
 export const ADMIN_PORTAL_PREFIX = "/portal/admin";
+/** Production CMS studio (content, pricing, media, settings). */
+export const ADMIN_CMS_PREFIX = `${ADMIN_PORTAL_PREFIX}/cms`;
 
 export function isAdminPortalPath(path: string): boolean {
   return path === ADMIN_PORTAL_LOGIN || path.startsWith(ADMIN_PORTAL_PREFIX);

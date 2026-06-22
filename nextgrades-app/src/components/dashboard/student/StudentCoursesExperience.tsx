@@ -22,7 +22,8 @@ import {
   type StudentCourseDetail,
 } from "@/lib/dashboard/student-overview";
 import { StudentDashboardLayout } from "./StudentDashboardLayout";
-import { studentPanel, subjectInitials, subjectColor, formatTimeRange } from "./student-ui";
+import { studentPanel, subjectInitials, subjectColor, formatTimeRange, st } from "./student-ui";
+import { StudentTabBar } from "./StudentTabBar";
 import { mobile } from "@/lib/mobile/tokens";
 import { cn } from "@/lib/utils";
 
@@ -110,15 +111,22 @@ function CourseCard({ course, locale }: { course: StudentCourseDetail; locale: s
             </div>
           </div>
         </div>
-        <div className="flex shrink-0 items-center gap-2">
-          <Button variant="outline" size="sm" href="/dashboard/student/courses">
+        <div className="flex w-full flex-col gap-3 border-t border-border-default pt-4 sm:flex-row sm:flex-wrap sm:items-center lg:border-0 lg:pt-0">
+          <Button variant="outline" size="sm" href="/dashboard/student/courses" className="w-full sm:w-auto">
             {t("studentDashboard.openCourse", { defaultValue: "Open course" })}
           </Button>
-          <Link href="/dashboard/student/courses" className="text-sm font-medium text-[#D4AF37] hover:underline">
+          <Link
+            href="/dashboard/student/courses"
+            className="flex w-full items-center justify-center gap-1 text-sm font-medium text-[var(--brand-gold)] hover:underline sm:w-auto sm:justify-start"
+          >
             {t("studentDashboard.courseDetails", { defaultValue: "Course details" })}
-            <ChevronRight className="ml-0.5 inline h-4 w-4" />
+            <ChevronRight className="h-4 w-4" />
           </Link>
-          <button type="button" className="rounded-lg p-2 text-text-muted/80 hover:bg-surface-subtle dark:bg-white/[0.04]" aria-label="More">
+          <button
+            type="button"
+            className={cn(st.iconBtn, "self-end sm:ml-auto lg:self-center")}
+            aria-label="More"
+          >
             <MoreHorizontal className="h-4 w-4" />
           </button>
         </div>
@@ -169,7 +177,7 @@ export function StudentCoursesExperience() {
   }
 
   const headerAction = (
-    <Button variant="outline" size="sm" href="/dashboard/student/appointments" className="gap-2">
+    <Button variant="outline" size="sm" href="/dashboard/student/appointments" className="w-full gap-2 sm:w-auto">
       <Calendar className="h-4 w-4" />
       {t("studentDashboard.goToAppointments", { defaultValue: "Go to my appointments" })}
     </Button>
@@ -181,31 +189,20 @@ export function StudentCoursesExperience() {
 
   return (
     <StudentDashboardLayout title={title} description={description} headerAction={headerAction}>
-      <div className="mx-auto grid max-w-[1400px] gap-6 xl:grid-cols-[1fr_320px]">
-        <div className="space-y-6">
-          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border-default">
-            <div className="flex flex-wrap gap-6">
-              {(
-                [
-                  ["all", t("studentDashboard.tabAllCourses", { defaultValue: "All courses" })],
-                  ["active", t("studentDashboard.tabActiveCourses", { defaultValue: "Active courses" })],
-                  ["completed", t("studentDashboard.tabCompletedCourses", { defaultValue: "Completed courses" })],
-                ] as const
-              ).map(([id, label]) => (
-                <button
-                  key={id}
-                  type="button"
-                  onClick={() => setTab(id)}
-                  className={cn(
-                    "border-b-2 pb-3 text-sm font-medium transition",
-                    tab === id ? "border-[#D4AF37] text-foreground" : "border-transparent text-text-muted"
-                  )}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-            <p className="text-xs text-text-muted">
+      <div className={cn(st.pageGrid, "pb-24 md:pb-0")}>
+        <div className={cn(st.mainColumn, "space-y-6")}>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <StudentTabBar
+              tabs={[
+                { id: "all", label: t("studentDashboard.tabAllCourses", { defaultValue: "All courses" }), shortLabel: t("studentDashboard.tabAllShort", { defaultValue: "All" }) },
+                { id: "active", label: t("studentDashboard.tabActiveCourses", { defaultValue: "Active courses" }), shortLabel: t("studentDashboard.tabActiveShort", { defaultValue: "Active" }) },
+                { id: "completed", label: t("studentDashboard.tabCompletedCourses", { defaultValue: "Completed courses" }), shortLabel: t("studentDashboard.tabDoneShort", { defaultValue: "Done" }) },
+              ]}
+              active={tab}
+              onChange={(id) => setTab(id as Tab)}
+              className="flex-1"
+            />
+            <p className="hidden shrink-0 text-xs text-text-muted md:block">
               {t("studentDashboard.sortBy", { defaultValue: "Sort by: Course name (A–Z)" })}
             </p>
           </div>
@@ -223,9 +220,9 @@ export function StudentCoursesExperience() {
             </div>
           )}
 
-          <div className="rounded-2xl border border-blue-100 bg-blue-50/50 p-5">
-            <div className="flex items-center gap-3">
-              <Trophy className="h-5 w-5 text-blue-500" />
+          <div className="rounded-2xl border border-blue-100 bg-blue-50/50 p-4 sm:p-5 dark:border-blue-500/20 dark:bg-blue-500/10">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
+              <Trophy className="h-5 w-5 shrink-0 text-blue-500" />
               <p className="text-sm font-medium text-foreground">
                 {t("studentDashboard.keepGoingBanner", {
                   defaultValue: "Keep going! You're making great progress. Stay on track! 💪",
@@ -235,12 +232,12 @@ export function StudentCoursesExperience() {
           </div>
         </div>
 
-        <aside className="space-y-4">
+        <aside className={st.asideWidgets}>
           <div className={studentPanel("p-5")}>
             <h3 className="text-sm font-semibold text-foreground">
               {t("studentDashboard.yourLearningProgress", { defaultValue: "Your learning progress" })}
             </h3>
-            <div className="mt-4 flex items-center gap-4">
+            <div className="mt-4 flex flex-col items-center gap-4 sm:flex-row sm:items-center">
               <div className="relative flex items-center justify-center">
                 <DonutChart percent={overallProgress} />
                 <span className="absolute text-lg font-bold text-foreground">{overallProgress}%</span>

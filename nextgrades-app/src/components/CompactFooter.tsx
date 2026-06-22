@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 
-/** Minimal footer for login/auth pages (owner spec P11-06). */
+/** Minimal footer for login/auth pages — matches site footer bottom bar styling. */
 export function CompactFooter() {
   const { t } = useTranslation();
 
@@ -18,7 +18,7 @@ export function CompactFooter() {
   return (
     <footer
       className={cn(
-        "border-t border-border-default bg-surface-elevated px-4 py-4 text-text-muted pb-[max(1rem,env(safe-area-inset-bottom))]"
+        "border-t border-[var(--footer-border)] bg-[var(--footer-background)] px-4 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] text-[var(--footer-subtle)]"
       )}
     >
       <div className="mx-auto flex max-w-7xl flex-col items-center gap-3 sm:flex-row sm:justify-between">

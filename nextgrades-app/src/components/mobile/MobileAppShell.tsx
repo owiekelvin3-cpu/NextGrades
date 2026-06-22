@@ -145,14 +145,19 @@ export function MobileAppShell({
           className={cn(
             "flex-1 overflow-y-auto overflow-x-hidden",
             suppressMobileTitle ? "px-0 pt-0" : mobile.pageX,
-            "pb-6 pt-2 md:px-6 md:py-6 lg:py-8"
+            "pb-6 pt-3 md:px-6 md:py-6 lg:py-8"
           )}
         >
           {!suppressMobileTitle && (
-            <div className="mb-8 md:hidden">
+            <div className="mb-6 md:hidden">
               <h1 className={mobile.pageTitle}>{title}</h1>
-              {description && <p className={cn(mobile.caption, "mt-3 max-w-prose")}>{description}</p>}
-              {headerAction && <div className="mt-6">{headerAction}</div>}
+              {description && <p className={cn(mobile.caption, "mt-2 max-w-prose")}>{description}</p>}
+              {(headerAction || topRightAction) && (
+                <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+                  {headerAction}
+                  {topRightAction}
+                </div>
+              )}
             </div>
           )}
 

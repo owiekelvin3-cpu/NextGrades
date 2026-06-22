@@ -70,7 +70,17 @@
     "madeInGermany": "Mit ♥ in Österreich",
     "countryAustria": "Österreich",
     "location": "Mit ♥ in {{country}}",
-    "copyright": "© 2026 NextGrades. Alle Rechte vorbehalten."
+    "copyright": "© 2026 NextGrades. Alle Rechte vorbehalten.",
+    "ctaEyebrow": "Starte noch heute",
+    "ctaTitle": "Buche deine kostenlose Beratung",
+    "ctaDescription": "Sprich mit unserem Team und finde das passende Nachhilfeprogramm für deine Ziele — unverbindlich.",
+    "ctaButton": "Kostenlose Beratung",
+    "socials": "Social Media",
+    "newsletter": "Newsletter",
+    "newsletterDesc": "Lerntipps, Produkt-Updates und exklusive Angebote per E-Mail.",
+    "newsletterPlaceholder": "E-Mail eingeben…",
+    "newsletterSubmit": "Abonnieren",
+    "newsletterSuccess": "Danke! Wir melden uns bei dir."
   },
   "home": {
     "heroTitle1": "Nachhilfe neu gedacht.",

@@ -70,7 +70,17 @@
     "madeInGermany": "Made with ♥ in Germany",
     "countryAustria": "Austria",
     "location": "Made with ♥ in {{country}}",
-    "copyright": "© 2026 NextGrades. All rights reserved."
+    "copyright": "© 2026 NextGrades. All rights reserved.",
+    "ctaEyebrow": "Start learning today",
+    "ctaTitle": "Book your free consultation",
+    "ctaDescription": "Talk with our team and discover the right tutoring program for your goals — no commitment required.",
+    "ctaButton": "Free consultation",
+    "socials": "Socials",
+    "newsletter": "Newsletter",
+    "newsletterDesc": "Receive learning tips, product updates, and exclusive offers.",
+    "newsletterPlaceholder": "Enter your email…",
+    "newsletterSubmit": "Subscribe",
+    "newsletterSuccess": "Thanks! We'll be in touch."
   },
   "home": {
     "heroEyebrow": "THE FUTURE OF LEARNING STARTS HERE.",

@@ -22,8 +22,10 @@ import {
 } from "@/lib/dashboard/student-overview";
 import { StudentDashboardLayout } from "./StudentDashboardLayout";
 import { studentPanel, formatTimeRange, lessonDateParts, st } from "./student-ui";
+import { StudentTabBar } from "./StudentTabBar";
 import { ZoomMeetingButton } from "@/components/zoom/ZoomMeetingButton";
 import { useToast } from "@/context/ToastContext";
+import { mobile } from "@/lib/mobile/tokens";
 import { cn } from "@/lib/utils";
 
 type Tab = "upcoming" | "past" | "calendar";
@@ -129,12 +131,12 @@ export function StudentAppointmentsExperience() {
   }
 
   const headerActions = (
-    <div className="flex flex-wrap gap-2">
-      <Button variant="outline" size="sm" className="gap-2">
+    <div className="flex w-full flex-col gap-2 sm:flex-row sm:flex-wrap">
+      <Button variant="outline" size="sm" className="w-full gap-2 sm:w-auto">
         <Calendar className="h-4 w-4" />
         {t("studentDashboard.connectCalendar", { defaultValue: "Connect calendar" })}
       </Button>
-      <Button variant="gold" size="sm" onClick={() => setShowRequestModal(true)} className="gap-2">
+      <Button variant="gold" size="sm" onClick={() => setShowRequestModal(true)} className="w-full gap-2 sm:w-auto">
         <Plus className="h-4 w-4" />
         {t("studentDashboard.requestAppointment", { defaultValue: "Request new appointment" })}
       </Button>
@@ -170,7 +172,7 @@ export function StudentAppointmentsExperience() {
   };
 
   return (
-    <StudentDashboardLayout title={title} description={description} topRightAction={headerActions}>
+    <StudentDashboardLayout title={title} description={description} headerAction={headerActions}>
       {/* Request Appointment Modal */}
       {showRequestModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
@@ -249,30 +251,29 @@ export function StudentAppointmentsExperience() {
           </div>
         </div>
       )}
-      <div className="mx-auto grid max-w-[1400px] gap-6 xl:grid-cols-[1fr_320px]">
-        <div className="space-y-6">
-          {/* Tabs */}
-          <div className="flex flex-wrap gap-6 border-b border-border-default">
-            {(
-              [
-                ["upcoming", t("studentDashboard.tabUpcoming", { defaultValue: "Upcoming appointments" })],
-                ["past", t("studentDashboard.tabPast", { defaultValue: "Past appointments" })],
-                ["calendar", t("studentDashboard.tabCalendar", { defaultValue: "Calendar view" })],
-              ] as const
-            ).map(([id, label]) => (
-              <button
-                key={id}
-                type="button"
-                onClick={() => setTab(id)}
-                className={cn(
-                  "border-b-2 pb-3 text-sm font-medium transition",
-                  tab === id ? st.tabActive : st.tabInactive
-                )}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
+      <div className={cn(st.pageGrid, "pb-24 md:pb-0")}>
+        <div className={cn(st.mainColumn, "space-y-6")}>
+          <StudentTabBar
+            tabs={[
+              {
+                id: "upcoming",
+                label: t("studentDashboard.tabUpcoming", { defaultValue: "Upcoming appointments" }),
+                shortLabel: t("studentDashboard.tabUpcomingShort", { defaultValue: "Upcoming" }),
+              },
+              {
+                id: "past",
+                label: t("studentDashboard.tabPast", { defaultValue: "Past appointments" }),
+                shortLabel: t("studentDashboard.tabPastShort", { defaultValue: "Past" }),
+              },
+              {
+                id: "calendar",
+                label: t("studentDashboard.tabCalendar", { defaultValue: "Calendar view" }),
+                shortLabel: t("studentDashboard.tabCalendarShort", { defaultValue: "Calendar" }),
+              },
+            ]}
+            active={tab}
+            onChange={(id) => setTab(id as Tab)}
+          />
 
           {tab === "calendar" ? (
             <div className={studentPanel("p-6")}>
@@ -297,11 +298,11 @@ export function StudentAppointmentsExperience() {
                       <div
                         key={lesson.id}
                         className={cn(
-                          "flex flex-col gap-4 p-5 sm:flex-row sm:items-center",
+                          "flex flex-col gap-4 p-4 sm:p-5 md:flex-row md:items-center",
                           parts.isToday && tab === "upcoming" && st.unreadBg
                         )}
                       >
-                        <div className="flex min-w-0 flex-1 items-center gap-4">
+                        <div className="flex min-w-0 flex-1 items-start gap-3 sm:items-center sm:gap-4">
                           <div className={cn(st.dateBadgeLg, parts.isToday && st.dateBadgeToday)}>
                             <span className={st.dateDayLg}>{parts.day}</span>
                             <span className="text-[10px] font-bold uppercase text-[#D4AF37]">{parts.month}</span>
@@ -327,9 +328,9 @@ export function StudentAppointmentsExperience() {
                             </div>
                           </div>
                         </div>
-                        <div className="flex shrink-0 items-center gap-2">
+                        <div className="flex w-full shrink-0 flex-col gap-2 sm:w-auto sm:flex-row sm:items-center">
                           {lesson.zoom_meeting_id && tab === "upcoming" ? (
-                            <ZoomMeetingButton lessonId={lesson.id} mode="join" />
+                            <ZoomMeetingButton lessonId={lesson.id} mode="join" className="w-full justify-center sm:w-auto" />
                           ) : null}
                           <button type="button" className={st.iconBtn} aria-label="More">
                             <MoreHorizontal className="h-4 w-4" />
@@ -365,8 +366,28 @@ export function StudentAppointmentsExperience() {
           </div>
         </div>
 
-        {/* Right sidebar */}
-        <aside className="space-y-4">
+        {/* Right sidebar — next appointment first on mobile */}
+        <aside className={st.asideWidgets}>
+          {data.nextLesson && (
+            <div className={studentPanel("p-5")}>
+              <h3 className={cn("text-sm font-semibold", st.textPrimary)}>{t("studentDashboard.nextAppointment")}</h3>
+              <p className={cn("mt-2 text-sm font-medium", st.textPrimary)}>
+                {lessonDateParts(data.nextLesson.start_time, locale, todayLabel).full}
+              </p>
+              <p className={cn("text-sm", st.textMuted)}>
+                {formatTimeRange(data.nextLesson.start_time, data.nextLesson.duration, locale)}
+              </p>
+              {data.nextLesson.subject_name && (
+                <span className="mt-2 inline-block rounded-lg bg-[#D4AF37]/10 px-2 py-1 text-xs font-medium text-[#D4AF37]">
+                  {data.nextLesson.subject_name}
+                </span>
+              )}
+              {data.nextLesson.zoom_meeting_id && (
+                <ZoomMeetingButton lessonId={data.nextLesson.id} mode="join" className="mt-4 w-full justify-center" />
+              )}
+            </div>
+          )}
+
           <div className={studentPanel("p-5")}>
             <h3 className={cn("text-sm font-semibold", st.textPrimary)}>
               {t("studentDashboard.remainingUnits")}
@@ -390,27 +411,7 @@ export function StudentAppointmentsExperience() {
             </Link>
           </div>
 
-          {data.nextLesson && (
-            <div className={studentPanel("p-5")}>
-              <h3 className={cn("text-sm font-semibold", st.textPrimary)}>{t("studentDashboard.nextAppointment")}</h3>
-              <p className={cn("mt-2 text-sm font-medium", st.textPrimary)}>
-                {lessonDateParts(data.nextLesson.start_time, locale, todayLabel).full}
-              </p>
-              <p className={cn("text-sm", st.textMuted)}>
-                {formatTimeRange(data.nextLesson.start_time, data.nextLesson.duration, locale)}
-              </p>
-              {data.nextLesson.subject_name && (
-                <span className="mt-2 inline-block rounded-lg bg-[#D4AF37]/10 px-2 py-1 text-xs font-medium text-[#D4AF37]">
-                  {data.nextLesson.subject_name}
-                </span>
-              )}
-              {data.nextLesson.zoom_meeting_id && (
-                <ZoomMeetingButton lessonId={data.nextLesson.id} mode="join" className="mt-4 w-full justify-center" />
-              )}
-            </div>
-          )}
-
-          <div className={studentPanel("p-5")}>
+          <div className={cn(studentPanel("p-5"), "hidden lg:block")}>
             <MiniCalendar lessons={[...data.upcoming, ...data.past]} locale={locale} />
           </div>
 
@@ -436,6 +437,13 @@ export function StudentAppointmentsExperience() {
             </div>
           )}
         </aside>
+      </div>
+
+      <div className={cn(mobile.stickyAction, "md:hidden")}>
+        <Button variant="gold" onClick={() => setShowRequestModal(true)} className="w-full gap-2">
+          <Plus className="h-5 w-5" />
+          {t("studentDashboard.requestAppointment", { defaultValue: "Request new appointment" })}
+        </Button>
       </div>
     </StudentDashboardLayout>
   );

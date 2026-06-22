@@ -15,11 +15,14 @@ import {
   MessageSquareQuote,
   Users,
   HelpCircle,
+  ListChecks,
+  Sparkles,
+  FileText,
   type LucideIcon,
 } from "lucide-react";
-import { ADMIN_PORTAL_PREFIX } from "@/lib/admin/portal-paths";
+import { ADMIN_CMS_PREFIX } from "@/lib/admin/portal-paths";
 
-const BASE = `${ADMIN_PORTAL_PREFIX}/website-content`;
+const BASE = ADMIN_CMS_PREFIX;
 
 export type CmsNavItem = {
   id: string;
@@ -52,6 +55,20 @@ export const CMS_SIDEBAR_TOOLS: CmsNavItem[] = [
   { id: "seo", label: "SEO settings", href: `${BASE}/seo`, icon: Search },
   { id: "theme", label: "Theme settings", href: `${BASE}/theme`, icon: Palette },
   { id: "history", label: "Version history", href: `${BASE}/history`, icon: History },
+];
+
+/** Spec-aligned CMS hub sections (sidebar grouping). */
+export const CMS_SIDEBAR_SECTIONS: CmsNavItem[] = [
+  { id: "pages-hub", label: "Pages", href: `${BASE}/pages`, icon: Home },
+  { id: "tests-hub", label: "Tests & quizzes", href: `${BASE}/tests`, icon: ListChecks },
+  { id: "subjects-data", label: "Subjects", href: `${BASE}/subjects`, icon: BookOpen },
+  { id: "hero-hub", label: "Hero & landing", href: `${BASE}/hero`, icon: Sparkles },
+  { id: "pricing-data", label: "Pricing", href: `${BASE}/pricing`, icon: CreditCard },
+  { id: "testimonials-data", label: "Testimonials", href: `${BASE}/testimonials`, icon: MessageSquareQuote },
+  { id: "faqs-data", label: "FAQs", href: `${BASE}/faqs`, icon: HelpCircle },
+  { id: "blog-hub", label: "Blog", href: `${BASE}/blog`, icon: FileText },
+  { id: "media", label: "Media", href: `${BASE}/media`, icon: ImageIcon },
+  { id: "settings-hub", label: "Site settings", href: `${BASE}/settings`, icon: Palette },
 ];
 
 export const CMS_HUB_HREF = BASE;

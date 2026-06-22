@@ -18,7 +18,9 @@ export const BRANDED = {
   platformLaptop: "/images/marketing/platform-laptop.png",
   /** Four students collaborating */
   studentsGroup4: "/images/marketing/students-group-4.png",
-  /** Three students collaborating with laptop — primary marketing hero */
+  /** Three students with branded NextGrades hoodies — primary page hero (Start, Programme, Fächer) */
+  heroStudentsBranded: "/images/marketing/hero-students-branded.png",
+  /** Three students collaborating with laptop — legacy marketing hero */
   heroStudentsCollab: "/images/marketing/hero-students-collab.png",
   /** Three students with laptop */
   studentsGroup3: "/images/marketing/students-group-3.png",
@@ -41,7 +43,7 @@ export const ABOUT_IMAGES = {
 } as const;
 
 export const CONTACT_HERO_IMAGE = BRANDED.studyDesk;
-export const PROGRAMS_HERO_IMAGE = BRANDED.heroStudentsCollab;
+export const PROGRAMS_HERO_IMAGE = BRANDED.heroStudentsBranded;
 export const CONSULTATION_HERO_IMAGE = BRANDED.tutoringSession;
 export const CAREERS_HERO_IMAGE = BRANDED.studentsGroup4;
 export const HELP_HERO_IMAGE = BRANDED.platformLaptop;
@@ -51,8 +53,8 @@ export const PRIVACY_HERO_IMAGE = BRANDED.privacySecure;
 export const HOME_PLATFORM_THUMB = BRANDED.progressDashboard;
 export const HOME_TESTIMONIALS_BG = BRANDED.studentsCollab;
 
-/** Primary homepage hero — students collaborating */
-export const HOME_HERO_STUDENT_IMAGE = BRANDED.heroStudentsCollab;
+/** Primary homepage hero — branded students collaborating */
+export const HOME_HERO_STUDENT_IMAGE = BRANDED.heroStudentsBranded;
 
 /** Home hero carousel — all branded lifestyle photos */
 export const HOME_HERO_CAROUSEL_IMAGES = [
@@ -87,7 +89,7 @@ export const PRICING_HERO_IMAGE = BRANDED.platformLaptop;
 
 export const PRICING_PLAN_IMAGES = PROGRAMS_PAGE_CARD_IMAGES;
 
-export const SUBJECTS_HERO_IMAGE = BRANDED.heroStudentsCollab;
+export const SUBJECTS_HERO_IMAGE = BRANDED.heroStudentsBranded;
 
 /** Team portrait fallbacks when CMS has no photo — branded lifestyle shots */
 export const ABOUT_TEAM_IMAGES = [

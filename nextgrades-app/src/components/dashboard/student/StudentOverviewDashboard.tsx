@@ -260,9 +260,9 @@ export function StudentOverviewDashboard() {
                           </div>
                         </div>
                       </div>
-                      <div className="flex shrink-0 items-center gap-2 pl-[4.5rem] sm:pl-0">
+                      <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center">
                         {lesson.zoom_meeting_id || lesson.zoom_link ? (
-                          <ZoomMeetingButton lessonId={lesson.id} mode="join" size="sm" />
+                          <ZoomMeetingButton lessonId={lesson.id} mode="join" size="sm" className="w-full justify-center sm:w-auto" />
                         ) : (
                           <span className={cn("text-xs", st.textSubtle)}>{t("studentDashboard.noZoomLink")}</span>
                         )}

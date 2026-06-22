@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
-import { ADMIN_PORTAL_HOME } from "@/lib/admin/portal-paths";
+import { ADMIN_CMS_PREFIX } from "@/lib/admin/portal-paths";
 
-/** Website content CMS is disabled — send admins back to the portal home. */
+/** Legacy website-content URLs redirect to the CMS studio. */
 export default function WebsiteContentLayout() {
-  redirect(ADMIN_PORTAL_HOME);
+  redirect(ADMIN_CMS_PREFIX);
 }

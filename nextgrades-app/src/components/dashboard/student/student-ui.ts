@@ -38,6 +38,10 @@ export const st = {
   statIconViolet:
     "text-violet-600 bg-violet-50 ring-violet-100 dark:text-violet-300 dark:bg-violet-500/12 dark:ring-violet-500/15",
   divider: "divide-y divide-border-default",
+  /** Two-column student page: main + aside from lg */
+  pageGrid: "mx-auto grid max-w-[1400px] gap-6 lg:grid-cols-[1fr_minmax(0,300px)] xl:grid-cols-[1fr_minmax(0,320px)]",
+  asideWidgets: "order-2 space-y-4 lg:order-none",
+  mainColumn: "order-1 min-w-0 space-y-4 lg:order-none",
   input: "rounded-xl border border-input-border bg-input-background px-3 py-2 text-sm text-input-foreground",
   tableHead:
     "border-b border-[var(--table-border)] bg-[var(--table-header)] text-xs font-semibold uppercase tracking-wide text-text-muted",

@@ -27,12 +27,13 @@ import {
   BarChart3,
   GraduationCap,
   Cookie,
+  Globe,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/context/ThemeContext";
 import { BrandLogo } from "@/components/BrandLogo";
 import { dashboardHomeForRole } from "@/lib/brand";
-import { ADMIN_PORTAL_HOME, ADMIN_PORTAL_PREFIX } from "@/lib/admin/portal-paths";
+import { ADMIN_CMS_PREFIX, ADMIN_PORTAL_HOME, ADMIN_PORTAL_PREFIX } from "@/lib/admin/portal-paths";
 import { BackToHomeLink } from "@/components/dashboard/BackToHomeLink";
 import { TeacherSidebarNav } from "@/components/dashboard/teacher/TeacherSidebarNav";
 import { StudentSidebarNav } from "@/components/dashboard/student/StudentSidebarNav";
@@ -86,6 +87,7 @@ const teacherConfig = [
 
 const adminConfig = [
   { href: ADMIN_PORTAL_HOME, icon: LayoutDashboard, labelKey: "adminNav.dashboard" },
+  { href: ADMIN_CMS_PREFIX, icon: Globe, labelKey: "adminNav.websiteContent" },
   { href: `${ADMIN_PORTAL_PREFIX}/students`, icon: Users, labelKey: "adminNav.students" },
   { href: `${ADMIN_PORTAL_PREFIX}/teachers`, icon: GraduationCap, labelKey: "adminNav.teachers" },
   { href: `${ADMIN_PORTAL_PREFIX}/users`, icon: UserCog, labelKey: "adminNav.users" },

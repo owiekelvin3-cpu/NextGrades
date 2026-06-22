@@ -32,6 +32,20 @@ function supabaseImagePatterns(): { protocol: "https"; hostname: string }[] {
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   productionBrowserSourceMaps: false,
+  async redirects() {
+    return [
+      {
+        source: "/portal/admin/website-content",
+        destination: "/portal/admin/cms",
+        permanent: true,
+      },
+      {
+        source: "/portal/admin/website-content/:path*",
+        destination: "/portal/admin/cms/:path*",
+        permanent: true,
+      },
+    ];
+  },
   headers: securityHeaders(),
   images: {
     formats: ["image/avif", "image/webp"],

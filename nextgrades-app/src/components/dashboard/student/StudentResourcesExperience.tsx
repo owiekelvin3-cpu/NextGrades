@@ -4,16 +4,14 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import {
   Search,
-  SlidersHorizontal,
   Star,
   Download,
   MoreHorizontal,
   FileText,
   Video,
   Headphones,
-  ChevronLeft,
-  ChevronRight,
   ArrowRight,
+  Filter,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { getDateLocale } from "@/lib/i18n/locales";
@@ -22,7 +20,9 @@ import { LoadingBlock } from "@/components/dashboard/LoadingBlock";
 import { useBookmarks } from "@/hooks/useBookmarks";
 import { fetchStudentResourcesPageData, formatBytes } from "@/lib/dashboard/student-overview";
 import { StudentDashboardLayout } from "./StudentDashboardLayout";
-import { studentPanel, materialTypeLabel, materialTypeColor } from "./student-ui";
+import { studentPanel, materialTypeLabel, materialTypeColor, st } from "./student-ui";
+import { StudentTabBar } from "./StudentTabBar";
+import { StudentPagination } from "./StudentPagination";
 import { mobile } from "@/lib/mobile/tokens";
 import { cn } from "@/lib/utils";
 
@@ -46,6 +46,7 @@ export function StudentResourcesExperience() {
   const [courseFilter, setCourseFilter] = useState("");
   const [typeFilter, setTypeFilter] = useState("");
   const [page, setPage] = useState(1);
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
 
   useEffect(() => {
     fetchStudentResourcesPageData()
@@ -97,68 +98,82 @@ export function StudentResourcesExperience() {
 
   return (
     <StudentDashboardLayout title={title} description={description}>
-      <div className="mx-auto grid max-w-[1400px] gap-6 xl:grid-cols-[1fr_300px]">
-        <div className="space-y-4">
-          <div className="hidden flex-wrap gap-6 border-b border-border-default md:flex">
-            {(
-              [
-                ["all", t("studentDashboard.tabAllMaterials", { defaultValue: "All materials" })],
-                ["course", t("studentDashboard.tabByCourse", { defaultValue: "By course" })],
-                ["type", t("studentDashboard.tabByType", { defaultValue: "By type" })],
-                ["favorites", t("studentDashboard.tabFavorites", { defaultValue: "Favorites" })],
-              ] as const
-            ).map(([id, label]) => (
-              <button
-                key={id}
-                type="button"
-                onClick={() => setTab(id)}
-                className={cn(
-                  "border-b-2 pb-3 text-sm font-medium transition",
-                  tab === id ? "border-[#D4AF37] text-foreground" : "border-transparent text-text-muted"
-                )}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
+      <div className={st.pageGrid}>
+        <div className={st.mainColumn}>
+          <StudentTabBar
+            tabs={[
+              { id: "all", label: t("studentDashboard.tabAllMaterials", { defaultValue: "All materials" }), shortLabel: t("studentDashboard.tabAllShort", { defaultValue: "All" }) },
+              { id: "course", label: t("studentDashboard.tabByCourse", { defaultValue: "By course" }), shortLabel: t("studentDashboard.tabCourseShort", { defaultValue: "Course" }) },
+              { id: "type", label: t("studentDashboard.tabByType", { defaultValue: "By type" }), shortLabel: t("studentDashboard.tabTypeShort", { defaultValue: "Type" }) },
+              { id: "favorites", label: t("studentDashboard.tabFavorites", { defaultValue: "Favorites" }), shortLabel: t("studentDashboard.tabFavShort", { defaultValue: "Favorites" }) },
+            ]}
+            active={tab}
+            onChange={(id) => setTab(id as Tab)}
+          />
 
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-            <div className="relative flex-1">
+            <div className="relative min-w-0 flex-1">
               <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-text-muted" />
               <input
                 type="search"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder={t("studentDashboard.searchMaterials", { defaultValue: "Search materials…" })}
-                className="w-full min-h-12 rounded-2xl border border-border-default bg-surface-elevated py-3 pl-12 pr-4 text-base outline-none focus:border-[#D4AF37] focus:ring-2 focus:ring-[#D4AF37]/25"
+                className="w-full min-h-12 rounded-2xl border border-border-default bg-surface-elevated py-3 pl-12 pr-4 text-base outline-none focus:border-[var(--brand-gold)] focus:ring-2 focus:ring-[var(--brand-gold)]/25"
               />
             </div>
+            <button
+              type="button"
+              onClick={() => setShowMobileFilters((v) => !v)}
+              className={cn(
+                "flex min-h-12 items-center justify-center gap-2 rounded-2xl border border-border-default bg-surface-elevated px-4 text-sm font-medium md:hidden",
+                showMobileFilters && "border-[var(--brand-gold)] text-[var(--brand-gold)]"
+              )}
+            >
+              <Filter className="h-4 w-4" />
+              {t("studentDashboard.filter", { defaultValue: "Filter" })}
+            </button>
           </div>
 
-          <div className={cn(mobile.chipRow, "md:hidden")}>
-            {(
-              [
-                ["all", t("studentDashboard.tabAllMaterials", { defaultValue: "All materials" })],
-                ["course", t("studentDashboard.tabByCourse", { defaultValue: "By course" })],
-                ["type", t("studentDashboard.tabByType", { defaultValue: "By type" })],
-                ["favorites", t("studentDashboard.tabFavorites", { defaultValue: "Favorites" })],
-              ] as const
-            ).map(([id, label]) => (
-              <button
-                key={id}
-                type="button"
-                onClick={() => setTab(id)}
-                className={cn(
-                  mobile.chip,
-                  tab === id
-                    ? "bg-[#D4AF37] font-semibold text-foreground"
-                    : "border border-border-default bg-surface-elevated text-text-muted"
-                )}
+          {showMobileFilters && (
+            <div className="grid grid-cols-1 gap-2 rounded-2xl border border-border-default bg-surface-elevated p-3 sm:grid-cols-2 md:hidden">
+              <select
+                value={courseFilter}
+                onChange={(e) => setCourseFilter(e.target.value)}
+                className="w-full rounded-xl border border-border-default bg-surface-subtle px-3 py-2.5 text-sm"
               >
-                {label}
+                <option value="">{t("studentDashboard.selectCourse", { defaultValue: "Select course" })}</option>
+                {subjectNames.map((s) => (
+                  <option key={s} value={s}>
+                    {s}
+                  </option>
+                ))}
+              </select>
+              <select
+                value={typeFilter}
+                onChange={(e) => setTypeFilter(e.target.value)}
+                className="w-full rounded-xl border border-border-default bg-surface-subtle px-3 py-2.5 text-sm"
+              >
+                <option value="">{t("studentDashboard.selectType", { defaultValue: "Select type" })}</option>
+                {["pdf", "video", "excel", "image", "other"].map((tp) => (
+                  <option key={tp} value={tp}>
+                    {materialTypeLabel(tp, t)}
+                  </option>
+                ))}
+              </select>
+              <button
+                type="button"
+                onClick={() => {
+                  setCourseFilter("");
+                  setTypeFilter("");
+                  setSearch("");
+                }}
+                className="col-span-full text-center text-sm text-text-muted hover:text-foreground"
+              >
+                {t("studentDashboard.resetFilters", { defaultValue: "Reset filters" })}
               </button>
-            ))}
-          </div>
+            </div>
+          )}
 
           <div className="hidden flex-wrap gap-3 md:flex">
             <select
@@ -199,7 +214,8 @@ export function StudentResourcesExperience() {
           </div>
 
           {/* Mobile card list */}
-          <div className="space-y-3 md:hidden">
+          <div className={cn(studentPanel("overflow-hidden md:hidden"), "space-y-0")}>
+            <div className="space-y-3 p-3">
             {pageItems.length === 0 ? (
               <div className={studentPanel("p-8 text-center text-text-muted")}>
                 {t("studentDashboard.noMaterials")}
@@ -244,6 +260,15 @@ export function StudentResourcesExperience() {
                 </article>
               ))
             )}
+            </div>
+            <StudentPagination
+              page={page}
+              totalPages={totalPages}
+              totalItems={filtered.length}
+              pageSize={PAGE_SIZE}
+              onPageChange={setPage}
+              summaryLabel={`${(page - 1) * PAGE_SIZE + 1}–${Math.min(page * PAGE_SIZE, filtered.length)} ${t("studentDashboard.ofTotal", { total: filtered.length, defaultValue: `of ${filtered.length} materials` })}`}
+            />
           </div>
 
           <div className={cn(studentPanel("overflow-hidden"), "hidden md:block")}>
@@ -329,38 +354,19 @@ export function StudentResourcesExperience() {
             </div>
 
             {filtered.length > 0 && (
-              <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border-default px-5 py-3">
-                <p className="text-xs text-text-muted">
-                  {(page - 1) * PAGE_SIZE + 1}–{Math.min(page * PAGE_SIZE, filtered.length)}{" "}
-                  {t("studentDashboard.ofTotal", { total: filtered.length, defaultValue: `of ${filtered.length} materials` })}
-                </p>
-                <div className="flex items-center gap-1">
-                  <button type="button" disabled={page <= 1} onClick={() => setPage((p) => p - 1)} className="rounded-lg p-1.5 text-text-muted disabled:opacity-40">
-                    <ChevronLeft className="h-4 w-4" />
-                  </button>
-                  {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => i + 1).map((p) => (
-                    <button
-                      key={p}
-                      type="button"
-                      onClick={() => setPage(p)}
-                      className={cn(
-                        "flex h-8 w-8 items-center justify-center rounded-lg text-sm font-medium",
-                        page === p ? "bg-[#D4AF37] text-foreground" : "text-text-muted hover:bg-surface-subtle dark:bg-white/10"
-                      )}
-                    >
-                      {p}
-                    </button>
-                  ))}
-                  <button type="button" disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)} className="rounded-lg p-1.5 text-text-muted disabled:opacity-40">
-                    <ChevronRight className="h-4 w-4" />
-                  </button>
-                </div>
-              </div>
+              <StudentPagination
+                page={page}
+                totalPages={totalPages}
+                totalItems={filtered.length}
+                pageSize={PAGE_SIZE}
+                onPageChange={setPage}
+                summaryLabel={`${(page - 1) * PAGE_SIZE + 1}–${Math.min(page * PAGE_SIZE, filtered.length)} ${t("studentDashboard.ofTotal", { total: filtered.length, defaultValue: `of ${filtered.length} materials` })}`}
+              />
             )}
           </div>
         </div>
 
-        <aside className="space-y-4">
+        <aside className={st.asideWidgets}>
           <div className={studentPanel("p-5 text-center")}>
             <h3 className="text-sm font-semibold text-foreground">
               {t("studentDashboard.storageSpace", { defaultValue: "Storage space" })}
