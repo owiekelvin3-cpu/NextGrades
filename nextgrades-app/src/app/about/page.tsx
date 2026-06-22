@@ -1,6 +1,5 @@
 "use client";
 
-import { useMemo } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
@@ -18,13 +17,10 @@ import {
   Heart,
   Quote,
   Smile,
-  Globe,
-  Share2,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useLocalizedContent } from "@/hooks/useLocalizedContent";
 import { useCmsImages } from "@/hooks/useCmsImage";
-import { useCmsTeam } from "@/hooks/useCmsTeam";
 import { useMarketingTheme } from "@/lib/marketing-theme";
 import { MarketingImage } from "@/components/marketing/MarketingImage";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
@@ -35,7 +31,6 @@ import { cn } from "@/lib/utils";
 import { hero } from "@/lib/premium/tokens";
 import {
   ABOUT_IMAGES,
-  ABOUT_TEAM_IMAGES,
 } from "@/lib/marketing-images";
 
 const PILLAR_ICONS = [Target, Eye, Sparkles];
@@ -81,16 +76,11 @@ export default function AboutPage() {
   const { t } = useTranslation();
   const { getImage } = useCmsImages();
 
-  const { team: cmsTeam } = useCmsTeam();
-
   const heroImage = getImage("cmsImages.about.hero", ABOUT_IMAGES.hero);
   const storyImage = getImage("cmsImages.about.story", ABOUT_IMAGES.story);
   const promiseImage = getImage("cmsImages.about.promise", ABOUT_IMAGES.promise);
   const missionImages = ABOUT_IMAGES.mission.map((url, i) =>
     getImage(`cmsImages.about.mission.${i}`, url)
-  );
-  const teamImages = ABOUT_TEAM_IMAGES.map((url, i) =>
-    getImage(`cmsImages.about.team.${i}`, url)
   );
 
   const pillars = useLocalizedContent<{ title: string; desc: string }[]>("aboutPage.heroPillars");
@@ -100,7 +90,6 @@ export default function AboutPage() {
   const principles = useLocalizedContent<{ title: string; desc: string }[]>("aboutPage.principles");
   const promiseItems = useLocalizedContent<string[]>("aboutPage.promiseItems");
   const stats = useLocalizedContent<{ value: string; label: string }[]>("aboutPage.stats");
-  const team = useLocalizedContent<{ name: string; role: string; bio: string }[]>("aboutPage.team");
   const communityTags = useLocalizedContent<string[]>("aboutPage.communityTags");
 
   const safePillars = Array.isArray(pillars) ? pillars : [];
@@ -110,25 +99,7 @@ export default function AboutPage() {
   const safePrinciples = Array.isArray(principles) ? principles : [];
   const safePromise = Array.isArray(promiseItems) ? promiseItems : [];
   const safeStats = Array.isArray(stats) ? stats : [];
-  const safeTeam = Array.isArray(team) ? team : [];
   const safeTags = Array.isArray(communityTags) ? communityTags : [];
-
-  const displayTeam = useMemo(() => {
-    if (cmsTeam.length > 0) {
-      return [...cmsTeam]
-        .sort((a, b) => a.sort_order - b.sort_order)
-        .map((member, i) => ({
-          name: member.name,
-          role: member.role,
-          bio: member.bio ?? "",
-          photo: member.photo_url ?? teamImages[i] ?? teamImages[0],
-        }));
-    }
-    return safeTeam.map((member, i) => ({
-      ...member,
-      photo: teamImages[i] ?? teamImages[0],
-    }));
-  }, [cmsTeam, safeTeam, teamImages]);
 
   const cardClass = cn(
     "rounded-2xl border transition-shadow hover:shadow-lg",
@@ -383,63 +354,6 @@ export default function AboutPage() {
             </div>
           </div>
         </section>
-
-        {/* Team */}
-        <section className={cn("py-20 lg:py-24", mt.section)}>
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <SectionHeading
-              eyebrow={t("aboutPage.teamEyebrow")}
-              title={t("about.teamTitle")}
-              subtitle={t("aboutPage.teamSubtitle")}
-              center
-              mt={mt}
-            />
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
-              {displayTeam.map((member, i) => (
-                <motion.div
-                  key={`${member.name}-${i}`}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.07 }}
-                  className={cn(cardClass, "group overflow-hidden")}
-                >
-                  <div className="aspect-square overflow-hidden">
-                    <MarketingImage
-                      src={member.photo}
-                      alt={`${member.name} – ${t("images.teamMember")}`}
-                      containerClassName="aspect-square w-full"
-                      sizes="(max-width: 768px) 50vw, 20vw"
-                      className="transition-transform duration-500 group-hover:scale-105"
-                    />
-                  </div>
-                  <div className="p-5">
-                    <h3 className={cn("font-bold", mt.heading)}>{member.name}</h3>
-                    <p className="mt-0.5 text-sm font-medium text-[#D4AF37]">{member.role}</p>
-                    <p className={cn("mt-2 text-xs leading-relaxed", mt.body)}>{member.bio}</p>
-                    <div className="mt-4 flex gap-2">
-                      <Link
-                        href="/contact"
-                        className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#D4AF37]/10 text-[#D4AF37] transition hover:bg-[#D4AF37]/20"
-                        aria-label={t("common.contact")}
-                      >
-                        <Globe className="h-4 w-4" />
-                      </Link>
-                      <Link
-                        href="/about"
-                        className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#D4AF37]/10 text-[#D4AF37] transition hover:bg-[#D4AF37]/20"
-                        aria-label={t("common.about")}
-                      >
-                        <Share2 className="h-4 w-4" />
-                      </Link>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
 
         {/* CTA */}
         <section className="px-4 py-16 sm:px-6 lg:px-8">
