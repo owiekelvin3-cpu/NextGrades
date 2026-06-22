@@ -24,11 +24,12 @@ import { useCmsImages } from "@/hooks/useCmsImage";
 import { useMarketingTheme } from "@/lib/marketing-theme";
 import { MarketingImage } from "@/components/marketing/MarketingImage";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
+import { MarketingHeroMobileImage } from "@/components/marketing/MarketingHeroMobileImage";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
-import { hero } from "@/lib/premium/tokens";
+import { hero, section, type } from "@/lib/premium/tokens";
 import {
   ABOUT_IMAGES,
 } from "@/lib/marketing-images";
@@ -110,7 +111,7 @@ export default function AboutPage() {
     <div className={cn("marketing-page-root flex min-h-screen flex-col", mt.page)}>
       <Navbar />
 
-      <main className="flex-1">
+      <main className="flex-1 overflow-x-hidden">
         {/* Hero — always dark */}
         <section className={cn("bg-[#0D1B2A] text-white", hero.section)}>
           <div className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -128,14 +129,14 @@ export default function AboutPage() {
             <div className="grid min-w-0 items-center gap-10 lg:grid-cols-2 lg:gap-14">
               <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
                 <Eyebrow className="mb-4">{t("aboutPage.heroEyebrow")}</Eyebrow>
-                <h1 className="text-4xl font-extrabold leading-tight tracking-tight md:text-5xl lg:text-[3.25rem]">
+                <h1 className={type.h1}>
                   {t("about.heroTitle")}{" "}
                   <span className="text-[#D4AF37]">{t("about.heroTitleHighlight")}</span>{" "}
                   {t("about.heroTitle2")}
                 </h1>
-                <p className="mt-5 max-w-xl text-lg leading-relaxed text-on-navy-muted">{t("about.heroSubtitle")}</p>
+                <p className="mt-4 max-w-xl text-sm leading-relaxed text-on-navy-muted md:mt-5 md:text-lg">{t("about.heroSubtitle")}</p>
 
-                <div className="mt-8 grid gap-4 sm:grid-cols-3">
+                <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
                   {safePillars.map((pillar, i) => {
                     const Icon = PILLAR_ICONS[i] ?? Target;
                     return (
@@ -154,23 +155,17 @@ export default function AboutPage() {
                 </div>
               </motion.div>
 
-              <motion.div
-                initial={{ opacity: 0, scale: 0.96 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.7, delay: 0.15 }}
-                className="relative hidden min-h-[360px] lg:block"
-                aria-hidden
-              />
+              <MarketingHeroMobileImage src={heroImage} alt={t("images.studentsCollaborating")} priority />
             </div>
           </div>
 
           {/* Feature bar */}
-          <div className="relative mt-14 border-t border-white/10 bg-[#0a1520]/80 backdrop-blur-sm">
-            <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-4 py-8 sm:px-6 md:grid-cols-4 lg:px-8">
+          <div className="relative mt-10 border-t border-white/10 bg-[#0a1520]/80 backdrop-blur-sm md:mt-14">
+            <div className={cn(section.container, "grid grid-cols-1 gap-4 py-8 md:grid-cols-2 lg:grid-cols-4 md:gap-6")}>
               {safeFeatures.map((feat, i) => {
                 const Icon = FEATURE_ICONS[i] ?? GraduationCap;
                 return (
-                  <div key={feat.title} className="flex items-start gap-3">
+                  <div key={feat.title} className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/5 p-4 md:border-0 md:bg-transparent md:p-0">
                     <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#D4AF37]/15">
                       <Icon className="h-5 w-5 text-[#D4AF37]" />
                     </div>
@@ -186,8 +181,8 @@ export default function AboutPage() {
         </section>
 
         {/* Story */}
-        <section className={cn("py-20 lg:py-24", mt.sectionAlt)}>
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <section className={cn("py-14 lg:py-24", mt.sectionAlt)}>
+          <div className={section.container}>
             <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
               <motion.div initial={{ opacity: 0, x: -24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
                 <Eyebrow className="mb-3">{t("aboutPage.storyEyebrow")}</Eyebrow>
@@ -223,7 +218,7 @@ export default function AboutPage() {
 
         {/* Mission detail */}
         <section className={cn("py-20 lg:py-24", mt.section)}>
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className={section.container}>
             <SectionHeading
               eyebrow={t("aboutPage.missionEyebrow")}
               title={t("aboutPage.missionTitle")}
@@ -266,8 +261,8 @@ export default function AboutPage() {
         </section>
 
         {/* Principles */}
-        <section className={cn("py-20 lg:py-24", mt.sectionAlt)}>
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <section className={cn("py-14 lg:py-24", mt.sectionAlt)}>
+          <div className={section.container}>
             <SectionHeading
               eyebrow={t("aboutPage.principlesEyebrow")}
               title={t("aboutPage.principlesTitle")}
@@ -300,7 +295,7 @@ export default function AboutPage() {
 
         {/* Promise — always dark */}
         <section className="bg-[#0D1B2A] py-20 text-white lg:py-24">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className={section.container}>
             <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
               <motion.div
                 initial={{ opacity: 0, x: -24 }}
@@ -332,8 +327,8 @@ export default function AboutPage() {
         </section>
 
         {/* Stats */}
-        <section className={cn("py-20 lg:py-24", mt.sectionAlt)}>
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <section className={cn("py-14 lg:py-24", mt.sectionAlt)}>
+          <div className={section.container}>
             <SectionHeading
               eyebrow={t("aboutPage.statsEyebrow")}
               title={t("aboutPage.statsTitle")}
@@ -356,7 +351,8 @@ export default function AboutPage() {
         </section>
 
         {/* CTA */}
-        <section className="px-4 py-16 sm:px-6 lg:px-8">
+        <section className="py-14 md:py-16">
+          <div className={section.container}>
           <div className="mx-auto max-w-5xl overflow-hidden rounded-2xl bg-gradient-to-br from-[#0D1B2A] via-[#132942] to-[#1a3555] p-8 shadow-2xl sm:p-12">
             <div className="flex flex-col items-center gap-8 lg:flex-row lg:justify-between">
               <div className="flex items-center gap-6">
@@ -368,7 +364,7 @@ export default function AboutPage() {
                   <p className="mt-2 max-w-lg text-on-navy-muted">{t("aboutPage.communityDesc")}</p>
                 </div>
               </div>
-              <Button variant="gold" size="xl" href="/consultation" className="shrink-0">
+              <Button variant="gold" size="xl" href="/consultation" className="w-full shrink-0 rounded-xl py-4 text-base font-semibold lg:w-auto">
                 {t("aboutPage.communityCta")}
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
@@ -381,6 +377,7 @@ export default function AboutPage() {
                 </div>
               ))}
             </div>
+          </div>
           </div>
         </section>
       </main>

@@ -2,9 +2,10 @@
 
 import type { ReactNode } from "react";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
+import { MarketingHeroMobileImage } from "@/components/marketing/MarketingHeroMobileImage";
 import { MockupBreadcrumbs, type BreadcrumbItem } from "./MockupBreadcrumbs";
 import { cn } from "@/lib/utils";
-import { hero } from "@/lib/premium/tokens";
+import { hero, type } from "@/lib/premium/tokens";
 
 type Props = {
   breadcrumbs?: BreadcrumbItem[];
@@ -18,7 +19,7 @@ type Props = {
   className?: string;
 };
 
-/** Standard inner-page hero — matches uploaded mockups (contact, help, resources, etc.). */
+/** Standard inner-page hero — text first, mobile card image below. */
 export function MockupPageHero({
   breadcrumbs,
   eyebrow,
@@ -37,6 +38,7 @@ export function MockupPageHero({
     <section
       className={cn(
         hero.section,
+        "relative overflow-hidden",
         isDark ? "bg-[#0D1B2A] text-white" : "bg-white text-[#0D1B2A]",
         className
       )}
@@ -49,26 +51,27 @@ export function MockupPageHero({
         priority
       />
       <div className={hero.inner}>
-        {breadcrumbs && breadcrumbs.length > 0 && (
-          <MockupBreadcrumbs items={breadcrumbs} light={isDark} />
-        )}
-        {eyebrow && (
-          <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-[#D4AF37]">{eyebrow}</p>
-        )}
-        <h1 className="max-w-2xl text-4xl font-bold leading-tight tracking-tight md:text-5xl lg:text-[3.25rem]">
-          {title}
-        </h1>
-        {subtitle && (
-          <p
-            className={cn(
-              "mt-5 max-w-xl text-lg leading-relaxed",
-              isDark ? "text-gray-300" : "text-gray-600"
+        <div className="grid min-w-0 items-center gap-8 lg:grid-cols-2 lg:gap-12">
+          <div className="min-w-0">
+            {breadcrumbs && breadcrumbs.length > 0 && (
+              <MockupBreadcrumbs items={breadcrumbs} light={isDark} />
             )}
-          >
-            {subtitle}
-          </p>
-        )}
-        {children}
+            {eyebrow && <p className={`${type.eyebrow} mb-3`}>{eyebrow}</p>}
+            <h1 className={cn(type.h1, "max-w-2xl")}>{title}</h1>
+            {subtitle && (
+              <p
+                className={cn(
+                  "mt-4 max-w-xl text-sm leading-relaxed md:mt-5 md:text-lg",
+                  isDark ? "text-on-navy-muted" : "text-gray-600"
+                )}
+              >
+                {subtitle}
+              </p>
+            )}
+            {children}
+          </div>
+          <MarketingHeroMobileImage src={heroImage} priority />
+        </div>
       </div>
     </section>
   );

@@ -42,12 +42,12 @@ export default function ResourcesPage() {
           subtitle={t("resources.heroSubtitle")}
           heroImage={heroImage}
         >
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-            <Button variant="gold" size="md" href="/resources/upgrade" className="w-full sm:w-auto">
+          <div className="mt-8 flex flex-col gap-3">
+            <Button variant="gold" size="md" href="/resources/upgrade" className="w-full rounded-xl py-4 text-base font-semibold md:w-auto md:py-3">
               <Crown className="h-4 w-4" />
               {t("resources.unlockCta")}
             </Button>
-            <Button variant="onDark" size="md" href="/subjects" className="w-full sm:w-auto">
+            <Button variant="onDark" size="md" href="/subjects" className="w-full rounded-xl py-4 text-base font-semibold md:w-auto md:py-3">
               {t("resources.browseBySubject")}
               <ArrowRight className="h-4 w-4" />
             </Button>

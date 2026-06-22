@@ -104,7 +104,7 @@ export function HomePagePremium() {
   }));
 
   return (
-    <main className="flex-1 bg-background">
+    <main className="flex-1 overflow-x-hidden bg-background">
       <HomeHero
         eyebrow={t("home.heroEyebrow")}
         title={t("home.heroTitle")}
@@ -124,7 +124,7 @@ export function HomePagePremium() {
             title={t("home.programsSection.title")}
             subtitle={t("home.programsSection.subtitle")}
           />
-          <div className="grid gap-8 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-8 xl:grid-cols-4">
             {programs.map((program, index) => (
               <ProgrammeOfferCard
                 key={program.title}
@@ -140,10 +140,10 @@ export function HomePagePremium() {
               />
             ))}
           </div>
-          <div className="mt-12 text-center">
+          <div className="mt-10 text-center md:mt-12">
             <Link
               href="/programs"
-              className="inline-flex min-h-[48px] items-center gap-2 rounded-2xl border border-[#0D1B2A]/15 bg-white px-8 text-sm font-semibold text-[#0D1B2A] shadow-sm transition hover:border-[#D4AF37]/40 hover:shadow-md"
+              className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl border border-[#0D1B2A]/15 bg-white px-8 py-4 text-base font-semibold text-[#0D1B2A] shadow-sm transition hover:border-[#D4AF37]/40 hover:shadow-md md:w-auto md:min-h-[48px] md:py-3 md:text-sm"
             >
               {t("home.viewAllPrograms")}
             </Link>

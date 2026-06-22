@@ -22,7 +22,7 @@ export function CTABand({
   primaryHref = "/consultation",
 }: CTABandProps) {
   return (
-    <section className="bg-[#0D1B2A] py-20 md:py-28">
+    <section className="bg-[#0D1B2A] py-14 md:py-28">
       <div className={section.container}>
         <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-br from-[#112240] to-[#0D1B2A] px-6 py-12 text-center shadow-2xl sm:px-12 md:py-16">
           <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-[#D4AF37]/10 blur-3xl" />

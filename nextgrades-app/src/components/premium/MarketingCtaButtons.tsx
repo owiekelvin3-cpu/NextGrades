@@ -16,7 +16,7 @@ type MarketingCtaButtonsProps = {
 };
 
 const buttonClass =
-  "min-h-[3.25rem] w-full px-5 text-base font-semibold leading-snug sm:w-auto sm:min-w-[12.5rem] sm:max-w-[20rem] sm:px-7";
+  "min-h-11 w-full rounded-xl px-5 py-4 text-base font-semibold leading-snug md:min-h-[3.25rem] md:w-auto md:min-w-[12.5rem] md:max-w-[20rem] md:px-7 md:py-3";
 
 /** Paired homepage CTAs — gold primary + ghost secondary on dark backgrounds. */
 export function MarketingCtaButtons({

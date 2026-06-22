@@ -254,6 +254,10 @@ function PricingContent() {
                 className="!mb-6 sm:!mb-8 md:!mb-10"
               />
 
+              <p className="mb-2 text-right text-xs text-[var(--text-muted)] md:hidden">
+                ← {t("marketingNav.scrollHint", { defaultValue: "Scroll horizontally to compare" })} →
+              </p>
+
               <PricingCompareMobile
                 rows={compareRows}
                 planColumns={planColumns}
@@ -261,7 +265,7 @@ function PricingContent() {
               />
 
               <div className={cn("responsive-table-wrap hidden rounded-xl shadow-sm md:block", mt.tableWrap)}>
-                <table className="w-full min-w-[680px] border-collapse text-left text-sm">
+                <table className="w-full min-w-[560px] border-collapse text-left text-sm">
                   <thead>
                     <tr className="bg-[var(--brand-navy)] text-white dark:bg-[var(--surface-subtle)] dark:text-[var(--foreground)]">
                       <th className="sticky left-0 z-10 bg-[#0D1B2A] px-4 py-3.5 text-left text-xs font-semibold uppercase tracking-wide text-on-navy-muted sm:px-5 sm:py-4">

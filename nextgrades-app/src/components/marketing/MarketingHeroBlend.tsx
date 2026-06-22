@@ -58,8 +58,8 @@ export function MarketingHeroBlend({
     variant === "dark-fade-bottom"
       ? "inset-0"
       : cn(
-          "inset-y-0 right-0 max-lg:opacity-[0.42] lg:opacity-100",
-          widthClassName ?? "w-full sm:w-[88%] md:w-[72%] lg:w-[58%] xl:w-[52%]"
+          "inset-y-0 right-0 hidden md:block",
+          widthClassName ?? "w-[72%] lg:w-[58%] xl:w-[52%]"
         );
 
   return (
@@ -115,7 +115,10 @@ export function MarketingHeroBlend({
             }}
           />
           <div
-            className="absolute inset-0 bg-gradient-to-t from-white/80 via-transparent to-transparent"
+            className="absolute inset-0"
+            style={{
+              background: `linear-gradient(to top, ${bg}cc 0%, transparent 45%)`,
+            }}
           />
         </>
       )}

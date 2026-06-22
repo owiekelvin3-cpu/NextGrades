@@ -16,33 +16,36 @@ type Props = {
   columns?: 3 | 4 | 5;
 };
 
-/** Horizontal icon row — matches homepage mockup strip below hero. */
+/** Feature highlights — stacked cards on mobile, grid on desktop. */
 export function MockupFeatureStrip({ items, className, columns = 5 }: Props) {
   const gridCols =
     columns === 3
-      ? "sm:grid-cols-3"
+      ? "md:grid-cols-3"
       : columns === 4
-        ? "sm:grid-cols-2 lg:grid-cols-4"
-        : "sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5";
+        ? "md:grid-cols-2 lg:grid-cols-4"
+        : "md:grid-cols-3 lg:grid-cols-5";
 
   return (
     <section
       className={cn(
-        "border-b border-border-default bg-surface-elevated py-10 md:py-12",
+        "border-b border-border-default bg-surface-elevated py-14 md:py-12",
         className
       )}
     >
       <div className={section.container}>
-        <div className={cn("grid gap-8", gridCols)}>
+        <div className={cn("grid grid-cols-1 gap-4", gridCols)}>
           {items.map((item) => {
             const Icon = item.icon;
             return (
-              <div key={item.title} className="text-center md:text-left">
-                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--brand-gold-muted)] md:mx-0">
-                  <Icon className="h-6 w-6 text-[var(--brand-gold)]" strokeWidth={1.75} />
+              <div
+                key={item.title}
+                className="rounded-xl border border-border-default bg-surface-subtle p-5 text-left md:border-transparent md:bg-transparent md:p-0"
+              >
+                <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--brand-gold-muted)]">
+                  <Icon className="h-5 w-5 text-[var(--brand-gold)]" strokeWidth={1.75} />
                 </div>
-                <h3 className="text-sm font-bold text-foreground">{item.title}</h3>
-                <p className="mt-2 text-xs leading-relaxed text-text-muted sm:text-sm">{item.desc}</p>
+                <h3 className="text-sm font-bold text-foreground md:text-sm">{item.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-text-muted">{item.desc}</p>
               </div>
             );
           })}

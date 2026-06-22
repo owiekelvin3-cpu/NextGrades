@@ -14,6 +14,7 @@ import { useCmsImage } from "@/hooks/useCmsImage";
 import { useToast } from "@/context/ToastContext";
 import { CONSULTATION_HERO_IMAGE } from "@/lib/marketing-images";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
+import { MarketingHeroMobileImage } from "@/components/marketing/MarketingHeroMobileImage";
 import { COMPANY_PHONE_DISPLAY, COMPANY_PHONE_TEL } from "@/lib/company";
 import {
   Calendar,
@@ -32,7 +33,7 @@ import {
   Mail,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { hero } from "@/lib/premium/tokens";
+import { hero, section, type } from "@/lib/premium/tokens";
 
 const benefitIcons = [Target, Sparkles, Shield, GraduationCap, Clock, Users];
 const stepIcons = [MessageSquare, Video, CheckCircle2, Calendar];
@@ -139,7 +140,7 @@ export default function ConsultationPage() {
     <div className={cn("marketing-page-root flex min-h-screen flex-col", mt.page)}>
       <Navbar />
 
-      <main className="flex-1">
+      <main className="flex-1 overflow-x-hidden">
         {/* Hero */}
         <section
           className={cn(
@@ -155,22 +156,22 @@ export default function ConsultationPage() {
             priority
           />
           <div className={hero.inner}>
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="grid min-w-0 items-center gap-8 lg:grid-cols-2 lg:gap-12">
               <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
-                <p className={`uppercase tracking-[0.2em] text-sm font-semibold mb-4 ${textMuted}`}>
+                <p className={`${type.eyebrow} mb-3 ${textMuted}`}>
                   {t("consultation.heroEyebrow")}
                 </p>
-                <h1 className={`text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight ${textPrimary}`}>
+                <h1 className={cn(type.h1, "mb-4", textPrimary)}>
                   {t("consultation.title")}
                   <br />
                   <span className="text-[#D4AF37]">{t("consultation.titleHighlight")}</span>
                 </h1>
-                <p className={`text-lg mb-4 ${textMuted}`}>{t("consultation.subtitle")}</p>
-                <p className={`text-base mb-8 ${isDark ? "text-foreground-secondary" : "text-gray-600"}`}>
+                <p className={cn("mb-3 text-sm md:text-lg", textMuted)}>{t("consultation.subtitle")}</p>
+                <p className={cn("mb-6 text-sm md:mb-8 md:text-base", isDark ? "text-foreground-secondary" : "text-gray-600")}>
                   {t("consultation.heroDesc")}
                 </p>
 
-                <div className="flex flex-wrap gap-2 mb-8">
+                <div className="mb-6 flex flex-wrap gap-2 md:mb-8">
                   {trustBadges.map((badge) => (
                     <Badge key={badge} variant="gold">
                       <CheckCircle2 className="w-3.5 h-3.5 mr-1.5" />
@@ -179,8 +180,8 @@ export default function ConsultationPage() {
                   ))}
                 </div>
 
-                <div className="flex flex-wrap gap-4">
-                  <Button variant="gold" size="lg" href="#book-consultation">
+                <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                  <Button variant="gold" size="lg" href="#book-consultation" className="w-full rounded-xl py-4 text-base font-semibold sm:w-auto">
                     {t("consultation.bookNow")}
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
@@ -188,11 +189,14 @@ export default function ConsultationPage() {
                     variant={isDark ? "onDark" : "outline"}
                     size="lg"
                     href="/programs"
+                    className="w-full rounded-xl py-4 text-base font-semibold sm:w-auto"
                   >
                     {t("consultation.viewPrograms")}
                   </Button>
                 </div>
               </motion.div>
+
+              <MarketingHeroMobileImage src={consultationHeroImage} alt={t("consultation.title")} priority />
 
               <motion.div
                 initial={{ opacity: 0, scale: 0.96 }}
@@ -234,8 +238,8 @@ export default function ConsultationPage() {
         </section>
 
         {/* Process */}
-        <section className={cn("py-20", mt.sectionAlt)}>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className={cn("py-14 md:py-20", mt.sectionAlt)}>
+          <div className={section.container}>
             <div className="text-center max-w-2xl mx-auto mb-14">
               <h2 className={`text-3xl md:text-4xl font-bold mb-4 ${textPrimary}`}>{t("consultation.processTitle")}</h2>
               <p className={textMuted}>{t("consultation.processSubtitle")}</p>
@@ -270,8 +274,8 @@ export default function ConsultationPage() {
         </section>
 
         {/* Benefits */}
-        <section className={cn("py-20", mt.section)}>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className={cn("py-14 md:py-20", mt.section)}>
+          <div className={section.container}>
             <div className="text-center max-w-2xl mx-auto mb-14">
               <h2 className={`text-3xl md:text-4xl font-bold mb-4 ${textPrimary}`}>{t("consultation.benefitsTitle")}</h2>
               <p className={textMuted}>{t("consultation.benefitsSubtitle")}</p>
@@ -296,7 +300,7 @@ export default function ConsultationPage() {
 
         {/* Audience */}
         <section className={cn("py-16", mt.sectionAlt)}>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className={section.container}>
             <h2 className={`text-2xl md:text-3xl font-bold text-center mb-10 ${textPrimary}`}>
               {t("consultation.audienceTitle")}
             </h2>
@@ -318,8 +322,8 @@ export default function ConsultationPage() {
         </section>
 
         {/* Booking form */}
-        <section id="book-consultation" className={cn("scroll-mt-24 py-20", mt.section)}>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section id="book-consultation" className={cn("scroll-mt-24 py-14 md:py-20", mt.section)}>
+          <div className={section.container}>
             <div className="grid lg:grid-cols-5 gap-10 items-start">
               <div className="lg:col-span-2 lg:sticky lg:top-28">
                 <Badge variant="gold" className="mb-4">
@@ -525,8 +529,8 @@ export default function ConsultationPage() {
         </section>
 
         {/* FAQ */}
-        <section className={cn("py-20", mt.sectionAlt)}>
-          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className={cn("py-14 md:py-20", mt.sectionAlt)}>
+          <div className={cn(section.container, "max-w-3xl")}>
             <h2 className={`text-3xl font-bold text-center mb-10 ${textPrimary}`}>{t("consultation.faqTitle")}</h2>
             <div className="space-y-3">
               {faqs.map((faq, i) => (
@@ -561,7 +565,7 @@ export default function ConsultationPage() {
 
         {/* Bottom CTA */}
         <section className="py-16">
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className={cn(section.container, "max-w-5xl")}>
             <Card className="p-10 md:p-14 text-center bg-gradient-to-br from-[#0D1B2A] to-[#1a3a5c] border-0 text-white relative overflow-hidden">
               <div className="absolute inset-0 bg-[#D4AF37]/5 pointer-events-none" />
               <div className="relative">

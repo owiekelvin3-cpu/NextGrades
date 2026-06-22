@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef, type ReactNode } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { LogOut, User as UserIcon, Menu, X, ChevronDown } from "lucide-react";
@@ -37,8 +37,6 @@ const secondaryNavLinks = [
   { href: "/about", key: "about" },
   { href: "/contact", key: "contact" },
 ] as const;
-
-const allNavLinks = [...primaryNavLinks, ...secondaryNavLinks] as const;
 
 function isNavLinkActive(pathname: string, href: string): boolean {
   if (href === "/") return pathname === "/";
@@ -193,8 +191,8 @@ export default function Navbar() {
         )}
         style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
       >
-        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-5 xl:px-6 2xl:px-8">
-          <div className="flex h-[var(--site-nav-height)] items-center gap-2 lg:gap-3 2xl:gap-5">
+        <div className="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-5 xl:px-6 2xl:px-8">
+          <div className="flex h-[var(--site-nav-height)] items-center justify-between gap-2 lg:gap-3 2xl:gap-5">
             <div className="flex shrink-0 items-center">
               <BrandLogo size="md" priority={pathname === "/"} onDarkBackground={onDark} className="2xl:hidden" />
               <BrandLogo
@@ -206,7 +204,7 @@ export default function Navbar() {
             </div>
 
             <nav
-              className="hidden min-w-0 flex-1 items-center justify-center gap-0 xl:flex xl:gap-0.5 2xl:gap-1"
+              className="hidden min-w-0 flex-1 items-center justify-center gap-0 md:flex md:gap-0.5 lg:gap-1 xl:gap-0.5 2xl:gap-1"
               aria-label={t("marketingNav.bottomLabel")}
             >
               {primaryNavLinks.map((link) => (
@@ -273,7 +271,7 @@ export default function Navbar() {
               </div>
             </nav>
 
-            <div className="hidden shrink-0 items-center gap-1.5 xl:flex 2xl:gap-2">
+            <div className="hidden shrink-0 items-center gap-1.5 md:flex 2xl:gap-2">
               <div className="flex items-center gap-1">
                 <LanguageSwitcher compact onDark={onDark} />
                 <ThemeToggle size="sm" onDark={onDark} />
@@ -357,13 +355,11 @@ export default function Navbar() {
               )}
             </div>
 
-            <div className="ml-auto flex items-center gap-1.5 xl:hidden">
-              <LanguageSwitcher compact onDark={onDark} />
-              <ThemeToggle size="sm" onDark={onDark} />
+            <div className="ml-auto flex items-center md:hidden">
               <button
                 type="button"
                 className={cn(
-                  "flex min-h-10 min-w-10 items-center justify-center rounded-lg border transition-colors touch-manipulation active:scale-95",
+                  "flex min-h-11 min-w-11 items-center justify-center rounded-xl border transition-colors touch-manipulation active:scale-95",
                   onDark
                     ? "border-white/10 bg-white/5 text-white hover:bg-white/10"
                     : "border-border-default bg-surface-elevated text-foreground hover:bg-surface-subtle"
@@ -408,36 +404,24 @@ export default function Navbar() {
                 </>
               ) : (
                 <>
-                  <Button variant="gold" size="md" className="w-full min-h-[48px]" href="/consultation">
-                    {t("navbar.freeConsultation")}
-                  </Button>
                   <Link
                     href="/login"
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="flex min-h-[48px] w-full items-center justify-center rounded-xl border border-border-default text-sm font-semibold text-foreground touch-manipulation hover:bg-surface-subtle"
+                    className="flex min-h-[48px] w-full items-center justify-center rounded-xl border border-border-default text-base font-semibold text-foreground touch-manipulation hover:bg-surface-subtle"
                   >
                     {t("common.login")}
                   </Link>
-                  {isPublicSignupEnabled() && (
-                    <Link
-                      href="/signup"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="flex min-h-[48px] w-full items-center justify-center rounded-xl border border-[var(--brand-gold)]/35 text-sm font-semibold text-[var(--brand-gold)] touch-manipulation"
-                    >
-                      {t("navbar.signup")}
-                    </Link>
-                  )}
+                  <Button variant="gold" size="md" className="w-full min-h-[48px] py-4 text-base font-semibold" href="/consultation">
+                    {t("navbar.consultationShort")}
+                  </Button>
                 </>
               )}
             </div>
           }
         >
-          <nav className="flex-1 overflow-y-auto overscroll-contain px-4 py-4">
-            <div className="mb-6">
-              <LanguageSwitcher layout="drawer" />
-            </div>
-            <MobileNavSection title={t("marketingNav.explore")}>
-              {allNavLinks.map((link) => (
+          <nav className="flex-1 overflow-y-auto overscroll-contain px-5 py-4">
+            <ul className="space-y-1">
+              {primaryNavLinks.map((link) => (
                 <MobileNavItem
                   key={link.href}
                   href={link.href}
@@ -446,20 +430,30 @@ export default function Navbar() {
                   onNavigate={() => setIsMobileMenuOpen(false)}
                 />
               ))}
-            </MobileNavSection>
+            </ul>
+
+            <div className="my-6 h-px bg-border-default/60" aria-hidden />
+
+            <div className="space-y-4">
+              <LanguageSwitcher layout="drawer" />
+              <ThemeToggle size="sm" onDark={onDark} />
+            </div>
+
+            <div className="mt-6 space-y-1 border-t border-border-default/60 pt-4">
+              {secondaryNavLinks.map((link) => (
+                <MobileNavItem
+                  key={link.href}
+                  href={link.href}
+                  label={t(`common.${link.key}`)}
+                  active={isNavLinkActive(pathname, link.href)}
+                  onNavigate={() => setIsMobileMenuOpen(false)}
+                />
+              ))}
+            </div>
           </nav>
         </MobileDrawer>
       </header>
     </>
-  );
-}
-
-function MobileNavSection({ title, children }: { title: string; children: ReactNode }) {
-  return (
-    <div>
-      <p className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-text-muted">{title}</p>
-      <ul className="space-y-0.5">{children}</ul>
-    </div>
   );
 }
 

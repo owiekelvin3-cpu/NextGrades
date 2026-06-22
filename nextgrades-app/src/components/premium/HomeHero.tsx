@@ -55,13 +55,13 @@ export function HomeHero({
               secondaryLabel={secondaryCta}
             />
 
-            <div className="mt-8 flex flex-wrap gap-4 text-sm text-on-navy-subtle sm:mt-10 sm:gap-6">
-              <span className="inline-flex items-center gap-2">
-                <MapPin className="h-4 w-4 text-[#D4AF37]" />
+            <div className="mt-8 flex flex-wrap gap-2 sm:mt-10 sm:gap-3">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-xs text-on-navy-subtle">
+                <MapPin className="h-3.5 w-3.5 text-[#D4AF37]" />
                 Österreich
               </span>
-              <span className="inline-flex items-center gap-2">
-                <Shield className="h-4 w-4 text-[#D4AF37]" />
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-xs text-on-navy-subtle">
+                <Shield className="h-3.5 w-3.5 text-[#D4AF37]" />
                 DSGVO-konform
               </span>
             </div>

@@ -23,6 +23,7 @@ import {
 import { StudentDashboardLayout } from "./StudentDashboardLayout";
 import { studentPanel, formatTimeRange, lessonDateParts, st } from "./student-ui";
 import { StudentTabBar } from "./StudentTabBar";
+import { StudentCalendarConnectModal } from "./StudentCalendarConnectModal";
 import { ZoomMeetingButton } from "@/components/zoom/ZoomMeetingButton";
 import { useToast } from "@/context/ToastContext";
 import { mobile } from "@/lib/mobile/tokens";
@@ -87,6 +88,7 @@ export function StudentAppointmentsExperience() {
   const [data, setData] = useState<StudentAppointmentsData | null>(null);
   const [tab, setTab] = useState<Tab>("upcoming");
   const [showRequestModal, setShowRequestModal] = useState(false);
+  const [showCalendarModal, setShowCalendarModal] = useState(false);
   const [requesting, setRequesting] = useState(false);
   const [requestForm, setRequestForm] = useState({ date: "", time: "", message: "" });
   const toast = useToast();
@@ -132,7 +134,12 @@ export function StudentAppointmentsExperience() {
 
   const headerActions = (
     <div className="flex w-full flex-col gap-2 sm:flex-row sm:flex-wrap">
-      <Button variant="outline" size="sm" className="w-full gap-2 sm:w-auto">
+      <Button
+        variant="outline"
+        size="sm"
+        className="w-full gap-2 sm:w-auto"
+        onClick={() => setShowCalendarModal(true)}
+      >
         <Calendar className="h-4 w-4" />
         {t("studentDashboard.connectCalendar", { defaultValue: "Connect calendar" })}
       </Button>
@@ -173,6 +180,7 @@ export function StudentAppointmentsExperience() {
 
   return (
     <StudentDashboardLayout title={title} description={description} headerAction={headerActions}>
+      <StudentCalendarConnectModal open={showCalendarModal} onClose={() => setShowCalendarModal(false)} />
       {/* Request Appointment Modal */}
       {showRequestModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">

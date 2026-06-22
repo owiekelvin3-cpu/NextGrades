@@ -15,7 +15,7 @@ export function MarketingHeroMobileImage({ src, alt = "", className, priority }:
   return (
     <div
       className={cn(
-        "relative aspect-[16/10] w-full overflow-hidden rounded-2xl border border-white/10 shadow-lg lg:hidden",
+        "relative mt-6 h-52 w-full overflow-hidden rounded-2xl border border-white/10 shadow-lg md:mt-0 md:hidden",
         className
       )}
     >

@@ -70,9 +70,9 @@ export default function Footer() {
             </div>
 
             <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-              <a href="mailto:support@nextgrades.de" className="footer-contact-btn">
+              <a href="mailto:support@nextgrades.at" className="footer-contact-btn">
                 <Mail className="h-4 w-4 shrink-0 text-[var(--brand-gold)]" aria-hidden />
-                support@nextgrades.de
+                support@nextgrades.at
               </a>
               <span className="inline-flex items-center gap-1.5 text-xs text-[var(--footer-subtle)]">
                 <MapPin className="h-3.5 w-3.5 text-[var(--brand-gold)]" aria-hidden />

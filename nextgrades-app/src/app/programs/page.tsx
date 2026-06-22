@@ -24,7 +24,7 @@ import { PROGRAMS_HERO_IMAGE, PROGRAMS_PAGE_CARD_IMAGES } from "@/lib/marketing-
 import { MarketingImage } from "@/components/marketing/MarketingImage";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
 import { MarketingHeroMobileImage } from "@/components/marketing/MarketingHeroMobileImage";
-import { hero, type } from "@/lib/premium/tokens";
+import { hero, type, section } from "@/lib/premium/tokens";
 import { cn } from "@/lib/utils";
 
 const statIcons = [GraduationCap, UserRound, Star];
@@ -132,19 +132,19 @@ export default function ProgramsPage() {
         </section>
 
         <section className="-mt-6 pb-2 md:-mt-8">
-          <div className="mx-auto max-w-5xl px-4">
+          <div className={section.container}>
             <Card className={cn("rounded-2xl border p-4 shadow-xl sm:p-6", mt.card)}>
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-7">
+              <div className="grid grid-cols-3 gap-3 sm:gap-7">
                 {safeStats.map((stat, index) => {
                   const Icon = statIcons[index];
                   return (
-                    <div key={index} className="flex items-center gap-3">
-                      <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[var(--surface-subtle)]">
+                    <div key={index} className="flex flex-col items-center gap-2 text-center sm:flex-row sm:items-center sm:gap-3 sm:text-left">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--surface-subtle)] sm:h-11 sm:w-11">
                         <Icon className="h-5 w-5 text-[var(--brand-gold)]" />
                       </div>
                       <div>
-                        <p className="text-3xl font-bold text-[var(--foreground)]">{stat.number}</p>
-                        <p className="text-sm text-[var(--text-muted)]">{stat.label}</p>
+                        <p className="text-2xl font-bold text-[var(--foreground)] sm:text-3xl">{stat.number}</p>
+                        <p className="text-xs text-[var(--text-muted)] sm:text-sm">{stat.label}</p>
                       </div>
                     </div>
                   );
@@ -155,7 +155,7 @@ export default function ProgramsPage() {
         </section>
 
         <section className={cn("py-14 md:py-16", mt.sectionAlt)}>
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className={section.container}>
             <div className="mb-10 text-center">
               <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--brand-gold)]">
                 {t("programsPage.sectionEyebrow")}
@@ -165,7 +165,7 @@ export default function ProgramsPage() {
               </h2>
               <p className="mx-auto max-w-2xl text-[var(--text-muted)]">{t("programsPage.sectionDesc")}</p>
             </div>
-            <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-6 xl:grid-cols-4">
               {safePrograms.map((program, index) => {
                 const featured = index === 3;
                 return (
@@ -221,12 +221,15 @@ export default function ProgramsPage() {
         </section>
 
         <section className={cn("py-14 md:py-16", mt.section)}>
-          <div className="mx-auto max-w-6xl px-4">
-            <h2 className="mb-8 text-center text-3xl font-bold text-[var(--foreground)]">
+          <div className={section.container}>
+            <h2 className="mb-6 text-center text-2xl font-bold text-[var(--foreground)] md:mb-8 md:text-3xl">
               {t("programsPage.compareTitle")}
             </h2>
+            <p className="mb-2 text-right text-xs text-[var(--text-muted)] md:hidden">
+              ← {t("marketingNav.scrollHint", { defaultValue: "Scroll horizontally to compare" })} →
+            </p>
             <div className={cn("responsive-table-wrap rounded-xl border", mt.tableWrap)}>
-              <table className="w-full min-w-[760px] text-sm">
+              <table className="w-full min-w-[600px] text-sm">
                 <thead className={mt.tableHead}>
                   <tr>
                     <th className="px-3 py-3 text-left text-xs font-semibold sm:px-6 sm:py-4 sm:text-sm">{compareHeaders.features}</th>
@@ -265,25 +268,25 @@ export default function ProgramsPage() {
         </section>
 
         <section className={cn("pb-14 pt-4", mt.sectionAlt)}>
-          <div className="mx-auto max-w-6xl px-4">
+          <div className={section.container}>
             <Card className={cn("rounded-2xl border p-5 sm:p-8", mt.card)}>
-              <div className="flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-center">
-                <div className="flex items-center gap-4 sm:gap-6">
-                  <Calendar className="h-14 w-14 text-[var(--brand-gold)]" />
+              <div className="flex flex-col items-stretch justify-between gap-6 lg:flex-row lg:items-center">
+                <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-6">
+                  <Calendar className="h-12 w-12 shrink-0 text-[var(--brand-gold)] sm:h-14 sm:w-14" />
                   <div>
                     <h3 className="mb-2 text-2xl font-bold text-[var(--foreground)]">{t("programsPage.ctaTitle")}</h3>
-                    <p className="text-[var(--text-muted)]">{t("programsPage.ctaDesc")}</p>
-                    <div className="mt-4 flex flex-wrap gap-4">
+                    <p className="text-sm text-[var(--text-muted)] md:text-base">{t("programsPage.ctaDesc")}</p>
+                    <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:gap-4">
                       {safeCtaTags.map((tag, i) => (
-                        <span key={i} className="flex items-center gap-2 text-xs text-[var(--foreground-secondary)]">
-                          <CheckCircle2 className="h-4 w-4 text-[var(--brand-gold)]" />
+                        <span key={i} className="flex items-center gap-2 text-xs text-[var(--foreground-secondary)] sm:text-sm">
+                          <CheckCircle2 className="h-4 w-4 shrink-0 text-[var(--brand-gold)]" />
                           {tag}
                         </span>
                       ))}
                     </div>
                   </div>
                 </div>
-                <Button variant="gold" size="lg" className="w-full sm:w-auto" href="/consultation">
+                <Button variant="gold" size="lg" className="w-full rounded-xl py-4 text-base font-semibold sm:w-auto" href="/consultation">
                   {t("programsPage.ctaButton")} <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
               </div>

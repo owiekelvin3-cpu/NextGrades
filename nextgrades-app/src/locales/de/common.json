@@ -367,7 +367,13 @@
     "ctaDesc": "Vergleiche Mitgliedschaften und Nachhilfe-Pakete auf unserer Preisseite.",
     "ctaConsultation": "Preise",
     "validationRequired": "Bitte fülle alle Pflichtfelder aus.",
-    "validationEmail": "Bitte gib eine gültige E-Mail-Adresse ein."
+    "validationEmail": "Bitte gib eine gültige E-Mail-Adresse ein.",
+    "subject": "Fach / Kurs",
+    "subjectPlaceholder": "Fach oder Programm wählen",
+    "subjectGroupSubjects": "Fächer",
+    "subjectGroupPrograms": "Programme",
+    "subjectHint": "Optional — hilft uns, deine Anfrage an das richtige Team weiterzuleiten.",
+    "subjectGeneral": "Allgemeine Anfrage"
   },
   "login": {
     "welcomeBack": "Willkommen zurück",

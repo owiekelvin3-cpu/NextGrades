@@ -36,12 +36,17 @@ export function PricingPlanCard({
   return (
     <article
       className={cn(
-        "group flex h-full flex-col overflow-hidden rounded-2xl border bg-[var(--card-background)] transition-shadow duration-300",
+        "group relative flex h-full flex-col overflow-hidden rounded-2xl border bg-[var(--card-background)] transition-shadow duration-300",
         plan.highlighted
           ? "border-[var(--brand-gold)]/40 shadow-[var(--card-shadow)] ring-1 ring-[var(--brand-gold)]/25"
           : "border-[var(--border-default)] shadow-sm hover:shadow-md"
       )}
     >
+      {plan.highlighted && popularLabel && (
+        <span className="absolute right-3 top-3 z-10 rounded-full bg-[var(--brand-gold)] px-3 py-1 text-xs font-bold text-[var(--brand-navy)]">
+          {popularLabel}
+        </span>
+      )}
       {imageSrc && (
         <div className="relative h-36 overflow-hidden bg-[var(--surface-subtle)] sm:h-40">
           <MarketingImage
@@ -55,22 +60,15 @@ export function PricingPlanCard({
         </div>
       )}
 
-      <div className="flex flex-1 flex-col p-5 sm:p-6 md:p-7">
-        <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-3">
-          <div className="min-w-0">
-            <h3 className="text-lg font-bold tracking-tight text-[var(--foreground)] sm:text-xl">
-              {plan.name}
-            </h3>
-            <p className="mt-1.5 text-sm leading-relaxed text-[var(--text-muted)]">{plan.description}</p>
-          </div>
-          {plan.highlighted && popularLabel && (
-            <span className="w-fit shrink-0 rounded-md bg-[var(--brand-navy)] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-white dark:bg-[var(--brand-gold)] dark:text-[var(--brand-navy)]">
-              {popularLabel}
-            </span>
-          )}
+      <div className="flex flex-1 flex-col p-5 md:p-7">
+        <div className="mb-4 pr-16">
+          <h3 className="text-lg font-semibold tracking-tight text-[var(--foreground)] md:text-xl md:font-bold">
+            {plan.name}
+          </h3>
+          <p className="mt-1.5 text-sm leading-relaxed text-[var(--text-muted)]">{plan.description}</p>
         </div>
 
-        <p className="break-words text-xl font-bold leading-tight tracking-tight text-[var(--foreground)] sm:text-2xl">
+        <p className="break-words text-2xl font-bold leading-tight tracking-tight text-[var(--foreground)] md:text-2xl">
           {plan.priceLabel ?? `€${plan.monthlyPrice}`}
         </p>
 
@@ -89,7 +87,7 @@ export function PricingPlanCard({
           variant={plan.highlighted ? "gold" : "outline"}
           size="lg"
           className={cn(
-            "mt-6 min-h-[3rem] w-full rounded-xl text-sm font-semibold sm:mt-8 sm:min-h-[3.25rem] sm:text-base"
+            "mt-6 min-h-11 w-full rounded-xl py-4 text-base font-semibold md:mt-8 md:min-h-[3.25rem] md:py-3 md:text-sm"
           )}
           disabled={isLoading}
           onClick={onSelect}

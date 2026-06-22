@@ -285,7 +285,19 @@
     "ctaDesc": "Compare memberships and tutoring packages on our pricing page.",
     "ctaConsultation": "Free consultation",
     "validationRequired": "Please fill in all required fields.",
-    "validationEmail": "Please enter a valid email address."
+    "validationEmail": "Please enter a valid email address.",
+    "lastNameOptional": "Last name (optional)",
+    "phoneOptional": "Phone number (optional)",
+    "subject": "Subject / course",
+    "subjectPlaceholder": "Select a subject or program",
+    "subjectGroupSubjects": "Subjects",
+    "subjectGroupPrograms": "Programs",
+    "subjectHint": "Optional — helps us route your message to the right team.",
+    "subjectGeneral": "General inquiry",
+    "sidePoint1": "Personal support tailored to your goals",
+    "sidePoint2": "Experienced, qualified tutors",
+    "sidePoint3": "Clear learning structure",
+    "sidePoint4": "Measurable progress"
   },
   "login": {
     "welcomeBack": "Welcome back",

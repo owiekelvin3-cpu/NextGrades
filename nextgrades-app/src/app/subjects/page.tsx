@@ -40,7 +40,21 @@ import { SUBJECTS_HERO_IMAGE, getSubjectImage } from "@/lib/marketing-images";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
 import { MarketingHeroMobileImage } from "@/components/marketing/MarketingHeroMobileImage";
 import { cn } from "@/lib/utils";
-import { hero, type } from "@/lib/premium/tokens";
+import { hero, type, section } from "@/lib/premium/tokens";
+
+const SUBJECT_ACCENT_COLORS = [
+  "#F59E0B",
+  "#3B82F6",
+  "#10B981",
+  "#8B5CF6",
+  "#EF4444",
+  "#F97316",
+  "#06B6D4",
+  "#6366F1",
+  "#22C55E",
+  "#F59E0B",
+  "#3B82F6",
+] as const;
 
 const SUBJECT_ICONS: Record<string, typeof Calculator> = {
   math: Calculator,
@@ -127,7 +141,7 @@ export default function SubjectsPage() {
     <div className={cn("marketing-page-root flex min-h-screen flex-col", mt.page)}>
       <Navbar />
 
-      <main className="flex-1">
+      <main className="flex-1 overflow-x-hidden">
         {/* Hero */}
         <section className={cn("bg-[#0D1B2A] text-white", hero.section)}>
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(212,175,55,0.12)_0%,_transparent_55%)]" />
@@ -181,13 +195,16 @@ export default function SubjectsPage() {
 
         {/* Stats strip */}
         <section className="relative z-10 -mt-4 pb-4">
-          <div className="mx-auto max-w-5xl px-4">
+          <div className={section.container}>
             <Card className={cn("border-0 p-4 shadow-xl sm:p-6", mt.card)}>
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-6">
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 sm:gap-6">
                 {stats.map((stat, index) => {
                   const Icon = statIcons[index];
                   return (
-                    <div key={index} className="flex min-w-0 flex-col items-center gap-1.5 text-center sm:flex-row sm:items-center sm:gap-4 sm:text-left">
+                    <div
+                      key={index}
+                      className="flex min-w-0 flex-col items-center gap-1.5 rounded-xl border border-[var(--border-default)] bg-[var(--surface-subtle)] p-4 text-center sm:flex-row sm:items-center sm:gap-4 sm:border-0 sm:bg-transparent sm:p-0 sm:text-left"
+                    >
                       <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--brand-gold-muted)] sm:h-12 sm:w-12">
                         <Icon className="h-4 w-4 text-[var(--brand-gold)] sm:h-6 sm:w-6" />
                       </div>
@@ -205,12 +222,12 @@ export default function SubjectsPage() {
 
         {/* Subject cards — owner mockup grid */}
         <section className="bg-[#0D1B2A] py-14 text-white md:py-20">
-          <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8">
+          <div className={section.container}>
             <p className="mx-auto mb-10 max-w-3xl text-center text-base leading-relaxed text-on-navy-muted sm:mb-12 sm:text-lg">
               {t("subjectsPage.gridIntro")}
             </p>
 
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
               {subjects.map((subject, index) => {
                 const Icon = SUBJECT_ICONS[subject.id] ?? BookOpen;
                 const { src: image, fallback: imageFallback } = resolveSubjectImage(subject.id, index);
@@ -222,6 +239,7 @@ export default function SubjectsPage() {
                         imageSrc={image}
                         imageFallback={imageFallback}
                         icon={Icon}
+                        accentColor={SUBJECT_ACCENT_COLORS[index % SUBJECT_ACCENT_COLORS.length]}
                         bookTutoringLabel={t("subjectsPage.bookTutoring")}
                         viewMaterialsLabel={t("subjectsPage.viewMaterials")}
                         onViewMaterials={() => openBrowse(subject)}
@@ -235,34 +253,34 @@ export default function SubjectsPage() {
         </section>
 
         {/* Why NextGrades */}
-        <section className={cn("py-20", mt.section)}>
-          <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-            <div className="mb-14 text-center">
-              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--brand-gold)]">
+        <section className={cn("py-14 md:py-20", mt.section)}>
+          <div className={section.container}>
+            <div className="mb-10 text-center md:mb-14">
+              <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-[var(--brand-gold)]">
                 {t("subjectsPage.whyEyebrow")}
               </p>
-              <h2 className="text-3xl font-bold text-[var(--foreground)] md:text-4xl">
+              <h2 className="text-2xl font-bold text-[var(--foreground)] md:text-4xl">
                 {t("subjectsPage.whyTitle")}
               </h2>
             </div>
-            <div className="grid grid-cols-4 gap-2 sm:gap-4 lg:gap-6">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4 lg:gap-6">
               {benefits.map((item, index) => {
                 const Icon = benefitIcons[index];
                 return (
                   <Card
                     key={index}
                     className={cn(
-                      "min-w-0 p-3 text-center transition-transform hover:-translate-y-1 sm:p-6",
-                      isDark ? "border-white/10 bg-[#0D1B2A]/50" : "border-gray-100"
+                      "rounded-xl p-5 text-left transition-transform hover:-translate-y-1 md:p-6 md:text-center",
+                      isDark ? "border-white/10 bg-white/5" : "border-gray-100 bg-white/5"
                     )}
                   >
-                    <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-[#D4AF37]/10 sm:mb-5 sm:h-16 sm:w-16 sm:rounded-2xl">
-                      <Icon className="h-5 w-5 text-[#D4AF37] sm:h-8 sm:w-8" />
+                    <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-[#D4AF37]/10 md:mx-auto md:mb-5 md:h-16 md:w-16 md:rounded-2xl">
+                      <Icon className="h-5 w-5 text-[#D4AF37] md:h-8 md:w-8" />
                     </div>
-                    <h3 className={cn("mb-1 text-[11px] font-bold leading-tight sm:mb-2 sm:text-base", "text-foreground")}>
+                    <h3 className={cn("mb-1 text-lg font-semibold leading-tight md:text-base md:font-bold", "text-foreground")}>
                       {item.title}
                     </h3>
-                    <p className={cn("hidden text-xs leading-relaxed sm:block sm:text-sm", isDark ? "text-text-muted" : "text-foreground-secondary")}>
+                    <p className={cn("text-sm leading-relaxed", isDark ? "text-text-muted" : "text-foreground-secondary")}>
                       {item.desc}
                     </p>
                   </Card>
