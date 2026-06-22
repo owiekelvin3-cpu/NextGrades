@@ -21,7 +21,7 @@ export function FooterMobileAccordion({
     <div
       className={cn(
         "overflow-hidden rounded-xl border border-[var(--footer-border)]",
-        open ? "bg-[var(--brand-gold-muted)]" : "bg-surface-elevated/40 dark:bg-white/[0.03]"
+        open ? "bg-[rgba(212,175,55,0.06)]" : "bg-white/[0.03]"
       )}
     >
       <button
@@ -70,7 +70,7 @@ export function FooterAccordionLink({
     <li>
       <Link
         href={href}
-        className="footer-nav-link block min-h-10 rounded-lg px-2 py-2.5 touch-manipulation hover:bg-[var(--table-row-hover)]"
+        className="footer-nav-link block min-h-10 rounded-lg px-2 py-2.5 touch-manipulation hover:bg-white/[0.04]"
       >
         {children}
       </Link>

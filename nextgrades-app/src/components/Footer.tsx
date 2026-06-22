@@ -3,60 +3,45 @@
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { BrandLogo } from "./BrandLogo";
-import { Mail, Phone, MessageCircle, Calendar } from "lucide-react";
+import { ArrowRight, Mail, MapPin } from "lucide-react";
+import { Button } from "@/components/ui/Button";
 import { OpenCookieSettingsButton } from "@/components/cookies/OpenCookieSettingsButton";
 import { useConsentOptional } from "@/context/ConsentContext";
 import { FooterMobileAccordion, FooterAccordionLink } from "@/components/marketing/mobile/FooterMobileAccordion";
-import { FooterNewsletter } from "@/components/FooterNewsletter";
 import { section } from "@/lib/premium/tokens";
-import {
-  COMPANY_COUNTRY,
-  COMPANY_MAILTO,
-  COMPANY_PHONE_DISPLAY,
-  COMPANY_PHONE_TEL,
-  COMPANY_SUPPORT_EMAIL,
-} from "@/lib/company";
-import { useTheme } from "@/context/ThemeContext";
 import { cn } from "@/lib/utils";
 
-const supportLinks = [
-  { href: "/contact", labelKey: "common.contact" },
-  { href: "/help", labelKey: "common.help" },
-  { href: "/resources", labelKey: "footer.resource1" },
-  { href: "/consultation", labelKey: "common.freeConsultation" },
-  { href: "/pricing", labelKey: "common.pricing" },
-  { href: "/login", labelKey: "common.login" },
+const programLinks = [
+  { href: "/consultation", key: "footer.program1" },
+  { href: "/programs", key: "footer.program2" },
+  { href: "/programs", key: "footer.program3" },
+  { href: "/resources", key: "footer.program4" },
+] as const;
+
+const resourceLinks = [
+  { href: "/resources", key: "footer.resource1" },
+  { href: "/resources", key: "footer.resource2" },
+  { href: "/resources", key: "footer.resource3" },
+  { href: "/resources/upgrade", key: "footer.resource4" },
 ] as const;
 
 const companyLinks = [
-  { href: "/about", labelKey: "common.about" },
-  { href: "/programs", labelKey: "common.programs" },
-  { href: "/subjects", labelKey: "common.subjects" },
-  { href: "/careers", labelKey: "common.careers" },
-  { href: "/signup", labelKey: "common.signup" },
+  { href: "/about", key: "common.about" },
+  { href: "/contact", key: "common.contact" },
+  { href: "/help", key: "common.help" },
+  { href: "/careers", key: "common.careers" },
 ] as const;
 
 const legalLinks = [
-  { href: "/terms", key: "footer.terms" },
   { href: "/privacy", key: "footer.privacy" },
+  { href: "/terms", key: "footer.terms" },
   { href: "/privacy/cookies", key: "footer.cookies" },
   { href: "/imprint", key: "footer.imprint" },
 ] as const;
 
-const contactChannels = [
-  { href: COMPANY_MAILTO, icon: Mail, label: COMPANY_SUPPORT_EMAIL, external: true },
-  { href: COMPANY_PHONE_TEL, icon: Phone, label: COMPANY_PHONE_DISPLAY, external: true },
-  { href: "/contact", icon: MessageCircle, labelKey: "common.contact" },
-  { href: "/consultation", icon: Calendar, labelKey: "common.freeConsultation" },
-] as const;
-
 export default function Footer() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const consent = useConsentOptional();
-  const { theme } = useTheme();
-  const onDarkFooter = theme === "dark";
-  const country =
-    i18n.language?.startsWith("de") ? COMPANY_COUNTRY.de : COMPANY_COUNTRY.en;
 
   return (
     <footer className="site-footer">
@@ -65,134 +50,133 @@ export default function Footer() {
       <div
         className={cn(
           section.container,
-          "site-footer__inner pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-12 md:pt-16"
+          "site-footer__inner pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-10 md:pt-14"
         )}
       >
-        {/* Main grid — reference: brand | support | company | newsletter */}
-        <div className="grid gap-10 lg:grid-cols-12 lg:gap-8 xl:gap-12">
-          {/* Brand + contact channels */}
-          <div className="lg:col-span-3">
-            <BrandLogo size="lg" href="/" onDarkBackground={onDarkFooter} className="mb-6" />
+        {/* Main grid */}
+        <div className="grid gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,1.85fr)] lg:gap-14 xl:gap-20">
+          {/* Brand column */}
+          <div className="flex flex-col gap-5">
+            <BrandLogo size="md" href="/" onDarkBackground className="sm:hidden" />
+            <BrandLogo size="lg" href="/" onDarkBackground className="hidden sm:block" />
 
-            <p className="mb-1 text-sm font-semibold text-[var(--footer-foreground)]">
-              {t("footer.tagline")}
-            </p>
-            <p className="mb-6 max-w-xs text-sm leading-relaxed text-[var(--footer-muted)]">
-              {t("footer.description")}
-            </p>
-
-            <div className="flex flex-wrap gap-2">
-              {contactChannels.map((item) => {
-                const Icon = item.icon;
-                const label =
-                  "labelKey" in item ? t(item.labelKey) : item.label;
-                const className = "footer-social-btn";
-                if ("external" in item && item.external) {
-                  return (
-                    <a
-                      key={item.href}
-                      href={item.href}
-                      className={className}
-                      aria-label={label}
-                      title={label}
-                    >
-                      <Icon className="h-4 w-4" />
-                    </a>
-                  );
-                }
-                return (
-                  <Link key={item.href} href={item.href} className={className} aria-label={label} title={label}>
-                    <Icon className="h-4 w-4" />
-                  </Link>
-                );
-              })}
+            <div className="space-y-2">
+              <p className="text-base font-semibold tracking-tight text-[var(--footer-foreground)]">
+                {t("footer.tagline")}
+              </p>
+              <p className="max-w-sm text-sm leading-relaxed text-[var(--footer-muted)]">
+                {t("footer.description")}
+              </p>
             </div>
 
-            <p className="mt-5 text-xs text-[var(--footer-subtle)]">
-              {t("footer.location", { country, defaultValue: `Made with ♥ in ${country}` })}
-            </p>
+            <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+              <a href="mailto:support@nextgrades.at" className="footer-contact-btn">
+                <Mail className="h-4 w-4 shrink-0 text-[var(--brand-gold)]" aria-hidden />
+                support@nextgrades.at
+              </a>
+              <span className="inline-flex items-center gap-1.5 text-xs text-[var(--footer-subtle)]">
+                <MapPin className="h-3.5 w-3.5 text-[var(--brand-gold)]" aria-hidden />
+                {t("footer.madeInGermany")}
+              </span>
+            </div>
+
+            <Button variant="gold" size="sm" href="/consultation" className="w-full sm:w-auto">
+              {t("common.freeConsultation")}
+              <ArrowRight className="h-4 w-4" />
+            </Button>
           </div>
 
-          {/* Desktop link columns */}
-          <div className="hidden gap-8 md:grid md:grid-cols-3 lg:col-span-6 lg:gap-10">
-            <FooterColumn title={t("footer.support", { defaultValue: "Support" })}>
-              {supportLinks.map((item) => (
-                <FooterLink key={item.href} href={item.href}>
-                  {t(item.labelKey)}
+          {/* Link columns — desktop */}
+          <div className="hidden gap-6 md:grid md:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+            <FooterColumn title={t("footer.programs")}>
+              {programLinks.map((item) => (
+                <FooterLink key={item.key} href={item.href}>
+                  {t(item.key)}
                 </FooterLink>
               ))}
             </FooterColumn>
-
-            <FooterColumn title={t("common.brand", { defaultValue: "NextGrades" })}>
-              {companyLinks.map((item) => (
-                <FooterLink key={item.href} href={item.href}>
-                  {t(item.labelKey)}
+            <FooterColumn title={t("footer.resources")}>
+              {resourceLinks.map((item) => (
+                <FooterLink key={item.key} href={item.href}>
+                  {t(item.key)}
                 </FooterLink>
               ))}
             </FooterColumn>
-
-            <div>
-              <h4 className="footer-column-title">
-                {t("footer.newsletterTitle", { defaultValue: "Newsletter" })}
-              </h4>
-              <FooterNewsletter />
-            </div>
-          </div>
-
-          {/* Mobile accordions */}
-          <div className="space-y-2 md:hidden lg:col-span-6">
-            <FooterMobileAccordion title={t("footer.support", { defaultValue: "Support" })} defaultOpen>
-              {supportLinks.map((item) => (
-                <FooterAccordionLink key={item.href} href={item.href}>
-                  {t(item.labelKey)}
-                </FooterAccordionLink>
-              ))}
-            </FooterMobileAccordion>
-
-            <FooterMobileAccordion title={t("common.brand", { defaultValue: "NextGrades" })}>
+            <FooterColumn title={t("footer.company")}>
               {companyLinks.map((item) => (
-                <FooterAccordionLink key={item.href} href={item.href}>
-                  {t(item.labelKey)}
-                </FooterAccordionLink>
+                <FooterLink key={item.href + item.key} href={item.href}>
+                  {t(item.key)}
+                </FooterLink>
               ))}
-            </FooterMobileAccordion>
-
-            <FooterMobileAccordion title={t("footer.newsletterTitle", { defaultValue: "Newsletter" })}>
-              <li className="px-2 py-3">
-                <FooterNewsletter />
-              </li>
-            </FooterMobileAccordion>
+            </FooterColumn>
+            <FooterColumn title={t("footer.legal")}>
+              {legalLinks.map((item) => (
+                <FooterLink key={item.href + item.key} href={item.href}>
+                  {t(item.key)}
+                </FooterLink>
+              ))}
+            </FooterColumn>
           </div>
         </div>
 
-        {/* Legal bar */}
-        <div className="footer-legal-bar relative z-[1] -mx-5 mt-12 px-5 py-5 md:-mx-6 md:mt-14 md:px-6 lg:-mx-8 lg:px-8">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-            <nav
-              className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 lg:justify-start"
-              aria-label={t("footer.legal", { defaultValue: "Legal" })}
-            >
-              {legalLinks.map((item) => (
-                <Link key={item.href} href={item.href} className="footer-legal-link">
-                  {t(item.key)}
-                </Link>
-              ))}
-              {consent ? (
-                <button
-                  type="button"
-                  onClick={consent.openPreferences}
-                  className="footer-legal-link"
-                >
-                  {t("footer.cookieSettings", { defaultValue: "Cookie settings" })}
-                </button>
-              ) : (
-                <OpenCookieSettingsButton className="footer-legal-link" />
-              )}
-            </nav>
+        {/* Link columns — mobile */}
+        <div className="mt-8 space-y-2 md:hidden">
+          <FooterMobileAccordion title={t("footer.programs")}>
+            {programLinks.map((item) => (
+              <FooterAccordionLink key={item.key} href={item.href}>
+                {t(item.key)}
+              </FooterAccordionLink>
+            ))}
+          </FooterMobileAccordion>
+          <FooterMobileAccordion title={t("footer.resources")}>
+            {resourceLinks.map((item) => (
+              <FooterAccordionLink key={item.key} href={item.href}>
+                {t(item.key)}
+              </FooterAccordionLink>
+            ))}
+          </FooterMobileAccordion>
+          <FooterMobileAccordion title={t("footer.company")}>
+            {companyLinks.map((item) => (
+              <FooterAccordionLink key={item.href + item.key} href={item.href}>
+                {t(item.key)}
+              </FooterAccordionLink>
+            ))}
+          </FooterMobileAccordion>
+          <FooterMobileAccordion title={t("footer.legal")}>
+            {legalLinks.map((item) => (
+              <FooterAccordionLink key={item.href + item.key} href={item.href}>
+                {t(item.key)}
+              </FooterAccordionLink>
+            ))}
+          </FooterMobileAccordion>
+        </div>
 
-            <p className="shrink-0 text-center text-xs text-[var(--footer-subtle)] lg:text-right">
-              {t("footer.copyright")}
-            </p>
+        {/* Bottom bar */}
+        <div className="mt-10 flex flex-col items-center justify-between gap-4 border-t border-[var(--footer-border)] pt-6 md:mt-12 md:flex-row">
+          <p className="text-center text-xs leading-relaxed text-[var(--footer-subtle)] md:text-left">
+            {t("footer.copyright")}
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+            {legalLinks.slice(0, 3).map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="text-xs text-[var(--footer-subtle)] transition-colors hover:text-[var(--brand-gold)]"
+              >
+                {t(item.key)}
+              </Link>
+            ))}
+            {consent ? (
+              <button
+                type="button"
+                onClick={consent.openPreferences}
+                className="text-xs text-[var(--footer-subtle)] transition-colors hover:text-[var(--brand-gold)]"
+              >
+                {t("footer.cookies")}
+              </button>
+            ) : (
+              <OpenCookieSettingsButton className="text-xs text-[var(--footer-subtle)] hover:text-[var(--brand-gold)]" />
+            )}
           </div>
         </div>
       </div>
@@ -204,7 +188,7 @@ function FooterColumn({ title, children }: { title: string; children: React.Reac
   return (
     <div>
       <h4 className="footer-column-title">{title}</h4>
-      <ul className="space-y-3">{children}</ul>
+      <ul className="space-y-2.5">{children}</ul>
     </div>
   );
 }
