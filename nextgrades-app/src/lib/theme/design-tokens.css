@@ -8,8 +8,8 @@
 
   /* ── Brand (constant) ── */
   --brand-navy: #0d1b2a;
-  --brand-navy-muted: #152535;
-  --brand-navy-soft: #1a2a3d;
+  --brand-navy-muted: #112240;
+  --brand-navy-soft: #112240;
   --brand-gold: #d4af37;
   --brand-gold-hover: #c9a030;
   --brand-gold-light: #e5c158;
@@ -154,7 +154,7 @@
 .dark {
   color-scheme: dark;
 
-  /* ── Brand navy depth stack (no neutral grey) ── */
+  /* ── Brand navy depth stack (#112240 cards on #0D1B2A — no blue tint) ── */
   --background: #0d1b2a;
   --foreground: #f5f7fa;
   --foreground-secondary: rgba(255, 255, 255, 0.9);
@@ -163,8 +163,8 @@
 
   --surface-base: #0d1b2a;
   --surface-muted: #112240;
-  --surface-subtle: #152535;
-  --surface-elevated: #1a3352;
+  --surface-subtle: #0f1e36;
+  --surface-elevated: #112240;
   --surface-dashboard: #0d1b2a;
   --surface-overlay: rgba(5, 12, 22, 0.78);
   --surface-inset: #0a1520;
@@ -197,23 +197,23 @@
   --button-ghost-foreground: #f5f7fa;
   --button-ghost-border: rgba(212, 175, 55, 0.25);
   --button-ghost-hover-bg: rgba(212, 175, 55, 0.08);
-  --button-dark-background: #152535;
+  --button-dark-background: #112240;
   --button-dark-foreground: #f5f7fa;
-  --button-dark-hover: #1a3352;
+  --button-dark-hover: #152a4a;
   --button-dark-border: rgba(212, 175, 55, 0.18);
   --button-gold-border: rgba(212, 175, 55, 0.4);
   --button-gold-shadow: rgba(0, 0, 0, 0.3);
   --button-card-icon-bg: rgba(212, 175, 55, 0.12);
   --button-pill-active-bg: var(--brand-gold);
   --button-pill-active-fg: var(--brand-navy);
-  --button-pill-inactive-bg: #152535;
+  --button-pill-inactive-bg: #112240;
   --button-pill-inactive-fg: rgba(212, 175, 55, 0.72);
-  --button-pill-inactive-hover: #1a3352;
+  --button-pill-inactive-hover: #152a4a;
   --button-on-dark-border: rgba(255, 255, 255, 0.28);
   --button-on-dark-fg: #ffffff;
   --button-on-dark-hover-bg: rgba(212, 175, 55, 0.1);
 
-  --nav-background: rgba(13, 27, 42, 0.96);
+  --nav-background: rgba(17, 34, 64, 0.96);
   --nav-border: rgba(212, 175, 55, 0.12);
   --nav-text: rgba(255, 255, 255, 0.72);
   --nav-text-active: #ffffff;
@@ -229,7 +229,7 @@
   --modal-border: rgba(212, 175, 55, 0.14);
   --modal-overlay: rgba(5, 12, 22, 0.82);
 
-  --table-header: #152535;
+  --table-header: #112240;
   --table-row-hover: rgba(212, 175, 55, 0.06);
   --table-border: rgba(212, 175, 55, 0.12);
 
@@ -245,11 +245,11 @@
   --alert-error-bg: rgba(239, 68, 68, 0.14);
   --alert-error-fg: #fca5a5;
   --alert-error-border: rgba(239, 68, 68, 0.28);
-  --alert-info-bg: rgba(77, 163, 255, 0.12);
-  --alert-info-fg: #93c5fd;
-  --alert-info-border: rgba(77, 163, 255, 0.24);
+  --alert-info-bg: rgba(212, 175, 55, 0.12);
+  --alert-info-fg: #e5c158;
+  --alert-info-border: rgba(212, 175, 55, 0.24);
 
-  --ring-offset: #0d1b2a;
+  --ring-offset: #112240;
 
   --footer-background: #0a1520;
   --footer-foreground: #f5f7fa;
