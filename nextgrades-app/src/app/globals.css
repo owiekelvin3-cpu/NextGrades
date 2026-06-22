@@ -574,18 +574,25 @@ body {
 
 /* Subject / program card primary CTA — label left, icon capsule right */
 .btn-card-primary {
-  @apply flex w-full items-center justify-between gap-3 rounded-xl px-4 py-3.5 text-left;
-  @apply bg-gradient-to-r from-[#D4AF37] to-[#E8B84A] text-sm font-semibold tracking-tight text-[#0D1B2A];
-  @apply border border-[#C9A227]/30 shadow-md shadow-[#D4AF37]/20;
-  @apply transform-gpu transition-all duration-[250ms] ease-out;
-  @apply hover:-translate-y-0.5 hover:scale-[1.01] hover:shadow-lg hover:shadow-[#D4AF37]/30;
-  @apply active:scale-[0.99] active:translate-y-0;
-  @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF37] focus-visible:ring-offset-2;
+  @apply theme-btn-interaction flex w-full items-center justify-between gap-3 rounded-xl px-4 py-3.5 text-left text-sm font-semibold tracking-tight;
+  background: linear-gradient(135deg, var(--button-primary-background) 0%, var(--brand-gold-light) 100%);
+  color: var(--button-primary-foreground);
+  border: 1px solid var(--button-gold-border);
+  box-shadow: 0 4px 14px var(--button-gold-shadow);
+}
+
+.btn-card-primary:hover:not(:disabled) {
+  background: var(--button-primary-hover);
 }
 
 .btn-card-primary-icon {
-  @apply flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#0D1B2A]/12;
-  @apply transition-colors duration-[250ms] group-hover:bg-[#0D1B2A]/20;
+  @apply flex h-9 w-9 shrink-0 items-center justify-center rounded-lg;
+  background: var(--button-card-icon-bg);
+  transition: background-color 0.2s ease;
+}
+
+.group:hover .btn-card-primary-icon {
+  background: color-mix(in srgb, var(--button-card-icon-bg) 160%, var(--brand-navy) 8%);
 }
 
 .btn-card-primary-icon svg {
@@ -593,30 +600,33 @@ body {
 }
 
 .btn-card-secondary {
-  @apply flex w-full items-center justify-center rounded-xl border px-4 py-3 text-sm font-semibold;
-  @apply transform-gpu transition-all duration-[250ms] ease-out;
-  @apply hover:-translate-y-0.5 hover:shadow-md active:scale-[0.99];
-  @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF37] focus-visible:ring-offset-2;
+  @apply theme-btn-interaction flex w-full items-center justify-center rounded-xl px-4 py-3 text-sm font-semibold;
+  background: var(--button-secondary-background);
+  color: var(--button-secondary-foreground);
+  border: 1px solid var(--border-default);
 }
 
-.btn-card-secondary--light {
-  @apply border-border-default bg-surface-elevated text-foreground hover:border-[var(--brand-gold)]/40 hover:bg-surface-muted;
+.btn-card-secondary:hover:not(:disabled) {
+  background: var(--button-secondary-hover);
+  border-color: color-mix(in srgb, var(--brand-gold) 35%, var(--border-default));
 }
 
-.btn-card-secondary--dark {
-  @apply border-border-default bg-[var(--sidebar-surface)] text-foreground hover:border-[var(--brand-gold)]/35 hover:bg-[var(--brand-gold-muted)];
+.btn-card-secondary--on-dark {
+  background: transparent;
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
-.btn-card-secondary--navy {
-  @apply border-white/30 bg-transparent text-white;
-  @apply hover:border-white/45 hover:bg-white/5;
+.btn-card-secondary--on-dark:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.45);
 }
 
 /* Premium pill / chip buttons (subjects, filters) */
 .btn-chip {
   @apply inline-flex items-center justify-center font-semibold transition-all duration-[250ms] ease-out;
-  @apply transform-gpu hover:scale-[1.04] hover:-translate-y-0.5 active:scale-[0.98];
-  @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF37] focus-visible:ring-offset-2;
+  @apply transform-gpu hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98];
+  @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--ring-offset)];
 }
 
 @media (prefers-reduced-motion: reduce) {

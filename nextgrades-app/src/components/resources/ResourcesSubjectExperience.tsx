@@ -18,6 +18,7 @@ import { ResourcesCtaBanner, ResourcesFeatureRow } from "@/components/resources/
 import { tabContentTypes, getSubjectUi, type ResourceTabId } from "@/lib/resources/ui-config";
 import { LoadingBlock } from "@/components/dashboard/LoadingBlock";
 import { appShell } from "@/lib/theme/shell";
+import { theme as th } from "@/lib/theme/tokens";
 import { hero, section } from "@/lib/premium/tokens";
 import { cn } from "@/lib/utils";
 
@@ -139,10 +140,8 @@ export function ResourcesSubjectExperience({ subjectSlug, subjectName, classLeve
                 type="button"
                 onClick={() => catalog.setClassLevel("")}
                 className={cn(
-                  "rounded-full px-4 py-2 text-sm font-medium transition",
-                  !catalog.classLevel
-                    ? "bg-[var(--brand-navy)] text-white dark:bg-[var(--brand-gold)] dark:text-[var(--brand-navy)]"
-                    : "border border-[var(--border-default)] bg-[var(--surface-elevated)] text-[var(--text-muted)] hover:border-[var(--brand-gold)]/40"
+                  "btn-pill",
+                  !catalog.classLevel ? th.btnPillActive : th.btnPillOutline
                 )}
               >
                 {t("resources.allClasses")}
@@ -152,10 +151,8 @@ export function ResourcesSubjectExperience({ subjectSlug, subjectName, classLeve
                   key={cls.id}
                   href={`/resources/${subjectSlug}/${cls.level}`}
                   className={cn(
-                    "rounded-full px-4 py-2 text-sm font-medium transition",
-                    String(cls.level) === catalog.classLevel
-                      ? "bg-[var(--brand-navy)] text-white dark:bg-[var(--brand-gold)] dark:text-[var(--brand-navy)]"
-                      : "border border-[var(--border-default)] bg-[var(--surface-elevated)] text-[var(--text-muted)] hover:border-[var(--brand-gold)]/40"
+                    "btn-pill",
+                    String(cls.level) === catalog.classLevel ? th.btnPillActive : th.btnPillOutline
                   )}
                 >
                   {cls.name}
@@ -171,10 +168,8 @@ export function ResourcesSubjectExperience({ subjectSlug, subjectName, classLeve
                 type="button"
                 onClick={() => catalog.setAccessFilter(option.value)}
                 className={cn(
-                  "rounded-full px-4 py-2 text-sm font-medium transition",
-                  catalog.accessFilter === option.value
-                    ? "bg-[var(--brand-gold)] text-[var(--brand-navy)]"
-                    : "border border-[var(--border-default)] bg-[var(--surface-elevated)] text-[var(--text-muted)] hover:border-[var(--brand-gold)]/40"
+                  "btn-pill",
+                  catalog.accessFilter === option.value ? th.btnPillOutlineActive : th.btnPillOutline
                 )}
               >
                 {option.label}

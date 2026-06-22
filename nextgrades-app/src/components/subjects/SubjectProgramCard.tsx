@@ -81,7 +81,7 @@ export function SubjectProgramCard({
               <ArrowRight className="h-4 w-4" />
             </span>
           </Link>
-          <button type="button" onClick={onViewMaterials} className="btn-card-secondary btn-card-secondary--navy">
+          <button type="button" onClick={onViewMaterials} className="btn-card-secondary btn-card-secondary--on-dark">
             {viewMaterialsLabel}
           </button>
         </div>

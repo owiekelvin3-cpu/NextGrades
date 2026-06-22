@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
 import { MarketingImage } from "@/components/marketing/MarketingImage";
+import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 import { card } from "@/lib/premium/tokens";
 
@@ -68,18 +68,15 @@ export function ProgrammeOfferCard({
             </li>
           ))}
         </ul>
-        <Link
+        <Button
+          variant={featured ? "gold" : "dark"}
+          size="md"
           href={href}
-          className={cn(
-            "mt-8 inline-flex min-h-[48px] items-center justify-center gap-2 rounded-2xl px-6 text-sm font-semibold transition-all touch-manipulation",
-            featured
-              ? "bg-[#D4AF37] text-[#0D1B2A] hover:bg-[#C9A030]"
-              : "bg-[#0D1B2A] text-white hover:bg-[#132942]"
-          )}
+          className="mt-8 w-full group-hover:translate-x-0"
         >
           {ctaLabel}
           <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-        </Link>
+        </Button>
       </div>
     </article>
   );

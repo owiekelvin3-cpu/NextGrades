@@ -282,10 +282,10 @@ export default function SubjectsPage() {
                 {t("subjectsPage.ctaButton")} <ArrowRight className="h-5 w-5" />
               </Button>
               <Button
-                variant="outline"
+                variant="onDark"
                 size="lg"
                 href="/programs"
-                className="w-full border-white/40 text-white hover:border-[#D4AF37] hover:bg-[#D4AF37]/10 hover:text-[#D4AF37] sm:w-auto"
+                className="w-full sm:w-auto"
               >
                 {t("home.explorePrograms", { defaultValue: "Explore programs" })}
               </Button>

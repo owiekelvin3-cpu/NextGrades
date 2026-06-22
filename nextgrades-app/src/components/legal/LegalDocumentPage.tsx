@@ -10,6 +10,7 @@ import { useMarketingTheme } from "@/lib/marketing-theme";
 import { cn } from "@/lib/utils";
 import { hero } from "@/lib/premium/tokens";
 import { OpenCookieSettingsButton } from "@/components/cookies/OpenCookieSettingsButton";
+import { Button } from "@/components/ui/Button";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
 import { useCmsImage } from "@/hooks/useCmsImage";
 import { PRIVACY_HERO_IMAGE } from "@/lib/marketing-images";
@@ -137,14 +138,11 @@ export function LegalDocumentPage({ namespace }: LegalDocumentPageProps) {
                 {namespace === "cookiesPolicy" ? (
                   <OpenCookieSettingsButton variant="button" className="w-full sm:w-auto" />
                 ) : null}
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#D4AF37] px-5 py-2.5 text-sm font-semibold text-[#0D1B2A] transition-opacity hover:opacity-90"
-                >
+                <Button variant="gold" size="sm" href="/contact">
                   <Mail className="h-4 w-4" />
                   {t(`${namespace}.contactCta`)}
                   <ArrowRight className="h-4 w-4" />
-                </Link>
+                </Button>
               </div>
             </div>
           </div>

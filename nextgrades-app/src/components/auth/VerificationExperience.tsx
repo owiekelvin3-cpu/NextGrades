@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Mail, ShieldCheck, ArrowLeft, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
 import { supabase } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
+import { theme as th } from "@/lib/theme/tokens";
 import { useTheme } from "@/context/ThemeContext";
 import { useResendCooldown } from "@/hooks/useResendCooldown";
 import type { VerificationStep } from "@/lib/auth/pending-verification-storage";
@@ -362,10 +363,9 @@ export function VerificationExperience({
               disabled={verifying || code.length !== 6 || !initialSendDone}
               onClick={() => void handleVerify()}
               className={cn(
-                "flex w-full items-center justify-center gap-2 rounded-2xl py-3.5 text-base font-semibold transition-all duration-200",
-                "bg-[#0D1B2A] text-white hover:bg-[#1a3354] disabled:cursor-not-allowed disabled:opacity-50",
-                "focus:outline-none focus:ring-4 focus:ring-[#D4AF37]/25",
-                "dark:bg-[#D4AF37] dark:text-[#0D1B2A] dark:hover:bg-[#c9a030]"
+                th.focusRing,
+                "theme-btn-interaction flex w-full items-center justify-center gap-2 rounded-2xl py-3.5 text-base font-semibold",
+                isDark ? th.btnGold : th.btnDark
               )}
             >
               {verifying ? (

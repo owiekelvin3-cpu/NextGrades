@@ -25,14 +25,10 @@ export default function Error({
         zurück.
       </p>
       <div className="mt-8 flex flex-wrap justify-center gap-3">
-        <button
-          type="button"
-          onClick={() => reset()}
-          className="inline-flex min-h-12 items-center justify-center rounded-2xl bg-[#D4AF37] px-6 py-3 text-sm font-bold text-[#0D1B2A] transition hover:opacity-90"
-        >
+        <Button variant="gold" size="md" type="button" onClick={() => reset()}>
           Erneut versuchen
-        </button>
-        <Button variant="secondary" size="md" href="/" className="border-white/20 bg-white/5 text-white">
+        </Button>
+        <Button variant="onDark" size="md" href="/">
           Zur Startseite
         </Button>
       </div>

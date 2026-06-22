@@ -9,6 +9,7 @@ import { getResourceThumbnail, RESOURCES_DEFAULT_THUMBNAIL } from "@/lib/resourc
 import { isPremiumResource } from "@/lib/resources/ui-config";
 import { isVideoResource, resourceWatchPath } from "@/lib/resources/video";
 import { appShell } from "@/lib/theme/shell";
+import { theme as th } from "@/lib/theme/tokens";
 import { MarketingImage } from "@/components/marketing/MarketingImage";
 import { useTranslation } from "react-i18next";
 
@@ -232,7 +233,7 @@ export function ResourcesCtaBanner() {
         </div>
         <Link
           href="/resources/upgrade"
-          className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#D4AF37] to-[#F5A623] px-6 py-3 text-sm font-bold text-[#0D1B2A] shadow-lg transition hover:opacity-95"
+          className={cn(th.btnGold, th.focusRing, "inline-flex min-h-12 shrink-0 items-center gap-2 rounded-xl px-6 py-3 text-sm")}
         >
           {t("resources.ctaButton")} <ChevronRight className="h-4 w-4" />
         </Link>

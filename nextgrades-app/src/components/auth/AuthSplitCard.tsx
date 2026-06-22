@@ -3,6 +3,7 @@
 import { BrandLogo } from "@/components/BrandLogo";
 import { MarketingImage } from "@/components/marketing/MarketingImage";
 import { useTheme } from "@/context/ThemeContext";
+import { theme as th } from "@/lib/theme/tokens";
 import { cn } from "@/lib/utils";
 import { authSurface } from "@/components/auth/auth-ui";
 
@@ -203,10 +204,9 @@ export function AuthPrimaryButton({
       type={type}
       disabled={disabled || loading}
       className={cn(
-        "mt-2 flex w-full items-center justify-center gap-2 rounded-2xl px-4 py-3.5 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-60",
-        variant === "gold"
-          ? "bg-[#D4AF37] text-[#0D1B2A] hover:bg-[#e5c158]"
-          : "bg-[#0D1B2A] text-white hover:bg-[#132942]"
+        "theme-btn-interaction mt-2 w-full rounded-2xl px-4 py-3.5 text-sm font-semibold",
+        variant === "gold" ? th.btnGold : th.btnDark,
+        th.focusRing
       )}
     >
       {loading ? (
@@ -214,7 +214,7 @@ export function AuthPrimaryButton({
           <span
             className={cn(
               "h-5 w-5 animate-spin rounded-full border-2 border-t-transparent",
-              variant === "gold" ? "border-[#0D1B2A]" : "border-white"
+              variant === "gold" ? "border-[var(--button-primary-foreground)]" : "border-[var(--button-dark-foreground)]"
             )}
           />
           …

@@ -17,6 +17,7 @@ import { LoadingBlock } from "@/components/dashboard/LoadingBlock";
 import { MobileResourceCard } from "@/components/mobile/MobileResourceCard";
 import { SectionHeader } from "@/components/premium/SectionHeader";
 import { section } from "@/lib/premium/tokens";
+import { theme as th } from "@/lib/theme/tokens";
 import { cn } from "@/lib/utils";
 
 const MARKETPLACE_TABS = RESOURCE_TABS.filter((tab) =>
@@ -76,10 +77,8 @@ export function ResourcesMarketplaceExperience() {
                 type="button"
                 onClick={() => catalog.setSubjectSlug("")}
                 className={cn(
-                  "shrink-0 rounded-full px-3.5 py-1.5 text-sm font-medium transition touch-manipulation",
-                  !catalog.subjectSlug
-                    ? "bg-[var(--brand-navy)] text-white dark:bg-[var(--brand-gold)] dark:text-[var(--brand-navy)]"
-                    : "bg-[var(--surface-subtle)] text-[var(--text-muted)] hover:bg-[var(--surface-muted)]"
+                  "btn-pill shrink-0 touch-manipulation",
+                  !catalog.subjectSlug ? th.btnPillActive : th.btnPillInactive
                 )}
               >
                 {t("resources.allSubjects")}
@@ -93,10 +92,8 @@ export function ResourcesMarketplaceExperience() {
                     type="button"
                     onClick={() => catalog.setSubjectSlug(active ? "" : slug)}
                     className={cn(
-                      "shrink-0 rounded-full px-3.5 py-1.5 text-sm font-medium transition touch-manipulation",
-                      active
-                        ? "bg-[var(--brand-navy)] text-white dark:bg-[var(--brand-gold)] dark:text-[var(--brand-navy)]"
-                        : "bg-[var(--surface-subtle)] text-[var(--text-muted)] hover:bg-[var(--surface-muted)]"
+                      "btn-pill shrink-0 touch-manipulation",
+                      active ? th.btnPillActive : th.btnPillInactive
                     )}
                   >
                     {s.name}
@@ -112,10 +109,8 @@ export function ResourcesMarketplaceExperience() {
                   type="button"
                   onClick={() => handleTabChange(tab.id)}
                   className={cn(
-                    "shrink-0 rounded-full border px-3.5 py-1.5 text-sm font-medium transition touch-manipulation",
-                    activeTab === tab.id
-                      ? "border-[var(--brand-gold)] bg-[var(--brand-gold-muted)] text-[var(--foreground)]"
-                      : "border-[var(--border-default)] text-[var(--text-muted)] hover:border-[var(--border-strong)]"
+                    "btn-pill shrink-0 touch-manipulation",
+                    activeTab === tab.id ? th.btnPillOutlineActive : th.btnPillOutline
                   )}
                 >
                   {t(tab.labelKey, { defaultValue: RESOURCE_TAB_DEFAULTS[index] ?? tab.id })}

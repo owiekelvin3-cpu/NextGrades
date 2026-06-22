@@ -1,6 +1,7 @@
 "use client";
 
 import { useTheme } from "@/context/ThemeContext";
+import { theme as th } from "@/lib/theme/tokens";
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -80,10 +81,9 @@ export function AuthMobilePrimaryButton({
       onClick={onClick}
       disabled={disabled || loading}
       className={cn(
-        "flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3.5 text-sm font-bold uppercase tracking-wide transition disabled:cursor-not-allowed disabled:opacity-60",
-        variant === "gold"
-          ? "bg-[#D4AF37] text-[#0D1B2A] hover:bg-[#e5c158]"
-          : "bg-[#0D1B2A] text-white hover:bg-[#132942] dark:bg-[#D4AF37] dark:text-[#0D1B2A] dark:hover:bg-[#e5c158]"
+        "theme-btn-interaction w-full rounded-xl px-4 py-3.5 text-sm font-bold uppercase tracking-wide",
+        variant === "gold" ? th.btnGold : th.btnDark,
+        th.focusRing
       )}
     >
       {loading ? (
@@ -109,7 +109,10 @@ export function AuthRolePicker({
   const { theme } = useTheme();
   const isDark = theme === "dark";
 
-  const base = "w-full rounded-xl px-4 py-4 text-sm font-bold uppercase tracking-wider transition touch-manipulation";
+  const base = cn(
+    th.focusRing,
+    "theme-btn-interaction w-full rounded-xl px-4 py-4 text-sm font-bold uppercase tracking-wider touch-manipulation"
+  );
 
   return (
     <div className="flex flex-col gap-3">
@@ -119,10 +122,12 @@ export function AuthRolePicker({
         className={cn(
           base,
           value === "student"
-            ? "bg-[#0D1B2A] text-white shadow-md dark:bg-[#D4AF37] dark:text-[#0D1B2A]"
+            ? isDark
+              ? th.btnGold
+              : th.btnDark
             : isDark
-              ? "border border-white/20 bg-transparent text-white hover:border-[#D4AF37]/40"
-              : "border-2 border-[#0D1B2A]/15 bg-white text-[#0D1B2A] hover:border-[#D4AF37]/50"
+              ? cn(th.btnOutline, "border-white/20 text-white")
+              : cn(th.btnOutline, "border-[var(--border-strong)]")
         )}
       >
         {studentLabel}
@@ -133,10 +138,12 @@ export function AuthRolePicker({
         className={cn(
           base,
           value === "teacher"
-            ? "bg-[#0D1B2A] text-white shadow-md dark:bg-[#D4AF37] dark:text-[#0D1B2A]"
+            ? isDark
+              ? th.btnGold
+              : th.btnDark
             : isDark
-              ? "border border-white/20 bg-transparent text-white hover:border-[#D4AF37]/40"
-              : "border-2 border-[#0D1B2A]/15 bg-white text-[#0D1B2A] hover:border-[#D4AF37]/50"
+              ? cn(th.btnOutline, "border-white/20 text-white")
+              : cn(th.btnOutline, "border-[var(--border-strong)]")
         )}
       >
         {teacherLabel}

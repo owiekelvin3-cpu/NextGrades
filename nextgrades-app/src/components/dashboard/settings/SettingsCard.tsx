@@ -3,6 +3,7 @@
 import { Loader2 } from "lucide-react";
 import { Toggle } from "@/components/ui/Toggle";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/Button";
 
 const fieldInput =
   "w-full rounded-xl border border-input-border bg-input-background px-4 py-2.5 text-sm text-input-foreground outline-none transition placeholder:text-input-placeholder focus:border-[var(--brand-gold)] focus:ring-2 focus:ring-[var(--input-focus-ring)] disabled:cursor-not-allowed disabled:opacity-60";
@@ -140,14 +141,9 @@ export function SettingsSaveBar({
 }) {
   return (
     <div className="flex justify-end border-t border-border-default pt-4">
-      <button
-        type="button"
-        disabled={saving}
-        onClick={onSave}
-        className="rounded-xl bg-[#D4AF37] px-6 py-2.5 text-sm font-semibold text-[#0D1B2A] transition hover:opacity-90 disabled:opacity-50"
-      >
+      <Button variant="gold" size="sm" type="button" disabled={saving} onClick={onSave}>
         {saving ? savingLabel : label}
-      </button>
+      </Button>
     </div>
   );
 }

@@ -3,6 +3,7 @@
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 import { RESOURCE_TABS, type ResourceTabId } from "@/lib/resources/ui-config";
+import { theme as th } from "@/lib/theme/tokens";
 
 type Props = {
   active: ResourceTabId;
@@ -38,10 +39,8 @@ export function ResourcesCategoryTabs({ active, onChange, className }: Props) {
                 type="button"
                 onClick={() => onChange(tab.id)}
                 className={cn(
-                  "min-h-11 rounded-full px-4 py-2.5 text-sm font-semibold whitespace-nowrap transition-colors touch-manipulation",
-                  isActive
-                    ? "bg-[#0D1B2A] text-white shadow-md dark:bg-[#D4AF37] dark:text-[#0D1B2A]"
-                    : "border border-border-default bg-surface-subtle text-text-muted"
+                  "btn-pill min-h-11 whitespace-nowrap touch-manipulation",
+                  isActive ? th.btnPillActive : th.btnPillInactive
                 )}
               >
                 {label}

@@ -62,11 +62,33 @@
 
   --button-primary-background: var(--brand-gold);
   --button-primary-foreground: var(--brand-navy);
+  --button-primary-hover: var(--brand-gold-hover);
   --button-secondary-background: #ffffff;
   --button-secondary-foreground: #1c1917;
+  --button-secondary-hover: #f5f5f4;
   --button-outline-background: transparent;
-  --button-outline-foreground: #44403c;
-  --button-outline-border: #d6d3d1;
+  --button-outline-foreground: var(--brand-gold);
+  --button-outline-border: var(--brand-gold);
+  --button-outline-hover-bg: var(--brand-gold-muted);
+  --button-ghost-background: transparent;
+  --button-ghost-foreground: #44403c;
+  --button-ghost-border: #d6d3d1;
+  --button-ghost-hover-bg: #f5f5f4;
+  --button-dark-background: var(--brand-navy);
+  --button-dark-foreground: #ffffff;
+  --button-dark-hover: var(--brand-navy-muted);
+  --button-dark-border: transparent;
+  --button-gold-border: rgba(201, 162, 39, 0.35);
+  --button-gold-shadow: rgba(212, 175, 55, 0.18);
+  --button-card-icon-bg: rgba(13, 27, 42, 0.1);
+  --button-pill-active-bg: var(--brand-navy);
+  --button-pill-active-fg: #ffffff;
+  --button-pill-inactive-bg: var(--surface-subtle);
+  --button-pill-inactive-fg: var(--text-muted);
+  --button-pill-inactive-hover: var(--surface-muted);
+  --button-on-dark-border: rgba(255, 255, 255, 0.28);
+  --button-on-dark-fg: #ffffff;
+  --button-on-dark-hover-bg: rgba(255, 255, 255, 0.06);
 
   --nav-background: rgba(255, 255, 255, 0.88);
   --nav-border: #e7e5e4;
@@ -157,11 +179,33 @@
 
   --button-primary-background: var(--brand-gold);
   --button-primary-foreground: var(--brand-navy);
+  --button-primary-hover: var(--brand-gold-hover);
   --button-secondary-background: rgba(255, 255, 255, 0.06);
   --button-secondary-foreground: #ececf0;
+  --button-secondary-hover: rgba(255, 255, 255, 0.1);
   --button-outline-background: transparent;
-  --button-outline-foreground: #ececf0;
-  --button-outline-border: rgba(255, 255, 255, 0.14);
+  --button-outline-foreground: var(--brand-gold);
+  --button-outline-border: rgba(212, 175, 55, 0.45);
+  --button-outline-hover-bg: var(--brand-gold-muted);
+  --button-ghost-background: transparent;
+  --button-ghost-foreground: #ececf0;
+  --button-ghost-border: rgba(255, 255, 255, 0.14);
+  --button-ghost-hover-bg: rgba(255, 255, 255, 0.06);
+  --button-dark-background: var(--surface-elevated);
+  --button-dark-foreground: var(--foreground);
+  --button-dark-hover: var(--surface-subtle);
+  --button-dark-border: var(--border-strong);
+  --button-gold-border: rgba(212, 175, 55, 0.35);
+  --button-gold-shadow: rgba(0, 0, 0, 0.25);
+  --button-card-icon-bg: rgba(13, 27, 42, 0.22);
+  --button-pill-active-bg: var(--brand-gold);
+  --button-pill-active-fg: var(--brand-navy);
+  --button-pill-inactive-bg: var(--surface-subtle);
+  --button-pill-inactive-fg: var(--text-muted);
+  --button-pill-inactive-hover: var(--surface-muted);
+  --button-on-dark-border: rgba(255, 255, 255, 0.28);
+  --button-on-dark-fg: #ffffff;
+  --button-on-dark-hover-bg: rgba(255, 255, 255, 0.06);
 
   --nav-background: rgba(12, 14, 18, 0.92);
   --nav-border: rgba(255, 255, 255, 0.08);
@@ -377,4 +421,145 @@ html.theme-animate *::after {
 
 .site-footer a:not([class*="Button"]):hover {
   color: var(--brand-gold);
+}
+
+/* ── Theme-aware button system (light + dark) ── */
+
+.theme-btn-interaction {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.375;
+  transform: translateZ(0);
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.theme-btn-interaction:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.theme-btn-interaction:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.theme-btn-interaction:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--ring-offset), 0 0 0 4px var(--brand-gold-ring);
+}
+
+.theme-btn-interaction:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.theme-btn-gold {
+  background: var(--button-primary-background);
+  color: var(--button-primary-foreground);
+  border: 1px solid var(--button-gold-border);
+  box-shadow: 0 1px 2px var(--button-gold-shadow);
+}
+
+.theme-btn-gold:hover:not(:disabled) {
+  background: var(--button-primary-hover);
+}
+
+.theme-btn-secondary {
+  background: var(--button-secondary-background);
+  color: var(--button-secondary-foreground);
+  border: 1px solid var(--border-default);
+}
+
+.theme-btn-secondary:hover:not(:disabled) {
+  background: var(--button-secondary-hover);
+}
+
+.theme-btn-outline {
+  background: var(--button-outline-background);
+  color: var(--button-outline-foreground);
+  border: 1px solid var(--button-outline-border);
+}
+
+.theme-btn-outline:hover:not(:disabled) {
+  background: var(--button-outline-hover-bg);
+}
+
+.theme-btn-ghost {
+  background: var(--button-ghost-background);
+  color: var(--button-ghost-foreground);
+  border: 1px solid var(--button-ghost-border);
+}
+
+.theme-btn-ghost:hover:not(:disabled) {
+  background: var(--button-ghost-hover-bg);
+}
+
+.theme-btn-dark {
+  background: var(--button-dark-background);
+  color: var(--button-dark-foreground);
+  border: 1px solid var(--button-dark-border);
+}
+
+.theme-btn-dark:hover:not(:disabled) {
+  background: var(--button-dark-hover);
+}
+
+.theme-btn-on-dark {
+  background: transparent;
+  color: var(--button-on-dark-fg);
+  border: 1px solid var(--button-on-dark-border);
+}
+
+.theme-btn-on-dark:hover:not(:disabled) {
+  background: var(--button-on-dark-hover-bg);
+  border-color: rgba(212, 175, 55, 0.45);
+}
+
+.btn-pill {
+  border-radius: 9999px;
+  padding: 0.375rem 0.875rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.25;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  touch-action: manipulation;
+}
+
+.btn-pill--active {
+  background: var(--button-pill-active-bg);
+  color: var(--button-pill-active-fg);
+}
+
+.btn-pill--inactive {
+  background: var(--button-pill-inactive-bg);
+  color: var(--button-pill-inactive-fg);
+}
+
+.btn-pill--inactive:hover {
+  background: var(--button-pill-inactive-hover);
+}
+
+.btn-pill--outline {
+  background: transparent;
+  color: var(--foreground-secondary);
+  border: 1px solid var(--border-default);
+}
+
+.btn-pill--outline:hover {
+  border-color: var(--button-outline-border);
+  background: var(--button-outline-hover-bg);
+  color: var(--button-outline-foreground);
+}
+
+.btn-pill--outline-active {
+  background: var(--button-outline-hover-bg);
+  color: var(--button-outline-foreground);
+  border: 1px solid var(--button-outline-border);
 }

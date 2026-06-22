@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { BrandLogo } from "@/components/BrandLogo";
 import { Button } from "@/components/ui/Button";
 
@@ -16,12 +15,9 @@ export default function NotFound() {
         <Button variant="gold" size="md" href="/">
           Zur Startseite
         </Button>
-        <Link
-          href="/contact"
-          className="inline-flex min-h-12 items-center justify-center rounded-2xl border border-white/20 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
-        >
+        <Button variant="onDark" size="md" href="/contact">
           Kontakt
-        </Link>
+        </Button>
       </div>
     </main>
   );

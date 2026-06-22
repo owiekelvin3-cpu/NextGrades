@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Button } from "@/components/ui/Button";
 import { ChevronRight, Download, Lock, Play, HelpCircle, Sparkles } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { contentTypeLabel } from "@/lib/resources/constants";
@@ -67,12 +68,9 @@ export function ResourcesRightSidebar({ resources, showAccountPanels = false, lo
             </li>
           ))}
         </ul>
-        <Link
-          href="/resources/upgrade"
-          className="mt-4 block rounded-xl bg-[#D4AF37] px-4 py-2.5 text-center text-sm font-bold text-[#0D1B2A]"
-        >
+        <Button variant="gold" size="sm" href="/resources/upgrade" className="mt-4 w-full">
           {t("resources.upgrade.unlockCta")}
-        </Link>
+        </Button>
       </div>
 
       <div className="rounded-2xl border border-gray-100 bg-white p-5">
@@ -216,12 +214,9 @@ export function ResourcesSupportBar() {
         <HelpCircle className="h-5 w-5 text-[#D4AF37]" />
         <p className="text-sm text-gray-600">{t("resources.subjectPage.supportPrompt")}</p>
       </div>
-      <Link
-        href="/contact"
-        className="rounded-xl border-2 border-[#D4AF37] px-5 py-2 text-sm font-semibold text-[#D4AF37] hover:bg-[#D4AF37]/5"
-      >
+      <Button variant="outline" size="sm" href="/contact">
         {t("common.contact")}
-      </Link>
+      </Button>
     </div>
   );
 }

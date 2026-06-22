@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowRight, BarChart3, BookOpen, ClipboardList, Layers } from "lucide-react";
 import { MarketingImage } from "@/components/marketing/MarketingImage";
 import { section, type } from "@/lib/premium/tokens";
+import { theme as th } from "@/lib/theme/tokens";
 import { cn } from "@/lib/utils";
 
 const SIDEBAR_ICONS = [BarChart3, BookOpen, ClipboardList, Layers];
@@ -42,7 +43,7 @@ export function PlatformShowcase({
             <p className="mt-4 text-base leading-relaxed text-text-muted">{subtitle}</p>
             <Link
               href={ctaHref}
-              className="mt-8 inline-flex min-h-[48px] items-center gap-2 rounded-2xl bg-[#D4AF37] px-8 text-sm font-semibold text-[#0D1B2A] transition hover:bg-[#C9A030]"
+              className={cn(th.btnGold, th.focusRing, "mt-8 min-h-12 rounded-2xl px-8 text-sm")}
             >
               {cta}
               <ArrowRight className="h-4 w-4" />

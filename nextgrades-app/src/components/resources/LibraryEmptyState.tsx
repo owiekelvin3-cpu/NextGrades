@@ -4,6 +4,8 @@ import Link from "next/link";
 import { BookOpen, Crown, ArrowRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/Button";
+import { theme as th } from "@/lib/theme/tokens";
+import { cn } from "@/lib/utils";
 
 type Props = {
   searching?: boolean;
@@ -33,7 +35,7 @@ export function LibraryEmptyState({ searching, query }: Props) {
         </Button>
         <Link
           href="/consultation"
-          className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-[var(--border-default)] px-5 py-2.5 text-sm font-semibold text-[var(--foreground)] transition hover:border-[var(--brand-gold)]/40 sm:w-auto"
+          className={cn(th.btnOutline, th.focusRing, "inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-sm sm:w-auto")}
         >
           {t("resources.emptyLibraryConsultation")}
           <ArrowRight className="h-4 w-4" />

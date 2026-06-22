@@ -9,6 +9,7 @@ import { useNotificationsOptional } from "@/context/NotificationContext";
 import { formatRelativeTime, categoryLabel } from "@/lib/notifications/format";
 import type { NotificationCategory } from "@/lib/notifications/types";
 import { NotificationCategoryIcon } from "@/components/notifications/NotificationCategoryIcon";
+import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -189,14 +190,16 @@ export function NotificationBell({ className, variant = "dark" }: Props) {
 
             {/* Footer */}
             <div className={cn("border-t p-3", onDarkBg ? "border-white/10 bg-[#0D1B2A]/50" : "border-gray-100 bg-gray-50/80")}>
-              <Link
+              <Button
+                variant="gold"
+                size="sm"
                 href="/dashboard/notifications"
                 onClick={() => setOpen(false)}
-                className="flex items-center justify-center gap-2 rounded-xl bg-[#D4AF37] px-4 py-2.5 text-xs font-semibold text-[#0D1B2A] transition hover:bg-[#c9a030]"
+                className="w-full text-xs"
               >
                 {t("notifications.viewAll", { defaultValue: "View all notifications" })}
                 <ArrowRight className="h-3.5 w-3.5" />
-              </Link>
+              </Button>
             </div>
           </div>
         </>

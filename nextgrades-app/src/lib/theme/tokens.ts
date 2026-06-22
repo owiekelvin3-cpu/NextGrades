@@ -61,6 +61,18 @@ export const theme = {
   brandGold: "text-[var(--brand-gold)]",
   brandGoldBg: "bg-[var(--brand-gold-muted)] text-[var(--brand-gold)]",
 
+  /** Buttons — pair with size/rounding utilities */
+  btnGold: "theme-btn-interaction theme-btn-gold",
+  btnSecondary: "theme-btn-interaction theme-btn-secondary",
+  btnOutline: "theme-btn-interaction theme-btn-outline",
+  btnGhost: "theme-btn-interaction theme-btn-ghost",
+  btnDark: "theme-btn-interaction theme-btn-dark",
+  btnOnDark: "theme-btn-interaction theme-btn-on-dark",
+  btnPillActive: "btn-pill btn-pill--active",
+  btnPillInactive: "btn-pill btn-pill--inactive",
+  btnPillOutline: "btn-pill btn-pill--outline",
+  btnPillOutlineActive: "btn-pill btn-pill--outline-active",
+
   /** Focus */
   focusRing:
     "focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--ring-offset)]",

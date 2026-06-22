@@ -8,6 +8,7 @@ import { useTheme } from "@/context/ThemeContext";
 import { cn } from "@/lib/utils";
 import { authSurface } from "@/components/auth/auth-ui";
 import { AuthModeSwitch } from "@/components/auth/AuthModeSwitch";
+import { Button } from "@/components/ui/Button";
 
 type LoginFormProps = {
   email: string;
@@ -172,17 +173,13 @@ export function AuthMobileSheet({
             </Link>
           </div>
 
-          <button
-            type="submit"
-            disabled={loginForm.loading}
-            className="flex w-full items-center justify-center gap-2 rounded-2xl bg-[#D4AF37] px-4 py-3.5 text-sm font-bold text-[#0D1B2A] transition hover:bg-[#e5c158] disabled:opacity-60"
-          >
+          <Button variant="gold" size="md" type="submit" disabled={loginForm.loading} className="w-full">
             {loginForm.loading ? (
-              <span className="h-5 w-5 animate-spin rounded-full border-2 border-[#0D1B2A] border-t-transparent" />
+              <span className="h-5 w-5 animate-spin rounded-full border-2 border-[var(--button-primary-foreground)] border-t-transparent" />
             ) : (
               loginLabels.loginBtn
             )}
-          </button>
+          </Button>
         </form>
 
         <AuthModeSwitch mode="login" className="mt-5" />

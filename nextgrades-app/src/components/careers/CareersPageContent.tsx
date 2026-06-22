@@ -185,10 +185,9 @@ export function CareersPageContent() {
                     {t("careersPage.viewPositions")}
                   </Button>
                   <Button
-                    variant="outline"
+                    variant="onDark"
                     size="lg"
                     href="#apply"
-                    className="border-white/25 text-white hover:bg-white/10"
                   >
                     {t("careersPage.applyNow")}
                   </Button>

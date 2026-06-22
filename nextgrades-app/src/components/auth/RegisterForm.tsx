@@ -260,16 +260,13 @@ export function RegisterForm({
               <p className="font-semibold">{t("login.accountCreatedTitle")}</p>
               <p className="mt-1 opacity-90">{successMessage}</p>
             </div>
-            <Link
-              href={
+            <Button variant="gold" size="sm" href={
                 redirectTo
                   ? `/login?redirect=${encodeURIComponent(redirectTo)}&email=${encodeURIComponent(email)}`
                   : `/login?email=${encodeURIComponent(email)}`
-              }
-              className="inline-flex items-center gap-2 rounded-lg bg-[#D4AF37] px-4 py-2 text-sm font-semibold text-[#0D1B2A] hover:opacity-90"
-            >
+              }>
               {t("login.signInNow")} <FontAwesomeIcon icon={faArrowRight} className="h-3 w-3" />
-            </Link>
+            </Button>
           </div>
         </div>
       </div>
@@ -293,13 +290,9 @@ export function RegisterForm({
             <p>{error}</p>
             {duplicateEmail && (
               <div className="mt-3 flex flex-wrap items-center gap-3">
-                <button
-                  type="button"
-                  onClick={goToLogin}
-                  className="inline-flex items-center gap-2 rounded-lg bg-[#D4AF37] px-4 py-2 text-sm font-semibold text-[#0D1B2A] hover:opacity-90"
-                >
+                <Button variant="gold" size="sm" type="button" onClick={goToLogin}>
                   {t("login.goToLogin")} <FontAwesomeIcon icon={faArrowRight} className="h-3 w-3" />
-                </button>
+                </Button>
                 <span className="text-xs opacity-75">{t("login.redirectingSoon")}</span>
               </div>
             )}
@@ -544,17 +537,13 @@ export function RegisterForm({
       {isMobile ? (
         <AuthMobilePrimaryButton loading={loading}>{t("login.createAccountBtn")}</AuthMobilePrimaryButton>
       ) : isSheet ? (
-        <button
-          type="submit"
-          disabled={loading}
-          className="flex w-full items-center justify-center gap-2 rounded-2xl bg-[#D4AF37] px-4 py-3.5 text-sm font-bold text-[#0D1B2A] transition hover:bg-[#e5c158] disabled:opacity-60 md:bg-[#0D1B2A] md:font-semibold md:text-white md:hover:bg-[#132942]"
-        >
+        <Button type="submit" variant="dark" size="md" disabled={loading} className="w-full md:rounded-2xl">
           {loading ? (
             <span className="h-5 w-5 animate-spin rounded-full border-2 border-current border-t-transparent" />
           ) : (
             t("login.registerBtn")
           )}
-        </button>
+        </Button>
       ) : (
       <Button
         type="submit"

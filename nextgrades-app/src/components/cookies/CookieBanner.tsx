@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Cookie } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useConsent } from "@/context/ConsentContext";
+import { theme as th } from "@/lib/theme/tokens";
 import { cn } from "@/lib/utils";
 
 export function CookieBanner() {
@@ -50,21 +51,21 @@ export function CookieBanner() {
             <button
               type="button"
               onClick={openPreferences}
-              className="min-h-[44px] rounded-xl border border-border-default px-4 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-surface-subtle focus-visible:ring-2 focus-visible:ring-[#D4AF37] touch-manipulation"
+              className={cn(th.btnOutline, th.focusRing, "min-h-[44px] touch-manipulation")}
             >
               {t("cookies.banner.customize")}
             </button>
             <button
               type="button"
               onClick={rejectNonEssential}
-              className="min-h-[44px] rounded-xl border border-border-default px-4 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-surface-subtle focus-visible:ring-2 focus-visible:ring-[#D4AF37] touch-manipulation"
+              className={cn(th.btnOutline, th.focusRing, "min-h-[44px] touch-manipulation")}
             >
               {t("cookies.banner.reject")}
             </button>
             <button
               type="button"
               onClick={acceptAll}
-              className="min-h-[44px] rounded-xl bg-[#D4AF37] px-5 py-2.5 text-sm font-semibold text-[#0D1B2A] transition-opacity hover:opacity-90 focus-visible:ring-2 focus-visible:ring-[#D4AF37] focus-visible:ring-offset-2 touch-manipulation"
+              className={cn(th.btnGold, th.focusRing, "min-h-[44px] touch-manipulation")}
             >
               {t("cookies.banner.acceptAll")}
             </button>

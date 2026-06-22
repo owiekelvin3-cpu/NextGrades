@@ -12,6 +12,7 @@ import { fetchProfileRole, sanitizeRedirect } from "@/lib/auth/redirect";
 import { ADMIN_PORTAL_HOME } from "@/lib/admin/portal-paths";
 import { authSurface } from "@/components/auth/auth-ui";
 import { AuthGuestGuard } from "@/components/auth/AuthGuestGuard";
+import { Button } from "@/components/ui/Button";
 import {
   isAuthUserEmailVerified,
   isClientEmailVerificationRequired,
@@ -163,17 +164,13 @@ function AdminPortalLoginContent() {
             </div>
           </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="flex w-full items-center justify-center gap-2 rounded-2xl bg-[#D4AF37] px-4 py-3.5 text-sm font-bold text-[#0D1B2A] transition hover:bg-[#e5c158] disabled:opacity-60"
-          >
+          <Button variant="gold" size="md" type="submit" disabled={loading} className="w-full">
             {loading ? (
-              <span className="h-5 w-5 animate-spin rounded-full border-2 border-[#0D1B2A] border-t-transparent" />
+              <span className="h-5 w-5 animate-spin rounded-full border-2 border-[var(--button-primary-foreground)] border-t-transparent" />
             ) : (
               t("adminPortal.signInButton", { defaultValue: "Sign in to Admin Portal" })
             )}
-          </button>
+          </Button>
         </form>
 
         <div className="mt-8 space-y-3 border-t border-white/10 pt-6 text-center text-sm">

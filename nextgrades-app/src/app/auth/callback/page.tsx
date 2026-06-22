@@ -11,6 +11,7 @@ import Footer from "@/components/Footer";
 import { syncPreferencesAfterAuth } from "@/lib/preferences";
 import { changeAppLanguage } from "@/components/I18nProvider";
 import { BrandLogo } from "@/components/BrandLogo";
+import { Button } from "@/components/ui/Button";
 import { fetchProfileRole, resolvePostAuthRedirect } from "@/lib/auth/redirect";
 import { ADMIN_PORTAL_HOME } from "@/lib/admin/portal-paths";
 
@@ -127,12 +128,9 @@ export default function AuthCallbackPage() {
                   Bestätigung fehlgeschlagen
                 </h2>
                 <p className={`mb-6 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>{error}</p>
-                <button
-                  onClick={() => router.push("/login")}
-                  className="w-full rounded-2xl bg-[#D4AF37] px-6 py-3 font-bold text-[#0D1B2A] transition-all hover:opacity-90"
-                >
+                <Button variant="gold" size="md" type="button" onClick={() => router.push("/login")} className="w-full">
                   Zum Login
-                </button>
+                </Button>
               </>
             ) : null}
           </div>

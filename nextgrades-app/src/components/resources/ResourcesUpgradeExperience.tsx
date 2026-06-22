@@ -10,7 +10,9 @@ import { useLocalizedContent } from "@/hooks/useLocalizedContent";
 import { buildLoginUrl } from "@/lib/auth/redirect";
 import { getResourcesSubjectImage } from "@/lib/resources/images";
 import { appShell } from "@/lib/theme/shell";
+import { Button } from "@/components/ui/Button";
 import { hero } from "@/lib/premium/tokens";
+import { theme as th } from "@/lib/theme/tokens";
 import { cn } from "@/lib/utils";
 
 type LocalizedPlan = {
@@ -238,11 +240,11 @@ export function ResourcesUpgradeExperience() {
                   <button
                     type="button"
                     onClick={() => handleSelect(plan.id)}
-                    className={`mt-6 w-full rounded-xl py-3 text-sm font-bold transition ${
-                      plan.highlighted
-                        ? "bg-[#D4AF37] text-[#0D1B2A]"
-                        : "border-2 border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37]/5"
-                    }`}
+                    className={cn(
+                      th.focusRing,
+                      "theme-btn-interaction mt-6 w-full rounded-xl py-3 text-sm font-bold",
+                      plan.highlighted ? th.btnGold : th.btnOutline
+                    )}
                   >
                     {t("pricing.getStarted")}
                   </button>
@@ -284,15 +286,12 @@ export function ResourcesUpgradeExperience() {
               <p className="text-sm font-medium text-[#0D1B2A]">{t("resources.upgrade.supportPrompt")}</p>
             </div>
             <div className="flex gap-3">
-              <Link
-                href="/contact"
-                className="rounded-xl border-2 border-[#0D1B2A] px-5 py-2.5 text-sm font-semibold"
-              >
+              <Button variant="outline" size="sm" href="/contact">
                 {t("resources.upgrade.contactCta")}
-              </Link>
-              <Link href="/consultation" className="rounded-xl bg-[#D4AF37] px-5 py-2.5 text-sm font-bold text-[#0D1B2A]">
+              </Button>
+              <Button variant="gold" size="sm" href="/consultation">
                 {t("resources.upgrade.consultationCta")}
-              </Link>
+              </Button>
             </div>
           </div>
         </div>

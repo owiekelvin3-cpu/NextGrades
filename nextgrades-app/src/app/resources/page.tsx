@@ -1,17 +1,16 @@
 "use client";
 
 import { Suspense, useMemo } from "react";
-import Link from "next/link";
-import { ArrowRight, Crown } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { Button } from "@/components/ui/Button";
 import { ResourcesMarketplaceExperience } from "@/components/resources/ResourcesMarketplaceExperience";
 import { MockupPageHero } from "@/components/mockup/MockupPageHero";
 import { MockupFeatureStrip } from "@/components/mockup/MockupFeatureStrip";
 import { useTranslation } from "react-i18next";
 import { useCmsImage } from "@/hooks/useCmsImage";
 import { RESOURCES_HERO_IMAGE } from "@/lib/marketing-images";
-import { BookOpen, Sparkles, Shield, Layers } from "lucide-react";
+import { BookOpen, Sparkles, Shield, Layers, ArrowRight, Crown } from "lucide-react";
 import { useMarketingTheme } from "@/lib/marketing-theme";
 import { cn } from "@/lib/utils";
 
@@ -44,20 +43,14 @@ export default function ResourcesPage() {
           heroImage={heroImage}
         >
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-            <Link
-              href="/resources/upgrade"
-              className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-xl bg-[#D4AF37] px-6 py-3 text-sm font-bold text-[#0D1B2A] transition hover:bg-[#C9A030]"
-            >
+            <Button variant="gold" size="md" href="/resources/upgrade" className="w-full sm:w-auto">
               <Crown className="h-4 w-4" />
               {t("resources.unlockCta")}
-            </Link>
-            <Link
-              href="/subjects"
-              className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-xl border border-white/30 px-6 py-3 text-sm font-semibold text-white transition hover:border-[#D4AF37]/50 hover:bg-white/5"
-            >
+            </Button>
+            <Button variant="onDark" size="md" href="/subjects" className="w-full sm:w-auto">
               {t("resources.browseBySubject")}
               <ArrowRight className="h-4 w-4" />
-            </Link>
+            </Button>
           </div>
         </MockupPageHero>
 

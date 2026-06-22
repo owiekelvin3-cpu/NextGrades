@@ -18,6 +18,7 @@ import {
 import { useTheme } from "@/context/ThemeContext";
 import { useToast } from "@/context/ToastContext";
 import { LoadingBlock } from "@/components/dashboard/LoadingBlock";
+import { Button } from "@/components/ui/Button";
 import { ProfileAvatarUpload } from "./ProfileAvatarUpload";
 import {
   SettingsCard,
@@ -245,9 +246,9 @@ export function StudentSettingsPanel({ role = "student" }: StudentSettingsPanelP
         theme === "dark" ? "border-white/10 bg-[#112240] text-gray-300" : "border-gray-100 bg-white text-gray-600"
       )}>
         <p>{t("settings.loadError", { defaultValue: "Could not load your profile. Please sign in again." })}</p>
-        <Link href="/login" className="mt-4 inline-block rounded-xl bg-[#D4AF37] px-5 py-2.5 text-sm font-semibold text-[#0D1B2A]">
+        <Button variant="gold" size="sm" href="/login" className="mt-4">
           {t("common.login", { defaultValue: "Log in" })}
-        </Link>
+        </Button>
       </div>
     );
   }
@@ -552,12 +553,12 @@ export function StudentSettingsPanel({ role = "student" }: StudentSettingsPanelP
                 </p>
               </div>
               <div className="mt-4 flex flex-wrap gap-3">
-                <Link href="/pricing" className="rounded-xl bg-[#D4AF37] px-5 py-2.5 text-sm font-semibold text-[#0D1B2A] transition hover:bg-[#F5A623]">
+                <Button variant="gold" size="sm" href="/pricing">
                   {t("settings.viewPlans", { defaultValue: "View plans" })}
-                </Link>
-                <Link href="/dashboard/student/appointments" className="rounded-xl border border-gray-200 px-5 py-2.5 text-sm font-semibold text-[#0D1B2A] transition hover:border-[#D4AF37]">
+                </Button>
+                <Button variant="outline" size="sm" href="/dashboard/student/appointments">
                   {t("studentDashboard.myAppointments", { defaultValue: "My appointments" })}
-                </Link>
+                </Button>
               </div>
             </SettingsCard>
 
@@ -565,10 +566,10 @@ export function StudentSettingsPanel({ role = "student" }: StudentSettingsPanelP
               <p className="mb-4 text-sm text-gray-600">
                 {t("settings.aiAccessDesc", { defaultValue: "Your AI tutor is included with your account. Choose your preferred assistant in the chat." })}
               </p>
-              <Link href="/dashboard/chat" className="inline-flex items-center gap-2 rounded-xl bg-[#0D1B2A] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#1a3352]">
-                <Sparkles className="h-4 w-4 text-[#D4AF37]" />
+              <Button variant="dark" size="sm" href="/dashboard/chat">
+                <Sparkles className="h-4 w-4 text-[var(--brand-gold)]" />
                 {t("studentDashboard.openAi", { defaultValue: "Open NextGrades AI" })}
-              </Link>
+              </Button>
             </SettingsCard>
           </>
         )}

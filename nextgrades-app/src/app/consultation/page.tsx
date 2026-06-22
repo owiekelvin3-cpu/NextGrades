@@ -185,10 +185,9 @@ export default function ConsultationPage() {
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
                   <Button
-                    variant="outline"
+                    variant={isDark ? "onDark" : "outline"}
                     size="lg"
                     href="/programs"
-                    className={isDark ? "border-white/20 text-white hover:bg-white/10" : ""}
                   >
                     {t("consultation.viewPrograms")}
                   </Button>
@@ -572,12 +571,7 @@ export default function ConsultationPage() {
                   <Button variant="gold" size="lg" href="/programs">
                     {t("consultation.ctaPrograms")}
                   </Button>
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    href="/pricing"
-                    className="border-white/30 text-white hover:bg-white/10"
-                  >
+                  <Button variant="onDark" size="lg" href="/pricing">
                     {t("consultation.ctaPricing")}
                   </Button>
                 </div>

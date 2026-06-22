@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
+import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 
 type HeroAction = {
@@ -209,12 +210,9 @@ export function OverviewEmptyState({
       <p className="text-sm font-semibold text-foreground">{title}</p>
       {description && <p className="mt-1 max-w-sm text-xs text-text-muted">{description}</p>}
       {actionHref && actionLabel && (
-        <Link
-          href={actionHref}
-          className="mt-5 inline-flex items-center gap-2 rounded-xl bg-[#D4AF37] px-4 py-2.5 text-sm font-semibold text-[#0D1B2A] transition hover:bg-[#c9a030]"
-        >
+        <Button variant="gold" size="sm" href={actionHref} className="mt-5">
           {actionLabel}
-        </Link>
+        </Button>
       )}
     </div>
   );

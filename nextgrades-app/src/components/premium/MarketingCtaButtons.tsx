@@ -10,6 +10,8 @@ type MarketingCtaButtonsProps = {
   primaryHref?: string;
   secondaryHref?: string;
   align?: "start" | "center";
+  /** Secondary CTA style — use `onDark` on navy/hero bands (default). */
+  secondaryVariant?: "onDark" | "outline" | "ghost";
   className?: string;
 };
 
@@ -23,6 +25,7 @@ export function MarketingCtaButtons({
   primaryHref = "/consultation",
   secondaryHref = "/programs",
   align = "start",
+  secondaryVariant = "onDark",
   className,
 }: MarketingCtaButtonsProps) {
   return (
@@ -37,7 +40,7 @@ export function MarketingCtaButtons({
         {primaryLabel}
       </Button>
       {secondaryLabel ? (
-        <Button variant="ghost" size="lg" href={secondaryHref} className={buttonClass}>
+        <Button variant={secondaryVariant} size="lg" href={secondaryHref} className={buttonClass}>
           <span className="text-center">{secondaryLabel}</span>
           <ArrowRight className="h-4 w-4 shrink-0" aria-hidden />
         </Button>

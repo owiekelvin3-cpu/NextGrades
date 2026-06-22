@@ -11,6 +11,7 @@ import { AuthField, AuthPrimaryButton } from "@/components/auth/AuthSplitCard";
 import { authSurface } from "@/components/auth/auth-ui";
 import { cn } from "@/lib/utils";
 import { AuthGuestGuard } from "@/components/auth/AuthGuestGuard";
+import { Button } from "@/components/ui/Button";
 
 function ForgotPasswordContent() {
   const [email, setEmail] = useState("");
@@ -102,12 +103,9 @@ function ForgotPasswordContent() {
               <p className={cn("rounded-2xl border px-4 py-4 text-sm leading-relaxed", s.body)}>
                 {t("forgotPasswordPage.successBody", { email: submittedEmail })}
               </p>
-              <Link
-                href="/login"
-                className="flex w-full items-center justify-center rounded-2xl bg-[#D4AF37] px-4 py-3.5 text-sm font-semibold text-[#0D1B2A] transition hover:bg-[#e5c158]"
-              >
+              <Button variant="gold" size="md" href="/login" className="w-full">
                 {t("forgotPasswordPage.backToLogin")}
-              </Link>
+              </Button>
             </div>
           ) : (
             <form className="space-y-5" onSubmit={handleSubmit}>
