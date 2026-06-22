@@ -281,6 +281,8 @@ body {
 
 :root {
   --site-nav-height: 4rem;
+  --site-nav-gap: clamp(1.125rem, 1.25vw + 0.75rem, 2.5rem);
+  --site-nav-offset: calc(var(--site-nav-height) + var(--site-nav-gap));
 }
 
 @media (min-width: 768px) {
@@ -295,8 +297,12 @@ body {
   }
 }
 
+html {
+  scroll-padding-top: calc(var(--site-nav-offset) + env(safe-area-inset-top, 0px));
+}
+
 .pt-site-nav {
-  padding-top: calc(var(--site-nav-height) + env(safe-area-inset-top, 0px));
+  padding-top: calc(var(--site-nav-offset) + env(safe-area-inset-top, 0px));
 }
 
 /* Dashboard tables & wide content on small screens */

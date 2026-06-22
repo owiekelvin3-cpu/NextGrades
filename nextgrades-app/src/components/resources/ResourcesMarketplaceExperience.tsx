@@ -48,7 +48,7 @@ export function ResourcesMarketplaceExperience() {
   return (
     <>
       {/* Search & filters */}
-      <section className="sticky top-[var(--site-nav-height,4rem)] z-30 border-b border-[var(--border-default)] bg-[var(--nav-background)] backdrop-blur-md">
+      <section className="sticky top-[var(--site-nav-offset)] z-30 border-b border-[var(--border-default)] bg-[var(--nav-background)] backdrop-blur-md">
         <div className={cn(section.container, "py-3 md:py-4")}>
           <div className="flex flex-col gap-3">
             <div className="flex gap-2 sm:gap-3">

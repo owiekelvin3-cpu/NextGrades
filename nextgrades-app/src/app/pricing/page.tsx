@@ -150,7 +150,7 @@ function PricingContent() {
             className="pointer-events-none absolute inset-0 bg-[#0D1B2A] md:hidden"
             aria-hidden
           />
-          <div className="relative z-10 mx-auto w-full max-w-7xl px-5 pb-8 pt-[calc(var(--site-nav-height,4rem)+1.25rem)] sm:px-6 md:min-h-[600px] md:pb-20 md:pt-28 lg:min-h-[680px] lg:px-8">
+          <div className="relative z-10 mx-auto w-full max-w-7xl px-5 pb-8 pt-site-nav sm:px-6 md:min-h-[600px] md:pb-20 lg:min-h-[680px] lg:px-8">
             <div className="grid min-w-0 items-center gap-8 lg:grid-cols-2 lg:gap-16">
               <div className="max-w-xl">
                 <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#D4AF37] sm:mb-4 sm:text-xs sm:tracking-[0.22em]">

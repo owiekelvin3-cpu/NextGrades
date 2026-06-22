@@ -25,9 +25,9 @@ export const hero = {
   section:
     "relative min-h-[min(100dvh,52rem)] overflow-hidden sm:min-h-[520px] md:min-h-[560px] lg:min-h-[640px] xl:min-h-[680px]",
   inner:
-    "relative z-10 mx-auto flex w-full min-w-0 max-w-7xl flex-col justify-center px-4 pb-12 pt-site-nav sm:px-6 sm:pb-16 md:px-8 md:pb-20 md:pt-28 lg:pb-20 lg:px-8 xl:px-10 2xl:px-12",
+    "relative z-10 mx-auto flex w-full min-w-0 max-w-7xl flex-col justify-center px-4 pb-12 pt-site-nav sm:px-6 sm:pb-16 md:px-8 md:pb-20 lg:pb-20 lg:px-8 xl:px-10 2xl:px-12",
   innerCentered:
-    "relative z-10 mx-auto flex w-full min-w-0 max-w-3xl flex-col items-center justify-center px-4 pb-12 pt-site-nav text-center sm:px-6 sm:pb-16 md:px-8 md:pb-20 md:pt-28 lg:px-8 xl:px-10 2xl:px-12",
+    "relative z-10 mx-auto flex w-full min-w-0 max-w-3xl flex-col items-center justify-center px-4 pb-12 pt-site-nav text-center sm:px-6 sm:pb-16 md:px-8 md:pb-20 lg:px-8 xl:px-10 2xl:px-12",
 } as const;
 
 export const card = {

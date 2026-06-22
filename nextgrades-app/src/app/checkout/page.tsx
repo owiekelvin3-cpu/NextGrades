@@ -94,7 +94,7 @@ function CheckoutContent() {
   return (
     <div className={`min-h-screen flex flex-col ${theme === "dark" ? "bg-[#0D1B2A]" : "bg-[#FAFAFA]"}`}>
       <Navbar />
-      <main className="flex-1 px-4 pb-16 pt-site-nav md:pt-28">
+      <main className="flex-1 px-4 pb-16 pt-site-nav">
         <div className="max-w-lg mx-auto">
           <Link
             href="/pricing"
