@@ -45,24 +45,24 @@ export function ResourcesMarketplaceExperience() {
   return (
     <>
       {/* Search & filters bar */}
-      <section className="sticky top-[var(--site-nav-height,4rem)] z-30 border-b border-gray-100 bg-white/95 backdrop-blur-md">
+      <section className="sticky top-[var(--site-nav-height,4rem)] z-30 border-b border-[var(--border-default)] bg-[var(--nav-background)] backdrop-blur-md">
         <div className={`${section.container} py-4 md:py-5`}>
           <div className="flex flex-col gap-4">
             <div className="flex gap-3">
               <div className="relative flex-1">
-                <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
+                <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[var(--text-subtle)]" />
                 <input
                   type="search"
                   value={catalog.search}
                   onChange={(e) => catalog.setSearch(e.target.value)}
                   placeholder={t("resources.searchPlaceholder")}
-                  className="w-full rounded-2xl border border-gray-200 bg-[#FAF8F5] py-3.5 pl-12 pr-4 text-sm outline-none transition focus:border-[#D4AF37]/50 focus:ring-2 focus:ring-[#D4AF37]/20"
+                  className="w-full rounded-2xl border border-[var(--input-border)] bg-[var(--input-background)] py-3.5 pl-12 pr-4 text-sm text-[var(--input-foreground)] outline-none transition focus:border-[var(--brand-gold)]/50 focus:ring-2 focus:ring-[var(--brand-gold-ring)]"
                 />
               </div>
               <button
                 type="button"
                 onClick={() => setFiltersOpen((o) => !o)}
-                className="inline-flex min-h-[48px] shrink-0 items-center gap-2 rounded-2xl border border-gray-200 bg-white px-4 text-sm font-medium text-[#0D1B2A] touch-manipulation lg:hidden"
+                className="inline-flex min-h-[48px] shrink-0 items-center gap-2 rounded-2xl border border-[var(--border-default)] bg-[var(--surface-elevated)] px-4 text-sm font-medium text-[var(--foreground)] touch-manipulation lg:hidden"
               >
                 <SlidersHorizontal className="h-4 w-4" />
                 {t("resources.filtersLabel")}
@@ -77,8 +77,8 @@ export function ResourcesMarketplaceExperience() {
                 className={cn(
                   "shrink-0 rounded-full px-4 py-2 text-sm font-medium transition touch-manipulation",
                   !catalog.subjectSlug
-                    ? "bg-[#0D1B2A] text-white"
-                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                    ? "bg-[var(--brand-navy)] text-white dark:bg-[var(--brand-gold)] dark:text-[var(--brand-navy)]"
+                    : "bg-[var(--surface-subtle)] text-[var(--text-muted)] hover:bg-[var(--surface-muted)]"
                 )}
               >
                 {t("resources.allSubjects")}
@@ -94,8 +94,8 @@ export function ResourcesMarketplaceExperience() {
                     className={cn(
                       "shrink-0 rounded-full px-4 py-2 text-sm font-medium transition touch-manipulation",
                       active
-                        ? "bg-[#0D1B2A] text-white"
-                        : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                        ? "bg-[var(--brand-navy)] text-white dark:bg-[var(--brand-gold)] dark:text-[var(--brand-navy)]"
+                        : "bg-[var(--surface-subtle)] text-[var(--text-muted)] hover:bg-[var(--surface-muted)]"
                     )}
                   >
                     {s.name}
@@ -114,8 +114,8 @@ export function ResourcesMarketplaceExperience() {
                   className={cn(
                     "shrink-0 rounded-full border px-4 py-2 text-sm font-medium transition touch-manipulation",
                     activeTab === tab.id
-                      ? "border-[#D4AF37] bg-[#D4AF37]/10 text-[#0D1B2A]"
-                      : "border-gray-200 text-gray-600 hover:border-gray-300"
+                      ? "border-[var(--brand-gold)] bg-[var(--brand-gold-muted)] text-[var(--foreground)]"
+                      : "border-[var(--border-default)] text-[var(--text-muted)] hover:border-[var(--border-strong)]"
                   )}
                 >
                   {t(tab.labelKey, { defaultValue: tab.id })}
@@ -127,7 +127,7 @@ export function ResourcesMarketplaceExperience() {
 
         {/* Mobile filter drawer */}
         {filtersOpen && (
-          <div className="border-t border-gray-100 bg-white px-5 py-4 lg:hidden">
+          <div className="border-t border-[var(--border-default)] bg-[var(--surface-elevated)] px-5 py-4 lg:hidden">
             <div className="mb-3 flex items-center justify-between">
               <p className="text-sm font-semibold">{t("resources.filtersLabel")}</p>
               <button type="button" onClick={() => setFiltersOpen(false)} aria-label="Close">
@@ -139,12 +139,12 @@ export function ResourcesMarketplaceExperience() {
         )}
       </section>
 
-      <section className="bg-[#FAF8F5] py-10 md:py-16">
+      <section className="bg-surface-muted py-10 md:py-16">
         <div className={`${section.container} space-y-14`}>
           {/* Desktop inline filters */}
           <div className="hidden items-end justify-between gap-6 lg:flex">
             <MarketplaceFilters catalog={catalog} className="flex flex-wrap gap-4" />
-            <p className="shrink-0 text-sm text-gray-500">
+            <p className="shrink-0 text-sm text-[var(--text-muted)]">
               {catalog.resources.length} {t("resources.topBarResults")}
             </p>
           </div>

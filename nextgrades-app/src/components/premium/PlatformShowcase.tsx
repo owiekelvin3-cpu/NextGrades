@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowRight, BarChart3, BookOpen, ClipboardList, Layers } from "lucide-react";
 import { MarketingImage } from "@/components/marketing/MarketingImage";
 import { section, type } from "@/lib/premium/tokens";
+import { cn } from "@/lib/utils";
 
 const SIDEBAR_ICONS = [BarChart3, BookOpen, ClipboardList, Layers];
 
@@ -32,13 +33,13 @@ export function PlatformShowcase({
   const sidebarFeatures = features.slice(0, 4);
 
   return (
-    <section className={`${section.py} bg-[#FAF8F5]`}>
+    <section className={cn(section.py, "bg-surface-muted")}>
       <div className={section.container}>
         <div className="grid items-center gap-10 lg:grid-cols-[1fr_1.2fr_1fr] lg:gap-8 xl:gap-12">
           <div>
             <p className={`${type.eyebrow} mb-4`}>{eyebrow}</p>
-            <h2 className={`${type.h2} text-[#0D1B2A]`}>{title}</h2>
-            <p className="mt-4 text-base leading-relaxed text-gray-600">{subtitle}</p>
+            <h2 className={cn(type.h2, "text-foreground")}>{title}</h2>
+            <p className="mt-4 text-base leading-relaxed text-text-muted">{subtitle}</p>
             <Link
               href={ctaHref}
               className="mt-8 inline-flex min-h-[48px] items-center gap-2 rounded-2xl bg-[#D4AF37] px-8 text-sm font-semibold text-[#0D1B2A] transition hover:bg-[#C9A030]"
@@ -49,7 +50,7 @@ export function PlatformShowcase({
           </div>
 
           <div className="relative mx-auto w-full max-w-lg lg:max-w-none">
-            <div className="overflow-hidden rounded-[1.5rem] shadow-[0_32px_80px_rgba(13,27,42,0.15)] ring-1 ring-gray-200/80">
+            <div className="overflow-hidden rounded-[1.5rem] shadow-[0_32px_80px_rgba(13,27,42,0.15)] ring-1 ring-border-default">
               <MarketingImage
                 src={image}
                 fallbackSrc={fallbackImage}
@@ -66,12 +67,12 @@ export function PlatformShowcase({
               const Icon = SIDEBAR_ICONS[i] ?? BookOpen;
               return (
                 <li key={feature.title} className="flex gap-4">
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#D4AF37]/10">
-                    <Icon className="h-5 w-5 text-[#D4AF37]" />
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[var(--brand-gold-muted)]">
+                    <Icon className="h-5 w-5 text-[var(--brand-gold)]" />
                   </div>
                   <div>
-                    <p className="font-semibold text-[#0D1B2A]">{feature.title}</p>
-                    <p className="mt-1 text-sm leading-relaxed text-gray-600">{feature.desc}</p>
+                    <p className="font-semibold text-foreground">{feature.title}</p>
+                    <p className="mt-1 text-sm leading-relaxed text-text-muted">{feature.desc}</p>
                   </div>
                 </li>
               );

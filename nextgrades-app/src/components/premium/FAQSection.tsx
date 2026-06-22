@@ -19,7 +19,7 @@ export function FAQSection({ eyebrow, title, items, muted }: FAQSectionProps) {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section className={cn(section.pyCompact, muted ? "bg-[#FAF8F5]" : "bg-white")}>
+    <section className={cn(section.pyCompact, muted ? "bg-surface-muted" : "bg-surface-elevated")}>
       <div className={cn(section.container, "max-w-3xl")}>
         <SectionHeader eyebrow={eyebrow} title={title} />
         <div className="space-y-3">
@@ -28,7 +28,7 @@ export function FAQSection({ eyebrow, title, items, muted }: FAQSectionProps) {
             return (
               <div
                 key={item.question}
-                className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm"
+                className="overflow-hidden rounded-2xl border border-border-default bg-surface-elevated shadow-sm"
               >
                 <button
                   type="button"
@@ -36,17 +36,17 @@ export function FAQSection({ eyebrow, title, items, muted }: FAQSectionProps) {
                   className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left touch-manipulation"
                   aria-expanded={isOpen}
                 >
-                  <span className="font-semibold text-[#0D1B2A]">{item.question}</span>
+                  <span className="font-semibold text-foreground">{item.question}</span>
                   <ChevronDown
                     className={cn(
-                      "h-5 w-5 shrink-0 text-[#D4AF37] transition-transform",
+                      "h-5 w-5 shrink-0 text-[var(--brand-gold)] transition-transform",
                       isOpen && "rotate-180"
                     )}
                   />
                 </button>
                 {isOpen && (
-                  <div className="border-t border-gray-50 px-6 pb-5 pt-4">
-                    <p className="text-sm leading-relaxed text-gray-600">{item.answer}</p>
+                  <div className="border-t border-border-default px-6 pb-5 pt-4">
+                    <p className="text-sm leading-relaxed text-text-muted">{item.answer}</p>
                   </div>
                 )}
               </div>

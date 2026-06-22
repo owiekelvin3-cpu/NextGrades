@@ -24,6 +24,7 @@ import {
 } from "@/lib/marketing-images";
 import { cn } from "@/lib/utils";
 import { section } from "@/lib/premium/tokens";
+import { useMarketingTheme } from "@/lib/marketing-theme";
 
 type CompareRow = {
   label: string;
@@ -75,6 +76,7 @@ function PricingContent() {
   const { t } = useTranslation();
   const router = useRouter();
   const toast = useToast();
+  const mt = useMarketingTheme();
   const heroImage = useCmsImage("cmsImages.pricing.hero", PRICING_HERO_IMAGE);
 
   const localizedPlans = useLocalizedContent<PricingPlanCardPlan[]>("pricingPage.plans");
@@ -128,7 +130,7 @@ function PricingContent() {
   const planColumns = plans.map((p) => p.id);
 
   return (
-    <div className="marketing-page-root flex min-h-screen flex-col overflow-x-hidden bg-[#FAF8F5]">
+    <div className={cn("marketing-page-root flex min-h-screen flex-col overflow-x-hidden", mt.page)}>
       <Navbar />
 
       <main className="flex-1 overflow-x-hidden">
@@ -182,7 +184,7 @@ function PricingContent() {
         {stats.length > 0 && (
           <section className="-mt-5 px-5 pb-1 sm:-mt-8 sm:px-6 md:-mt-10">
             <div className="mx-auto max-w-4xl">
-              <Card className="rounded-2xl border border-gray-200/80 bg-white p-4 shadow-[0_8px_30px_rgba(13,27,42,0.06)] sm:p-6">
+              <Card className={cn("rounded-2xl p-4 shadow-[var(--card-shadow)] sm:p-6", mt.card)}>
                 <div className="grid grid-cols-2 gap-x-4 gap-y-5 sm:grid-cols-4 sm:gap-4">
                   {stats.slice(0, 4).map((stat, index) => {
                     const Icon = STAT_ICONS[index] ?? Star;
@@ -191,17 +193,17 @@ function PricingContent() {
                         key={stat.label}
                         className={cn(
                           "min-w-0 text-center sm:text-left",
-                          index % 2 === 0 && "border-r border-gray-100 pr-4 sm:border-0 sm:pr-0",
+                          index % 2 === 0 && "border-r border-[var(--border-default)] pr-4 sm:border-0 sm:pr-0",
                           index < 2 && "pb-1 sm:pb-0"
                         )}
                       >
-                        <div className="mb-1.5 inline-flex h-8 w-8 items-center justify-center rounded-full bg-[#0D1B2A]/5 sm:mb-2 sm:h-9 sm:w-9">
-                          <Icon className="h-3.5 w-3.5 text-[#0D1B2A] sm:h-4 sm:w-4" aria-hidden />
+                        <div className="mb-1.5 inline-flex h-8 w-8 items-center justify-center rounded-full bg-[var(--surface-subtle)] sm:mb-2 sm:h-9 sm:w-9">
+                          <Icon className="h-3.5 w-3.5 text-[var(--foreground)] sm:h-4 sm:w-4" aria-hidden />
                         </div>
-                        <p className="text-xl font-bold tracking-tight text-[#0D1B2A] sm:text-2xl md:text-3xl">
+                        <p className="text-xl font-bold tracking-tight text-[var(--foreground)] sm:text-2xl md:text-3xl">
                           {stat.value}
                         </p>
-                        <p className="mt-0.5 text-[11px] leading-snug text-gray-500 sm:text-sm">
+                        <p className="mt-0.5 text-[11px] leading-snug text-[var(--text-muted)] sm:text-sm">
                           {stat.label}
                         </p>
                       </div>
@@ -214,7 +216,7 @@ function PricingContent() {
         )}
 
         {/* Plans */}
-        <section className="py-10 sm:py-14 md:py-16 lg:py-20">
+        <section className={cn("py-10 sm:py-14 md:py-16 lg:py-20", mt.sectionAlt)}>
           <div className={section.container}>
             <SectionHeader
               eyebrow={t("pricing.badge")}
@@ -244,7 +246,7 @@ function PricingContent() {
 
         {/* Comparison */}
         {Array.isArray(compareRows) && compareRows.length > 0 && (
-          <section className="border-t border-gray-200/80 bg-white py-10 sm:py-14 md:py-16">
+          <section className={cn("border-t border-[var(--border-default)] py-10 sm:py-14 md:py-16", mt.section)}>
             <div className={section.container}>
               <SectionHeader
                 title={t("pricing.compareTitle")}
@@ -258,10 +260,10 @@ function PricingContent() {
                 headers={safeCompareHeaders}
               />
 
-              <div className="responsive-table-wrap hidden rounded-xl border border-gray-200 bg-white shadow-sm md:block">
+              <div className={cn("responsive-table-wrap hidden rounded-xl shadow-sm md:block", mt.tableWrap)}>
                 <table className="w-full min-w-[680px] border-collapse text-left text-sm">
                   <thead>
-                    <tr className="bg-[#0D1B2A] text-white">
+                    <tr className="bg-[var(--brand-navy)] text-white dark:bg-[var(--surface-subtle)] dark:text-[var(--foreground)]">
                       <th className="sticky left-0 z-10 bg-[#0D1B2A] px-4 py-3.5 text-left text-xs font-semibold uppercase tracking-wide text-gray-300 sm:px-5 sm:py-4">
                         {safeCompareHeaders.features ?? "Merkmale"}
                       </th>
@@ -280,14 +282,14 @@ function PricingContent() {
                       <tr
                         key={row.label}
                         className={cn(
-                          "border-b border-gray-100 last:border-0",
-                          i % 2 === 1 && "bg-[#FAF8F5]/80"
+                          "border-b border-[var(--border-default)] last:border-0",
+                          i % 2 === 1 && "bg-[var(--surface-muted)]/60"
                         )}
                       >
                         <td
                           className={cn(
-                            "sticky left-0 z-10 px-4 py-3 font-medium text-[#0D1B2A] sm:px-5 sm:py-3.5",
-                            i % 2 === 1 ? "bg-[#FAF8F5]/80" : "bg-white"
+                            "sticky left-0 z-10 px-4 py-3 font-medium text-[var(--foreground)] sm:px-5 sm:py-3.5",
+                            i % 2 === 1 ? "bg-[var(--surface-muted)]/60" : "bg-[var(--card-background)]"
                           )}
                         >
                           {row.label}
@@ -308,7 +310,7 @@ function PricingContent() {
 
         {/* FAQ */}
         {faqs.length > 0 && (
-          <section className="border-t border-gray-200/80 bg-[#FAF8F5] py-10 sm:py-14 md:py-16">
+          <section className={cn("border-t border-[var(--border-default)] py-10 sm:py-14 md:py-16", mt.sectionAlt)}>
             <div className={cn(section.container, "max-w-3xl")}>
               <SectionHeader
                 eyebrow={t("pricing.faqEyebrow", { defaultValue: "FAQ" })}
@@ -316,7 +318,7 @@ function PricingContent() {
                 align="center"
                 className="!mb-6 sm:!mb-8"
               />
-              <div className="divide-y divide-gray-200 rounded-xl border border-gray-200 bg-white">
+              <div className="divide-y divide-[var(--border-default)] rounded-xl border border-[var(--border-default)] bg-[var(--card-background)]">
                 {faqs.map((item, index) => {
                   const isOpen = openFaq === index;
                   return (
@@ -327,19 +329,19 @@ function PricingContent() {
                         className="flex w-full items-start justify-between gap-3 px-4 py-4 text-left touch-manipulation sm:items-center sm:gap-4 sm:px-6 sm:py-5"
                         aria-expanded={isOpen}
                       >
-                        <span className="text-sm font-semibold leading-snug text-[#0D1B2A] sm:text-base">
+                        <span className="text-sm font-semibold leading-snug text-[var(--foreground)] sm:text-base">
                           {item.question}
                         </span>
                         <ChevronDown
                           className={cn(
-                            "mt-0.5 h-5 w-5 shrink-0 text-gray-400 transition-transform sm:mt-0",
+                            "mt-0.5 h-5 w-5 shrink-0 text-[var(--text-muted)] transition-transform sm:mt-0",
                             isOpen && "rotate-180"
                           )}
                         />
                       </button>
                       {isOpen && (
-                        <div className="border-t border-gray-100 px-4 pb-4 pt-3 sm:px-6 sm:pb-5">
-                          <p className="text-sm leading-relaxed text-gray-600">{item.answer}</p>
+                        <div className="border-t border-[var(--border-default)] px-4 pb-4 pt-3 sm:px-6 sm:pb-5">
+                          <p className="text-sm leading-relaxed text-[var(--text-muted)]">{item.answer}</p>
                         </div>
                       )}
                     </div>
@@ -392,7 +394,7 @@ export default function PricingPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex min-h-screen items-center justify-center bg-[#FAF8F5]">
+        <div className="flex min-h-screen items-center justify-center bg-background">
           <Loader2 className="h-8 w-8 animate-spin text-[#D4AF37]" />
         </div>
       }

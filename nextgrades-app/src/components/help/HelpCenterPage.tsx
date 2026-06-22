@@ -28,6 +28,8 @@ import { Button } from "@/components/ui/Button";
 import { useCmsImage } from "@/hooks/useCmsImage";
 import { HELP_HERO_IMAGE } from "@/lib/marketing-images";
 import { section } from "@/lib/premium/tokens";
+import { cn } from "@/lib/utils";
+import { useMarketingTheme } from "@/lib/marketing-theme";
 
 const CATEGORY_ICONS = [Rocket, User, CreditCard, BookOpen, GraduationCap, Settings];
 
@@ -42,6 +44,7 @@ type PopularArticle = { title: string; views: string };
 
 export function HelpCenterPage() {
   const { t, i18n } = useTranslation();
+  const mt = useMarketingTheme();
   const heroImage = useCmsImage("cmsImages.help.hero", HELP_HERO_IMAGE);
   const [query, setQuery] = useState("");
 
@@ -67,7 +70,7 @@ export function HelpCenterPage() {
   }, [categories, query]);
 
   return (
-    <div className="marketing-page-root flex min-h-screen flex-col bg-[#FAF8F5]">
+    <div className={cn("marketing-page-root flex min-h-screen flex-col", mt.page)}>
       <Navbar />
 
       <main className="flex-1">
@@ -86,18 +89,18 @@ export function HelpCenterPage() {
           heroImage={heroImage}
         >
           <div className="relative mt-8 max-w-xl">
-            <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
+            <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[var(--text-subtle)]" />
             <input
               type="search"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder={t("helpPage.searchPlaceholder")}
-              className="w-full rounded-2xl border border-gray-200 bg-white py-4 pl-12 pr-4 text-sm shadow-sm transition focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20"
+              className="w-full rounded-2xl border border-[var(--input-border)] bg-[var(--input-background)] py-4 pl-12 pr-4 text-sm text-[var(--input-foreground)] shadow-sm transition focus:border-[var(--brand-gold)] focus:outline-none focus:ring-2 focus:ring-[var(--brand-gold-ring)]"
             />
           </div>
         </MockupPageHero>
 
-        <section className="border-b border-gray-100 bg-white py-10">
+        <section className={cn("border-b border-[var(--border-default)] py-10", mt.section)}>
           <div className={section.container}>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
               {(Array.isArray(categories) ? categories : []).slice(0, 6).map((cat, i) => {
@@ -106,11 +109,13 @@ export function HelpCenterPage() {
                   <a
                     key={cat.id}
                     href={`#${cat.id}`}
-                    className="group rounded-2xl border border-gray-100 bg-[#FAF8F5] p-5 transition hover:border-[#D4AF37]/30 hover:shadow-md"
+                    className={cn(
+                      "group rounded-2xl border border-[var(--border-default)] bg-[var(--surface-muted)] p-5 transition hover:border-[var(--brand-gold)]/30 hover:shadow-md"
+                    )}
                   >
-                    <Icon className="mb-3 h-6 w-6 text-[#D4AF37]" />
-                    <p className="font-bold text-[#0D1B2A] group-hover:text-[#D4AF37]">{cat.title}</p>
-                    <p className="mt-1 text-xs leading-relaxed text-gray-600">{cat.desc}</p>
+                    <Icon className="mb-3 h-6 w-6 text-[var(--brand-gold)]" />
+                    <p className="font-bold text-[var(--foreground)] group-hover:text-[var(--brand-gold)]">{cat.title}</p>
+                    <p className="mt-1 text-xs leading-relaxed text-[var(--text-muted)]">{cat.desc}</p>
                   </a>
                 );
               })}
@@ -118,37 +123,37 @@ export function HelpCenterPage() {
           </div>
         </section>
 
-        <section className={`${section.pyCompact} bg-[#FAF8F5]`}>
+        <section className={cn(section.pyCompact, mt.sectionAlt)}>
           <div className={section.container}>
             <div className="grid gap-10 lg:grid-cols-[1fr_320px]">
               <div>
-                <h2 className="mb-8 text-2xl font-bold text-[#0D1B2A]">{t("helpPage.allCategories")}</h2>
+                <h2 className="mb-8 text-2xl font-bold text-[var(--foreground)]">{t("helpPage.allCategories")}</h2>
                 <div className="space-y-10">
                   {filtered.map((cat, i) => {
                     const Icon = CATEGORY_ICONS[i] ?? BookOpen;
                     return (
                       <div key={cat.id} id={cat.id}>
                         <div className="mb-4 flex items-start gap-4">
-                          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#D4AF37]/10">
-                            <Icon className="h-6 w-6 text-[#D4AF37]" />
+                          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[var(--brand-gold-muted)]">
+                            <Icon className="h-6 w-6 text-[var(--brand-gold)]" />
                           </div>
                           <div>
-                            <h3 className="text-xl font-bold text-[#0D1B2A]">{cat.title}</h3>
-                            <p className="mt-1 text-sm text-gray-600">{cat.desc}</p>
+                            <h3 className="text-xl font-bold text-[var(--foreground)]">{cat.title}</h3>
+                            <p className="mt-1 text-sm text-[var(--text-muted)]">{cat.desc}</p>
                           </div>
                         </div>
-                        <ul className="divide-y divide-gray-100 overflow-hidden rounded-2xl border border-gray-100 bg-white">
+                        <ul className="divide-y divide-[var(--border-default)] overflow-hidden rounded-2xl border border-[var(--border-default)] bg-[var(--card-background)]">
                           {cat.articles.slice(0, 4).map((article) => (
                             <li key={article.title}>
                               <Link
                                 href={article.href ?? "/contact"}
-                                className="flex items-center justify-between gap-4 px-5 py-4 text-sm transition hover:bg-[#FAF8F5]"
+                                className="flex items-center justify-between gap-4 px-5 py-4 text-sm transition hover:bg-[var(--surface-muted)]"
                               >
                                 <span className="flex items-center gap-3">
-                                  <FileText className="h-4 w-4 shrink-0 text-[#D4AF37]" />
-                                  <span className="font-medium text-[#0D1B2A]">{article.title}</span>
+                                  <FileText className="h-4 w-4 shrink-0 text-[var(--brand-gold)]" />
+                                  <span className="font-medium text-[var(--foreground)]">{article.title}</span>
                                 </span>
-                                <ChevronRight className="h-4 w-4 shrink-0 text-gray-400" />
+                                <ChevronRight className="h-4 w-4 shrink-0 text-[var(--text-subtle)]" />
                               </Link>
                             </li>
                           ))}
@@ -170,16 +175,16 @@ export function HelpCenterPage() {
 
               <aside className="space-y-6 lg:sticky lg:top-28 lg:self-start">
                 <Card className="p-6">
-                  <h3 className="font-bold text-[#0D1B2A]">{t("helpPage.popularTitle")}</h3>
+                  <h3 className="font-bold text-[var(--foreground)]">{t("helpPage.popularTitle")}</h3>
                   <ul className="mt-4 space-y-3">
                     {(Array.isArray(popular) ? popular : []).map((item) => (
                       <li key={item.title}>
                         <Link
                           href="/contact"
-                          className="flex items-start justify-between gap-2 text-sm transition hover:text-[#D4AF37]"
+                          className="flex items-start justify-between gap-2 text-sm transition hover:text-[var(--brand-gold)]"
                         >
-                          <span className="font-medium text-[#0D1B2A]">{item.title}</span>
-                          <span className="flex shrink-0 items-center gap-1 text-xs text-gray-500">
+                          <span className="font-medium text-[var(--foreground)]">{item.title}</span>
+                          <span className="flex shrink-0 items-center gap-1 text-xs text-[var(--text-muted)]">
                             <Eye className="h-3.5 w-3.5" />
                             {item.views}
                           </span>

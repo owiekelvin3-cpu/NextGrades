@@ -28,7 +28,7 @@ export function CompactFooter() {
             <Link
               key={link.label}
               href={link.href}
-              className="whitespace-nowrap transition-colors hover:text-[#D4AF37]"
+              className="whitespace-nowrap transition-colors hover:text-[var(--brand-gold)]"
             >
               {link.label}
             </Link>

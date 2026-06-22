@@ -9,40 +9,26 @@ import { cn } from "@/lib/utils";
 export function FooterMobileAccordion({
   title,
   children,
-  isDark,
   defaultOpen = false,
 }: {
   title: string;
   children: React.ReactNode;
-  isDark: boolean;
   defaultOpen?: boolean;
 }) {
   const [open, setOpen] = useState(defaultOpen);
 
   return (
-    <div
-      className={cn(
-        "md:hidden overflow-hidden rounded-2xl border",
-        isDark ? "border-white/10 bg-white/[0.04]" : "border-gray-100 bg-gray-50/80"
-      )}
-    >
+    <div className="overflow-hidden rounded-xl border border-[var(--footer-border)] bg-white/[0.03]">
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="flex min-h-[52px] w-full items-center justify-between px-4 py-3 text-left touch-manipulation"
+        className="flex min-h-[48px] w-full items-center justify-between px-4 py-3 text-left touch-manipulation"
+        aria-expanded={open}
       >
-        <span
-          className={cn(
-            "text-sm font-semibold",
-            isDark ? "text-white" : "text-[#0D1B2A]"
-          )}
-        >
-          {title}
-        </span>
+        <span className="text-sm font-medium text-[var(--footer-foreground)]">{title}</span>
         <ChevronDown
           className={cn(
-            "h-5 w-5 shrink-0 transition-transform duration-200",
-            isDark ? "text-gray-400" : "text-gray-500",
+            "h-4 w-4 shrink-0 text-[var(--footer-muted)] transition-transform duration-200",
             open && "rotate-180"
           )}
         />
@@ -56,12 +42,7 @@ export function FooterMobileAccordion({
             transition={{ duration: 0.2 }}
             className="overflow-hidden"
           >
-            <ul
-              className={cn(
-                "space-y-2.5 border-t px-4 py-3",
-                isDark ? "border-white/10" : "border-gray-100"
-              )}
-            >
+            <ul className="space-y-1 border-t border-[var(--footer-border)] px-4 py-2">
               {children}
             </ul>
           </motion.div>
@@ -74,20 +55,15 @@ export function FooterMobileAccordion({
 export function FooterAccordionLink({
   href,
   children,
-  isDark,
 }: {
   href: string;
   children: React.ReactNode;
-  isDark: boolean;
 }) {
   return (
     <li>
       <Link
         href={href}
-        className={cn(
-          "block min-h-10 py-1 text-sm transition-colors hover:text-[#D4AF37] touch-manipulation",
-          isDark ? "text-gray-400" : "text-gray-600"
-        )}
+        className="block min-h-10 py-2 text-sm text-[var(--footer-link)] transition-colors hover:text-[var(--brand-gold)] touch-manipulation"
       >
         {children}
       </Link>

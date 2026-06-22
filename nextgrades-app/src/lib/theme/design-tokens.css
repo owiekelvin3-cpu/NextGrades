@@ -108,6 +108,14 @@
   --focus-ring: var(--brand-gold-ring);
   --ring-offset: #fafaf9;
 
+  --footer-background: #0d1b2a;
+  --footer-foreground: #f5f5f4;
+  --footer-muted: #9ca3af;
+  --footer-subtle: #6b7280;
+  --footer-border: rgba(255, 255, 255, 0.1);
+  --footer-link: #d1d5db;
+  --footer-heading: var(--brand-gold);
+
   --transition-theme: background-color 0.32s cubic-bezier(0.4, 0, 0.2, 1),
     color 0.32s cubic-bezier(0.4, 0, 0.2, 1),
     border-color 0.32s cubic-bezier(0.4, 0, 0.2, 1),
@@ -192,6 +200,14 @@
   --alert-info-border: rgba(59, 130, 246, 0.22);
 
   --ring-offset: #0c0e12;
+
+  --footer-background: #080d14;
+  --footer-foreground: #ececf0;
+  --footer-muted: #9494a0;
+  --footer-subtle: #6e6e7a;
+  --footer-border: rgba(255, 255, 255, 0.08);
+  --footer-link: #c4c4cc;
+  --footer-heading: var(--brand-gold);
 }
 
 /* Smooth theme switching */
@@ -345,4 +361,20 @@ html.theme-animate *::after {
 
 .gradient-navy {
   background: linear-gradient(135deg, var(--brand-navy) 0%, var(--brand-navy-soft) 100%);
+}
+
+/* Site footer — brand anchor bar (consistent in light & dark site themes) */
+.site-footer {
+  background: var(--footer-background);
+  color: var(--footer-foreground);
+  border-top: 1px solid var(--footer-border);
+}
+
+.site-footer a:not([class*="Button"]) {
+  color: var(--footer-link);
+  transition: color 0.2s ease;
+}
+
+.site-footer a:not([class*="Button"]):hover {
+  color: var(--brand-gold);
 }

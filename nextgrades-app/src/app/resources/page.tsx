@@ -10,11 +10,14 @@ import { useTranslation } from "react-i18next";
 import { useCmsImage } from "@/hooks/useCmsImage";
 import { RESOURCES_HERO_IMAGE } from "@/lib/marketing-images";
 import { BookOpen, Sparkles, Shield, Layers } from "lucide-react";
+import { useMarketingTheme } from "@/lib/marketing-theme";
+import { cn } from "@/lib/utils";
 
 const BENEFIT_ICONS = [BookOpen, Sparkles, Shield, Layers];
 
 export default function ResourcesPage() {
   const { t, i18n } = useTranslation();
+  const mt = useMarketingTheme();
   const heroImage = useCmsImage("cmsImages.resources.hero", RESOURCES_HERO_IMAGE);
 
   const benefits = useMemo(() => {
@@ -24,7 +27,7 @@ export default function ResourcesPage() {
   }, [t, i18n.language]);
 
   return (
-    <div className="marketing-page-root flex min-h-screen flex-col bg-[#FAF8F5]">
+    <div className={cn("marketing-page-root flex min-h-screen flex-col", mt.page)}>
       <Navbar />
 
       <main className="flex-1">
@@ -40,7 +43,7 @@ export default function ResourcesPage() {
         />
 
         {benefits.length > 0 && (
-          <MockupFeatureStrip items={benefits} columns={4} className="bg-[#FAF8F5]" />
+          <MockupFeatureStrip items={benefits} columns={4} className={mt.sectionAlt} />
         )}
 
         <Suspense fallback={null}>

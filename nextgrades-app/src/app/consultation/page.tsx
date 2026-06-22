@@ -7,7 +7,7 @@ import Footer from "@/components/Footer";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
-import { useTheme } from "@/context/ThemeContext";
+import { useMarketingTheme } from "@/lib/marketing-theme";
 import { useTranslation } from "react-i18next";
 import { useLocalizedContent } from "@/hooks/useLocalizedContent";
 import { useCmsImage } from "@/hooks/useCmsImage";
@@ -44,7 +44,7 @@ type AudienceItem = { title: string; description: string };
 type FaqItem = { question: string; answer: string };
 
 export default function ConsultationPage() {
-  const { theme } = useTheme();
+  const mt = useMarketingTheme();
   const { t } = useTranslation();
   const toast = useToast();
   const consultationHeroImage = useCmsImage("cmsImages.consultation.hero", CONSULTATION_HERO_IMAGE);
@@ -73,15 +73,12 @@ export default function ConsultationPage() {
     goals: "",
   });
 
-  const isDark = theme === "dark";
-  const textPrimary = isDark ? "text-white" : "text-[#0D1B2A]";
-  const textMuted = isDark ? "text-gray-400" : "text-gray-600";
-  const cardBg = isDark ? "bg-[#112240] border-white/10" : "bg-white border-gray-100";
-  const inputClass = `w-full px-4 py-3.5 rounded-xl border transition-all focus:outline-none focus:border-[#D4AF37] focus:ring-2 focus:ring-[#D4AF37]/20 ${
-    isDark
-      ? "border-white/10 bg-[#0D1B2A] text-white placeholder:text-gray-500"
-      : "border-gray-200 bg-white text-[#0D1B2A] placeholder:text-gray-400"
-  }`;
+  const isDark = mt.isDark;
+  const textPrimary = "text-[var(--foreground)]";
+  const textMuted = "text-[var(--text-muted)]";
+  const cardBg = cn("border border-[var(--border-default)] bg-[var(--card-background)]");
+  const inputClass =
+    "w-full rounded-xl border border-[var(--input-border)] bg-[var(--input-background)] px-4 py-3.5 text-[var(--input-foreground)] transition-all placeholder:text-[var(--input-placeholder)] focus:border-[var(--brand-gold)] focus:outline-none focus:ring-2 focus:ring-[var(--brand-gold-ring)]";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -139,7 +136,7 @@ export default function ConsultationPage() {
   };
 
   return (
-    <div className={`marketing-page-root min-h-screen flex flex-col ${isDark ? "bg-[#0D1B2A]" : "bg-[#FAFAFA]"}`}>
+    <div className={cn("marketing-page-root flex min-h-screen flex-col", mt.page)}>
       <Navbar />
 
       <main className="flex-1">
@@ -238,7 +235,7 @@ export default function ConsultationPage() {
         </section>
 
         {/* Process */}
-        <section className={`py-20 ${isDark ? "bg-[#112240]/30" : "bg-[#FAFAFA]"}`}>
+        <section className={cn("py-20", mt.sectionAlt)}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-14">
               <h2 className={`text-3xl md:text-4xl font-bold mb-4 ${textPrimary}`}>{t("consultation.processTitle")}</h2>
@@ -274,7 +271,7 @@ export default function ConsultationPage() {
         </section>
 
         {/* Benefits */}
-        <section className={`py-20 ${isDark ? "bg-[#0D1B2A]" : "bg-white"}`}>
+        <section className={cn("py-20", mt.section)}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-14">
               <h2 className={`text-3xl md:text-4xl font-bold mb-4 ${textPrimary}`}>{t("consultation.benefitsTitle")}</h2>
@@ -299,7 +296,7 @@ export default function ConsultationPage() {
         </section>
 
         {/* Audience */}
-        <section className={`py-16 ${isDark ? "bg-[#112240]/30" : "bg-[#FAFAFA]"}`}>
+        <section className={cn("py-16", mt.sectionAlt)}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className={`text-2xl md:text-3xl font-bold text-center mb-10 ${textPrimary}`}>
               {t("consultation.audienceTitle")}
@@ -322,7 +319,7 @@ export default function ConsultationPage() {
         </section>
 
         {/* Booking form */}
-        <section id="book-consultation" className={`py-20 scroll-mt-24 ${isDark ? "bg-[#0D1B2A]" : "bg-white"}`}>
+        <section id="book-consultation" className={cn("scroll-mt-24 py-20", mt.section)}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-5 gap-10 items-start">
               <div className="lg:col-span-2 lg:sticky lg:top-28">
@@ -529,7 +526,7 @@ export default function ConsultationPage() {
         </section>
 
         {/* FAQ */}
-        <section className={`py-20 ${isDark ? "bg-[#112240]/30" : "bg-[#FAFAFA]"}`}>
+        <section className={cn("py-20", mt.sectionAlt)}>
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className={`text-3xl font-bold text-center mb-10 ${textPrimary}`}>{t("consultation.faqTitle")}</h2>
             <div className="space-y-3">

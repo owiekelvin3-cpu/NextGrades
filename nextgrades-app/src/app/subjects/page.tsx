@@ -29,7 +29,7 @@ import {
   Ruler,
   X,
 } from "lucide-react";
-import { useTheme } from "@/context/ThemeContext";
+import { useMarketingTheme } from "@/lib/marketing-theme";
 import { useTranslation } from "react-i18next";
 import { useLocalizedContent } from "@/hooks/useLocalizedContent";
 import { useCmsImages } from "@/hooks/useCmsImage";
@@ -61,7 +61,7 @@ type SubjectItem = {
 };
 
 export default function SubjectsPage() {
-  const { theme } = useTheme();
+  const mt = useMarketingTheme();
   const { t } = useTranslation();
   const router = useRouter();
   const { getImage } = useCmsImages();
@@ -93,7 +93,7 @@ export default function SubjectsPage() {
   const benefits = Array.isArray(benefitsRaw) ? benefitsRaw : [];
   const stats = Array.isArray(statsRaw) ? statsRaw : [];
 
-  const isDark = theme === "dark";
+  const isDark = mt.isDark;
 
   const openBrowse = (subject: SubjectItem) => {
     setBrowseSubject(subject);
@@ -115,7 +115,7 @@ export default function SubjectsPage() {
             "hover:border-[#D4AF37] hover:bg-[#D4AF37]/10 hover:text-[#D4AF37] hover:shadow-md",
             isDark
               ? "border-white/15 bg-white/5 text-gray-200"
-              : "border-gray-200/90 bg-white text-[#0D1B2A] shadow-sm"
+              : "border-[var(--border-default)] bg-[var(--surface-elevated)] text-[var(--foreground)] shadow-sm"
           )
     );
 
@@ -130,18 +130,11 @@ export default function SubjectsPage() {
     }
   };
 
-  const inputCls = cn(
-    "w-full rounded-xl border px-4 py-3 text-sm focus:outline-none focus:border-[#D4AF37] focus:ring-2 focus:ring-[#D4AF37]/20",
-    isDark ? "border-white/10 bg-[#0D1B2A] text-white" : "border-gray-200 bg-white text-[#0D1B2A]"
-  );
+  const inputCls =
+    "w-full rounded-xl border border-[var(--input-border)] bg-[var(--input-background)] px-4 py-3 text-sm text-[var(--input-foreground)] focus:border-[var(--brand-gold)] focus:outline-none focus:ring-2 focus:ring-[var(--brand-gold-ring)]";
 
   return (
-    <div
-      className={cn(
-        "marketing-page-root flex min-h-screen flex-col",
-        isDark ? "bg-[#0D1B2A]" : "bg-[#FAFAFA]"
-      )}
-    >
+    <div className={cn("marketing-page-root flex min-h-screen flex-col", mt.page)}>
       <Navbar />
 
       <main className="flex-1">
@@ -199,23 +192,18 @@ export default function SubjectsPage() {
         {/* Stats strip */}
         <section className="relative z-10 -mt-4 pb-4">
           <div className="mx-auto max-w-5xl px-4">
-            <Card className={cn("border-0 p-4 shadow-xl sm:p-6", isDark ? "bg-[#112240]" : "bg-white")}>
+            <Card className={cn("border-0 p-4 shadow-xl sm:p-6", mt.card)}>
               <div className="grid grid-cols-4 gap-2 sm:gap-6">
                 {stats.map((stat, index) => {
                   const Icon = statIcons[index];
                   return (
                     <div key={index} className="flex min-w-0 flex-col items-center gap-1.5 text-center sm:flex-row sm:items-center sm:gap-4 sm:text-left">
-                      <div
-                        className={cn(
-                          "flex h-9 w-9 shrink-0 items-center justify-center rounded-full sm:h-12 sm:w-12",
-                          isDark ? "bg-[#D4AF37]/15" : "bg-[#D4AF37]/10"
-                        )}
-                      >
-                        <Icon className="h-4 w-4 text-[#D4AF37] sm:h-6 sm:w-6" />
+                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--brand-gold-muted)] sm:h-12 sm:w-12">
+                        <Icon className="h-4 w-4 text-[var(--brand-gold)] sm:h-6 sm:w-6" />
                       </div>
                       <div className="min-w-0">
-                        <p className={cn("text-base font-bold leading-none sm:text-2xl", isDark ? "text-white" : "text-[#0D1B2A]")}>{stat.value}</p>
-                        <p className={cn("text-[9px] leading-tight sm:text-sm", isDark ? "text-gray-400" : "text-gray-600")}>{stat.label}</p>
+                        <p className="text-base font-bold leading-none text-[var(--foreground)] sm:text-2xl">{stat.value}</p>
+                        <p className="text-[9px] leading-tight text-[var(--text-muted)] sm:text-sm">{stat.label}</p>
                       </div>
                     </div>
                   );
@@ -226,13 +214,13 @@ export default function SubjectsPage() {
         </section>
 
         {/* Subject cards */}
-        <section className={cn("py-20", isDark ? "bg-[#0D1B2A]" : "bg-[#FAFAFA]")}>
+        <section className={cn("py-20", mt.sectionAlt)}>
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="mb-8 text-center sm:mb-14">
-              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#D4AF37]">
+              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--brand-gold)]">
                 {t("subjects.eyebrow")}
               </p>
-              <h2 className={cn("text-2xl font-bold sm:text-3xl md:text-4xl", isDark ? "text-white" : "text-[#0D1B2A]")}>
+              <h2 className="text-2xl font-bold text-[var(--foreground)] sm:text-3xl md:text-4xl">
                 {t("subjects.subtitle", { defaultValue: "Choose your subject" })}
               </h2>
             </div>
@@ -263,8 +251,7 @@ export default function SubjectsPage() {
                     <div id={`subject-${subject.id}`} className="h-full">
                     <Card
                       className={cn(
-                        "group flex h-full flex-col overflow-hidden border transition-shadow hover:shadow-xl",
-                        isDark ? "border-white/10 bg-[#112240]" : "border-gray-100 bg-white"
+                        "group flex h-full flex-col overflow-hidden border border-[var(--border-default)] bg-[var(--card-background)] transition-shadow hover:shadow-xl"
                       )}
                     >
                       <div className="relative h-44 overflow-hidden sm:h-52">
@@ -288,26 +275,21 @@ export default function SubjectsPage() {
                       </div>
 
                       <div className="flex flex-1 flex-col p-5 sm:p-6">
-                        <h3 className={cn("mb-2 text-lg font-bold sm:text-xl", isDark ? "text-white" : "text-[#0D1B2A]")}>
+                        <h3 className="mb-2 text-lg font-bold text-[var(--foreground)] sm:text-xl">
                           {subject.title}
                         </h3>
-                        <p className={cn("mb-4 text-sm leading-relaxed sm:mb-5", isDark ? "text-gray-400" : "text-gray-600")}>
+                        <p className="mb-4 text-sm leading-relaxed text-[var(--text-muted)] sm:mb-5">
                           {subject.description}
                         </p>
                         <ul className="mb-5 space-y-2 sm:mb-6">
                           {subject.features.map((feature, i) => (
                             <li key={i} className="flex items-start gap-2 text-sm">
-                              <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#D4AF37]" />
-                              <span className={isDark ? "text-gray-300" : "text-gray-600"}>{feature}</span>
+                              <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[var(--brand-gold)]" />
+                              <span className="text-[var(--foreground-secondary)]">{feature}</span>
                             </li>
                           ))}
                         </ul>
-                        <div
-                          className={cn(
-                            "mt-auto flex flex-col gap-2 border-t pt-5",
-                            isDark ? "border-white/10" : "border-gray-100"
-                          )}
-                        >
+                        <div className="mt-auto flex flex-col gap-2 border-t border-[var(--border-default)] pt-5">
                           <button
                             type="button"
                             onClick={() => openBrowse(subject)}
@@ -341,13 +323,13 @@ export default function SubjectsPage() {
         </section>
 
         {/* Why NextGrades */}
-        <section className={cn("py-20", isDark ? "bg-[#112240]" : "bg-white")}>
+        <section className={cn("py-20", mt.section)}>
           <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
             <div className="mb-14 text-center">
-              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#D4AF37]">
+              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--brand-gold)]">
                 {t("subjectsPage.whyEyebrow")}
               </p>
-              <h2 className={cn("text-3xl font-bold md:text-4xl", isDark ? "text-white" : "text-[#0D1B2A]")}>
+              <h2 className="text-3xl font-bold text-[var(--foreground)] md:text-4xl">
                 {t("subjectsPage.whyTitle")}
               </h2>
             </div>

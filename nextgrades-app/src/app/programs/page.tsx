@@ -19,7 +19,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { useLocalizedContent } from "@/hooks/useLocalizedContent";
 import { useCmsImages } from "@/hooks/useCmsImage";
-import { useTheme } from "@/context/ThemeContext";
+import { useMarketingTheme } from "@/lib/marketing-theme";
 import { PROGRAMS_HERO_IMAGE, PROGRAMS_PAGE_CARD_IMAGES } from "@/lib/marketing-images";
 import { MarketingImage } from "@/components/marketing/MarketingImage";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
@@ -45,15 +45,15 @@ type CompareRow = {
   c4?: string | boolean;
 };
 
-function CompareCell({ value, dark }: { value: string | boolean; dark: boolean }) {
+function CompareCell({ value }: { value: string | boolean }) {
   if (value === true) {
-    return <CheckCircle2 className="mx-auto h-5 w-5 text-[#D4AF37]" />;
+    return <CheckCircle2 className="mx-auto h-5 w-5 text-[var(--brand-gold)]" />;
   }
-  return <span className={dark ? "text-sm text-gray-300" : "text-sm text-gray-600"}>{value}</span>;
+  return <span className="text-sm text-[var(--foreground-secondary)]">{value}</span>;
 }
 
 export default function ProgramsPage() {
-  const { theme } = useTheme();
+  const mt = useMarketingTheme();
   const { t } = useTranslation();
   const { getImage } = useCmsImages();
   const programsHeroImage = getImage("cmsImages.programs.hero", PROGRAMS_HERO_IMAGE);
@@ -84,11 +84,7 @@ export default function ProgramsPage() {
   const safeCtaTags = Array.isArray(ctaTags) ? ctaTags : [];
 
   return (
-    <div
-      className={`marketing-page-root min-h-screen flex flex-col ${
-        theme === "dark" ? "bg-[#0D1B2A]" : "bg-[#FAFAFA]"
-      }`}
-    >
+    <div className={cn("marketing-page-root flex min-h-screen flex-col", mt.page)}>
       <Navbar />
 
       <main className="flex-1 overflow-x-hidden">
@@ -136,42 +132,18 @@ export default function ProgramsPage() {
 
         <section className="-mt-6 pb-2 md:-mt-8">
           <div className="mx-auto max-w-5xl px-4">
-            <Card
-              className={`rounded-2xl border p-4 shadow-xl sm:p-6 ${
-                theme === "dark" ? "border-white/10 bg-[#112240] shadow-black/35" : "border-gray-200 bg-white shadow-gray-300/30"
-              }`}
-            >
+            <Card className={cn("rounded-2xl border p-4 shadow-xl sm:p-6", mt.card)}>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-7">
                 {safeStats.map((stat, index) => {
                   const Icon = statIcons[index];
                   return (
                     <div key={index} className="flex items-center gap-3">
-                      <div
-                        className={`flex h-11 w-11 items-center justify-center rounded-full ${
-                          theme === "dark" ? "bg-white/10" : "bg-[#0D1B2A]/8"
-                        }`}
-                      >
-                        <Icon
-                          className={`h-5 w-5 ${
-                            theme === "dark" ? "text-[#D4AF37]" : "text-[#0D1B2A]"
-                          }`}
-                        />
+                      <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[var(--surface-subtle)]">
+                        <Icon className="h-5 w-5 text-[var(--brand-gold)]" />
                       </div>
                       <div>
-                        <p
-                          className={`text-3xl font-bold ${
-                            theme === "dark" ? "text-white" : "text-[#0D1B2A]"
-                          }`}
-                        >
-                          {stat.number}
-                        </p>
-                        <p
-                          className={`text-sm ${
-                            theme === "dark" ? "text-gray-400" : "text-gray-600"
-                          }`}
-                        >
-                          {stat.label}
-                        </p>
+                        <p className="text-3xl font-bold text-[var(--foreground)]">{stat.number}</p>
+                        <p className="text-sm text-[var(--text-muted)]">{stat.label}</p>
                       </div>
                     </div>
                   );
@@ -181,18 +153,16 @@ export default function ProgramsPage() {
           </div>
         </section>
 
-        <section className={`py-14 md:py-16 ${theme === "dark" ? "bg-[#112240]" : "bg-[#F7F8FA]"}`}>
+        <section className={cn("py-14 md:py-16", mt.sectionAlt)}>
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="mb-10 text-center">
-              <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#D4AF37]">
+              <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--brand-gold)]">
                 {t("programsPage.sectionEyebrow")}
               </p>
-              <h2 className={theme === "dark" ? "mb-2 text-3xl font-bold text-white sm:text-4xl" : "mb-2 text-3xl font-bold text-[#0D1B2A] sm:text-4xl"}>
+              <h2 className="mb-2 text-3xl font-bold text-[var(--foreground)] sm:text-4xl">
                 {t("programsPage.sectionTitle")}
               </h2>
-              <p className={theme === "dark" ? "mx-auto max-w-2xl text-gray-400" : "mx-auto max-w-2xl text-gray-600"}>
-                {t("programsPage.sectionDesc")}
-              </p>
+              <p className="mx-auto max-w-2xl text-[var(--text-muted)]">{t("programsPage.sectionDesc")}</p>
             </div>
             <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
               {safePrograms.map((program, index) => {
@@ -200,13 +170,10 @@ export default function ProgramsPage() {
                 return (
                   <Card
                     key={program.title}
-                    className={`relative flex h-full flex-col overflow-hidden rounded-2xl border ${
-                      featured
-                        ? "border-2 border-[#D4AF37] shadow-xl"
-                        : theme === "dark"
-                          ? "border-white/10"
-                          : "border-gray-200"
-                    }`}
+                    className={cn(
+                      "relative flex h-full flex-col overflow-hidden rounded-2xl border",
+                      featured ? "border-2 border-[var(--brand-gold)] shadow-xl" : "border-border-default"
+                    )}
                   >
                     {featured && (
                       <div className="absolute right-3 top-3 z-10">
@@ -228,30 +195,16 @@ export default function ProgramsPage() {
                       />
                     </div>
                     <div className="flex flex-1 flex-col p-5">
-                      <h3
-                        className={`mb-2 text-[1.45rem] font-bold leading-tight ${
-                          theme === "dark" ? "text-white" : "text-[#0D1B2A]"
-                        }`}
-                      >
+                      <h3 className="mb-2 text-[1.45rem] font-bold leading-tight text-[var(--foreground)]">
                         {program.title}
                       </h3>
-                      <p className="mb-3 text-sm font-semibold text-[#D4AF37]">
-                        {program.price}
-                      </p>
-                      <p className={theme === "dark" ? "mb-5 text-gray-400" : "mb-5 text-gray-600"}>
-                        {program.description}
-                      </p>
+                      <p className="mb-3 text-sm font-semibold text-[var(--brand-gold)]">{program.price}</p>
+                      <p className="mb-5 text-[var(--text-muted)]">{program.description}</p>
                       <ul className="mb-7 flex-1 space-y-2.5">
                         {program.features.map((feature, i) => (
                           <li key={i} className="flex items-start gap-3">
-                            <CheckCircle2 className="mt-0.5 h-4.5 w-4.5 shrink-0 text-[#D4AF37]" />
-                            <span
-                              className={`text-sm ${
-                                theme === "dark" ? "text-gray-300" : "text-gray-700"
-                              }`}
-                            >
-                              {feature}
-                            </span>
+                            <CheckCircle2 className="mt-0.5 h-4.5 w-4.5 shrink-0 text-[var(--brand-gold)]" />
+                            <span className="text-sm text-[var(--foreground-secondary)]">{feature}</span>
                           </li>
                         ))}
                       </ul>
@@ -266,18 +219,14 @@ export default function ProgramsPage() {
           </div>
         </section>
 
-        <section className={theme === "dark" ? "bg-[#0D1B2A] py-14 md:py-16" : "bg-white py-14 md:py-16"}>
+        <section className={cn("py-14 md:py-16", mt.section)}>
           <div className="mx-auto max-w-6xl px-4">
-            <h2 className={theme === "dark" ? "mb-8 text-center text-3xl font-bold text-white" : "mb-8 text-center text-3xl font-bold text-[#0D1B2A]"}>
+            <h2 className="mb-8 text-center text-3xl font-bold text-[var(--foreground)]">
               {t("programsPage.compareTitle")}
             </h2>
-            <div
-              className={`responsive-table-wrap rounded-xl border ${
-                theme === "dark" ? "border-white/10" : "border-gray-200"
-              }`}
-            >
+            <div className={cn("responsive-table-wrap rounded-xl border", mt.tableWrap)}>
               <table className="w-full min-w-[760px] text-sm">
-                <thead className={theme === "dark" ? "bg-[#112240]" : "bg-gray-50"}>
+                <thead className={mt.tableHead}>
                   <tr>
                     <th className="px-3 py-3 text-left text-xs font-semibold sm:px-6 sm:py-4 sm:text-sm">{compareHeaders.features}</th>
                     <th className="px-3 py-3 text-center text-xs font-semibold sm:px-6 sm:py-4 sm:text-sm">{compareHeaders.oneOnOne}</th>
@@ -288,34 +237,23 @@ export default function ProgramsPage() {
                     </th>
                   </tr>
                 </thead>
-                <tbody
-                  className={`divide-y ${
-                    theme === "dark" ? "divide-white/10" : "divide-gray-100"
-                  }`}
-                >
+                <tbody className="divide-y divide-[var(--border-default)]">
                   {safeCompareRows.map((row, index) => (
-                    <tr
-                      key={index}
-                      className={theme === "dark" ? "hover:bg-white/5" : "hover:bg-gray-50"}
-                    >
-                      <td
-                        className={`px-3 py-3 text-xs font-medium sm:px-6 sm:py-4 sm:text-sm ${
-                          theme === "dark" ? "text-gray-300" : "text-gray-700"
-                        }`}
-                      >
+                    <tr key={index} className="hover:bg-[var(--table-row-hover)]">
+                      <td className="px-3 py-3 text-xs font-medium text-[var(--foreground-secondary)] sm:px-6 sm:py-4 sm:text-sm">
                         {row.label}
                       </td>
                       <td className="px-3 py-3 text-center sm:px-6 sm:py-4">
-                        <CompareCell value={row.c1} dark={theme === "dark"} />
+                        <CompareCell value={row.c1} />
                       </td>
                       <td className="px-3 py-3 text-center sm:px-6 sm:py-4">
-                        <CompareCell value={row.c2} dark={theme === "dark"} />
+                        <CompareCell value={row.c2} />
                       </td>
                       <td className="px-3 py-3 text-center sm:px-6 sm:py-4">
-                        <CompareCell value={row.c3} dark={theme === "dark"} />
+                        <CompareCell value={row.c3} />
                       </td>
-                      <td className="bg-[#D4AF37]/5 px-3 py-3 text-center sm:px-6 sm:py-4">
-                        <CompareCell value={row.c4 ?? false} dark={theme === "dark"} />
+                      <td className="bg-[var(--brand-gold-muted)] px-3 py-3 text-center sm:px-6 sm:py-4">
+                        <CompareCell value={row.c4 ?? false} />
                       </td>
                     </tr>
                   ))}
@@ -325,34 +263,19 @@ export default function ProgramsPage() {
           </div>
         </section>
 
-        <section
-          className={`pb-14 pt-4 ${theme === "dark" ? "bg-[#112240] text-white" : "bg-[#FAFAFA] text-[#0D1B2A]"}`}
-        >
+        <section className={cn("pb-14 pt-4", mt.sectionAlt)}>
           <div className="mx-auto max-w-6xl px-4">
-            <Card
-              className={`rounded-2xl border p-5 sm:p-8 ${
-                theme === "dark"
-                  ? "border-white/10 bg-[#0D1B2A]"
-                  : "border-gray-200 bg-white"
-              }`}
-            >
+            <Card className={cn("rounded-2xl border p-5 sm:p-8", mt.card)}>
               <div className="flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-center">
                 <div className="flex items-center gap-4 sm:gap-6">
-                  <Calendar className="h-14 w-14 text-[#D4AF37]" />
+                  <Calendar className="h-14 w-14 text-[var(--brand-gold)]" />
                   <div>
-                    <h3 className="mb-2 text-2xl font-bold">{t("programsPage.ctaTitle")}</h3>
-                    <p className={theme === "dark" ? "text-gray-300" : "text-gray-600"}>
-                      {t("programsPage.ctaDesc")}
-                    </p>
+                    <h3 className="mb-2 text-2xl font-bold text-[var(--foreground)]">{t("programsPage.ctaTitle")}</h3>
+                    <p className="text-[var(--text-muted)]">{t("programsPage.ctaDesc")}</p>
                     <div className="mt-4 flex flex-wrap gap-4">
                       {safeCtaTags.map((tag, i) => (
-                        <span
-                          key={i}
-                          className={`text-xs flex items-center gap-2 ${
-                            theme === "dark" ? "text-gray-300" : "text-gray-600"
-                          }`}
-                        >
-                          <CheckCircle2 className="w-4 h-4 text-[#D4AF37]" />
+                        <span key={i} className="flex items-center gap-2 text-xs text-[var(--foreground-secondary)]">
+                          <CheckCircle2 className="h-4 w-4 text-[var(--brand-gold)]" />
                           {tag}
                         </span>
                       ))}

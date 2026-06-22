@@ -29,9 +29,10 @@ export const hero = {
 } as const;
 
 export const card = {
-  base: "rounded-3xl border bg-white shadow-[0_2px_40px_rgba(13,27,42,0.06)] transition-shadow duration-300 hover:shadow-[0_8px_48px_rgba(13,27,42,0.1)]",
+  base: "rounded-3xl border border-border-default bg-surface-elevated shadow-[var(--card-shadow)] transition-shadow duration-300 hover:shadow-[0_8px_48px_rgba(13,27,42,0.1)]",
   baseDark: "rounded-3xl border border-border-default bg-surface-elevated shadow-[var(--card-shadow)]",
-  featured: "rounded-3xl border-2 border-[#D4AF37]/40 bg-white shadow-[0_12px_48px_rgba(212,175,55,0.12)]",
+  featured:
+    "rounded-3xl border-2 border-[var(--brand-gold)]/40 bg-surface-elevated shadow-[0_12px_48px_rgba(212,175,55,0.12)]",
 } as const;
 
 export const type = {

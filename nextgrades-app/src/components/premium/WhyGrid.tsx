@@ -16,7 +16,7 @@ type WhyGridProps = {
 
 export function WhyGrid({ eyebrow, title, subtitle, items }: WhyGridProps) {
   return (
-    <section className={cn(section.py, "bg-[#FAF8F5]")}>
+    <section className={cn(section.py, "bg-surface-muted")}>
       <div className={section.container}>
         <SectionHeader eyebrow={eyebrow} title={title} subtitle={subtitle} />
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
@@ -24,11 +24,11 @@ export function WhyGrid({ eyebrow, title, subtitle, items }: WhyGridProps) {
             const Icon = item.icon;
             return (
               <div key={item.title} className={cn("p-8 sm:p-10", card.base)}>
-                <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#0D1B2A]">
-                  <Icon className="h-7 w-7 text-[#D4AF37]" strokeWidth={1.75} />
+                <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-[var(--brand-navy)]">
+                  <Icon className="h-7 w-7 text-[var(--brand-gold)]" strokeWidth={1.75} />
                 </div>
-                <h3 className="text-xl font-bold text-[#0D1B2A]">{item.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-gray-600 sm:text-base">{item.desc}</p>
+                <h3 className="text-xl font-bold text-foreground">{item.title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-text-muted sm:text-base">{item.desc}</p>
               </div>
             );
           })}

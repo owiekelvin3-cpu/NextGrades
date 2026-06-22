@@ -20,12 +20,12 @@ type TestimonialPremiumProps = {
 
 export function TestimonialPremium({ items, title, dark = false }: TestimonialPremiumProps) {
   return (
-    <section className={cn(dark ? "bg-[#0D1B2A]" : "bg-[#FAF8F5]")}>
+    <section className={cn(dark ? "bg-[var(--brand-navy)]" : "bg-surface-muted")}>
       <div className="mx-auto max-w-7xl px-5 py-20 sm:px-6 md:py-28 lg:px-8">
         <h2
           className={cn(
             "mb-14 text-center text-3xl font-bold tracking-tight sm:text-4xl",
-            dark ? "text-white" : "text-[#0D1B2A]"
+            dark ? "text-white" : "text-foreground"
           )}
         >
           {title}
@@ -58,12 +58,12 @@ export function TestimonialPremium({ items, title, dark = false }: TestimonialPr
                 <blockquote
                   className={cn(
                     "flex-1 text-base leading-relaxed sm:text-lg",
-                    dark ? "text-gray-200" : "text-gray-700"
+                    dark ? "text-gray-200" : "text-foreground-secondary"
                   )}
                 >
                   &ldquo;{item.quote}&rdquo;
                 </blockquote>
-                <footer className="mt-8 flex items-center gap-4 border-t border-gray-100 pt-6 dark:border-white/10">
+                <footer className="mt-8 flex items-center gap-4 border-t border-border-default pt-6 dark:border-white/10">
                   <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#D4AF37] to-[#F5A623] text-sm font-bold text-[#0D1B2A]">
                     {initials}
                   </div>
@@ -72,7 +72,7 @@ export function TestimonialPremium({ items, title, dark = false }: TestimonialPr
                       {item.name}
                     </p>
                     {(item.school || item.role) && (
-                      <p className={cn("text-sm", dark ? "text-gray-400" : "text-gray-500")}>
+                      <p className={cn("text-sm", dark ? "text-gray-400" : "text-text-muted")}>
                         {[item.role, item.school].filter(Boolean).join(" · ")}
                       </p>
                     )}

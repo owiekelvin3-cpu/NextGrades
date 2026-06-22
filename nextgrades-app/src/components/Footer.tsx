@@ -3,8 +3,7 @@
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { BrandLogo } from "./BrandLogo";
-import { Mail, MapPin, Phone } from "lucide-react";
-import { COMPANY_PHONE_DISPLAY, COMPANY_PHONE_TEL } from "@/lib/company";
+import { Mail } from "lucide-react";
 import { OpenCookieSettingsButton } from "@/components/cookies/OpenCookieSettingsButton";
 import { useConsentOptional } from "@/context/ConsentContext";
 import { FooterMobileAccordion, FooterAccordionLink } from "@/components/marketing/mobile/FooterMobileAccordion";
@@ -44,43 +43,35 @@ export default function Footer() {
   const consent = useConsentOptional();
 
   return (
-    <footer className="border-t border-white/10 bg-[var(--brand-navy)] text-[var(--sidebar-text-active)]">
+    <footer className="site-footer">
       <div
         className={cn(
           section.container,
-          "pb-[max(1rem,env(safe-area-inset-bottom))] pt-10 md:pt-12"
+          "pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-10 md:pt-12"
         )}
       >
-        <div className="flex flex-col gap-6 border-b border-white/10 pb-8 md:flex-row md:items-start md:justify-between">
-          <div className="max-w-sm">
-            <BrandLogo size="lg" href="/" onDarkBackground />
-            <p className="mt-3 text-sm leading-relaxed text-gray-400">{t("footer.tagline")}</p>
-            <p className="mt-2 text-xs leading-relaxed text-gray-500">{t("footer.description")}</p>
-          </div>
-
-          <div className="flex flex-col gap-2 text-sm text-gray-400 sm:flex-row sm:flex-wrap sm:gap-x-6 sm:gap-y-2">
+        {/* Brand */}
+        <div className="border-b border-[var(--footer-border)] pb-8 md:pb-10">
+          <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+            <div className="max-w-md">
+              <BrandLogo size="md" href="/" onDarkBackground className="sm:hidden" />
+              <BrandLogo size="lg" href="/" onDarkBackground className="hidden sm:block" />
+              <p className="mt-4 text-sm leading-relaxed text-[var(--footer-muted)]">
+                {t("footer.tagline")}
+              </p>
+            </div>
             <a
               href="mailto:support@nextgrades.de"
-              className="inline-flex items-center gap-2 transition hover:text-[#D4AF37]"
+              className="inline-flex w-fit items-center gap-2 text-sm text-[var(--footer-link)]"
             >
-              <Mail className="h-3.5 w-3.5 shrink-0" />
+              <Mail className="h-4 w-4 shrink-0 text-[var(--footer-heading)]" aria-hidden />
               support@nextgrades.de
             </a>
-            <a
-              href={COMPANY_PHONE_TEL}
-              className="inline-flex items-center gap-2 transition hover:text-[#D4AF37]"
-            >
-              <Phone className="h-3.5 w-3.5 shrink-0" />
-              {COMPANY_PHONE_DISPLAY}
-            </a>
-            <span className="inline-flex items-center gap-2">
-              <MapPin className="h-3.5 w-3.5 shrink-0" />
-              {t("footer.location", { country: t("footer.countryAustria") })}
-            </span>
           </div>
         </div>
 
-        <div className="hidden gap-8 py-8 sm:grid sm:grid-cols-2 lg:grid-cols-4">
+        {/* Link columns — desktop */}
+        <div className="hidden gap-10 py-9 sm:grid sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
           <FooterColumn title={t("footer.programs")}>
             {programLinks.map((item) => (
               <FooterLink key={item.key} href={item.href}>
@@ -111,49 +102,53 @@ export default function Footer() {
           </FooterColumn>
         </div>
 
-        <div className="space-y-3 py-6 sm:hidden">
-          <FooterMobileAccordion title={t("footer.programs")} isDark>
+        {/* Link columns — mobile */}
+        <div className="space-y-2 py-6 sm:hidden">
+          <FooterMobileAccordion title={t("footer.programs")}>
             {programLinks.map((item) => (
-              <FooterAccordionLink key={item.key} href={item.href} isDark>
+              <FooterAccordionLink key={item.key} href={item.href}>
                 {t(item.key)}
               </FooterAccordionLink>
             ))}
           </FooterMobileAccordion>
-          <FooterMobileAccordion title={t("footer.resources")} isDark>
+          <FooterMobileAccordion title={t("footer.resources")}>
             {resourceLinks.map((item) => (
-              <FooterAccordionLink key={item.key} href={item.href} isDark>
+              <FooterAccordionLink key={item.key} href={item.href}>
                 {t(item.key)}
               </FooterAccordionLink>
             ))}
           </FooterMobileAccordion>
-          <FooterMobileAccordion title={t("footer.company")} isDark>
+          <FooterMobileAccordion title={t("footer.company")}>
             {companyLinks.map((item) => (
-              <FooterAccordionLink key={item.href + item.key} href={item.href} isDark>
+              <FooterAccordionLink key={item.href + item.key} href={item.href}>
                 {t(item.key)}
               </FooterAccordionLink>
             ))}
           </FooterMobileAccordion>
-          <FooterMobileAccordion title={t("footer.legal")} isDark>
+          <FooterMobileAccordion title={t("footer.legal")}>
             {legalLinks.map((item) => (
-              <FooterAccordionLink key={item.href + item.key} href={item.href} isDark>
+              <FooterAccordionLink key={item.href + item.key} href={item.href}>
                 {t(item.key)}
               </FooterAccordionLink>
             ))}
           </FooterMobileAccordion>
         </div>
 
-        <div className="flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-6 sm:flex-row">
-          <p className="text-center text-xs text-gray-500 sm:text-left">{t("footer.copyright")}</p>
+        {/* Bottom bar */}
+        <div className="flex flex-col items-center justify-between gap-3 border-t border-[var(--footer-border)] pt-6 sm:flex-row">
+          <p className="text-center text-xs text-[var(--footer-subtle)] sm:text-left">
+            {t("footer.copyright")}
+          </p>
           {consent ? (
             <button
               type="button"
               onClick={consent.openPreferences}
-              className="text-xs text-gray-500 transition-colors hover:text-gray-300"
+              className="text-xs text-[var(--footer-subtle)] transition-colors hover:text-[var(--footer-foreground)]"
             >
               {t("footer.cookies")}
             </button>
           ) : (
-            <OpenCookieSettingsButton className="text-xs text-gray-500 hover:text-gray-300" />
+            <OpenCookieSettingsButton className="text-xs text-[var(--footer-subtle)] hover:text-[var(--footer-foreground)]" />
           )}
         </div>
       </div>
@@ -161,17 +156,13 @@ export default function Footer() {
   );
 }
 
-function FooterColumn({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) {
+function FooterColumn({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div>
-      <h4 className="mb-3 text-[11px] font-bold uppercase tracking-[0.12em] text-[#D4AF37]">{title}</h4>
-      <ul className="space-y-2">{children}</ul>
+      <h4 className="mb-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--footer-heading)]">
+        {title}
+      </h4>
+      <ul className="space-y-2.5">{children}</ul>
     </div>
   );
 }
@@ -179,7 +170,7 @@ function FooterColumn({
 function FooterLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
     <li>
-      <Link href={href} className="text-sm text-gray-400 transition-colors hover:text-white">
+      <Link href={href} className="text-sm leading-snug text-[var(--footer-link)] hover:text-[var(--brand-gold)]">
         {children}
       </Link>
     </li>
