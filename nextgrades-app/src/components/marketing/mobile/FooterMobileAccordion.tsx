@@ -18,17 +18,24 @@ export function FooterMobileAccordion({
   const [open, setOpen] = useState(defaultOpen);
 
   return (
-    <div className="overflow-hidden rounded-xl border border-[var(--footer-border)] bg-white/[0.03]">
+    <div
+      className={cn(
+        "overflow-hidden rounded-xl border border-[var(--footer-border)]",
+        open ? "bg-[rgba(212,175,55,0.06)]" : "bg-white/[0.03]"
+      )}
+    >
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="flex min-h-[48px] w-full items-center justify-between px-4 py-3 text-left touch-manipulation"
+        className="flex min-h-[48px] w-full items-center justify-between gap-3 px-4 py-3 text-left touch-manipulation"
         aria-expanded={open}
       >
-        <span className="text-sm font-medium text-[var(--footer-foreground)]">{title}</span>
+        <span className="text-sm font-semibold tracking-tight text-[var(--footer-foreground)]">
+          {title}
+        </span>
         <ChevronDown
           className={cn(
-            "h-4 w-4 shrink-0 text-[var(--footer-muted)] transition-transform duration-200",
+            "h-4 w-4 shrink-0 text-[var(--brand-gold)] transition-transform duration-200",
             open && "rotate-180"
           )}
         />
@@ -42,7 +49,7 @@ export function FooterMobileAccordion({
             transition={{ duration: 0.2 }}
             className="overflow-hidden"
           >
-            <ul className="space-y-1 border-t border-[var(--footer-border)] px-4 py-2">
+            <ul className="space-y-0.5 border-t border-[var(--footer-border)] px-3 py-2">
               {children}
             </ul>
           </motion.div>
@@ -63,7 +70,7 @@ export function FooterAccordionLink({
     <li>
       <Link
         href={href}
-        className="block min-h-10 py-2 text-sm text-[var(--footer-link)] transition-colors hover:text-[var(--brand-gold)] touch-manipulation"
+        className="footer-nav-link block min-h-10 rounded-lg px-2 py-2.5 touch-manipulation hover:bg-white/[0.04]"
       >
         {children}
       </Link>
