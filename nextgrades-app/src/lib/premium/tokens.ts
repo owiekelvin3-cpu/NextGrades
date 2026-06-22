@@ -40,7 +40,7 @@ export const type = {
   h1: "text-4xl font-bold leading-[1.08] tracking-tight sm:text-5xl lg:text-[3.5rem]",
   h2: "text-3xl font-bold leading-tight tracking-tight sm:text-4xl lg:text-[2.75rem]",
   h3: "text-xl font-bold leading-snug sm:text-2xl",
-  body: "text-base leading-relaxed text-gray-600 sm:text-lg",
+  body: "text-base leading-relaxed text-foreground-secondary sm:text-lg",
   bodyDark: "text-base leading-relaxed text-on-navy-muted sm:text-lg",
   bodyDarkMuted: "text-sm text-on-navy-subtle",
 } as const;

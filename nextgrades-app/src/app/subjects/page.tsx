@@ -146,7 +146,7 @@ export default function SubjectsPage() {
                   {t("subjects.heroTitle")}{" "}
                   <span className="text-[#D4AF37]">{t("subjects.heroTitleHighlight")}</span>
                 </h1>
-                <p className="mb-8 max-w-xl text-base leading-relaxed text-gray-300 sm:text-lg">
+                <p className="mb-8 max-w-xl text-base leading-relaxed text-on-navy-muted sm:text-lg">
                   {t("subjects.heroSubtitle")}
                 </p>
 
@@ -160,7 +160,7 @@ export default function SubjectsPage() {
                       >
                         <Icon className="mb-1.5 h-4 w-4 text-[#D4AF37] sm:mb-2 sm:h-5 sm:w-5" />
                         <p className="text-[11px] font-semibold leading-tight sm:text-sm">{item.title}</p>
-                        <p className="mt-1 hidden text-xs leading-snug text-gray-400 sm:block">
+                        <p className="mt-1 hidden text-xs leading-snug text-on-navy-subtle sm:block">
                           {item.desc}
                         </p>
                       </div>
@@ -205,7 +205,7 @@ export default function SubjectsPage() {
         {/* Subject cards — owner mockup grid */}
         <section className="bg-[#0D1B2A] py-14 text-white md:py-20">
           <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8">
-            <p className="mx-auto mb-10 max-w-3xl text-center text-base leading-relaxed text-gray-300 sm:mb-12 sm:text-lg">
+            <p className="mx-auto mb-10 max-w-3xl text-center text-base leading-relaxed text-on-navy-muted sm:mb-12 sm:text-lg">
               {t("subjectsPage.gridIntro")}
             </p>
 
@@ -261,7 +261,7 @@ export default function SubjectsPage() {
                     <h3 className={cn("mb-1 text-[11px] font-bold leading-tight sm:mb-2 sm:text-base", isDark ? "text-white" : "text-[#0D1B2A]")}>
                       {item.title}
                     </h3>
-                    <p className={cn("hidden text-xs leading-relaxed sm:block sm:text-sm", isDark ? "text-gray-400" : "text-gray-600")}>
+                    <p className={cn("hidden text-xs leading-relaxed sm:block sm:text-sm", isDark ? "text-text-muted" : "text-foreground-secondary")}>
                       {item.desc}
                     </p>
                   </Card>
@@ -276,7 +276,7 @@ export default function SubjectsPage() {
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(212,175,55,0.15)_0%,_transparent_60%)]" />
           <div className="relative mx-auto max-w-3xl px-4">
             <h2 className="mb-4 text-3xl font-bold md:text-4xl">{t("subjectsPage.ctaTitle")}</h2>
-            <p className="mb-8 text-lg text-gray-300">{t("subjectsPage.ctaDesc")}</p>
+            <p className="mb-8 text-lg text-on-navy-muted">{t("subjectsPage.ctaDesc")}</p>
             <div className="flex w-full max-w-lg flex-col items-stretch justify-center gap-3 sm:max-w-none sm:flex-row sm:items-center">
               <Button variant="gold" size="lg" className="w-full sm:w-auto" href="/consultation">
                 {t("subjectsPage.ctaButton")} <ArrowRight className="h-5 w-5" />
@@ -325,7 +325,7 @@ export default function SubjectsPage() {
               >
                 {browseSubject.title}
               </h3>
-              <p className={cn("mb-6 text-sm", isDark ? "text-gray-400" : "text-gray-600")}>
+              <p className={cn("mb-6 text-sm", isDark ? "text-text-muted" : "text-foreground-secondary")}>
                 {t("subjectsPage.browseHint", { defaultValue: "Choose grade and semester to see matching materials." })}
               </p>
               <div className="space-y-4">

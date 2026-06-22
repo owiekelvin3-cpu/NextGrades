@@ -40,7 +40,7 @@ export function SectionHeader({
         <p
           className={cn(
             "mt-5 max-w-2xl text-base leading-relaxed sm:text-lg",
-            dark ? "text-on-navy-subtle" : "text-gray-600",
+            dark ? "text-on-navy-subtle" : "text-foreground-secondary",
             centered && "mx-auto"
           )}
         >

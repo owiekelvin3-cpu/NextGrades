@@ -54,13 +54,13 @@ export function ProgrammeOfferCard({
       </div>
 
       <div className="flex flex-1 flex-col p-6 sm:p-8">
-        <h3 className="text-xl font-bold tracking-tight text-[#0D1B2A] sm:text-2xl">{title}</h3>
+        <h3 className="text-xl font-bold tracking-tight text-foreground sm:text-2xl">{title}</h3>
         {price && (
           <p className="mt-2 text-sm font-semibold text-[#D4AF37]">{price}</p>
         )}
         <ul className="mt-6 flex-1 space-y-3">
           {features.slice(0, 5).map((feature) => (
-            <li key={feature} className="flex items-start gap-3 text-sm text-gray-700">
+            <li key={feature} className="flex items-start gap-3 text-sm text-foreground-secondary">
               <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#D4AF37]/15">
                 <Check className="h-3 w-3 text-[#D4AF37]" strokeWidth={3} />
               </span>

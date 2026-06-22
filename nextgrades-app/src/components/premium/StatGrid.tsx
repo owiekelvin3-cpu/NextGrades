@@ -47,7 +47,7 @@ export function StatGrid({ stats, variant = "elevated" }: StatGridProps) {
             <p
               className={cn(
                 "mt-2 text-sm font-medium leading-snug",
-                isDark ? "text-on-navy-subtle" : "text-gray-600"
+                isDark ? "text-on-navy-subtle" : "text-foreground-secondary"
               )}
             >
               {stat.label}
