@@ -128,7 +128,7 @@ export function PublishContentForm({ resourceId, initialData }: PublishContentFo
       : "bg-white border-gray-200 text-gray-900 placeholder-gray-400"
   } focus:outline-none focus:ring-2 focus:ring-[#D4AF37]`;
 
-  const labelCls = `block text-sm font-medium mb-2 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`;
+  const labelCls = `block text-sm font-medium mb-2 text-foreground`;
 
   const handleThumbnail = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
@@ -257,7 +257,7 @@ export function PublishContentForm({ resourceId, initialData }: PublishContentFo
             >
               {step > s ? <Check className="w-5 h-5" /> : s}
             </div>
-            <span className={`ml-2 text-sm hidden sm:inline ${step >= s ? (theme === "dark" ? "text-white" : "text-[#0D1B2A]") : muted(theme)}`}>
+            <span className={`ml-2 text-sm hidden sm:inline ${step >= s ? "text-foreground" : muted(theme)}`}>
               {s === 1 ? "Content & File" : s === 2 ? "Details" : "Publish"}
             </span>
             {s < 3 && <div className={`flex-1 h-1 mx-3 ${step > s ? "bg-[#D4AF37]" : theme === "dark" ? "bg-[#112240]" : "bg-gray-200"}`} />}
@@ -267,7 +267,7 @@ export function PublishContentForm({ resourceId, initialData }: PublishContentFo
 
       {step === 1 && (
         <motion.div initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }}>
-          <Card className={`p-6 md:p-8 ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
+          <Card className={`p-6 md:p-8`}>
             <div className="space-y-6">
               <div>
                 <label className={labelCls}>Content Type *</label>
@@ -288,15 +288,15 @@ export function PublishContentForm({ resourceId, initialData }: PublishContentFo
                     onClick={() => fileRef.current?.click()}
                   >
                     <input ref={fileRef} type="file" className="hidden" onChange={handleFileSelect} accept={RESOURCE_FILE_ACCEPT} />
-                    <Upload className={`w-12 h-12 mx-auto mb-3 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`} />
-                    <p className={theme === "dark" ? "text-white" : "text-[#0D1B2A]"}>Drop file or click to browse (max 50MB)</p>
+                    <Upload className={`w-12 h-12 mx-auto mb-3 text-text-muted`} />
+                    <p className="text-foreground">Drop file or click to browse (max 50MB)</p>
                     <p className={`text-xs mt-2 ${muted(theme)}`}>PDF, video, Word, PowerPoint, Excel, images, text</p>
                   </div>
                 ) : (
                   <div className={`flex items-center gap-4 p-4 rounded-xl border ${theme === "dark" ? "border-white/10 bg-[#0D1B2A]" : "border-gray-200 bg-gray-50"}`}>
                     {getFileIcon(file)}
                     <div className="flex-1 min-w-0">
-                      <p className={`font-medium truncate ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>{file.name}</p>
+                      <p className={`font-medium truncate text-foreground`}>{file.name}</p>
                       <p className={`text-sm ${muted(theme)}`}>{(file.size / 1024 / 1024).toFixed(2)} MB</p>
                     </div>
                     <Button variant="outline" size="sm" onClick={() => setFile(null)}><X className="w-4 h-4" /></Button>
@@ -347,7 +347,7 @@ export function PublishContentForm({ resourceId, initialData }: PublishContentFo
 
       {step === 2 && (
         <motion.div initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }}>
-          <Card className={`p-6 md:p-8 space-y-5 ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
+          <Card className={`p-6 md:p-8 space-y-5`}>
             <div>
               <label className={labelCls}>Resource Title *</label>
               <input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} className={inputCls} placeholder="Enter title" />
@@ -443,7 +443,7 @@ export function PublishContentForm({ resourceId, initialData }: PublishContentFo
 
       {step === 3 && (
         <motion.div initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }}>
-          <Card className={`p-6 md:p-8 space-y-6 ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
+          <Card className={`p-6 md:p-8 space-y-6`}>
             <div>
               <label className={labelCls}>Access</label>
               <div className="grid grid-cols-2 gap-3">
@@ -471,14 +471,14 @@ export function PublishContentForm({ resourceId, initialData }: PublishContentFo
               </div>
             </div>
 
-            <div className={`rounded-xl border overflow-hidden ${theme === "dark" ? "border-white/10" : "border-gray-200"}`}>
+            <div className={`rounded-xl border overflow-hidden border-border-default`}>
               <div className="aspect-video relative bg-[#0D1B2A]/10">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={thumbnailPreview || DEFAULT_THUMBNAIL} alt="Preview" className="w-full h-full object-cover" />
               </div>
               <div className="p-4">
                 <p className="text-xs text-[#D4AF37] font-semibold">{categories.find((c) => c.id === form.category_id)?.name || "Resource"}</p>
-                <h4 className={`font-bold ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>{form.title || "Untitled resource"}</h4>
+                <h4 className={`font-bold text-foreground`}>{form.title || "Untitled resource"}</h4>
                 <p className={`text-sm mt-1 ${muted(theme)}`}>{form.short_description || "Short description preview"}</p>
               </div>
             </div>
@@ -512,6 +512,6 @@ export function PublishContentForm({ resourceId, initialData }: PublishContentFo
   );
 }
 
-function muted(theme: string) {
-  return theme === "dark" ? "text-gray-400" : "text-gray-600";
+function muted(_theme: string) {
+  return "text-text-muted";
 }

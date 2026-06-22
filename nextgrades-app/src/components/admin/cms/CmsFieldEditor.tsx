@@ -28,7 +28,7 @@ export function CmsFieldEditor({
   onReset,
 }: Props) {
   const [showTechnical, setShowTechnical] = useState(false);
-  const textPrimary = isDark ? "text-white" : "text-[#0D1B2A]";
+  const textPrimary = "text-foreground";
   const textMuted = isDark ? "text-gray-400" : "text-gray-600";
   const otherLocale = editLocale === "en" ? "de" : "en";
 
@@ -134,7 +134,7 @@ type GroupProps = {
 
 export function CmsFieldGroup({ label, count, isDark, defaultOpen = true, children }: GroupProps) {
   const [open, setOpen] = useState(defaultOpen);
-  const textPrimary = isDark ? "text-white" : "text-[#0D1B2A]";
+  const textPrimary = "text-foreground";
 
   return (
     <section className="space-y-3">

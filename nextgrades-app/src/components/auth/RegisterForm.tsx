@@ -350,7 +350,7 @@ export function RegisterForm({
                     : "border-gray-200 bg-white hover:border-[#D4AF37]/40"
               )}
             >
-              <p className={cn("text-sm font-bold", isDark ? "text-white" : "text-[#0D1B2A]")}>
+              <p className={cn("text-sm font-bold", "text-foreground")}>
                 {r === "student" ? t("login.student") : t("login.teacher")}
               </p>
               <p className={cn("mt-1 text-xs", isDark ? "text-gray-400" : "text-gray-500")}>

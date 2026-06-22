@@ -73,7 +73,7 @@ export function CmsVersionHistory({ i18nKey, isDark, onRollback }: Props) {
               )}
             >
               <div className="min-w-0">
-                <p className={cn("truncate text-sm font-medium", isDark ? "text-white" : "text-[#0D1B2A]")}>
+                <p className={cn("truncate text-sm font-medium", "text-foreground")}>
                   {r.i18n_key}
                 </p>
                 <p className={cn("text-[11px]", textMuted)}>{new Date(r.created_at).toLocaleString()}</p>

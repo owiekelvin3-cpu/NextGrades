@@ -2,7 +2,7 @@
 
 export const TEACHER_AVATAR_COLORS = ["#D4AF37", "#4DA3FF", "#22C55E", "#A855F7", "#F97316", "#EC4899"];
 
-export const teacherShell = "flex min-h-screen bg-[#F0F2F5] text-[#0D1B2A]";
+export const teacherShell = "flex min-h-screen bg-surface-dashboard text-foreground";
 
 export const teacherHeader =
   "border-b border-gray-200/80 bg-white/95 backdrop-blur-sm";

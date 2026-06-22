@@ -50,7 +50,7 @@ export function typeIconColor(type: string): string {
     case "error":
       return "text-red-600 bg-red-50 ring-red-100 dark:bg-red-900/20 dark:ring-red-800/30";
     default:
-      return "text-blue-600 bg-blue-50 ring-blue-100 dark:bg-blue-900/20 dark:ring-blue-800/30";
+      return "text-[var(--brand-gold)] bg-[var(--brand-gold-muted)] ring-[var(--brand-gold)]/20";
   }
 }
 
@@ -66,12 +66,12 @@ export function categoryAccent(category: NotificationCategory): string {
     assignment: "text-orange-600 bg-orange-50 ring-orange-100 dark:bg-orange-900/20 dark:ring-orange-800/30",
     grade: "text-emerald-600 bg-emerald-50 ring-emerald-100 dark:bg-emerald-900/20 dark:ring-emerald-800/30",
     message: "text-indigo-600 bg-indigo-50 ring-indigo-100 dark:bg-indigo-900/20 dark:ring-indigo-800/30",
-    account: "text-slate-600 bg-slate-100 ring-slate-200 dark:bg-slate-800/40 dark:ring-slate-700/30",
+    account: "text-text-muted bg-surface-subtle ring-1 ring-border-default",
     course: "text-teal-600 bg-teal-50 ring-teal-100 dark:bg-teal-900/20 dark:ring-teal-800/30",
     exam: "text-rose-600 bg-rose-50 ring-rose-100 dark:bg-rose-900/20 dark:ring-rose-800/30",
-    enrollment: "text-[#D4AF37] bg-[#FFF9E6] ring-[#D4AF37]/20",
+    enrollment: "text-[var(--brand-gold)] bg-[var(--brand-gold-muted)] ring-[var(--brand-gold)]/20",
     submission: "text-cyan-600 bg-cyan-50 ring-cyan-100 dark:bg-cyan-900/20 dark:ring-cyan-800/30",
-    system: "text-gray-600 bg-gray-100 ring-gray-200 dark:bg-gray-800/40 dark:ring-gray-700/30",
+    system: "text-text-muted bg-surface-subtle ring-1 ring-border-default",
   };
   return accents[category];
 }

@@ -101,7 +101,7 @@ export default function TeacherAnalyticsPage() {
     <TeacherDashboardLayout title="Analytics">
       <div className="mx-auto max-w-7xl">
           <div className="mb-8 flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
-            <p className={theme === "dark" ? "text-gray-400" : "text-gray-600"}>
+            <p className="text-text-muted">
               Track your content performance
             </p>
             <div className="flex gap-2">
@@ -122,7 +122,7 @@ export default function TeacherAnalyticsPage() {
           {loading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
               {[...Array(5)].map((_, i) => (
-                <Card key={i} className={`p-6 ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
+                <Card key={i} className={`p-6`}>
                   <div className="animate-pulse">
                     <div className="w-12 h-12 rounded-xl bg-gray-200 mb-4"></div>
                     <div className="h-8 bg-gray-200 rounded mb-2"></div>
@@ -140,16 +140,16 @@ export default function TeacherAnalyticsPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 }}
                 >
-                  <Card className={`p-6 ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
+                  <Card className={`p-6`}>
                     <div className="flex items-center justify-between mb-4">
                       <div className="w-12 h-12 rounded-xl bg-[#4DA3FF]/10 flex items-center justify-center">
                         <BarChart3 className="w-6 h-6 text-[#4DA3FF]" />
                       </div>
                     </div>
-                    <p className={`text-3xl font-bold mb-1 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
+                    <p className={`text-3xl font-bold mb-1 text-foreground`}>
                       {formatNumber(analytics?.overview?.totalUploads || 0)}
                     </p>
-                    <p className={`${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                    <p className={`text-text-muted`}>
                       Total Uploads
                     </p>
                   </Card>
@@ -160,16 +160,16 @@ export default function TeacherAnalyticsPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 }}
                 >
-                  <Card className={`p-6 ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
+                  <Card className={`p-6`}>
                     <div className="flex items-center justify-between mb-4">
                       <div className="w-12 h-12 rounded-xl bg-[#22C55E]/10 flex items-center justify-center">
                         <Eye className="w-6 h-6 text-[#22C55E]" />
                       </div>
                     </div>
-                    <p className={`text-3xl font-bold mb-1 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
+                    <p className={`text-3xl font-bold mb-1 text-foreground`}>
                       {formatNumber(analytics?.overview?.totalViews || 0)}
                     </p>
-                    <p className={`${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                    <p className={`text-text-muted`}>
                       Total Views
                     </p>
                   </Card>
@@ -180,16 +180,16 @@ export default function TeacherAnalyticsPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 }}
                 >
-                  <Card className={`p-6 ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
+                  <Card className={`p-6`}>
                     <div className="flex items-center justify-between mb-4">
                       <div className="w-12 h-12 rounded-xl bg-[#D4AF37]/10 flex items-center justify-center">
                         <Download className="w-6 h-6 text-[#D4AF37]" />
                       </div>
                     </div>
-                    <p className={`text-3xl font-bold mb-1 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
+                    <p className={`text-3xl font-bold mb-1 text-foreground`}>
                       {formatNumber(analytics?.overview?.totalDownloads || 0)}
                     </p>
-                    <p className={`${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                    <p className={`text-text-muted`}>
                       Total Downloads
                     </p>
                   </Card>
@@ -200,16 +200,16 @@ export default function TeacherAnalyticsPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4 }}
                 >
-                  <Card className={`p-6 ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
+                  <Card className={`p-6`}>
                     <div className="flex items-center justify-between mb-4">
                       <div className="w-12 h-12 rounded-xl bg-[#A855F7]/10 flex items-center justify-center">
                         <Users className="w-6 h-6 text-[#A855F7]" />
                       </div>
                     </div>
-                    <p className={`text-3xl font-bold mb-1 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
+                    <p className={`text-3xl font-bold mb-1 text-foreground`}>
                       {formatNumber(analytics?.overview?.totalStudentsReached || 0)}
                     </p>
-                    <p className={`${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                    <p className={`text-text-muted`}>
                       Students Reached
                     </p>
                   </Card>
@@ -220,16 +220,16 @@ export default function TeacherAnalyticsPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5 }}
                 >
-                  <Card className={`p-6 ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
+                  <Card className={`p-6`}>
                     <div className="flex items-center justify-between mb-4">
                       <div className="w-12 h-12 rounded-xl bg-[#F97316]/10 flex items-center justify-center">
                         <DollarSign className="w-6 h-6 text-[#F97316]" />
                       </div>
                     </div>
-                    <p className={`text-3xl font-bold mb-1 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
+                    <p className={`text-3xl font-bold mb-1 text-foreground`}>
                       {formatCurrency(analytics?.overview?.totalRevenue || 0)}
                     </p>
-                    <p className={`${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                    <p className={`text-text-muted`}>
                       Premium Earnings
                     </p>
                   </Card>
@@ -243,8 +243,8 @@ export default function TeacherAnalyticsPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.6 }}
                 >
-                  <Card className={`p-6 ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
-                    <h2 className={`text-xl font-bold mb-6 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
+                  <Card className={`p-6`}>
+                    <h2 className={`text-xl font-bold mb-6 text-foreground`}>
                       Performance Over Time
                     </h2>
                     <div className="h-64">
@@ -264,14 +264,14 @@ export default function TeacherAnalyticsPage() {
                                   title={`${data.downloads} downloads`}
                                 />
                               </div>
-                              <span className={`text-xs text-center ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>
+                              <span className={`text-xs text-center text-text-muted`}>
                                 {formatDate(data.date)}
                               </span>
                             </div>
                           ))}
                         </div>
                       ) : (
-                        <div className={`flex items-center justify-center h-full ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>
+                        <div className={`flex items-center justify-center h-full text-text-muted`}>
                           No data available
                         </div>
                       )}
@@ -279,11 +279,11 @@ export default function TeacherAnalyticsPage() {
                     <div className="flex items-center justify-center gap-6 mt-4">
                       <div className="flex items-center gap-2">
                         <div className="w-3 h-3 bg-[#22C55E] rounded"></div>
-                        <span className={`text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>Views</span>
+                        <span className={`text-sm text-text-muted`}>Views</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <div className="w-3 h-3 bg-[#D4AF37] rounded"></div>
-                        <span className={`text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>Downloads</span>
+                        <span className={`text-sm text-text-muted`}>Downloads</span>
                       </div>
                     </div>
                   </Card>
@@ -295,13 +295,13 @@ export default function TeacherAnalyticsPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.7 }}
                 >
-                  <Card className={`p-6 ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
-                    <h2 className={`text-xl font-bold mb-6 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
+                  <Card className={`p-6`}>
+                    <h2 className={`text-xl font-bold mb-6 text-foreground`}>
                       Top Performing Resources
                     </h2>
                     <div className="space-y-4">
                       {analytics?.mostViewed?.length === 0 ? (
-                        <p className={`text-center py-8 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>
+                        <p className={`text-center py-8 text-text-muted`}>
                           No resources yet
                         </p>
                       ) : (
@@ -321,18 +321,18 @@ export default function TeacherAnalyticsPage() {
                               {index + 1}
                             </div>
                             <div className="flex-1">
-                              <h3 className={`font-semibold ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
+                              <h3 className={`font-semibold text-foreground`}>
                                 {resource.title}
                               </h3>
-                              <p className={`text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>
+                              <p className={`text-sm text-text-muted`}>
                                 {resource.type}
                               </p>
                             </div>
                             <div className="text-right">
-                              <p className={`text-lg font-bold ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
+                              <p className={`text-lg font-bold text-foreground`}>
                                 {formatNumber(resource.view_count)}
                               </p>
-                              <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>
+                              <p className={`text-xs text-text-muted`}>
                                 views
                               </p>
                             </div>
@@ -351,13 +351,13 @@ export default function TeacherAnalyticsPage() {
                 transition={{ delay: 0.8 }}
                 className="mt-8"
               >
-                <Card className={`p-6 ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
-                  <h2 className={`text-xl font-bold mb-6 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
+                <Card className={`p-6`}>
+                  <h2 className={`text-xl font-bold mb-6 text-foreground`}>
                     Recent Activity
                   </h2>
                   <div className="space-y-4">
                     {analytics?.recentActivity?.length === 0 ? (
-                      <p className={`text-center py-8 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>
+                      <p className={`text-center py-8 text-text-muted`}>
                         No recent activity
                       </p>
                     ) : (
@@ -378,10 +378,10 @@ export default function TeacherAnalyticsPage() {
                              <TrendingUp className="w-5 h-5 text-[#4DA3FF]" />}
                           </div>
                           <div className="flex-1">
-                            <p className={`font-medium ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
+                            <p className={`font-medium text-foreground`}>
                               {activity.materials?.title || 'Unknown resource'}
                             </p>
-                            <p className={`text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>
+                            <p className={`text-sm text-text-muted`}>
                               {activity.action} · {formatDate(activity.created_at)}
                             </p>
                           </div>

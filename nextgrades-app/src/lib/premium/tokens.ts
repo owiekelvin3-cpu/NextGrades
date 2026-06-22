@@ -1,15 +1,15 @@
 /** Premium EdTech design tokens — shared across marketing surfaces */
 
 export const premium = {
-  navy: "#0D1B2A",
-  navyMuted: "#112240",
-  navyDeep: "#0A1520",
-  gold: "#D4AF37",
-  goldHover: "#C9A030",
-  cream: "#FAF8F5",
-  surface: "#F7F8FA",
-  border: "rgba(13, 27, 42, 0.08)",
-  borderDark: "rgba(255, 255, 255, 0.1)",
+  navy: "var(--brand-navy)",
+  navyMuted: "var(--brand-navy-muted)",
+  navyDeep: "var(--surface-inset)",
+  gold: "var(--brand-gold)",
+  goldHover: "var(--brand-gold-hover)",
+  cream: "var(--background)",
+  surface: "var(--surface-muted)",
+  border: "var(--border-default)",
+  borderDark: "var(--border-default)",
 } as const;
 
 export const section = {
@@ -38,7 +38,7 @@ export const card = {
 } as const;
 
 export const type = {
-  eyebrow: "text-xs font-bold uppercase tracking-[0.2em] text-[#D4AF37]",
+  eyebrow: "text-xs font-bold uppercase tracking-[0.2em] text-[var(--brand-gold)]",
   h1: "text-[clamp(1.75rem,4vw+0.5rem,3.5rem)] font-bold leading-[1.08] tracking-tight",
   h2: "text-[clamp(1.375rem,2.5vw+0.5rem,2.75rem)] font-bold leading-tight tracking-tight",
   h3: "text-xl font-bold leading-snug sm:text-2xl",

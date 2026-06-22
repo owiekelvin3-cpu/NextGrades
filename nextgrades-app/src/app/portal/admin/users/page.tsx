@@ -196,10 +196,10 @@ function AdminUsersPageContent() {
           {/* Header */}
           <div className="mb-8 flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
             <div>
-              <h1 className={`text-2xl md:text-3xl font-bold ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
+              <h1 className={`text-2xl md:text-3xl font-bold text-foreground`}>
                 User Management
               </h1>
-              <p className={`mt-1 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+              <p className={`mt-1 text-text-muted`}>
                 Manage user accounts and permissions
               </p>
             </div>
@@ -228,11 +228,11 @@ function AdminUsersPageContent() {
           />
 
           {/* Filters */}
-          <Card className={`p-4 mb-6 ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
+          <Card className={`p-4 mb-6`}>
             <div className="flex flex-col md:flex-row gap-4">
               {/* Search */}
               <div className="flex-1 relative">
-                <Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`} />
+                <Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-text-muted`} />
                 <input
                   type="text"
                   placeholder="Search users..."
@@ -263,7 +263,7 @@ function AdminUsersPageContent() {
                   <option value="teacher">Teacher</option>
                   <option value="student">Student</option>
                 </select>
-                <ChevronDown className={`absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`} />
+                <ChevronDown className={`absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none text-text-muted`} />
               </div>
 
               {/* Status Filter */}
@@ -281,7 +281,7 @@ function AdminUsersPageContent() {
                   <option value="active">Active</option>
                   <option value="inactive">Suspended</option>
                 </select>
-                <ChevronDown className={`absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`} />
+                <ChevronDown className={`absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none text-text-muted`} />
               </div>
 
               {/* Verification Filter */}
@@ -299,7 +299,7 @@ function AdminUsersPageContent() {
                   <option value="verified">Email Verified</option>
                   <option value="unverified">Unverified</option>
                 </select>
-                <ChevronDown className={`absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`} />
+                <ChevronDown className={`absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none text-text-muted`} />
               </div>
 
               {/* Sort */}
@@ -318,36 +318,36 @@ function AdminUsersPageContent() {
                   <option value="full_name">Name A–Z</option>
                   <option value="email">Email A–Z</option>
                 </select>
-                <ChevronDown className={`absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`} />
+                <ChevronDown className={`absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none text-text-muted`} />
               </div>
             </div>
           </Card>
 
           {/* Users Table */}
-          <Card className={`overflow-hidden ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
+          <Card className={`overflow-hidden`}>
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className={`border-b ${theme === "dark" ? "border-white/10" : "border-gray-200"}`}>
-                    <th className={`text-left p-4 text-sm font-semibold ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                  <tr className={`border-b border-border-default`}>
+                    <th className={`text-left p-4 text-sm font-semibold text-text-muted`}>
                       User
                     </th>
-                    <th className={`text-left p-4 text-sm font-semibold ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                    <th className={`text-left p-4 text-sm font-semibold text-text-muted`}>
                       Role
                     </th>
-                    <th className={`text-left p-4 text-sm font-semibold ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                    <th className={`text-left p-4 text-sm font-semibold text-text-muted`}>
                       Status
                     </th>
-                    <th className={`text-left p-4 text-sm font-semibold ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                    <th className={`text-left p-4 text-sm font-semibold text-text-muted`}>
                       Verified
                     </th>
-                    <th className={`text-left p-4 text-sm font-semibold ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                    <th className={`text-left p-4 text-sm font-semibold text-text-muted`}>
                       Joined
                     </th>
-                    <th className={`text-left p-4 text-sm font-semibold ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                    <th className={`text-left p-4 text-sm font-semibold text-text-muted`}>
                       Last Login
                     </th>
-                    <th className={`text-right p-4 text-sm font-semibold ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                    <th className={`text-right p-4 text-sm font-semibold text-text-muted`}>
                       Actions
                     </th>
                   </tr>
@@ -378,7 +378,7 @@ function AdminUsersPageContent() {
                     ))
                   ) : users.length === 0 ? (
                     <tr>
-                      <td colSpan={7} className={`p-12 text-center ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>
+                      <td colSpan={7} className={`p-12 text-center text-text-muted`}>
                         No users found
                       </td>
                     </tr>
@@ -398,14 +398,14 @@ function AdminUsersPageContent() {
                                   className="w-10 h-10 rounded-full object-cover"
                                 />
                               ) : (
-                                <User className={`w-5 h-5 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`} />
+                                <User className={`w-5 h-5 text-text-muted`} />
                               )}
                             </div>
                             <div>
-                              <p className={`font-medium ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
+                              <p className={`font-medium text-foreground`}>
                                 {user.full_name || "Unknown"}
                               </p>
-                              <p className={`text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>
+                              <p className={`text-sm text-text-muted`}>
                                 {user.email || user.auth_user?.email}
                                 {user.username ? ` · @${user.username}` : ""}
                               </p>
@@ -427,10 +427,10 @@ function AdminUsersPageContent() {
                             {user.email_verified ? "Verified" : "Unverified"}
                           </Badge>
                         </td>
-                        <td className={`p-4 text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                        <td className={`p-4 text-sm text-text-muted`}>
                           {formatDate(user.created_at)}
                         </td>
-                        <td className={`p-4 text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                        <td className={`p-4 text-sm text-text-muted`}>
                           {formatDate(user.last_login_at || user.auth_user?.last_sign_in_at || null)}
                         </td>
                         <td className="p-4">
@@ -478,7 +478,7 @@ function AdminUsersPageContent() {
             {/* Pagination */}
             {totalPages > 1 && (
               <div className="flex items-center justify-between p-4 border-t border-gray-200">
-                <p className={`text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                <p className={`text-sm text-text-muted`}>
                   Page {page} of {totalPages}
                 </p>
                 <div className="flex gap-2">

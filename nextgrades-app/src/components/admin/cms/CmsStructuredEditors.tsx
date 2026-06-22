@@ -93,7 +93,7 @@ function StructuredListEditor<T extends { id?: string }>({
     <div className="max-w-3xl p-4 sm:p-6">
       <h2 className={`mb-6 text-lg font-bold ${textPrimary}`}>{title}</h2>
 
-      <Card className={`mb-8 space-y-4 p-5 ${isDark ? "bg-[#112240]" : "bg-white"}`}>
+      <Card className={`mb-8 space-y-4 p-5`}>
         <p className={`text-sm font-semibold ${textPrimary}`}>Add new</p>
         {fields.map((f) =>
           f.textarea ? (
@@ -133,7 +133,7 @@ function StructuredListEditor<T extends { id?: string }>({
           <p className={textMuted}>No entries yet.</p>
         ) : (
           localItems.map((item, index) => (
-            <Card key={item.id ?? index} className={`space-y-3 p-5 ${isDark ? "bg-[#112240]" : "bg-white"}`}>
+            <Card key={item.id ?? index} className={`space-y-3 p-5`}>
               {fields.map((f) => (
                 <div key={f.key}>
                   <label className={`text-xs font-semibold ${textMuted}`}>{f.label}</label>
@@ -232,7 +232,7 @@ function SeoEditor({
     <div className="max-w-3xl space-y-6 p-4 sm:p-6">
       <h2 className={`text-lg font-bold ${textPrimary}`}>SEO per page</h2>
       {byPage.map((row) => (
-        <Card key={row.page_name} className={`space-y-3 p-5 ${isDark ? "bg-[#112240]" : "bg-white"}`}>
+        <Card key={row.page_name} className={`space-y-3 p-5`}>
           <p className={`font-semibold capitalize ${textPrimary}`}>{row.page_name}</p>
           <input
             className={inputClass}

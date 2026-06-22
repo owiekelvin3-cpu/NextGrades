@@ -91,7 +91,7 @@ export function AuthMobileShell({
         <h1
           className={cn(
             "max-w-[300px] text-[1.65rem] font-bold leading-[1.2] tracking-tight",
-            isDark ? "text-white" : "text-[#0D1B2A]"
+            "text-foreground"
           )}
         >
           {title}

@@ -91,10 +91,10 @@ export default function ChooseRolePage() {
               theme === "dark" ? "border-white/10 bg-[#112240]/90" : "border-gray-100 bg-white"
             )}
           >
-            <h1 className={cn("text-2xl font-bold", theme === "dark" ? "text-white" : "text-[#0D1B2A]")}>
+            <h1 className={cn("text-2xl font-bold", "text-foreground")}>
               Choose your account type
             </h1>
-            <p className={cn("mt-2 text-sm", theme === "dark" ? "text-gray-400" : "text-gray-600")}>
+            <p className={cn("mt-2 text-sm", "text-text-muted")}>
               Select whether you are joining as a student or a teacher. This is set once for your account.
             </p>
 
@@ -129,10 +129,10 @@ export default function ChooseRolePage() {
                     <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-[#D4AF37]/20">
                       <FontAwesomeIcon icon={faUser} className="w-5 text-[#D4AF37]" />
                     </div>
-                    <p className={cn("font-bold capitalize", theme === "dark" ? "text-white" : "text-[#0D1B2A]")}>
+                    <p className={cn("font-bold capitalize", "text-foreground")}>
                       {option}
                     </p>
-                    <p className={cn("mt-1 text-xs", theme === "dark" ? "text-gray-400" : "text-gray-500")}>
+                    <p className={cn("mt-1 text-xs", "text-text-muted")}>
                       {option === "student" ? "Learn & grow" : "Teach & inspire"}
                     </p>
                   </button>

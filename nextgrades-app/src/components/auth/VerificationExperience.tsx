@@ -249,7 +249,7 @@ export function VerificationExperience({
             >
               <CheckCircle2 className="h-10 w-10 text-emerald-500" strokeWidth={2} />
             </motion.div>
-            <h2 className={cn("text-2xl font-semibold tracking-tight", isDark ? "text-white" : "text-[#0D1B2A]")}>
+            <h2 className={cn("text-2xl font-semibold tracking-tight", "text-foreground")}>
               {t("verify.successTitle")}
             </h2>
             <p className={cn("mt-2 text-sm", isDark ? "text-gray-400" : "text-gray-600")}>
@@ -267,7 +267,7 @@ export function VerificationExperience({
                   <Mail className="h-7 w-7 text-[#D4AF37]" strokeWidth={1.75} />
                 )}
               </div>
-              <h1 className={cn("text-2xl font-bold tracking-tight sm:text-[1.65rem]", isDark ? "text-white" : "text-[#0D1B2A]")}>
+              <h1 className={cn("text-2xl font-bold tracking-tight sm:text-[1.65rem]", "text-foreground")}>
                 {isLogin ? t("verify.loginTitle") : t("verify.signupTitle")}
               </h1>
               <p className={cn("mt-2 max-w-[320px] text-sm leading-relaxed", isDark ? "text-gray-400" : "text-gray-600")}>

@@ -185,17 +185,17 @@ export default function TeacherContentPage() {
     >
       <div className="mx-auto max-w-7xl">
           {fetchError && (
-            <Card className={`mb-6 border-l-4 border-red-500 p-4 ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
+            <Card className={`mb-6 border-l-4 border-red-500 p-4`}>
               <p className="text-sm text-red-600">{fetchError}</p>
             </Card>
           )}
 
           {/* Filters */}
-          <Card className={`p-4 mb-6 ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
+          <Card className={`p-4 mb-6`}>
             <div className="flex flex-col md:flex-row gap-4">
               {/* Search */}
               <div className="flex-1 relative">
-                <Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`} />
+                <Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-text-muted`} />
                 <input
                   type="text"
                   placeholder={t("teacherContent.searchPlaceholder")}
@@ -228,7 +228,7 @@ export default function TeacherContentPage() {
                   <option value="scheduled">Scheduled</option>
                   <option value="archived">Archived</option>
                 </select>
-                <ChevronDown className={`absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`} />
+                <ChevronDown className={`absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none text-text-muted`} />
               </div>
 
               {/* Category Filter */}
@@ -249,7 +249,7 @@ export default function TeacherContentPage() {
                     </option>
                   ))}
                 </select>
-                <ChevronDown className={`absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`} />
+                <ChevronDown className={`absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none text-text-muted`} />
               </div>
 
               {/* Sort */}
@@ -274,7 +274,7 @@ export default function TeacherContentPage() {
                   <option value="title-asc">Title A-Z</option>
                   <option value="title-desc">Title Z-A</option>
                 </select>
-                <ChevronDown className={`absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`} />
+                <ChevronDown className={`absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none text-text-muted`} />
               </div>
             </div>
           </Card>
@@ -283,7 +283,7 @@ export default function TeacherContentPage() {
           {loading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[...Array(6)].map((_, i) => (
-                <Card key={i} className={`p-6 ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
+                <Card key={i} className={`p-6`}>
                   <div className="animate-pulse">
                     <div className="w-full h-40 rounded-lg bg-gray-200 mb-4"></div>
                     <div className="h-6 bg-gray-200 rounded mb-2"></div>
@@ -297,12 +297,12 @@ export default function TeacherContentPage() {
               ))}
             </div>
           ) : filteredResources.length === 0 ? (
-            <Card className={`p-12 text-center ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
+            <Card className={`p-12 text-center`}>
               <Folder className="w-16 h-16 mx-auto mb-4 text-gray-400" />
-              <h3 className={`text-xl font-semibold mb-2 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
+              <h3 className={`text-xl font-semibold mb-2 text-foreground`}>
                 No resources found
               </h3>
-              <p className={`mb-6 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+              <p className={`mb-6 text-text-muted`}>
                 {searchQuery ? "Try adjusting your search or filters" : "Upload your first resource to get started"}
               </p>
               {!searchQuery && (
@@ -321,7 +321,7 @@ export default function TeacherContentPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.05 * index }}
                 >
-                  <Card className={`overflow-hidden ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
+                  <Card className={`overflow-hidden`}>
                     {/* Thumbnail */}
                     <div className="relative h-40 bg-gradient-to-br from-[#D4AF37]/20 to-[#4DA3FF]/20 flex items-center justify-center">
                       {resource.thumbnail_url ? (
@@ -345,13 +345,13 @@ export default function TeacherContentPage() {
                     {/* Content */}
                     <div className="p-4">
                       <div className="flex items-start justify-between mb-2">
-                        <h3 className={`font-semibold text-lg ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"} line-clamp-2`}>
+                        <h3 className={`font-semibold text-lg text-foreground line-clamp-2`}>
                           {resource.title}
                         </h3>
                       </div>
 
                       {resource.description && (
-                        <p className={`text-sm mb-3 line-clamp-2 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                        <p className={`text-sm mb-3 line-clamp-2 text-text-muted`}>
                           {resource.description}
                         </p>
                       )}
@@ -369,11 +369,11 @@ export default function TeacherContentPage() {
 
                       {/* Stats */}
                       <div className="flex items-center gap-4 mb-4 text-sm">
-                        <div className={`flex items-center gap-1 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                        <div className={`flex items-center gap-1 text-text-muted`}>
                           <Eye className="w-4 h-4" />
                           <span>{resource.view_count}</span>
                         </div>
-                        <div className={`flex items-center gap-1 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                        <div className={`flex items-center gap-1 text-text-muted`}>
                           <Download className="w-4 h-4" />
                           <span>{resource.download_count}</span>
                         </div>

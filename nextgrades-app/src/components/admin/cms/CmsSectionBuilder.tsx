@@ -77,7 +77,7 @@ export function CmsSectionBuilder({ groups, layout, onChange, isDark }: Props) {
           >
             <GripVertical className="h-4 w-4 shrink-0 text-gray-400" />
             <div className="min-w-0 flex-1">
-              <p className={cn("truncate text-sm font-medium", isDark ? "text-white" : "text-[#0D1B2A]")}>
+              <p className={cn("truncate text-sm font-medium", "text-foreground")}>
                 {group.label}
               </p>
               <p className={cn("text-[11px]", textMuted)}>{group.fieldKeys.length} fields</p>

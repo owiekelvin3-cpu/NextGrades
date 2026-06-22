@@ -52,7 +52,7 @@ export function QuizPlayer({
   }, []);
 
   const isDark = theme === "dark";
-  const textPrimary = isDark ? "text-white" : "text-[#0D1B2A]";
+  const textPrimary = "text-foreground";
   const current = questions[index];
   const progress = ((index + 1) / questions.length) * 100;
 
@@ -127,7 +127,7 @@ export function QuizPlayer({
   if (finished && result) {
     return (
       <div className="space-y-6">
-        <Card className={`p-8 text-center ${isDark ? "bg-[#112240]" : "bg-white"}`}>
+        <Card className={`p-8 text-center`}>
           <p className={`text-5xl font-bold text-[#D4AF37] mb-2`}>{result.scorePercent}%</p>
           <p className={textPrimary}>Quiz complete</p>
           <Button variant="gold" className="mt-6" onClick={onExit}>
@@ -140,7 +140,7 @@ export function QuizPlayer({
             const g = gradedMap.get(q.id);
             const ok = g?.is_correct;
             return (
-              <Card key={q.id} className={`p-5 ${isDark ? "bg-[#112240]" : "bg-white"}`}>
+              <Card key={q.id} className={`p-5`}>
                 <div className="flex items-start gap-3">
                   {ok ? (
                     <CheckCircle2 className="w-5 h-5 text-green-500 shrink-0" />
@@ -189,7 +189,7 @@ export function QuizPlayer({
         <div className="h-full bg-[#D4AF37] transition-all" style={{ width: `${progress}%` }} />
       </div>
 
-      <Card className={`p-6 ${isDark ? "bg-[#112240]" : "bg-white"}`}>
+      <Card className={`p-6`}>
         <Badge variant="outline" className="mb-4">
           {current.question_type.replace("_", " ")}
         </Badge>

@@ -42,7 +42,7 @@ export function CmsActivityPanel({ pageName, isDark }: Props) {
                 isDark ? "border-white/10 bg-[#112240]/50" : "border-gray-100 bg-gray-50"
               )}
             >
-              <p className={isDark ? "text-white" : "text-[#0D1B2A]"}>{e.summary}</p>
+              <p className="text-foreground">{e.summary}</p>
               <div className={cn("mt-1 flex flex-wrap items-center gap-3 text-[11px]", textMuted)}>
                 <span className="inline-flex items-center gap-1">
                   <Clock className="h-3 w-3" />

@@ -115,7 +115,7 @@ export function AdminZoomDashboard() {
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((s) => (
-          <Card key={s.label} className={`p-5 ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
+          <Card key={s.label} className={`p-5`}>
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs text-gray-500">{s.label}</p>
@@ -127,7 +127,7 @@ export function AdminZoomDashboard() {
         ))}
       </div>
 
-      <Card className={`p-6 ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
+      <Card className={`p-6`}>
         <h2 className="mb-4 text-sm font-semibold">
           {t("zoom.admin.upcomingList", { defaultValue: "Upcoming meetings" })}
         </h2>
@@ -159,7 +159,7 @@ export function AdminZoomDashboard() {
         )}
       </Card>
 
-      <Card className={`p-6 ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
+      <Card className={`p-6`}>
         <h2 className="mb-4 text-sm font-semibold">
           {t("zoom.admin.teacherStatus", { defaultValue: "Teacher Zoom status" })}
         </h2>
@@ -188,7 +188,7 @@ export function AdminZoomDashboard() {
         )}
       </Card>
 
-      <Card className={`p-6 ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
+      <Card className={`p-6`}>
         <h2 className="mb-4 text-sm font-semibold">
           {t("zoom.admin.connections", { defaultValue: "Connected Zoom accounts" })}
         </h2>

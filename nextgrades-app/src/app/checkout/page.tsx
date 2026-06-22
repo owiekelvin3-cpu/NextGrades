@@ -103,14 +103,14 @@ function CheckoutContent() {
             <ArrowLeft className="w-4 h-4" />
             {t("checkout.backToPricing", { defaultValue: "Back to pricing" })}
           </Link>
-          <Card className={`p-8 ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
-            <h1 className={`text-2xl font-bold mb-2 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
+          <Card className={`p-8`}>
+            <h1 className={`text-2xl font-bold mb-2 text-foreground`}>
               {t("checkout.title", { defaultValue: "Complete your subscription" })}
             </h1>
-            <p className={`mb-6 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+            <p className={`mb-6 text-text-muted`}>
               {plan?.name} · {billing === "yearly" ? t("pricing.yearly") : t("pricing.monthly")}
             </p>
-            <div className={`text-4xl font-bold mb-6 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
+            <div className={`text-4xl font-bold mb-6 text-foreground`}>
               €{price}
               <span className="text-lg font-normal text-gray-500 ml-2">
                 /{billing === "yearly" ? t("pricing.perYear") : t("pricing.perMonth")}

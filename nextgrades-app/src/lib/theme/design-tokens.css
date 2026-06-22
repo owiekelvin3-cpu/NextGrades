@@ -38,7 +38,7 @@
   /* ── Semantic: Light (navy + gold + cream — no stone grey) ── */
   --background: #faf9f6;
   --foreground: #0d1b2a;
-  --foreground-secondary: #1a3352;
+  --foreground-secondary: #2a3548;
   --text-muted: #8a7428;
   --text-subtle: rgba(13, 27, 42, 0.55);
 
@@ -76,7 +76,7 @@
   --button-outline-border: var(--brand-gold);
   --button-outline-hover-bg: var(--brand-gold-muted);
   --button-ghost-background: transparent;
-  --button-ghost-foreground: #1a3352;
+  --button-ghost-foreground: #2a3548;
   --button-ghost-border: rgba(13, 27, 42, 0.14);
   --button-ghost-hover-bg: #f4f0e8;
   --button-dark-background: var(--brand-navy);
@@ -97,7 +97,7 @@
 
   --nav-background: rgba(255, 255, 255, 0.92);
   --nav-border: rgba(13, 27, 42, 0.08);
-  --nav-text: #1a3352;
+  --nav-text: #2a3548;
   --nav-text-active: #0d1b2a;
   --nav-dropdown: #ffffff;
 
@@ -128,9 +128,28 @@
   --alert-error-bg: #fef2f2;
   --alert-error-fg: #991b1b;
   --alert-error-border: #fecaca;
-  --alert-info-bg: #eff6ff;
-  --alert-info-fg: #1e40af;
-  --alert-info-border: #bfdbfe;
+  --alert-info-bg: #fdf8eb;
+  --alert-info-fg: #6b5a1e;
+  --alert-info-border: rgba(212, 175, 55, 0.35);
+
+  --link: var(--brand-gold);
+  --link-hover: var(--brand-gold-hover);
+  --link-muted: var(--text-muted);
+
+  --disabled-opacity: 0.5;
+  --disabled-foreground: var(--text-subtle);
+
+  /* Chat surfaces */
+  --chat-sidebar: #f4f0e8;
+  --chat-header: rgba(250, 249, 246, 0.96);
+  --chat-panel: var(--background);
+  --chat-input: var(--surface-elevated);
+  --chat-toolbar: var(--surface-elevated);
+  --chat-bubble-user: var(--brand-navy);
+  --chat-bubble-assistant: var(--surface-muted);
+  --chat-item-active: var(--surface-elevated);
+  --chat-item-hover: var(--surface-subtle);
+  --chat-border: var(--border-default);
 
   --focus-ring: var(--brand-gold-ring);
   --ring-offset: #faf9f6;
@@ -248,6 +267,24 @@
   --alert-info-bg: rgba(212, 175, 55, 0.12);
   --alert-info-fg: #e5c158;
   --alert-info-border: rgba(212, 175, 55, 0.24);
+
+  --link: var(--brand-gold);
+  --link-hover: var(--brand-gold-light);
+  --link-muted: rgba(212, 175, 55, 0.72);
+
+  --disabled-opacity: 0.45;
+  --disabled-foreground: rgba(212, 175, 55, 0.45);
+
+  --chat-sidebar: #0a1520;
+  --chat-header: rgba(17, 34, 64, 0.96);
+  --chat-panel: var(--background);
+  --chat-input: #112240;
+  --chat-toolbar: #112240;
+  --chat-bubble-user: #152a4a;
+  --chat-bubble-assistant: #112240;
+  --chat-item-active: #112240;
+  --chat-item-hover: rgba(212, 175, 55, 0.08);
+  --chat-border: var(--border-default);
 
   --ring-offset: #112240;
 
@@ -664,4 +701,77 @@ html.theme-animate *::after {
   background: var(--button-outline-hover-bg);
   color: var(--button-outline-foreground);
   border: 1px solid var(--button-outline-border);
+}
+
+/* ── Chat UI (token-driven, no neutral grays) ── */
+
+.chat-sidebar {
+  background: var(--chat-sidebar);
+  border-color: var(--chat-border);
+}
+
+.chat-header {
+  background: var(--chat-header);
+  border-color: var(--chat-border);
+  color: var(--foreground);
+}
+
+.chat-panel {
+  background: var(--chat-panel);
+  color: var(--foreground);
+}
+
+.chat-input-shell {
+  background: var(--chat-input);
+  border-color: var(--chat-border);
+  color: var(--foreground);
+}
+
+.chat-toolbar {
+  background: var(--chat-toolbar);
+  border-color: var(--chat-border);
+}
+
+.chat-item {
+  color: var(--foreground-secondary);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.chat-item:hover {
+  background: var(--chat-item-hover);
+}
+
+.chat-item--active {
+  background: var(--chat-item-active);
+  color: var(--foreground);
+  font-weight: 500;
+}
+
+.chat-bubble-user {
+  background: var(--chat-bubble-user);
+  color: #ffffff;
+}
+
+.chat-bubble-assistant {
+  background: var(--chat-bubble-assistant);
+  color: var(--foreground);
+}
+
+.theme-link {
+  color: var(--link);
+  transition: color 0.2s ease;
+}
+
+.theme-link:hover {
+  color: var(--link-hover);
+}
+
+.theme-link-muted {
+  color: var(--link-muted);
+}
+
+.theme-disabled {
+  opacity: var(--disabled-opacity);
+  color: var(--disabled-foreground);
+  pointer-events: none;
 }

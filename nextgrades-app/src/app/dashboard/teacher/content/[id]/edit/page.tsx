@@ -63,7 +63,7 @@ export default function EditResourcePage() {
       }
     >
       <div className="mx-auto max-w-4xl">
-        <p className={`mb-6 text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+        <p className={`mb-6 text-sm text-text-muted`}>
           Update details, thumbnail, or pricing
         </p>
         {loading ? (
@@ -71,7 +71,7 @@ export default function EditResourcePage() {
         ) : initialData ? (
           <PublishContentForm resourceId={id} initialData={initialData as never} />
         ) : (
-          <p className={theme === "dark" ? "text-gray-400" : "text-gray-600"}>
+          <p className="text-text-muted">
             Resource not found.{" "}
             <Link href="/dashboard/teacher/content" className="text-[#D4AF37] hover:underline">
               Return to My Resources

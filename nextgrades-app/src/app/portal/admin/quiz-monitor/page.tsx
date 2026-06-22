@@ -24,7 +24,7 @@ export default function AdminQuizMonitorPage() {
   const [stats, setStats] = useState<Stats | null>(null);
   const [loading, setLoading] = useState(true);
   const isDark = theme === "dark";
-  const textPrimary = isDark ? "text-white" : "text-[#0D1B2A]";
+  const textPrimary = "text-foreground";
 
   useEffect(() => {
     (async () => {
@@ -56,7 +56,7 @@ export default function AdminQuizMonitorPage() {
               { icon: Users, label: "Attempts", value: stats.counts.attempts },
               { icon: Zap, label: "Student scores", value: stats.counts.studentScores },
             ].map((s) => (
-              <Card key={s.label} className={`p-5 ${isDark ? "bg-[#112240]" : "bg-white"}`}>
+              <Card key={s.label} className={`p-5`}>
                 <s.icon className="w-6 h-6 text-[#D4AF37] mb-2" />
                 <p className={`text-2xl font-bold ${textPrimary}`}>{s.value}</p>
                 <p className="text-sm text-gray-500">{s.label}</p>
@@ -64,7 +64,7 @@ export default function AdminQuizMonitorPage() {
             ))}
           </div>
 
-          <Card className={`p-6 ${isDark ? "bg-[#112240]" : "bg-white"}`}>
+          <Card className={`p-6`}>
             <h3 className={`font-bold mb-2 ${textPrimary}`}>Generation engine</h3>
             <p className="text-sm text-gray-500 mb-4">
               {stats.generation.engine} · {stats.generation.completedJobs} completed ·{" "}
@@ -90,7 +90,7 @@ export default function AdminQuizMonitorPage() {
           </Card>
 
           <div className="grid lg:grid-cols-2 gap-6">
-            <Card className={`p-6 ${isDark ? "bg-[#112240]" : "bg-white"}`}>
+            <Card className={`p-6`}>
               <h3 className={`font-bold mb-4 ${textPrimary}`}>Recent uploads</h3>
               <ul className="space-y-2 text-sm">
                 {stats.recentMaterials.map((m) => (
@@ -101,7 +101,7 @@ export default function AdminQuizMonitorPage() {
                 ))}
               </ul>
             </Card>
-            <Card className={`p-6 ${isDark ? "bg-[#112240]" : "bg-white"}`}>
+            <Card className={`p-6`}>
               <h3 className={`font-bold mb-4 ${textPrimary}`}>Recent quizzes</h3>
               <ul className="space-y-2 text-sm">
                 {stats.recentQuizzes.map((q) => (

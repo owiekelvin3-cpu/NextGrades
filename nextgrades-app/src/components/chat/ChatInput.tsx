@@ -92,7 +92,7 @@ export function ChatInput({
   };
 
   return (
-    <div className="shrink-0 bg-gradient-to-t from-[#F7F7F8] via-[#F7F7F8] to-transparent px-3 pb-3 pt-2 dark:from-[#171717] dark:via-[#171717] sm:px-4 sm:pb-4">
+    <div className="shrink-0 bg-gradient-to-t from-[var(--chat-panel)] via-[var(--chat-panel)] to-transparent px-3 pb-3 pt-2 sm:px-4 sm:pb-4">
       <div className="mx-auto max-w-3xl">
         <div
           onDragOver={(e) => {
@@ -102,14 +102,14 @@ export function ChatInput({
           onDragLeave={() => setDragOver(false)}
           onDrop={onDrop}
           className={cn(
-            "relative rounded-[22px] border bg-white shadow-sm transition-all dark:bg-[#2f2f2f]",
+            "chat-input-shell relative rounded-[22px] border shadow-sm transition-all",
             dragOver
-              ? "border-[#D4AF37] ring-2 ring-[#D4AF37]/25"
-              : "border-gray-200 focus-within:border-gray-300 focus-within:shadow-md dark:border-white/10 dark:focus-within:border-white/20"
+              ? "border-[var(--brand-gold)] ring-2 ring-[var(--brand-gold-ring)]"
+              : "border-border-default focus-within:border-[var(--border-strong)] focus-within:shadow-md"
           )}
         >
           {attachments.length > 0 && (
-            <div className="border-b border-gray-100 px-3 py-2.5 dark:border-white/10">
+            <div className="border-b border-border-default px-3 py-2.5">
               <ChatAttachmentList files={attachments} onRemove={onRemoveAttachment} />
             </div>
           )}
@@ -129,7 +129,7 @@ export function ChatInput({
               onClick={() => fileRef.current?.click()}
               className={cn(
                 "mb-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl transition-colors",
-                "text-gray-500 hover:bg-gray-100 hover:text-[#D4AF37] dark:text-gray-400 dark:hover:bg-white/10",
+                "text-text-muted hover:bg-surface-subtle hover:text-[var(--brand-gold)]",
                 (disabled || uploading || atAttachmentLimit) && "cursor-not-allowed opacity-40"
               )}
               aria-label={isDe ? "Datei anhängen" : "Attach file"}
@@ -150,14 +150,14 @@ export function ChatInput({
               disabled={disabled}
               rows={1}
               placeholder={placeholder}
-              className="max-h-[200px] min-h-[26px] flex-1 resize-none bg-transparent py-2 text-[15px] leading-6 text-gray-900 outline-none placeholder:text-gray-400 dark:text-gray-100 sm:min-h-[28px]"
+              className="max-h-[200px] min-h-[26px] flex-1 resize-none bg-transparent py-2 text-[15px] leading-6 text-foreground outline-none placeholder:text-input-placeholder sm:min-h-[28px]"
             />
 
             {streaming ? (
               <button
                 type="button"
                 onClick={onStop}
-                className="mb-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#0D1B2A] text-white transition hover:opacity-90 dark:bg-white dark:text-[#0D1B2A]"
+                className="mb-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[var(--brand-navy)] text-white transition hover:opacity-90"
                 aria-label={isDe ? "Stoppen" : "Stop"}
               >
                 <Square className="h-3.5 w-3.5 fill-current" />
@@ -170,8 +170,8 @@ export function ChatInput({
                 className={cn(
                   "mb-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl transition-all",
                   canSend
-                    ? "bg-gradient-to-br from-[#D4AF37] to-[#F5A623] text-[#0D1B2A] shadow-md hover:opacity-95"
-                    : "bg-gray-100 text-gray-400 dark:bg-white/10 dark:text-gray-500"
+                    ? "bg-gradient-to-br from-[var(--brand-gold)] to-[var(--color-gold-light)] text-[var(--brand-navy)] shadow-md hover:opacity-95"
+                    : "bg-surface-subtle text-text-muted"
                 )}
                 aria-label={isDe ? "Senden" : "Send"}
               >
@@ -182,12 +182,12 @@ export function ChatInput({
         </div>
 
         <div className="mt-2 flex flex-col items-center gap-0.5 sm:flex-row sm:justify-center sm:gap-3">
-          <p className="flex items-center gap-1 text-[11px] text-gray-400">
+          <p className="flex items-center gap-1 text-[11px] text-text-muted">
             <Paperclip className="h-3 w-3" aria-hidden />
             {uploadHint}
           </p>
-          <span className="hidden text-gray-300 sm:inline">·</span>
-          <p className="text-[11px] text-gray-400">{disclaimer}</p>
+          <span className="hidden text-border-default sm:inline">·</span>
+          <p className="text-[11px] text-text-muted">{disclaimer}</p>
         </div>
       </div>
     </div>

@@ -19,9 +19,9 @@ export function EmptyState({ title, description, action }: EmptyStateProps) {
       }`}
     >
       <Inbox className={`w-12 h-12 mx-auto mb-4 ${theme === "dark" ? "text-gray-500" : "text-gray-400"}`} />
-      <h3 className={`font-semibold mb-2 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>{title}</h3>
+      <h3 className={`font-semibold mb-2 text-foreground`}>{title}</h3>
       {description && (
-        <p className={`text-sm mb-4 max-w-md mx-auto ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+        <p className={`text-sm mb-4 max-w-md mx-auto text-text-muted`}>
           {description}
         </p>
       )}

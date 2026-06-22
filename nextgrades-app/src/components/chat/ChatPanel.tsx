@@ -99,13 +99,13 @@ export function ChatPanel({ open, onClose, fullPage }: ChatPanelProps) {
   }, [role]);
 
   const panelClass = fullPage
-    ? "flex h-full w-full overflow-hidden bg-[#F7F7F8] dark:bg-[#171717]"
+    ? "chat-panel flex h-full w-full overflow-hidden bg-[var(--chat-panel)]"
     : cn(
-        "fixed z-50 flex overflow-hidden shadow-2xl ring-1 ring-black/5 dark:ring-white/10",
+        "chat-panel fixed z-50 flex overflow-hidden shadow-2xl ring-1 ring-black/5 dark:ring-[var(--border-default)]",
         "inset-x-0 bottom-0 top-0 sm:inset-auto sm:bottom-5 sm:right-5 sm:top-auto",
         "w-full sm:w-[min(100vw-2rem,480px)]",
         "h-[100dvh] sm:h-[min(780px,calc(100dvh-2.5rem))] sm:rounded-2xl",
-        "bg-[#F7F7F8] dark:bg-[#171717]"
+        "bg-[var(--chat-panel)]"
       );
 
   if (!open && !fullPage) return null;
@@ -119,7 +119,7 @@ export function ChatPanel({ open, onClose, fullPage }: ChatPanelProps) {
         <button
           type="button"
           onClick={() => chat.newChat()}
-          className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm font-semibold text-gray-800 shadow-sm transition hover:bg-gray-50 dark:border-white/10 dark:bg-[#2a2a2a] dark:text-gray-100 dark:hover:bg-[#333]"
+          className="theme-btn-secondary flex flex-1 items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-sm font-semibold shadow-sm"
         >
           <Plus className="h-4 w-4" aria-hidden />
           {isDe ? "Neuer Chat" : "New chat"}
@@ -128,7 +128,7 @@ export function ChatPanel({ open, onClose, fullPage }: ChatPanelProps) {
           <button
             type="button"
             onClick={() => setSidebarOpen(false)}
-            className="rounded-xl p-2.5 text-gray-500 hover:bg-gray-100 dark:hover:bg-white/10 lg:hidden"
+            className="rounded-xl p-2.5 text-text-muted hover:bg-surface-subtle lg:hidden"
             aria-label="Close sidebar"
           >
             <PanelLeftClose className="h-4 w-4" />
@@ -137,16 +137,14 @@ export function ChatPanel({ open, onClose, fullPage }: ChatPanelProps) {
       </div>
       <div className="flex-1 overflow-y-auto px-2 pb-3">
         {chat.sessions.length === 0 ? (
-          <p className="px-3 py-2 text-xs text-gray-400">{isDe ? "Noch keine Chats" : "No chats yet"}</p>
+          <p className="px-3 py-2 text-xs text-text-muted">{isDe ? "Noch keine Chats" : "No chats yet"}</p>
         ) : (
           chat.sessions.map((s) => (
             <div
               key={s.id}
               className={cn(
-                "group mb-0.5 flex items-center gap-1 rounded-xl px-3 py-2.5 text-sm",
-                chat.activeSessionId === s.id
-                  ? "bg-white font-medium text-gray-900 shadow-sm dark:bg-[#2a2a2a] dark:text-white"
-                  : "text-gray-600 hover:bg-white/60 dark:text-gray-300 dark:hover:bg-white/5"
+                "chat-item group mb-0.5 flex items-center gap-1 rounded-xl px-3 py-2.5 text-sm",
+                chat.activeSessionId === s.id && "chat-item--active shadow-sm"
               )}
             >
               {renamingId === s.id ? (
@@ -164,7 +162,7 @@ export function ChatPanel({ open, onClose, fullPage }: ChatPanelProps) {
                       setRenamingId(null);
                     }
                   }}
-                  className="w-full rounded-lg border border-gray-200 bg-white px-2 py-1 text-xs dark:border-white/10 dark:bg-[#2f2f2f]"
+                  className="theme-input w-full rounded-lg px-2 py-1 text-xs"
                 />
               ) : (
                 <button
@@ -221,29 +219,29 @@ export function ChatPanel({ open, onClose, fullPage }: ChatPanelProps) {
           {showSidebar && (
             <aside
               className={cn(
-                "flex shrink-0 flex-col border-r border-gray-200 bg-[#F0F0F0] dark:border-white/10 dark:bg-[#111111]",
+                "chat-sidebar flex shrink-0 flex-col border-r",
                 fullPage ? "hidden w-64 md:flex" : "absolute inset-y-0 left-0 z-10 w-[min(85vw,280px)] shadow-xl",
                 !fullPage && "sm:relative sm:shadow-none"
               )}
             >
-              <div className="flex items-center gap-2 border-b border-gray-200 px-4 py-3 dark:border-white/10">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[#D4AF37] to-[#F5A623] shadow-sm">
-                  <Sparkles className="h-4 w-4 text-[#0D1B2A]" />
+              <div className="flex items-center gap-2 border-b border-border-default px-4 py-3">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[var(--brand-gold)] to-[var(--color-gold-light)] shadow-sm">
+                  <Sparkles className="h-4 w-4 text-[var(--brand-navy)]" />
                 </div>
-                <span className="text-sm font-bold text-gray-900 dark:text-white">NextGrades AI</span>
+                <span className="text-sm font-bold text-foreground">NextGrades AI</span>
               </div>
               {sidebarContent}
             </aside>
           )}
 
           <div className="flex min-w-0 flex-1 flex-col">
-            <header className="flex shrink-0 items-center justify-between gap-2 border-b border-gray-200 bg-[#F7F7F8]/95 px-2 py-2 backdrop-blur-sm dark:border-white/10 dark:bg-[#171717]/95 sm:px-3">
+            <header className="chat-header flex shrink-0 items-center justify-between gap-2 border-b px-2 py-2 backdrop-blur-sm sm:px-3">
               <div className="flex min-w-0 flex-1 items-center gap-1">
                 {!sidebarOpen && (
                   <button
                     type="button"
                     onClick={() => setSidebarOpen(true)}
-                    className="rounded-xl p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-white/10"
+                    className="rounded-xl p-2 text-text-muted hover:bg-surface-subtle"
                     aria-label="Open sidebar"
                   >
                     <PanelLeft className="h-4 w-4" />
@@ -268,7 +266,7 @@ export function ChatPanel({ open, onClose, fullPage }: ChatPanelProps) {
                 <button
                   type="button"
                   onClick={() => chat.newChat()}
-                  className="hidden rounded-xl p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-white/10 sm:flex"
+                  className="hidden rounded-xl p-2 text-text-muted hover:bg-surface-subtle sm:flex"
                   aria-label="New chat"
                 >
                   <Plus className="h-4 w-4" />
@@ -277,7 +275,7 @@ export function ChatPanel({ open, onClose, fullPage }: ChatPanelProps) {
                   <>
                     <Link
                       href="/dashboard/chat"
-                      className="rounded-xl p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-white/10"
+                      className="rounded-xl p-2 text-text-muted hover:bg-surface-subtle"
                       aria-label="Full page"
                     >
                       <Maximize2 className="h-4 w-4" />
@@ -285,7 +283,7 @@ export function ChatPanel({ open, onClose, fullPage }: ChatPanelProps) {
                     <button
                       type="button"
                       onClick={onClose}
-                      className="rounded-xl p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-white/10"
+                      className="rounded-xl p-2 text-text-muted hover:bg-surface-subtle"
                       aria-label="Close"
                     >
                       <X className="h-4 w-4" />
@@ -309,12 +307,12 @@ export function ChatPanel({ open, onClose, fullPage }: ChatPanelProps) {
             )}
 
             {materials.length > 0 && (
-              <div className="flex items-center gap-2 border-b border-gray-200 bg-white px-3 py-2 dark:border-white/10 dark:bg-[#222] sm:px-4">
-                <BookOpen className="h-3.5 w-3.5 shrink-0 text-[#D4AF37]" />
+              <div className="chat-toolbar flex items-center gap-2 border-b px-3 py-2 sm:px-4">
+                <BookOpen className="h-3.5 w-3.5 shrink-0 text-[var(--brand-gold)]" />
                 <select
                   value={chat.materialId ?? ""}
                   onChange={(e) => chat.setMaterialId(e.target.value || undefined)}
-                  className="min-w-0 flex-1 truncate rounded-lg border-0 bg-transparent px-1 py-1 text-xs text-gray-600 outline-none dark:text-gray-300"
+                  className="min-w-0 flex-1 truncate rounded-lg border-0 bg-transparent px-1 py-1 text-xs text-foreground-secondary outline-none"
                 >
                   <option value="">{isDe ? "Kein Material" : "No material context"}</option>
                   {materials.map((m) => (
@@ -332,7 +330,7 @@ export function ChatPanel({ open, onClose, fullPage }: ChatPanelProps) {
                   <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#D4AF37]/20 to-[#F5A623]/10 shadow-sm sm:h-16 sm:w-16">
                     <Sparkles className="h-7 w-7 text-[#D4AF37] sm:h-8 sm:w-8" />
                   </div>
-                  <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-white sm:text-2xl">
+                  <h3 className="mb-2 text-xl font-bold text-foreground sm:text-2xl">
                     {emptyCopy.title}
                   </h3>
                   <p className="mb-8 max-w-md text-sm leading-relaxed text-gray-500 sm:text-base">

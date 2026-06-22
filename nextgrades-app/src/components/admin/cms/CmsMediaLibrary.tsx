@@ -83,7 +83,7 @@ export function CmsMediaLibrary({ open, onClose, onSelect, isDark }: Props) {
 
   if (!open) return null;
 
-  const textPrimary = isDark ? "text-white" : "text-[#0D1B2A]";
+  const textPrimary = "text-foreground";
   const textMuted = isDark ? "text-gray-400" : "text-gray-600";
 
   return (

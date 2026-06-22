@@ -38,6 +38,9 @@
   --color-surface-elevated: var(--surface-elevated);
   --color-text-muted: var(--text-muted);
   --color-border-default: var(--border-default);
+  --color-brand-navy-muted: var(--brand-navy-muted);
+  --color-text-subtle: var(--text-subtle);
+  --color-link: var(--link);
 
   --font-sans: var(--font-geist-sans);
   --font-poppins: var(--font-poppins);
@@ -819,8 +822,8 @@ html {
   max-width: 100%;
 }
 
-/* ── Remap Tailwind gray utilities → brand semantic tokens (light + dark) ── */
-:is(.text-gray-200, .text-gray-300) {
+/* ── Remap Tailwind gray/slate/stone utilities → brand semantic tokens (light + dark) ── */
+:is(.text-gray-100, .text-gray-200, .text-gray-300) {
   color: var(--foreground-secondary);
 }
 
@@ -830,6 +833,22 @@ html {
 
 :is(.text-gray-600, .text-gray-700) {
   color: var(--text-subtle);
+}
+
+:is(.text-gray-800, .text-gray-900) {
+  color: var(--foreground);
+}
+
+:is(.text-slate-400, .text-slate-500, .text-slate-600, .text-slate-700) {
+  color: var(--text-muted);
+}
+
+:is(.text-stone-500, .text-stone-600, .text-zinc-500, .text-zinc-600) {
+  color: var(--text-muted);
+}
+
+.bg-white {
+  background-color: var(--surface-elevated);
 }
 
 :is(.bg-gray-50, .bg-gray-50\/50, .bg-gray-50\/80) {
@@ -844,7 +863,15 @@ html {
   background-color: var(--surface-elevated);
 }
 
-:is(.border-gray-100, .border-gray-200) {
+:is(.bg-slate-50, .bg-slate-100, .bg-stone-50, .bg-stone-100) {
+  background-color: var(--surface-subtle);
+}
+
+:is(.bg-slate-800, .bg-slate-800\/40, .bg-gray-800, .bg-gray-800\/40) {
+  background-color: var(--surface-muted);
+}
+
+:is(.border-gray-100, .border-gray-200, .border-gray-300, .border-slate-200) {
   border-color: var(--border-default);
 }
 
@@ -852,17 +879,51 @@ html {
   border-color: var(--border-default);
 }
 
-:is(.hover\:bg-gray-50:hover, .hover\:bg-gray-50\/50:hover) {
+:is(.hover\:bg-gray-50:hover, .hover\:bg-gray-50\/50:hover, .hover\:bg-slate-50:hover) {
   background-color: var(--surface-muted);
 }
 
-.hover\:bg-gray-100:hover {
+:is(.hover\:bg-gray-100:hover, .hover\:bg-slate-100:hover) {
   background-color: var(--surface-elevated);
 }
 
-.placeholder\:text-gray-400::placeholder,
-.placeholder\:text-gray-500::placeholder {
+:is(
+  .placeholder\:text-gray-300::placeholder,
+  .placeholder\:text-gray-400::placeholder,
+  .placeholder\:text-gray-500::placeholder,
+  .placeholder\:text-slate-400::placeholder
+) {
   color: var(--input-placeholder);
+}
+
+:is(.text-\[\#0D1B2A\], .text-\[\#0d1b2a\]) {
+  color: var(--foreground);
+}
+
+:is(.text-\[\#6B7280\], .text-\[\#6b7280\]) {
+  color: var(--text-muted);
+}
+
+:is(.bg-\[\#F0F2F5\], .bg-\[\#F7F7F8\], .bg-\[\#F0F0F0\], .bg-\[\#F5F6F8\]) {
+  background-color: var(--surface-muted);
+}
+
+:is(
+  .dark\:bg-\[\#111111\],
+  .dark\:bg-\[\#171717\],
+  .dark\:bg-\[\#222\],
+  .dark\:bg-\[\#212121\],
+  .dark\:bg-\[\#2a2a2a\],
+  .dark\:bg-\[\#2f2f2f\],
+  .dark\:bg-\[\#333\],
+  .dark\:bg-\[\#676767\],
+  .dark\:bg-\[\#1a2332\]
+) {
+  background-color: var(--chat-input);
+}
+
+:is(.border-white\/10, .dark\:border-white\/10) {
+  border-color: var(--border-default);
 }
 
 .shadow-gray-300\/30 {

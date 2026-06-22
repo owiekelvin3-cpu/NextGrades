@@ -35,7 +35,7 @@ export default function AdminModerationPage() {
   const [acting, setActing] = useState<string | null>(null);
 
   const isDark = theme === "dark";
-  const textPrimary = isDark ? "text-white" : "text-[#0D1B2A]";
+  const textPrimary = "text-foreground";
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -99,7 +99,7 @@ export default function AdminModerationPage() {
       ) : (
         <div className="space-y-4">
           {items.map((item) => (
-            <Card key={item.id} className={`p-6 ${isDark ? "bg-[#112240]" : "bg-white"}`}>
+            <Card key={item.id} className={`p-6`}>
               <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                 <div className="min-w-0 flex-1">
                   <div className="mb-2 flex flex-wrap items-center gap-2">

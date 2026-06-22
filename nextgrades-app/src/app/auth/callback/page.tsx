@@ -110,10 +110,10 @@ export default function AuthCallbackPage() {
                   <BrandLogo size="lg" linked={false} />
                 </div>
                 <div className="mx-auto mb-6 h-16 w-16 animate-spin rounded-full border-4 border-[#D4AF37] border-t-transparent" />
-                <h2 className={`mb-2 text-xl font-bold ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
+                <h2 className={`mb-2 text-xl font-bold text-foreground`}>
                   Konto wird bestätigt…
                 </h2>
-                <p className={theme === "dark" ? "text-gray-400" : "text-gray-600"}>
+                <p className="text-text-muted">
                   Gleich geht es weiter zu deinem Dashboard
                 </p>
               </>
@@ -124,10 +124,10 @@ export default function AuthCallbackPage() {
                 >
                   <span className="text-2xl text-red-500">✕</span>
                 </div>
-                <h2 className={`mb-2 text-xl font-bold ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
+                <h2 className={`mb-2 text-xl font-bold text-foreground`}>
                   Bestätigung fehlgeschlagen
                 </h2>
-                <p className={`mb-6 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>{error}</p>
+                <p className={`mb-6 text-text-muted`}>{error}</p>
                 <Button variant="gold" size="md" type="button" onClick={() => router.push("/login")} className="w-full">
                   Zum Login
                 </Button>

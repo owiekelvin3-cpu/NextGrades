@@ -58,8 +58,8 @@ function LessonCards({
 }) {
   const { theme } = useTheme();
   const { t } = useTranslation();
-  const muted = theme === "dark" ? "text-gray-400" : "text-gray-600";
-  const text = theme === "dark" ? "text-white" : "text-[#0D1B2A]";
+  const muted = "text-text-muted";
+  const text = "text-foreground";
   const dateLocale = getDateLocale(locale);
 
   const formatDate = (iso: string) =>
@@ -70,7 +70,7 @@ function LessonCards({
   return (
     <SectionGrid>
       {lessons.map((lesson) => (
-        <Card key={lesson.id} className={`p-6 ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
+        <Card key={lesson.id} className={`p-6`}>
           <Badge variant="gold" className="mb-3">
             {lesson.status}
           </Badge>
@@ -172,9 +172,9 @@ export function StudentCoursesSection() {
       {enrollments.map((e) => {
         const progress = e.status === "completed" ? 100 : e.status === "active" ? 50 : 25;
         return (
-          <Card key={e.id} className={`p-6 ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
+          <Card key={e.id} className={`p-6`}>
             <BookOpen className="w-8 h-8 text-[#D4AF37] mb-3" />
-            <h3 className={`font-bold mb-1 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
+            <h3 className={`font-bold mb-1 text-foreground`}>
               {e.subject_name ?? "—"}
             </h3>
             <p className="text-sm text-gray-500 mb-4">
@@ -276,9 +276,9 @@ export function StudentProgressSection() {
   return (
     <SectionGrid>
       {stats.map((s) => (
-        <Card key={s.label} className={`p-6 ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
+        <Card key={s.label} className={`p-6`}>
           <TrendingUp className="w-8 h-8 text-[#D4AF37] mb-3" />
-          <p className={`text-3xl font-bold ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>{s.value}</p>
+          <p className={`text-3xl font-bold text-foreground`}>{s.value}</p>
           <p className="text-gray-500">{s.label}</p>
         </Card>
       ))}
@@ -314,8 +314,8 @@ export function StudentSettingsSection() {
   if (loading) return <LoadingBlock />;
 
   return (
-    <Card className={`p-8 max-w-xl ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
-      <h3 className={`font-bold mb-6 flex items-center gap-2 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
+    <Card className={`p-8 max-w-xl`}>
+      <h3 className={`font-bold mb-6 flex items-center gap-2 text-foreground`}>
         <Settings className="w-5 h-5" /> {t("dashboardPages.student.settings.title")}
       </h3>
       <form className="space-y-4" onSubmit={handleSave}>
@@ -361,7 +361,7 @@ export function TeacherStudentsSection() {
   }
 
   return (
-    <Card className={`overflow-hidden ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
+    <Card className={`overflow-hidden`}>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead className={theme === "dark" ? "bg-[#0D1B2A]" : "bg-gray-50"}>
@@ -457,7 +457,7 @@ export function TeacherResourcesSection() {
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {resources.map((resource) => (
-            <Card key={resource.id} className={`overflow-hidden ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
+            <Card key={resource.id} className={`overflow-hidden`}>
               <div className="relative flex h-32 items-center justify-center bg-gradient-to-br from-[#D4AF37]/20 to-[#4DA3FF]/20">
                 {resource.thumbnail_url ? (
                   // eslint-disable-next-line @next/next/no-img-element
@@ -467,7 +467,7 @@ export function TeacherResourcesSection() {
                 )}
               </div>
               <div className="p-4">
-                <h3 className={`line-clamp-2 font-semibold ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
+                <h3 className={`line-clamp-2 font-semibold text-foreground`}>
                   {resource.title}
                 </h3>
                 <p className="mt-1 text-xs capitalize text-gray-500">{resource.status.replace("_", " ")}</p>
@@ -518,9 +518,9 @@ export function TeacherEarningsSection() {
   return (
     <SectionGrid>
       {items.map((s) => (
-        <Card key={s.label} className={`p-6 ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
+        <Card key={s.label} className={`p-6`}>
           <CreditCard className="w-8 h-8 text-[#D4AF37] mb-3" />
-          <p className={`text-2xl font-bold ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>{s.value}</p>
+          <p className={`text-2xl font-bold text-foreground`}>{s.value}</p>
           <p className="text-gray-500">{s.label}</p>
         </Card>
       ))}
@@ -555,12 +555,12 @@ export function AdminProfilesTable({ role }: { role: "student" | "teacher" }) {
   }
 
   return (
-    <Card className={`p-6 ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
-      <h3 className={`font-bold mb-4 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>{title}</h3>
+    <Card className={`p-6`}>
+      <h3 className={`font-bold mb-4 text-foreground`}>{title}</h3>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className={`text-left border-b ${theme === "dark" ? "border-white/10" : "border-gray-200"}`}>
+            <tr className={`text-left border-b border-border-default`}>
               <th className="py-2">{t("login.fullName")}</th>
               <th className="py-2">{t("login.iAmA")}</th>
               <th className="py-2">{t("dashboardCommon.joined", { defaultValue: "Joined" })}</th>
@@ -646,11 +646,11 @@ function AdminEnrollmentsSection() {
   }
 
   return (
-    <Card className={`p-6 ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
+    <Card className={`p-6`}>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className={`text-left border-b ${theme === "dark" ? "border-white/10" : "border-gray-200"}`}>
+            <tr className={`text-left border-b border-border-default`}>
               <th className="py-2">{t("login.fullName")}</th>
               <th className="py-2">{t("resources.filters.subject")}</th>
               <th className="py-2">{t("dashboardCommon.status", { defaultValue: "Status" })}</th>
@@ -706,8 +706,8 @@ export function AdminAnalyticsSection() {
   return (
     <SectionGrid>
       {items.map((s) => (
-        <Card key={s.label} className={`p-6 ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
-          <p className={`text-3xl font-bold ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>{s.value}</p>
+        <Card key={s.label} className={`p-6`}>
+          <p className={`text-3xl font-bold text-foreground`}>{s.value}</p>
           <p className="text-gray-500">{s.label}</p>
         </Card>
       ))}

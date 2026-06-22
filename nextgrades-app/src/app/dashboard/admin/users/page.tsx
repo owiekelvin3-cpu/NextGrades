@@ -174,10 +174,10 @@ export default function AdminUsersPage() {
           {/* Header */}
           <div className="mb-8 hidden flex-col items-start justify-between gap-4 md:flex md:flex-row md:items-center">
             <div>
-              <h1 className={`text-2xl md:text-3xl font-bold ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
+              <h1 className={`text-2xl md:text-3xl font-bold text-foreground`}>
                 {t("adminUsers.title")}
               </h1>
-              <p className={`mt-1 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+              <p className={`mt-1 text-text-muted`}>
                 {t("adminUsers.description")}
               </p>
             </div>
@@ -194,11 +194,11 @@ export default function AdminUsersPage() {
           </div>
 
           {/* Filters */}
-          <Card className={`p-4 mb-6 ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
+          <Card className={`p-4 mb-6`}>
             <div className="flex flex-col md:flex-row gap-4">
               {/* Search */}
               <div className="flex-1 relative">
-                <Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`} />
+                <Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-text-muted`} />
                 <input
                   type="text"
                   placeholder={t("adminUsers.searchPlaceholder")}
@@ -229,7 +229,7 @@ export default function AdminUsersPage() {
                   <option value="teacher">{t("adminUsers.roleTeacher")}</option>
                   <option value="student">{t("adminUsers.roleStudent")}</option>
                 </select>
-                <ChevronDown className={`absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`} />
+                <ChevronDown className={`absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none text-text-muted`} />
               </div>
 
               {/* Status Filter */}
@@ -247,7 +247,7 @@ export default function AdminUsersPage() {
                   <option value="active">{t("adminUsers.statusActive")}</option>
                   <option value="inactive">{t("adminUsers.statusSuspended")}</option>
                 </select>
-                <ChevronDown className={`absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`} />
+                <ChevronDown className={`absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none text-text-muted`} />
               </div>
 
               {/* Verification Filter */}
@@ -265,7 +265,7 @@ export default function AdminUsersPage() {
                   <option value="verified">{t("adminUsers.verified")}</option>
                   <option value="unverified">{t("adminUsers.unverified")}</option>
                 </select>
-                <ChevronDown className={`absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`} />
+                <ChevronDown className={`absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none text-text-muted`} />
               </div>
 
               {/* Sort */}
@@ -284,36 +284,36 @@ export default function AdminUsersPage() {
                   <option value="full_name">{t("adminUsers.sortName")}</option>
                   <option value="email">{t("login.email")}</option>
                 </select>
-                <ChevronDown className={`absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`} />
+                <ChevronDown className={`absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none text-text-muted`} />
               </div>
             </div>
           </Card>
 
           {/* Users Table */}
-          <Card className={`overflow-hidden ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
+          <Card className={`overflow-hidden`}>
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className={`border-b ${theme === "dark" ? "border-white/10" : "border-gray-200"}`}>
-                    <th className={`text-left p-4 text-sm font-semibold ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                  <tr className={`border-b border-border-default`}>
+                    <th className={`text-left p-4 text-sm font-semibold text-text-muted`}>
                       User
                     </th>
-                    <th className={`text-left p-4 text-sm font-semibold ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                    <th className={`text-left p-4 text-sm font-semibold text-text-muted`}>
                       Role
                     </th>
-                    <th className={`text-left p-4 text-sm font-semibold ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                    <th className={`text-left p-4 text-sm font-semibold text-text-muted`}>
                       Status
                     </th>
-                    <th className={`text-left p-4 text-sm font-semibold ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                    <th className={`text-left p-4 text-sm font-semibold text-text-muted`}>
                       Verified
                     </th>
-                    <th className={`text-left p-4 text-sm font-semibold ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                    <th className={`text-left p-4 text-sm font-semibold text-text-muted`}>
                       Joined
                     </th>
-                    <th className={`text-left p-4 text-sm font-semibold ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                    <th className={`text-left p-4 text-sm font-semibold text-text-muted`}>
                       Last Login
                     </th>
-                    <th className={`text-right p-4 text-sm font-semibold ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                    <th className={`text-right p-4 text-sm font-semibold text-text-muted`}>
                       Actions
                     </th>
                   </tr>
@@ -344,7 +344,7 @@ export default function AdminUsersPage() {
                     ))
                   ) : users.length === 0 ? (
                     <tr>
-                      <td colSpan={7} className={`p-12 text-center ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>
+                      <td colSpan={7} className={`p-12 text-center text-text-muted`}>
                         {t("adminUsers.noUsers")}
                       </td>
                     </tr>
@@ -367,14 +367,14 @@ export default function AdminUsersPage() {
                                   className="w-10 h-10 rounded-full object-cover"
                                 />
                               ) : (
-                                <User className={`w-5 h-5 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`} />
+                                <User className={`w-5 h-5 text-text-muted`} />
                               )}
                             </div>
                             <div>
-                              <p className={`font-medium ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
+                              <p className={`font-medium text-foreground`}>
                                 {user.full_name || "Unknown"}
                               </p>
-                              <p className={`text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>
+                              <p className={`text-sm text-text-muted`}>
                                 {user.email || user.auth_user?.email}
                                 {user.username ? ` · @${user.username}` : ""}
                               </p>
@@ -396,10 +396,10 @@ export default function AdminUsersPage() {
                             {user.email_verified ? t("adminUsers.verified") : t("adminUsers.unverified")}
                           </Badge>
                         </td>
-                        <td className={`p-4 text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                        <td className={`p-4 text-sm text-text-muted`}>
                           {formatDate(user.created_at)}
                         </td>
-                        <td className={`p-4 text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                        <td className={`p-4 text-sm text-text-muted`}>
                           {formatDate(user.last_login_at || user.auth_user?.last_sign_in_at || null)}
                         </td>
                         <td className="p-4">
@@ -447,7 +447,7 @@ export default function AdminUsersPage() {
             {/* Pagination */}
             {totalPages > 1 && (
               <div className="flex items-center justify-between p-4 border-t border-gray-200">
-                <p className={`text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                <p className={`text-sm text-text-muted`}>
                   Page {page} of {totalPages}
                 </p>
                 <div className="flex gap-2">

@@ -409,7 +409,7 @@ export default function LoginPage() {
     <AuthGuestGuard>
       <Suspense
         fallback={
-          <div className="flex min-h-screen items-center justify-center bg-[#F0F2F5] text-[#6B7280] dark:bg-[#0D1B2A] dark:text-gray-400">
+          <div className="flex min-h-screen items-center justify-center bg-background text-text-muted">
             …
           </div>
         }

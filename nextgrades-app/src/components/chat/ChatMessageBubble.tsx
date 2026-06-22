@@ -46,7 +46,7 @@ export function ChatMessageBubble({
     <div
       className={cn(
         "group w-full border-b border-transparent",
-        isUser ? "bg-transparent" : "bg-white dark:bg-[#212121]"
+        isUser ? "bg-transparent" : "bg-surface-muted"
       )}
     >
       <div className="mx-auto flex max-w-3xl gap-4 px-4 py-6 md:px-6">
@@ -54,8 +54,8 @@ export function ChatMessageBubble({
           className={cn(
             "flex h-8 w-8 shrink-0 items-center justify-center rounded-sm",
             isUser
-              ? "bg-[#D4AF37] text-[#0D1B2A]"
-              : "bg-[#0D1B2A] text-white dark:bg-[#676767]"
+              ? "bg-[var(--brand-gold)] text-[var(--brand-navy)]"
+              : "chat-bubble-user"
           )}
         >
           {isUser ? <User className="h-4 w-4" /> : <Bot className="h-4 w-4" />}
@@ -67,21 +67,21 @@ export function ChatMessageBubble({
           )}
 
           {showingTranslation && (
-            <p className="mb-2 text-[11px] font-medium text-gray-400">
+            <p className="mb-2 text-[11px] font-medium text-text-muted">
               {translation?.language === "de" ? "Deutsch" : "English"} ·{" "}
               <button
                 type="button"
                 onClick={() => onTranslate?.(translateTarget)}
-                className="underline hover:text-gray-600 dark:hover:text-gray-200"
+                className="theme-link underline"
               >
                 {responseLanguage === "de" ? "Original anzeigen" : "Show original"}
               </button>
             </p>
           )}
 
-          <div className="text-[15px] leading-7 text-gray-800 dark:text-gray-100">
+          <div className="text-[15px] leading-7 text-foreground">
             {translation?.loading ? (
-              <div className="flex items-center gap-2 text-gray-400">
+              <div className="flex items-center gap-2 text-text-muted">
                 <Loader2 className="h-4 w-4 animate-spin" />
                 <span className="text-sm">
                   {responseLanguage === "de" ? "Übersetze…" : "Translating…"}
@@ -97,7 +97,7 @@ export function ChatMessageBubble({
                   <TypingIndicator />
                 ) : null}
                 {streaming && displayContent && (
-                  <span className="ml-0.5 inline-block h-5 w-0.5 animate-pulse bg-gray-400" />
+                  <span className="ml-0.5 inline-block h-5 w-0.5 animate-pulse bg-text-muted" />
                 )}
               </>
             ) : null}

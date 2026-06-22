@@ -73,7 +73,7 @@ function AdminAccessContent() {
   };
 
   const panel = theme === "dark" ? "bg-[#112240] border-white/10 text-white" : "bg-white border-gray-100 text-[#0D1B2A]";
-  const muted = theme === "dark" ? "text-gray-400" : "text-gray-600";
+  const muted = "text-text-muted";
 
   return (
     <div className={`min-h-screen flex flex-col ${theme === "dark" ? "bg-[#0D1B2A]" : "bg-[#FAFAFA]"}`}>

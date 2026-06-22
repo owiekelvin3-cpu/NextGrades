@@ -39,7 +39,7 @@ export function StatGrid({ stats, variant = "elevated" }: StatGridProps) {
             <p
               className={cn(
                 "text-3xl font-bold tracking-tight md:text-4xl",
-                isDark ? "text-white" : "text-[#0D1B2A]"
+                "text-foreground"
               )}
             >
               {stat.number}

@@ -43,7 +43,7 @@ export function StudentQuizHub() {
   } | null>(null);
 
   const isDark = theme === "dark";
-  const textPrimary = isDark ? "text-white" : "text-[#0D1B2A]";
+  const textPrimary = "text-foreground";
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -125,7 +125,7 @@ export function StudentQuizHub() {
         ) : (
           <div className="grid md:grid-cols-2 gap-4">
             {quizzes.map((q) => (
-              <Card key={q.id} className={`p-6 ${isDark ? "bg-[#112240]" : "bg-white"}`}>
+              <Card key={q.id} className={`p-6`}>
                 <div className="flex justify-between items-start mb-3">
                   <h3 className={`font-bold ${textPrimary}`}>{q.title}</h3>
                   <Badge variant="gold">{q.difficulty}</Badge>
@@ -151,7 +151,7 @@ export function StudentQuizHub() {
       ) : (
         <div className="space-y-3">
           {attempts.map((a) => (
-            <Card key={a.id} className={`p-4 flex flex-wrap justify-between items-center gap-3 ${isDark ? "bg-[#112240]" : "bg-white"}`}>
+            <Card key={a.id} className={`p-4 flex flex-wrap justify-between items-center gap-3`}>
               <div>
                 <p className={`font-semibold ${textPrimary}`}>
                   {a.generated_quizzes?.title ?? "Quiz"}

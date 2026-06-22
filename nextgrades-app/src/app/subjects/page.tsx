@@ -259,7 +259,7 @@ export default function SubjectsPage() {
                     <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-[#D4AF37]/10 sm:mb-5 sm:h-16 sm:w-16 sm:rounded-2xl">
                       <Icon className="h-5 w-5 text-[#D4AF37] sm:h-8 sm:w-8" />
                     </div>
-                    <h3 className={cn("mb-1 text-[11px] font-bold leading-tight sm:mb-2 sm:text-base", isDark ? "text-white" : "text-[#0D1B2A]")}>
+                    <h3 className={cn("mb-1 text-[11px] font-bold leading-tight sm:mb-2 sm:text-base", "text-foreground")}>
                       {item.title}
                     </h3>
                     <p className={cn("hidden text-xs leading-relaxed sm:block sm:text-sm", isDark ? "text-text-muted" : "text-foreground-secondary")}>
@@ -322,7 +322,7 @@ export default function SubjectsPage() {
               </button>
               <h3
                 id="browse-subject-title"
-                className={cn("mb-2 pr-10 text-xl font-bold sm:text-2xl", isDark ? "text-white" : "text-[#0D1B2A]")}
+                className={cn("mb-2 pr-10 text-xl font-bold sm:text-2xl", "text-foreground")}
               >
                 {browseSubject.title}
               </h3>
@@ -331,7 +331,7 @@ export default function SubjectsPage() {
               </p>
               <div className="space-y-4">
                 <div>
-                  <label className={cn("mb-2 block text-sm font-medium", isDark ? "text-white" : "text-[#0D1B2A]")}>
+                  <label className={cn("mb-2 block text-sm font-medium", "text-foreground")}>
                     {t("subjectsPage.selectGrade", { defaultValue: "Grade" })}
                   </label>
                   <select value={browseGrade} onChange={(e) => setBrowseGrade(e.target.value)} className={inputCls}>
@@ -342,7 +342,7 @@ export default function SubjectsPage() {
                   </select>
                 </div>
                 <div>
-                  <label className={cn("mb-2 block text-sm font-medium", isDark ? "text-white" : "text-[#0D1B2A]")}>
+                  <label className={cn("mb-2 block text-sm font-medium", "text-foreground")}>
                     {t("subjectsPage.selectSemester", { defaultValue: "Semester" })}
                   </label>
                   <select value={browseSemester} onChange={(e) => setBrowseSemester(e.target.value)} className={inputCls}>

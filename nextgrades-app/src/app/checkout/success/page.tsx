@@ -40,14 +40,14 @@ function SuccessContent() {
     <div className={`min-h-screen flex flex-col ${theme === "dark" ? "bg-[#0D1B2A]" : "bg-[#FAFAFA]"}`}>
       <Navbar />
       <main className="flex flex-1 items-center justify-center px-4 pb-16 pt-site-nav">
-        <Card className={`p-10 max-w-md w-full text-center ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
+        <Card className={`p-10 max-w-md w-full text-center`}>
           <div className="w-20 h-20 rounded-full bg-[#22C55E]/20 flex items-center justify-center mx-auto mb-6">
             <CheckCircle2 className="w-10 h-10 text-[#22C55E]" />
           </div>
-          <h1 className={`text-2xl font-bold mb-3 ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
+          <h1 className={`text-2xl font-bold mb-3 text-foreground`}>
             {t("checkout.successTitle", { defaultValue: "Welcome to NextGrades!" })}
           </h1>
-          <p className={`mb-2 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+          <p className={`mb-2 text-text-muted`}>
             {t("checkout.successDesc", {
               defaultValue: "Your plan is now active:",
             })}{" "}

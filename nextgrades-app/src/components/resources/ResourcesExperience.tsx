@@ -187,8 +187,8 @@ export function ResourcesExperience() {
     }
   };
 
-  const text = theme === "dark" ? "text-white" : "text-[#0D1B2A]";
-  const muted = theme === "dark" ? "text-gray-400" : "text-gray-600";
+  const text = "text-foreground";
+  const muted = "text-text-muted";
   const panel = theme === "dark" ? "bg-[#112240] border-white/10" : "bg-white border-gray-200";
   const selectCls = `w-full rounded-lg border px-3 py-2 text-sm ${theme === "dark" ? "bg-[#0D1B2A] border-white/15 text-white" : "bg-white border-gray-200"}`;
 

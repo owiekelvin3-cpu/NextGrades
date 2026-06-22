@@ -48,7 +48,7 @@ function CircularProgress({
         fill="none"
         stroke="currentColor"
         strokeWidth={stroke}
-        className="text-gray-100 dark:text-white/10"
+        className="text-[var(--brand-gold)]/25"
       />
       <circle
         cx={size / 2}

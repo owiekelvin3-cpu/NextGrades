@@ -160,8 +160,8 @@ export function AIGeneratorContent() {
     <div className="grid gap-8 lg:grid-cols-3">
       <div className="space-y-8 lg:col-span-2">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-          <Card className={`p-8 ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
-            <h2 className={`mb-6 text-xl font-bold ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
+          <Card className={`p-8`}>
+            <h2 className={`mb-6 text-xl font-bold text-foreground`}>
               {t("aiGeneratorPage.step1")}
             </h2>
             <input
@@ -185,10 +185,10 @@ export function AIGeneratorContent() {
               }`}
             >
               <UploadCloud className="mx-auto mb-4 h-8 w-8 text-[#D4AF37]" />
-              <p className={`mb-1 font-semibold ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
+              <p className={`mb-1 font-semibold text-foreground`}>
                 {t("aiGeneratorPage.uploadTitle")}
               </p>
-              <p className={`text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>
+              <p className={`text-sm text-text-muted`}>
                 {t("aiGeneratorPage.uploadHint")}
               </p>
               <Button
@@ -253,8 +253,8 @@ export function AIGeneratorContent() {
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-          <Card className={`p-8 ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
-            <h2 className={`mb-6 text-xl font-bold ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
+          <Card className={`p-8`}>
+            <h2 className={`mb-6 text-xl font-bold text-foreground`}>
               {t("aiGeneratorPage.step2")}
             </h2>
             <div className="grid gap-6 md:grid-cols-2">
@@ -337,8 +337,8 @@ export function AIGeneratorContent() {
         </motion.div>
 
         {generatedQuiz && (
-          <Card className={`p-8 ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
-            <h3 className={`mb-4 text-lg font-bold ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
+          <Card className={`p-8`}>
+            <h3 className={`mb-4 text-lg font-bold text-foreground`}>
               {generatedQuiz.title}
             </h3>
             <ul className="space-y-3">
@@ -357,8 +357,8 @@ export function AIGeneratorContent() {
       </div>
 
       <div className="space-y-8">
-        <Card className={`p-6 ${theme === "dark" ? "bg-[#112240]" : "bg-white"}`}>
-          <h3 className={`mb-4 font-semibold ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
+        <Card className={`p-6`}>
+          <h3 className={`mb-4 font-semibold text-foreground`}>
             {t("aiGeneratorPage.quickAccess")}
           </h3>
           <div className="space-y-3">
@@ -382,10 +382,10 @@ export function AIGeneratorContent() {
         </Card>
 
         <Card className={`p-6 ${theme === "dark" ? "bg-[#112240] border border-[#D4AF37]/30" : "border border-blue-200 bg-blue-50"}`}>
-          <h3 className={`mb-3 font-semibold ${theme === "dark" ? "text-white" : "text-[#0D1B2A]"}`}>
+          <h3 className={`mb-3 font-semibold text-foreground`}>
             {t("aiGeneratorPage.tipsTitle")}
           </h3>
-          <ul className={`space-y-2 text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+          <ul className={`space-y-2 text-sm text-text-muted`}>
             {[t("aiGeneratorPage.tip1"), t("aiGeneratorPage.tip2"), t("aiGeneratorPage.tip3")].map((tip) => (
               <li key={tip} className="flex items-start gap-2">
                 <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#D4AF37]" />

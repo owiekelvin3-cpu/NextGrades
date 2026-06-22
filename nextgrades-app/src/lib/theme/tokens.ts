@@ -82,6 +82,16 @@ export const theme = {
 
   /** Sidebar (dashboard) */
   sidebar: "theme-sidebar",
+
+  /** Links */
+  link: "theme-link",
+  linkMuted: "theme-link-muted",
+
+  /** States */
+  disabled: "theme-disabled",
+
+  /** Dashboard card — use on Card or div */
+  dashboardCard: "p-6",
 } as const;
 
 export type ThemeTokenKey = keyof typeof theme;

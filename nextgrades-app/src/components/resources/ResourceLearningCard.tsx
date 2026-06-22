@@ -79,8 +79,8 @@ export function ResourceLearningCard({
   const access = resourceAccess(resource);
   const locked = resource.locked ?? (access === "premium" && resource.canAccess === false);
   const isVideo = isVideoResource(resource);
-  const text = theme === "dark" ? "text-white" : "text-[#0D1B2A]";
-  const muted = theme === "dark" ? "text-gray-400" : "text-gray-600";
+  const text = "text-foreground";
+  const muted = "text-text-muted";
   const panel = theme === "dark" ? "bg-[#112240] border-white/10" : "bg-white border-gray-200";
   const thumb = getResourceThumbnail(resource);
   const summary = resource.short_description || resource.description || "—";
