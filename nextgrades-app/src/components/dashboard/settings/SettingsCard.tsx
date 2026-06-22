@@ -98,7 +98,7 @@ export function SettingsToggle({
     <div
       className={cn(
         "flex min-h-[56px] touch-manipulation items-center justify-between gap-4 py-3.5",
-        variant === "card" && "rounded-xl border border-border-default bg-surface-subtle px-4 dark:bg-[#0D1B2A]",
+        variant === "card" && "rounded-xl border border-border-default bg-surface-subtle px-4",
         variant === "row" && "border-b border-border-default px-4 last:border-b-0"
       )}
     >
@@ -121,7 +121,7 @@ export function SettingsToggleGroup({ title, children }: { title?: string; child
       {title && (
         <p className="mb-2 px-1 text-xs font-semibold uppercase tracking-wide text-text-muted">{title}</p>
       )}
-      <div className="overflow-hidden rounded-xl border border-border-default bg-surface-subtle dark:bg-[#0D1B2A]">
+      <div className="overflow-hidden rounded-xl border border-border-default bg-surface-subtle">
         {children}
       </div>
     </div>

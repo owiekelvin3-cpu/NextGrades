@@ -150,9 +150,7 @@ export function AIGeneratorContent() {
   };
 
   const selectClass =
-    theme === "dark"
-      ? "w-full px-4 py-3 rounded-xl border border-white/15 bg-[#0D1B2A] text-white"
-      : "w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-[#0D1B2A]";
+    "w-full rounded-xl border border-input-border bg-input-background px-4 py-3 text-input-foreground";
 
   const readyMaterials = materials.filter((m) => m.extraction_status === "ready");
 

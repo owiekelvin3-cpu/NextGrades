@@ -14,12 +14,12 @@ import {
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { getDateLocale } from "@/lib/i18n/locales";
-import { useTheme } from "@/context/ThemeContext";
 import type { TeacherOverviewData } from "@/lib/dashboard/teacher-overview";
 import {
   TEACHER_AVATAR_COLORS,
   formatTeacherEuro,
   studentInitials,
+  tt,
 } from "./teacher-ui";
 import { ZoomMeetingButton } from "@/components/zoom/ZoomMeetingButton";
 import { ZoomSetupStrip } from "@/components/zoom/ZoomSetupStrip";
@@ -113,7 +113,7 @@ function StatTile({
     <Link
       href={href}
       className={cn(
-        "relative flex min-h-[118px] flex-col justify-between overflow-hidden rounded-2xl p-4 text-white shadow-md transition active:scale-[0.98]",
+        "relative flex min-h-[118px] flex-col justify-between overflow-hidden rounded-2xl p-4 text-white shadow-md transition active:scale-[0.98] touch-manipulation",
         gradient
       )}
     >
@@ -142,8 +142,6 @@ type Props = {
 
 export function TeacherMobileDashboard({ data }: Props) {
   const { t, i18n } = useTranslation();
-  const { theme } = useTheme();
-  const isDark = theme === "dark";
   const locale = getDateLocale(i18n.language);
 
   const monthLabel = new Date().toLocaleDateString(locale, { month: "long", year: "numeric" });
@@ -180,14 +178,8 @@ export function TeacherMobileDashboard({ data }: Props) {
   ];
 
   return (
-    <div
-      className={cn(
-        "md:hidden",
-        isDark ? "bg-[#0a1520]" : "bg-[#F5F6F8]"
-      )}
-    >
-      {/* Featured — today's teaching (overlaps header) */}
-      <div className="-mt-6 px-5 pb-2">
+    <div className="bg-surface-dashboard md:hidden">
+      <div className={tt.mobileFeaturedOverlap}>
         <SectionHeader
           title={t("teacherDashboard.mobileTodayOverview", { defaultValue: "Today's teaching" })}
           href="/dashboard/teacher/schedule"
@@ -196,10 +188,7 @@ export function TeacherMobileDashboard({ data }: Props) {
         <Link
           href="/dashboard/teacher/schedule"
           className={cn(
-            "flex items-center gap-4 rounded-3xl border p-4 shadow-[0_8px_32px_rgba(13,27,42,0.08)] transition active:scale-[0.99]",
-            isDark
-              ? "border-white/10 bg-[#112240]"
-              : "border-gray-100 bg-white"
+            "flex items-center gap-4 rounded-3xl border border-border-default bg-surface-elevated p-4 shadow-[var(--card-shadow)] transition active:scale-[0.99] touch-manipulation"
           )}
         >
           {nextLesson ? (
@@ -235,15 +224,14 @@ export function TeacherMobileDashboard({ data }: Props) {
           )}
           <div className="relative flex shrink-0 flex-col items-center">
             <CircularProgress value={todayProgress} />
-            <span className="absolute inset-0 flex items-center justify-center text-xs font-bold text-[#0D1B2A] dark:text-[#D4AF37]">
+            <span className="absolute inset-0 flex items-center justify-center text-xs font-bold text-foreground">
               {todayProgress}%
             </span>
           </div>
         </Link>
       </div>
 
-      <div className="space-y-6 px-5 pb-6 pt-4">
-        {/* 2×2 teaching stats */}
+      <div className={tt.mobileSection}>
         <section>
           <SectionHeader
             title={t("teacherDashboard.mobileQuickStats", { defaultValue: "Teaching status" })}
@@ -282,7 +270,6 @@ export function TeacherMobileDashboard({ data }: Props) {
           </div>
         </section>
 
-        {/* Quick actions row */}
         <section>
           <SectionHeader
             title={t("teacherDashboard.quickLinksTitle", { defaultValue: "Quick access" })}
@@ -293,7 +280,7 @@ export function TeacherMobileDashboard({ data }: Props) {
                 key={href}
                 href={href}
                 className={cn(
-                  "relative flex min-h-[88px] flex-col justify-between overflow-hidden rounded-2xl p-3.5 text-white shadow-sm active:scale-[0.98]",
+                  "relative flex min-h-[88px] flex-col justify-between overflow-hidden rounded-2xl p-3.5 text-white shadow-sm active:scale-[0.98] touch-manipulation",
                   "bg-gradient-to-br",
                   gradient
                 )}
@@ -310,7 +297,6 @@ export function TeacherMobileDashboard({ data }: Props) {
           <ZoomSetupStrip returnPath="/dashboard/teacher" />
         </Suspense>
 
-        {/* Upcoming lessons — horizontal scroll */}
         <section>
           <SectionHeader
             title={t("teacherDashboard.upcomingLessons")}
@@ -318,24 +304,16 @@ export function TeacherMobileDashboard({ data }: Props) {
             linkLabel={t("teacherDashboard.allAppointments")}
           />
           {data.upcomingLessons.length === 0 ? (
-            <div
-              className={cn(
-                "rounded-2xl border p-6 text-center text-sm text-text-muted",
-                isDark ? "border-white/10 bg-[#112240]/50" : "border-gray-100 bg-white"
-              )}
-            >
-              {t("teacherDashboard.noAppointments")}
-            </div>
+            <div className={tt.empty}>{t("teacherDashboard.noAppointments")}</div>
           ) : (
-            <div className="-mx-5 flex gap-3 overflow-x-auto px-5 pb-1 scrollbar-none snap-x snap-mandatory">
+            <div className="-mx-5 flex gap-3 overflow-x-auto px-5 pb-1 no-scrollbar snap-x snap-mandatory">
               {data.upcomingLessons.slice(0, 6).map((lesson, i) => {
                 const start = new Date(lesson.start_time);
                 return (
                   <article
                     key={lesson.id}
                     className={cn(
-                      "w-[72vw] max-w-[280px] shrink-0 snap-start overflow-hidden rounded-2xl border shadow-sm",
-                      isDark ? "border-white/10 bg-[#112240]" : "border-gray-100 bg-white"
+                      "w-[72vw] max-w-[280px] shrink-0 snap-start overflow-hidden rounded-2xl border border-border-default bg-surface-elevated shadow-sm"
                     )}
                   >
                     <div
@@ -375,7 +353,6 @@ export function TeacherMobileDashboard({ data }: Props) {
           )}
         </section>
 
-        {/* Students preview */}
         <section>
           <SectionHeader
             title={t("teacherDashboard.studentList")}
@@ -383,26 +360,14 @@ export function TeacherMobileDashboard({ data }: Props) {
             linkLabel={t("teacherDashboard.allStudents")}
           />
           {data.students.length === 0 ? (
-            <div
-              className={cn(
-                "rounded-2xl border p-6 text-center text-sm text-text-muted",
-                isDark ? "border-white/10 bg-[#112240]/50" : "border-gray-100 bg-white"
-              )}
-            >
-              {t("teacherDashboard.noStudents")}
-            </div>
+            <div className={tt.empty}>{t("teacherDashboard.noStudents")}</div>
           ) : (
-            <ul
-              className={cn(
-                "divide-y overflow-hidden rounded-2xl border",
-                isDark ? "border-white/10 bg-[#112240]" : "border-gray-100 bg-white"
-              )}
-            >
+            <ul className={cn("divide-y divide-border-default overflow-hidden rounded-2xl border border-border-default bg-surface-elevated")}>
               {data.students.slice(0, 4).map((student, i) => (
                 <li key={student.id}>
                   <Link
-                    href={`/dashboard/teacher/students`}
-                    className="flex items-center gap-3 px-4 py-3.5 transition active:bg-black/5 dark:active:bg-white/5"
+                    href="/dashboard/teacher/students"
+                    className="flex items-center gap-3 px-4 py-3.5 transition active:bg-[var(--table-row-hover)]"
                   >
                     <div
                       className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white"

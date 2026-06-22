@@ -84,13 +84,13 @@ export function TeacherSidebarNav({ unreadNotifications = 0, onNavigate }: Props
               "relative flex items-center gap-3 rounded-xl px-3 py-2 text-[13px] transition-all",
               active
                 ? "border border-[#D4AF37]/50 bg-[#D4AF37]/10 font-medium text-white"
-                : "border border-transparent text-gray-400 hover:bg-white/[0.04] hover:text-gray-200"
+                : "border border-transparent text-text-muted hover:bg-white/[0.04] hover:text-gray-200"
             )}
           >
-            <item.icon className={cn("h-[18px] w-[18px] shrink-0", active ? "text-[#D4AF37]" : "text-gray-500")} />
+            <item.icon className={cn("h-[18px] w-[18px] shrink-0", active ? "text-[#D4AF37]" : "text-text-muted")} />
             <span className="flex-1">{t(item.labelKey)}</span>
             {showBadge && (
-              <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-[#D4AF37] px-1.5 text-[10px] font-bold text-[#0D1B2A]">
+              <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-[#D4AF37] px-1.5 text-[10px] font-bold text-foreground">
                 {unreadNotifications > 9 ? "9+" : unreadNotifications}
               </span>
             )}

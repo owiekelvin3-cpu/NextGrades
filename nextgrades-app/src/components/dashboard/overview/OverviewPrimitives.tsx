@@ -82,7 +82,7 @@ export function OverviewStatCard({
   value,
   href,
   icon: Icon,
-  iconClassName = "text-[#D4AF37] bg-[#D4AF37]/12 dark:bg-[#D4AF37]/15",
+  iconClassName = "text-[var(--brand-gold)] bg-[var(--brand-gold-muted)]",
   footer,
   className,
 }: OverviewStatCardProps) {
@@ -92,7 +92,7 @@ export function OverviewStatCard({
         <p className="text-xs font-semibold uppercase tracking-wider text-text-muted">{label}</p>
         <span
           className={cn(
-            "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ring-1 ring-inset ring-black/5 dark:ring-white/10",
+            "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ring-1 ring-inset ring-border-default",
             iconClassName
           )}
         >
@@ -144,7 +144,7 @@ export function OverviewPanel({
       <div className="flex items-center justify-between gap-3 border-b border-border-default px-5 py-3.5">
         <div className="flex min-w-0 items-center gap-2.5">
           {Icon && (
-            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-surface-subtle text-text-muted dark:bg-white/[0.06]">
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-surface-subtle text-text-muted">
               <Icon className="h-4 w-4" />
             </span>
           )}
@@ -204,7 +204,7 @@ export function OverviewEmptyState({
 }) {
   return (
     <div className="flex flex-col items-center px-6 py-14 text-center">
-      <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-surface-subtle ring-1 ring-border-default dark:bg-white/[0.05]">
+      <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-surface-subtle ring-1 ring-border-default">
         <Icon className="h-7 w-7 text-text-muted/50" />
       </div>
       <p className="text-sm font-semibold text-foreground">{title}</p>

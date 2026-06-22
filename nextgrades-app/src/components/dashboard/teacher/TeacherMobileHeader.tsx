@@ -17,7 +17,7 @@ function getFirstName(name: string) {
   return name.trim().split(/\s+/)[0] || name;
 }
 
-/** Mockup-style navy header — welcome, search, menu. */
+/** Mobile teacher header — theme-aware (light surface / dark navy). */
 export function TeacherMobileHeader({ displayName }: Props) {
   const { t } = useTranslation();
   const { theme } = useTheme();
@@ -29,38 +29,59 @@ export function TeacherMobileHeader({ displayName }: Props) {
     <>
       <header
         className={cn(
-          "relative shrink-0 overflow-hidden pb-8 md:hidden",
-          isDark ? "bg-[#0D1B2A]" : "bg-[#0D1B2A]"
+          "relative shrink-0 overflow-hidden border-b pb-6 md:hidden",
+          isDark
+            ? "border-white/10 bg-[var(--brand-navy)]"
+            : "border-border-default bg-surface-elevated"
         )}
         style={{ paddingTop: "max(0.75rem, env(safe-area-inset-top))" }}
       >
-        <div
-          className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-[#D4AF37]/15"
-          aria-hidden
-        />
-        <div
-          className="pointer-events-none absolute -left-6 bottom-0 h-28 w-28 rounded-full bg-[#D4AF37]/8 blur-2xl"
-          aria-hidden
-        />
+        {isDark && (
+          <>
+            <div
+              className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-[#D4AF37]/15"
+              aria-hidden
+            />
+            <div
+              className="pointer-events-none absolute -left-6 bottom-0 h-28 w-28 rounded-full bg-[#D4AF37]/8 blur-2xl"
+              aria-hidden
+            />
+          </>
+        )}
 
         <div className="relative z-10 px-5 pt-2">
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0 flex-1">
-              <p className="text-sm font-medium text-white/70">
+              <p
+                className={cn(
+                  "text-sm font-medium",
+                  isDark ? "text-white/70" : "text-text-muted"
+                )}
+              >
                 {t("teacherDashboard.welcome", { defaultValue: "Welcome back! 👋" })}
               </p>
-              <h1 className="mt-0.5 truncate text-xl font-bold tracking-tight text-white sm:text-2xl">
+              <h1
+                className={cn(
+                  "mt-0.5 truncate text-xl font-bold tracking-tight sm:text-2xl",
+                  isDark ? "text-white" : "text-foreground"
+                )}
+              >
                 {firstName}
               </h1>
             </div>
             <div className="flex shrink-0 items-center gap-1">
-              <NotificationBell variant="light" />
+              <NotificationBell variant={isDark ? "light" : "dark"} />
               <button
                 type="button"
                 aria-label={t("mobileNav.menu", { defaultValue: "Menu" })}
                 aria-expanded={menuOpen}
                 onClick={() => setMenuOpen(true)}
-                className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/10 text-white transition active:scale-95"
+                className={cn(
+                  "flex h-11 w-11 items-center justify-center rounded-xl transition active:scale-95",
+                  isDark
+                    ? "bg-white/10 text-white"
+                    : "border border-border-default bg-surface-subtle text-foreground"
+                )}
               >
                 <Menu className="h-5 w-5" />
               </button>
@@ -69,10 +90,15 @@ export function TeacherMobileHeader({ displayName }: Props) {
 
           <Link
             href="/dashboard/teacher/students"
-            className="mt-5 flex items-center gap-3 rounded-2xl bg-white px-4 py-3.5 shadow-lg shadow-black/10 transition active:scale-[0.99] dark:bg-[#112240] dark:shadow-black/30"
+            className={cn(
+              "mt-5 flex items-center gap-3 rounded-2xl border px-4 py-3.5 shadow-sm transition active:scale-[0.99]",
+              isDark
+                ? "border-white/10 bg-[var(--surface-elevated)] shadow-black/20"
+                : "border-border-default bg-surface-subtle"
+            )}
           >
-            <Search className="h-5 w-5 shrink-0 text-[#D4AF37]" />
-            <span className={cn("text-sm", isDark ? "text-gray-400" : "text-gray-500")}>
+            <Search className="h-5 w-5 shrink-0 text-[var(--brand-gold)]" />
+            <span className="text-sm text-text-muted">
               {t("teacherDashboard.searchStudents", { defaultValue: "Search students…" })}
             </span>
           </Link>

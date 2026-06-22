@@ -359,9 +359,9 @@ export function StudentAppointmentsExperience() {
             </h3>
             <div className="grid gap-4 sm:grid-cols-3">
               {[
-                { icon: Video, color: "bg-blue-50 text-blue-500 dark:bg-blue-500/15 dark:text-blue-400", title: t("studentDashboard.stepStart", { defaultValue: "Start appointment" }) },
-                { icon: Clock, color: "bg-orange-50 text-orange-500 dark:bg-orange-500/15 dark:text-orange-400", title: t("studentDashboard.stepOnTime", { defaultValue: "Be on time" }) },
-                { icon: Calendar, color: "bg-green-50 text-green-500 dark:bg-green-500/15 dark:text-green-400", title: t("studentDashboard.stepLearn", { defaultValue: "Learn & progress" }) },
+                { icon: Video, color: st.stepIconBlue, title: t("studentDashboard.stepStart", { defaultValue: "Start appointment" }) },
+                { icon: Clock, color: st.stepIconOrange, title: t("studentDashboard.stepOnTime", { defaultValue: "Be on time" }) },
+                { icon: Calendar, color: st.stepIconGreen, title: t("studentDashboard.stepLearn", { defaultValue: "Learn & progress" }) },
               ].map((step) => (
                 <div key={step.title} className="flex flex-col items-center text-center">
                   <div className={cn("mb-2 flex h-12 w-12 items-center justify-center rounded-full", step.color)}>
@@ -386,7 +386,7 @@ export function StudentAppointmentsExperience() {
                 {formatTimeRange(data.nextLesson.start_time, data.nextLesson.duration, locale)}
               </p>
               {data.nextLesson.subject_name && (
-                <span className="mt-2 inline-block rounded-lg bg-[#D4AF37]/10 px-2 py-1 text-xs font-medium text-[#D4AF37]">
+                <span className={cn("mt-2 inline-block", st.goldChip)}>
                   {data.nextLesson.subject_name}
                 </span>
               )}
@@ -429,7 +429,7 @@ export function StudentAppointmentsExperience() {
                 {t("studentDashboard.yourTeacher", { defaultValue: "Your teacher" })}
               </h3>
               <div className="mt-3 flex items-center gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#D4AF37]/20 text-sm font-bold text-[#D4AF37]">
+                <div className={cn("flex h-11 w-11 items-center justify-center rounded-full text-sm font-bold", st.goldIconWrap)}>
                   {data.primaryTeacher.name.charAt(0)}
                 </div>
                 <div>

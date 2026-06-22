@@ -47,8 +47,8 @@ function formatTimeRange(start: string, durationMin: number, locale: string) {
 
 function StatMetric({ label, value }: { label: string; value: string | number }) {
   return (
-    <span className="text-xs text-gray-500">
-      <strong className="font-semibold text-[#0D1B2A]">{value}</strong> {label}
+    <span className="text-xs text-text-muted">
+      <strong className="font-semibold text-foreground">{value}</strong> {label}
     </span>
   );
 }
@@ -165,14 +165,14 @@ export function TeacherOverviewDashboard() {
               icon={Euro}
               iconClassName="text-emerald-600 bg-emerald-50 ring-emerald-100"
               footer={
-                <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500">
+                <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-text-muted">
                   <span>
                     {t("teacherDashboard.gross")}:{" "}
-                    <strong className="text-[#0D1B2A]">{formatTeacherEuro(data.stats.earningsGross)}</strong>
+                    <strong className="text-foreground">{formatTeacherEuro(data.stats.earningsGross)}</strong>
                   </span>
                   <span>
                     {t("teacherDashboard.pending")}:{" "}
-                    <strong className="text-[#0D1B2A]">{formatTeacherEuro(data.stats.earningsPending)}</strong>
+                    <strong className="text-foreground">{formatTeacherEuro(data.stats.earningsPending)}</strong>
                   </span>
                 </div>
               }
@@ -188,13 +188,13 @@ export function TeacherOverviewDashboard() {
               iconClassName="text-orange-600 bg-orange-50 ring-orange-100"
               footer={
                 <>
-                  <div className="mb-1.5 flex justify-between text-[11px] text-gray-500">
+                  <div className="mb-1.5 flex justify-between text-[11px] text-text-muted">
                     <span>{data.stats.bonusProgress}%</span>
                     <span className="truncate pl-2">
                       {t("teacherDashboard.nextGoal")}: {formatTeacherEuro(data.stats.bonusNextGoal)}
                     </span>
                   </div>
-                  <div className="h-1.5 overflow-hidden rounded-full bg-gray-100">
+                  <div className="h-1.5 overflow-hidden rounded-full bg-surface-subtle">
                     <div
                       className="h-full rounded-full bg-gradient-to-r from-[#D4AF37] to-[#22C55E] transition-all"
                       style={{ width: `${data.stats.bonusProgress}%` }}
@@ -237,27 +237,31 @@ export function TeacherOverviewDashboard() {
                       key={lesson.id}
                       className={cn(
                         "flex flex-col gap-3 rounded-xl border p-4 transition hover:border-[#D4AF37]/25 hover:shadow-sm sm:flex-row sm:items-center sm:justify-between",
-                        isToday ? "border-[#D4AF37]/30 bg-gradient-to-r from-[#FFF9E6]/60 to-white" : "border-gray-100 bg-gray-50/40"
+                        isToday
+                          ? "border-[var(--brand-gold)]/30 bg-[var(--brand-gold-muted)]"
+                          : "border-border-default bg-surface-subtle/50"
                       )}
                     >
                       <div className="flex min-w-0 items-center gap-4">
                         <div
                           className={cn(
                             "flex h-14 w-14 shrink-0 flex-col items-center justify-center rounded-xl border text-center",
-                            isToday ? "border-[#D4AF37]/40 bg-[#FFF9E6]" : "border-gray-100 bg-white"
+                            isToday
+                              ? "border-[var(--brand-gold)]/40 bg-[var(--brand-gold-muted)]"
+                              : "border-border-default bg-surface-elevated"
                           )}
                         >
-                          <span className="text-[10px] font-bold uppercase leading-none text-gray-400">
+                          <span className="text-[10px] font-bold uppercase leading-none text-text-muted">
                             {start.toLocaleDateString(locale, { weekday: "short" })}
                           </span>
-                          <span className="text-lg font-bold leading-tight text-[#0D1B2A]">{start.getDate()}</span>
+                          <span className="text-lg font-bold leading-tight text-foreground">{start.getDate()}</span>
                         </div>
                         <div className="min-w-0">
-                          <p className="truncate font-semibold text-[#0D1B2A]">{lesson.student_name || "—"}</p>
-                          <p className="mt-0.5 truncate text-sm text-gray-500">
+                          <p className="truncate font-semibold text-foreground">{lesson.student_name || "—"}</p>
+                          <p className="mt-0.5 truncate text-sm text-text-muted">
                             {lesson.subject_name || "—"} · {lesson.duration} min
                           </p>
-                          <p className="mt-1 text-xs text-gray-400">
+                          <p className="mt-1 text-xs text-text-muted">
                             {formatTimeRange(lesson.start_time, lesson.duration, locale)}
                           </p>
                         </div>
@@ -290,7 +294,7 @@ export function TeacherOverviewDashboard() {
                 <ul className="space-y-1 p-3">
                   {data.students.slice(0, 5).map((student, i) => (
                     <li key={student.id}>
-                      <div className="flex items-center gap-3 rounded-xl px-3 py-3 transition hover:bg-gray-50">
+                      <div className="flex items-center gap-3 rounded-xl px-3 py-3 transition hover:bg-surface-subtle">
                         <div
                           className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white shadow-sm"
                           style={{ backgroundColor: TEACHER_AVATAR_COLORS[i % TEACHER_AVATAR_COLORS.length] }}
@@ -298,14 +302,14 @@ export function TeacherOverviewDashboard() {
                           {studentInitials(student.name)}
                         </div>
                         <div className="min-w-0 flex-1">
-                          <p className="truncate text-sm font-semibold text-[#0D1B2A]">{student.name}</p>
-                          <p className="truncate text-xs text-gray-500">
+                          <p className="truncate text-sm font-semibold text-foreground">{student.name}</p>
+                          <p className="truncate text-xs text-text-muted">
                             {student.subject} · {student.totalHours}h
                           </p>
                         </div>
                         <Link
                           href={`/dashboard/teacher/schedule?student=${student.id}`}
-                          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-gray-200 text-gray-400 transition hover:border-[#D4AF37]/40 hover:bg-[#FFF9E6] hover:text-[#D4AF37]"
+                          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-border-default text-text-muted transition hover:border-[var(--brand-gold)]/40 hover:bg-[var(--brand-gold-muted)] hover:text-[#D4AF37]"
                           title={t("teacherDashboard.createForStudent")}
                         >
                           <Plus className="h-4 w-4" />
@@ -314,7 +318,7 @@ export function TeacherOverviewDashboard() {
                     </li>
                   ))}
                 </ul>
-                <div className="border-t border-gray-100 px-4 py-3">
+                <div className="border-t border-border-default px-4 py-3">
                   <Link
                     href="/dashboard/teacher/students"
                     className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#D4AF37] hover:underline"

@@ -130,8 +130,8 @@ export function StudentQuizHub() {
                   <h3 className={`font-bold ${textPrimary}`}>{q.title}</h3>
                   <Badge variant="gold">{q.difficulty}</Badge>
                 </div>
-                {q.topic && <p className="text-sm text-gray-500 mb-2">{q.topic}</p>}
-                <p className="text-sm text-gray-500 mb-4">
+                {q.topic && <p className="text-sm text-text-muted mb-2">{q.topic}</p>}
+                <p className="text-sm text-text-muted mb-4">
                   {Array.isArray(q.quiz_questions)
                     ? q.quiz_questions.length
                     : (q.quiz_questions as unknown as { count?: number })?.count ?? "—"}{" "}
@@ -156,7 +156,7 @@ export function StudentQuizHub() {
                 <p className={`font-semibold ${textPrimary}`}>
                   {a.generated_quizzes?.title ?? "Quiz"}
                 </p>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-text-muted">
                   {a.completed_at
                     ? new Date(a.completed_at).toLocaleString()
                     : "In progress"}

@@ -29,6 +29,7 @@ import {
 import { StudentDashboardLayout } from "./StudentDashboardLayout";
 import { StudentWelcomeHeader } from "./StudentWelcomeHeader";
 import { StudentQuickNav } from "./StudentQuickNav";
+import { StudentMobileDashboard } from "./StudentMobileDashboard";
 import { formatTimeRange, lessonDateParts, st } from "./student-ui";
 import {
   OverviewStatCard,
@@ -114,8 +115,10 @@ export function StudentOverviewDashboard() {
     : t("studentDashboard.noAppointments");
 
   return (
-    <StudentDashboardLayout title={title} suppressMobileTitle>
-      <div className="content-ready mx-auto flex max-w-6xl flex-col gap-6 md:gap-8">
+    <StudentDashboardLayout title={title} suppressMobileTitle hideTopBar>
+      <StudentMobileDashboard data={data} firstName={firstName} dateLocale={dateLocale} />
+
+      <div className="hidden md:flex content-ready mx-auto max-w-6xl flex-col gap-6 md:gap-8">
         <StudentWelcomeHeader
           firstName={firstName}
           learningGoal={data.learningGoal}
@@ -235,7 +238,7 @@ export function StudentOverviewDashboard() {
                       key={lesson.id}
                       className={cn(
                         "flex flex-col gap-4 px-5 py-4 sm:flex-row sm:items-center",
-                        parts.isToday && "bg-[#D4AF37]/[0.04]"
+                        parts.isToday && st.unreadBg
                       )}
                     >
                       <div className="flex min-w-0 flex-1 items-center gap-4">
@@ -290,11 +293,11 @@ export function StudentOverviewDashboard() {
                     <Link
                       href="/dashboard/notifications"
                       className={cn(
-                        "flex gap-3 px-5 py-4 transition hover:bg-surface-subtle dark:hover:bg-white/[0.03]",
+                        "flex gap-3 px-5 py-4 transition hover:bg-[var(--table-row-hover)]",
                         !n.is_read && st.unreadBg
                       )}
                     >
-                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-surface-subtle dark:bg-white/[0.06]">
+                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-surface-subtle">
                         <Bell className="h-4 w-4 text-text-muted" />
                       </div>
                       <div className="min-w-0 flex-1">
@@ -351,7 +354,7 @@ export function StudentOverviewDashboard() {
                 {data.materials.slice(0, 4).map((m) => (
                   <li key={m.id} className={cn("flex items-center gap-3 px-5 py-3.5", st.listRow)}>
                     <div className={st.fileIcon}>
-                      <FileText className="h-4 w-4 text-red-500 dark:text-red-400" />
+                      <FileText className="h-4 w-4" />
                     </div>
                     <div className="min-w-0 flex-1">
                       <p className={cn("truncate text-sm font-medium", st.textPrimary)}>{m.title}</p>

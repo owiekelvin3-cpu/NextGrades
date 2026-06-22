@@ -42,6 +42,8 @@ import {
 } from "lucide-react";
 import { useToast } from "@/context/ToastContext";
 import { StudentQuizHub } from "@/components/quiz/StudentQuizHub";
+import { st } from "@/components/dashboard/student/student-ui";
+import { cn } from "@/lib/utils";
 
 function SectionGrid({ children }: { children: React.ReactNode }) {
   return <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">{children}</div>;
@@ -138,7 +140,6 @@ export function StudentAppointmentsSection() {
 }
 
 export function StudentCoursesSection() {
-  const { theme } = useTheme();
   const { t } = useTranslation();
   const [enrollments, setEnrollments] = useState<Awaited<ReturnType<typeof fetchStudentEnrollments>>>([]);
   const [loading, setLoading] = useState(true);
@@ -177,13 +178,13 @@ export function StudentCoursesSection() {
             <h3 className={`font-bold mb-1 text-foreground`}>
               {e.subject_name ?? "—"}
             </h3>
-            <p className="text-sm text-gray-500 mb-4">
+            <p className="text-sm text-text-muted mb-4">
               {e.class_name ?? ""}
               {e.semester ? ` · ${t("resources.filters.semester")} ${e.semester}` : ""}
             </p>
             <Badge variant={e.status === "active" ? "success" : "gold"}>{e.status}</Badge>
-            <div className="h-2 bg-gray-200 dark:bg-white/10 rounded-full overflow-hidden mt-4">
-              <div className="h-full bg-[#D4AF37] rounded-full" style={{ width: `${progress}%` }} />
+            <div className={cn("h-2 rounded-full overflow-hidden mt-4", st.progressTrackMd)}>
+              <div className={st.progressBar} style={{ width: `${progress}%` }} />
             </div>
           </Card>
         );
@@ -219,7 +220,7 @@ export function StudentResourcesSection() {
             <Card key={m.id} className="p-6">
               <FileText className="w-8 h-8 text-[#D4AF37] mb-3" />
               <h3 className="font-bold">{m.title}</h3>
-              <p className="text-sm text-gray-500 mt-1 line-clamp-2">{m.description}</p>
+              <p className="text-sm text-text-muted mt-1 line-clamp-2">{m.description}</p>
               <Button
                 variant="outline"
                 size="sm"
@@ -241,7 +242,6 @@ export function StudentQuizzesSection() {
 }
 
 export function StudentProgressSection() {
-  const { theme } = useTheme();
   const { t } = useTranslation();
   const [progress, setProgress] = useState(0);
   const [completed, setCompleted] = useState(0);
@@ -279,7 +279,7 @@ export function StudentProgressSection() {
         <Card key={s.label} className={`p-6`}>
           <TrendingUp className="w-8 h-8 text-[#D4AF37] mb-3" />
           <p className={`text-3xl font-bold text-foreground`}>{s.value}</p>
-          <p className="text-gray-500">{s.label}</p>
+          <p className="text-text-muted">{s.label}</p>
         </Card>
       ))}
     </SectionGrid>

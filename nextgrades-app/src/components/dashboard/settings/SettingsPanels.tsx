@@ -241,10 +241,7 @@ export function StudentSettingsPanel({ role = "student" }: StudentSettingsPanelP
 
   if (!profile) {
     return (
-      <div className={cn(
-        "mx-auto max-w-lg rounded-2xl border p-8 text-center shadow-sm",
-        theme === "dark" ? "border-white/10 bg-[#112240] text-gray-300" : "border-gray-100 bg-white text-gray-600"
-      )}>
+      <div className="mx-auto max-w-lg rounded-2xl border border-border-default bg-surface-elevated p-8 text-center text-text-muted shadow-sm">
         <p>{t("settings.loadError", { defaultValue: "Could not load your profile. Please sign in again." })}</p>
         <Button variant="gold" size="sm" href="/login" className="mt-4">
           {t("common.login", { defaultValue: "Log in" })}
@@ -274,9 +271,7 @@ export function StudentSettingsPanel({ role = "student" }: StudentSettingsPanelP
                 "flex shrink-0 items-center gap-2.5 rounded-xl px-4 py-2.5 text-sm font-medium transition",
                 tab === id
                   ? "bg-[#D4AF37] text-[#0D1B2A] shadow-sm"
-                  : theme === "dark"
-                    ? "bg-[#112240] text-gray-300 hover:bg-white/10"
-                    : "bg-white text-gray-600 hover:bg-gray-50"
+                  : "bg-surface-elevated text-text-muted hover:bg-[var(--table-row-hover)] hover:text-foreground"
               )}
             >
               <Icon className="h-4 w-4" />
@@ -416,7 +411,7 @@ export function StudentSettingsPanel({ role = "student" }: StudentSettingsPanelP
                           ? "border-[#D4AF37] bg-[#D4AF37]/10 text-[#D4AF37]"
                           : theme === "dark"
                             ? "border-white/15 bg-[#0D1B2A] text-gray-300 hover:border-white/25"
-                            : "border-gray-200 bg-[#FAFBFC] text-gray-600 hover:border-gray-300"
+                            : "border-border-default bg-surface-subtle text-text-muted hover:border-border-default"
                       )}
                     >
                       {mode === "light" ? t("settings.lightMode", { defaultValue: "Light" }) : t("settings.darkMode", { defaultValue: "Dark" })}
@@ -445,7 +440,7 @@ export function StudentSettingsPanel({ role = "student" }: StudentSettingsPanelP
                       className={cn(
                         "rounded-xl border-2 px-5 py-2 text-sm font-semibold transition",
                         aiLanguage === lang
-                          ? "border-[#D4AF37] bg-[#D4AF37]/10 text-[#0D1B2A]"
+                          ? "border-[#D4AF37] bg-[var(--brand-gold-muted)] text-foreground"
                           : "border-gray-200 text-gray-500 hover:border-gray-300"
                       )}
                     >
@@ -542,7 +537,7 @@ export function StudentSettingsPanel({ role = "student" }: StudentSettingsPanelP
           <>
             <SettingsCard title={t("settings.subscriptionTitle", { defaultValue: "Subscription & units" })} icon={CreditCard}>
               <div className="rounded-xl border border-[#D4AF37]/20 bg-[#FFF9E6] p-4">
-                <p className="text-sm font-semibold text-[#0D1B2A]">
+                <p className="text-sm font-semibold text-foreground">
                   {t("settings.subscriptionStatus", { defaultValue: "Status" })}:{" "}
                   <span className="capitalize text-[#D4AF37]">
                     {profile?.subscription_status ?? t("settings.noSubscription", { defaultValue: "No active plan" })}
@@ -594,7 +589,7 @@ export function StudentSettingsPanel({ role = "student" }: StudentSettingsPanelP
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="rounded-xl border border-gray-100 bg-[#FAFBFC] px-4 py-3 text-sm font-medium text-[#0D1B2A] transition hover:border-[#D4AF37]/40 hover:bg-white"
+                  className="rounded-xl border border-border-default bg-surface-subtle px-4 py-3 text-sm font-medium text-foreground transition hover:border-[var(--brand-gold)]/40 hover:bg-surface-elevated"
                 >
                   {link.label} →
                 </Link>

@@ -22,7 +22,7 @@ export function BackToHomeLink({ className, darkSidebar = false, onNavigate }: P
         "flex w-full items-center gap-3 rounded-xl px-4 py-2.5 text-left text-sm transition-all",
         darkSidebar
           ? "text-gray-300 hover:bg-white/10 hover:text-white"
-          : "text-gray-600 hover:bg-gray-50 hover:text-[#0D1B2A]",
+          : "text-text-muted hover:bg-[var(--table-row-hover)] hover:text-foreground",
         className
       )}
     >

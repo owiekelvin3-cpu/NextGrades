@@ -1,5 +1,16 @@
 /** Shared styles and helpers for student dashboard — theme-aware via design tokens */
 
+import type { LucideIcon } from "lucide-react";
+import {
+  BookOpen,
+  Calculator,
+  FlaskConical,
+  Atom,
+  Languages,
+  Headphones,
+  Palette,
+} from "lucide-react";
+
 export const SUBJECT_COLORS = ["#2563EB", "#16A34A", "#D97706", "#9333EA", "#DC2626", "#0891B2"];
 
 /** Theme-aware Tailwind class bundles */
@@ -49,9 +60,44 @@ export const st = {
   iconBtn:
     "rounded-lg p-2 text-text-muted transition hover:bg-[var(--table-row-hover)] hover:text-foreground",
   unreadBg: "bg-[var(--brand-gold-muted)]",
+  goldChip: "rounded-lg bg-[var(--brand-gold-muted)] px-2 py-1 text-xs font-medium text-[var(--brand-gold)]",
+  goldIconWrap: "flex items-center justify-center rounded-xl bg-[var(--brand-gold-muted)] text-[var(--brand-gold)]",
+  promoCard: "rounded-2xl border border-[var(--brand-gold)]/20 bg-[var(--brand-gold-muted)] p-5",
+  donutTrack: "text-surface-subtle",
+  donutFill: "text-[var(--brand-gold)]",
+  listHover: "transition hover:bg-[var(--table-row-hover)]",
   fileIcon:
-    "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-red-50 ring-1 ring-red-100 dark:bg-red-500/12 dark:ring-red-500/15",
+    "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-red-50 text-red-600 ring-1 ring-red-100 dark:bg-red-500/12 dark:text-red-300 dark:ring-red-500/15",
+  stepIconBlue: "bg-blue-50 text-blue-600 dark:bg-blue-500/15 dark:text-blue-400",
+  stepIconOrange: "bg-orange-50 text-orange-600 dark:bg-orange-500/15 dark:text-orange-400",
+  stepIconGreen: "bg-green-50 text-green-600 dark:bg-green-500/15 dark:text-green-400",
+  motivationBanner: "rounded-2xl border border-blue-100 bg-blue-50/80 p-4 sm:p-5 dark:border-blue-500/20 dark:bg-blue-500/10",
+  /** Mobile dashboard (reference UI) */
+  mobileHero:
+    "relative overflow-hidden rounded-3xl border border-[var(--brand-gold)]/20 bg-gradient-to-br from-[var(--brand-gold-muted)] via-surface-elevated to-surface-subtle p-5 shadow-[var(--card-shadow)] dark:from-[var(--brand-navy)]/80 dark:via-surface-elevated dark:to-[var(--brand-navy-muted)]",
+  mobileSubjectActive:
+    "border-transparent bg-[var(--brand-navy)] text-white shadow-md dark:bg-[var(--brand-gold)] dark:text-[var(--brand-navy)]",
+  mobileSubjectIdle:
+    "border-border-default bg-surface-elevated text-foreground hover:border-[var(--brand-gold)]/30",
+  mobileCourseCard:
+    "w-[72vw] max-w-[280px] shrink-0 snap-start overflow-hidden rounded-3xl border border-border-default bg-surface-elevated shadow-[var(--card-shadow)]",
+  mobileInstructorCard:
+    "flex items-center gap-3 rounded-2xl border border-border-default bg-surface-elevated p-3 shadow-sm",
+  mobileSectionLink: "text-sm font-semibold text-[var(--brand-gold)]",
 } as const;
+
+export function subjectIcon(name: string): LucideIcon {
+  const n = name.toLowerCase();
+  if (n.includes("math") || n.includes("mathe")) return Calculator;
+  if (n.includes("phys")) return Atom;
+  if (n.includes("chem")) return FlaskConical;
+  if (n.includes("engl") || n.includes("liter") || n.includes("deutsch") || n.includes("sprach"))
+    return Languages;
+  if (n.includes("music") || n.includes("musik")) return Headphones;
+  if (n.includes("art") || n.includes("kunst")) return Palette;
+  if (n.includes("bio")) return FlaskConical;
+  return BookOpen;
+}
 
 export function studentPanel(className = "") {
   return `${st.panel} ${className}`;

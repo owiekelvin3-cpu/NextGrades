@@ -275,7 +275,7 @@ export function StudentResourcesExperience() {
             <div className="overflow-x-auto">
               <table className="w-full min-w-[640px] text-left text-sm">
                 <thead>
-                  <tr className="border-b border-border-default bg-surface-subtle dark:bg-surface-elevated/[0.03] text-xs font-semibold uppercase tracking-wide text-text-muted">
+                  <tr className={st.tableHead}>
                     <th className="px-5 py-3">{t("studentDashboard.colMaterial", { defaultValue: "Material" })}</th>
                     <th className="px-5 py-3">{t("studentDashboard.colCourse", { defaultValue: "Course" })}</th>
                     <th className="px-5 py-3">{t("studentDashboard.colType", { defaultValue: "Type" })}</th>
@@ -283,7 +283,7 @@ export function StudentResourcesExperience() {
                     <th className="px-5 py-3 text-right">{t("studentDashboard.colActions", { defaultValue: "Actions" })}</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-50">
+                <tbody className="divide-y divide-border-default">
                   {pageItems.length === 0 ? (
                     <tr>
                       <td colSpan={5} className="px-5 py-12 text-center text-text-muted">
@@ -292,7 +292,7 @@ export function StudentResourcesExperience() {
                     </tr>
                   ) : (
                     pageItems.map((m) => (
-                      <tr key={m.id} className="hover:bg-surface-subtle dark:bg-white/[0.04]/50">
+                      <tr key={m.id} className="hover:bg-[var(--table-row-hover)]">
                         <td className="px-5 py-4">
                           <div className="flex items-center gap-3">
                             <div className={cn("flex h-9 w-9 shrink-0 items-center justify-center rounded-lg", materialTypeColor(m.type))}>
@@ -341,7 +341,7 @@ export function StudentResourcesExperience() {
                                 <Download className="h-4 w-4" />
                               </a>
                             )}
-                            <button type="button" className="rounded-lg p-2 text-text-muted/80 hover:bg-surface-subtle dark:bg-white/[0.04]" aria-label="More">
+                            <button type="button" className={cn(st.iconBtn)} aria-label="More">
                               <MoreHorizontal className="h-4 w-4" />
                             </button>
                           </div>
@@ -373,13 +373,14 @@ export function StudentResourcesExperience() {
             </h3>
             <div className="relative mx-auto my-4 flex h-24 w-24 items-center justify-center">
               <svg className="-rotate-90" width="96" height="96">
-                <circle cx="48" cy="48" r="40" fill="none" stroke="#F3F4F6" strokeWidth="8" />
+                <circle cx="48" cy="48" r="40" fill="none" className="text-surface-subtle" stroke="currentColor" strokeWidth="8" />
                 <circle
                   cx="48"
                   cy="48"
                   r="40"
                   fill="none"
-                  stroke="#D4AF37"
+                  stroke="currentColor"
+                  className="text-[var(--brand-gold)]"
                   strokeWidth="8"
                   strokeDasharray={2 * Math.PI * 40}
                   strokeDashoffset={2 * Math.PI * 40 * (1 - storagePercent / 100)}
@@ -391,7 +392,7 @@ export function StudentResourcesExperience() {
             <p className="text-xs text-text-muted">
               {totalBytes > 0 ? `${formatBytes(totalBytes)} ${t("studentDashboard.storageUsed", { defaultValue: "used" })}` : t("studentDashboard.noMaterials")}
             </p>
-            <Link href="/dashboard/student/settings" className="mt-4 inline-flex w-full items-center justify-center rounded-xl border border-border-default py-2 text-sm font-medium text-foreground hover:bg-surface-subtle dark:bg-white/[0.04]">
+            <Link href="/dashboard/student/settings" className="mt-4 inline-flex w-full items-center justify-center rounded-xl border border-border-default py-2 text-sm font-medium text-foreground transition hover:bg-[var(--table-row-hover)]">
               {t("studentDashboard.manageStorage", { defaultValue: "Manage storage" })}
             </Link>
           </div>
@@ -422,8 +423,8 @@ export function StudentResourcesExperience() {
             )}
           </div>
 
-          <div className="rounded-2xl border border-[#D4AF37]/20 bg-[#FFF9E6] p-5">
-            <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-[#D4AF37]/20">
+          <div className={st.promoCard}>
+            <div className={cn("mb-2 flex h-10 w-10 items-center justify-center rounded-full", st.goldIconWrap)}>
               <Headphones className="h-5 w-5 text-[#D4AF37]" />
             </div>
             <h3 className="text-sm font-semibold text-foreground">{t("studentDashboard.materialNotFound", { defaultValue: "Material not found?" })}</h3>

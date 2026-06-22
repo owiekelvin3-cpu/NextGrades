@@ -17,16 +17,16 @@ import { fetchTeacherOverviewData, type TeacherOverviewData } from "@/lib/dashbo
 function FaqItem({ question, answer }: { question: string; answer: string }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="border-b border-gray-100 last:border-0">
+    <div className="border-b border-border-default last:border-0">
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className="flex w-full items-center justify-between gap-3 py-4 text-left text-sm font-medium text-[#0D1B2A]"
+        className="flex w-full items-center justify-between gap-3 py-4 text-left text-sm font-medium text-foreground"
       >
         {question}
-        <ChevronDown className={`h-4 w-4 shrink-0 text-gray-400 transition ${open ? "rotate-180" : ""}`} />
+        <ChevronDown className={`h-4 w-4 shrink-0 text-text-muted transition ${open ? "rotate-180" : ""}`} />
       </button>
-      {open && <p className="pb-4 text-sm text-gray-500">{answer}</p>}
+      {open && <p className="pb-4 text-sm text-text-muted">{answer}</p>}
     </div>
   );
 }
@@ -56,7 +56,7 @@ export function TeacherNextJumpBonus() {
   if (!data) {
     return (
       <TeacherDashboardLayout title={t("teacherDashboard.nav.nextJumpBonus")}>
-        <div className={`${teacherPanel()} p-10 text-center text-gray-600`}>
+        <div className={`${teacherPanel()} p-10 text-center text-text-muted`}>
           {t("teacherDashboard.signInRequired")}
         </div>
       </TeacherDashboardLayout>
@@ -90,27 +90,27 @@ export function TeacherNextJumpBonus() {
         <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           <div className={`${teacherPanel()} flex flex-col items-center justify-center p-5 text-center`}>
             <Rocket className="h-10 w-10 text-[#D4AF37]" />
-            <p className="mt-2 text-xs text-gray-500">{t("teacherDashboard.bonusProgram")}</p>
+            <p className="mt-2 text-xs text-text-muted">{t("teacherDashboard.bonusProgram")}</p>
           </div>
           <div className={teacherPanel("p-5")}>
-            <p className="text-xs text-gray-500">{t("teacherDashboard.currentBonusTitle")}</p>
-            <p className="mt-1 text-2xl font-bold text-[#0D1B2A]">{formatTeacherEuro(stats.bonusCurrent)}</p>
+            <p className="text-xs text-text-muted">{t("teacherDashboard.currentBonusTitle")}</p>
+            <p className="mt-1 text-2xl font-bold text-foreground">{formatTeacherEuro(stats.bonusCurrent)}</p>
             <p className="mt-1 text-xs text-green-600">+12% {t("teacherDashboard.thisMonth")}</p>
           </div>
           <div className={teacherPanel("p-5")}>
-            <p className="text-xs text-gray-500">{t("teacherDashboard.nextGoalTitle")}</p>
-            <p className="mt-1 text-2xl font-bold text-[#0D1B2A]">{formatTeacherEuro(stats.bonusNextGoal)}</p>
+            <p className="text-xs text-text-muted">{t("teacherDashboard.nextGoalTitle")}</p>
+            <p className="mt-1 text-2xl font-bold text-foreground">{formatTeacherEuro(stats.bonusNextGoal)}</p>
           </div>
           <div className={teacherPanel("p-5")}>
-            <p className="text-xs text-gray-500">{t("teacherDashboard.progressBonus")}</p>
-            <p className="mt-1 text-2xl font-bold text-[#0D1B2A]">{stats.bonusProgress}%</p>
+            <p className="text-xs text-text-muted">{t("teacherDashboard.progressBonus")}</p>
+            <p className="mt-1 text-2xl font-bold text-foreground">{stats.bonusProgress}%</p>
             <div className="mt-2 h-2 overflow-hidden rounded-full bg-gray-100">
               <div className="h-full rounded-full bg-green-500" style={{ width: `${stats.bonusProgress}%` }} />
             </div>
           </div>
           <div className={teacherPanel("p-5")}>
-            <p className="text-xs text-gray-500">{t("teacherDashboard.withdrawableFrom")}</p>
-            <p className="mt-1 text-2xl font-bold text-[#0D1B2A]">{formatTeacherEuro(withdrawable)}</p>
+            <p className="text-xs text-text-muted">{t("teacherDashboard.withdrawableFrom")}</p>
+            <p className="mt-1 text-2xl font-bold text-foreground">{formatTeacherEuro(withdrawable)}</p>
             <button type="button" className="mt-2 text-xs font-medium text-[#D4AF37] hover:underline">
               {t("teacherDashboard.withdrawNow")}
             </button>
@@ -121,16 +121,16 @@ export function TeacherNextJumpBonus() {
           {/* Monthly progress */}
           <div className={`${teacherPanel()} lg:col-span-2 p-6`}>
             <div className="flex items-center justify-between">
-              <h2 className="text-sm font-semibold text-[#0D1B2A]">{t("teacherDashboard.monthlyProgress")}</h2>
-              <span className="rounded-lg border border-gray-200 px-3 py-1 text-xs text-gray-600">{monthLabel}</span>
+              <h2 className="text-sm font-semibold text-foreground">{t("teacherDashboard.monthlyProgress")}</h2>
+              <span className="rounded-lg border border-gray-200 px-3 py-1 text-xs text-text-muted">{monthLabel}</span>
             </div>
             <div className="mt-6 flex items-end gap-6">
-              <p className="text-5xl font-bold text-[#0D1B2A]">{stats.bonusProgress}%</p>
+              <p className="text-5xl font-bold text-foreground">{stats.bonusProgress}%</p>
               <div className="flex-1 pb-2">
                 <div className="h-3 overflow-hidden rounded-full bg-gray-100">
                   <div className="h-full rounded-full bg-green-500" style={{ width: `${stats.bonusProgress}%` }} />
                 </div>
-                <p className="mt-2 text-sm text-gray-500">
+                <p className="mt-2 text-sm text-text-muted">
                   {hoursTaught} / {hoursTarget} {t("teacherDashboard.hoursTaught")}
                 </p>
               </div>
@@ -139,19 +139,19 @@ export function TeacherNextJumpBonus() {
 
           {/* Bonus calculation */}
           <div className={teacherPanel("p-6")}>
-            <h2 className="text-sm font-semibold text-[#0D1B2A]">{t("teacherDashboard.bonusCalculation")}</h2>
+            <h2 className="text-sm font-semibold text-foreground">{t("teacherDashboard.bonusCalculation")}</h2>
             <dl className="mt-4 space-y-3 text-sm">
               <div className="flex justify-between">
-                <dt className="text-gray-500">{t("teacherDashboard.hourlyRate")}</dt>
-                <dd className="font-medium text-[#0D1B2A]">€35,00</dd>
+                <dt className="text-text-muted">{t("teacherDashboard.hourlyRate")}</dt>
+                <dd className="font-medium text-foreground">€35,00</dd>
               </div>
               <div className="flex justify-between">
-                <dt className="text-gray-500">{t("teacherDashboard.bonusRate")}</dt>
-                <dd className="font-medium text-[#0D1B2A]">20%</dd>
+                <dt className="text-text-muted">{t("teacherDashboard.bonusRate")}</dt>
+                <dd className="font-medium text-foreground">20%</dd>
               </div>
-              <div className="flex justify-between border-t border-gray-100 pt-3">
-                <dt className="text-gray-500">{t("teacherDashboard.hoursTaught")}</dt>
-                <dd className="font-bold text-[#0D1B2A]">{hoursTaught}h</dd>
+              <div className="flex justify-between border-t border-border-default pt-3">
+                <dt className="text-text-muted">{t("teacherDashboard.hoursTaught")}</dt>
+                <dd className="font-bold text-foreground">{hoursTaught}h</dd>
               </div>
             </dl>
           </div>
@@ -159,13 +159,13 @@ export function TeacherNextJumpBonus() {
 
         {/* Bonus levels table */}
         <div className={teacherPanel()}>
-          <div className="border-b border-gray-100 px-6 py-4">
-            <h2 className="text-sm font-semibold text-[#0D1B2A]">{t("teacherDashboard.bonusLevels")}</h2>
+          <div className="border-b border-border-default px-6 py-4">
+            <h2 className="text-sm font-semibold text-foreground">{t("teacherDashboard.bonusLevels")}</h2>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-gray-100 text-left text-[11px] font-semibold uppercase tracking-wide text-gray-400">
+                <tr className="border-b border-border-default text-left text-[11px] font-semibold uppercase tracking-wide text-text-muted">
                   <th className="px-6 py-3">{t("teacherDashboard.level")}</th>
                   <th className="px-3 py-3">{t("teacherDashboard.requirement")}</th>
                   <th className="px-3 py-3">{t("teacherDashboard.bonusRate")}</th>
@@ -177,11 +177,11 @@ export function TeacherNextJumpBonus() {
                   const status = levelStatus(lvl.level);
                   return (
                     <tr key={lvl.level} className="border-b border-gray-50 last:border-0">
-                      <td className="px-6 py-4 font-medium text-[#0D1B2A]">Level {lvl.level}</td>
-                      <td className="px-3 py-4 text-gray-600">
+                      <td className="px-6 py-4 font-medium text-foreground">Level {lvl.level}</td>
+                      <td className="px-3 py-4 text-text-muted">
                         {lvl.hours} {t("teacherDashboard.hoursPerMonth")}
                       </td>
-                      <td className="px-3 py-4 text-gray-600">€{lvl.rate}/h</td>
+                      <td className="px-3 py-4 text-text-muted">€{lvl.rate}/h</td>
                       <td className="px-6 py-4">
                         {status === "completed" && (
                           <Badge variant="success">{t("teacherDashboard.statusCompleted")}</Badge>
@@ -204,17 +204,17 @@ export function TeacherNextJumpBonus() {
         {/* History + FAQ + Tips */}
         <div className="grid gap-6 lg:grid-cols-2">
           <div className={teacherPanel()}>
-            <div className="border-b border-gray-100 px-6 py-4">
-              <h2 className="text-sm font-semibold text-[#0D1B2A]">{t("teacherDashboard.bonusHistory")}</h2>
+            <div className="border-b border-border-default px-6 py-4">
+              <h2 className="text-sm font-semibold text-foreground">{t("teacherDashboard.bonusHistory")}</h2>
             </div>
             <ul className="divide-y divide-gray-50">
               {historyMonths.map((d, i) => (
                 <li key={d.toISOString()} className="flex items-center justify-between px-6 py-4">
                   <div>
-                    <p className="text-sm font-medium text-[#0D1B2A]">
+                    <p className="text-sm font-medium text-foreground">
                       {d.toLocaleDateString(locale, { month: "long", year: "numeric" })}
                     </p>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-text-muted">
                       {t("teacherDashboard.paidOut")}{" "}
                       {d.toLocaleDateString(locale, { day: "numeric", month: "short" })}
                     </p>
@@ -230,9 +230,9 @@ export function TeacherNextJumpBonus() {
 
           <div className="space-y-6">
             <div className={teacherPanel("px-6")}>
-              <div className="flex items-center gap-2 border-b border-gray-100 py-4">
-                <HelpCircle className="h-4 w-4 text-gray-400" />
-                <h2 className="text-sm font-semibold text-[#0D1B2A]">{t("teacherDashboard.faq")}</h2>
+              <div className="flex items-center gap-2 border-b border-border-default py-4">
+                <HelpCircle className="h-4 w-4 text-text-muted" />
+                <h2 className="text-sm font-semibold text-foreground">{t("teacherDashboard.faq")}</h2>
               </div>
               <FaqItem question={t("teacherDashboard.faq1q")} answer={t("teacherDashboard.faq1a")} />
               <FaqItem question={t("teacherDashboard.faq2q")} answer={t("teacherDashboard.faq2a")} />
@@ -242,9 +242,9 @@ export function TeacherNextJumpBonus() {
             <div className="rounded-2xl border border-orange-100 bg-orange-50/80 p-6">
               <div className="flex items-center gap-2">
                 <Lightbulb className="h-5 w-5 text-orange-500" />
-                <h2 className="text-sm font-semibold text-[#0D1B2A]">{t("teacherDashboard.bonusTips")}</h2>
+                <h2 className="text-sm font-semibold text-foreground">{t("teacherDashboard.bonusTips")}</h2>
               </div>
-              <ul className="mt-4 space-y-2 text-sm text-gray-600">
+              <ul className="mt-4 space-y-2 text-sm text-text-muted">
                 <li className="flex gap-2">
                   <ChevronRight className="mt-0.5 h-4 w-4 shrink-0 text-orange-400" />
                   {t("teacherDashboard.tip1")}

@@ -35,13 +35,22 @@ function DonutChart({ percent, size = 120 }: { percent: number; size?: number })
   const offset = c - (percent / 100) * c;
   return (
     <svg width={size} height={size} className="-rotate-90">
-      <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="#F3F4F6" strokeWidth="10" />
       <circle
         cx={size / 2}
         cy={size / 2}
         r={r}
         fill="none"
-        stroke="#D4AF37"
+        className={st.donutTrack}
+        stroke="currentColor"
+        strokeWidth="10"
+      />
+      <circle
+        cx={size / 2}
+        cy={size / 2}
+        r={r}
+        fill="none"
+        className={st.donutFill}
+        stroke="currentColor"
         strokeWidth="10"
         strokeDasharray={c}
         strokeDashoffset={offset}
@@ -76,8 +85,8 @@ function CourseCard({ course, locale }: { course: StudentCourseDetail; locale: s
                 </p>
                 <div className="mt-1 flex items-center gap-2">
                   <span className="text-sm font-bold text-[#D4AF37]">{course.progressPercent}%</span>
-                  <div className="h-2 flex-1 overflow-hidden rounded-full bg-surface-subtle dark:bg-white/10">
-                    <div className="h-full rounded-full bg-[#D4AF37]" style={{ width: `${course.progressPercent}%` }} />
+                  <div className={st.progressTrackMd}>
+                    <div className={st.progressBar} style={{ width: `${course.progressPercent}%` }} />
                   </div>
                 </div>
                 {course.lessonCount > 0 && (
@@ -220,7 +229,7 @@ export function StudentCoursesExperience() {
             </div>
           )}
 
-          <div className="rounded-2xl border border-blue-100 bg-blue-50/50 p-4 sm:p-5 dark:border-blue-500/20 dark:bg-blue-500/10">
+          <div className={st.motivationBanner}>
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
               <Trophy className="h-5 w-5 shrink-0 text-blue-500" />
               <p className="text-sm font-medium text-foreground">
@@ -252,7 +261,7 @@ export function StudentCoursesExperience() {
                   {t("studentDashboard.legendInProgress", { defaultValue: "In progress" })} ({progressBreakdown.inProgress})
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="h-2 w-2 rounded-full bg-gray-300" />
+                  <span className="h-2 w-2 rounded-full bg-surface-subtle ring-1 ring-border-default" />
                   {t("studentDashboard.legendPlanned", { defaultValue: "Planned" })} ({progressBreakdown.planned})
                 </li>
               </ul>
@@ -287,7 +296,7 @@ export function StudentCoursesExperience() {
             <h3 className="text-sm font-semibold text-foreground">
               {t("studentDashboard.helpSupport", { defaultValue: "Help & support" })}
             </h3>
-            <ul className="mt-3 divide-y divide-gray-50">
+            <ul className="mt-3 divide-y divide-border-default">
               {[
                 { href: "/help", icon: HelpCircle, label: t("studentDashboard.helpCenter") },
                 { href: "/contact", icon: MessageCircle, label: t("studentDashboard.contactSupport") },

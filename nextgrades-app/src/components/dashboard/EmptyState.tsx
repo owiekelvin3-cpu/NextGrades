@@ -1,7 +1,7 @@
 "use client";
 
-import { useTheme } from "@/context/ThemeContext";
 import { Inbox } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface EmptyStateProps {
   title: string;
@@ -10,20 +10,12 @@ interface EmptyStateProps {
 }
 
 export function EmptyState({ title, description, action }: EmptyStateProps) {
-  const { theme } = useTheme();
-
   return (
-    <div
-      className={`py-12 px-6 text-center rounded-2xl border ${
-        theme === "dark" ? "border-white/10 bg-[#0D1B2A]/50" : "border-gray-100 bg-gray-50"
-      }`}
-    >
-      <Inbox className={`w-12 h-12 mx-auto mb-4 ${theme === "dark" ? "text-gray-500" : "text-gray-400"}`} />
-      <h3 className={`font-semibold mb-2 text-foreground`}>{title}</h3>
+    <div className="rounded-2xl border border-border-default bg-surface-subtle px-6 py-12 text-center">
+      <Inbox className="mx-auto mb-4 h-12 w-12 text-text-muted" />
+      <h3 className="mb-2 font-semibold text-foreground">{title}</h3>
       {description && (
-        <p className={`text-sm mb-4 max-w-md mx-auto text-text-muted`}>
-          {description}
-        </p>
+        <p className="mx-auto mb-4 max-w-md text-sm text-text-muted">{description}</p>
       )}
       {action}
     </div>

@@ -116,8 +116,8 @@ function ScheduleContent() {
                 {t("zoom.statUpcoming", { defaultValue: "Upcoming" })}
               </span>
             </div>
-            <p className="mt-3 text-3xl font-bold text-[#0D1B2A]">{upcoming.length}</p>
-            <p className="mt-1 text-xs text-gray-500">
+            <p className="mt-3 text-3xl font-bold text-foreground">{upcoming.length}</p>
+            <p className="mt-1 text-xs text-text-muted">
               {t("zoom.statUpcomingDesc", { defaultValue: "Scheduled live sessions" })}
             </p>
           </div>
@@ -131,15 +131,15 @@ function ScheduleContent() {
             </div>
             {nextMeeting && nextParts ? (
               <>
-                <p className="mt-3 text-lg font-bold leading-tight text-[#0D1B2A]">
+                <p className="mt-3 text-lg font-bold leading-tight text-foreground">
                   {nextParts.isToday ? todayLabel : nextParts.weekday}
                 </p>
-                <p className="mt-1 text-xs text-gray-500">
+                <p className="mt-1 text-xs text-text-muted">
                   {formatTimeRange(nextMeeting.start_time, nextMeeting.duration, locale)}
                 </p>
               </>
             ) : (
-              <p className="mt-3 text-sm text-gray-500">
+              <p className="mt-3 text-sm text-text-muted">
                 {t("zoom.noMeetingsShort", { defaultValue: "Nothing scheduled yet" })}
               </p>
             )}
@@ -150,12 +150,12 @@ function ScheduleContent() {
               <Video className="h-4 w-4" />
               <span className="text-xs font-semibold uppercase tracking-wide">Zoom</span>
             </div>
-            <p className="mt-3 text-lg font-bold text-[#0D1B2A]">
+            <p className="mt-3 text-lg font-bold text-foreground">
               {zoomReady
                 ? t("zoom.statusConnected", { defaultValue: "Connected" })
                 : t("zoom.statusDisconnected", { defaultValue: "Not connected" })}
             </p>
-            <p className="mt-1 text-xs text-gray-500">
+            <p className="mt-1 text-xs text-text-muted">
               {zoomReady
                 ? t("zoom.readyToSchedule", { defaultValue: "Ready to schedule" })
                 : t("zoom.setupRequired", { defaultValue: "Connect Zoom to start scheduling" })}
@@ -168,7 +168,7 @@ function ScheduleContent() {
           <div className={teacherPanel("p-5 sm:p-6")}>
             <div className="mb-4 flex items-center gap-2">
               <Sparkles className="h-4 w-4 text-[#D4AF37]" />
-              <h2 className="text-sm font-semibold text-[#0D1B2A]">
+              <h2 className="text-sm font-semibold text-foreground">
                 {t("zoom.getStarted", { defaultValue: "Get started in 3 steps" })}
               </h2>
             </div>
@@ -178,7 +178,9 @@ function ScheduleContent() {
                   key={item.step}
                   className={cn(
                     "flex items-center gap-3 rounded-xl border px-4 py-3",
-                    item.done ? "border-green-200 bg-green-50" : "border-gray-100 bg-[#FAFBFC]"
+                    item.done
+                      ? "border-green-200 bg-green-50 dark:border-green-500/30 dark:bg-green-500/10"
+                      : "border-border-default bg-surface-subtle"
                   )}
                 >
                   <span
@@ -189,7 +191,7 @@ function ScheduleContent() {
                   >
                     {item.done ? "✓" : item.step}
                   </span>
-                  <p className="text-sm font-medium text-[#0D1B2A]">{item.title}</p>
+                  <p className="text-sm font-medium text-foreground">{item.title}</p>
                 </div>
               ))}
             </div>
@@ -206,12 +208,12 @@ function ScheduleContent() {
           />
 
           <div className={teacherPanel()}>
-            <div className="flex items-center justify-between gap-3 border-b border-gray-100 px-5 py-4">
+            <div className="flex items-center justify-between gap-3 border-b border-border-default px-5 py-4">
               <div>
-                <h2 className="text-sm font-semibold text-[#0D1B2A]">
+                <h2 className="text-sm font-semibold text-foreground">
                   {t("zoom.scheduledMeetings", { defaultValue: "Scheduled meetings" })}
                 </h2>
-                <p className="mt-0.5 text-xs text-gray-500">
+                <p className="mt-0.5 text-xs text-text-muted">
                   {t("zoom.scheduledMeetingsDesc", {
                     defaultValue: "Your upcoming live sessions — join or cancel anytime.",
                   })}
@@ -228,13 +230,13 @@ function ScheduleContent() {
               <LoadingBlock />
             ) : upcoming.length === 0 ? (
               <div className="px-5 py-12 text-center">
-                <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#F0F2F5]">
-                  <Users className="h-7 w-7 text-gray-400" />
+                <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-surface-subtle">
+                  <Users className="h-7 w-7 text-text-muted" />
                 </div>
-                <p className="text-sm font-medium text-[#0D1B2A]">
+                <p className="text-sm font-medium text-foreground">
                   {t("zoom.emptyTitle", { defaultValue: "No classes scheduled yet" })}
                 </p>
-                <p className="mx-auto mt-1 max-w-xs text-xs text-gray-500">
+                <p className="mx-auto mt-1 max-w-xs text-xs text-text-muted">
                   {zoomReady
                     ? t("zoom.emptyDescReady", {
                         defaultValue: "Use the form on the left to schedule your first live class.",
@@ -245,39 +247,41 @@ function ScheduleContent() {
                 </p>
               </div>
             ) : (
-              <div className="divide-y divide-gray-50 p-2">
+              <div className="divide-y divide-border-default p-2">
                 {upcoming.map((m) => {
                   const parts = lessonDateParts(m.start_time, locale, todayLabel);
                   return (
                     <div
                       key={m.id}
                       className={cn(
-                        "flex flex-col gap-4 rounded-xl p-4 transition hover:bg-[#FAFBFC] sm:flex-row sm:items-center",
-                        parts.isToday && "bg-[#FFF9E6]/50"
+                        "flex flex-col gap-4 rounded-xl p-4 transition hover:bg-surface-subtle sm:flex-row sm:items-center",
+                        parts.isToday && "bg-[var(--brand-gold-muted)]/50"
                       )}
                     >
                       <div className="flex min-w-0 flex-1 items-center gap-4">
                         <div
                           className={cn(
                             "flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-xl border",
-                            parts.isToday ? "border-[#D4AF37]/50 bg-[#FFF9E6]" : "border-gray-100 bg-white"
+                            parts.isToday
+                              ? "border-[var(--brand-gold)]/50 bg-[var(--brand-gold-muted)]"
+                              : "border-border-default bg-surface-elevated"
                           )}
                         >
-                          <span className="text-2xl font-bold text-[#0D1B2A]">{parts.day}</span>
+                          <span className="text-2xl font-bold text-foreground">{parts.day}</span>
                           <span className="text-[10px] font-bold uppercase text-[#D4AF37]">{parts.month}</span>
                         </div>
                         <div className="min-w-0">
-                          <p className="truncate font-semibold text-[#0D1B2A]">
+                          <p className="truncate font-semibold text-foreground">
                             {m.meeting_title || t("zoom.liveClass", { defaultValue: "Live class" })}
                           </p>
-                          <p className="text-sm text-gray-500">{parts.weekday}</p>
-                          <div className="mt-1.5 flex flex-wrap items-center gap-2 text-xs text-gray-400">
+                          <p className="text-sm text-text-muted">{parts.weekday}</p>
+                          <div className="mt-1.5 flex flex-wrap items-center gap-2 text-xs text-text-muted">
                             <span className="inline-flex items-center gap-1">
                               <Clock className="h-3 w-3" />
                               {formatTimeRange(m.start_time, m.duration, locale)}
                             </span>
                             {m.meeting_type && (
-                              <span className="rounded-full bg-gray-100 px-2 py-0.5 capitalize text-gray-600">
+                              <span className="rounded-full bg-surface-subtle px-2 py-0.5 capitalize text-text-muted">
                                 {m.meeting_type.replace(/_/g, " ")}
                               </span>
                             )}

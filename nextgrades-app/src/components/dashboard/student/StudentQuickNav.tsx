@@ -86,17 +86,17 @@ export function StudentQuickNav({ openTaskCount = 0, appointmentHint }: StudentQ
             aria-current={active ? "page" : undefined}
             className={cn(
               "group flex min-h-[5.5rem] flex-col justify-between rounded-xl border bg-surface-elevated p-4 transition",
-              active
-                ? "border-[#D4AF37]/40 shadow-sm ring-1 ring-[#D4AF37]/15"
-                : "border-border-default hover:border-[#D4AF37]/25 hover:shadow-sm"
+                active
+                  ? "border-[var(--brand-gold)]/40 shadow-sm ring-1 ring-[var(--brand-gold)]/15"
+                  : "border-border-default hover:border-[var(--brand-gold)]/25 hover:shadow-sm"
             )}
           >
             <span
               className={cn(
                 "flex h-9 w-9 items-center justify-center rounded-lg transition",
                 active
-                  ? "bg-[#D4AF37]/15 text-[#D4AF37]"
-                  : "bg-surface-subtle text-foreground group-hover:bg-[#D4AF37]/10 group-hover:text-[#D4AF37]"
+                  ? "bg-[var(--brand-gold-muted)] text-[var(--brand-gold)]"
+                  : "bg-surface-subtle text-foreground group-hover:bg-[var(--brand-gold-muted)] group-hover:text-[var(--brand-gold)]"
               )}
             >
               <Icon className="h-[18px] w-[18px]" strokeWidth={2} />

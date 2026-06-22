@@ -31,7 +31,7 @@ export function DashboardPage({ role, titleKey, descriptionKey, children }: Dash
           <div className="mb-4 flex items-center gap-4">
             <Link
               href={role === "admin" ? ADMIN_PORTAL_HOME : `/dashboard/${role}`}
-              className="touch-target flex items-center justify-center rounded-xl text-foreground transition-colors hover:bg-black/5 dark:hover:bg-white/10"
+              className="touch-target flex items-center justify-center rounded-xl text-foreground transition-colors hover:bg-[var(--table-row-hover)]"
             >
               <ArrowLeft className="h-5 w-5" />
             </Link>

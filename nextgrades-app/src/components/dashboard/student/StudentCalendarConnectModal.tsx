@@ -97,7 +97,7 @@ export function StudentCalendarConnectModal({ open, onClose }: StudentCalendarCo
       <div className={cn("w-full max-w-lg rounded-2xl p-6 shadow-xl", st.panel)} role="dialog" aria-modal="true">
         <div className="mb-5 flex items-start justify-between gap-3">
           <div className="flex items-start gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#D4AF37]/15">
+            <div className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-xl", st.goldIconWrap)}>
               <Calendar className="h-5 w-5 text-[#D4AF37]" />
             </div>
             <div>

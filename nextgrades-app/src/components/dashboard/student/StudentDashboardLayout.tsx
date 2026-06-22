@@ -9,6 +9,7 @@ interface StudentDashboardLayoutProps {
   headerAction?: React.ReactNode;
   topRightAction?: React.ReactNode;
   hideBottomNav?: boolean;
+  hideTopBar?: boolean;
   suppressMobileTitle?: boolean;
 }
 
@@ -19,6 +20,7 @@ export function StudentDashboardLayout({
   headerAction,
   topRightAction,
   hideBottomNav,
+  hideTopBar,
   suppressMobileTitle,
 }: StudentDashboardLayoutProps) {
   return (
@@ -29,6 +31,7 @@ export function StudentDashboardLayout({
       headerAction={headerAction}
       topRightAction={topRightAction}
       hideBottomNav={hideBottomNav}
+      hideTopBar={hideTopBar}
       suppressMobileTitle={suppressMobileTitle}
     >
       {children}
