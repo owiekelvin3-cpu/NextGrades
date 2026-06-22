@@ -154,13 +154,14 @@
   --focus-ring: var(--brand-gold-ring);
   --ring-offset: #faf9f6;
 
-  --footer-background: #0d1b2a;
-  --footer-foreground: #f5f7fa;
-  --footer-muted: rgba(212, 175, 55, 0.75);
-  --footer-subtle: rgba(255, 255, 255, 0.55);
-  --footer-border: rgba(212, 175, 55, 0.12);
-  --footer-link: rgba(255, 255, 255, 0.85);
-  --footer-heading: var(--brand-gold);
+  --footer-background: #f4f0e8;
+  --footer-foreground: #0d1b2a;
+  --footer-muted: rgba(13, 27, 42, 0.62);
+  --footer-subtle: rgba(13, 27, 42, 0.48);
+  --footer-border: rgba(13, 27, 42, 0.1);
+  --footer-link: #2a3548;
+  --footer-heading: #0d1b2a;
+  --footer-bar-background: #ebe4d6;
 
   --transition-theme: background-color 0.32s cubic-bezier(0.4, 0, 0.2, 1),
     color 0.32s cubic-bezier(0.4, 0, 0.2, 1),
@@ -295,6 +296,7 @@
   --footer-border: rgba(212, 175, 55, 0.12);
   --footer-link: rgba(255, 255, 255, 0.82);
   --footer-heading: var(--brand-gold);
+  --footer-bar-background: #070f18;
 }
 
 /* Smooth theme switching */
@@ -462,13 +464,17 @@ html.theme-animate *::after {
   color: var(--on-navy-faint);
 }
 
-/* Site footer — brand anchor bar (consistent in light & dark site themes) */
+/* Site footer — reference layout; adapts to light/dark site theme */
 .site-footer {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(180deg, var(--footer-background) 0%, #070f18 100%);
+  background: linear-gradient(180deg, var(--footer-background) 0%, var(--footer-bar-background) 100%);
   color: var(--footer-foreground);
   border-top: 1px solid var(--footer-border);
+}
+
+.dark .site-footer {
+  background: linear-gradient(180deg, var(--footer-background) 0%, #070f18 100%);
 }
 
 .site-footer::before {
@@ -476,6 +482,10 @@ html.theme-animate *::after {
   position: absolute;
   inset: 0;
   pointer-events: none;
+  background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(212, 175, 55, 0.1), transparent 60%);
+}
+
+.dark .site-footer::before {
   background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(212, 175, 55, 0.14), transparent 60%);
 }
 
@@ -560,6 +570,94 @@ html.theme-animate *::after {
   width: 1.5rem;
   border-radius: 9999px;
   background: linear-gradient(90deg, var(--brand-gold), transparent);
+}
+
+.site-footer .footer-social-btn {
+  display: flex;
+  height: 2.5rem;
+  width: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  border: 1px solid var(--footer-border);
+  color: var(--footer-link);
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.site-footer .footer-social-btn:hover {
+  border-color: rgba(212, 175, 55, 0.45);
+  color: var(--brand-gold);
+  background: rgba(212, 175, 55, 0.08);
+}
+
+.site-footer .footer-newsletter-input {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid var(--footer-border);
+  background: transparent;
+  padding: 0.625rem 0;
+  font-size: 0.875rem;
+  color: var(--footer-foreground);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.site-footer .footer-newsletter-input::placeholder {
+  color: var(--footer-subtle);
+}
+
+.site-footer .footer-newsletter-input:focus {
+  border-bottom-color: var(--brand-gold);
+}
+
+.site-footer .footer-newsletter-btn {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.25rem;
+  background: var(--brand-gold);
+  padding: 0.625rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--brand-navy);
+  transition:
+    background-color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.site-footer .footer-newsletter-btn:hover:not(:disabled) {
+  background: var(--brand-gold-hover);
+}
+
+.site-footer .footer-newsletter-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.site-footer .footer-legal-bar {
+  border-top: 1px solid var(--footer-border);
+  background: var(--footer-bar-background);
+}
+
+.site-footer .footer-legal-link {
+  font-size: 0.6875rem;
+  line-height: 1.5;
+  color: var(--footer-subtle);
+  transition: color 0.2s ease;
+}
+
+.site-footer .footer-legal-link:hover {
+  color: var(--brand-gold);
+}
+
+@media (min-width: 768px) {
+  .site-footer .footer-legal-link {
+    font-size: 0.75rem;
+  }
 }
 
 /* ── Theme-aware button system (light + dark) ── */

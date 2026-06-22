@@ -70,7 +70,14 @@
     "madeInGermany": "Mit ♥ in Österreich",
     "countryAustria": "Österreich",
     "location": "Mit ♥ in {{country}}",
-    "copyright": "© 2026 NextGrades. Alle Rechte vorbehalten."
+    "copyright": "© 2026 NextGrades. Alle Rechte vorbehalten.",
+    "support": "Support",
+    "newsletterTitle": "Newsletter",
+    "newsletterDesc": "Bleib auf dem Laufenden zu Programmen, Lerntipps und Neuigkeiten von NextGrades.",
+    "newsletterPlaceholder": "E-Mail-Adresse eingeben",
+    "newsletterCta": "Anmelden",
+    "newsletterSuccess": "Danke — du bist angemeldet!",
+    "cookieSettings": "Cookie-Einstellungen"
   },
   "home": {
     "heroTitle1": "Nachhilfe neu gedacht.",

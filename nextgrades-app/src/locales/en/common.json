@@ -70,7 +70,14 @@
     "madeInGermany": "Made with ♥ in Germany",
     "countryAustria": "Austria",
     "location": "Made with ♥ in {{country}}",
-    "copyright": "© 2026 NextGrades. All rights reserved."
+    "copyright": "© 2026 NextGrades. All rights reserved.",
+    "support": "Support",
+    "newsletterTitle": "Newsletter",
+    "newsletterDesc": "Stay up to date on programs, learning tips, and news from NextGrades.",
+    "newsletterPlaceholder": "Enter your e-mail address",
+    "newsletterCta": "Sign Up",
+    "newsletterSuccess": "Thanks — you're on the list!",
+    "cookieSettings": "Cookie settings"
   },
   "home": {
     "heroEyebrow": "THE FUTURE OF LEARNING STARTS HERE.",
