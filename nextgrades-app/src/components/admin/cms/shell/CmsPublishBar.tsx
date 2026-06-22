@@ -31,7 +31,7 @@ export function CmsPublishBar({ pageId }: Props) {
           </Button>
           <Button variant="gold" size="sm" disabled={publishing} onClick={() => void publish(pageId ?? undefined)}>
             {publishing ? <Loader2 className="h-4 w-4 animate-spin" /> : <CloudUpload className="mr-2 h-4 w-4" />}
-            Publish live
+            Save all changes
           </Button>
         </div>
       </div>

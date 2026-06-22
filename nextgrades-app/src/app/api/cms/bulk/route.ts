@@ -11,6 +11,7 @@ import { mergeCmsFields, countPageStats } from "@/lib/cms/merge-content";
 import type { CmsSavePayload } from "@/lib/cms/save-content";
 import type { CmsContentRow } from "@/lib/cms/types";
 import { logCmsActivity } from "@/lib/cms/activity";
+import { revalidateCmsAfterPublish } from "@/lib/cms/revalidate-pages";
 
 function isMissingColumnError(message: string, column: string) {
   return message.includes(column) && (message.includes("column") || message.includes("schema cache"));
@@ -258,6 +259,11 @@ export async function PUT(request: Request) {
     });
     } catch {
       /* activity log optional until migration 00025 */
+    }
+
+    if (mode === "publish") {
+      const pageIds = [...new Set(updates.map((u) => u.pageGroup).filter(Boolean))];
+      revalidateCmsAfterPublish(pageIds);
     }
 
     return NextResponse.json({ success: true, count: saved, mode: mode === "draft" ? "draft" : "publish" });

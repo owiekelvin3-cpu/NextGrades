@@ -10,6 +10,7 @@ import {
   CMS_SIDEBAR_PAGES,
   CMS_SIDEBAR_TOOLS,
   CMS_SIDEBAR_SECTIONS,
+  CMS_HUB_HREF,
 } from "@/lib/cms/cms-nav";
 import { ADMIN_PORTAL_HOME } from "@/lib/admin/portal-paths";
 import { useSidebar } from "@/context/SidebarContext";
@@ -71,7 +72,8 @@ function CmsSidebarNav({
         const active =
           pathname === item.href ||
           pathname?.startsWith(`${item.href}/`) ||
-          (item.id === "pages-hub" && onPagesSection);
+          (item.id === "pages-hub" &&
+            (onPagesSection || pathname === CMS_HUB_HREF || pathname?.startsWith(`${CMS_HUB_HREF}/pages`)));
         return (
           <CmsNavLink key={item.id} item={item} active={Boolean(active)} onNavigate={onNavigate} />
         );

@@ -54,7 +54,7 @@ export async function GET() {
 
     return NextResponse.json(rowsToOverrideMap(mapped), {
       headers: {
-        "Cache-Control": "public, s-maxage=300, stale-while-revalidate=900",
+        "Cache-Control": "public, max-age=0, must-revalidate",
       },
     });
   } catch (error) {

@@ -90,9 +90,8 @@ export function ContactPageContent() {
     "w-full rounded-xl border border-[var(--input-border)] bg-[var(--input-background)] px-4 py-3.5 text-sm text-[var(--input-foreground)] transition-all placeholder:text-[var(--input-placeholder)] focus:border-[var(--brand-gold)] focus:outline-none focus:ring-2 focus:ring-[var(--brand-gold-ring)]";
 
   const selectClass = cn(
-    inputClass,
-    "appearance-none bg-[length:1rem_1rem] bg-[right_1rem_center] bg-no-repeat pr-10",
-    "bg-[image:var(--select-chevron)]"
+    "theme-select w-full rounded-xl px-4 py-3.5 text-sm transition-all focus:border-[var(--brand-gold)] focus:outline-none focus:ring-2 focus:ring-[var(--brand-gold-ring)]",
+    !formData.subject && "theme-select--placeholder"
   );
 
   const heroBg = mt.isDark ? "#0D1B2A" : "var(--background)";
@@ -152,11 +151,6 @@ export function ContactPageContent() {
 
   return (
     <div className={cn("marketing-page-root flex min-h-screen flex-col", mt.page)}>
-      <style>{`
-        :root { --select-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238a7428' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); }
-        .dark { --select-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23d4af37' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); }
-      `}</style>
-
       <Navbar />
 
       <main className="flex-1 overflow-x-hidden">
@@ -334,9 +328,18 @@ export function ContactPageContent() {
                       </div>
                     </div>
 
-                    <div>
-                      <label className={cn("mb-2 flex items-center gap-2 text-sm font-medium", mt.heading)}>
-                        <BookOpen className="h-4 w-4 text-[var(--brand-gold)]" aria-hidden />
+                    <div
+                      className={cn(
+                        "rounded-xl border border-border-default p-4 sm:p-5",
+                        mt.isDark
+                          ? "bg-surface-elevated ring-1 ring-[var(--border-strong)]"
+                          : "bg-surface-subtle"
+                      )}
+                    >
+                      <label className={cn("mb-2 flex items-center gap-2 text-sm font-semibold", mt.heading)}>
+                        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--brand-gold-muted)]">
+                          <BookOpen className="h-4 w-4 text-[var(--brand-gold)]" aria-hidden />
+                        </span>
                         {t("contact.subject")}
                       </label>
                       <select
@@ -360,7 +363,9 @@ export function ContactPageContent() {
                           ))}
                         </optgroup>
                       </select>
-                      <p className={cn("mt-1.5 text-xs", mt.muted)}>{t("contact.subjectHint")}</p>
+                      <p className={cn("mt-2 text-xs leading-relaxed", mt.isDark ? "text-[var(--foreground-secondary)]" : mt.body)}>
+                        {t("contact.subjectHint")}
+                      </p>
                     </div>
 
                     <div>

@@ -3,6 +3,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { requireAdminApi } from "@/lib/auth/api-auth";
 import { isSupabaseServiceRoleConfigured } from "@/lib/supabase/env";
 import { logCmsActivity } from "@/lib/cms/activity";
+import { revalidateCmsAfterPublish } from "@/lib/cms/revalidate-pages";
 
 export async function POST(request: Request) {
   const gate = await requireAdminApi();
@@ -71,6 +72,12 @@ export async function POST(request: Request) {
       user_id: gate.auth!.user.id,
       user_email: (gate.auth!.user as { email?: string }).email ?? null,
     });
+
+    if (pageGroup) {
+      revalidateCmsAfterPublish([pageGroup]);
+    } else {
+      revalidateCmsAfterPublish([]);
+    }
 
     return NextResponse.json({ success: true, count });
   } catch (error: unknown) {

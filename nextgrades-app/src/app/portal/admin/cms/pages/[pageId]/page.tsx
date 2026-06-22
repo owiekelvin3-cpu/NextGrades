@@ -1,8 +1,8 @@
-import { CmsVisualEditor } from "@/components/admin/cms/CmsVisualEditor";
+import { CmsPageEditor } from "@/components/admin/cms/CmsPageEditor";
 
 type Props = { params: Promise<{ pageId: string }> };
 
 export default async function CmsPageEditorRoute({ params }: Props) {
   const { pageId } = await params;
-  return <CmsVisualEditor pageId={pageId} />;
+  return <CmsPageEditor pageId={pageId} />;
 }

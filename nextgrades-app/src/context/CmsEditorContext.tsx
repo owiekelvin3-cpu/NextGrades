@@ -136,7 +136,7 @@ export function CmsEditorProvider({ children }: { children: ReactNode }) {
         applyPublishResult(dirty);
         if (mode === "publish") {
           await refreshCms();
-          toast.success(`Published ${data.count} field(s) to the live website`);
+          toast.success("Changes saved! Live site updated.");
         } else {
           toast.success(`Saved ${data.count} draft(s)`);
         }

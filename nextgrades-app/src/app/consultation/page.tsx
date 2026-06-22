@@ -79,6 +79,11 @@ export default function ConsultationPage() {
   const cardBg = cn("border border-[var(--border-default)] bg-[var(--card-background)]");
   const inputClass =
     "w-full rounded-xl border border-[var(--input-border)] bg-[var(--input-background)] px-4 py-3.5 text-[var(--input-foreground)] transition-all placeholder:text-[var(--input-placeholder)] focus:border-[var(--brand-gold)] focus:outline-none focus:ring-2 focus:ring-[var(--brand-gold-ring)]";
+  const selectClass = (value: string) =>
+    cn(
+      "theme-select w-full rounded-xl px-4 py-3.5 text-sm transition-all focus:border-[var(--brand-gold)] focus:outline-none focus:ring-2 focus:ring-[var(--brand-gold-ring)]",
+      !value && "theme-select--placeholder"
+    );
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -442,7 +447,7 @@ export default function ConsultationPage() {
                         </label>
                         <select
                           required
-                          className={inputClass}
+                          className={selectClass(form.grade)}
                           value={form.grade}
                           onChange={(e) => setForm({ ...form, grade: e.target.value })}
                         >
@@ -460,7 +465,7 @@ export default function ConsultationPage() {
                         </label>
                         <select
                           required
-                          className={inputClass}
+                          className={selectClass(form.subject)}
                           value={form.subject}
                           onChange={(e) => setForm({ ...form, subject: e.target.value })}
                         >
@@ -478,7 +483,7 @@ export default function ConsultationPage() {
                         </label>
                         <select
                           required
-                          className={inputClass}
+                          className={selectClass(form.preferredTime)}
                           value={form.preferredTime}
                           onChange={(e) => setForm({ ...form, preferredTime: e.target.value })}
                         >
