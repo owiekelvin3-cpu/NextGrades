@@ -18,7 +18,6 @@ type Props = {
   imageSrc: string;
   imageFallback?: string;
   icon: LucideIcon;
-  accentColor?: string;
   bookTutoringLabel: string;
   viewMaterialsLabel: string;
   onViewMaterials: () => void;
@@ -31,7 +30,6 @@ export function SubjectProgramCard({
   imageSrc,
   imageFallback,
   icon: Icon,
-  accentColor = "#D4AF37",
   bookTutoringLabel,
   viewMaterialsLabel,
   onViewMaterials,
@@ -44,17 +42,18 @@ export function SubjectProgramCard({
         className
       )}
     >
-      {/* Desktop image header */}
-      <div className="relative hidden md:block">
-        <div className="relative h-40 overflow-hidden">
+      {/* Subject photo header */}
+      <div className="relative">
+        <div className="relative h-36 overflow-hidden sm:h-40">
           <MarketingImage
             src={imageSrc}
             fallbackSrc={imageFallback}
-            alt=""
+            alt={subject.title}
             containerClassName="h-full w-full"
             sizes="(max-width: 640px) 100vw, (max-width: 1280px) 20vw, 240px"
             className="transition-transform duration-500 group-hover:scale-[1.03]"
           />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#112240]/80 via-transparent to-transparent" />
         </div>
         <div
           className="absolute -bottom-5 left-4 z-10 flex h-11 w-11 items-center justify-center rounded-lg bg-[#D4AF37] shadow-lg"
@@ -65,19 +64,9 @@ export function SubjectProgramCard({
       </div>
 
       <div className="flex flex-1 flex-col p-5 md:px-5 md:pb-6 md:pt-9">
-        {/* Mobile: icon + title row */}
-        <div className="flex items-start gap-4 md:block">
-          <div
-            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-lg font-bold text-[#0D1B2A] md:hidden"
-            style={{ backgroundColor: accentColor }}
-            aria-hidden
-          >
-            <Icon className="h-5 w-5 text-[#0D1B2A]" strokeWidth={2} />
-          </div>
-          <div className="min-w-0 flex-1">
-            <h3 className="text-lg font-semibold leading-snug text-white md:text-lg md:font-bold">{subject.title}</h3>
-            <p className="mt-1 hidden text-sm leading-relaxed text-on-navy-subtle md:block">{subject.description}</p>
-          </div>
+        <div className="min-w-0 flex-1">
+          <h3 className="text-lg font-semibold leading-snug text-white md:text-lg md:font-bold">{subject.title}</h3>
+          <p className="mt-1 text-sm leading-relaxed text-on-navy-subtle">{subject.description}</p>
         </div>
 
         <ul className="mt-4 flex-1 space-y-2 md:mt-4">

@@ -107,23 +107,32 @@ export const LOGIN_AVATAR_IMAGES = [
   BRANDED.studentsGroup4,
 ] as const;
 
-const SUBJECT_CARD_PHOTO = BRANDED.subjectBooks;
+const SUBJECT_PHOTO_PARAMS = "auto=format&fit=crop&w=800&h=500&q=80";
+
+/** Curated Unsplash photos — one distinct image per subject on /subjects */
+function subjectPhoto(photoId: string): string {
+  return `https://images.unsplash.com/${photoId}?${SUBJECT_PHOTO_PARAMS}`;
+}
+
+export const SUBJECT_ONLINE_IMAGES = {
+  math: subjectPhoto("photo-1635070041078-e363dbe005cb"),
+  german: subjectPhoto("photo-1456513080510-7bf3a84b82f8"),
+  english: subjectPhoto("photo-1544716278-ca5e3f4abd8c"),
+  french: subjectPhoto("photo-1502602898657-3e91760cbb34"),
+  italian: subjectPhoto("photo-1552832230-c0197dd311b5"),
+  latin: subjectPhoto("photo-1551882547-ff40c63fe5fa"),
+  chemistry: subjectPhoto("photo-1532094349884-543bc11b234d"),
+  physics: subjectPhoto("photo-1567427017947-545c5f8d16ad"),
+  biology: subjectPhoto("photo-1582719471384-894fbb16e074"),
+  accounting: subjectPhoto("photo-1554224155-6726b3ff858f"),
+  business: subjectPhoto("photo-1556761175-5973dc0f32e7"),
+  "business-admin": subjectPhoto("photo-1460925895917-afdab827c52f"),
+  "computer-science": subjectPhoto("photo-1517694712202-14dd9538aa97"),
+  "technical-drawing": subjectPhoto("photo-1503387762-592deb58ef4e"),
+} as const;
 
 export const SUBJECT_IMAGE_BY_ID: Record<string, string> = {
-  math: SUBJECT_CARD_PHOTO,
-  english: SUBJECT_CARD_PHOTO,
-  german: SUBJECT_CARD_PHOTO,
-  physics: SUBJECT_CARD_PHOTO,
-  chemistry: SUBJECT_CARD_PHOTO,
-  biology: BRANDED.studyDesk,
-  business: BRANDED.platformLaptop,
-  "business-admin": BRANDED.platformLaptop,
-  accounting: BRANDED.platformLaptop,
-  french: SUBJECT_CARD_PHOTO,
-  italian: SUBJECT_CARD_PHOTO,
-  latin: SUBJECT_CARD_PHOTO,
-  "computer-science": BRANDED.tutoringSession,
-  "technical-drawing": BRANDED.studyDesk,
+  ...SUBJECT_ONLINE_IMAGES,
 };
 
 const SUBJECT_ALIASES: Record<string, string> = {
@@ -151,11 +160,11 @@ export function normalizeSubjectKey(slugOrName?: string | null): string {
 }
 
 export const SUBJECT_CARD_IMAGES = [
-  SUBJECT_IMAGE_BY_ID.math,
-  SUBJECT_IMAGE_BY_ID.english,
-  SUBJECT_IMAGE_BY_ID.german,
-  SUBJECT_IMAGE_BY_ID.physics,
-  SUBJECT_IMAGE_BY_ID.chemistry,
+  SUBJECT_ONLINE_IMAGES.math,
+  SUBJECT_ONLINE_IMAGES.english,
+  SUBJECT_ONLINE_IMAGES.german,
+  SUBJECT_ONLINE_IMAGES.physics,
+  SUBJECT_ONLINE_IMAGES.chemistry,
 ] as const;
 
 export function getSubjectImage(subjectId: string, index = 0): string {

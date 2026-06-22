@@ -42,20 +42,6 @@ import { MarketingHeroMobileImage } from "@/components/marketing/MarketingHeroMo
 import { cn } from "@/lib/utils";
 import { hero, type, section } from "@/lib/premium/tokens";
 
-const SUBJECT_ACCENT_COLORS = [
-  "#F59E0B",
-  "#3B82F6",
-  "#10B981",
-  "#8B5CF6",
-  "#EF4444",
-  "#F97316",
-  "#06B6D4",
-  "#6366F1",
-  "#22C55E",
-  "#F59E0B",
-  "#3B82F6",
-] as const;
-
 const SUBJECT_ICONS: Record<string, typeof Calculator> = {
   math: Calculator,
   english: BookOpen,
@@ -239,7 +225,6 @@ export default function SubjectsPage() {
                         imageSrc={image}
                         imageFallback={imageFallback}
                         icon={Icon}
-                        accentColor={SUBJECT_ACCENT_COLORS[index % SUBJECT_ACCENT_COLORS.length]}
                         bookTutoringLabel={t("subjectsPage.bookTutoring")}
                         viewMaterialsLabel={t("subjectsPage.viewMaterials")}
                         onViewMaterials={() => openBrowse(subject)}
