@@ -260,8 +260,74 @@
     }
   },
   "contact": {
-    "title": "Let's Get In Touch.",
-    "subtitle": "Or just reach out manually to",
+    "eyebrow": "Contact NextGrades",
+    "title": "We're here to help you succeed.",
+    "subtitle": "Tell us what you need — or reach us directly at",
+    "heroDesc": "Whether you're a parent, student, or school, our team will guide you to the right program with personal, no-obligation support.",
+    "heroCta": "Send a message",
+    "benefitsEyebrow": "Get in touch",
+    "benefits": [
+      {
+        "title": "Personal support",
+        "description": "Tailored guidance for your goals — from first question to enrollment."
+      },
+      {
+        "title": "Qualified tutors",
+        "description": "Experienced educators across core school subjects and exam preparation."
+      },
+      {
+        "title": "Clear structure",
+        "description": "Transparent programs, pricing, and learning paths you can trust."
+      },
+      {
+        "title": "Measurable progress",
+        "description": "Structured tutoring designed to build confidence and results."
+      }
+    ],
+    "sectionPersonal": "Your details",
+    "processEyebrow": "How it works",
+    "processTitle": "What happens next",
+    "steps": [
+      {
+        "title": "Send your message",
+        "description": "Fill out the form with your question, subject, or program interest."
+      },
+      {
+        "title": "We review your request",
+        "description": "Our team reads every message and routes it to the right specialist."
+      },
+      {
+        "title": "Personal reply",
+        "description": "We respond within one business day with clear next steps."
+      },
+      {
+        "title": "Start learning",
+        "description": "Book a consultation or enroll in the program that fits you best."
+      }
+    ],
+    "supportTitle": "Still have questions?",
+    "supportDesc": "Reach us directly — we're happy to help by email or phone.",
+    "faqTitle": "Frequently asked questions",
+    "faqs": [
+      {
+        "question": "How quickly do you respond?",
+        "answer": "We typically reply within one business day. Urgent requests are prioritized during our support hours."
+      },
+      {
+        "question": "Is the initial consultation free?",
+        "answer": "Yes. We offer a free consultation to help you find the right program before you commit."
+      },
+      {
+        "question": "Which subjects and programs do you offer?",
+        "answer": "We cover core school subjects, 1:1 tutoring, group courses, math programs, and exam preparation. Select a subject in the form and we'll share details."
+      },
+      {
+        "question": "How do I get started after contacting you?",
+        "answer": "After we reply, you can book a free consultation, compare plans on our pricing page, or enroll directly with our team's guidance."
+      }
+    ],
+    "privacyAgree": "I agree to the processing of my data according to the",
+    "privacyRequired": "Please accept the privacy policy to continue.",
     "firstName": "First Name",
     "lastName": "Last Name",
     "emailAddress": "Email Address",

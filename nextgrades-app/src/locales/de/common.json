@@ -336,8 +336,74 @@
     }
   },
   "contact": {
-    "title": "Nicht sicher, welches Programm passt?",
-    "subtitle": "Wir beraten dich kostenlos und finden gemeinsam die beste Lösung.",
+    "eyebrow": "Kontakt bei NextGrades",
+    "title": "Wir helfen dir, das Beste aus deiner Lernreise zu machen.",
+    "subtitle": "Schreib uns — oder erreich uns direkt unter",
+    "heroDesc": "Ob Eltern, Schüler:in oder Schule: Unser Team berät dich persönlich und unverbindlich zum passenden Programm.",
+    "heroCta": "Nachricht senden",
+    "benefitsEyebrow": "Kontakt aufnehmen",
+    "benefits": [
+      {
+        "title": "Persönliche Betreuung",
+        "description": "Individuelle Beratung von der ersten Frage bis zur Anmeldung."
+      },
+      {
+        "title": "Erfahrene Lehrkräfte",
+        "description": "Qualifizierte Tutor:innen in Kernfächern und Prüfungsvorbereitung."
+      },
+      {
+        "title": "Klare Struktur",
+        "description": "Transparente Programme, Preise und Lernwege, denen du vertrauen kannst."
+      },
+      {
+        "title": "Messbare Fortschritte",
+        "description": "Strukturierte Nachhilfe für mehr Sicherheit und bessere Ergebnisse."
+      }
+    ],
+    "sectionPersonal": "Deine Angaben",
+    "processEyebrow": "So funktioniert's",
+    "processTitle": "Was als Nächstes passiert",
+    "steps": [
+      {
+        "title": "Nachricht senden",
+        "description": "Fülle das Formular mit deiner Frage, deinem Fach oder Programmwunsch aus."
+      },
+      {
+        "title": "Wir prüfen deine Anfrage",
+        "description": "Unser Team liest jede Nachricht und leitet sie an die richtige Fachperson weiter."
+      },
+      {
+        "title": "Persönliche Antwort",
+        "description": "Wir melden uns in der Regel innerhalb eines Werktags mit klaren nächsten Schritten."
+      },
+      {
+        "title": "Loslegen",
+        "description": "Buche eine Beratung oder starte mit dem Programm, das zu dir passt."
+      }
+    ],
+    "supportTitle": "Noch Fragen?",
+    "supportDesc": "Erreich uns direkt per E-Mail oder Telefon — wir helfen gerne weiter.",
+    "faqTitle": "Häufig gestellte Fragen",
+    "faqs": [
+      {
+        "question": "Wie schnell antwortet ihr?",
+        "answer": "In der Regel innerhalb eines Werktags. Dringende Anfragen bearbeiten wir während unserer Support-Zeiten priorisiert."
+      },
+      {
+        "question": "Ist die Erstberatung kostenlos?",
+        "answer": "Ja. Wir bieten eine kostenlose Beratung, damit du das passende Programm finden kannst — ohne Verpflichtung."
+      },
+      {
+        "question": "Welche Fächer und Programme bietet ihr an?",
+        "answer": "Wir decken Kernfächer, Einzelnachhilfe, Gruppenkurse, Mathe-Programme und Prüfungsvorbereitung ab. Wähle ein Fach im Formular — wir senden dir die Details."
+      },
+      {
+        "question": "Wie geht es nach der Kontaktaufnahme weiter?",
+        "answer": "Nach unserer Antwort kannst du eine kostenlose Beratung buchen, Tarife vergleichen oder dich mit unserer Hilfe direkt anmelden."
+      }
+    ],
+    "privacyAgree": "Ich stimme der Verarbeitung meiner Daten gemäß der",
+    "privacyRequired": "Bitte akzeptiere die Datenschutzerklärung, um fortzufahren.",
     "firstName": "Vorname",
     "lastName": "Nachname",
     "emailAddress": "E-Mail-Adresse",
