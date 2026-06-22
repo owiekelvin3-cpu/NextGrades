@@ -583,8 +583,33 @@ body {
 }
 
 /* Subject / program card primary CTA — label left, icon capsule right */
+.btn-card-primary,
+.btn-card-secondary {
+  display: inline-flex;
+  align-items: center;
+  transform: translateZ(0);
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.btn-card-primary:focus-visible,
+.btn-card-secondary:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--ring-offset), 0 0 0 4px var(--brand-gold-ring);
+}
+
+.btn-card-primary:disabled,
+.btn-card-secondary:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
 .btn-card-primary {
-  @apply theme-btn-interaction flex w-full items-center justify-between gap-3 rounded-xl px-4 py-3.5 text-left text-sm font-semibold tracking-tight;
+  @apply flex w-full items-center justify-between gap-3 rounded-xl px-4 py-3.5 text-left text-sm font-semibold tracking-tight;
   background: linear-gradient(135deg, var(--button-primary-background) 0%, var(--brand-gold-light) 100%);
   color: var(--button-primary-foreground);
   border: 1px solid var(--button-gold-border);
@@ -593,6 +618,11 @@ body {
 
 .btn-card-primary:hover:not(:disabled) {
   background: var(--button-primary-hover);
+  transform: translateY(-1px);
+}
+
+.btn-card-primary:active:not(:disabled) {
+  transform: translateY(0);
 }
 
 .btn-card-primary-icon {
@@ -610,7 +640,7 @@ body {
 }
 
 .btn-card-secondary {
-  @apply theme-btn-interaction flex w-full items-center justify-center rounded-xl px-4 py-3 text-sm font-semibold;
+  @apply flex w-full items-center justify-center rounded-xl px-4 py-3 text-sm font-semibold;
   background: var(--button-secondary-background);
   color: var(--button-secondary-foreground);
   border: 1px solid var(--border-default);
@@ -619,6 +649,11 @@ body {
 .btn-card-secondary:hover:not(:disabled) {
   background: var(--button-secondary-hover);
   border-color: color-mix(in srgb, var(--brand-gold) 35%, var(--border-default));
+  transform: translateY(-1px);
+}
+
+.btn-card-secondary:active:not(:disabled) {
+  transform: translateY(0);
 }
 
 .btn-card-secondary--on-dark {
