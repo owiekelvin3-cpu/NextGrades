@@ -54,7 +54,7 @@ export default function Footer() {
         )}
       >
         {/* Main grid */}
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1.85fr)] lg:gap-14 xl:gap-20">
+        <div className="grid gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,1.85fr)] lg:gap-14 xl:gap-20">
           {/* Brand column */}
           <div className="flex flex-col gap-5">
             <BrandLogo size="md" href="/" onDarkBackground className="sm:hidden" />
@@ -87,7 +87,7 @@ export default function Footer() {
           </div>
 
           {/* Link columns — desktop */}
-          <div className="hidden gap-8 sm:grid sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+          <div className="hidden gap-6 md:grid md:grid-cols-2 lg:grid-cols-4 lg:gap-6">
             <FooterColumn title={t("footer.programs")}>
               {programLinks.map((item) => (
                 <FooterLink key={item.key} href={item.href}>
@@ -120,7 +120,7 @@ export default function Footer() {
         </div>
 
         {/* Link columns — mobile */}
-        <div className="mt-8 space-y-2 sm:hidden">
+        <div className="mt-8 space-y-2 md:hidden">
           <FooterMobileAccordion title={t("footer.programs")}>
             {programLinks.map((item) => (
               <FooterAccordionLink key={item.key} href={item.href}>

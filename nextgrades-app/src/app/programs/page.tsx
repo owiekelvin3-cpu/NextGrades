@@ -23,7 +23,8 @@ import { useMarketingTheme } from "@/lib/marketing-theme";
 import { PROGRAMS_HERO_IMAGE, PROGRAMS_PAGE_CARD_IMAGES } from "@/lib/marketing-images";
 import { MarketingImage } from "@/components/marketing/MarketingImage";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
-import { hero } from "@/lib/premium/tokens";
+import { MarketingHeroMobileImage } from "@/components/marketing/MarketingHeroMobileImage";
+import { hero, type } from "@/lib/premium/tokens";
 import { cn } from "@/lib/utils";
 
 const statIcons = [GraduationCap, UserRound, Star];
@@ -102,10 +103,10 @@ export default function ProgramsPage() {
                 <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-[#D4AF37] sm:text-sm">
                   {t("programsPage.heroEyebrow")}
                 </p>
-                <h1 className="mb-6 text-4xl font-bold leading-[1.12] sm:text-5xl lg:text-[3.25rem]">
+                <h1 className={cn(type.h1, "mb-6")}>
                   {t("programs.title")}
                 </h1>
-                <p className="mb-8 max-w-lg text-base leading-relaxed text-gray-300 sm:text-lg">
+                <p className="mb-8 max-w-lg text-base leading-relaxed text-on-navy-muted sm:text-lg">
                   {t("programsPage.heroSubtitle")}
                 </p>
                 <ul className="mb-8 flex flex-wrap gap-2.5 sm:gap-3">
@@ -121,11 +122,11 @@ export default function ProgramsPage() {
                     );
                   })}
                 </ul>
-                <Button variant="gold" size="md" className="px-8" href="/consultation">
+                <Button variant="gold" size="md" className="w-full px-8 sm:w-auto" href="/consultation">
                   {t("programsPage.freeConsultation")}
                 </Button>
               </div>
-              <div className="hero-enter hero-enter-delay-2 hidden min-h-[320px] lg:block" aria-hidden />
+              <MarketingHeroMobileImage src={programsHeroImage} alt={t("images.studentStudying")} priority />
             </div>
           </div>
         </section>
@@ -164,7 +165,7 @@ export default function ProgramsPage() {
               </h2>
               <p className="mx-auto max-w-2xl text-[var(--text-muted)]">{t("programsPage.sectionDesc")}</p>
             </div>
-            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+            <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
               {safePrograms.map((program, index) => {
                 const featured = index === 3;
                 return (

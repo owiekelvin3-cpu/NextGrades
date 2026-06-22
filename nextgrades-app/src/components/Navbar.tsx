@@ -206,7 +206,7 @@ export default function Navbar() {
             </div>
 
             <nav
-              className="hidden min-w-0 flex-1 items-center justify-center gap-0 lg:flex lg:gap-0.5 2xl:gap-1"
+              className="hidden min-w-0 flex-1 items-center justify-center gap-0 xl:flex xl:gap-0.5 2xl:gap-1"
               aria-label={t("marketingNav.bottomLabel")}
             >
               {primaryNavLinks.map((link) => (
@@ -273,7 +273,7 @@ export default function Navbar() {
               </div>
             </nav>
 
-            <div className="hidden shrink-0 items-center gap-1.5 lg:flex 2xl:gap-2">
+            <div className="hidden shrink-0 items-center gap-1.5 xl:flex 2xl:gap-2">
               <div className="flex items-center gap-1">
                 <LanguageSwitcher compact onDark={onDark} />
                 <ThemeToggle size="sm" onDark={onDark} />
@@ -357,7 +357,7 @@ export default function Navbar() {
               )}
             </div>
 
-            <div className="ml-auto flex items-center gap-1.5 lg:hidden">
+            <div className="ml-auto flex items-center gap-1.5 xl:hidden">
               <LanguageSwitcher compact onDark={onDark} />
               <ThemeToggle size="sm" onDark={onDark} />
               <button

@@ -38,8 +38,9 @@ import { useLocalizedContent } from "@/hooks/useLocalizedContent";
 import { useCmsImages } from "@/hooks/useCmsImage";
 import { SUBJECTS_HERO_IMAGE, getSubjectImage } from "@/lib/marketing-images";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
+import { MarketingHeroMobileImage } from "@/components/marketing/MarketingHeroMobileImage";
 import { cn } from "@/lib/utils";
-import { hero } from "@/lib/premium/tokens";
+import { hero, type } from "@/lib/premium/tokens";
 
 const SUBJECT_ICONS: Record<string, typeof Calculator> = {
   math: Calculator,
@@ -137,12 +138,12 @@ export default function SubjectsPage() {
             priority
           />
           <div className={hero.inner}>
-            <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-              <div className="hero-enter">
+            <div className="grid min-w-0 items-center gap-8 lg:grid-cols-2 lg:gap-12 xl:gap-16">
+              <div className="hero-enter min-w-0">
                 <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-[#D4AF37] sm:text-sm">
                   {t("subjects.eyebrow")}
                 </p>
-                <h1 className="mb-6 text-4xl font-bold leading-[1.08] md:text-5xl lg:text-[3.25rem]">
+                <h1 className={cn(type.h1, "mb-6")}>
                   {t("subjects.heroTitle")}{" "}
                   <span className="text-[#D4AF37]">{t("subjects.heroTitleHighlight")}</span>
                 </h1>
@@ -150,7 +151,7 @@ export default function SubjectsPage() {
                   {t("subjects.heroSubtitle")}
                 </p>
 
-                <div className="mb-10 grid grid-cols-3 gap-2 sm:gap-4">
+                <div className="mb-10 grid grid-cols-1 gap-2.5 sm:grid-cols-3 sm:gap-4">
                   {benefits.slice(0, 3).map((item, index) => {
                     const Icon = heroFeatureIcons[index] ?? Target;
                     return (
@@ -173,7 +174,7 @@ export default function SubjectsPage() {
                 </Button>
               </div>
 
-              <div className="hero-enter hero-enter-delay-2 relative hidden min-h-[360px] w-full max-w-lg lg:block lg:max-w-none" aria-hidden />
+              <MarketingHeroMobileImage src={subjectsHeroImage} alt={t("subjects.title")} priority />
             </div>
           </div>
         </section>
@@ -182,7 +183,7 @@ export default function SubjectsPage() {
         <section className="relative z-10 -mt-4 pb-4">
           <div className="mx-auto max-w-5xl px-4">
             <Card className={cn("border-0 p-4 shadow-xl sm:p-6", mt.card)}>
-              <div className="grid grid-cols-4 gap-2 sm:gap-6">
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-6">
                 {stats.map((stat, index) => {
                   const Icon = statIcons[index];
                   return (
