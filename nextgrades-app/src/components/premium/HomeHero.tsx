@@ -43,7 +43,7 @@ export function HomeHero({
             {title}{" "}
             <span className="text-[#D4AF37]">{titleHighlight}</span>
           </h1>
-          <p className="mt-6 max-w-lg text-lg leading-relaxed text-gray-300 sm:text-xl">{subtitle}</p>
+          <p className="mt-6 max-w-lg text-lg leading-relaxed text-on-navy-muted sm:text-xl">{subtitle}</p>
 
           <MarketingCtaButtons
             className="mt-10"
@@ -51,7 +51,7 @@ export function HomeHero({
             secondaryLabel={secondaryCta}
           />
 
-          <div className="mt-10 flex flex-wrap gap-6 text-sm text-gray-400">
+          <div className="mt-10 flex flex-wrap gap-6 text-sm text-on-navy-subtle">
             <span className="inline-flex items-center gap-2">
               <MapPin className="h-4 w-4 text-[#D4AF37]" />
               Österreich

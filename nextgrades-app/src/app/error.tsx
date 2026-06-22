@@ -20,7 +20,7 @@ export default function Error({
     <main className="flex min-h-[calc(100vh-var(--site-nav-height))] flex-col items-center justify-center bg-[#0D1B2A] px-4 py-16 text-center text-white">
       <BrandLogo size="lg" linked={false} onDarkBackground />
       <h1 className="mt-8 text-2xl font-bold sm:text-3xl">Etwas ist schiefgelaufen</h1>
-      <p className="mt-3 max-w-md text-sm leading-relaxed text-gray-400">
+      <p className="mt-3 max-w-md text-sm leading-relaxed text-on-navy-subtle">
         Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es erneut oder kehre zur Startseite
         zurück.
       </p>

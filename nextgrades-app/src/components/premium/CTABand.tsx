@@ -31,7 +31,7 @@ export function CTABand({
               <Calendar className="h-7 w-7 text-[#D4AF37]" />
             </div>
             <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">{title}</h2>
-            <p className="mt-4 text-lg leading-relaxed text-gray-400">{subtitle}</p>
+            <p className="mt-4 text-lg leading-relaxed text-on-navy-subtle">{subtitle}</p>
             <MarketingCtaButtons
               className="mt-10"
               align="center"

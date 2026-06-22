@@ -166,7 +166,7 @@ export default function ConsultationPage() {
                   <span className="text-[#D4AF37]">{t("consultation.titleHighlight")}</span>
                 </h1>
                 <p className={`text-lg mb-4 ${textMuted}`}>{t("consultation.subtitle")}</p>
-                <p className={`text-base mb-8 ${isDark ? "text-gray-300" : "text-gray-600"}`}>
+                <p className={`text-base mb-8 ${isDark ? "text-foreground-secondary" : "text-gray-600"}`}>
                   {t("consultation.heroDesc")}
                 </p>
 
@@ -212,12 +212,12 @@ export default function ConsultationPage() {
                       </div>
                       <div>
                         <p className="font-semibold">{t("consultation.cardTitle")}</p>
-                        <p className={`text-sm ${isDark ? "text-gray-300" : "text-gray-600"}`}>
+                        <p className={`text-sm ${isDark ? "text-foreground-secondary" : "text-gray-600"}`}>
                           {t("consultation.cardSubtitle")}
                         </p>
                       </div>
                     </div>
-                    <div className={`flex items-center gap-4 text-sm ${isDark ? "text-gray-300" : "text-gray-600"}`}>
+                    <div className={`flex items-center gap-4 text-sm ${isDark ? "text-foreground-secondary" : "text-gray-600"}`}>
                       <span className="flex items-center gap-1">
                         <Clock className="h-4 w-4 text-[#D4AF37]" /> 30 min
                       </span>
@@ -566,7 +566,7 @@ export default function ConsultationPage() {
               <div className="absolute inset-0 bg-[#D4AF37]/5 pointer-events-none" />
               <div className="relative">
                 <h2 className="text-3xl md:text-4xl font-bold mb-4">{t("consultation.ctaTitle")}</h2>
-                <p className="text-gray-300 mb-8 max-w-xl mx-auto">{t("consultation.ctaDesc")}</p>
+                <p className="text-on-navy-muted mb-8 max-w-xl mx-auto">{t("consultation.ctaDesc")}</p>
                 <div className="flex flex-wrap justify-center gap-4">
                   <Button variant="gold" size="lg" href="/programs">
                     {t("consultation.ctaPrograms")}

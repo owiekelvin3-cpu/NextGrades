@@ -63,11 +63,11 @@ export function SubjectProgramCard({
 
       <div className="flex flex-1 flex-col px-4 pb-5 pt-9 sm:px-5 sm:pb-6">
         <h3 className="text-base font-bold leading-snug text-white sm:text-lg">{subject.title}</h3>
-        <p className="mt-2 text-sm leading-relaxed text-gray-400">{subject.description}</p>
+        <p className="mt-2 text-sm leading-relaxed text-on-navy-subtle">{subject.description}</p>
 
         <ul className="mt-4 flex-1 space-y-2">
           {subject.features.map((feature) => (
-            <li key={feature} className="flex items-start gap-2 text-sm text-gray-300">
+            <li key={feature} className="flex items-start gap-2 text-sm text-on-navy-muted">
               <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#D4AF37]" strokeWidth={2} />
               <span className="leading-snug">{feature}</span>
             </li>

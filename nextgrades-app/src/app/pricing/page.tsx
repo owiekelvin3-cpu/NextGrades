@@ -65,7 +65,7 @@ function CompareCell({ value }: { value: string | boolean | undefined }) {
     return <CheckCircle2 className="mx-auto h-4 w-4 text-[#D4AF37]" aria-hidden />;
   }
   if (value === false || value === undefined) {
-    return <span className="text-gray-300" aria-hidden>—</span>;
+    return <span className="text-on-navy-muted" aria-hidden>—</span>;
   }
   return <span className="text-xs text-gray-600 sm:text-sm">{value}</span>;
 }
@@ -159,10 +159,10 @@ function PricingContent() {
                 <h1 className="text-[1.75rem] font-bold leading-[1.12] tracking-tight sm:text-4xl md:text-5xl lg:text-[3.25rem]">
                   {t("pricingPage.plansTitle")}
                 </h1>
-                <p className="mt-4 max-w-lg text-[15px] leading-relaxed text-gray-300 sm:mt-6 sm:text-base md:text-lg">
+                <p className="mt-4 max-w-lg text-[15px] leading-relaxed text-on-navy-muted sm:mt-6 sm:text-base md:text-lg">
                   {t("pricingPage.plansSubtitle")}
                 </p>
-                <p className="mt-3 text-sm text-gray-400">{t("pricingPage.valueProposition")}</p>
+                <p className="mt-3 text-sm text-on-navy-subtle">{t("pricingPage.valueProposition")}</p>
               </div>
               <div className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-white/10 shadow-lg md:hidden">
                 <MarketingImage
@@ -264,7 +264,7 @@ function PricingContent() {
                 <table className="w-full min-w-[680px] border-collapse text-left text-sm">
                   <thead>
                     <tr className="bg-[var(--brand-navy)] text-white dark:bg-[var(--surface-subtle)] dark:text-[var(--foreground)]">
-                      <th className="sticky left-0 z-10 bg-[#0D1B2A] px-4 py-3.5 text-left text-xs font-semibold uppercase tracking-wide text-gray-300 sm:px-5 sm:py-4">
+                      <th className="sticky left-0 z-10 bg-[#0D1B2A] px-4 py-3.5 text-left text-xs font-semibold uppercase tracking-wide text-on-navy-muted sm:px-5 sm:py-4">
                         {safeCompareHeaders.features ?? "Merkmale"}
                       </th>
                       {planColumns.map((col) => (
@@ -358,7 +358,7 @@ function PricingContent() {
             <h2 className="text-xl font-bold leading-snug tracking-tight text-white sm:text-2xl md:text-3xl">
               {t("pricingPage.finalCtaTitle")}
             </h2>
-            <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-gray-400 sm:mt-4 sm:text-base">
+            <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-on-navy-subtle sm:mt-4 sm:text-base">
               {t("pricingPage.finalCtaDesc")}
             </p>
             {ctaTags.length > 0 && (
@@ -366,7 +366,7 @@ function PricingContent() {
                 {ctaTags.map((tag) => (
                   <li
                     key={tag}
-                    className="rounded-full border border-white/15 px-2.5 py-1 text-[11px] font-medium text-gray-300 sm:px-3 sm:text-xs"
+                    className="rounded-full border border-white/15 px-2.5 py-1 text-[11px] font-medium text-on-navy-muted sm:px-3 sm:text-xs"
                   >
                     {tag}
                   </li>

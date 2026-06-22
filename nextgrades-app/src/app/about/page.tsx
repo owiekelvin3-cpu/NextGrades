@@ -133,7 +133,7 @@ export default function AboutPage() {
                   <span className="text-[#D4AF37]">{t("about.heroTitleHighlight")}</span>{" "}
                   {t("about.heroTitle2")}
                 </h1>
-                <p className="mt-5 max-w-xl text-lg leading-relaxed text-gray-300">{t("about.heroSubtitle")}</p>
+                <p className="mt-5 max-w-xl text-lg leading-relaxed text-on-navy-muted">{t("about.heroSubtitle")}</p>
 
                 <div className="mt-8 grid gap-4 sm:grid-cols-3">
                   {safePillars.map((pillar, i) => {
@@ -142,15 +142,15 @@ export default function AboutPage() {
                       <div key={pillar.title} className="rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
                         <Icon className="mb-2 h-5 w-5 text-[#D4AF37]" />
                         <p className="text-sm font-bold">{pillar.title}</p>
-                        <p className="mt-1 text-xs leading-relaxed text-gray-400">{pillar.desc}</p>
+                        <p className="mt-1 text-xs leading-relaxed text-on-navy-subtle">{pillar.desc}</p>
                       </div>
                     );
                   })}
                 </div>
                 <div className="mt-8 hidden rounded-xl border border-white/10 bg-[#0D1B2A]/90 p-5 shadow-xl backdrop-blur-md lg:block">
                   <Quote className="mb-2 h-6 w-6 text-[#D4AF37]" />
-                  <p className="text-sm italic leading-relaxed text-gray-200">&ldquo;{t("aboutPage.heroQuote")}&rdquo;</p>
-                  <p className="mt-2 text-xs text-gray-500">— {t("aboutPage.heroQuoteAuthor")}</p>
+                  <p className="text-sm italic leading-relaxed text-on-navy-muted">&ldquo;{t("aboutPage.heroQuote")}&rdquo;</p>
+                  <p className="mt-2 text-xs text-on-navy-faint">— {t("aboutPage.heroQuoteAuthor")}</p>
                 </div>
               </motion.div>
 
@@ -176,7 +176,7 @@ export default function AboutPage() {
                     </div>
                     <div>
                       <p className="text-sm font-semibold">{feat.title}</p>
-                      <p className="mt-0.5 text-xs text-gray-400">{feat.desc}</p>
+                      <p className="mt-0.5 text-xs text-on-navy-subtle">{feat.desc}</p>
                     </div>
                   </div>
                 );
@@ -322,7 +322,7 @@ export default function AboutPage() {
                   {safePromise.map((item) => (
                     <li key={item} className="flex items-start gap-3">
                       <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[#D4AF37]" />
-                      <span className="text-gray-300">{item}</span>
+                      <span className="text-on-navy-muted">{item}</span>
                     </li>
                   ))}
                 </ul>
@@ -365,7 +365,7 @@ export default function AboutPage() {
                 </div>
                 <div className="text-center lg:text-left">
                   <h2 className="text-2xl font-bold text-white md:text-3xl">{t("aboutPage.communityTitle")}</h2>
-                  <p className="mt-2 max-w-lg text-gray-300">{t("aboutPage.communityDesc")}</p>
+                  <p className="mt-2 max-w-lg text-on-navy-muted">{t("aboutPage.communityDesc")}</p>
                 </div>
               </div>
               <Button variant="gold" size="xl" href="/consultation" className="shrink-0">

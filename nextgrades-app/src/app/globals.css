@@ -746,3 +746,53 @@ body {
 .responsive-table-wrap {
   max-width: 100%;
 }
+
+/* ── Dark mode: remap Tailwind gray utilities → brand navy/gold tokens ── */
+.dark :is(.text-gray-200, .text-gray-300) {
+  color: var(--foreground-secondary);
+}
+
+.dark :is(.text-gray-400, .text-gray-500) {
+  color: var(--text-muted);
+}
+
+.dark :is(.text-gray-600, .text-gray-700) {
+  color: var(--text-subtle);
+}
+
+.dark :is(.bg-gray-50, .bg-gray-50\/50, .bg-gray-50\/80) {
+  background-color: var(--surface-subtle);
+}
+
+.dark :is(.bg-gray-100, .bg-gray-100\/80) {
+  background-color: var(--surface-muted);
+}
+
+.dark .bg-gray-200 {
+  background-color: var(--surface-elevated);
+}
+
+.dark :is(.border-gray-100, .border-gray-200) {
+  border-color: var(--border-default);
+}
+
+.dark :is(.divide-gray-50 > :not(:last-child), .divide-gray-100 > :not(:last-child)) {
+  border-color: var(--border-default);
+}
+
+.dark :is(.hover\:bg-gray-50:hover, .hover\:bg-gray-50\/50:hover) {
+  background-color: var(--surface-muted);
+}
+
+.dark .hover\:bg-gray-100:hover {
+  background-color: var(--surface-elevated);
+}
+
+.dark .placeholder\:text-gray-400::placeholder,
+.dark .placeholder\:text-gray-500::placeholder {
+  color: var(--input-placeholder);
+}
+
+.dark .shadow-gray-300\/30 {
+  --tw-shadow-color: rgba(13, 27, 42, 0.35);
+}

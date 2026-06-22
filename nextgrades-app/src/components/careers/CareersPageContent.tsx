@@ -176,10 +176,8 @@ export function CareersPageContent() {
                 <h1 className="text-4xl font-bold leading-tight md:text-5xl lg:text-[3.25rem]">
                   {t("careersPage.title")}
                 </h1>
-                <p className="mt-5 max-w-xl text-lg leading-relaxed text-gray-300">
-                  {t("careersPage.subtitle")}
-                </p>
-                <p className="mt-3 max-w-xl text-sm text-gray-400">{t("careersPage.heroDesc")}</p>
+                <p className="mt-5 max-w-xl text-lg leading-relaxed text-on-navy-muted">{t("careersPage.subtitle")}</p>
+                <p className="mt-3 max-w-xl text-sm text-on-navy-subtle">{t("careersPage.heroDesc")}</p>
                 <div className="mt-8 flex flex-wrap gap-4">
                   <Button variant="gold" size="lg" href="#positions">
                     {t("careersPage.viewPositions")}
@@ -475,7 +473,7 @@ export function CareersPageContent() {
         <section className="px-4 pb-16 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-5xl overflow-hidden rounded-2xl bg-gradient-to-br from-[#0D1B2A] via-[#132942] to-[#1a3555] p-8 text-center text-white sm:p-12">
             <h2 className="text-2xl font-bold md:text-3xl">{t("careersPage.ctaTitle")}</h2>
-            <p className="mx-auto mt-3 max-w-xl text-gray-300">{t("careersPage.ctaDesc")}</p>
+            <p className="mx-auto mt-3 max-w-xl text-on-navy-muted">{t("careersPage.ctaDesc")}</p>
             <Button variant="gold" size="lg" href="#apply" className="mt-8">
               {t("careersPage.ctaButton")}
               <ArrowRight className="ml-2 h-4 w-4" />

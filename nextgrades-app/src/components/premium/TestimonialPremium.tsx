@@ -72,7 +72,7 @@ export function TestimonialPremium({ items, title, dark = false }: TestimonialPr
                       {item.name}
                     </p>
                     {(item.school || item.role) && (
-                      <p className={cn("text-sm", dark ? "text-gray-400" : "text-text-muted")}>
+                      <p className={cn("text-sm", dark ? "text-on-navy-subtle" : "text-text-muted")}>
                         {[item.role, item.school].filter(Boolean).join(" · ")}
                       </p>
                     )}

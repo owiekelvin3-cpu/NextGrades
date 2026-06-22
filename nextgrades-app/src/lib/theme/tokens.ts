@@ -56,7 +56,10 @@ export const theme = {
   alertError: "theme-alert-error rounded-xl px-4 py-3 text-sm",
   alertInfo: "theme-alert-info rounded-xl px-4 py-3 text-sm",
 
-  /** Brand accents (intentional — marketing heroes, gold CTAs) */
+  /** Text on fixed navy marketing bands */
+  onNavyMuted: "text-on-navy-muted",
+  onNavySubtle: "text-on-navy-subtle",
+  onNavyFaint: "text-on-navy-faint",
   brandNavy: "bg-[var(--brand-navy)] text-white",
   brandGold: "text-[var(--brand-gold)]",
   brandGoldBg: "bg-[var(--brand-gold-muted)] text-[var(--brand-gold)]",

@@ -78,7 +78,7 @@ export function ResourcesUpgradeExperience() {
       <section className={cn("bg-[#0D1B2A] text-white", hero.section)}>
         <MarketingHeroBlend src={heroImage} alt="" variant="dark-full" priority sizes="100vw" opacity={0.75} />
         <div className={hero.inner}>
-          <p className="mb-3 text-sm text-gray-400">
+          <p className="mb-3 text-sm text-on-navy-subtle">
             {t("resources.upgrade.breadcrumb", { subject: subjectLabel })}
           </p>
           <div className="grid items-center gap-10 lg:grid-cols-2">
@@ -87,7 +87,7 @@ export function ResourcesUpgradeExperience() {
                 {t("resources.upgrade.title")}{" "}
                 <span className="text-[#D4AF37]">{t("resources.upgrade.titleHighlight")}</span>
               </h1>
-              <p className="mb-8 max-w-lg text-gray-300">{t("resources.upgrade.subtitle")}</p>
+              <p className="mb-8 max-w-lg text-on-navy-muted">{t("resources.upgrade.subtitle")}</p>
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
                 {heroBenefits.map(({ icon: Icon, label }) => (
                   <div key={label} className="text-center">

@@ -41,5 +41,6 @@ export const type = {
   h2: "text-3xl font-bold leading-tight tracking-tight sm:text-4xl lg:text-[2.75rem]",
   h3: "text-xl font-bold leading-snug sm:text-2xl",
   body: "text-base leading-relaxed text-gray-600 sm:text-lg",
-  bodyDark: "text-base leading-relaxed text-gray-300 sm:text-lg",
+  bodyDark: "text-base leading-relaxed text-on-navy-muted sm:text-lg",
+  bodyDarkMuted: "text-sm text-on-navy-subtle",
 } as const;

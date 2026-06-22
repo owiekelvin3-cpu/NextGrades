@@ -1,6 +1,6 @@
 /**
- * NextGrades design tokens — enterprise-grade light/dark system.
- * Inspired by Linear, Stripe, Notion: soft light surfaces, deep dark elevation, no harsh contrast.
+ * NextGrades design tokens — brand navy + gold system.
+ * Dark mode uses navy depth layers and gold accents (no neutral grey palette).
  */
 
 :root {
@@ -15,6 +15,11 @@
   --brand-gold-light: #e5c158;
   --brand-gold-muted: rgba(212, 175, 55, 0.12);
   --brand-gold-ring: rgba(212, 175, 55, 0.35);
+
+  /* Text on fixed navy marketing surfaces */
+  --on-navy-muted: #c5d4e8;
+  --on-navy-subtle: #8fa8c8;
+  --on-navy-faint: rgba(212, 175, 55, 0.72);
 
   /* Legacy aliases (keep components working) */
   --color-deep-navy: var(--brand-navy);
@@ -149,108 +154,109 @@
 .dark {
   color-scheme: dark;
 
-  --background: #0c0e12;
-  --foreground: #ececf0;
-  --foreground-secondary: #c4c4cc;
-  --text-muted: #9494a0;
-  --text-subtle: #6e6e7a;
+  /* ── Brand navy depth stack (no neutral grey) ── */
+  --background: #0d1b2a;
+  --foreground: #f5f7fa;
+  --foreground-secondary: #c5d4e8;
+  --text-muted: #8fa8c8;
+  --text-subtle: #6b8aab;
 
-  --surface-base: #0c0e12;
-  --surface-muted: #0f1117;
-  --surface-subtle: #141820;
-  --surface-elevated: #181c24;
-  --surface-dashboard: #0f1117;
-  --surface-overlay: rgba(0, 0, 0, 0.62);
-  --surface-inset: #0a0c10;
+  --surface-base: #0d1b2a;
+  --surface-muted: #112240;
+  --surface-subtle: #152535;
+  --surface-elevated: #1a3352;
+  --surface-dashboard: #0d1b2a;
+  --surface-overlay: rgba(5, 12, 22, 0.78);
+  --surface-inset: #0a1520;
 
-  --border-default: rgba(255, 255, 255, 0.08);
-  --border-strong: rgba(255, 255, 255, 0.12);
-  --border-subtle: rgba(255, 255, 255, 0.05);
+  --border-default: rgba(212, 175, 55, 0.14);
+  --border-strong: rgba(212, 175, 55, 0.28);
+  --border-subtle: rgba(255, 255, 255, 0.06);
 
-  --card-background: #181c24;
-  --card-foreground: #ececf0;
-  --card-border: rgba(255, 255, 255, 0.08);
-  --card-shadow: 0 1px 2px rgba(0, 0, 0, 0.28), 0 8px 24px rgba(0, 0, 0, 0.32);
+  --card-background: #112240;
+  --card-foreground: #f5f7fa;
+  --card-border: rgba(212, 175, 55, 0.12);
+  --card-shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 8px 28px rgba(0, 0, 0, 0.4);
 
-  --input-background: #141820;
-  --input-foreground: #ececf0;
-  --input-border: rgba(255, 255, 255, 0.1);
-  --input-placeholder: #6e6e7a;
+  --input-background: #112240;
+  --input-foreground: #f5f7fa;
+  --input-border: rgba(212, 175, 55, 0.2);
+  --input-placeholder: rgba(212, 175, 55, 0.45);
 
   --button-primary-background: var(--brand-gold);
   --button-primary-foreground: var(--brand-navy);
   --button-primary-hover: var(--brand-gold-hover);
-  --button-secondary-background: rgba(255, 255, 255, 0.06);
-  --button-secondary-foreground: #ececf0;
-  --button-secondary-hover: rgba(255, 255, 255, 0.1);
+  --button-secondary-background: rgba(212, 175, 55, 0.08);
+  --button-secondary-foreground: #f5f7fa;
+  --button-secondary-hover: rgba(212, 175, 55, 0.14);
   --button-outline-background: transparent;
   --button-outline-foreground: var(--brand-gold);
-  --button-outline-border: rgba(212, 175, 55, 0.45);
+  --button-outline-border: rgba(212, 175, 55, 0.5);
   --button-outline-hover-bg: var(--brand-gold-muted);
   --button-ghost-background: transparent;
-  --button-ghost-foreground: #ececf0;
-  --button-ghost-border: rgba(255, 255, 255, 0.14);
-  --button-ghost-hover-bg: rgba(255, 255, 255, 0.06);
-  --button-dark-background: var(--surface-elevated);
-  --button-dark-foreground: var(--foreground);
-  --button-dark-hover: var(--surface-subtle);
-  --button-dark-border: var(--border-strong);
-  --button-gold-border: rgba(212, 175, 55, 0.35);
-  --button-gold-shadow: rgba(0, 0, 0, 0.25);
-  --button-card-icon-bg: rgba(13, 27, 42, 0.22);
+  --button-ghost-foreground: #e8eef5;
+  --button-ghost-border: rgba(212, 175, 55, 0.22);
+  --button-ghost-hover-bg: rgba(212, 175, 55, 0.08);
+  --button-dark-background: #152535;
+  --button-dark-foreground: #f5f7fa;
+  --button-dark-hover: #1a3352;
+  --button-dark-border: rgba(212, 175, 55, 0.18);
+  --button-gold-border: rgba(212, 175, 55, 0.4);
+  --button-gold-shadow: rgba(0, 0, 0, 0.3);
+  --button-card-icon-bg: rgba(212, 175, 55, 0.12);
   --button-pill-active-bg: var(--brand-gold);
   --button-pill-active-fg: var(--brand-navy);
-  --button-pill-inactive-bg: var(--surface-subtle);
-  --button-pill-inactive-fg: var(--text-muted);
-  --button-pill-inactive-hover: var(--surface-muted);
+  --button-pill-inactive-bg: #152535;
+  --button-pill-inactive-fg: #8fa8c8;
+  --button-pill-inactive-hover: #1a3352;
   --button-on-dark-border: rgba(255, 255, 255, 0.28);
   --button-on-dark-fg: #ffffff;
-  --button-on-dark-hover-bg: rgba(255, 255, 255, 0.06);
+  --button-on-dark-hover-bg: rgba(212, 175, 55, 0.1);
 
-  --nav-background: rgba(12, 14, 18, 0.92);
-  --nav-border: rgba(255, 255, 255, 0.08);
-  --nav-text: #9494a0;
-  --nav-text-active: #ececf0;
-  --nav-dropdown: #181c24;
+  --nav-background: rgba(13, 27, 42, 0.96);
+  --nav-border: rgba(212, 175, 55, 0.12);
+  --nav-text: rgba(255, 255, 255, 0.72);
+  --nav-text-active: #ffffff;
+  --nav-dropdown: #112240;
 
-  --sidebar-background: #0a1018;
-  --sidebar-border: rgba(255, 255, 255, 0.06);
-  --sidebar-text: #8b93a1;
-  --sidebar-text-active: #f0f0f2;
-  --sidebar-surface: rgba(255, 255, 255, 0.04);
+  --sidebar-background: #0a1520;
+  --sidebar-border: rgba(212, 175, 55, 0.1);
+  --sidebar-text: rgba(212, 175, 55, 0.65);
+  --sidebar-text-active: #f5f7fa;
+  --sidebar-surface: rgba(212, 175, 55, 0.06);
 
-  --modal-background: #181c24;
-  --modal-border: rgba(255, 255, 255, 0.08);
-  --modal-overlay: rgba(0, 0, 0, 0.72);
+  --modal-background: #112240;
+  --modal-border: rgba(212, 175, 55, 0.14);
+  --modal-overlay: rgba(5, 12, 22, 0.82);
 
-  --table-header: #141820;
-  --table-row-hover: rgba(255, 255, 255, 0.04);
-  --table-border: rgba(255, 255, 255, 0.08);
+  --table-header: #152535;
+  --table-row-hover: rgba(212, 175, 55, 0.06);
+  --table-border: rgba(212, 175, 55, 0.12);
 
-  --chart-grid: rgba(255, 255, 255, 0.08);
-  --chart-text: #9494a0;
+  --chart-grid: rgba(212, 175, 55, 0.12);
+  --chart-text: #8fa8c8;
 
-  --alert-success-bg: rgba(16, 185, 129, 0.12);
+  --alert-success-bg: rgba(16, 185, 129, 0.14);
   --alert-success-fg: #6ee7b7;
-  --alert-success-border: rgba(16, 185, 129, 0.22);
-  --alert-warning-bg: rgba(245, 158, 11, 0.12);
-  --alert-warning-fg: #fcd34d;
-  --alert-warning-border: rgba(245, 158, 11, 0.22);
-  --alert-error-bg: rgba(239, 68, 68, 0.12);
+  --alert-success-border: rgba(16, 185, 129, 0.28);
+  --alert-warning-bg: rgba(212, 175, 55, 0.14);
+  --alert-warning-fg: #e5c158;
+  --alert-warning-border: rgba(212, 175, 55, 0.28);
+  --alert-error-bg: rgba(239, 68, 68, 0.14);
   --alert-error-fg: #fca5a5;
-  --alert-error-border: rgba(239, 68, 68, 0.22);
-  --alert-info-bg: rgba(59, 130, 246, 0.12);
+  --alert-error-border: rgba(239, 68, 68, 0.28);
+  --alert-info-bg: rgba(77, 163, 255, 0.12);
   --alert-info-fg: #93c5fd;
-  --alert-info-border: rgba(59, 130, 246, 0.22);
+  --alert-info-border: rgba(77, 163, 255, 0.24);
 
-  --ring-offset: #0c0e12;
+  --ring-offset: #0d1b2a;
 
-  --footer-background: #080d14;
-  --footer-foreground: #ececf0;
-  --footer-muted: #9494a0;
-  --footer-subtle: #6e6e7a;
-  --footer-border: rgba(255, 255, 255, 0.08);
-  --footer-link: #c4c4cc;
+  --footer-background: #0a1520;
+  --footer-foreground: #f5f7fa;
+  --footer-muted: rgba(212, 175, 55, 0.72);
+  --footer-subtle: rgba(255, 255, 255, 0.5);
+  --footer-border: rgba(212, 175, 55, 0.12);
+  --footer-link: rgba(255, 255, 255, 0.82);
   --footer-heading: var(--brand-gold);
 }
 
@@ -383,7 +389,7 @@ html.theme-animate *::after {
 .site-header-dark {
   --nav-text: rgba(255, 255, 255, 0.78);
   --nav-text-active: #ffffff;
-  --nav-dropdown: #141820;
+  --nav-dropdown: #112240;
 }
 
 .glass {
@@ -405,6 +411,18 @@ html.theme-animate *::after {
 
 .gradient-navy {
   background: linear-gradient(135deg, var(--brand-navy) 0%, var(--brand-navy-soft) 100%);
+}
+
+.text-on-navy-muted {
+  color: var(--on-navy-muted);
+}
+
+.text-on-navy-subtle {
+  color: var(--on-navy-subtle);
+}
+
+.text-on-navy-faint {
+  color: var(--on-navy-faint);
 }
 
 /* Site footer — brand anchor bar (consistent in light & dark site themes) */
