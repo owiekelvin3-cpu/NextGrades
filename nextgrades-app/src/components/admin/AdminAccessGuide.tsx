@@ -45,7 +45,7 @@ export function AdminAccessGuide() {
       </ol>
 
       <div className="mt-6 flex flex-wrap gap-3">
-        <Button variant="gold" size="sm" href="/portal/admin/website-content">
+        <Button variant="gold" size="sm" href="/portal/admin/cms">
           {t("adminDashboard.accessGuideCmsLink")}
         </Button>
         <Button variant="outline" size="sm" href="/portal/admin/users">

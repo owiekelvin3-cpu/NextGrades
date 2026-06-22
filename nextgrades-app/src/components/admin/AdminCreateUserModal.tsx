@@ -177,7 +177,7 @@ export function AdminCreateUserModal({ open, onClose, onSuccess }: AdminCreateUs
           </div>
 
           {error && (
-            <p className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-500" role="alert">
+            <p className="theme-alert-error rounded-lg px-3 py-2 text-sm" role="alert">
               {error}
             </p>
           )}

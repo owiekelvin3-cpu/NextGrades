@@ -26,10 +26,11 @@ export function TestimonialPremium({ items, title, dark = false }: TestimonialPr
             "mb-10 text-center text-2xl font-bold tracking-tight md:mb-14 md:text-4xl",
             dark ? "text-white" : "text-foreground"
           )}
+          data-animate="fadeUp"
         >
           {title}
         </h2>
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-3 md:gap-8">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-3 md:gap-8" data-animate="staggerChildren" data-stagger="0.1">
           {items.map((item) => {
             const initials =
               item.initials ||

@@ -1271,7 +1271,13 @@
     "chatbot": "KI-Chatbot",
     "analytics": "Analysen",
     "zoom": "Zoom",
-    "cookies": "Cookies"
+    "cookies": "Cookies",
+    "security": "Sicherheit",
+    "sectionOverview": "Übersicht",
+    "sectionPlatform": "Plattform",
+    "sectionInsights": "Einblicke",
+    "sectionSystem": "System",
+    "adminUser": "Administrator"
   },
   "adminHub": {
     "featuredLabel": "Am wichtigsten",
@@ -1337,7 +1343,13 @@
     ],
     "accessGuideCmsLink": "Website-Inhalte öffnen",
     "accessGuideUsersLink": "Benutzer verwalten",
-    "accessGuidePublicLink": "Öffentliche Website öffnen"
+    "accessGuidePublicLink": "Öffentliche Website öffnen",
+    "kpiTotalUsers": "Benutzer gesamt",
+    "kpiPendingModeration": "Ausstehende Moderation",
+    "kpiNeedsReview": "Prüfung nötig",
+    "kpiAllClear": "Alles erledigt",
+    "noActivityTitle": "Keine aktuelle Aktivität",
+    "noActivityDesc": "Plattform-Ereignisse erscheinen hier, wenn sich NutzerInnen anmelden, einschreiben und interagieren."
   },
   "misc": {
     "loading": "Laden...",
@@ -1666,6 +1678,52 @@
     "createClose": "Schließen",
     "createSuccess": "Benutzer erstellt — Einladung per E-Mail gesendet",
     "createFailed": "Benutzer konnte nicht erstellt werden"
+  },
+  "adminTable": {
+    "previous": "Zurück",
+    "next": "Weiter",
+    "pageOf": "Seite {{page}} von {{total}}",
+    "totalItems": "{{count}} Einträge",
+    "noData": "Keine Einträge gefunden",
+    "noDataDesc": "Passe die Filter an oder versuche es später erneut.",
+    "sortBy": "Sortieren nach {{column}}",
+    "actionsMenu": "Zeilenaktionen",
+    "colUser": "Benutzer",
+    "colRole": "Rolle",
+    "colStatus": "Status",
+    "colVerified": "Verifiziert",
+    "colJoined": "Beigetreten",
+    "colLastLogin": "Letzte Anmeldung",
+    "colActions": "Aktionen"
+  },
+  "adminAnalytics": {
+    "signupsTitle": "Neue Anmeldungen (30 Tage)",
+    "activityTitle": "Plattform-Aktivität (30 Tage)",
+    "rolesTitle": "Benutzer nach Rolle"
+  },
+  "adminSecurity": {
+    "title": "Sicherheitsüberwachung",
+    "subtitle": "Fehlgeschlagene Anmeldungen, Sperren, OTP-Ereignisse und aktuelle Audit-Aktivität (letzte 7 Tage).",
+    "failedLogins": "Fehlgeschlagene Anmeldungen (7 T.)",
+    "activeLockouts": "Aktive Sperren",
+    "loginOtpSent": "Login-OTP gesendet",
+    "suspiciousEvents": "Verdächtige Ereignisse",
+    "recentEvents": "Aktuelle Sicherheitsereignisse",
+    "lockoutsTitle": "Aktive Sperren",
+    "noLockouts": "Keine aktiven Sperren.",
+    "colEvent": "Ereignis",
+    "colEmail": "E-Mail",
+    "colIp": "IP",
+    "colTime": "Zeit",
+    "failures": "{{count}} Fehlversuche",
+    "until": "bis {{date}}",
+    "ipUnknown": "unbekannt"
+  },
+  "adminResources": {
+    "emptyTitle": "Ressourcen werden im CMS verwaltet",
+    "emptyDesc": "Lernmaterialien im Website-Editor hochladen und organisieren. Veröffentlichte Ressourcen erscheinen auf der öffentlichen Ressourcenseite.",
+    "openCms": "Ressourcen im CMS öffnen",
+    "viewPublic": "Öffentliche Seite anzeigen"
   },
   "teacherContent": {
     "searchPlaceholder": "Ressourcen suchen…",

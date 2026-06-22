@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { LoadingBlock } from "@/components/dashboard/LoadingBlock";
 import { EmptyState } from "@/components/dashboard/EmptyState";
-import { useTheme } from "@/context/ThemeContext";
 import { useTranslation } from "react-i18next";
 import { useToast } from "@/context/ToastContext";
 import { CheckCircle2, XCircle, ExternalLink } from "lucide-react";
@@ -26,16 +25,12 @@ type ModerationItem = {
 };
 
 export default function AdminModerationPage() {
-  const { theme } = useTheme();
   const { t } = useTranslation();
   const toast = useToast();
   const [items, setItems] = useState<ModerationItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<"pending" | "approved" | "rejected">("pending");
   const [acting, setActing] = useState<string | null>(null);
-
-  const isDark = theme === "dark";
-  const textPrimary = "text-foreground";
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -103,14 +98,14 @@ export default function AdminModerationPage() {
               <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                 <div className="min-w-0 flex-1">
                   <div className="mb-2 flex flex-wrap items-center gap-2">
-                    <h3 className={`font-bold ${textPrimary}`}>{item.title}</h3>
+                    <h3 className="font-bold text-foreground">{item.title}</h3>
                     <Badge variant="gold">{item.type}</Badge>
                     <Badge>{item.access_type}</Badge>
                   </div>
                   {item.description && (
-                    <p className="mb-2 text-sm text-gray-500 line-clamp-2">{item.description}</p>
+                    <p className="mb-2 text-sm text-text-muted line-clamp-2">{item.description}</p>
                   )}
-                  <p className="text-xs text-gray-500">
+                  <p className="text-xs text-text-muted">
                     {item.profiles?.full_name ?? "Teacher"} ·{" "}
                     {item.category?.name ?? "Uncategorized"} ·{" "}
                     {new Date(item.created_at).toLocaleDateString()}
@@ -137,7 +132,7 @@ export default function AdminModerationPage() {
                         Approve
                       </Button>
                       <Button
-                        variant="outline"
+                        variant="danger"
                         size="sm"
                         disabled={acting === item.id}
                         onClick={() => void moderate(item.id, "rejected")}

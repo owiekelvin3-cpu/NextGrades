@@ -3,7 +3,7 @@ import { forwardRef } from "react";
 import Link from "next/link";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "gold" | "outline" | "ghost" | "dark" | "onDark";
+  variant?: "primary" | "secondary" | "gold" | "outline" | "ghost" | "dark" | "onDark" | "danger";
   size?: "sm" | "md" | "lg" | "xl";
   href?: string;
 }
@@ -16,6 +16,7 @@ const variantClass = {
   ghost: "theme-btn-ghost",
   dark: "theme-btn-dark",
   onDark: "theme-btn-on-dark",
+  danger: "theme-btn-danger",
 } as const;
 
 const sizes = {

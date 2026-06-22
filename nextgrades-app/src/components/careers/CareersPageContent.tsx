@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import {
   ArrowRight,
   Briefcase,
@@ -169,16 +168,20 @@ export function CareersPageContent() {
           />
           <div className={hero.inner}>
             <div className="grid items-center gap-12 lg:grid-cols-2">
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-                <Badge variant="gold" className="mb-5">
+              <div>
+                <Badge variant="gold" className="mb-5" data-animate="hero-headline">
                   {t("careersPage.eyebrow")}
                 </Badge>
-                <h1 className="text-4xl font-bold leading-tight md:text-5xl lg:text-[3.25rem]">
+                <h1 className="text-4xl font-bold leading-tight md:text-5xl lg:text-[3.25rem]" data-animate="hero-headline" data-animate-delay="0.1">
                   {t("careersPage.title")}
                 </h1>
-                <p className="mt-5 max-w-xl text-lg leading-relaxed text-on-navy-muted">{t("careersPage.subtitle")}</p>
-                <p className="mt-3 max-w-xl text-sm text-on-navy-subtle">{t("careersPage.heroDesc")}</p>
-                <div className="mt-8 flex flex-wrap gap-4">
+                <p className="mt-5 max-w-xl text-lg leading-relaxed text-on-navy-muted" data-animate="hero-subheadline">
+                  {t("careersPage.subtitle")}
+                </p>
+                <p className="mt-3 max-w-xl text-sm text-on-navy-subtle" data-animate="hero-subheadline" data-animate-delay="0.2">
+                  {t("careersPage.heroDesc")}
+                </p>
+                <div className="mt-8 flex flex-wrap gap-4" data-animate="hero-cta">
                   <Button variant="gold" size="lg" href="#positions">
                     {t("careersPage.viewPositions")}
                   </Button>
@@ -190,7 +193,7 @@ export function CareersPageContent() {
                     {t("careersPage.applyNow")}
                   </Button>
                 </div>
-              </motion.div>
+              </div>
               <div className="hidden min-h-[280px] lg:block" aria-hidden />
             </div>
           </div>

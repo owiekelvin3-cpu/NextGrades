@@ -15,7 +15,12 @@ export function MockupStatsBar({ stats }: Props) {
   return (
     <section className="bg-[#0D1B2A] py-14 md:py-14">
       <div className={section.container}>
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-0 md:divide-x md:divide-white/10">
+        <div
+          className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-0 md:divide-x md:divide-white/10"
+          data-animate="staggerChildren"
+          data-stagger="0.12"
+          data-stagger-variant="scaleUp"
+        >
           {stats.map((stat) => {
             const Icon = stat.icon;
             return (
@@ -27,7 +32,12 @@ export function MockupStatsBar({ stats }: Props) {
                 )}
               >
                 <Icon className="mb-2 h-6 w-6 text-[#D4AF37] md:mb-3 md:h-7 md:w-7" strokeWidth={1.75} />
-                <p className="text-2xl font-bold tracking-tight text-white md:text-4xl">{stat.number}</p>
+                <p
+                  className="text-2xl font-bold tracking-tight text-white md:text-4xl"
+                  data-counter-value={stat.number}
+                >
+                  {stat.number}
+                </p>
                 <p className="mt-1 text-xs text-gray-400 md:text-sm">{stat.label}</p>
               </div>
             );

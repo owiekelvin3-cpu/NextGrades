@@ -40,20 +40,27 @@ export function HomeHero({
       <div className={hero.inner}>
         <div className="grid min-w-0 items-center gap-8 lg:grid-cols-2 lg:gap-12 xl:gap-16">
           <div className="max-w-xl">
-            <p className={`${type.eyebrow} mb-4 sm:mb-5`}>{eyebrow}</p>
-            <h1 className={type.h1}>
+            <p className={`${type.eyebrow} mb-4 sm:mb-5`} data-animate="hero-headline">
+              {eyebrow}
+            </p>
+            <h1 className={type.h1} data-animate="hero-headline" data-animate-delay="0.1">
               {title}{" "}
               <span className="text-[#D4AF37]">{titleHighlight}</span>
             </h1>
-            <p className="mt-5 max-w-lg text-base leading-relaxed text-on-navy-muted sm:mt-6 sm:text-lg md:text-xl">
+            <p
+              className="mt-5 max-w-lg text-base leading-relaxed text-on-navy-muted sm:mt-6 sm:text-lg md:text-xl"
+              data-animate="hero-subheadline"
+            >
               {subtitle}
             </p>
 
-            <MarketingCtaButtons
-              className="mt-8 sm:mt-10"
-              primaryLabel={primaryCta}
-              secondaryLabel={secondaryCta}
-            />
+            <div data-animate="hero-cta">
+              <MarketingCtaButtons
+                className="mt-8 sm:mt-10"
+                primaryLabel={primaryCta}
+                secondaryLabel={secondaryCta}
+              />
+            </div>
 
             <div className="mt-8 flex flex-wrap gap-2 sm:mt-10 sm:gap-3">
               <span className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-xs text-on-navy-subtle">
@@ -66,7 +73,9 @@ export function HomeHero({
               </span>
             </div>
           </div>
-          <MarketingHeroMobileImage src={heroImage} priority className="max-w-xl lg:max-w-none" />
+          <div data-animate="hero-image" className="max-w-xl lg:max-w-none">
+            <MarketingHeroMobileImage src={heroImage} priority className="max-w-xl lg:max-w-none" />
+          </div>
         </div>
       </div>
     </section>

@@ -42,6 +42,7 @@ import {
 } from "lucide-react";
 import { useToast } from "@/context/ToastContext";
 import { StudentQuizHub } from "@/components/quiz/StudentQuizHub";
+import { AdminTable, AdminTableStatusBadge } from "@/components/admin/AdminTable";
 import { st } from "@/components/dashboard/student/student-ui";
 import { cn } from "@/lib/utils";
 
@@ -533,7 +534,6 @@ export function TeacherSettingsSection() {
 }
 
 export function AdminProfilesTable({ role }: { role: "student" | "teacher" }) {
-  const { theme } = useTheme();
   const { t } = useTranslation();
   const [profiles, setProfiles] = useState<DashboardProfile[]>([]);
   const [loading, setLoading] = useState(true);
@@ -548,40 +548,39 @@ export function AdminProfilesTable({ role }: { role: "student" | "teacher" }) {
   const title =
     role === "student" ? t("dashboardPages.admin.students.title") : t("dashboardPages.admin.teachers.title");
 
-  if (loading) return <LoadingBlock />;
-
-  if (!profiles.length) {
-    return <EmptyState title={title} description={t("adminDashboard.subtitle")} />;
-  }
-
   return (
-    <Card className={`p-6`}>
-      <h3 className={`font-bold mb-4 text-foreground`}>{title}</h3>
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead>
-            <tr className={`text-left border-b border-border-default`}>
-              <th className="py-2">{t("login.fullName")}</th>
-              <th className="py-2">{t("login.iAmA")}</th>
-              <th className="py-2">{t("dashboardCommon.joined", { defaultValue: "Joined" })}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {profiles.map((u) => (
-              <tr key={u.id} className={`border-b ${theme === "dark" ? "border-white/5" : "border-gray-100"}`}>
-                <td className="py-3">{u.full_name ?? "—"}</td>
-                <td className="py-3">
-                  <Badge variant="gold">{u.role}</Badge>
-                </td>
-                <td className="py-3 text-gray-500">
-                  {u.created_at ? new Date(u.created_at).toLocaleDateString() : "—"}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </Card>
+    <AdminTable
+      title={title}
+      columns={[
+        {
+          id: "name",
+          header: t("login.fullName"),
+          sortable: true,
+          sortValue: (u) => u.full_name ?? "",
+          cell: (u) => u.full_name ?? "—",
+        },
+        {
+          id: "role",
+          header: t("login.iAmA"),
+          cell: (u) => <AdminTableStatusBadge label={u.role} variant="gold" />,
+        },
+        {
+          id: "joined",
+          header: t("dashboardCommon.joined", { defaultValue: "Joined" }),
+          sortable: true,
+          sortValue: (u) => u.created_at ?? "",
+          cell: (u) => (
+            <span className="text-sm text-text-muted">
+              {u.created_at ? new Date(u.created_at).toLocaleDateString() : "—"}
+            </span>
+          ),
+        },
+      ]}
+      data={profiles}
+      getRowId={(u) => u.id}
+      loading={loading}
+      emptyState={{ title, description: t("adminDashboard.noActivityDesc") }}
+    />
   );
 }
 
@@ -594,7 +593,6 @@ export function AdminTableSection({ type }: { type: "students" | "teachers" | "p
 }
 
 function AdminEnrollmentsSection() {
-  const { theme } = useTheme();
   const { t } = useTranslation();
   const [rows, setRows] = useState<{ id: string; status: string; student_name: string; subject_name: string }[]>([]);
   const [loading, setLoading] = useState(true);
@@ -607,10 +605,10 @@ function AdminEnrollmentsSection() {
         .select("id, status, student_id, subject_id")
         .limit(50);
       type EnrollmentRow = { id: string; status: string; student_id: string; subject_id: string };
-      const rows = (data || []) as EnrollmentRow[];
-      if (rows.length) {
-        const studentIds = [...new Set(rows.map((e) => e.student_id))];
-        const subjectIds = [...new Set(rows.map((e) => e.subject_id).filter(Boolean))];
+      const enrollmentRows = (data || []) as EnrollmentRow[];
+      if (enrollmentRows.length) {
+        const studentIds = [...new Set(enrollmentRows.map((e) => e.student_id))];
+        const subjectIds = [...new Set(enrollmentRows.map((e) => e.subject_id).filter(Boolean))];
         const [profiles, subjects] = await Promise.all([
           supabase.from("profiles").select("id, full_name").in("id", studentIds),
           subjectIds.length
@@ -627,7 +625,7 @@ function AdminEnrollmentsSection() {
           (subjects.data || []).map((s: { id: string; name: string }) => [s.id, s.name])
         );
         setRows(
-          rows.map((e) => ({
+          enrollmentRows.map((e) => ({
             id: e.id,
             status: e.status,
             student_name: nameMap.get(e.student_id) ?? "—",
@@ -639,37 +637,38 @@ function AdminEnrollmentsSection() {
     })();
   }, []);
 
-  if (loading) return <LoadingBlock />;
-
-  if (!rows.length) {
-    return <EmptyState title={t("dashboardPages.admin.memberships.title")} />;
-  }
-
   return (
-    <Card className={`p-6`}>
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead>
-            <tr className={`text-left border-b border-border-default`}>
-              <th className="py-2">{t("login.fullName")}</th>
-              <th className="py-2">{t("resources.filters.subject")}</th>
-              <th className="py-2">{t("dashboardCommon.status", { defaultValue: "Status" })}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((r) => (
-              <tr key={r.id} className={`border-b ${theme === "dark" ? "border-white/5" : "border-gray-100"}`}>
-                <td className="py-3">{r.student_name}</td>
-                <td className="py-3">{r.subject_name}</td>
-                <td className="py-3">
-                  <Badge variant={r.status === "active" ? "success" : "gold"}>{r.status}</Badge>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </Card>
+    <AdminTable
+      columns={[
+        {
+          id: "student",
+          header: t("login.fullName"),
+          sortable: true,
+          sortValue: (r) => r.student_name,
+          cell: (r) => r.student_name,
+        },
+        {
+          id: "subject",
+          header: t("resources.filters.subject"),
+          sortable: true,
+          sortValue: (r) => r.subject_name,
+          cell: (r) => r.subject_name,
+        },
+        {
+          id: "status",
+          header: t("dashboardCommon.status", { defaultValue: "Status" }),
+          cell: (r) => (
+            <AdminTableStatusBadge
+              label={r.status}
+              variant={r.status === "active" ? "success" : "gold"}
+            />
+          ),
+        },
+      ]}
+      data={rows}
+      loading={loading}
+      emptyState={{ title: t("dashboardPages.admin.payments.title") }}
+    />
   );
 }
 

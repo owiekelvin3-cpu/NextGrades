@@ -63,7 +63,7 @@ export function LegalDocumentPage({ namespace }: LegalDocumentPageProps) {
             />
           )}
           <div className={hero.innerCentered}>
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#D4AF37]/30 bg-[#D4AF37]/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-[#D4AF37]">
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#D4AF37]/30 bg-[#D4AF37]/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-[#D4AF37]" data-animate="hero-headline">
               <FileText className="h-3.5 w-3.5" />
               {t(`${namespace}.eyebrow`)}
             </div>
@@ -72,13 +72,15 @@ export function LegalDocumentPage({ namespace }: LegalDocumentPageProps) {
                 "text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl",
                 showPrivacyHero ? "text-[#0D1B2A]" : mt.heading
               )}
+              data-animate="hero-headline"
+              data-animate-delay="0.1"
             >
               {t(`${namespace}.title`)}
             </h1>
-            <p className={cn("mt-4 text-lg", showPrivacyHero ? "text-gray-600" : mt.body)}>
+            <p className={cn("mt-4 text-lg", showPrivacyHero ? "text-gray-600" : mt.body)} data-animate="hero-subheadline">
               {t(`${namespace}.subtitle`)}
             </p>
-            <p className={cn("mt-3 text-sm", showPrivacyHero ? "text-gray-500" : mt.muted)}>
+            <p className={cn("mt-3 text-sm", showPrivacyHero ? "text-gray-500" : mt.muted)} data-animate="hero-subheadline" data-animate-delay="0.2">
               {t(`${namespace}.lastUpdated`)}
             </p>
           </div>
@@ -89,7 +91,7 @@ export function LegalDocumentPage({ namespace }: LegalDocumentPageProps) {
           <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
             <p className={cn("mb-10 text-base leading-relaxed", mt.body)}>{t(`${namespace}.intro`)}</p>
 
-            <div className="space-y-8">
+            <div className="space-y-8" data-animate="staggerChildren" data-stagger="0.1">
               {sections.map((section, index) => (
                 <article
                   key={index}

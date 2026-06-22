@@ -661,6 +661,16 @@ html.theme-animate *::after {
   border-color: rgba(212, 175, 55, 0.45);
 }
 
+.theme-btn-danger {
+  background: var(--alert-error-bg);
+  color: var(--alert-error-fg);
+  border: 1px solid var(--alert-error-border);
+}
+
+.theme-btn-danger:hover:not(:disabled) {
+  filter: brightness(0.97);
+}
+
 .btn-pill {
   border-radius: 9999px;
   padding: 0.375rem 0.875rem;

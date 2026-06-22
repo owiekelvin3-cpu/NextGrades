@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
 import {
   Target,
   Eye,
@@ -62,7 +61,7 @@ function SectionHeading({
   mt: ReturnType<typeof useMarketingTheme>;
 }) {
   return (
-    <div className={cn("mb-12", center && "text-center")}>
+    <div className={cn("mb-12", center && "text-center")} data-animate="fadeUp">
       {eyebrow && <Eyebrow className={cn("mb-3", center && "mx-auto")}>{eyebrow}</Eyebrow>}
       <h2 className={cn("text-3xl font-bold tracking-tight md:text-4xl", mt.heading)}>{title}</h2>
       {subtitle && (
@@ -127,14 +126,16 @@ export default function AboutPage() {
 
           <div className={hero.inner}>
             <div className="grid min-w-0 items-center gap-10 lg:grid-cols-2 lg:gap-14">
-              <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+              <div data-animate="hero-headline">
                 <Eyebrow className="mb-4">{t("aboutPage.heroEyebrow")}</Eyebrow>
-                <h1 className={type.h1}>
+                <h1 className={type.h1} data-animate="hero-headline" data-animate-delay="0.1">
                   {t("about.heroTitle")}{" "}
                   <span className="text-[#D4AF37]">{t("about.heroTitleHighlight")}</span>{" "}
                   {t("about.heroTitle2")}
                 </h1>
-                <p className="mt-4 max-w-xl text-sm leading-relaxed text-on-navy-muted md:mt-5 md:text-lg">{t("about.heroSubtitle")}</p>
+                <p className="mt-4 max-w-xl text-sm leading-relaxed text-on-navy-muted md:mt-5 md:text-lg" data-animate="hero-subheadline">
+                  {t("about.heroSubtitle")}
+                </p>
 
                 <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
                   {safePillars.map((pillar, i) => {
@@ -153,15 +154,17 @@ export default function AboutPage() {
                   <p className="text-sm italic leading-relaxed text-on-navy-muted">&ldquo;{t("aboutPage.heroQuote")}&rdquo;</p>
                   <p className="mt-2 text-xs text-on-navy-faint">— {t("aboutPage.heroQuoteAuthor")}</p>
                 </div>
-              </motion.div>
+              </div>
 
-              <MarketingHeroMobileImage src={heroImage} alt={t("images.studentsCollaborating")} priority />
+              <div data-animate="hero-image">
+                <MarketingHeroMobileImage src={heroImage} alt={t("images.studentsCollaborating")} priority />
+              </div>
             </div>
           </div>
 
           {/* Feature bar */}
           <div className="relative mt-10 border-t border-white/10 bg-[#0a1520]/80 backdrop-blur-sm md:mt-14">
-            <div className={cn(section.container, "grid grid-cols-1 gap-4 py-8 md:grid-cols-2 lg:grid-cols-4 md:gap-6")}>
+            <div className={cn(section.container, "grid grid-cols-1 gap-4 py-8 md:grid-cols-2 lg:grid-cols-4 md:gap-6")} data-animate="staggerChildren" data-stagger="0.12">
               {safeFeatures.map((feat, i) => {
                 const Icon = FEATURE_ICONS[i] ?? GraduationCap;
                 return (
@@ -184,7 +187,7 @@ export default function AboutPage() {
         <section className={cn("py-14 lg:py-24", mt.sectionAlt)}>
           <div className={section.container}>
             <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-              <motion.div initial={{ opacity: 0, x: -24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
+              <div data-animate="slideInLeft">
                 <Eyebrow className="mb-3">{t("aboutPage.storyEyebrow")}</Eyebrow>
                 <h2 className={cn("text-3xl font-bold md:text-4xl", mt.heading)}>{t("aboutPage.storyTitle")}</h2>
                 <div className="mt-6 space-y-4">
@@ -198,11 +201,9 @@ export default function AboutPage() {
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </Link>
-              </motion.div>
-              <motion.div
-                initial={{ opacity: 0, x: 24 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
+              </div>
+              <div
+                data-animate="slideInRight"
                 className="overflow-hidden rounded-2xl shadow-xl"
               >
                 <MarketingImage
@@ -211,7 +212,7 @@ export default function AboutPage() {
                   containerClassName="h-80 w-full lg:h-[420px]"
                   sizes="(max-width: 1024px) 100vw, 45vw"
                 />
-              </motion.div>
+              </div>
             </div>
           </div>
         </section>
@@ -225,18 +226,11 @@ export default function AboutPage() {
               center
               mt={mt}
             />
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4" data-animate="staggerChildren" data-stagger="0.12">
               {safeMission.map((card, i) => {
                 const Icon = MISSION_ICONS[i] ?? BookOpen;
                 return (
-                  <motion.div
-                    key={card.title}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.08 }}
-                    className={cn(cardClass, "overflow-hidden")}
-                  >
+                  <div key={card.title} className={cn(cardClass, "overflow-hidden")}>
                     <div className="flex h-14 items-center justify-center bg-[#D4AF37]/10">
                       <Icon className="h-6 w-6 text-[#D4AF37]" />
                     </div>
@@ -253,7 +247,7 @@ export default function AboutPage() {
                       <h3 className={cn("font-bold", mt.heading)}>{card.title}</h3>
                       <p className={cn("mt-2 text-sm leading-relaxed", mt.body)}>{card.desc}</p>
                     </div>
-                  </motion.div>
+                  </div>
                 );
               })}
             </div>
@@ -269,24 +263,17 @@ export default function AboutPage() {
               center
               mt={mt}
             />
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-5" data-animate="staggerChildren" data-stagger="0.1">
               {safePrinciples.map((item, i) => {
                 const Icon = PRINCIPLE_ICONS[i] ?? Heart;
                 return (
-                  <motion.div
-                    key={item.title}
-                    initial={{ opacity: 0, y: 16 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.06 }}
-                    className={cn(cardClass, "p-6 text-center")}
-                  >
+                  <div key={item.title} className={cn(cardClass, "p-6 text-center")}>
                     <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full border-2 border-[#D4AF37]/30 bg-[#D4AF37]/10">
                       <Icon className="h-6 w-6 text-[#D4AF37]" />
                     </div>
                     <h3 className={cn("text-sm font-bold", mt.heading)}>{item.title}</h3>
                     <p className={cn("mt-2 text-xs leading-relaxed", mt.body)}>{item.desc}</p>
-                  </motion.div>
+                  </div>
                 );
               })}
             </div>
@@ -297,10 +284,8 @@ export default function AboutPage() {
         <section className="bg-[#0D1B2A] py-20 text-white lg:py-24">
           <div className={section.container}>
             <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-              <motion.div
-                initial={{ opacity: 0, x: -24 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
+              <div
+                data-animate="slideInLeft"
                 className="overflow-hidden rounded-2xl shadow-2xl"
               >
                 <MarketingImage
@@ -309,8 +294,8 @@ export default function AboutPage() {
                   containerClassName="h-80 w-full lg:h-[440px]"
                   sizes="(max-width: 1024px) 100vw, 45vw"
                 />
-              </motion.div>
-              <motion.div initial={{ opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
+              </div>
+              <div data-animate="slideInRight">
                 <Eyebrow className="mb-3">{t("aboutPage.promiseEyebrow")}</Eyebrow>
                 <h2 className="text-3xl font-bold md:text-4xl">{t("aboutPage.promiseTitle")}</h2>
                 <ul className="mt-8 space-y-4">
@@ -321,7 +306,7 @@ export default function AboutPage() {
                     </li>
                   ))}
                 </ul>
-              </motion.div>
+              </div>
             </div>
           </div>
         </section>

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Card } from "@/components/ui/Card";
@@ -157,21 +156,23 @@ export default function ConsultationPage() {
           />
           <div className={hero.inner}>
             <div className="grid min-w-0 items-center gap-8 lg:grid-cols-2 lg:gap-12">
-              <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
-                <p className={`${type.eyebrow} mb-3 ${textMuted}`}>
+              <div>
+                <p className={`${type.eyebrow} mb-3 ${textMuted}`} data-animate="hero-headline">
                   {t("consultation.heroEyebrow")}
                 </p>
-                <h1 className={cn(type.h1, "mb-4", textPrimary)}>
+                <h1 className={cn(type.h1, "mb-4", textPrimary)} data-animate="hero-headline" data-animate-delay="0.1">
                   {t("consultation.title")}
                   <br />
                   <span className="text-[#D4AF37]">{t("consultation.titleHighlight")}</span>
                 </h1>
-                <p className={cn("mb-3 text-sm md:text-lg", textMuted)}>{t("consultation.subtitle")}</p>
-                <p className={cn("mb-6 text-sm md:mb-8 md:text-base", isDark ? "text-foreground-secondary" : "text-gray-600")}>
+                <p className={cn("mb-3 text-sm md:text-lg", textMuted)} data-animate="hero-subheadline">
+                  {t("consultation.subtitle")}
+                </p>
+                <p className={cn("mb-6 text-sm md:mb-8 md:text-base", isDark ? "text-foreground-secondary" : "text-gray-600")} data-animate="hero-subheadline" data-animate-delay="0.2">
                   {t("consultation.heroDesc")}
                 </p>
 
-                <div className="mb-6 flex flex-wrap gap-2 md:mb-8">
+                <div className="mb-6 flex flex-wrap gap-2 md:mb-8" data-animate="hero-cta">
                   {trustBadges.map((badge) => (
                     <Badge key={badge} variant="gold">
                       <CheckCircle2 className="w-3.5 h-3.5 mr-1.5" />
@@ -194,14 +195,14 @@ export default function ConsultationPage() {
                     {t("consultation.viewPrograms")}
                   </Button>
                 </div>
-              </motion.div>
+              </div>
 
-              <MarketingHeroMobileImage src={consultationHeroImage} alt={t("consultation.title")} priority />
+              <div data-animate="hero-image">
+                <MarketingHeroMobileImage src={consultationHeroImage} alt={t("consultation.title")} priority />
+              </div>
 
-              <motion.div
-                initial={{ opacity: 0, scale: 0.96 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.7, delay: 0.15 }}
+              <div
+                data-animate="hero-image"
                 className="relative hidden min-h-[400px] lg:block"
               >
                 <div className="absolute bottom-0 right-0 z-10 max-w-xs p-4">
@@ -231,7 +232,7 @@ export default function ConsultationPage() {
                     </div>
                   </Card>
                 </div>
-              </motion.div>
+              </div>
             </div>
 
           </div>
@@ -240,22 +241,16 @@ export default function ConsultationPage() {
         {/* Process */}
         <section className={cn("py-14 md:py-20", mt.sectionAlt)}>
           <div className={section.container}>
-            <div className="text-center max-w-2xl mx-auto mb-14">
+            <div className="text-center max-w-2xl mx-auto mb-14" data-animate="fadeUp">
               <h2 className={`text-3xl md:text-4xl font-bold mb-4 ${textPrimary}`}>{t("consultation.processTitle")}</h2>
               <p className={textMuted}>{t("consultation.processSubtitle")}</p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6" data-animate="staggerChildren" data-stagger="0.1">
               {steps.map((step, i) => {
                 const Icon = stepIcons[i] ?? Calendar;
                 return (
-                  <motion.div
-                    key={step.title}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.1 }}
-                  >
+                  <div key={step.title}>
                     <Card className={`p-6 h-full relative overflow-hidden ${cardBg}`}>
                       <span className="absolute top-4 right-4 text-5xl font-bold text-[#D4AF37]/10">
                         {String(i + 1).padStart(2, "0")}
@@ -266,7 +261,7 @@ export default function ConsultationPage() {
                       <h3 className={`font-bold text-lg mb-2 ${textPrimary}`}>{step.title}</h3>
                       <p className={`text-sm ${textMuted}`}>{step.description}</p>
                     </Card>
-                  </motion.div>
+                  </div>
                 );
               })}
             </div>
@@ -276,12 +271,12 @@ export default function ConsultationPage() {
         {/* Benefits */}
         <section className={cn("py-14 md:py-20", mt.section)}>
           <div className={section.container}>
-            <div className="text-center max-w-2xl mx-auto mb-14">
+            <div className="text-center max-w-2xl mx-auto mb-14" data-animate="fadeUp">
               <h2 className={`text-3xl md:text-4xl font-bold mb-4 ${textPrimary}`}>{t("consultation.benefitsTitle")}</h2>
               <p className={textMuted}>{t("consultation.benefitsSubtitle")}</p>
             </div>
 
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" data-animate="staggerChildren" data-stagger="0.12">
               {benefits.map((item, i) => {
                 const Icon = benefitIcons[i] ?? Sparkles;
                 return (
@@ -301,10 +296,10 @@ export default function ConsultationPage() {
         {/* Audience */}
         <section className={cn("py-16", mt.sectionAlt)}>
           <div className={section.container}>
-            <h2 className={`text-2xl md:text-3xl font-bold text-center mb-10 ${textPrimary}`}>
+            <h2 className={`text-2xl md:text-3xl font-bold text-center mb-10 ${textPrimary}`} data-animate="fadeUp">
               {t("consultation.audienceTitle")}
             </h2>
-            <div className="grid md:grid-cols-3 gap-6">
+            <div className="grid md:grid-cols-3 gap-6" data-animate="staggerChildren" data-stagger="0.12">
               {audiences.map((item, i) => {
                 const Icon = audienceIcons[i] ?? Users;
                 return (
@@ -374,11 +369,7 @@ export default function ConsultationPage() {
 
               <Card className={`lg:col-span-3 p-8 sm:p-10 ${cardBg}`}>
                 {submitted ? (
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="text-center py-12"
-                  >
+                  <div className="text-center py-12">
                     <div className="w-20 h-20 rounded-full bg-green-500/20 flex items-center justify-center mx-auto mb-6">
                       <CheckCircle2 className="w-10 h-10 text-green-500" />
                     </div>
@@ -387,7 +378,7 @@ export default function ConsultationPage() {
                     <Button variant="gold" href="/programs">
                       {t("consultation.ctaPrograms")}
                     </Button>
-                  </motion.div>
+                  </div>
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-5">
                     <div className="grid sm:grid-cols-2 gap-5">
@@ -549,13 +540,9 @@ export default function ConsultationPage() {
                     />
                   </button>
                   {openFaq === i && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      className={`px-5 pb-5 text-sm ${textMuted}`}
-                    >
+                    <div className={`px-5 pb-5 text-sm ${textMuted}`}>
                       {faq.answer}
-                    </motion.div>
+                    </div>
                   )}
                 </Card>
               ))}

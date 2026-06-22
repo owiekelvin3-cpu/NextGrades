@@ -33,7 +33,7 @@ export function MockupFeatureStrip({ items, className, columns = 5 }: Props) {
       )}
     >
       <div className={section.container}>
-        <div className={cn("grid grid-cols-1 gap-4", gridCols)}>
+        <div className={cn("grid grid-cols-1 gap-4", gridCols)} data-animate="staggerChildren" data-stagger="0.12">
           {items.map((item) => {
             const Icon = item.icon;
             return (

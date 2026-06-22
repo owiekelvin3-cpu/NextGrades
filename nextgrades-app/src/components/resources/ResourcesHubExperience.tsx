@@ -18,7 +18,6 @@ import { getResourcesSubjectImage } from "@/lib/resources/images";
 import { LoadingBlock } from "@/components/dashboard/LoadingBlock";
 import { MobileResourcesToolbar } from "@/components/mobile/MobileResourcesToolbar";
 import { MobileResourceCard } from "@/components/mobile/MobileResourceCard";
-import { RevealOnScroll } from "@/components/marketing/RevealOnScroll";
 import { appShell } from "@/lib/theme/shell";
 
 export function ResourcesHubExperience() {
@@ -101,8 +100,7 @@ export function ResourcesHubExperience() {
               ) : (
                 <>
                   {displayFree.length > 0 && (
-                    <RevealOnScroll>
-                    <div>
+                    <div data-animate="fadeUp">
                       <SectionHeader
                         title={t("resources.freeTitle", { defaultValue: "Free content" })}
                         badge={t("resources.freeSubtitle", { defaultValue: "Available for everyone" })}
@@ -111,7 +109,7 @@ export function ResourcesHubExperience() {
                         actionHref="/resources?access=free"
                         actionLabel={t("resources.freeShowAll", { defaultValue: "Show all" })}
                       />
-                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4" data-animate="staggerChildren" data-stagger="0.12">
                         {displayFree.map((r) => (
                           <div key={r.id} className="hidden sm:block">
                             <ResourceHubCard
@@ -134,12 +132,10 @@ export function ResourcesHubExperience() {
                         ))}
                       </div>
                     </div>
-                    </RevealOnScroll>
                   )}
 
                   {displayPremium.length > 0 && (
-                    <RevealOnScroll delay={60}>
-                    <div>
+                    <div data-animate="fadeUp">
                       <SectionHeader
                         title={t("resources.premiumTitle", { defaultValue: "Premium content" })}
                         badge={t("resources.premiumSubtitle", { defaultValue: "Members only" })}
@@ -148,7 +144,7 @@ export function ResourcesHubExperience() {
                         actionHref="/resources/upgrade"
                         actionLabel={t("resources.premiumShowAll", { defaultValue: "Show all" })}
                       />
-                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4" data-animate="staggerChildren" data-stagger="0.12">
                         {displayPremium.map((r) => (
                           <div key={r.id} className="hidden sm:block">
                             <ResourceHubCard
@@ -171,7 +167,6 @@ export function ResourcesHubExperience() {
                         ))}
                       </div>
                     </div>
-                    </RevealOnScroll>
                   )}
 
                   {catalog.resources.length === 0 && (
@@ -180,8 +175,7 @@ export function ResourcesHubExperience() {
                     </div>
                   )}
 
-                  <RevealOnScroll delay={80}>
-                  <div>
+                  <div data-animate="fadeUp">
                     <SectionHeader
                       title={t("resources.resourcesBySubject", { defaultValue: "Resources by subject" })}
                     />
@@ -225,14 +219,13 @@ export function ResourcesHubExperience() {
                       })}
                     </div>
                   </div>
-                  </RevealOnScroll>
 
-                  <RevealOnScroll delay={100}>
+                  <div data-animate="fadeUp" data-animate-delay="0.1">
                     <ResourcesCtaBanner />
-                  </RevealOnScroll>
-                  <RevealOnScroll delay={120}>
+                  </div>
+                  <div data-animate="fadeUp" data-animate-delay="0.15">
                     <ResourcesFeatureRow />
-                  </RevealOnScroll>
+                  </div>
                 </>
               )}
             </div>

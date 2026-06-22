@@ -1,5 +1,4 @@
 import { Card } from "./ui/Card";
-import { motion } from "framer-motion";
 import { LucideIcon } from "lucide-react";
 
 interface FeatureCardProps {
@@ -9,21 +8,14 @@ interface FeatureCardProps {
   delay?: number;
 }
 
-export function FeatureCard({ icon: Icon, title, description, delay = 0 }: FeatureCardProps) {
+export function FeatureCard({ icon: Icon, title, description }: FeatureCardProps) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay }}
-    >
-      <Card className="p-8 hover:border-soft-gold/30 group">
-        <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-soft-gold to-yellow-400 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-          <Icon className="w-7 h-7 text-deep-navy" />
-        </div>
-        <h3 className="text-xl font-bold text-deep-navy mb-3">{title}</h3>
-        <p className="text-gray-600 leading-relaxed">{description}</p>
-      </Card>
-    </motion.div>
+    <Card className="group p-8 hover:border-soft-gold/30">
+      <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-soft-gold to-yellow-400 transition-transform duration-300 group-hover:scale-110">
+        <Icon className="h-7 w-7 text-deep-navy" />
+      </div>
+      <h3 className="mb-3 text-xl font-bold text-deep-navy">{title}</h3>
+      <p className="leading-relaxed text-gray-600">{description}</p>
+    </Card>
   );
 }

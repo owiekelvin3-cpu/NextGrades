@@ -37,7 +37,7 @@ export function PlatformShowcase({
     <section className={cn(section.py, "bg-surface-muted")}>
       <div className={section.container}>
         <div className="flex flex-col gap-8 lg:grid lg:grid-cols-[1fr_1.2fr_1fr] lg:items-center lg:gap-8 xl:gap-12">
-          <div className="order-1 text-left">
+          <div className="order-1 text-left" data-animate="slideInLeft">
             <p className={`${type.eyebrow} mb-3`}>{eyebrow}</p>
             <h2 className={cn(type.h2, "text-foreground")}>{title}</h2>
             <p className="mt-4 text-sm leading-relaxed text-text-muted md:text-base">{subtitle}</p>
@@ -54,7 +54,7 @@ export function PlatformShowcase({
             </Link>
           </div>
 
-          <div className="order-2 relative mx-auto w-full max-w-lg lg:max-w-none">
+          <div className="order-2 relative mx-auto w-full max-w-lg lg:max-w-none" data-animate="scaleUp">
             <div className="h-48 overflow-hidden rounded-2xl shadow-[0_32px_80px_rgba(13,27,42,0.15)] ring-1 ring-border-default md:h-auto">
               <MarketingImage
                 src={image}
@@ -67,7 +67,7 @@ export function PlatformShowcase({
             </div>
           </div>
 
-          <ul className="order-3 flex flex-col gap-3 md:space-y-6 lg:space-y-6">
+          <ul className="order-3 flex flex-col gap-3 md:space-y-6 lg:space-y-6" data-animate="staggerChildren" data-stagger="0.12">
             {sidebarFeatures.map((feature, i) => {
               const Icon = SIDEBAR_ICONS[i] ?? BookOpen;
               return (

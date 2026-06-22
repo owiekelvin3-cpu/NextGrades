@@ -23,7 +23,7 @@ export function SectionHeader({
   const centered = align === "center";
 
   return (
-    <header className={cn(centered && "text-center", "mb-14 md:mb-16 lg:mb-20", className)}>
+    <header className={cn(centered && "text-center", "mb-14 md:mb-16 lg:mb-20", className)} data-animate="fadeUp">
       {eyebrow && (
         <p className={cn(type.eyebrow, centered && "mx-auto", "mb-4")}>{eyebrow}</p>
       )}

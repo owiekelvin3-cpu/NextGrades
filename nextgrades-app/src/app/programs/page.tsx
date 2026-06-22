@@ -100,16 +100,16 @@ export default function ProgramsPage() {
           <div className={hero.inner}>
             <div className="grid min-w-0 items-center gap-10 sm:gap-12 lg:grid-cols-2 lg:gap-16">
               <div className="hero-enter min-w-0 max-w-xl">
-                <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-[#D4AF37] sm:text-sm">
+                <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-[#D4AF37] sm:text-sm" data-animate="hero-headline">
                   {t("programsPage.heroEyebrow")}
                 </p>
-                <h1 className={cn(type.h1, "mb-6")}>
+                <h1 className={cn(type.h1, "mb-6")} data-animate="hero-headline" data-animate-delay="0.1">
                   {t("programs.title")}
                 </h1>
-                <p className="mb-8 max-w-lg text-base leading-relaxed text-on-navy-muted sm:text-lg">
+                <p className="mb-8 max-w-lg text-base leading-relaxed text-on-navy-muted sm:text-lg" data-animate="hero-subheadline">
                   {t("programsPage.heroSubtitle")}
                 </p>
-                <ul className="mb-8 flex flex-wrap gap-2.5 sm:gap-3">
+                <ul className="mb-8 flex flex-wrap gap-2.5 sm:gap-3" data-animate="hero-cta">
                   {safeHeroFeatures.slice(0, 3).map((feature, index) => {
                     const Icon = heroFeatureIcons[index] ?? Hexagon;
                     return (
@@ -126,7 +126,9 @@ export default function ProgramsPage() {
                   {t("programsPage.freeConsultation")}
                 </Button>
               </div>
-              <MarketingHeroMobileImage src={programsHeroImage} alt={t("images.studentStudying")} priority />
+              <div data-animate="hero-image">
+                <MarketingHeroMobileImage src={programsHeroImage} alt={t("images.studentStudying")} priority />
+              </div>
             </div>
           </div>
         </section>
@@ -165,7 +167,7 @@ export default function ProgramsPage() {
               </h2>
               <p className="mx-auto max-w-2xl text-[var(--text-muted)]">{t("programsPage.sectionDesc")}</p>
             </div>
-            <div className="grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-6 xl:grid-cols-4">
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-6 xl:grid-cols-4" data-animate="staggerChildren" data-stagger="0.15">
               {safePrograms.map((program, index) => {
                 const featured = index === 3;
                 return (

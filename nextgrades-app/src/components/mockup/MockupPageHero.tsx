@@ -56,21 +56,30 @@ export function MockupPageHero({
             {breadcrumbs && breadcrumbs.length > 0 && (
               <MockupBreadcrumbs items={breadcrumbs} light={isDark} />
             )}
-            {eyebrow && <p className={`${type.eyebrow} mb-3`}>{eyebrow}</p>}
-            <h1 className={cn(type.h1, "max-w-2xl")}>{title}</h1>
+            {eyebrow && (
+              <p className={`${type.eyebrow} mb-3`} data-animate="hero-headline">
+                {eyebrow}
+              </p>
+            )}
+            <h1 className={cn(type.h1, "max-w-2xl")} data-animate="hero-headline" data-animate-delay="0.1">
+              {title}
+            </h1>
             {subtitle && (
               <p
                 className={cn(
                   "mt-4 max-w-xl text-sm leading-relaxed md:mt-5 md:text-lg",
                   isDark ? "text-on-navy-muted" : "text-gray-600"
                 )}
+                data-animate="hero-subheadline"
               >
                 {subtitle}
               </p>
             )}
-            {children}
+            {children ? <div data-animate="hero-cta">{children}</div> : null}
           </div>
-          <MarketingHeroMobileImage src={heroImage} priority />
+          <div data-animate="hero-image">
+            <MarketingHeroMobileImage src={heroImage} priority />
+          </div>
         </div>
       </div>
     </section>

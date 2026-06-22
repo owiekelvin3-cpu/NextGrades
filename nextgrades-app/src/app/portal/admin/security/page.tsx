@@ -2,7 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { Shield, AlertTriangle, Lock, Activity } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Card } from "@/components/ui/Card";
+import { AdminKpiCard, AdminKpiStrip } from "@/components/admin/AdminKpiCard";
+import { AdminTable, AdminTableStatusBadge } from "@/components/admin/AdminTable";
 
 type SecurityPayload = {
   stats: {
@@ -29,8 +32,10 @@ type SecurityPayload = {
 };
 
 export default function AdminSecurityPage() {
+  const { t } = useTranslation();
   const [data, setData] = useState<SecurityPayload | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     void fetch("/api/admin/security")
@@ -39,7 +44,8 @@ export default function AdminSecurityPage() {
         if (!res.ok) throw new Error(json.error || "Failed to load security data");
         setData(json);
       })
-      .catch((err) => setError(err instanceof Error ? err.message : "Failed to load"));
+      .catch((err) => setError(err instanceof Error ? err.message : "Failed to load"))
+      .finally(() => setLoading(false));
   }, []);
 
   const stats = data?.stats;
@@ -48,79 +54,106 @@ export default function AdminSecurityPage() {
     <div className="mx-auto max-w-7xl">
       <div className="mb-6">
         <h1 className="flex items-center gap-2 text-2xl font-bold text-foreground">
-          <Shield className="h-7 w-7 text-[#D4AF37]" />
-          Security Monitoring
+          <Shield className="h-7 w-7 text-[var(--brand-gold)]" />
+          {t("adminSecurity.title")}
         </h1>
-        <p className="mt-1 text-sm text-text-muted">
-          Failed logins, lockouts, OTP events, and recent audit activity (last 7 days).
-        </p>
+        <p className="mt-1 text-sm text-text-muted">{t("adminSecurity.subtitle")}</p>
       </div>
 
       {error && (
-        <Card className="mb-4 border-red-500/30 bg-red-500/5 p-4 text-sm text-red-600">{error}</Card>
+        <Card className="theme-alert-error mb-4 p-4 text-sm">{error}</Card>
       )}
 
-      <div className="mb-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        {[
-          { label: "Failed logins (7d)", value: stats?.failedLogins7d ?? "—", icon: AlertTriangle },
-          { label: "Active lockouts", value: stats?.activeLockouts ?? "—", icon: Lock },
-          { label: "Login OTP sent", value: stats?.loginOtpSent ?? "—", icon: Activity },
-          { label: "Suspicious events", value: stats?.suspiciousEvents ?? "—", icon: Shield },
-        ].map((item) => (
-          <Card key={item.label} className="p-4">
-            <div className="flex items-center gap-3">
-              <item.icon className="h-5 w-5 text-[#D4AF37]" />
-              <div>
-                <p className="text-xs text-text-muted">{item.label}</p>
-                <p className="text-2xl font-bold">{item.value}</p>
-              </div>
-            </div>
-          </Card>
-        ))}
-      </div>
+      <AdminKpiStrip className="mb-6 xl:grid-cols-4 2xl:grid-cols-4">
+        <AdminKpiCard
+          label={t("adminSecurity.failedLogins")}
+          value={stats?.failedLogins7d ?? "—"}
+          icon={AlertTriangle}
+          iconTone="warning"
+        />
+        <AdminKpiCard
+          label={t("adminSecurity.activeLockouts")}
+          value={stats?.activeLockouts ?? "—"}
+          icon={Lock}
+          iconTone="gold"
+        />
+        <AdminKpiCard
+          label={t("adminSecurity.loginOtpSent")}
+          value={stats?.loginOtpSent ?? "—"}
+          icon={Activity}
+          iconTone="info"
+        />
+        <AdminKpiCard
+          label={t("adminSecurity.suspiciousEvents")}
+          value={stats?.suspiciousEvents ?? "—"}
+          icon={Shield}
+          iconTone={stats?.suspiciousEvents ? "warning" : "success"}
+        />
+      </AdminKpiStrip>
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <Card className="overflow-hidden">
-          <div className="border-b border-border px-4 py-3 font-semibold">Recent security events</div>
-          <div className="max-h-[420px] overflow-auto">
-            <table className="w-full text-left text-sm">
-              <thead className="sticky top-0 bg-muted/80 text-xs uppercase text-text-muted">
-                <tr>
-                  <th className="px-4 py-2">Event</th>
-                  <th className="px-4 py-2">Email</th>
-                  <th className="px-4 py-2">IP</th>
-                  <th className="px-4 py-2">Time</th>
-                </tr>
-              </thead>
-              <tbody>
-                {(data?.recentEvents ?? []).map((e) => (
-                  <tr key={e.id} className="border-t border-border/60">
-                    <td className="px-4 py-2">
-                      <span className={e.success ? "text-green-600" : "text-red-600"}>{e.event_type}</span>
-                    </td>
-                    <td className="px-4 py-2 text-text-muted">{e.email || "—"}</td>
-                    <td className="px-4 py-2 text-text-muted">{e.ip_address || "—"}</td>
-                    <td className="px-4 py-2 text-text-muted">{new Date(e.created_at).toLocaleString()}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </Card>
+        <AdminTable
+          title={t("adminSecurity.recentEvents")}
+          columns={[
+            {
+              id: "event",
+              header: t("adminSecurity.colEvent"),
+              cell: (e) => (
+                <AdminTableStatusBadge
+                  label={e.event_type}
+                  variant={e.success ? "success" : "warning"}
+                />
+              ),
+            },
+            {
+              id: "email",
+              header: t("adminSecurity.colEmail"),
+              cell: (e) => <span className="text-text-muted">{e.email || "—"}</span>,
+            },
+            {
+              id: "ip",
+              header: t("adminSecurity.colIp"),
+              cell: (e) => <span className="text-text-muted">{e.ip_address || "—"}</span>,
+            },
+            {
+              id: "time",
+              header: t("adminSecurity.colTime"),
+              sortable: true,
+              sortValue: (e) => e.created_at,
+              cell: (e) => (
+                <span className="text-text-muted">{new Date(e.created_at).toLocaleString()}</span>
+              ),
+            },
+          ]}
+          data={data?.recentEvents ?? []}
+          loading={loading}
+          dense
+          stickyHeader
+        />
 
         <Card className="overflow-hidden">
-          <div className="border-b border-border px-4 py-3 font-semibold">Active lockouts</div>
-          <div className="max-h-[420px] overflow-auto p-4 text-sm">
+          <div className="border-b border-[var(--table-border)] px-4 py-3 font-semibold text-foreground">
+            {t("adminSecurity.lockoutsTitle")}
+          </div>
+          <div className="max-h-[480px] overflow-auto p-4 text-sm">
             {(data?.activeLockouts ?? []).length === 0 ? (
-              <p className="text-text-muted">No active lockouts.</p>
+              <p className="py-8 text-center text-text-muted">{t("adminSecurity.noLockouts")}</p>
             ) : (
               <ul className="space-y-3">
-                {data?.activeLockouts.map((l, i) => (
-                  <li key={`${l.email}-${i}`} className="rounded-lg border border-border/60 p-3">
-                    <p className="font-medium">{l.email}</p>
-                    <p className="text-xs text-text-muted">
-                      {l.failed_attempts} failures · IP {l.ip_address || "unknown"} · until{" "}
-                      {l.locked_until ? new Date(l.locked_until).toLocaleString() : "—"}
+                {data?.activeLockouts.map((lockout, index) => (
+                  <li
+                    key={`${lockout.email}-${index}`}
+                    className="rounded-xl border border-border-default bg-surface-subtle p-3"
+                  >
+                    <p className="font-medium text-foreground">{lockout.email}</p>
+                    <p className="mt-1 text-xs text-text-muted">
+                      {t("adminSecurity.failures", { count: lockout.failed_attempts })} · IP{" "}
+                      {lockout.ip_address || t("adminSecurity.ipUnknown")} ·{" "}
+                      {t("adminSecurity.until", {
+                        date: lockout.locked_until
+                          ? new Date(lockout.locked_until).toLocaleString()
+                          : "—",
+                      })}
                     </p>
                   </li>
                 ))}

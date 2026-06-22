@@ -206,6 +206,7 @@ export default function Navbar() {
             <nav
               className="hidden min-w-0 flex-1 items-center justify-center gap-0 md:flex md:gap-0.5 lg:gap-1 xl:gap-0.5 2xl:gap-1"
               aria-label={t("marketingNav.bottomLabel")}
+              data-animate="nav-stagger"
             >
               {primaryNavLinks.map((link) => (
                 <Link
@@ -213,6 +214,7 @@ export default function Navbar() {
                   href={link.href}
                   className={navLinkClass(isNavLinkActive(pathname, link.href), onDark)}
                   title={t(`common.${link.key}`)}
+                  data-animate="nav-item"
                 >
                   {navLabel(t, link.key)}
                 </Link>
@@ -224,6 +226,7 @@ export default function Navbar() {
                   href={link.href}
                   className={cn(navLinkClass(isNavLinkActive(pathname, link.href), onDark), "hidden 2xl:inline-flex")}
                   title={t(`common.${link.key}`)}
+                  data-animate="nav-item"
                 >
                   {navLabel(t, link.key)}
                 </Link>

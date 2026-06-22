@@ -3,6 +3,7 @@
 import { ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import PageTransition from "@/components/PageTransition";
+import { PageAnimationsInit } from "@/components/animations/PageAnimationsInit";
 
 /** Applies page enter/exit fade on marketing routes only — dashboards stay instant. */
 export default function RouteTransition({ children }: { children: ReactNode }) {
@@ -16,5 +17,10 @@ export default function RouteTransition({ children }: { children: ReactNode }) {
     return <>{children}</>;
   }
 
-  return <PageTransition>{children}</PageTransition>;
+  return (
+    <PageTransition>
+      <PageAnimationsInit />
+      {children}
+    </PageTransition>
+  );
 }

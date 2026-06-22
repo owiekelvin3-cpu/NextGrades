@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
-import { RevealOnScroll } from "@/components/marketing/RevealOnScroll";
 import Footer from "@/components/Footer";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
@@ -140,18 +139,18 @@ export default function SubjectsPage() {
           <div className={hero.inner}>
             <div className="grid min-w-0 items-center gap-8 lg:grid-cols-2 lg:gap-12 xl:gap-16">
               <div className="hero-enter min-w-0">
-                <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-[#D4AF37] sm:text-sm">
+                <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-[#D4AF37] sm:text-sm" data-animate="hero-headline">
                   {t("subjects.eyebrow")}
                 </p>
-                <h1 className={cn(type.h1, "mb-6")}>
+                <h1 className={cn(type.h1, "mb-6")} data-animate="hero-headline" data-animate-delay="0.1">
                   {t("subjects.heroTitle")}{" "}
                   <span className="text-[#D4AF37]">{t("subjects.heroTitleHighlight")}</span>
                 </h1>
-                <p className="mb-8 max-w-xl text-base leading-relaxed text-on-navy-muted sm:text-lg">
+                <p className="mb-8 max-w-xl text-base leading-relaxed text-on-navy-muted sm:text-lg" data-animate="hero-subheadline">
                   {t("subjects.heroSubtitle")}
                 </p>
 
-                <div className="mb-10 grid grid-cols-1 gap-2.5 sm:grid-cols-3 sm:gap-4">
+                <div className="mb-10 grid grid-cols-1 gap-2.5 sm:grid-cols-3 sm:gap-4" data-animate="hero-cta">
                   {benefits.slice(0, 3).map((item, index) => {
                     const Icon = heroFeatureIcons[index] ?? Target;
                     return (
@@ -174,7 +173,9 @@ export default function SubjectsPage() {
                 </Button>
               </div>
 
-              <MarketingHeroMobileImage src={subjectsHeroImage} alt={t("subjects.title")} priority />
+              <div data-animate="hero-image">
+                <MarketingHeroMobileImage src={subjectsHeroImage} alt={t("subjects.title")} priority />
+              </div>
             </div>
           </div>
         </section>
@@ -213,13 +214,12 @@ export default function SubjectsPage() {
               {t("subjectsPage.gridIntro")}
             </p>
 
-            <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5" data-animate="staggerChildren" data-stagger="0.12">
               {subjects.map((subject, index) => {
                 const Icon = SUBJECT_ICONS[subject.id] ?? BookOpen;
                 const { src: image, fallback: imageFallback } = resolveSubjectImage(subject.id, index);
                 return (
-                  <RevealOnScroll key={subject.id} delay={index * 60} className="h-full">
-                    <div id={`subject-${subject.id}`} className="h-full">
+                  <div key={subject.id} id={`subject-${subject.id}`} className="h-full">
                       <SubjectProgramCard
                         subject={subject}
                         imageSrc={image}
@@ -229,8 +229,7 @@ export default function SubjectsPage() {
                         viewMaterialsLabel={t("subjectsPage.viewMaterials")}
                         onViewMaterials={() => openBrowse(subject)}
                       />
-                    </div>
-                  </RevealOnScroll>
+                  </div>
                 );
               })}
             </div>

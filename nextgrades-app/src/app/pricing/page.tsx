@@ -153,18 +153,20 @@ function PricingContent() {
           <div className="relative z-10 mx-auto w-full max-w-7xl px-5 pb-8 pt-site-nav sm:px-6 md:min-h-[600px] md:pb-20 lg:min-h-[680px] lg:px-8">
             <div className="grid min-w-0 items-center gap-8 lg:grid-cols-2 lg:gap-16">
               <div className="max-w-xl">
-                <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#D4AF37] sm:mb-4 sm:text-xs sm:tracking-[0.22em]">
+                <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#D4AF37] sm:mb-4 sm:text-xs sm:tracking-[0.22em]" data-animate="hero-headline">
                   {t("pricingPage.plansEyebrow")}
                 </p>
-                <h1 className="text-[1.75rem] font-bold leading-[1.12] tracking-tight sm:text-4xl md:text-5xl lg:text-[3.25rem]">
+                <h1 className="text-[1.75rem] font-bold leading-[1.12] tracking-tight sm:text-4xl md:text-5xl lg:text-[3.25rem]" data-animate="hero-headline" data-animate-delay="0.1">
                   {t("pricingPage.plansTitle")}
                 </h1>
-                <p className="mt-4 max-w-lg text-[15px] leading-relaxed text-on-navy-muted sm:mt-6 sm:text-base md:text-lg">
+                <p className="mt-4 max-w-lg text-[15px] leading-relaxed text-on-navy-muted sm:mt-6 sm:text-base md:text-lg" data-animate="hero-subheadline">
                   {t("pricingPage.plansSubtitle")}
                 </p>
-                <p className="mt-3 text-sm text-on-navy-subtle">{t("pricingPage.valueProposition")}</p>
+                <p className="mt-3 text-sm text-on-navy-subtle" data-animate="hero-subheadline" data-animate-delay="0.2">
+                  {t("pricingPage.valueProposition")}
+                </p>
               </div>
-              <div className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-white/10 shadow-lg md:hidden">
+              <div className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-white/10 shadow-lg md:hidden" data-animate="hero-image">
                 <MarketingImage
                   src={heroImage}
                   alt=""
@@ -185,7 +187,7 @@ function PricingContent() {
           <section className="-mt-5 px-5 pb-1 sm:-mt-8 sm:px-6 md:-mt-10">
             <div className="mx-auto max-w-4xl">
               <Card className={cn("rounded-2xl p-4 shadow-[var(--card-shadow)] sm:p-6", mt.card)}>
-                <div className="grid grid-cols-2 gap-x-4 gap-y-5 sm:grid-cols-4 sm:gap-4">
+                <div className="grid grid-cols-2 gap-x-4 gap-y-5 sm:grid-cols-4 sm:gap-4" data-animate="staggerChildren" data-stagger="0.12" data-stagger-variant="scaleUp">
                   {stats.slice(0, 4).map((stat, index) => {
                     const Icon = STAT_ICONS[index] ?? Star;
                     return (
@@ -200,7 +202,10 @@ function PricingContent() {
                         <div className="mb-1.5 inline-flex h-8 w-8 items-center justify-center rounded-full bg-[var(--surface-subtle)] sm:mb-2 sm:h-9 sm:w-9">
                           <Icon className="h-3.5 w-3.5 text-[var(--foreground)] sm:h-4 sm:w-4" aria-hidden />
                         </div>
-                        <p className="text-xl font-bold tracking-tight text-[var(--foreground)] sm:text-2xl md:text-3xl">
+                        <p
+                          className="text-xl font-bold tracking-tight text-[var(--foreground)] sm:text-2xl md:text-3xl"
+                          data-counter-value={stat.value}
+                        >
                           {stat.value}
                         </p>
                         <p className="mt-0.5 text-[11px] leading-snug text-[var(--text-muted)] sm:text-sm">
@@ -225,7 +230,7 @@ function PricingContent() {
               align="center"
               className="!mb-8 sm:!mb-10 md:!mb-12"
             />
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 xl:grid-cols-4">
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 xl:grid-cols-4" data-animate="staggerChildren" data-stagger="0.15">
               {plans.map((plan) => (
                 <PricingPlanCard
                   key={plan.id}

@@ -1274,7 +1274,13 @@
     "chatbot": "AI Chatbot",
     "analytics": "Analytics",
     "zoom": "Zoom",
-    "cookies": "Cookies"
+    "cookies": "Cookies",
+    "security": "Security",
+    "sectionOverview": "Overview",
+    "sectionPlatform": "Platform",
+    "sectionInsights": "Insights",
+    "sectionSystem": "System",
+    "adminUser": "Administrator"
   },
   "adminHub": {
     "featuredLabel": "Most important",
@@ -1340,7 +1346,13 @@
     ],
     "accessGuideCmsLink": "Open website content",
     "accessGuideUsersLink": "Manage users",
-    "accessGuidePublicLink": "Open public website"
+    "accessGuidePublicLink": "Open public website",
+    "kpiTotalUsers": "Total users",
+    "kpiPendingModeration": "Pending moderation",
+    "kpiNeedsReview": "Needs review",
+    "kpiAllClear": "All clear",
+    "noActivityTitle": "No recent activity",
+    "noActivityDesc": "Platform events will appear here as users sign up, enroll, and interact."
   },
   "misc": {
     "loading": "Loading...",
@@ -1668,6 +1680,52 @@
     "createClose": "Close",
     "createSuccess": "User created — credentials sent by email",
     "createFailed": "Failed to create user"
+  },
+  "adminTable": {
+    "previous": "Previous",
+    "next": "Next",
+    "pageOf": "Page {{page}} of {{total}}",
+    "totalItems": "{{count}} items",
+    "noData": "No records found",
+    "noDataDesc": "Try adjusting filters or check back later.",
+    "sortBy": "Sort by {{column}}",
+    "actionsMenu": "Row actions",
+    "colUser": "User",
+    "colRole": "Role",
+    "colStatus": "Status",
+    "colVerified": "Verified",
+    "colJoined": "Joined",
+    "colLastLogin": "Last login",
+    "colActions": "Actions"
+  },
+  "adminAnalytics": {
+    "signupsTitle": "New signups (30 days)",
+    "activityTitle": "Platform activity (30 days)",
+    "rolesTitle": "Users by role"
+  },
+  "adminSecurity": {
+    "title": "Security monitoring",
+    "subtitle": "Failed logins, lockouts, OTP events, and recent audit activity (last 7 days).",
+    "failedLogins": "Failed logins (7d)",
+    "activeLockouts": "Active lockouts",
+    "loginOtpSent": "Login OTP sent",
+    "suspiciousEvents": "Suspicious events",
+    "recentEvents": "Recent security events",
+    "lockoutsTitle": "Active lockouts",
+    "noLockouts": "No active lockouts.",
+    "colEvent": "Event",
+    "colEmail": "Email",
+    "colIp": "IP",
+    "colTime": "Time",
+    "failures": "{{count}} failures",
+    "until": "until {{date}}",
+    "ipUnknown": "unknown"
+  },
+  "adminResources": {
+    "emptyTitle": "Resources are managed in the CMS",
+    "emptyDesc": "Upload and organize learning materials in the website content editor. Published resources appear on the public resources page.",
+    "openCms": "Open resources in CMS",
+    "viewPublic": "View public page"
   },
   "teacherContent": {
     "searchPlaceholder": "Search resources…",

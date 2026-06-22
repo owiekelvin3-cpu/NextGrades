@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import {
   ArrowRight,
   BookOpen,
@@ -176,13 +175,9 @@ export function ContactPageContent() {
             priority
           />
           <div className={hero.inner}>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="grid min-w-0 items-center gap-10 lg:grid-cols-2 lg:gap-16"
-            >
+            <div className="grid min-w-0 items-center gap-10 lg:grid-cols-2 lg:gap-16">
               <div className="relative z-10 min-w-0 max-w-xl">
-                <Badge variant="gold" className="mb-5">
+                <Badge variant="gold" className="mb-5" data-animate="hero-headline">
                   <MessageSquare className="mr-1.5 h-3.5 w-3.5" />
                   {t("contact.eyebrow")}
                 </Badge>
@@ -191,6 +186,8 @@ export function ContactPageContent() {
                     type.h1,
                     mt.isDark ? "text-white" : mt.heading
                   )}
+                  data-animate="hero-headline"
+                  data-animate-delay="0.1"
                 >
                   {t("contact.title")}
                 </h1>
@@ -199,6 +196,7 @@ export function ContactPageContent() {
                     "mt-4 max-w-xl text-sm leading-relaxed md:mt-5 md:text-lg",
                     mt.isDark ? "text-on-navy-muted" : mt.body
                   )}
+                  data-animate="hero-subheadline"
                 >
                   {t("contact.subtitle")}{" "}
                   <a
@@ -218,19 +216,23 @@ export function ContactPageContent() {
                     {t("contact.heroDesc")}
                   </p>
                 )}
-                <Button variant="gold" size="lg" href="#contact-form" className="mt-8">
-                  {t("contact.heroCta")}
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
+                <div data-animate="hero-cta">
+                  <Button variant="gold" size="lg" href="#contact-form" className="mt-8">
+                    {t("contact.heroCta")}
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </div>
               </div>
-              <MarketingHeroMobileImage src={contactHeroImage} priority />
-            </motion.div>
+              <div data-animate="hero-image">
+                <MarketingHeroMobileImage src={contactHeroImage} priority />
+              </div>
+            </div>
           </div>
         </section>
 
         <section className={cn("-mt-6 relative z-10 px-4 pb-4 sm:px-6 lg:px-8", mt.sectionAlt)}>
           <div className="mx-auto max-w-7xl">
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4" data-animate="staggerChildren" data-stagger="0.12">
               {(Array.isArray(benefits) ? benefits : []).map((item, i) => {
                 const Icon = BENEFIT_ICONS[i] ?? Heart;
                 return (
