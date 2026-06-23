@@ -1,14 +1,8 @@
 "use client";
 
-import { useState, type FormEvent, type ReactNode } from "react";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
-import {
-  ArrowUp,
-  Mail,
-  MessageCircle,
-  Phone,
-} from "lucide-react";
+import { Mail, Phone } from "lucide-react";
 import { BrandLogo } from "./BrandLogo";
 import { OpenCookieSettingsButton } from "@/components/cookies/OpenCookieSettingsButton";
 import { useConsentOptional } from "@/context/ConsentContext";
@@ -16,62 +10,35 @@ import {
   COMPANY_MAILTO,
   COMPANY_PHONE_DISPLAY,
   COMPANY_PHONE_TEL,
-  COMPANY_SOCIAL,
   COMPANY_SUPPORT_EMAIL,
 } from "@/lib/company";
 import { section } from "@/lib/premium/tokens";
 import { cn } from "@/lib/utils";
 
-const informationLinks = [
-  { href: "/about", key: "common.about" },
+const exploreLinks = [
   { href: "/programs", key: "common.programs" },
   { href: "/subjects", key: "common.subjects" },
   { href: "/pricing", key: "common.pricing" },
   { href: "/resources", key: "common.resourcesShort" },
+  { href: "/consultation", key: "navbar.consultationShort" },
 ] as const;
 
-const helpfulLinks = [
+const companyLinks = [
+  { href: "/about", key: "common.about" },
   { href: "/contact", key: "common.contact" },
-  { href: "/consultation", key: "navbar.consultationShort" },
   { href: "/help", key: "common.help" },
   { href: "/careers", key: "common.careers" },
+] as const;
+
+const legalLinks = [
   { href: "/privacy", key: "footer.privacy" },
   { href: "/terms", key: "footer.terms" },
   { href: "/imprint", key: "footer.imprint" },
 ] as const;
 
-type FooterSocialLink = {
-  id: string;
-  href: string;
-  label: string;
-  external: boolean;
-  icon: "whatsapp" | "email";
-};
-
 export default function Footer() {
   const { t } = useTranslation();
   const consent = useConsentOptional();
-
-  const socialLinks: FooterSocialLink[] = [
-    ...(COMPANY_SOCIAL.whatsapp
-      ? [
-          {
-            id: "whatsapp",
-            href: COMPANY_SOCIAL.whatsapp,
-            label: "WhatsApp",
-            external: true,
-            icon: "whatsapp" as const,
-          },
-        ]
-      : []),
-    {
-      id: "email",
-      href: COMPANY_MAILTO,
-      label: "E-Mail",
-      external: false,
-      icon: "email" as const,
-    },
-  ];
 
   return (
     <footer className="site-footer">
@@ -80,206 +47,91 @@ export default function Footer() {
       <div
         className={cn(
           section.container,
-          "site-footer__inner pb-[max(1rem,env(safe-area-inset-bottom))] pt-10 md:pt-12"
+          "site-footer__inner pb-[max(0.875rem,env(safe-area-inset-bottom))] pt-7 md:pt-8"
         )}
       >
-        <div
-          className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8 xl:gap-10"
-          data-animate="staggerChildren"
-          data-stagger="0.06"
-        >
-          <div className="space-y-5 sm:col-span-2 lg:col-span-1">
-            <BrandLogo size="lg" href="/" onDarkBackground />
-            <p className="text-sm font-medium text-[var(--footer-foreground)]">{t("footer.tagline")}</p>
-
-            <div>
-              <h3 className="footer-section-title">{t("footer.aboutTitle")}</h3>
-              <p className="mt-2 max-w-xs text-sm leading-relaxed text-[var(--footer-muted)]">
-                {t("footer.description")}
-              </p>
-            </div>
-
-            <div>
-              <h3 className="footer-section-title">{t("footer.contactTitle")}</h3>
-              <ul className="mt-3 space-y-2.5">
-                <li>
-                  <a href={COMPANY_PHONE_TEL} className="footer-contact-line">
-                    <Phone className="h-4 w-4 shrink-0 text-[var(--brand-gold)]" aria-hidden />
-                    {COMPANY_PHONE_DISPLAY}
-                  </a>
-                </li>
-                <li>
-                  <a href={COMPANY_MAILTO} className="footer-contact-line">
-                    <Mail className="h-4 w-4 shrink-0 text-[var(--brand-gold)]" aria-hidden />
-                    {COMPANY_SUPPORT_EMAIL}
-                  </a>
-                </li>
-              </ul>
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)_minmax(0,1fr)] lg:gap-10">
+          <div className="space-y-3 sm:col-span-2 lg:col-span-1">
+            <BrandLogo size="md" href="/" onDarkBackground />
+            <p className="max-w-[16rem] text-sm leading-snug text-[var(--footer-muted)]">{t("footer.tagline")}</p>
+            <div className="flex flex-col gap-1.5 sm:flex-row sm:flex-wrap sm:gap-x-4">
+              <a href={COMPANY_PHONE_TEL} className="footer-contact-line text-[0.8125rem]">
+                <Phone className="h-3.5 w-3.5 shrink-0 text-[var(--brand-gold)]" aria-hidden />
+                {COMPANY_PHONE_DISPLAY}
+              </a>
+              <a href={COMPANY_MAILTO} className="footer-contact-line text-[0.8125rem]">
+                <Mail className="h-3.5 w-3.5 shrink-0 text-[var(--brand-gold)]" aria-hidden />
+                {COMPANY_SUPPORT_EMAIL}
+              </a>
             </div>
           </div>
 
-          <FooterColumn title={t("footer.information")}>
-            {informationLinks.map((item) => (
+          <FooterColumn title={t("marketingNav.explore")}>
+            {exploreLinks.map((item) => (
               <FooterLink key={item.href} href={item.href}>
                 {t(item.key)}
               </FooterLink>
             ))}
           </FooterColumn>
 
-          <FooterColumn title={t("footer.helpfulLinks")}>
-            {helpfulLinks.map((item) => (
+          <FooterColumn title={t("footer.company")}>
+            {companyLinks.map((item) => (
               <FooterLink key={item.href} href={item.href}>
                 {t(item.key)}
               </FooterLink>
             ))}
-            <li>
-              {consent ? (
-                <button type="button" onClick={consent.openPreferences} className="footer-nav-link text-left">
-                  {t("footer.cookieSettings")}
-                </button>
-              ) : (
-                <OpenCookieSettingsButton className="footer-nav-link p-0 text-left" />
-              )}
-            </li>
           </FooterColumn>
-
-          <div className="relative sm:col-span-2 lg:col-span-1">
-            <FooterNewsletter />
-            <button
-              type="button"
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              className="footer-back-top"
-              aria-label={t("footer.backToTop")}
-            >
-              <ArrowUp className="h-4 w-4" aria-hidden />
-            </button>
-          </div>
         </div>
 
-        <div
-          className="mt-10 flex flex-col items-center justify-between gap-4 border-t border-[var(--footer-border)] pt-6 md:flex-row"
-          data-animate="fadeIn"
-        >
-          <nav className="flex flex-wrap items-center justify-center gap-2.5" aria-label="Social media">
-            {socialLinks.map(({ id, href, label, external, icon }) => (
-              <a
-                key={id}
-                href={href}
-                {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                className="footer-social-icon"
-                aria-label={label}
-              >
-                {icon === "whatsapp" ? (
-                  <MessageCircle className="h-4 w-4" aria-hidden />
-                ) : (
-                  <Mail className="h-4 w-4" aria-hidden />
-                )}
-              </a>
-            ))}
-          </nav>
-
-          <p className="text-center text-[11px] text-[var(--footer-subtle)] sm:text-xs md:text-right">
+        <div className="mt-6 flex flex-col items-center justify-between gap-3 border-t border-[var(--footer-border)] pt-4 md:mt-7 md:flex-row">
+          <p className="text-center text-[11px] text-[var(--footer-subtle)] sm:text-xs md:text-left">
             {t("footer.copyright")}
             <span className="mx-1.5 text-[var(--footer-border)]" aria-hidden>
               ·
             </span>
             {t("footer.madeInGermany")}
           </p>
+          <nav className="flex flex-wrap items-center justify-center gap-x-3.5 gap-y-1">
+            {legalLinks.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="text-[11px] text-[var(--footer-subtle)] transition-colors hover:text-[var(--brand-gold)] sm:text-xs"
+              >
+                {t(item.key)}
+              </Link>
+            ))}
+            {consent ? (
+              <button
+                type="button"
+                onClick={consent.openPreferences}
+                className="text-[11px] text-[var(--footer-subtle)] transition-colors hover:text-[var(--brand-gold)] sm:text-xs"
+              >
+                {t("footer.cookieSettings")}
+              </button>
+            ) : (
+              <OpenCookieSettingsButton className="text-[11px] text-[var(--footer-subtle)] hover:text-[var(--brand-gold)] sm:text-xs" />
+            )}
+          </nav>
         </div>
       </div>
     </footer>
   );
 }
 
-function FooterNewsletter() {
-  const { t } = useTranslation();
-  const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const trimmed = email.trim();
-    if (!trimmed) return;
-
-    setStatus("loading");
-    try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          firstName: "Newsletter",
-          email: trimmed,
-          message: t("footer.newsletterSignupMessage"),
-          subject: t("footer.newsletterSignupSubject"),
-        }),
-      });
-
-      if (!response.ok) {
-        setStatus("error");
-        return;
-      }
-
-      setEmail("");
-      setStatus("success");
-    } catch {
-      setStatus("error");
-    }
-  }
-
+function FooterColumn({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div>
-      <h3 className="footer-section-title">{t("footer.newsletterTitle")}</h3>
-      <p className="mt-2 text-sm leading-relaxed text-[var(--footer-muted)]">{t("footer.newsletterDesc")}</p>
-
-      <form onSubmit={handleSubmit} className="mt-4 space-y-3">
-        <label className="sr-only" htmlFor="footer-newsletter-email">
-          {t("footer.newsletterPlaceholder")}
-        </label>
-        <div className="footer-subscribe-field">
-          <Mail className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--brand-navy)]/50" aria-hidden />
-          <input
-            id="footer-newsletter-email"
-            type="email"
-            required
-            autoComplete="email"
-            value={email}
-            onChange={(event) => {
-              setEmail(event.target.value);
-              if (status !== "idle") setStatus("idle");
-            }}
-            placeholder={t("footer.newsletterPlaceholder")}
-            className="footer-subscribe-input"
-            disabled={status === "loading"}
-          />
-        </div>
-        <button type="submit" className="footer-subscribe-btn" disabled={status === "loading"}>
-          {status === "loading" ? "…" : t("footer.newsletterCta")}
-        </button>
-      </form>
-
-      {status === "success" && (
-        <p className="mt-2 text-xs text-[var(--brand-gold)]">{t("footer.newsletterSuccess")}</p>
-      )}
-      {status === "error" && (
-        <p className="mt-2 text-xs text-red-300">{t("footer.newsletterError")}</p>
-      )}
+      <h3 className="footer-section-title text-[0.9375rem]">{title}</h3>
+      <ul className="mt-2 space-y-1.5">{children}</ul>
     </div>
   );
 }
 
-function FooterColumn({ title, children }: { title: string; children: ReactNode }) {
-  return (
-    <div>
-      <h3 className="footer-section-title">{title}</h3>
-      <ul className="mt-3 space-y-2">{children}</ul>
-    </div>
-  );
-}
-
-function FooterLink({ href, children }: { href: string; children: ReactNode }) {
+function FooterLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
     <li>
-      <Link href={href} className="footer-nav-link">
+      <Link href={href} className="footer-nav-link text-[0.8125rem]">
         {children}
       </Link>
     </li>
