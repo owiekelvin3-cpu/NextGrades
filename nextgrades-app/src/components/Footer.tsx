@@ -5,9 +5,6 @@ import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import {
   ArrowUp,
-  Facebook,
-  Instagram,
-  Linkedin,
   Mail,
   MessageCircle,
   Phone,
@@ -43,24 +40,37 @@ const helpfulLinks = [
   { href: "/imprint", key: "footer.imprint" },
 ] as const;
 
-const SOCIAL_ICONS = [
-  { id: "instagram" as const, icon: Instagram, label: "Instagram" },
-  { id: "facebook" as const, icon: Facebook, label: "Facebook" },
-  { id: "linkedin" as const, icon: Linkedin, label: "LinkedIn" },
-  { id: "whatsapp" as const, icon: MessageCircle, label: "WhatsApp" },
-] as const;
+type FooterSocialLink = {
+  id: string;
+  href: string;
+  label: string;
+  external: boolean;
+  icon: "whatsapp" | "email";
+};
 
 export default function Footer() {
   const { t } = useTranslation();
   const consent = useConsentOptional();
 
-  const socialLinks = [
-    ...SOCIAL_ICONS.flatMap(({ id, icon, label }) => {
-      const href = COMPANY_SOCIAL[id];
-      if (!href) return [];
-      return [{ id, href, icon, label, external: true as const }];
-    }),
-    { id: "email", href: COMPANY_MAILTO, icon: Mail, label: "E-Mail", external: false as const },
+  const socialLinks: FooterSocialLink[] = [
+    ...(COMPANY_SOCIAL.whatsapp
+      ? [
+          {
+            id: "whatsapp",
+            href: COMPANY_SOCIAL.whatsapp,
+            label: "WhatsApp",
+            external: true,
+            icon: "whatsapp" as const,
+          },
+        ]
+      : []),
+    {
+      id: "email",
+      href: COMPANY_MAILTO,
+      label: "E-Mail",
+      external: false,
+      icon: "email" as const,
+    },
   ];
 
   return (
@@ -151,7 +161,7 @@ export default function Footer() {
           data-animate="fadeIn"
         >
           <nav className="flex flex-wrap items-center justify-center gap-2.5" aria-label="Social media">
-            {socialLinks.map(({ id, href, icon: Icon, label, external }) => (
+            {socialLinks.map(({ id, href, label, external, icon }) => (
               <a
                 key={id}
                 href={href}
@@ -159,7 +169,11 @@ export default function Footer() {
                 className="footer-social-icon"
                 aria-label={label}
               >
-                <Icon className="h-4 w-4" aria-hidden />
+                {icon === "whatsapp" ? (
+                  <MessageCircle className="h-4 w-4" aria-hidden />
+                ) : (
+                  <Mail className="h-4 w-4" aria-hidden />
+                )}
               </a>
             ))}
           </nav>

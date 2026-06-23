@@ -5,7 +5,11 @@ import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { PricingPlanCard, type PricingPlanCardPlan } from "@/components/pricing/PricingPlanCard";
-import { PricingCompareMobile } from "@/components/pricing/PricingCompareMobile";
+import {
+  ProgramCompareTable,
+  type ProgramCompareHeaders,
+  type ProgramCompareRow,
+} from "@/components/programs/ProgramCompareTable";
 import { MarketingCtaButtons } from "@/components/premium/MarketingCtaButtons";
 import { SectionHeader } from "@/components/premium/SectionHeader";
 import { MarketingImage } from "@/components/marketing/MarketingImage";
@@ -25,14 +29,6 @@ import {
 import { cn } from "@/lib/utils";
 import { section } from "@/lib/premium/tokens";
 import { useMarketingTheme } from "@/lib/marketing-theme";
-
-type CompareRow = {
-  label: string;
-  library?: string | boolean;
-  group?: string | boolean;
-  premium?: string | boolean;
-  matura?: string | boolean;
-};
 
 type PlanAction = "checkout" | "resources" | "consultation";
 
@@ -60,16 +56,6 @@ function checkoutPlanId(planId: string): string {
   return planId;
 }
 
-function CompareCell({ value }: { value: string | boolean | undefined }) {
-  if (value === true) {
-    return <CheckCircle2 className="mx-auto h-4 w-4 text-[#D4AF37]" aria-hidden />;
-  }
-  if (value === false || value === undefined) {
-    return <span className="text-on-navy-muted" aria-hidden>—</span>;
-  }
-  return <span className="text-xs text-gray-600 sm:text-sm">{value}</span>;
-}
-
 function PricingContent() {
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
@@ -85,16 +71,25 @@ function PricingContent() {
   const faqsRaw = useLocalizedContent<{ question: string; answer: string }[]>("pricingPage.faqs");
   const faqs = Array.isArray(faqsRaw) ? faqsRaw : [];
 
-  const compareRows = useLocalizedContent<CompareRow[]>("pricingPage.compareRows");
-  const compareHeaders = useLocalizedContent<Record<string, string>>("pricingPage.compareHeaders");
+  const compareRows = useLocalizedContent<ProgramCompareRow[]>("programsPage.compareRows");
+  const compareHeadersRaw = useLocalizedContent<ProgramCompareHeaders>("programsPage.compareHeaders");
+  const compareHeaders: ProgramCompareHeaders =
+    compareHeadersRaw && typeof compareHeadersRaw === "object" && "features" in compareHeadersRaw
+      ? compareHeadersRaw
+      : {
+          features: "Merkmale",
+          oneOnOne: "1:1 Premium",
+          group: "Lerngruppe",
+          library: "Lernbibliothek",
+          math: "Mathe Matura Komplettpaket",
+        };
+  const safeCompareRows = Array.isArray(compareRows) ? compareRows : [];
+
   const planActions = useLocalizedContent<Record<string, string>>("pricingPage.planActions");
   const statsRaw = useLocalizedContent<PricingStat[]>("pricingPage.stats");
   const stats = Array.isArray(statsRaw) ? statsRaw : [];
   const ctaTagsRaw = useLocalizedContent<string[]>("pricingPage.finalCtaTags");
   const ctaTags = Array.isArray(ctaTagsRaw) ? ctaTagsRaw : [];
-
-  const safeCompareHeaders =
-    compareHeaders && typeof compareHeaders === "object" ? compareHeaders : {};
 
   const handlePlanSelect = async (plan: PricingPlanCardPlan) => {
     const action = planActionType(plan.id);
@@ -126,8 +121,6 @@ function PricingContent() {
       setLoadingPlan(null);
     }
   };
-
-  const planColumns = plans.map((p) => p.id);
 
   return (
     <div className={cn("marketing-page-root flex min-h-screen flex-col overflow-x-hidden", mt.page)}>
@@ -250,71 +243,15 @@ function PricingContent() {
         </section>
 
         {/* Comparison */}
-        {Array.isArray(compareRows) && compareRows.length > 0 && (
-          <section className={cn("border-t border-[var(--border-default)] py-10 sm:py-14 md:py-16", mt.section)}>
-            <div className={section.container}>
-              <SectionHeader
-                title={t("pricing.compareTitle")}
-                align="center"
-                className="!mb-6 sm:!mb-8 md:!mb-10"
-              />
-
-              <p className="mb-2 text-right text-xs text-[var(--text-muted)] md:hidden">
-                ← {t("marketingNav.scrollHint", { defaultValue: "Scroll horizontally to compare" })} →
-              </p>
-
-              <PricingCompareMobile
-                rows={compareRows}
-                planColumns={planColumns}
-                headers={safeCompareHeaders}
-              />
-
-              <div className={cn("responsive-table-wrap hidden rounded-xl shadow-sm md:block", mt.tableWrap)}>
-                <table className="w-full min-w-[560px] border-collapse text-left text-sm">
-                  <thead>
-                    <tr className="bg-[var(--brand-navy)] text-white dark:bg-[var(--surface-subtle)] dark:text-[var(--foreground)]">
-                      <th className="sticky left-0 z-10 bg-[#0D1B2A] px-4 py-3.5 text-left text-xs font-semibold uppercase tracking-wide text-on-navy-muted sm:px-5 sm:py-4">
-                        {safeCompareHeaders.features ?? "Merkmale"}
-                      </th>
-                      {planColumns.map((col) => (
-                        <th
-                          key={col}
-                          className="px-3 py-3.5 text-center text-[10px] font-semibold uppercase tracking-wide sm:px-4 sm:py-4 sm:text-xs"
-                        >
-                          {safeCompareHeaders[col] ?? col}
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {compareRows.map((row, i) => (
-                      <tr
-                        key={row.label}
-                        className={cn(
-                          "border-b border-[var(--border-default)] last:border-0",
-                          i % 2 === 1 && "bg-[var(--surface-muted)]/60"
-                        )}
-                      >
-                        <td
-                          className={cn(
-                            "sticky left-0 z-10 px-4 py-3 font-medium text-[var(--foreground)] sm:px-5 sm:py-3.5",
-                            i % 2 === 1 ? "bg-[var(--surface-muted)]/60" : "bg-[var(--card-background)]"
-                          )}
-                        >
-                          {row.label}
-                        </td>
-                        {planColumns.map((col) => (
-                          <td key={col} className="px-3 py-3 text-center sm:px-4 sm:py-3.5">
-                            <CompareCell value={row[col as keyof CompareRow] as string | boolean | undefined} />
-                          </td>
-                        ))}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </section>
+        {safeCompareRows.length > 0 && (
+          <ProgramCompareTable
+            title={t("programsPage.compareTitle", { defaultValue: "Programmvergleich" })}
+            headers={compareHeaders}
+            rows={safeCompareRows}
+            partialLabel={t("programsPage.comparePartial", { defaultValue: "Teilweise" })}
+            scrollHint={`← ${t("marketingNav.scrollHint", { defaultValue: "Scroll horizontally to compare" })} →`}
+            className={cn("border-t border-[var(--border-default)]", mt.section)}
+          />
         )}
 
         {/* FAQ */}
