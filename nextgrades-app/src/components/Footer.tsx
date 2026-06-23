@@ -2,33 +2,20 @@
 
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
-import { Mail, Phone } from "lucide-react";
+import { Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import { BrandLogo } from "./BrandLogo";
 import { OpenCookieSettingsButton } from "@/components/cookies/OpenCookieSettingsButton";
 import { useConsentOptional } from "@/context/ConsentContext";
 import {
+  COMPANY_COUNTRY,
   COMPANY_MAILTO,
   COMPANY_PHONE_DISPLAY,
   COMPANY_PHONE_TEL,
+  COMPANY_SOCIAL,
   COMPANY_SUPPORT_EMAIL,
 } from "@/lib/company";
 import { section } from "@/lib/premium/tokens";
 import { cn } from "@/lib/utils";
-
-const exploreLinks = [
-  { href: "/programs", key: "common.programs" },
-  { href: "/subjects", key: "common.subjects" },
-  { href: "/pricing", key: "common.pricing" },
-  { href: "/resources", key: "common.resourcesShort" },
-  { href: "/consultation", key: "navbar.consultationShort" },
-] as const;
-
-const companyLinks = [
-  { href: "/about", key: "common.about" },
-  { href: "/contact", key: "common.contact" },
-  { href: "/help", key: "common.help" },
-  { href: "/careers", key: "common.careers" },
-] as const;
 
 const legalLinks = [
   { href: "/privacy", key: "footer.privacy" },
@@ -36,82 +23,136 @@ const legalLinks = [
   { href: "/imprint", key: "footer.imprint" },
 ] as const;
 
+const resourceLinks = [
+  { href: "/programs", key: "common.programs" },
+  { href: "/subjects", key: "common.subjects" },
+  { href: "/pricing", key: "common.pricing" },
+  { href: "/resources", key: "common.resourcesShort" },
+] as const;
+
+const mainLinks = [
+  { href: "/about", key: "common.about" },
+  { href: "/contact", key: "common.contact" },
+  { href: "/help", key: "common.help" },
+  { href: "/careers", key: "common.careers" },
+  { href: "/consultation", key: "navbar.consultationShort" },
+] as const;
+
+const bottomLinks = [
+  { href: "/about", key: "common.about" },
+  { href: "/programs", key: "common.programs" },
+  { href: "/pricing", key: "common.pricing" },
+  { href: "/consultation", key: "navbar.consultationShort" },
+] as const;
+
 export default function Footer() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const consent = useConsentOptional();
+  const country = i18n.language.startsWith("de") ? COMPANY_COUNTRY.de : COMPANY_COUNTRY.en;
 
   return (
     <footer className="site-footer">
-      <div className="site-footer__accent" aria-hidden />
-
-      <div
-        className={cn(
-          section.container,
-          "site-footer__inner pb-[max(0.875rem,env(safe-area-inset-bottom))] pt-7 md:pt-8"
-        )}
-      >
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)_minmax(0,1fr)] lg:gap-10">
-          <div className="space-y-3 sm:col-span-2 lg:col-span-1">
-            <BrandLogo size="md" href="/" onDarkBackground />
-            <p className="max-w-[16rem] text-sm leading-snug text-[var(--footer-muted)]">{t("footer.tagline")}</p>
-            <div className="flex flex-col gap-1.5 sm:flex-row sm:flex-wrap sm:gap-x-4">
-              <a href={COMPANY_PHONE_TEL} className="footer-contact-line text-[0.8125rem]">
-                <Phone className="h-3.5 w-3.5 shrink-0 text-[var(--brand-gold)]" aria-hidden />
-                {COMPANY_PHONE_DISPLAY}
-              </a>
-              <a href={COMPANY_MAILTO} className="footer-contact-line text-[0.8125rem]">
-                <Mail className="h-3.5 w-3.5 shrink-0 text-[var(--brand-gold)]" aria-hidden />
-                {COMPANY_SUPPORT_EMAIL}
-              </a>
-            </div>
+      <div className="site-footer__main">
+        <div className={cn(section.container, "site-footer__inner pt-10 pb-8 md:pt-12 md:pb-10")}>
+          <div className="mb-8 flex justify-center md:mb-10">
+            <BrandLogo size="lg" href="/" onDarkBackground className="mx-auto" />
           </div>
 
-          <FooterColumn title={t("marketingNav.explore")}>
-            {exploreLinks.map((item) => (
-              <FooterLink key={item.href} href={item.href}>
-                {t(item.key)}
-              </FooterLink>
-            ))}
-          </FooterColumn>
+          <div className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 lg:grid-cols-5 lg:gap-8">
+            <FooterColumn title={t("footer.legal")}>
+              {legalLinks.map((item) => (
+                <FooterLink key={item.href} href={item.href}>
+                  {t(item.key)}
+                </FooterLink>
+              ))}
+              <li>
+                {consent ? (
+                  <button type="button" onClick={consent.openPreferences} className="footer-col-link">
+                    {t("footer.cookieSettings")}
+                  </button>
+                ) : (
+                  <OpenCookieSettingsButton className="footer-col-link p-0" />
+                )}
+              </li>
+            </FooterColumn>
 
-          <FooterColumn title={t("footer.company")}>
-            {companyLinks.map((item) => (
-              <FooterLink key={item.href} href={item.href}>
-                {t(item.key)}
-              </FooterLink>
-            ))}
-          </FooterColumn>
+            <FooterColumn title={t("footer.resourcesHeading")}>
+              {resourceLinks.map((item) => (
+                <FooterLink key={item.href} href={item.href}>
+                  {t(item.key)}
+                </FooterLink>
+              ))}
+            </FooterColumn>
+
+            <FooterColumn title={t("footer.linksHeading")}>
+              {mainLinks.map((item) => (
+                <FooterLink key={item.href} href={item.href}>
+                  {t(item.key)}
+                </FooterLink>
+              ))}
+            </FooterColumn>
+
+            <FooterColumn title={t("footer.officesHeading")}>
+              <li className="footer-col-text">{t("footer.officeAustria")}</li>
+              <li className="footer-col-text">{t("footer.officeOnline")}</li>
+            </FooterColumn>
+
+            <FooterColumn title={t("footer.stayConnected")} className="col-span-2 sm:col-span-1">
+              <li>
+                <a href={COMPANY_PHONE_TEL} className="footer-col-contact">
+                  <Phone className="h-3.5 w-3.5 shrink-0 text-[var(--brand-gold)]" aria-hidden />
+                  {COMPANY_PHONE_DISPLAY}
+                </a>
+              </li>
+              <li>
+                <a href={COMPANY_MAILTO} className="footer-col-contact">
+                  <Mail className="h-3.5 w-3.5 shrink-0 text-[var(--brand-gold)]" aria-hidden />
+                  {COMPANY_SUPPORT_EMAIL}
+                </a>
+              </li>
+              <li className="footer-col-contact">
+                <MapPin className="h-3.5 w-3.5 shrink-0 text-[var(--brand-gold)]" aria-hidden />
+                <span>{country}</span>
+              </li>
+              <li className="pt-2">
+                <div className="flex flex-wrap gap-2">
+                  {COMPANY_SOCIAL.whatsapp ? (
+                    <a
+                      href={COMPANY_SOCIAL.whatsapp}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="footer-social-square"
+                      aria-label="WhatsApp"
+                    >
+                      <MessageCircle className="h-4 w-4" aria-hidden />
+                    </a>
+                  ) : null}
+                  <a href={COMPANY_MAILTO} className="footer-social-square" aria-label="E-Mail">
+                    <Mail className="h-4 w-4" aria-hidden />
+                  </a>
+                </div>
+              </li>
+            </FooterColumn>
+          </div>
         </div>
+      </div>
 
-        <div className="mt-6 flex flex-col items-center justify-between gap-3 border-t border-[var(--footer-border)] pt-4 md:mt-7 md:flex-row">
-          <p className="text-center text-[11px] text-[var(--footer-subtle)] sm:text-xs md:text-left">
+      <div className="site-footer__bar">
+        <div
+          className={cn(
+            section.container,
+            "flex flex-col items-center justify-between gap-3 py-3.5 sm:flex-row sm:gap-4"
+          )}
+        >
+          <p className="text-center text-[11px] text-[#0D1B2A]/90 sm:text-left sm:text-xs">
             {t("footer.copyright")}
-            <span className="mx-1.5 text-[var(--footer-border)]" aria-hidden>
-              ·
-            </span>
-            {t("footer.madeInGermany")}
           </p>
-          <nav className="flex flex-wrap items-center justify-center gap-x-3.5 gap-y-1">
-            {legalLinks.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="text-[11px] text-[var(--footer-subtle)] transition-colors hover:text-[var(--brand-gold)] sm:text-xs"
-              >
+          <nav className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
+            {bottomLinks.map((item) => (
+              <Link key={item.href} href={item.href} className="site-footer__bar-link">
                 {t(item.key)}
               </Link>
             ))}
-            {consent ? (
-              <button
-                type="button"
-                onClick={consent.openPreferences}
-                className="text-[11px] text-[var(--footer-subtle)] transition-colors hover:text-[var(--brand-gold)] sm:text-xs"
-              >
-                {t("footer.cookieSettings")}
-              </button>
-            ) : (
-              <OpenCookieSettingsButton className="text-[11px] text-[var(--footer-subtle)] hover:text-[var(--brand-gold)] sm:text-xs" />
-            )}
           </nav>
         </div>
       </div>
@@ -119,11 +160,19 @@ export default function Footer() {
   );
 }
 
-function FooterColumn({ title, children }: { title: string; children: React.ReactNode }) {
+function FooterColumn({
+  title,
+  children,
+  className,
+}: {
+  title: string;
+  children: React.ReactNode;
+  className?: string;
+}) {
   return (
-    <div>
-      <h3 className="footer-section-title text-[0.9375rem]">{title}</h3>
-      <ul className="mt-2 space-y-1.5">{children}</ul>
+    <div className={className}>
+      <h3 className="footer-col-heading">{title}</h3>
+      <ul className="mt-3 space-y-2">{children}</ul>
     </div>
   );
 }
@@ -131,7 +180,7 @@ function FooterColumn({ title, children }: { title: string; children: React.Reac
 function FooterLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
     <li>
-      <Link href={href} className="footer-nav-link text-[0.8125rem]">
+      <Link href={href} className="footer-col-link">
         {children}
       </Link>
     </li>

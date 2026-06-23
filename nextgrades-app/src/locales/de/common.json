@@ -82,6 +82,12 @@
     "contactTitle": "Kontakt",
     "information": "Information",
     "helpfulLinks": "Hilfreiche Links",
+    "resourcesHeading": "Ressourcen",
+    "linksHeading": "Links",
+    "officesHeading": "Standort",
+    "stayConnected": "Kontakt",
+    "officeAustria": "Österreich",
+    "officeOnline": "100 % online",
     "newsletterSignupSubject": "Newsletter-Anmeldung",
     "newsletterSignupMessage": "Bitte tragt mich für den NextGrades-Newsletter ein.",
     "backToTop": "Nach oben",
@@ -132,7 +138,7 @@
         },
         {
           "quote": "Die Plattform ist intuitiv und die Materialien perfekt für die Matura-Vorbereitung. Absolute Empfehlung!",
-          "name": "Julia, 4. Klasse Gymnasium"
+          "name": "Julia, Klasse 10"
         }
       ]
     },

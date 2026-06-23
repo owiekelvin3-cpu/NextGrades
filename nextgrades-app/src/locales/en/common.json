@@ -82,6 +82,12 @@
     "contactTitle": "Contact",
     "information": "Information",
     "helpfulLinks": "Helpful links",
+    "resourcesHeading": "Resources",
+    "linksHeading": "Links",
+    "officesHeading": "Location",
+    "stayConnected": "Contact",
+    "officeAustria": "Austria",
+    "officeOnline": "100% online",
     "newsletterSignupSubject": "Newsletter signup",
     "newsletterSignupMessage": "Please add me to the NextGrades newsletter.",
     "backToTop": "Back to top",
@@ -220,7 +226,7 @@
         },
         {
           "quote": "The platform is intuitive and the materials are perfect for graduation exam preparation!",
-          "name": "Julia, 4. Klasse Gymnasium"
+          "name": "Julia, Klasse 10"
         }
       ]
     },
