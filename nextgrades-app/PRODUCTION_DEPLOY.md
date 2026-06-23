@@ -11,6 +11,10 @@ npm run predeploy   # uses .env.local — expect blocker until NEXT_PUBLIC_APP_U
 
 After deploy, open `https://YOUR-DOMAIN/api/health` — should return `"status":"ok"` (not `blocked`).
 
+## Auth middleware
+
+`src/middleware.ts` re-exports `src/proxy.ts` — it protects `/dashboard`, `/portal`, `/checkout`, and auth routes (role checks, login redirects, API rate limits). Required for production student/teacher access control.
+
 ## Required Vercel environment variables
 
 | Variable | Notes |

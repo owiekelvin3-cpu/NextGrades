@@ -333,6 +333,7 @@ export async function proxy(request: NextRequest) {
 export const config = {
   matcher: [
     "/api/:path*",
+    "/dashboard",
     "/dashboard/:path*",
     "/portal/:path*",
     "/admin/:path*",

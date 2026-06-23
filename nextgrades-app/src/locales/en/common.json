@@ -417,6 +417,7 @@
     "supabaseNotConfigured": "Supabase credentials are not configured. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in .env.local.",
     "invalidEmail": "Invalid email",
     "accountSuspended": "Your account has been suspended. Contact support@nextgrades.de if you believe this is a mistake.",
+    "inviteOnlyNote": "Accounts are created by invitation only. Contact support@nextgrades.de if you need access.",
     "profileIncomplete": "Your account profile is incomplete. Please contact support.",
     "enterValidEmail": "Please enter a valid email address",
     "enterPassword": "Please enter your password",

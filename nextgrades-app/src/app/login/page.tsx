@@ -34,6 +34,7 @@ import { LOGIN_HERO_IMAGE } from "@/lib/marketing-images";
 import { cn } from "@/lib/utils";
 import { AuthGuestGuard } from "@/components/auth/AuthGuestGuard";
 import { AuthModeSwitch } from "@/components/auth/AuthModeSwitch";
+import { isPublicSignupEnabled } from "@/lib/auth/public-signup";
 import {
   isAuthUserEmailVerified,
   isClientEmailVerificationRequired,
@@ -60,6 +61,7 @@ function LoginContent() {
   const loginHeroImage = useCmsImage("cmsImages.auth.loginHero", LOGIN_HERO_IMAGE);
   const isDark = theme === "dark";
   const s = authSurface(isDark);
+  const showInviteNote = !isPublicSignupEnabled();
 
   const redirectTo = sanitizeRedirect(searchParams.get("redirect"));
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -231,6 +233,20 @@ function LoginContent() {
           <AuthMobileIllustration src={loginHeroImage} alt="" />
         }
       >
+        {showInviteNote && (
+          <p
+            className={cn(
+              "mb-4 rounded-xl border px-4 py-3 text-sm leading-relaxed",
+              isDark
+                ? "border-[var(--brand-gold)]/25 bg-[var(--brand-gold)]/10 text-zinc-300"
+                : "border-[var(--brand-gold)]/30 bg-[var(--brand-gold-muted)] text-[#0D1B2A]/80"
+            )}
+            role="status"
+          >
+            {t("login.inviteOnlyNote")}
+          </p>
+        )}
+
         {error && (
           <div
             className={cn(
@@ -329,6 +345,20 @@ function LoginContent() {
           <div className="flex flex-1 flex-col justify-center py-4 md:py-8">
             <AuthSplitCard heroImage={loginHeroImage} heroPanel={heroPanel} className="!bg-transparent">
               <AuthSplitHeader title={t("login.welcomeBackTitle")} subtitle={t("login.loginSubtitle")} />
+
+              {showInviteNote && (
+                <p
+                  className={cn(
+                    "mb-5 rounded-2xl border px-4 py-3 text-sm leading-relaxed",
+                    isDark
+                      ? "border-[var(--brand-gold)]/25 bg-[var(--brand-gold)]/10 text-zinc-300"
+                      : "border-[var(--brand-gold)]/30 bg-[var(--brand-gold-muted)] text-[#0D1B2A]/80"
+                  )}
+                  role="status"
+                >
+                  {t("login.inviteOnlyNote")}
+                </p>
+              )}
 
               {error && (
                 <div className={cn("mb-6 rounded-2xl border px-4 py-3 text-sm", s.errorBox)}>
