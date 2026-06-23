@@ -35,7 +35,7 @@ import { useMarketingTheme } from "@/lib/marketing-theme";
 import { useTranslation } from "react-i18next";
 import { useLocalizedContent } from "@/hooks/useLocalizedContent";
 import { useCmsImages } from "@/hooks/useCmsImage";
-import { SUBJECTS_HERO_IMAGE, getSubjectImage } from "@/lib/marketing-images";
+import { SUBJECTS_HERO_IMAGE, SHARED_PAGE_HERO_IMAGE, getSubjectImage } from "@/lib/marketing-images";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
 import { MarketingHeroMobileImage } from "@/components/marketing/MarketingHeroMobileImage";
 import { themeInputClass, themeSelectClass } from "@/lib/theme/form-fields";
@@ -134,6 +134,7 @@ export default function SubjectsPage() {
             src={subjectsHeroImage}
             alt={t("subjects.title")}
             variant="dark-split-right"
+            fallbackSrc={SHARED_PAGE_HERO_IMAGE}
             priority
           />
           <div className={hero.inner}>
@@ -174,7 +175,7 @@ export default function SubjectsPage() {
               </div>
 
               <div data-animate="hero-image">
-                <MarketingHeroMobileImage src={subjectsHeroImage} alt={t("subjects.title")} priority />
+                <MarketingHeroMobileImage src={subjectsHeroImage} fallbackSrc={SHARED_PAGE_HERO_IMAGE} alt={t("subjects.title")} priority />
               </div>
             </div>
           </div>

@@ -20,7 +20,7 @@ import { useTranslation } from "react-i18next";
 import { useLocalizedContent } from "@/hooks/useLocalizedContent";
 import { useCmsImages } from "@/hooks/useCmsImage";
 import { useMarketingTheme } from "@/lib/marketing-theme";
-import { PROGRAMS_HERO_IMAGE, PROGRAMS_PAGE_CARD_IMAGES } from "@/lib/marketing-images";
+import { PROGRAMS_HERO_IMAGE, PROGRAMS_PAGE_CARD_IMAGES, SHARED_PAGE_HERO_IMAGE } from "@/lib/marketing-images";
 import { MarketingImage } from "@/components/marketing/MarketingImage";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
 import { MarketingHeroMobileImage } from "@/components/marketing/MarketingHeroMobileImage";
@@ -95,6 +95,7 @@ export default function ProgramsPage() {
             src={programsHeroImage}
             alt={t("images.studentStudying")}
             variant="dark-split-right"
+            fallbackSrc={SHARED_PAGE_HERO_IMAGE}
             priority
           />
           <div className={hero.inner}>
@@ -127,7 +128,7 @@ export default function ProgramsPage() {
                 </Button>
               </div>
               <div data-animate="hero-image">
-                <MarketingHeroMobileImage src={programsHeroImage} alt={t("images.studentStudying")} priority />
+                <MarketingHeroMobileImage src={programsHeroImage} fallbackSrc={SHARED_PAGE_HERO_IMAGE} alt={t("images.studentStudying")} priority />
               </div>
             </div>
           </div>

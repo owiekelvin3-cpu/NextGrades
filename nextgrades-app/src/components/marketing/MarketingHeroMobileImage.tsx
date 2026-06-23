@@ -8,10 +8,11 @@ type Props = {
   alt?: string;
   className?: string;
   priority?: boolean;
+  fallbackSrc?: string;
 };
 
 /** Stacked hero image for phones & tablets — keeps copy readable above the fold. */
-export function MarketingHeroMobileImage({ src, alt = "", className, priority }: Props) {
+export function MarketingHeroMobileImage({ src, alt = "", className, priority, fallbackSrc }: Props) {
   return (
     <div
       className={cn(
@@ -22,6 +23,7 @@ export function MarketingHeroMobileImage({ src, alt = "", className, priority }:
       <MarketingImage
         src={src}
         alt={alt}
+        fallbackSrc={fallbackSrc}
         containerClassName="h-full w-full"
         sizes="(max-width: 1024px) 100vw, 50vw"
         priority={priority}

@@ -1,4 +1,4 @@
-import { ONLINE_IMAGE_FALLBACK } from "@/lib/marketing-images";
+import { ONLINE_IMAGE_FALLBACK, SHARED_PAGE_HERO_IMAGE } from "@/lib/marketing-images";
 
 const INVALID_OVERRIDE = /^(none|null|undefined|#|javascript:|data:,|\s*$)/i;
 
@@ -9,14 +9,27 @@ export const SHARED_MARKETING_HERO_KEYS = [
   "cmsImages.subjects.hero",
 ] as const;
 
-/** Ignore stale stock-photo CMS overrides so the branded hero always wins. */
-export function isStaleExternalHeroOverride(src?: string | null): boolean {
+const SHARED_HERO_ASSET = "hero-students-nextgrades";
+
+/** True when override is the canonical shared hero asset (not legacy CMS paths). */
+export function isCanonicalSharedHeroOverride(src?: string | null): boolean {
   if (!src || typeof src !== "string") return false;
   const s = src.trim().toLowerCase();
-  if (!s) return false;
-  if (s.includes("/images/marketing/hero-students")) return false;
-  if (s.startsWith("/images/marketing/")) return false;
-  return /unsplash|pexels|pixabay|shutterstock|istock|placeholder|rectangle_40443|images\.unsplash/i.test(s);
+  return s.includes(SHARED_HERO_ASSET);
+}
+
+/**
+ * Shared page heroes must use the branded students photo.
+ * CMS may still store legacy paths (tutoring-session, subject-books, etc.) — ignore those.
+ */
+export function resolveSharedMarketingHero(
+  override: string | null | undefined,
+  canonical: string = SHARED_PAGE_HERO_IMAGE
+): string {
+  if (isValidImageSrc(override) && isCanonicalSharedHeroOverride(override)) {
+    return override!.trim();
+  }
+  return isValidImageSrc(canonical) ? canonical.trim() : SHARED_PAGE_HERO_IMAGE;
 }
 
 /** Ignore stale CMS uploads (generic placeholder rectangles) — use branded defaults instead. */
@@ -48,12 +61,9 @@ export function resolveCmsImageSrc(
   fallback?: string,
   registryDefault?: string
 ): string {
-  if (
-    key &&
-    (SHARED_MARKETING_HERO_KEYS as readonly string[]).includes(key) &&
-    isStaleExternalHeroOverride(override)
-  ) {
-    return resolveImageChain(fallback, registryDefault, ONLINE_IMAGE_FALLBACK);
+  if (key && (SHARED_MARKETING_HERO_KEYS as readonly string[]).includes(key)) {
+    const canonical = registryDefault ?? fallback ?? SHARED_PAGE_HERO_IMAGE;
+    return resolveSharedMarketingHero(override, canonical);
   }
   return resolveImageChain(override, fallback, registryDefault, ONLINE_IMAGE_FALLBACK);
 }

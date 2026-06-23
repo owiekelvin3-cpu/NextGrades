@@ -4,7 +4,8 @@ import { Shield, MapPin } from "lucide-react";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
 import { MarketingHeroMobileImage } from "@/components/marketing/MarketingHeroMobileImage";
 import { MarketingCtaButtons } from "@/components/premium/MarketingCtaButtons";
-import { type, hero } from "@/lib/premium/tokens";
+import { SHARED_PAGE_HERO_IMAGE } from "@/lib/marketing-images";
+import { hero, type } from "@/lib/premium/tokens";
 import { cn } from "@/lib/utils";
 
 type HomeHeroProps = {
@@ -34,6 +35,7 @@ export function HomeHero({
         alt=""
         variant="dark-split-right"
         backgroundColor="#0D1B2A"
+        fallbackSrc={SHARED_PAGE_HERO_IMAGE}
         priority
       />
 
@@ -74,7 +76,7 @@ export function HomeHero({
             </div>
           </div>
           <div data-animate="hero-image" className="max-w-xl lg:max-w-none">
-            <MarketingHeroMobileImage src={heroImage} priority className="max-w-xl lg:max-w-none" />
+            <MarketingHeroMobileImage src={heroImage} fallbackSrc={SHARED_PAGE_HERO_IMAGE} priority className="max-w-xl lg:max-w-none" />
           </div>
         </div>
       </div>

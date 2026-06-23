@@ -1354,6 +1354,14 @@
     "contactTitle": "Fragen zu den AGB?",
     "contactNote": "Bei Unklarheiten hilft dir unser Team gerne unter support@nextgrades.de weiter.",
     "contactCta": "Kontakt aufnehmen",
+    "trustBadge1": "Verbraucherfreundliche Regelungen",
+    "trustBadge2": "Klare Abrechnung & Kündigung",
+    "highlights": [
+      "Transparente Preise und Abo-Bedingungen",
+      "Faire Stornierungs- und Erstattungsregeln",
+      "DSGVO-konformer Datenschutz",
+      "Klare Regeln zu geistigem Eigentum"
+    ],
     "sections": [
       {
         "title": "Geltungsbereich und Vertragspartner",

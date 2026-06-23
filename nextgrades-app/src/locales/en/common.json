@@ -1029,6 +1029,14 @@
     "contactTitle": "Questions about these terms?",
     "contactNote": "If anything is unclear, our team is happy to help at support@nextgrades.de.",
     "contactCta": "Get in touch",
+    "trustBadge1": "Consumer-friendly policies",
+    "trustBadge2": "Clear billing & cancellation",
+    "highlights": [
+      "Transparent pricing and subscription terms",
+      "Fair cancellation and refund rules",
+      "GDPR-aligned data protection",
+      "Clear intellectual property guidelines"
+    ],
     "sections": [
       {
         "title": "Scope and contracting party",

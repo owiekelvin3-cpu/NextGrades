@@ -26,7 +26,7 @@ function loadEnv() {
 
 /** Must match src/lib/marketing-images.ts + marketing-images-registry.ts */
 const CMS_IMAGES = {
-  "cmsImages.home.heroStudent": "/images/marketing/tutoring-session.png",
+  "cmsImages.home.heroStudent": "/images/marketing/hero-students-nextgrades.png",
   "cmsImages.home.studyBanner": "/images/marketing/platform-laptop.png",
   "cmsImages.home.desk": "/images/marketing/study-desk.png",
   "cmsImages.home.platformThumb": "/images/marketing/platform-laptop.png",
@@ -42,12 +42,12 @@ const CMS_IMAGES = {
   "cmsImages.about.mission.2": "/images/marketing/platform-laptop.png",
   "cmsImages.about.mission.3": "/images/marketing/privacy-secure.png",
   "cmsImages.about.promise": "/images/marketing/privacy-secure.png",
-  "cmsImages.programs.hero": "/images/marketing/students-collab.png",
+  "cmsImages.programs.hero": "/images/marketing/hero-students-nextgrades.png",
   "cmsImages.programs.card.0": "/images/marketing/tutoring-session.png",
   "cmsImages.programs.card.1": "/images/marketing/students-collab.png",
   "cmsImages.programs.card.2": "/images/marketing/subject-books.png",
   "cmsImages.programs.card.3": "/images/marketing/platform-laptop.png",
-  "cmsImages.subjects.hero": "/images/marketing/subject-books.png",
+  "cmsImages.subjects.hero": "/images/marketing/hero-students-nextgrades.png",
   "cmsImages.contact.hero": "/images/marketing/study-desk.png",
   "cmsImages.consultation.hero": "/images/marketing/tutoring-session.png",
   "cmsImages.resources.hero": "/images/marketing/students-group-3.png",

@@ -7,7 +7,7 @@ import { applyCmsOverridesToI18n } from "@/lib/cms/apply-overrides";
 import type { CmsOverrideMap } from "@/lib/cms/types";
 import { runWhenIdle } from "@/lib/performance/idle";
 
-const CMS_CACHE_KEY = "nextgrades_cms_overrides";
+const CMS_CACHE_KEY = "nextgrades_cms_overrides_v2";
 const CMS_CACHE_TTL_MS = 10 * 60 * 1000;
 
 type CmsContextValue = {

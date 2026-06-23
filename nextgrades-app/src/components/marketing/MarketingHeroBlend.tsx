@@ -30,6 +30,7 @@ type MarketingHeroBlendProps = {
   priority?: boolean;
   sizes?: string;
   opacity?: number;
+  fallbackSrc?: string;
   children?: ReactNode;
 };
 
@@ -57,6 +58,7 @@ export function MarketingHeroBlend({
   priority = false,
   sizes = "(max-width: 1024px) 100vw, 55vw",
   opacity = 1,
+  fallbackSrc,
   children,
 }: MarketingHeroBlendProps) {
   const bg = backgroundColor ?? DEFAULT_BG[variant];
@@ -78,6 +80,7 @@ export function MarketingHeroBlend({
       <MarketingImage
         src={src}
         alt={alt}
+        fallbackSrc={fallbackSrc}
         containerClassName="absolute inset-0"
         className={cn(
           "object-cover",
