@@ -11,15 +11,16 @@ npm run predeploy   # uses .env.local — expect blocker until NEXT_PUBLIC_APP_U
 
 After deploy, open `https://YOUR-DOMAIN/api/health` — should return `"status":"ok"` (not `blocked`).
 
-## Auth middleware
+## Auth proxy (Next.js 16)
 
-`src/middleware.ts` re-exports `src/proxy.ts` — it protects `/dashboard`, `/portal`, `/checkout`, and auth routes (role checks, login redirects, API rate limits). Required for production student/teacher access control.
+`src/proxy.ts` protects `/dashboard`, `/portal`, `/checkout`, and auth routes (role checks, login redirects, API rate limits). Required for production student/teacher access control. Do **not** add `src/middleware.ts` — Next.js 16 allows only `proxy.ts`.
 
 ## Required Vercel environment variables
 
 | Variable | Notes |
 |----------|--------|
 | `NEXT_PUBLIC_APP_URL` | `https://your-domain.com` (no trailing slash) |
+| `AUTH_SESSION_SECRET` | Random string, at least 32 characters |
 | `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Anon key |
 | `SUPABASE_SERVICE_ROLE_KEY` | Service role (server only) |

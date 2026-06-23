@@ -37,3 +37,4 @@ jobs:
           NEXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
           NEXT_PUBLIC_SUPABASE_ANON_KEY: placeholder-anon-key
           NEXT_PUBLIC_APP_URL: https://example.com
+          AUTH_SESSION_SECRET: ci-placeholder-auth-session-secret-32chars
