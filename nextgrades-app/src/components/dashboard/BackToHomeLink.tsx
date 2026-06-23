@@ -21,7 +21,7 @@ export function BackToHomeLink({ className, darkSidebar = false, onNavigate }: P
       className={cn(
         "flex w-full items-center gap-3 rounded-xl px-4 py-2.5 text-left text-sm transition-all",
         darkSidebar
-          ? "text-gray-300 hover:bg-white/10 hover:text-white"
+          ? "text-[var(--sidebar-text)] hover:bg-[var(--sidebar-surface)] hover:text-[var(--sidebar-text-active)]"
           : "text-text-muted hover:bg-[var(--table-row-hover)] hover:text-foreground",
         className
       )}

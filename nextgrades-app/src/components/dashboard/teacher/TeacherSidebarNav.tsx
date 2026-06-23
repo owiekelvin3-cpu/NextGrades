@@ -83,11 +83,16 @@ export function TeacherSidebarNav({ unreadNotifications = 0, onNavigate }: Props
             className={cn(
               "relative flex items-center gap-3 rounded-xl px-3 py-2 text-[13px] transition-all",
               active
-                ? "border border-[#D4AF37]/50 bg-[#D4AF37]/10 font-medium text-white"
-                : "border border-transparent text-text-muted hover:bg-white/[0.04] hover:text-gray-200"
+                ? "border border-[var(--brand-gold)]/50 bg-[var(--brand-gold-muted)] font-medium text-[var(--sidebar-text-active)]"
+                : "border border-transparent text-[var(--sidebar-text)] hover:bg-[var(--sidebar-surface)] hover:text-[var(--sidebar-text-active)]"
             )}
           >
-            <item.icon className={cn("h-[18px] w-[18px] shrink-0", active ? "text-[#D4AF37]" : "text-text-muted")} />
+            <item.icon
+              className={cn(
+                "h-[18px] w-[18px] shrink-0",
+                active ? "text-[var(--brand-gold)]" : "text-[var(--sidebar-text)]"
+              )}
+            />
             <span className="flex-1">{t(item.labelKey)}</span>
             {showBadge && (
               <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-[#D4AF37] px-1.5 text-[10px] font-bold text-foreground">

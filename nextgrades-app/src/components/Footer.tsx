@@ -2,20 +2,32 @@
 
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
-import { Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import { BrandLogo } from "./BrandLogo";
 import { OpenCookieSettingsButton } from "@/components/cookies/OpenCookieSettingsButton";
 import { useConsentOptional } from "@/context/ConsentContext";
 import {
-  COMPANY_COUNTRY,
   COMPANY_MAILTO,
   COMPANY_PHONE_DISPLAY,
   COMPANY_PHONE_TEL,
-  COMPANY_SOCIAL,
   COMPANY_SUPPORT_EMAIL,
 } from "@/lib/company";
 import { section } from "@/lib/premium/tokens";
 import { cn } from "@/lib/utils";
+
+const primaryLinks = [
+  { href: "/programs", key: "common.programs" },
+  { href: "/subjects", key: "common.subjects" },
+  { href: "/pricing", key: "common.pricing" },
+  { href: "/resources", key: "common.resourcesShort" },
+  { href: "/consultation", key: "navbar.consultationShort" },
+] as const;
+
+const secondaryLinks = [
+  { href: "/about", key: "common.about" },
+  { href: "/contact", key: "common.contact" },
+  { href: "/help", key: "common.help" },
+  { href: "/careers", key: "common.careers" },
+] as const;
 
 const legalLinks = [
   { href: "/privacy", key: "footer.privacy" },
@@ -23,166 +35,85 @@ const legalLinks = [
   { href: "/imprint", key: "footer.imprint" },
 ] as const;
 
-const resourceLinks = [
-  { href: "/programs", key: "common.programs" },
-  { href: "/subjects", key: "common.subjects" },
-  { href: "/pricing", key: "common.pricing" },
-  { href: "/resources", key: "common.resourcesShort" },
-] as const;
+const footerLinkClass =
+  "inline-flex min-h-9 items-center rounded-lg px-1 text-sm text-foreground/80 transition-colors hover:text-[var(--brand-gold)] touch-manipulation";
 
-const mainLinks = [
-  { href: "/about", key: "common.about" },
-  { href: "/contact", key: "common.contact" },
-  { href: "/help", key: "common.help" },
-  { href: "/careers", key: "common.careers" },
-  { href: "/consultation", key: "navbar.consultationShort" },
-] as const;
-
-const bottomLinks = [
-  { href: "/about", key: "common.about" },
-  { href: "/programs", key: "common.programs" },
-  { href: "/pricing", key: "common.pricing" },
-  { href: "/consultation", key: "navbar.consultationShort" },
-] as const;
+const footerLinkMutedClass =
+  "inline-flex min-h-8 items-center rounded-lg px-1 text-xs text-text-muted transition-colors hover:text-[var(--brand-gold)] touch-manipulation";
 
 export default function Footer() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const consent = useConsentOptional();
-  const country = i18n.language.startsWith("de") ? COMPANY_COUNTRY.de : COMPANY_COUNTRY.en;
 
   return (
     <footer className="site-footer">
-      <div className="site-footer__main">
-        <div className={cn(section.container, "site-footer__inner pt-10 pb-8 md:pt-12 md:pb-10")}>
-          <div className="mb-8 flex justify-center md:mb-10">
-            <BrandLogo size="lg" href="/" onDarkBackground className="mx-auto" />
+      <div
+        className={cn(
+          section.container,
+          "pb-[max(1rem,env(safe-area-inset-bottom))] pt-8 md:pt-10"
+        )}
+      >
+        <div className="flex flex-col items-center gap-6 text-center md:flex-row md:items-start md:justify-between md:text-left">
+          <div className="flex max-w-sm flex-col items-center gap-2 md:items-start">
+            <BrandLogo size="sm" href="/" />
+            <p className="text-xs leading-relaxed text-text-muted">{t("footer.tagline")}</p>
           </div>
 
-          <div className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 lg:grid-cols-5 lg:gap-8">
-            <FooterColumn title={t("footer.legal")}>
-              {legalLinks.map((item) => (
-                <FooterLink key={item.href} href={item.href}>
-                  {t(item.key)}
-                </FooterLink>
-              ))}
-              <li>
-                {consent ? (
-                  <button type="button" onClick={consent.openPreferences} className="footer-col-link">
-                    {t("footer.cookieSettings")}
-                  </button>
-                ) : (
-                  <OpenCookieSettingsButton className="footer-col-link p-0" />
-                )}
-              </li>
-            </FooterColumn>
-
-            <FooterColumn title={t("footer.resourcesHeading")}>
-              {resourceLinks.map((item) => (
-                <FooterLink key={item.href} href={item.href}>
-                  {t(item.key)}
-                </FooterLink>
-              ))}
-            </FooterColumn>
-
-            <FooterColumn title={t("footer.linksHeading")}>
-              {mainLinks.map((item) => (
-                <FooterLink key={item.href} href={item.href}>
-                  {t(item.key)}
-                </FooterLink>
-              ))}
-            </FooterColumn>
-
-            <FooterColumn title={t("footer.officesHeading")}>
-              <li className="footer-col-text">{t("footer.officeAustria")}</li>
-              <li className="footer-col-text">{t("footer.officeOnline")}</li>
-            </FooterColumn>
-
-            <FooterColumn title={t("footer.stayConnected")} className="col-span-2 sm:col-span-1">
-              <li>
-                <a href={COMPANY_PHONE_TEL} className="footer-col-contact">
-                  <Phone className="h-3.5 w-3.5 shrink-0 text-[var(--brand-gold)]" aria-hidden />
-                  {COMPANY_PHONE_DISPLAY}
-                </a>
-              </li>
-              <li>
-                <a href={COMPANY_MAILTO} className="footer-col-contact">
-                  <Mail className="h-3.5 w-3.5 shrink-0 text-[var(--brand-gold)]" aria-hidden />
-                  {COMPANY_SUPPORT_EMAIL}
-                </a>
-              </li>
-              <li className="footer-col-contact">
-                <MapPin className="h-3.5 w-3.5 shrink-0 text-[var(--brand-gold)]" aria-hidden />
-                <span>{country}</span>
-              </li>
-              <li className="pt-2">
-                <div className="flex flex-wrap gap-2">
-                  {COMPANY_SOCIAL.whatsapp ? (
-                    <a
-                      href={COMPANY_SOCIAL.whatsapp}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="footer-social-square"
-                      aria-label="WhatsApp"
-                    >
-                      <MessageCircle className="h-4 w-4" aria-hidden />
-                    </a>
-                  ) : null}
-                  <a href={COMPANY_MAILTO} className="footer-social-square" aria-label="E-Mail">
-                    <Mail className="h-4 w-4" aria-hidden />
-                  </a>
-                </div>
-              </li>
-            </FooterColumn>
+          <div className="flex flex-col items-center gap-1 text-xs text-text-muted md:items-end">
+            <a href={COMPANY_PHONE_TEL} className={footerLinkMutedClass}>
+              {COMPANY_PHONE_DISPLAY}
+            </a>
+            <a href={COMPANY_MAILTO} className={footerLinkMutedClass}>
+              {COMPANY_SUPPORT_EMAIL}
+            </a>
           </div>
         </div>
-      </div>
 
-      <div className="site-footer__bar">
-        <div
-          className={cn(
-            section.container,
-            "flex flex-col items-center justify-between gap-3 py-3.5 sm:flex-row sm:gap-4"
-          )}
+        <nav
+          aria-label={t("marketingNav.explore", { defaultValue: "Explore" })}
+          className="mt-8 flex flex-wrap justify-center gap-x-1 gap-y-1 md:mt-9 md:gap-x-2"
         >
-          <p className="text-center text-[11px] text-[#0D1B2A]/90 sm:text-left sm:text-xs">
-            {t("footer.copyright")}
-          </p>
-          <nav className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
-            {bottomLinks.map((item) => (
-              <Link key={item.href} href={item.href} className="site-footer__bar-link">
-                {t(item.key)}
-              </Link>
-            ))}
-          </nav>
+          {primaryLinks.map((item) => (
+            <Link key={item.href} href={item.href} className={footerLinkClass}>
+              {t(item.key)}
+            </Link>
+          ))}
+        </nav>
+
+        <nav
+          aria-label={t("footer.company", { defaultValue: "Company" })}
+          className="mt-2 flex flex-wrap justify-center gap-x-1 gap-y-1 md:gap-x-2"
+        >
+          {secondaryLinks.map((item) => (
+            <Link key={item.href} href={item.href} className={footerLinkClass}>
+              {t(item.key)}
+            </Link>
+          ))}
+        </nav>
+
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-x-1 gap-y-1 border-t border-border-default pt-5">
+          {legalLinks.map((item) => (
+            <Link key={item.href} href={item.href} className={footerLinkMutedClass}>
+              {t(item.key)}
+            </Link>
+          ))}
+          {consent ? (
+            <button type="button" onClick={consent.openPreferences} className={footerLinkMutedClass}>
+              {t("footer.cookieSettings")}
+            </button>
+          ) : (
+            <OpenCookieSettingsButton className={cn(footerLinkMutedClass, "bg-transparent p-0")} />
+          )}
         </div>
+
+        <p className="mt-4 text-center text-[11px] leading-relaxed text-text-muted/90">
+          {t("footer.copyright")}
+          <span className="mx-2 text-border-default" aria-hidden>
+            ·
+          </span>
+          {t("footer.madeInGermany")}
+        </p>
       </div>
     </footer>
-  );
-}
-
-function FooterColumn({
-  title,
-  children,
-  className,
-}: {
-  title: string;
-  children: React.ReactNode;
-  className?: string;
-}) {
-  return (
-    <div className={className}>
-      <h3 className="footer-col-heading">{title}</h3>
-      <ul className="mt-3 space-y-2">{children}</ul>
-    </div>
-  );
-}
-
-function FooterLink({ href, children }: { href: string; children: React.ReactNode }) {
-  return (
-    <li>
-      <Link href={href} className="footer-col-link">
-        {children}
-      </Link>
-    </li>
   );
 }

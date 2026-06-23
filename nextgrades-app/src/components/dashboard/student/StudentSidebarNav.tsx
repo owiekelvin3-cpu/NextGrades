@@ -116,7 +116,7 @@ export function StudentSidebarNav({ unreadNotifications = 0, onNavigate }: Props
     <nav className="min-h-0 flex-1 space-y-5 overflow-y-auto overflow-x-hidden py-0.5 scrollbar-none">
       {navSections.map((section) => (
         <div key={section.titleKey}>
-          <p className="mb-2 px-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-gray-500">
+          <p className="mb-2 px-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--sidebar-text)]">
             {t(section.titleKey, { defaultValue: section.defaultTitle })}
           </p>
           <ul className="space-y-0.5">
@@ -132,18 +132,21 @@ export function StudentSidebarNav({ unreadNotifications = 0, onNavigate }: Props
                     className={cn(
                       "relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-[13px] transition-colors",
                       active
-                        ? "bg-white/[0.07] font-medium text-white"
-                        : "text-gray-400 hover:bg-white/[0.04] hover:text-gray-200"
+                        ? "bg-[var(--sidebar-surface)] font-medium text-[var(--sidebar-text-active)]"
+                        : "text-[var(--sidebar-text)] hover:bg-[var(--sidebar-surface)] hover:text-[var(--sidebar-text-active)]"
                     )}
                   >
                     {active && (
                       <span
-                        className="absolute bottom-2 left-0 top-2 w-0.5 rounded-full bg-[#D4AF37]"
+                        className="absolute bottom-2 left-0 top-2 w-0.5 rounded-full bg-[var(--brand-gold)]"
                         aria-hidden
                       />
                     )}
                     <item.icon
-                      className={cn("h-[18px] w-[18px] shrink-0", active ? "text-[#D4AF37]" : "text-gray-500")}
+                      className={cn(
+                        "h-[18px] w-[18px] shrink-0",
+                        active ? "text-[var(--brand-gold)]" : "text-[var(--sidebar-text)]"
+                      )}
                     />
                     <span className="flex-1">{t(item.labelKey)}</span>
                     {showBadge && (

@@ -32,6 +32,7 @@ import { useSidebar, SIDEBAR_WIDTH } from "@/context/SidebarContext";
 import { useNotificationsOptional } from "@/context/NotificationContext";
 import { supabase } from "@/lib/supabase/client";
 import { getTeacherFirstName } from "@/lib/dashboard/teacher-overview";
+import { theme as themeTokens } from "@/lib/theme/tokens";
 
 interface SidebarProps {
   role: "student" | "teacher" | "admin";
@@ -151,7 +152,7 @@ function SidebarContent({
             </div>
           )}
           <div className="min-w-0">
-            <p className="truncate text-sm font-medium text-white">
+            <p className="truncate text-sm font-medium text-[var(--sidebar-text-active)]">
               {teacherDisplay
                 ? t("teacherDashboard.sidebarHello", { name: teacherDisplay })
                 : t("teacherDashboard.sidebarGuest")}
@@ -162,10 +163,12 @@ function SidebarContent({
 
       {isStudent && studentFirst && (
         <div className="mb-4 shrink-0 px-1">
-          <p className="truncate text-sm font-semibold text-white">
+          <p className="truncate text-sm font-semibold text-[var(--sidebar-text-active)]">
             {t("studentDashboard.sidebarHello", { name: studentFirst, defaultValue: `Hi, ${studentFirst}!` })}
           </p>
-          <p className="mt-0.5 text-xs text-gray-500">{t("studentDashboard.overviewTitle", { defaultValue: "Overview" })}</p>
+          <p className="mt-0.5 text-xs text-[var(--sidebar-text)]">
+            {t("studentDashboard.overviewTitle", { defaultValue: "Overview" })}
+          </p>
         </div>
       )}
 
@@ -189,7 +192,12 @@ function SidebarContent({
       )}
 
       {role !== "admin" && (
-      <div className={cn("mt-auto shrink-0 space-y-1 pt-3", darkSidebar ? "border-t border-white/10" : "border-t border-gray-100")}>
+      <div
+        className={cn(
+          "mt-auto shrink-0 space-y-1 pt-3",
+          darkSidebar ? "border-t border-[var(--sidebar-border)]" : "border-t border-border-default"
+        )}
+      >
         <BackToHomeLink darkSidebar={darkSidebar} onNavigate={() => setIsMobileMenuOpen?.(false)} />
         <button
           type="button"
@@ -197,8 +205,8 @@ function SidebarContent({
           className={cn(
             "flex w-full items-center gap-3 rounded-xl px-4 py-2.5 text-left text-sm transition-all",
             darkSidebar
-              ? "text-gray-300 hover:bg-white/10 hover:text-white"
-              : "text-gray-600 hover:bg-gray-50 hover:text-[#0D1B2A]"
+              ? "text-[var(--sidebar-text)] hover:bg-[var(--sidebar-surface)] hover:text-[var(--sidebar-text-active)]"
+              : "text-text-muted hover:bg-[var(--table-row-hover)] hover:text-foreground"
           )}
         >
           <LogOut className="h-5 w-5" />
@@ -223,7 +231,7 @@ export function Sidebar({
     role === "teacher" || role === "student" || role === "admin" || theme === "dark";
 
   const sidebarClass = useDarkSidebar
-    ? "bg-[var(--sidebar-background)] text-[var(--sidebar-text-active)]"
+    ? cn(themeTokens.sidebar, "border-r border-[var(--sidebar-border)]")
     : "border-r border-border-default bg-surface-elevated text-foreground";
 
   return (

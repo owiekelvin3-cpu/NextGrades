@@ -65,8 +65,8 @@ export function MobileDrawer({
         aria-modal="true"
         aria-label={ariaLabel}
         className={cn(
-          "mobile-drawer-panel fixed inset-y-0 right-0 z-[90] flex w-full max-w-[100vw] flex-col bg-surface-elevated shadow-2xl sm:max-w-[min(100%,380px)] md:hidden",
-          panelClassName,
+          "mobile-drawer-panel fixed inset-y-0 right-0 z-[90] flex w-full max-w-[100vw] flex-col shadow-2xl sm:max-w-[min(100%,380px)] md:hidden",
+          panelClassName ?? "bg-surface-elevated",
           className
         )}
         style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}

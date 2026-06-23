@@ -42,7 +42,8 @@ export function MobileMenuSheet({ open, onClose, role }: Props) {
       open={open}
       onClose={onClose}
       ariaLabel={t("mobileNav.main", { defaultValue: "Main navigation" })}
-      header={<BrandLogo href={dashboardHomeForRole(role)} size="lg" />}
+      panelClassName="bg-[var(--sidebar-background)] text-[var(--sidebar-text-active)]"
+      header={<BrandLogo href={dashboardHomeForRole(role)} size="lg" onDarkBackground />}
       footer={
         <div className="space-y-4">
           <LanguageSwitcher layout="drawer" />
@@ -50,7 +51,7 @@ export function MobileMenuSheet({ open, onClose, role }: Props) {
           <Link
             href="/"
             onClick={onClose}
-            className={cn(mobile.menuItem, "text-text-muted")}
+            className={cn(mobile.menuItem, "text-[var(--sidebar-text)] hover:text-[var(--sidebar-text-active)]")}
           >
             <Home className="h-5 w-5 shrink-0" strokeWidth={1.75} />
             <span className="font-medium">{t("dashboardNav.backToHomepage", { defaultValue: "Back to Homepage" })}</span>
@@ -71,7 +72,9 @@ export function MobileMenuSheet({ open, onClose, role }: Props) {
                   onClick={onClose}
                   className={cn(
                     mobile.menuItem,
-                    active ? "bg-[#D4AF37]/12 font-semibold text-foreground" : "text-text-muted"
+                    active
+                      ? "bg-[var(--sidebar-surface)] font-semibold text-[var(--sidebar-text-active)]"
+                      : "text-[var(--sidebar-text)] hover:bg-[var(--sidebar-surface)] hover:text-[var(--sidebar-text-active)]"
                   )}
                 >
                   <Icon className="h-5 w-5 shrink-0" strokeWidth={active ? 2 : 1.75} />
