@@ -77,7 +77,15 @@
     "newsletterPlaceholder": "E-Mail-Adresse eingeben",
     "newsletterCta": "Anmelden",
     "newsletterSuccess": "Danke — du bist angemeldet!",
-    "cookieSettings": "Cookie-Einstellungen"
+    "cookieSettings": "Cookie-Einstellungen",
+    "aboutTitle": "Über uns",
+    "contactTitle": "Kontakt",
+    "information": "Information",
+    "helpfulLinks": "Hilfreiche Links",
+    "newsletterSignupSubject": "Newsletter-Anmeldung",
+    "newsletterSignupMessage": "Bitte tragt mich für den NextGrades-Newsletter ein.",
+    "backToTop": "Nach oben",
+    "newsletterError": "Anmeldung fehlgeschlagen. Bitte versuche es erneut oder kontaktiere uns."
   },
   "home": {
     "heroTitle1": "Nachhilfe neu gedacht.",

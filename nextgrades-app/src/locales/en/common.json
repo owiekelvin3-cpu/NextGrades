@@ -77,7 +77,15 @@
     "newsletterPlaceholder": "Enter your e-mail address",
     "newsletterCta": "Sign Up",
     "newsletterSuccess": "Thanks — you're on the list!",
-    "cookieSettings": "Cookie settings"
+    "cookieSettings": "Cookie settings",
+    "aboutTitle": "About us",
+    "contactTitle": "Contact",
+    "information": "Information",
+    "helpfulLinks": "Helpful links",
+    "newsletterSignupSubject": "Newsletter signup",
+    "newsletterSignupMessage": "Please add me to the NextGrades newsletter.",
+    "backToTop": "Back to top",
+    "newsletterError": "Signup failed. Please try again or contact us."
   },
   "home": {
     "heroEyebrow": "THE FUTURE OF LEARNING STARTS HERE.",

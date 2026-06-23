@@ -23,3 +23,11 @@ export const COMPANY_WEBSITE = "https://www.nextgrades.at";
 export const COMPANY_DEFAULT_TIMEZONE = "Europe/Vienna";
 
 export const COMPANY_ADDRESS_DEFAULT = `NextGrades, ${COMPANY_COUNTRY.de}`;
+
+/** Optional public social profiles — omit entries to hide icons in the footer. */
+export const COMPANY_SOCIAL = {
+  whatsapp: `https://wa.me/${COMPANY_PHONE_E164.replace("+", "")}`,
+  instagram: null as string | null,
+  facebook: null as string | null,
+  linkedin: null as string | null,
+} as const;
