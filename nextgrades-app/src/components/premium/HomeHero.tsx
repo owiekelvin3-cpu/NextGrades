@@ -1,6 +1,6 @@
 "use client";
 
-import { Shield, MapPin } from "lucide-react";
+import { MapPin } from "lucide-react";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
 import { MarketingHeroMobileImage } from "@/components/marketing/MarketingHeroMobileImage";
 import { MarketingCtaButtons } from "@/components/premium/MarketingCtaButtons";
@@ -68,10 +68,6 @@ export function HomeHero({
               <span className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-xs text-on-navy-subtle">
                 <MapPin className="h-3.5 w-3.5 text-[#D4AF37]" />
                 Österreich
-              </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-xs text-on-navy-subtle">
-                <Shield className="h-3.5 w-3.5 text-[#D4AF37]" />
-                DSGVO-konform
               </span>
             </div>
           </div>
