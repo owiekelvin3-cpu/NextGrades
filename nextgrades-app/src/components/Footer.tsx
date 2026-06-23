@@ -14,15 +14,12 @@ import {
 import { section } from "@/lib/premium/tokens";
 import { cn } from "@/lib/utils";
 
-const primaryLinks = [
+const navLinks = [
   { href: "/programs", key: "common.programs" },
   { href: "/subjects", key: "common.subjects" },
   { href: "/pricing", key: "common.pricing" },
   { href: "/resources", key: "common.resourcesShort" },
   { href: "/consultation", key: "navbar.consultationShort" },
-] as const;
-
-const secondaryLinks = [
   { href: "/about", key: "common.about" },
   { href: "/contact", key: "common.contact" },
   { href: "/help", key: "common.help" },
@@ -36,10 +33,10 @@ const legalLinks = [
 ] as const;
 
 const footerLinkClass =
-  "inline-flex min-h-9 items-center rounded-lg px-1 text-sm text-foreground/80 transition-colors hover:text-[var(--brand-gold)] touch-manipulation";
+  "inline-flex items-center rounded-md px-1.5 py-1 text-[13px] leading-tight text-foreground/80 transition-colors hover:text-[var(--brand-gold)] touch-manipulation";
 
 const footerLinkMutedClass =
-  "inline-flex min-h-8 items-center rounded-lg px-1 text-xs text-text-muted transition-colors hover:text-[var(--brand-gold)] touch-manipulation";
+  "inline-flex items-center rounded-md px-1.5 py-0.5 text-[11px] leading-tight text-text-muted transition-colors hover:text-[var(--brand-gold)] touch-manipulation";
 
 export default function Footer() {
   const { t } = useTranslation();
@@ -50,19 +47,22 @@ export default function Footer() {
       <div
         className={cn(
           section.container,
-          "pb-[max(1rem,env(safe-area-inset-bottom))] pt-8 md:pt-10"
+          "py-4 pb-[max(0.5rem,env(safe-area-inset-bottom))] md:py-5"
         )}
       >
-        <div className="flex flex-col items-center gap-6 text-center md:flex-row md:items-start md:justify-between md:text-left">
-          <div className="flex max-w-sm flex-col items-center gap-2 md:items-start">
-            <BrandLogo size="sm" href="/" />
-            <p className="text-xs leading-relaxed text-text-muted">{t("footer.tagline")}</p>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+          <div className="flex flex-col items-center gap-1 sm:items-start">
+            <BrandLogo size="sm" href="/" className="h-9 max-h-9 w-auto sm:h-10" />
+            <p className="text-[11px] leading-snug text-text-muted">{t("footer.tagline")}</p>
           </div>
 
-          <div className="flex flex-col items-center gap-1 text-xs text-text-muted md:items-end">
+          <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-0.5 text-[11px] text-text-muted sm:justify-end">
             <a href={COMPANY_PHONE_TEL} className={footerLinkMutedClass}>
               {COMPANY_PHONE_DISPLAY}
             </a>
+            <span className="hidden text-border-default sm:inline" aria-hidden>
+              ·
+            </span>
             <a href={COMPANY_MAILTO} className={footerLinkMutedClass}>
               {COMPANY_SUPPORT_EMAIL}
             </a>
@@ -70,28 +70,17 @@ export default function Footer() {
         </div>
 
         <nav
-          aria-label={t("marketingNav.explore", { defaultValue: "Explore" })}
-          className="mt-8 flex flex-wrap justify-center gap-x-1 gap-y-1 md:mt-9 md:gap-x-2"
+          aria-label={t("footer.helpfulLinks", { defaultValue: "Site links" })}
+          className="mt-3 flex flex-wrap justify-center gap-x-0.5 gap-y-0 sm:mt-3.5 sm:justify-start"
         >
-          {primaryLinks.map((item) => (
+          {navLinks.map((item) => (
             <Link key={item.href} href={item.href} className={footerLinkClass}>
               {t(item.key)}
             </Link>
           ))}
         </nav>
 
-        <nav
-          aria-label={t("footer.company", { defaultValue: "Company" })}
-          className="mt-2 flex flex-wrap justify-center gap-x-1 gap-y-1 md:gap-x-2"
-        >
-          {secondaryLinks.map((item) => (
-            <Link key={item.href} href={item.href} className={footerLinkClass}>
-              {t(item.key)}
-            </Link>
-          ))}
-        </nav>
-
-        <div className="mt-6 flex flex-wrap items-center justify-center gap-x-1 gap-y-1 border-t border-border-default pt-5">
+        <div className="mt-3 flex flex-wrap items-center justify-center gap-x-0.5 gap-y-0 border-t border-border-default pt-2.5 sm:justify-start">
           {legalLinks.map((item) => (
             <Link key={item.href} href={item.href} className={footerLinkMutedClass}>
               {t(item.key)}
@@ -106,9 +95,9 @@ export default function Footer() {
           )}
         </div>
 
-        <p className="mt-4 text-center text-[11px] leading-relaxed text-text-muted/90">
+        <p className="mt-2 text-center text-[10px] leading-snug text-text-muted/90 sm:text-left">
           {t("footer.copyright")}
-          <span className="mx-2 text-border-default" aria-hidden>
+          <span className="mx-1.5 text-border-default" aria-hidden>
             ·
           </span>
           {t("footer.madeInGermany")}
