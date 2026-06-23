@@ -19,6 +19,7 @@ import { Button } from "@/components/ui/Button";
 import { fetchSubjects, getSessionUserId } from "@/lib/dashboard/data";
 import { ZOOM_MEETING_TYPES, type ZoomMeetingType } from "@/lib/zoom/config";
 import { teacherPanel } from "@/components/dashboard/teacher/teacher-ui";
+import { themeInputClass, themeSelectClass } from "@/lib/theme/form-fields";
 import { cn } from "@/lib/utils";
 
 const TIMEZONES = ["Europe/Berlin", "Europe/Vienna", "Europe/Zurich", "Europe/London", "UTC"];
@@ -162,8 +163,8 @@ export function CreateLiveClassForm({
     }
   };
 
-  const inputCls =
-    "w-full rounded-xl border border-gray-200 bg-white px-3.5 py-2.5 text-sm text-[#0D1B2A] outline-none transition focus:border-[#D4AF37] focus:ring-2 focus:ring-[#D4AF37]/20";
+  const inputCls = themeInputClass;
+  const selectCls = (value: string) => themeSelectClass(value, "rounded-lg py-2.5");
 
   const selectedMeta = MEETING_TYPE_META[form.meetingType];
 
@@ -311,7 +312,7 @@ export function CreateLiveClassForm({
               <select
                 value={form.subjectId}
                 onChange={(e) => setForm({ ...form, subjectId: e.target.value })}
-                className={inputCls}
+                className={selectCls(form.subjectId)}
               >
                 <option value="">{t("zoom.selectSubject", { defaultValue: "Select subject" })}</option>
                 {subjects.map((s) => (
@@ -332,7 +333,7 @@ export function CreateLiveClassForm({
                 required={form.meetingType === "private_session"}
                 value={form.studentId}
                 onChange={(e) => setForm({ ...form, studentId: e.target.value })}
-                className={inputCls}
+                className={selectCls(form.studentId)}
               >
                 <option value="">{t("zoom.selectStudent", { defaultValue: "Select student" })}</option>
                 {students.map((s) => (
@@ -375,7 +376,7 @@ export function CreateLiveClassForm({
                   <select
                     value={form.timezone}
                     onChange={(e) => setForm({ ...form, timezone: e.target.value })}
-                    className={inputCls}
+                    className={selectCls(form.timezone)}
                   >
                     {TIMEZONES.map((tz) => (
                       <option key={tz} value={tz}>

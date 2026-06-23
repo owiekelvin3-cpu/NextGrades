@@ -11,6 +11,7 @@ import {
 } from "@/lib/notifications/types";
 import { NOTIFICATION_SOUND_OPTIONS, playNotificationSound, unlockAudio } from "@/lib/notifications/sounds";
 import { categoryLabel } from "@/lib/notifications/format";
+import { themeSelectCompactClass } from "@/lib/theme/form-fields";
 import { cn } from "@/lib/utils";
 
 export function NotificationSoundSettings() {
@@ -124,7 +125,7 @@ export function NotificationSoundSettings() {
                     <select
                       value={selected}
                       onChange={(e) => void setCategorySound(cat, e.target.value as NotificationSoundId)}
-                      className="min-h-10 rounded-xl border border-border-default bg-surface-elevated px-3 text-sm text-foreground focus:border-[#D4AF37] focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+                      className={themeSelectCompactClass(selected, "min-h-10 rounded-xl px-3")}
                       aria-label={categoryLabel(cat, i18n.language)}
                     >
                       {NOTIFICATION_SOUND_OPTIONS.map((opt) => (

@@ -22,6 +22,7 @@ import {
 import { buildLoginUrl } from "@/lib/auth/redirect";
 import { isVideoResource, resourceWatchPath } from "@/lib/resources/video";
 import { Search, Filter, ChevronRight, FileText } from "lucide-react";
+import { themeSelectCompactClass, themeSelectFilterClass } from "@/lib/theme/form-fields";
 
 type Category = { id: string; name: string };
 type CatalogSubject = { id: string; name: string; slug?: string | null };
@@ -190,7 +191,7 @@ export function ResourcesExperience() {
   const text = "text-foreground";
   const muted = "text-text-muted";
   const panel = theme === "dark" ? "bg-[#112240] border-white/10" : "bg-white border-gray-200";
-  const selectCls = `w-full rounded-lg border px-3 py-2 text-sm ${theme === "dark" ? "bg-[#0D1B2A] border-white/15 text-white" : "bg-white border-gray-200"}`;
+  const selectCls = (value: string) => themeSelectCompactClass(value, "w-full");
 
   if (loading && resources.length === 0) {
     return (
@@ -223,7 +224,7 @@ export function ResourcesExperience() {
                     <p className={`font-medium mb-2 ${muted}`}>
                       {t("resources.filters.subject", { defaultValue: "Subject" })}
                     </p>
-                    <select value={subjectSlug} onChange={(e) => setSubjectSlug(e.target.value)} className={selectCls}>
+                    <select value={subjectSlug} onChange={(e) => setSubjectSlug(e.target.value)} className={selectCls(subjectSlug)}>
                       <option value="">{t("resources.filters.allSubjects", { defaultValue: "All subjects" })}</option>
                       {catalogSubjects.map((s) => (
                         <option key={s.id} value={s.slug || s.id}>{s.name}</option>
@@ -236,7 +237,7 @@ export function ResourcesExperience() {
                     <p className={`font-medium mb-2 ${muted}`}>
                       {t("resources.filters.grade", { defaultValue: "Grade" })}
                     </p>
-                    <select value={classLevel} onChange={(e) => setClassLevel(e.target.value)} className={selectCls}>
+                    <select value={classLevel} onChange={(e) => setClassLevel(e.target.value)} className={selectCls(classLevel)}>
                       <option value="">{t("resources.filters.allGrades", { defaultValue: "All grades" })}</option>
                       {catalogClasses.map((c) => (
                         <option key={c.id} value={String(c.level)}>{c.name}</option>
@@ -248,7 +249,7 @@ export function ResourcesExperience() {
                   <p className={`font-medium mb-2 ${muted}`}>
                     {t("resources.filters.semester", { defaultValue: "Semester" })}
                   </p>
-                  <select value={semester} onChange={(e) => setSemester(e.target.value)} className={selectCls}>
+                  <select value={semester} onChange={(e) => setSemester(e.target.value)} className={selectCls(semester)}>
                     <option value="">{t("resources.filters.allSemesters", { defaultValue: "All semesters" })}</option>
                     <option value="1">{t("resources.filters.semester1", { defaultValue: "Semester 1" })}</option>
                     <option value="2">{t("resources.filters.semester2", { defaultValue: "Semester 2" })}</option>
@@ -256,7 +257,7 @@ export function ResourcesExperience() {
                 </div>
                 <div>
                   <p className={`font-medium mb-2 ${muted}`}>Content Type</p>
-                  <select value={contentType} onChange={(e) => setContentType(e.target.value)} className={selectCls}>
+                  <select value={contentType} onChange={(e) => setContentType(e.target.value)} className={selectCls(contentType)}>
                     <option value="">All types</option>
                     {CONTENT_TYPES.map((c) => (
                       <option key={c.value} value={c.value}>{c.label}</option>
@@ -265,7 +266,7 @@ export function ResourcesExperience() {
                 </div>
                 <div>
                   <p className={`font-medium mb-2 ${muted}`}>Category</p>
-                  <select value={categoryId} onChange={(e) => setCategoryId(e.target.value)} className={selectCls}>
+                  <select value={categoryId} onChange={(e) => setCategoryId(e.target.value)} className={selectCls(categoryId)}>
                     <option value="">All categories</option>
                     {categories.map((c) => (
                       <option key={c.id} value={c.id}>{c.name}</option>
@@ -274,7 +275,7 @@ export function ResourcesExperience() {
                 </div>
                 <div>
                   <p className={`font-medium mb-2 ${muted}`}>Age Range</p>
-                  <select value={ageRange} onChange={(e) => setAgeRange(e.target.value)} className={selectCls}>
+                  <select value={ageRange} onChange={(e) => setAgeRange(e.target.value)} className={selectCls(ageRange)}>
                     <option value="">All ages</option>
                     {AGE_RANGES.map((a) => (
                       <option key={a.value} value={a.value}>{a.label}</option>
@@ -283,7 +284,7 @@ export function ResourcesExperience() {
                 </div>
                 <div>
                   <p className={`font-medium mb-2 ${muted}`}>Difficulty</p>
-                  <select value={difficulty} onChange={(e) => setDifficulty(e.target.value)} className={selectCls}>
+                  <select value={difficulty} onChange={(e) => setDifficulty(e.target.value)} className={selectCls(difficulty)}>
                     <option value="">All levels</option>
                     {DIFFICULTY_LEVELS.map((d) => (
                       <option key={d.value} value={d.value}>{d.label}</option>
@@ -302,7 +303,7 @@ export function ResourcesExperience() {
                 {teachers.length > 0 && (
                   <div>
                     <p className={`font-medium mb-2 ${muted}`}>Teacher</p>
-                    <select value={teacherId} onChange={(e) => setTeacherId(e.target.value)} className={selectCls}>
+                    <select value={teacherId} onChange={(e) => setTeacherId(e.target.value)} className={selectCls(teacherId)}>
                       <option value="">All teachers</option>
                       {teachers.map((tch) => (
                         <option key={tch.id} value={tch.id}>{tch.name}</option>
@@ -312,7 +313,7 @@ export function ResourcesExperience() {
                 )}
                 <div>
                   <p className={`font-medium mb-2 ${muted}`}>Language</p>
-                  <select value={language} onChange={(e) => setLanguage(e.target.value)} className={selectCls}>
+                  <select value={language} onChange={(e) => setLanguage(e.target.value)} className={selectCls(language)}>
                     <option value="">All languages</option>
                     {LANGUAGES.map((l) => (
                       <option key={l.value} value={l.value}>{l.label}</option>
@@ -351,7 +352,7 @@ export function ResourcesExperience() {
               <select
                 value={sort}
                 onChange={(e) => setSort(e.target.value as typeof sort)}
-                className={`rounded-xl border px-4 py-3 ${theme === "dark" ? "bg-[#112240] border-white/10 text-white" : "bg-white border-gray-200"}`}
+                className={themeSelectFilterClass(sort, "py-3")}
               >
                 <option value="recent">{t("resources.sortNewest", { defaultValue: "Most recent" })}</option>
                 <option value="popular">{t("resources.sortPopular", { defaultValue: "Most popular" })}</option>

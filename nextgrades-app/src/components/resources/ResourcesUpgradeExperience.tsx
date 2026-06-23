@@ -13,6 +13,8 @@ import { appShell } from "@/lib/theme/shell";
 import { Button } from "@/components/ui/Button";
 import { hero } from "@/lib/premium/tokens";
 import { theme as th } from "@/lib/theme/tokens";
+import { useMarketingTheme } from "@/lib/marketing-theme";
+import { themeSelectClass } from "@/lib/theme/form-fields";
 import { cn } from "@/lib/utils";
 
 type LocalizedPlan = {
@@ -30,6 +32,7 @@ type FaqItem = { question: string; answer: string };
 const SUBJECT_KEYS = ["english", "math", "german", "physics"] as const;
 
 export function ResourcesUpgradeExperience() {
+  const mt = useMarketingTheme();
   const { t } = useTranslation();
   const router = useRouter();
   const [yearly, setYearly] = useState(false);
@@ -127,14 +130,14 @@ export function ResourcesUpgradeExperience() {
             ))}
           </div>
 
-          <div className="mb-10 rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
+          <div className={cn("mb-10 rounded-2xl border p-6 shadow-sm", mt.card)}>
             <div className="grid gap-4 sm:grid-cols-3">
               <div>
-                <label className="text-xs font-semibold uppercase text-gray-500">{t("resources.upgrade.subjectLabel")}</label>
+                <label className={cn("text-xs font-semibold uppercase", mt.muted)}>{t("resources.upgrade.subjectLabel")}</label>
                 <select
                   value={subject}
                   onChange={(e) => setSubject(e.target.value)}
-                  className="mt-1 w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm"
+                  className={themeSelectClass(subject, "mt-1 py-2.5")}
                 >
                   {SUBJECT_KEYS.map((key) => (
                     <option key={key} value={key}>
@@ -144,11 +147,11 @@ export function ResourcesUpgradeExperience() {
                 </select>
               </div>
               <div>
-                <label className="text-xs font-semibold uppercase text-gray-500">{t("resources.upgrade.gradeLabel")}</label>
+                <label className={cn("text-xs font-semibold uppercase", mt.muted)}>{t("resources.upgrade.gradeLabel")}</label>
                 <select
                   value={grade}
                   onChange={(e) => setGrade(e.target.value)}
-                  className="mt-1 w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm"
+                  className={themeSelectClass(grade, "mt-1 py-2.5")}
                 >
                   {[1, 2, 3, 4, 5].map((g) => (
                     <option key={g} value={g}>
@@ -158,11 +161,11 @@ export function ResourcesUpgradeExperience() {
                 </select>
               </div>
               <div>
-                <label className="text-xs font-semibold uppercase text-gray-500">{t("resources.upgrade.semesterLabel")}</label>
+                <label className={cn("text-xs font-semibold uppercase", mt.muted)}>{t("resources.upgrade.semesterLabel")}</label>
                 <select
                   value={semester}
                   onChange={(e) => setSemester(e.target.value)}
-                  className="mt-1 w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm"
+                  className={themeSelectClass(semester, "mt-1 py-2.5")}
                 >
                   <option value="1">{t("resources.upgrade.semesterOption", { semester: 1 })}</option>
                   <option value="2">{t("resources.upgrade.semesterOption", { semester: 2 })}</option>

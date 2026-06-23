@@ -10,6 +10,8 @@ import { useLocalizedContent } from "@/hooks/useLocalizedContent";
 import { useTheme } from "@/context/ThemeContext";
 import { useToast } from "@/context/ToastContext";
 import { LoadingBlock } from "@/components/dashboard/LoadingBlock";
+import { themeInputClass, themeSelectCompactClass } from "@/lib/theme/form-fields";
+import { cn } from "@/lib/utils";
 
 type UploadedMaterial = {
   id: string;
@@ -149,8 +151,8 @@ export function AIGeneratorContent() {
     }
   };
 
-  const selectClass =
-    "w-full rounded-xl border border-input-border bg-input-background px-4 py-3 text-input-foreground";
+  const selectClass = (value: string) => themeSelectCompactClass(value, "w-full rounded-xl py-3");
+  const fieldClass = themeInputClass;
 
   const readyMaterials = materials.filter((m) => m.extraction_status === "ready");
 
@@ -260,7 +262,7 @@ export function AIGeneratorContent() {
                 <label className={`mb-2 block text-sm font-medium ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>
                   {t("aiGeneratorPage.subject")}
                 </label>
-                <select className={selectClass} value={topic} onChange={(e) => setTopic(e.target.value)}>
+                <select className={selectClass(topic)} value={topic} onChange={(e) => setTopic(e.target.value)}>
                   <option value="">{t("aiGeneratorPage.selectSubject", { defaultValue: "Optional topic" })}</option>
                   {subjects.map((s) => (
                     <option key={s} value={s}>
@@ -273,7 +275,7 @@ export function AIGeneratorContent() {
                 <label className={`mb-2 block text-sm font-medium ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>
                   {t("aiGeneratorPage.grade")}
                 </label>
-                <select className={selectClass} defaultValue="">
+                <select className={selectClass("")} defaultValue="">
                   {grades.map((g) => (
                     <option key={g}>{g}</option>
                   ))}
@@ -284,8 +286,7 @@ export function AIGeneratorContent() {
                   {t("aiGeneratorPage.difficulty", { defaultValue: "Difficulty" })}
                 </label>
                 <select
-                  className={selectClass}
-                  value={difficulty}
+                  className={selectClass(difficulty)}
                   onChange={(e) => setDifficulty(e.target.value as "easy" | "medium" | "hard")}
                 >
                   <option value="easy">{t("aiGeneratorPage.easy", { defaultValue: "Easy" })}</option>
@@ -301,14 +302,14 @@ export function AIGeneratorContent() {
                   type="number"
                   min={5}
                   max={30}
-                  className={selectClass}
+                  className={fieldClass}
                   value={questionCount}
                   onChange={(e) => setQuestionCount(Number(e.target.value))}
                 />
               </div>
             </div>
             <input
-              className={`${selectClass} mt-4`}
+              className={cn(fieldClass, "mt-4")}
               placeholder={t("aiGeneratorPage.quizTitle", { defaultValue: "Quiz title (optional)" })}
               value={title}
               onChange={(e) => setTitle(e.target.value)}

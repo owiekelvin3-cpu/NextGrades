@@ -23,6 +23,8 @@ import {
 import { useTheme } from "@/context/ThemeContext";
 import { useToast } from "@/context/ToastContext";
 import { useTranslation } from "react-i18next";
+import { themeSelectCompactClass } from "@/lib/theme/form-fields";
+import { cn } from "@/lib/utils";
 
 interface Category {
   id: string;
@@ -66,6 +68,7 @@ export default function TeacherContentPage() {
   const [sortOrder, setSortOrder] = useState("desc");
   const [categories, setCategories] = useState<Category[]>([]);
   const [fetchError, setFetchError] = useState<string | null>(null);
+  const filterSelect = (value: string) => themeSelectCompactClass(value, "pr-10");
 
   const fetchResources = useCallback(async () => {
     try {
@@ -214,11 +217,7 @@ export default function TeacherContentPage() {
                 <select
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value)}
-                  className={`appearance-none px-4 py-2 pr-10 rounded-lg border ${
-                    theme === "dark"
-                      ? "bg-[#0D1B2A] border-white/10 text-white"
-                      : "bg-white border-gray-200 text-gray-900"
-                  } focus:outline-none focus:ring-2 focus:ring-[#D4AF37]`}
+                  className={filterSelect(statusFilter)}
                 >
                   <option value="all">All Status</option>
                   <option value="published">Published</option>
@@ -236,11 +235,7 @@ export default function TeacherContentPage() {
                 <select
                   value={categoryFilter}
                   onChange={(e) => setCategoryFilter(e.target.value)}
-                  className={`appearance-none px-4 py-2 pr-10 rounded-lg border ${
-                    theme === "dark"
-                      ? "bg-[#0D1B2A] border-white/10 text-white"
-                      : "bg-white border-gray-200 text-gray-900"
-                  } focus:outline-none focus:ring-2 focus:ring-[#D4AF37]`}
+                  className={filterSelect(categoryFilter)}
                 >
                   <option value="all">All Categories</option>
                   {categories.map((cat) => (
@@ -261,11 +256,7 @@ export default function TeacherContentPage() {
                     setSortBy(sort);
                     setSortOrder(order);
                   }}
-                  className={`appearance-none px-4 py-2 pr-10 rounded-lg border ${
-                    theme === "dark"
-                      ? "bg-[#0D1B2A] border-white/10 text-white"
-                      : "bg-white border-gray-200 text-gray-900"
-                  } focus:outline-none focus:ring-2 focus:ring-[#D4AF37]`}
+                  className={filterSelect(`${sortBy}-${sortOrder}`)}
                 >
                   <option value="created_at-desc">Newest First</option>
                   <option value="created_at-asc">Oldest First</option>

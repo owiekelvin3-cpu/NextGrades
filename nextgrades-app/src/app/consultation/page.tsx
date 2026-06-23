@@ -31,6 +31,7 @@ import {
   Phone,
   Mail,
 } from "lucide-react";
+import { themeInputClass, themeSelectClass } from "@/lib/theme/form-fields";
 import { cn } from "@/lib/utils";
 import { hero, section, type } from "@/lib/premium/tokens";
 
@@ -77,13 +78,8 @@ export default function ConsultationPage() {
   const textPrimary = "text-[var(--foreground)]";
   const textMuted = "text-[var(--text-muted)]";
   const cardBg = cn("border border-[var(--border-default)] bg-[var(--card-background)]");
-  const inputClass =
-    "w-full rounded-xl border border-[var(--input-border)] bg-[var(--input-background)] px-4 py-3.5 text-[var(--input-foreground)] transition-all placeholder:text-[var(--input-placeholder)] focus:border-[var(--brand-gold)] focus:outline-none focus:ring-2 focus:ring-[var(--brand-gold-ring)]";
-  const selectClass = (value: string) =>
-    cn(
-      "theme-select w-full rounded-xl px-4 py-3.5 text-sm transition-all focus:border-[var(--brand-gold)] focus:outline-none focus:ring-2 focus:ring-[var(--brand-gold-ring)]",
-      !value && "theme-select--placeholder"
-    );
+  const inputClass = themeInputClass;
+  const selectClass = (value: string) => themeSelectClass(value);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

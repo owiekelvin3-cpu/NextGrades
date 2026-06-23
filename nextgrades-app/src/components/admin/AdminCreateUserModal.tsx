@@ -5,6 +5,8 @@ import { createPortal } from "react-dom";
 import { X, Mail, Plus } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/Button";
+import { themeInputClass, themeSelectCompactClass } from "@/lib/theme/form-fields";
+import { cn } from "@/lib/utils";
 
 type AdminCreateUserModalProps = {
   open: boolean;
@@ -86,9 +88,7 @@ export function AdminCreateUserModal({ open, onClose, onSuccess }: AdminCreateUs
 
   if (!mounted || !open) return null;
 
-  const inputClass =
-    "theme-input w-full rounded-lg px-3 py-2.5 text-sm outline-none transition focus:ring-2 focus:ring-[var(--input-focus-ring)]";
-
+  const inputClass = cn(themeInputClass, "theme-input rounded-lg py-2.5");
   const labelClass = "mb-1.5 block text-sm font-medium text-foreground-secondary";
 
   return createPortal(
@@ -169,7 +169,7 @@ export function AdminCreateUserModal({ open, onClose, onSuccess }: AdminCreateUs
               id="create-user-role"
               value={role}
               onChange={(e) => setRole(e.target.value as "student" | "teacher")}
-              className={inputClass}
+              className={themeSelectCompactClass(role, cn(inputClass, "py-2.5"))}
             >
               <option value="student">{t("adminUsers.roleStudent")}</option>
               <option value="teacher">{t("adminUsers.roleTeacher")}</option>

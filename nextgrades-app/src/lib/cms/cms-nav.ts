@@ -1,11 +1,4 @@
 import {
-  Home,
-  GraduationCap,
-  BookOpen,
-  Info,
-  FolderOpen,
-  CreditCard,
-  Mail,
   Menu,
   ImageIcon,
   Search,
@@ -16,11 +9,12 @@ import {
   Users,
   HelpCircle,
   ListChecks,
-  Sparkles,
   FileText,
+  Settings,
   type LucideIcon,
 } from "lucide-react";
 import { ADMIN_CMS_PREFIX } from "@/lib/admin/portal-paths";
+import { CMS_PAGES, CMS_PAGE_CATEGORIES, type CmsPageCategory } from "./page-meta";
 
 const BASE = ADMIN_CMS_PREFIX;
 
@@ -32,43 +26,48 @@ export type CmsNavItem = {
   description?: string;
 };
 
-export const CMS_SIDEBAR_PAGES: CmsNavItem[] = [
-  { id: "home", label: "Home", href: `${BASE}/pages/home`, icon: Home },
-  { id: "programs", label: "Programs", href: `${BASE}/pages/programs`, icon: GraduationCap },
-  { id: "subjects", label: "Subjects", href: `${BASE}/pages/subjects`, icon: BookOpen },
-  { id: "about", label: "About", href: `${BASE}/pages/about`, icon: Info },
-  { id: "resources", label: "Resources", href: `${BASE}/pages/resources`, icon: FolderOpen },
-  { id: "pricing", label: "Pricing", href: `${BASE}/pages/pricing`, icon: CreditCard },
-  { id: "contact", label: "Contact", href: `${BASE}/pages/contact`, icon: Mail },
-];
+/** All editable marketing pages — derived from page registry (single source of truth). */
+export const CMS_SIDEBAR_PAGES: CmsNavItem[] = CMS_PAGES.map((page) => ({
+  id: page.id,
+  label: page.label,
+  href: `${BASE}/pages/${page.id}`,
+  icon: page.icon,
+  description: page.description,
+}));
 
-export const CMS_SIDEBAR_TOOLS: CmsNavItem[] = [
-  { id: "programs-data", label: "Program cards", href: `${BASE}/programs`, icon: LayoutGrid, description: "Add, edit, reorder programs" },
-  { id: "testimonials-data", label: "Testimonials", href: `${BASE}/testimonials`, icon: MessageSquareQuote },
-  { id: "team-data", label: "Team members", href: `${BASE}/team`, icon: Users },
-  { id: "faqs-data", label: "FAQs", href: `${BASE}/faqs`, icon: HelpCircle },
-  { id: "subjects-data", label: "Subject cards", href: `${BASE}/subjects`, icon: BookOpen },
-  { id: "pricing-data", label: "Pricing plans", href: `${BASE}/pricing`, icon: CreditCard },
-  { id: "resources-data", label: "Resource library", href: `${BASE}/resources`, icon: FolderOpen },
-  { id: "navigation", label: "Navigation", href: `${BASE}/navigation`, icon: Menu },
+export type CmsPageNavGroup = {
+  id: CmsPageCategory;
+  label: string;
+  pages: CmsNavItem[];
+};
+
+export const CMS_PAGE_NAV_GROUPS: CmsPageNavGroup[] = CMS_PAGE_CATEGORIES.map((cat) => ({
+  id: cat.id,
+  label: cat.label,
+  pages: CMS_SIDEBAR_PAGES.filter((p) => CMS_PAGES.find((m) => m.id === p.id)?.category === cat.id),
+}));
+
+/** Primary CMS sidebar — content editing first, site tools second. */
+export const CMS_SIDEBAR_SECTIONS: CmsNavItem[] = [
+  { id: "pages-hub", label: "All pages", href: `${BASE}/pages`, icon: LayoutGrid },
   { id: "media", label: "Media library", href: `${BASE}/media`, icon: ImageIcon },
-  { id: "seo", label: "SEO settings", href: `${BASE}/seo`, icon: Search },
-  { id: "theme", label: "Theme settings", href: `${BASE}/theme`, icon: Palette },
+  { id: "seo", label: "SEO", href: `${BASE}/seo`, icon: Search },
+  { id: "theme", label: "Theme & branding", href: `${BASE}/theme`, icon: Palette },
+  { id: "settings-hub", label: "Site settings", href: `${BASE}/settings`, icon: Settings },
   { id: "history", label: "Version history", href: `${BASE}/history`, icon: History },
 ];
 
-/** Spec-aligned CMS hub sections (sidebar grouping). */
-export const CMS_SIDEBAR_SECTIONS: CmsNavItem[] = [
-  { id: "pages-hub", label: "Pages", href: `${BASE}/pages`, icon: Home },
-  { id: "tests-hub", label: "Tests & quizzes", href: `${BASE}/tests`, icon: ListChecks },
-  { id: "subjects-data", label: "Subjects", href: `${BASE}/subjects`, icon: BookOpen },
-  { id: "hero-hub", label: "Hero & landing", href: `${BASE}/hero`, icon: Sparkles },
-  { id: "pricing-data", label: "Pricing", href: `${BASE}/pricing`, icon: CreditCard },
+/** Advanced structured content (cards, nav, blog) — separate from page text fields. */
+export const CMS_SIDEBAR_TOOLS: CmsNavItem[] = [
   { id: "testimonials-data", label: "Testimonials", href: `${BASE}/testimonials`, icon: MessageSquareQuote },
   { id: "faqs-data", label: "FAQs", href: `${BASE}/faqs`, icon: HelpCircle },
+  { id: "team-data", label: "Team members", href: `${BASE}/team`, icon: Users },
+  { id: "programs-data", label: "Program cards", href: `${BASE}/programs`, icon: LayoutGrid },
+  { id: "subjects-data", label: "Subject cards", href: `${BASE}/subjects`, icon: LayoutGrid },
+  { id: "pricing-data", label: "Pricing plans", href: `${BASE}/pricing`, icon: LayoutGrid },
+  { id: "navigation", label: "Navigation menu", href: `${BASE}/navigation`, icon: Menu },
   { id: "blog-hub", label: "Blog", href: `${BASE}/blog`, icon: FileText },
-  { id: "media", label: "Media", href: `${BASE}/media`, icon: ImageIcon },
-  { id: "settings-hub", label: "Site settings", href: `${BASE}/settings`, icon: Palette },
+  { id: "tests-hub", label: "Tests & quizzes", href: `${BASE}/tests`, icon: ListChecks },
 ];
 
 export const CMS_HUB_HREF = BASE;

@@ -36,6 +36,7 @@ import {
   COMPANY_SUPPORT_EMAIL,
 } from "@/lib/company";
 import { hero, type } from "@/lib/premium/tokens";
+import { themeInputClass, themeSelectClass } from "@/lib/theme/form-fields";
 import { cn } from "@/lib/utils";
 
 const BENEFIT_ICONS = [Heart, Users, BookOpen, TrendingUp];
@@ -86,13 +87,9 @@ export function ContactPageContent() {
     message: "",
   });
 
-  const inputClass =
-    "w-full rounded-xl border border-[var(--input-border)] bg-[var(--input-background)] px-4 py-3.5 text-sm text-[var(--input-foreground)] transition-all placeholder:text-[var(--input-placeholder)] focus:border-[var(--brand-gold)] focus:outline-none focus:ring-2 focus:ring-[var(--brand-gold-ring)]";
+  const inputClass = themeInputClass;
 
-  const selectClass = cn(
-    "theme-select w-full rounded-xl px-4 py-3.5 text-sm transition-all focus:border-[var(--brand-gold)] focus:outline-none focus:ring-2 focus:ring-[var(--brand-gold-ring)]",
-    !formData.subject && "theme-select--placeholder"
-  );
+  const selectClass = themeSelectClass(formData.subject);
 
   const heroBg = mt.isDark ? "#0D1B2A" : "var(--background)";
 

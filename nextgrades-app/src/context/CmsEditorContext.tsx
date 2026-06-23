@@ -32,8 +32,11 @@ type CmsEditorContextValue = {
   getField: (i18nKey: string) => MergedCmsField | undefined;
   dirtyCount: number;
   pageDirtyCount: (pageId: string) => number;
+  sectionDirtyCount: (fieldKeys: string[]) => number;
   saveDraft: (pageId?: string) => Promise<void>;
   publish: (pageId?: string) => Promise<void>;
+  publishSection: (fieldKeys: string[]) => Promise<void>;
+  saveSectionDraft: (fieldKeys: string[]) => Promise<void>;
   reload: () => Promise<void>;
   runSetup: () => Promise<void>;
   publishing: boolean;
@@ -123,10 +126,15 @@ export function CmsEditorProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const persist = useCallback(
-    async (mode: PublishMode, pageId?: string) => {
-      const dirty = pageId ? dirtyFields.filter((f) => f.pageGroup === pageId) : dirtyFields;
+    async (mode: PublishMode, options?: { pageId?: string; fieldKeys?: string[] }) => {
+      let dirty = [...dirtyFields];
+      if (options?.pageId) dirty = dirty.filter((f) => f.pageGroup === options.pageId);
+      if (options?.fieldKeys?.length) {
+        const keys = new Set(options.fieldKeys);
+        dirty = dirty.filter((f) => keys.has(f.i18n_key));
+      }
       if (!dirty.length) {
-        toast.error(mode === "draft" ? "No changes to save" : "Change something first, then publish");
+        toast.error(mode === "draft" ? "No changes to save" : "Change something first, then save");
         return;
       }
       setPublishing(true);
@@ -151,6 +159,14 @@ export function CmsEditorProvider({ children }: { children: ReactNode }) {
     [applyPublishResult, dirtyFields, load, refreshCms, toast]
   );
 
+  const sectionDirtyCount = useCallback(
+    (fieldKeys: string[]) => {
+      const keys = new Set(fieldKeys);
+      return dirtyFields.filter((f) => keys.has(f.i18n_key)).length;
+    },
+    [dirtyFields]
+  );
+
   const value: CmsEditorContextValue = {
     fields,
     loading,
@@ -166,8 +182,11 @@ export function CmsEditorProvider({ children }: { children: ReactNode }) {
     getField: (key) => fields.find((f) => f.i18n_key === key),
     dirtyCount: dirtyFields.length,
     pageDirtyCount: (pageId) => dirtyFields.filter((f) => f.pageGroup === pageId).length,
-    saveDraft: (pageId) => persist("draft", pageId),
-    publish: (pageId) => persist("publish", pageId),
+    sectionDirtyCount,
+    saveDraft: (pageId) => persist("draft", { pageId }),
+    publish: (pageId) => persist("publish", { pageId }),
+    publishSection: (fieldKeys) => persist("publish", { fieldKeys }),
+    saveSectionDraft: (fieldKeys) => persist("draft", { fieldKeys }),
     reload: load,
     runSetup,
     publishing,

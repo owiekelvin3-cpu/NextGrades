@@ -38,6 +38,7 @@ import { useCmsImages } from "@/hooks/useCmsImage";
 import { SUBJECTS_HERO_IMAGE, getSubjectImage } from "@/lib/marketing-images";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
 import { MarketingHeroMobileImage } from "@/components/marketing/MarketingHeroMobileImage";
+import { themeInputClass, themeSelectClass } from "@/lib/theme/form-fields";
 import { cn } from "@/lib/utils";
 import { hero, type, section } from "@/lib/premium/tokens";
 
@@ -119,8 +120,7 @@ export default function SubjectsPage() {
     }
   };
 
-  const inputCls =
-    "w-full rounded-xl border border-[var(--input-border)] bg-[var(--input-background)] px-4 py-3 text-sm text-[var(--input-foreground)] focus:border-[var(--brand-gold)] focus:outline-none focus:ring-2 focus:ring-[var(--brand-gold-ring)]";
+  const selectCls = (value: string) => themeSelectClass(value, "py-3");
 
   return (
     <div className={cn("marketing-page-root flex min-h-screen flex-col", mt.page)}>
@@ -336,7 +336,7 @@ export default function SubjectsPage() {
                   <label className={cn("mb-2 block text-sm font-medium", "text-foreground")}>
                     {t("subjectsPage.selectGrade", { defaultValue: "Grade" })}
                   </label>
-                  <select value={browseGrade} onChange={(e) => setBrowseGrade(e.target.value)} className={inputCls}>
+                  <select value={browseGrade} onChange={(e) => setBrowseGrade(e.target.value)} className={selectCls(browseGrade)}>
                     <option value="">{t("resources.filters.allGrades", { defaultValue: "All grades" })}</option>
                     {catalogClasses.map((c) => (
                       <option key={c.id} value={String(c.level)}>{c.name}</option>
@@ -347,7 +347,7 @@ export default function SubjectsPage() {
                   <label className={cn("mb-2 block text-sm font-medium", "text-foreground")}>
                     {t("subjectsPage.selectSemester", { defaultValue: "Semester" })}
                   </label>
-                  <select value={browseSemester} onChange={(e) => setBrowseSemester(e.target.value)} className={inputCls}>
+                  <select value={browseSemester} onChange={(e) => setBrowseSemester(e.target.value)} className={selectCls(browseSemester)}>
                     <option value="">{t("resources.filters.allSemesters", { defaultValue: "All semesters" })}</option>
                     <option value="1">{t("resources.filters.semester1", { defaultValue: "Semester 1" })}</option>
                     <option value="2">{t("resources.filters.semester2", { defaultValue: "Semester 2" })}</option>

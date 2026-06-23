@@ -24,8 +24,7 @@ const MARKETPLACE_TABS = RESOURCE_TABS.filter((tab) =>
   ["all", "worksheets", "videos", "exam_prep", "learning_materials"].includes(tab.id)
 );
 
-const filterSelectClass =
-  "rounded-xl border border-[var(--input-border)] bg-[var(--input-background)] px-4 py-2.5 text-sm text-[var(--input-foreground)] outline-none focus:border-[var(--brand-gold)] focus:ring-2 focus:ring-[var(--brand-gold-ring)]";
+import { themeSelectFilterClass } from "@/lib/theme/form-fields";
 
 export function ResourcesMarketplaceExperience() {
   const { t } = useTranslation();
@@ -243,7 +242,7 @@ function MarketplaceFilters({
       <select
         value={catalog.classLevel}
         onChange={(e) => catalog.setClassLevel(e.target.value)}
-        className={filterSelectClass}
+        className={themeSelectFilterClass(catalog.classLevel)}
       >
         <option value="">{t("resources.allClasses")}</option>
         {catalog.classes.map((c) => (
@@ -255,7 +254,7 @@ function MarketplaceFilters({
       <select
         value={catalog.accessFilter}
         onChange={(e) => catalog.setAccessFilter(e.target.value as typeof catalog.accessFilter)}
-        className={filterSelectClass}
+        className={themeSelectFilterClass(catalog.accessFilter)}
       >
         <option value="all">{t("resources.accessAll")}</option>
         <option value="free">{t("resources.accessFree")}</option>
@@ -264,7 +263,7 @@ function MarketplaceFilters({
       <select
         value={catalog.sort}
         onChange={(e) => catalog.setSort(e.target.value as typeof catalog.sort)}
-        className={filterSelectClass}
+        className={themeSelectFilterClass(catalog.sort)}
       >
         <option value="recent">{t("resources.sortNewest")}</option>
         <option value="popular">{t("resources.sortPopular")}</option>

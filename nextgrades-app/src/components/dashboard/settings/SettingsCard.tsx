@@ -3,6 +3,7 @@
 import { Loader2 } from "lucide-react";
 import { Toggle } from "@/components/ui/Toggle";
 import { cn } from "@/lib/utils";
+import { themeSelectCompactClass } from "@/lib/theme/form-fields";
 import { Button } from "@/components/ui/Button";
 
 const fieldInput =
@@ -67,11 +68,12 @@ export function SettingsTextarea({ className, ...props }: React.TextareaHTMLAttr
 
 export function SettingsSelect({
   className,
+  value,
   children,
   ...props
 }: React.SelectHTMLAttributes<HTMLSelectElement>) {
   return (
-    <select className={cn(fieldInput, className)} {...props}>
+    <select className={themeSelectCompactClass(value, cn("w-full py-2.5", className))} value={value} {...props}>
       {children}
     </select>
   );

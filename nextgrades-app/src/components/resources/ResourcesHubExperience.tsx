@@ -19,6 +19,7 @@ import { LoadingBlock } from "@/components/dashboard/LoadingBlock";
 import { MobileResourcesToolbar } from "@/components/mobile/MobileResourcesToolbar";
 import { MobileResourceCard } from "@/components/mobile/MobileResourceCard";
 import { appShell } from "@/lib/theme/shell";
+import { themeSelectFilterClass } from "@/lib/theme/form-fields";
 
 export function ResourcesHubExperience() {
   const { t } = useTranslation();
@@ -86,7 +87,7 @@ export function ResourcesHubExperience() {
                   <select
                     value={catalog.sort}
                     onChange={(e) => catalog.setSort(e.target.value as typeof catalog.sort)}
-                    className="rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm"
+                    className={themeSelectFilterClass(catalog.sort, "py-2.5")}
                   >
                     <option value="recent">{t("resources.sortNewest", { defaultValue: "Newest first" })}</option>
                     <option value="popular">{t("resources.sortPopular", { defaultValue: "Most popular" })}</option>

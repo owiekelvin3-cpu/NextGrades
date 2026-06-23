@@ -24,6 +24,7 @@ import { studentPanel, materialTypeLabel, materialTypeColor, st } from "./studen
 import { StudentTabBar } from "./StudentTabBar";
 import { StudentPagination } from "./StudentPagination";
 import { mobile } from "@/lib/mobile/tokens";
+import { themeSelectCompactClass } from "@/lib/theme/form-fields";
 import { cn } from "@/lib/utils";
 
 type Tab = "all" | "course" | "type" | "favorites";
@@ -140,7 +141,7 @@ export function StudentResourcesExperience() {
               <select
                 value={courseFilter}
                 onChange={(e) => setCourseFilter(e.target.value)}
-                className="w-full rounded-xl border border-border-default bg-surface-subtle px-3 py-2.5 text-sm"
+                className={themeSelectCompactClass(courseFilter, "w-full py-2.5")}
               >
                 <option value="">{t("studentDashboard.selectCourse", { defaultValue: "Select course" })}</option>
                 {subjectNames.map((s) => (
@@ -152,7 +153,7 @@ export function StudentResourcesExperience() {
               <select
                 value={typeFilter}
                 onChange={(e) => setTypeFilter(e.target.value)}
-                className="w-full rounded-xl border border-border-default bg-surface-subtle px-3 py-2.5 text-sm"
+                className={themeSelectCompactClass(typeFilter, "w-full py-2.5")}
               >
                 <option value="">{t("studentDashboard.selectType", { defaultValue: "Select type" })}</option>
                 {["pdf", "video", "excel", "image", "other"].map((tp) => (
@@ -179,7 +180,7 @@ export function StudentResourcesExperience() {
             <select
               value={courseFilter}
               onChange={(e) => setCourseFilter(e.target.value)}
-              className="rounded-xl border border-border-default bg-surface-elevated px-3 py-2 text-sm text-text-muted"
+              className={themeSelectCompactClass(courseFilter, "py-2")}
             >
               <option value="">{t("studentDashboard.selectCourse", { defaultValue: "Select course" })}</option>
               {subjectNames.map((s) => (
@@ -191,7 +192,7 @@ export function StudentResourcesExperience() {
             <select
               value={typeFilter}
               onChange={(e) => setTypeFilter(e.target.value)}
-              className="rounded-xl border border-border-default bg-surface-elevated px-3 py-2 text-sm text-text-muted"
+              className={themeSelectCompactClass(typeFilter, "py-2")}
             >
               <option value="">{t("studentDashboard.selectType", { defaultValue: "Select type" })}</option>
               {["pdf", "video", "excel", "image", "other"].map((tp) => (

@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { useTheme } from "@/context/ThemeContext";
 import { useToast } from "@/context/ToastContext";
+import { themeInputClass, themeSelectClass } from "@/lib/theme/form-fields";
 import {
   CONTENT_TYPES,
   DIFFICULTY_LEVELS,
@@ -122,11 +123,8 @@ export function PublishContentForm({ resourceId, initialData }: PublishContentFo
     });
   }, []);
 
-  const inputCls = `w-full px-4 py-3 rounded-lg border ${
-    theme === "dark"
-      ? "bg-[#0D1B2A] border-white/10 text-white placeholder-gray-500"
-      : "bg-white border-gray-200 text-gray-900 placeholder-gray-400"
-  } focus:outline-none focus:ring-2 focus:ring-[#D4AF37]`;
+  const inputCls = themeInputClass;
+  const selectCls = (value: string) => themeSelectClass(value, "rounded-lg py-3");
 
   const labelCls = `block text-sm font-medium mb-2 text-foreground`;
 
@@ -271,7 +269,7 @@ export function PublishContentForm({ resourceId, initialData }: PublishContentFo
             <div className="space-y-6">
               <div>
                 <label className={labelCls}>Content Type *</label>
-                <select value={form.content_type} onChange={(e) => setForm({ ...form, content_type: e.target.value })} className={inputCls}>
+                <select value={form.content_type} onChange={(e) => setForm({ ...form, content_type: e.target.value })} className={selectCls(form.content_type)}>
                   {CONTENT_TYPES.map((t) => (
                     <option key={t.value} value={t.value}>{t.label}</option>
                   ))}
@@ -362,7 +360,7 @@ export function PublishContentForm({ resourceId, initialData }: PublishContentFo
             </div>
             <div>
               <label className={labelCls}>Category</label>
-              <select value={form.category_id} onChange={(e) => setForm({ ...form, category_id: e.target.value })} className={inputCls}>
+              <select value={form.category_id} onChange={(e) => setForm({ ...form, category_id: e.target.value })} className={selectCls(form.category_id)}>
                 <option value="">Select category</option>
                 {categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
               </select>
@@ -370,21 +368,21 @@ export function PublishContentForm({ resourceId, initialData }: PublishContentFo
             <div className="grid sm:grid-cols-3 gap-4">
               <div>
                 <label className={labelCls}>Subject</label>
-                <select value={form.subject_id} onChange={(e) => setForm({ ...form, subject_id: e.target.value })} className={inputCls}>
+                <select value={form.subject_id} onChange={(e) => setForm({ ...form, subject_id: e.target.value })} className={selectCls(form.subject_id)}>
                   <option value="">Any subject</option>
                   {catalogSubjects.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
                 </select>
               </div>
               <div>
                 <label className={labelCls}>Grade</label>
-                <select value={form.class_id} onChange={(e) => setForm({ ...form, class_id: e.target.value })} className={inputCls}>
+                <select value={form.class_id} onChange={(e) => setForm({ ...form, class_id: e.target.value })} className={selectCls(form.class_id)}>
                   <option value="">Any grade</option>
                   {catalogClasses.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
                 </select>
               </div>
               <div>
                 <label className={labelCls}>Semester</label>
-                <select value={form.semester} onChange={(e) => setForm({ ...form, semester: e.target.value })} className={inputCls}>
+                <select value={form.semester} onChange={(e) => setForm({ ...form, semester: e.target.value })} className={selectCls(form.semester)}>
                   <option value="">Any semester</option>
                   <option value="1">Semester 1</option>
                   <option value="2">Semester 2</option>
@@ -410,13 +408,13 @@ export function PublishContentForm({ resourceId, initialData }: PublishContentFo
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
                 <label className={labelCls}>Difficulty</label>
-                <select value={form.difficulty_level} onChange={(e) => setForm({ ...form, difficulty_level: e.target.value })} className={inputCls}>
+                <select value={form.difficulty_level} onChange={(e) => setForm({ ...form, difficulty_level: e.target.value })} className={selectCls(form.difficulty_level)}>
                   {DIFFICULTY_LEVELS.map((d) => <option key={d.value} value={d.value}>{d.label}</option>)}
                 </select>
               </div>
               <div>
                 <label className={labelCls}>Age Range</label>
-                <select value={form.age_range} onChange={(e) => setForm({ ...form, age_range: e.target.value })} className={inputCls}>
+                <select value={form.age_range} onChange={(e) => setForm({ ...form, age_range: e.target.value })} className={selectCls(form.age_range)}>
                   {AGE_RANGES.map((a) => <option key={a.value} value={a.value}>{a.label}</option>)}
                 </select>
               </div>
@@ -428,7 +426,7 @@ export function PublishContentForm({ resourceId, initialData }: PublishContentFo
               </div>
               <div>
                 <label className={labelCls}>Language</label>
-                <select value={form.language} onChange={(e) => setForm({ ...form, language: e.target.value })} className={inputCls}>
+                <select value={form.language} onChange={(e) => setForm({ ...form, language: e.target.value })} className={selectCls(form.language)}>
                   {LANGUAGES.map((l) => <option key={l.value} value={l.value}>{l.label}</option>)}
                 </select>
               </div>

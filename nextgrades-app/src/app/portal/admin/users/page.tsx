@@ -43,10 +43,10 @@ interface UserProfile {
   } | null;
 }
 
-const fieldClass =
-  "theme-input w-full rounded-lg border border-[var(--input-border)] bg-[var(--input-background)] px-3 py-2 text-sm text-[var(--input-foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--brand-gold-ring)]";
+import { themeInputClass, themeSelectCompactClass } from "@/lib/theme/form-fields";
 
-const selectClass = cn(fieldClass, "appearance-none pr-10");
+const fieldClass = cn(themeInputClass, "rounded-lg py-2");
+const selectClass = (value: string, extra?: string) => themeSelectCompactClass(value, cn("w-full pr-10", extra));
 
 export default function AdminUsersPage() {
   return (
@@ -269,7 +269,7 @@ function AdminUsersPageContent() {
           <select
             value={filter.value}
             onChange={(e) => filter.onChange(e.target.value)}
-            className={selectClass}
+            className={selectClass(filter.value)}
           >
             {filter.options.map(([val, label]) => (
               <option key={val} value={val}>
@@ -389,7 +389,7 @@ function AdminUsersPageContent() {
                 <select
                   value={user.role}
                   onChange={(e) => void handleRoleChange(user.id, e.target.value)}
-                  className={cn(selectClass, "w-auto min-w-[6.5rem] py-1.5 text-xs")}
+                  className={selectClass(user.role, "w-auto min-w-[6.5rem] py-1.5 text-xs")}
                   aria-label={t("adminUsers.createRole")}
                 >
                   <option value="student">{t("adminUsers.roleStudent")}</option>

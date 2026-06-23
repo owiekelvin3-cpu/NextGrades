@@ -6,6 +6,7 @@ import { Sidebar } from "@/components/dashboard/Sidebar";
 import { MobileTopBar } from "@/components/mobile/MobileTopBar";
 import { MobileBottomNav, MOBILE_BOTTOM_NAV_PADDING } from "@/components/mobile/MobileBottomNav";
 import { appShell } from "@/lib/theme/shell";
+import { themeSelectCompactClass } from "@/lib/theme/form-fields";
 import { cn } from "@/lib/utils";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
@@ -55,6 +56,7 @@ export default function AdminUsersPage() {
   const [sortBy, setSortBy] = useState("created_at");
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const filterSelect = (value: string) => themeSelectCompactClass(value, "pr-10");
 
   const fetchUsers = useCallback(async () => {
     try {
@@ -218,11 +220,7 @@ export default function AdminUsersPage() {
                 <select
                   value={roleFilter}
                   onChange={(e) => setRoleFilter(e.target.value)}
-                  className={`appearance-none px-4 py-2 pr-10 rounded-lg border ${
-                    theme === "dark"
-                      ? "bg-[#0D1B2A] border-white/10 text-white"
-                      : "bg-white border-gray-200 text-gray-900"
-                  } focus:outline-none focus:ring-2 focus:ring-[#D4AF37]`}
+                  className={filterSelect(roleFilter)}
                 >
                   <option value="all">{t("adminUsers.allRoles")}</option>
                   <option value="admin">{t("adminUsers.roleAdmin")}</option>
@@ -237,11 +235,7 @@ export default function AdminUsersPage() {
                 <select
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value)}
-                  className={`appearance-none px-4 py-2 pr-10 rounded-lg border ${
-                    theme === "dark"
-                      ? "bg-[#0D1B2A] border-white/10 text-white"
-                      : "bg-white border-gray-200 text-gray-900"
-                  } focus:outline-none focus:ring-2 focus:ring-[#D4AF37]`}
+                  className={filterSelect(statusFilter)}
                 >
                   <option value="all">{t("adminUsers.allStatus")}</option>
                   <option value="active">{t("adminUsers.statusActive")}</option>
@@ -255,11 +249,7 @@ export default function AdminUsersPage() {
                 <select
                   value={verifiedFilter}
                   onChange={(e) => setVerifiedFilter(e.target.value)}
-                  className={`appearance-none px-4 py-2 pr-10 rounded-lg border ${
-                    theme === "dark"
-                      ? "bg-[#0D1B2A] border-white/10 text-white"
-                      : "bg-white border-gray-200 text-gray-900"
-                  } focus:outline-none focus:ring-2 focus:ring-[#D4AF37]`}
+                  className={filterSelect(verifiedFilter)}
                 >
                   <option value="all">{t("adminUsers.allVerified")}</option>
                   <option value="verified">{t("adminUsers.verified")}</option>
@@ -273,11 +263,7 @@ export default function AdminUsersPage() {
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className={`appearance-none px-4 py-2 pr-10 rounded-lg border ${
-                    theme === "dark"
-                      ? "bg-[#0D1B2A] border-white/10 text-white"
-                      : "bg-white border-gray-200 text-gray-900"
-                  } focus:outline-none focus:ring-2 focus:ring-[#D4AF37]`}
+                  className={filterSelect(sortBy)}
                 >
                   <option value="created_at">{t("adminUsers.sortNewest")}</option>
                   <option value="created_at_asc">{t("adminUsers.sortOldest")}</option>
@@ -407,11 +393,7 @@ export default function AdminUsersPage() {
                             <select
                               value={user.role}
                               onChange={(e) => handleRoleChange(user.id, e.target.value)}
-                              className={`text-xs px-2 py-1 rounded border ${
-                                theme === "dark"
-                                  ? "bg-[#0D1B2A] border-white/10 text-white"
-                                  : "bg-white border-gray-200 text-gray-900"
-                              }`}
+                              className={themeSelectCompactClass(user.role, "text-xs px-2 py-1")}
                             >
                               <option value="student">{t("adminUsers.roleStudent")}</option>
                               <option value="teacher">{t("adminUsers.roleTeacher")}</option>
