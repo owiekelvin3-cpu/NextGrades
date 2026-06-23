@@ -24,6 +24,11 @@ import { PROGRAMS_HERO_IMAGE, PROGRAMS_PAGE_CARD_IMAGES, SHARED_PAGE_HERO_IMAGE 
 import { MarketingImage } from "@/components/marketing/MarketingImage";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
 import { MarketingHeroMobileImage } from "@/components/marketing/MarketingHeroMobileImage";
+import {
+  ProgramCompareTable,
+  type ProgramCompareRow,
+  type ProgramCompareHeaders,
+} from "@/components/programs/ProgramCompareTable";
 import { hero, type, section } from "@/lib/premium/tokens";
 import { cn } from "@/lib/utils";
 
@@ -38,21 +43,6 @@ type ProgramItem = {
   price: string;
 };
 
-type CompareRow = {
-  label: string;
-  c1: string | boolean;
-  c2: string | boolean;
-  c3: string | boolean;
-  c4?: string | boolean;
-};
-
-function CompareCell({ value }: { value: string | boolean }) {
-  if (value === true) {
-    return <CheckCircle2 className="mx-auto h-5 w-5 text-[var(--brand-gold)]" />;
-  }
-  return <span className="text-sm text-[var(--foreground-secondary)]">{value}</span>;
-}
-
 export default function ProgramsPage() {
   const mt = useMarketingTheme();
   const { t } = useTranslation();
@@ -64,19 +54,19 @@ export default function ProgramsPage() {
   const heroFeatures = useLocalizedContent<{ title: string; desc: string }[]>("programsPage.heroFeatures");
   const stats = useLocalizedContent<{ number: string; label: string }[]>("programsPage.stats");
   const programs = useLocalizedContent<ProgramItem[]>("programsPage.items");
-  const compareRows = useLocalizedContent<CompareRow[]>("programsPage.compareRows");
+  const compareRows = useLocalizedContent<ProgramCompareRow[]>("programsPage.compareRows");
   const ctaTags = useLocalizedContent<string[]>("programsPage.ctaTags");
-  const compareHeadersRaw = useLocalizedContent<{
-    features: string;
-    oneOnOne: string;
-    group: string;
-    library?: string;
-    math: string;
-  }>("programsPage.compareHeaders");
-  const compareHeaders =
+  const compareHeadersRaw = useLocalizedContent<ProgramCompareHeaders>("programsPage.compareHeaders");
+  const compareHeaders: ProgramCompareHeaders =
     compareHeadersRaw && typeof compareHeadersRaw === "object" && "features" in compareHeadersRaw
       ? compareHeadersRaw
-      : { features: "Merkmale", oneOnOne: "1:1 Premium", group: "Lerngruppe", library: "Lernbibliothek", math: "Mathe Matura" };
+      : {
+          features: "Merkmale",
+          oneOnOne: "1:1 Premium",
+          group: "Lerngruppe",
+          library: "Lernbibliothek",
+          math: "Mathe Matura Komplettpaket",
+        };
 
   const safePrograms = Array.isArray(programs) ? programs : [];
   const safeStats = Array.isArray(stats) ? stats : [];
@@ -223,52 +213,14 @@ export default function ProgramsPage() {
           </div>
         </section>
 
-        <section className={cn("py-14 md:py-16", mt.section)}>
-          <div className={section.container}>
-            <h2 className="mb-6 text-center text-2xl font-bold text-[var(--foreground)] md:mb-8 md:text-3xl">
-              {t("programsPage.compareTitle")}
-            </h2>
-            <p className="mb-2 text-right text-xs text-[var(--text-muted)] md:hidden">
-              ← {t("marketingNav.scrollHint", { defaultValue: "Scroll horizontally to compare" })} →
-            </p>
-            <div className={cn("responsive-table-wrap rounded-xl border", mt.tableWrap)}>
-              <table className="w-full min-w-[600px] text-sm">
-                <thead className={mt.tableHead}>
-                  <tr>
-                    <th className="px-3 py-3 text-left text-xs font-semibold sm:px-6 sm:py-4 sm:text-sm">{compareHeaders.features}</th>
-                    <th className="px-3 py-3 text-center text-xs font-semibold sm:px-6 sm:py-4 sm:text-sm">{compareHeaders.oneOnOne}</th>
-                    <th className="px-3 py-3 text-center text-xs font-semibold sm:px-6 sm:py-4 sm:text-sm">{compareHeaders.group}</th>
-                    <th className="px-3 py-3 text-center text-xs font-semibold sm:px-6 sm:py-4 sm:text-sm">{compareHeaders.library ?? "Lernbibliothek"}</th>
-                    <th className="bg-[#D4AF37]/10 px-3 py-3 text-center text-xs font-semibold text-[#D4AF37] sm:px-6 sm:py-4 sm:text-sm">
-                      {compareHeaders.math}
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-[var(--border-default)]">
-                  {safeCompareRows.map((row, index) => (
-                    <tr key={index} className="hover:bg-[var(--table-row-hover)]">
-                      <td className="px-3 py-3 text-xs font-medium text-[var(--foreground-secondary)] sm:px-6 sm:py-4 sm:text-sm">
-                        {row.label}
-                      </td>
-                      <td className="px-3 py-3 text-center sm:px-6 sm:py-4">
-                        <CompareCell value={row.c1} />
-                      </td>
-                      <td className="px-3 py-3 text-center sm:px-6 sm:py-4">
-                        <CompareCell value={row.c2} />
-                      </td>
-                      <td className="px-3 py-3 text-center sm:px-6 sm:py-4">
-                        <CompareCell value={row.c3} />
-                      </td>
-                      <td className="bg-[var(--brand-gold-muted)] px-3 py-3 text-center sm:px-6 sm:py-4">
-                        <CompareCell value={row.c4 ?? false} />
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </section>
+        <ProgramCompareTable
+          title={t("programsPage.compareTitle")}
+          headers={compareHeaders}
+          rows={safeCompareRows}
+          partialLabel={t("programsPage.comparePartial", { defaultValue: "Teilweise" })}
+          scrollHint={`← ${t("marketingNav.scrollHint", { defaultValue: "Scroll horizontally to compare" })} →`}
+          className={mt.section}
+        />
 
         <section className={cn("pb-14 pt-4", mt.sectionAlt)}>
           <div className={section.container}>

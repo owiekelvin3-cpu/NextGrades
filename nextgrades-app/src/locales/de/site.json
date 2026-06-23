@@ -242,6 +242,7 @@
       }
     ],
     "compareTitle": "Programmvergleich",
+    "comparePartial": "Teilweise",
     "compareHeaders": {
       "features": "Merkmale",
       "oneOnOne": "1:1 Premium",
@@ -250,41 +251,18 @@
       "math": "Mathe Matura Komplettpaket"
     },
     "compareRows": [
-      {
-        "label": "Betreuung",
-        "c1": "Individuell 1:1",
-        "c2": "Max. 3-5 SchülerInnen",
-        "c3": "Selbstständig",
-        "c4": "Gruppe + Begleitung"
-      },
-      {
-        "label": "Live-Sessions",
-        "c1": true,
-        "c2": true,
-        "c3": false,
-        "c4": true
-      },
-      {
-        "label": "Lernmaterialien",
-        "c1": true,
-        "c2": true,
-        "c3": true,
-        "c4": true
-      },
-      {
-        "label": "Matura-Vorbereitung",
-        "c1": true,
-        "c2": true,
-        "c3": true,
-        "c4": true
-      },
-      {
-        "label": "Preis",
-        "c1": "39 € / Stunde",
-        "c2": "29 € / SchülerIn",
-        "c3": "49 € ab / Fach",
-        "c4": "149 € einmalig"
-      }
+      { "label": "Live-Unterricht", "c1": true, "c2": true, "c3": false, "c4": false },
+      { "label": "Persönlicher Lernplan", "c1": true, "c2": false, "c3": false, "c4": false },
+      { "label": "Individuelle Betreuung", "c1": true, "c2": false, "c3": false, "c4": false },
+      { "label": "Gruppenlernen", "c1": false, "c2": true, "c3": false, "c4": false },
+      { "label": "Lernvideos", "c1": false, "c2": false, "c3": true, "c4": true },
+      { "label": "PDFs & Zusammenfassungen", "c1": false, "c2": false, "c3": true, "c4": true },
+      { "label": "Übungsblätter", "c1": false, "c2": false, "c3": true, "c4": true },
+      { "label": "Lösungen", "c1": false, "c2": false, "c3": true, "c4": true },
+      { "label": "Matura-Vorbereitung", "c1": true, "c2": true, "c3": "partial", "c4": true },
+      { "label": "Formelsammlungen", "c1": false, "c2": false, "c3": true, "c4": true },
+      { "label": "Sofortiger Zugriff", "c1": false, "c2": false, "c3": true, "c4": true },
+      { "label": "Einmalzahlung", "c1": false, "c2": false, "c3": true, "c4": true }
     ],
     "ctaTitle": "Unsicher, welches Programm passt?",
     "ctaDesc": "Buche ein kostenloses Erstgespräch – wir beraten dich und finden gemeinsam den besten Weg.",

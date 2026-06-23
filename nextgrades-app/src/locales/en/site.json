@@ -271,49 +271,27 @@
       }
     ],
     "compareTitle": "Program comparison",
+    "comparePartial": "Partial",
     "compareHeaders": {
       "features": "Features",
-      "oneOnOne": "1:1 Premium Tutoring",
-      "group": "Small Group Learning",
-      "math": "Math Excellence Program"
+      "oneOnOne": "1:1 Premium",
+      "group": "Learning group",
+      "library": "Learning library",
+      "math": "Math graduation complete package"
     },
     "compareRows": [
-      {
-        "label": "Support",
-        "c1": "Individual 1:1",
-        "c2": "Max. 3–5 students",
-        "c3": "Group + individual support"
-      },
-      {
-        "label": "Learning plans",
-        "c1": true,
-        "c2": true,
-        "c3": true
-      },
-      {
-        "label": "Flexible appointments",
-        "c1": true,
-        "c2": true,
-        "c3": "Fixed times (weekly)"
-      },
-      {
-        "label": "Learning materials",
-        "c1": true,
-        "c2": true,
-        "c3": true
-      },
-      {
-        "label": "Graduation exam prep",
-        "c1": true,
-        "c2": true,
-        "c3": true
-      },
-      {
-        "label": "Price",
-        "c1": "from €45 / hour",
-        "c2": "from €30 / student",
-        "c3": "from €99 / month"
-      }
+      { "label": "Live lessons", "c1": true, "c2": true, "c3": false, "c4": false },
+      { "label": "Personal learning plan", "c1": true, "c2": false, "c3": false, "c4": false },
+      { "label": "Individual support", "c1": true, "c2": false, "c3": false, "c4": false },
+      { "label": "Group learning", "c1": false, "c2": true, "c3": false, "c4": false },
+      { "label": "Learning videos", "c1": false, "c2": false, "c3": true, "c4": true },
+      { "label": "PDFs & summaries", "c1": false, "c2": false, "c3": true, "c4": true },
+      { "label": "Practice worksheets", "c1": false, "c2": false, "c3": true, "c4": true },
+      { "label": "Solutions", "c1": false, "c2": false, "c3": true, "c4": true },
+      { "label": "Graduation exam prep", "c1": true, "c2": true, "c3": "partial", "c4": true },
+      { "label": "Formula collections", "c1": false, "c2": false, "c3": true, "c4": true },
+      { "label": "Instant access", "c1": false, "c2": false, "c3": true, "c4": true },
+      { "label": "One-time payment", "c1": false, "c2": false, "c3": true, "c4": true }
     ],
     "ctaTitle": "Not sure which program fits?",
     "ctaDesc": "Book a free consultation – we'll advise you and find the best path together.",
