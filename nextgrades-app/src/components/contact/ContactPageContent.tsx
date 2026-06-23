@@ -22,7 +22,7 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
-import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
+import { MarketingHeroBlend, MARKETING_LIGHT_BG, MARKETING_NAVY } from "@/components/marketing/MarketingHeroBlend";
 import { MarketingHeroMobileImage } from "@/components/marketing/MarketingHeroMobileImage";
 import { useMarketingTheme } from "@/lib/marketing-theme";
 import { useCmsImage } from "@/hooks/useCmsImage";
@@ -91,7 +91,7 @@ export function ContactPageContent() {
 
   const selectClass = themeSelectClass(formData.subject);
 
-  const heroBg = mt.isDark ? "#0D1B2A" : "var(--background)";
+  const heroBg = mt.isDark ? MARKETING_NAVY : MARKETING_LIGHT_BG;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

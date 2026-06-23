@@ -18,8 +18,8 @@ export const BRANDED = {
   platformLaptop: "/images/marketing/platform-laptop.png",
   /** Four students collaborating */
   studentsGroup4: "/images/marketing/students-group-4.png",
-  /** Three students with branded NextGrades hoodies — primary page hero (Start, Programme, Fächer) */
-  heroStudentsBranded: "/images/marketing/hero-students-branded.png",
+  /** Three students with branded NextGrades hoodies — shared hero (Start, Programme, Fächer) */
+  heroStudentsBranded: "/images/marketing/hero-students-nextgrades.png",
   /** Three students collaborating with laptop — legacy marketing hero */
   heroStudentsCollab: "/images/marketing/hero-students-collab.png",
   /** Three students with laptop */
@@ -42,8 +42,11 @@ export const ABOUT_IMAGES = {
   promise: BRANDED.privacySecure,
 } as const;
 
+/** Shared hero photo — Start (home), Programme, Fächer */
+export const SHARED_PAGE_HERO_IMAGE = BRANDED.heroStudentsBranded;
+
 export const CONTACT_HERO_IMAGE = BRANDED.studyDesk;
-export const PROGRAMS_HERO_IMAGE = BRANDED.heroStudentsBranded;
+export const PROGRAMS_HERO_IMAGE = SHARED_PAGE_HERO_IMAGE;
 export const CONSULTATION_HERO_IMAGE = BRANDED.tutoringSession;
 export const CAREERS_HERO_IMAGE = BRANDED.studentsGroup4;
 export const HELP_HERO_IMAGE = BRANDED.platformLaptop;
@@ -54,7 +57,7 @@ export const HOME_PLATFORM_THUMB = BRANDED.progressDashboard;
 export const HOME_TESTIMONIALS_BG = BRANDED.studentsCollab;
 
 /** Primary homepage hero — branded students collaborating */
-export const HOME_HERO_STUDENT_IMAGE = BRANDED.heroStudentsBranded;
+export const HOME_HERO_STUDENT_IMAGE = SHARED_PAGE_HERO_IMAGE;
 
 /** Home hero carousel — all branded lifestyle photos */
 export const HOME_HERO_CAROUSEL_IMAGES = [
@@ -89,7 +92,7 @@ export const PRICING_HERO_IMAGE = BRANDED.platformLaptop;
 
 export const PRICING_PLAN_IMAGES = PROGRAMS_PAGE_CARD_IMAGES;
 
-export const SUBJECTS_HERO_IMAGE = BRANDED.heroStudentsBranded;
+export const SUBJECTS_HERO_IMAGE = SHARED_PAGE_HERO_IMAGE;
 
 /** Team portrait fallbacks when CMS has no photo — branded lifestyle shots */
 export const ABOUT_TEAM_IMAGES = [

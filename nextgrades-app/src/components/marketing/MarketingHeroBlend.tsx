@@ -5,6 +5,8 @@ import { MarketingImage } from "@/components/marketing/MarketingImage";
 import { cn } from "@/lib/utils";
 
 export const MARKETING_NAVY = "#0D1B2A";
+/** Light marketing page background — matches `--background` in design-tokens.css */
+export const MARKETING_LIGHT_BG = "#faf9f6";
 
 export type HeroBlendVariant =
   /** Photo on the right; fades into navy on the left (programs, home, about). */
@@ -34,9 +36,14 @@ type MarketingHeroBlendProps = {
 const DEFAULT_BG: Record<HeroBlendVariant, string> = {
   "dark-split-right": MARKETING_NAVY,
   "dark-full": MARKETING_NAVY,
-  "light-split-right": "#FFFFFF",
+  "light-split-right": MARKETING_LIGHT_BG,
   "dark-fade-bottom": MARKETING_NAVY,
 };
+
+/** Alpha blend stop — works with hex and CSS variables (unlike `${hex}cc`). */
+function mixBg(bg: string, opacityPercent: number): string {
+  return `color-mix(in srgb, ${bg} ${opacityPercent}%, transparent)`;
+}
 
 /** Blended hero photo layer — no borders; gradients match mockup fades. */
 export function MarketingHeroBlend({
@@ -88,19 +95,19 @@ export function MarketingHeroBlend({
           <div
             className="absolute inset-0 lg:hidden"
             style={{
-              background: `linear-gradient(to right, ${bg} 0%, ${bg}f0 55%, ${bg}80 75%, transparent 100%)`,
+              background: `linear-gradient(to right, ${bg} 0%, ${mixBg(bg, 94)} 55%, ${mixBg(bg, 50)} 75%, transparent 100%)`,
             }}
           />
           <div
             className="absolute inset-0 hidden lg:block"
             style={{
-              background: `linear-gradient(to right, ${bg} 0%, ${bg}e6 28%, ${bg}99 42%, transparent 72%)`,
+              background: `linear-gradient(to right, ${bg} 0%, ${mixBg(bg, 90)} 28%, ${mixBg(bg, 60)} 42%, transparent 72%)`,
             }}
           />
           <div
             className="absolute inset-0"
             style={{
-              background: `linear-gradient(to top, ${bg}cc 0%, transparent 45%)`,
+              background: `linear-gradient(to top, ${mixBg(bg, 80)} 0%, transparent 45%)`,
             }}
           />
         </>
@@ -111,13 +118,13 @@ export function MarketingHeroBlend({
           <div
             className="absolute inset-0"
             style={{
-              background: `linear-gradient(to right, ${bg} 0%, ${bg}f2 32%, ${bg}bf 48%, transparent 78%)`,
+              background: `linear-gradient(to right, ${bg} 0%, ${mixBg(bg, 95)} 28%, ${mixBg(bg, 72)} 46%, ${mixBg(bg, 35)} 62%, transparent 82%)`,
             }}
           />
           <div
             className="absolute inset-0"
             style={{
-              background: `linear-gradient(to top, ${bg}cc 0%, transparent 45%)`,
+              background: `linear-gradient(to top, ${mixBg(bg, 88)} 0%, ${mixBg(bg, 40)} 28%, transparent 52%)`,
             }}
           />
         </>
@@ -128,7 +135,7 @@ export function MarketingHeroBlend({
           <div
             className="absolute inset-0"
             style={{
-              background: `linear-gradient(to right, ${bg} 0%, ${bg}f5 35%, ${bg}80 55%, ${bg}40 75%, transparent 100%)`,
+              background: `linear-gradient(to right, ${bg} 0%, ${mixBg(bg, 96)} 35%, ${mixBg(bg, 50)} 55%, ${mixBg(bg, 25)} 75%, transparent 100%)`,
             }}
           />
           <div
@@ -143,7 +150,7 @@ export function MarketingHeroBlend({
           <div
             className="absolute inset-0"
             style={{
-              background: `linear-gradient(to bottom, transparent 0%, ${bg}99 55%, ${bg} 100%)`,
+              background: `linear-gradient(to bottom, transparent 0%, ${mixBg(bg, 60)} 55%, ${bg} 100%)`,
             }}
           />
           <div
@@ -185,13 +192,13 @@ export function MarketingHeroSection({
   imagePriority = true,
 }: MarketingHeroSectionProps) {
   const isDark = variant !== "light-split-right";
-  const bg = backgroundColor ?? (isDark ? MARKETING_NAVY : "#FFFFFF");
+  const bg = backgroundColor ?? (isDark ? MARKETING_NAVY : MARKETING_LIGHT_BG);
 
   return (
     <section
       className={cn(
         "relative overflow-hidden",
-        isDark ? "bg-[#0D1B2A] text-white" : "bg-white text-[#0D1B2A]",
+        isDark ? "bg-[#0D1B2A] text-white" : "bg-background text-[#0D1B2A]",
         className
       )}
       style={backgroundColor ? { backgroundColor: bg } : undefined}

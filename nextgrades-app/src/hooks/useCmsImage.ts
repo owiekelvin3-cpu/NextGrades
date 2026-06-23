@@ -5,8 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useCms } from "@/context/CmsContext";
 import { getCmsImageDefault } from "@/lib/cms/marketing-images-registry";
 import { getPreviewOverrides, isCmsPreviewFrame, subscribePreviewOverrides } from "@/lib/cms/preview-store";
-import { ONLINE_IMAGE_FALLBACK } from "@/lib/images/online-assets";
-import { resolveImageChain } from "@/lib/images/resolve";
+import { resolveCmsImageSrc } from "@/lib/images/resolve";
 import type { CmsOverrideMap } from "@/lib/cms/types";
 
 function mergeOverrides(published: CmsOverrideMap, preview: CmsOverrideMap | null): CmsOverrideMap {
@@ -34,7 +33,7 @@ export function useCmsImage(key: string, fallback?: string): string {
   const lng = i18n.language.startsWith("de") ? "de" : "en";
   const resolved = overrides[key]?.[lng] ?? overrides[key]?.en;
   const overrideStr = typeof resolved === "string" ? resolved : undefined;
-  return resolveImageChain(overrideStr, fallback, getCmsImageDefault(key), ONLINE_IMAGE_FALLBACK);
+  return resolveCmsImageSrc(key, overrideStr, fallback, getCmsImageDefault(key));
 }
 
 /** Batch helper for pages with many images. */
@@ -46,7 +45,7 @@ export function useCmsImages() {
   const getImage = (key: string, fallback?: string) => {
     const resolved = overrides[key]?.[lng] ?? overrides[key]?.en;
     const overrideStr = typeof resolved === "string" ? resolved : undefined;
-    return resolveImageChain(overrideStr, fallback, getCmsImageDefault(key), ONLINE_IMAGE_FALLBACK);
+    return resolveCmsImageSrc(key, overrideStr, fallback, getCmsImageDefault(key));
   };
 
   return { getImage, overrides };
