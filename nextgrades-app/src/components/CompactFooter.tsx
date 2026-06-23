@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 
 const linkClass =
-  "inline-flex items-center rounded-md px-1.5 py-0.5 text-[11px] leading-tight text-text-muted transition-colors hover:text-[var(--brand-gold)] touch-manipulation";
+  "text-xs text-[#0D1B2A]/55 transition-colors duration-200 hover:text-[var(--brand-gold)] dark:text-zinc-400 dark:hover:text-[var(--brand-gold)]";
 
 /** Minimal footer for login/auth pages (owner spec P11-06). */
 export function CompactFooter() {
@@ -21,18 +21,21 @@ export function CompactFooter() {
   return (
     <footer
       className={cn(
-        "site-footer border-t border-border-default bg-surface-muted px-4 py-3 pb-[max(0.5rem,env(safe-area-inset-bottom))]"
+        "site-footer border-t border-black/[0.08] bg-[#F8F8F6] dark:border-white/10 dark:bg-[#0D1B2A]",
+        "px-6 py-4 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
       )}
     >
       <div className="mx-auto flex max-w-7xl flex-col items-center gap-2">
-        <nav className="flex flex-wrap justify-center gap-x-2 gap-y-0">
+        <nav className="flex flex-wrap justify-center gap-x-3 gap-y-1">
           {links.map((link) => (
             <Link key={link.href} href={link.href} className={linkClass}>
               {link.label}
             </Link>
           ))}
         </nav>
-        <p className="text-center text-[10px] leading-snug text-text-muted/90">{t("footer.copyright")}</p>
+        <p className="text-center text-[10px] leading-snug text-[#0D1B2A]/50 dark:text-zinc-500">
+          {t("footer.copyright")}
+        </p>
       </div>
     </footer>
   );

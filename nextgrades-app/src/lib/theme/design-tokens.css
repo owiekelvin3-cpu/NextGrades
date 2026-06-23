@@ -527,11 +527,9 @@ html.theme-animate *::after {
   color: var(--on-navy-faint);
 }
 
-/* Site footer — light, minimal band (matches marketing pages) */
+/* Site footer — premium strip (colors via Tailwind in Footer.tsx) */
 .site-footer {
-  background: var(--surface-muted);
-  color: var(--foreground);
-  border-top: 1px solid var(--border-default);
+  flex-shrink: 0;
 }
 
 .site-footer .footer-nav-link {
