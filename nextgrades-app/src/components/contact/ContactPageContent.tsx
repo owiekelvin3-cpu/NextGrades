@@ -22,7 +22,7 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
-import { MarketingHeroBlend, MARKETING_LIGHT_BG, MARKETING_NAVY } from "@/components/marketing/MarketingHeroBlend";
+import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
 import { MarketingHeroMobileImage } from "@/components/marketing/MarketingHeroMobileImage";
 import { useMarketingTheme } from "@/lib/marketing-theme";
 import { useCmsImage } from "@/hooks/useCmsImage";
@@ -91,8 +91,6 @@ export function ContactPageContent() {
 
   const selectClass = themeSelectClass(formData.subject);
 
-  const heroBg = mt.isDark ? MARKETING_NAVY : MARKETING_LIGHT_BG;
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.firstName.trim() || !formData.email.trim() || !formData.message.trim()) {
@@ -151,18 +149,14 @@ export function ContactPageContent() {
       <Navbar />
 
       <main className="flex-1 overflow-x-hidden">
-        <section
-          className={cn(
-            hero.section,
-            "relative overflow-hidden",
-            mt.isDark ? "bg-[#0D1B2A] text-white" : mt.page
-          )}
-        >
+        <section className={cn("relative overflow-hidden bg-[#0D1B2A] text-white", hero.section)}>
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(212,175,55,0.15),transparent_45%)]" />
           <MarketingHeroBlend
             src={contactHeroImage}
             alt={t("contact.heroImageAlt")}
-            variant={mt.isDark ? "dark-split-right" : "light-split-right"}
-            backgroundColor={heroBg}
+            variant="dark-split-right"
+            backgroundColor="#0D1B2A"
+            fallbackSrc={CONTACT_HERO_IMAGE}
             priority
           />
           <div className={hero.inner}>
@@ -172,21 +166,11 @@ export function ContactPageContent() {
                   <MessageSquare className="mr-1.5 h-3.5 w-3.5" />
                   {t("contact.eyebrow")}
                 </Badge>
-                <h1
-                  className={cn(
-                    type.h1,
-                    mt.isDark ? "text-white" : mt.heading
-                  )}
-                  data-animate="hero-headline"
-                  data-animate-delay="0.1"
-                >
+                <h1 className={cn(type.h1, "text-white")} data-animate="hero-headline" data-animate-delay="0.1">
                   {t("contact.title")}
                 </h1>
                 <p
-                  className={cn(
-                    "mt-4 max-w-xl text-sm leading-relaxed md:mt-5 md:text-lg",
-                    mt.isDark ? "text-on-navy-muted" : mt.body
-                  )}
+                  className="mt-4 max-w-xl text-sm leading-relaxed text-on-navy-muted md:mt-5 md:text-lg"
                   data-animate="hero-subheadline"
                 >
                   {t("contact.subtitle")}{" "}
@@ -198,14 +182,7 @@ export function ContactPageContent() {
                   </a>
                 </p>
                 {t("contact.heroDesc") && (
-                  <p
-                    className={cn(
-                      "mt-3 max-w-xl text-sm",
-                      mt.isDark ? "text-on-navy-subtle" : mt.muted
-                    )}
-                  >
-                    {t("contact.heroDesc")}
-                  </p>
+                  <p className="mt-3 max-w-xl text-sm text-on-navy-subtle">{t("contact.heroDesc")}</p>
                 )}
                 <div data-animate="hero-cta">
                   <Button variant="gold" size="lg" href="#contact-form" className="mt-8">
@@ -215,7 +192,12 @@ export function ContactPageContent() {
                 </div>
               </div>
               <div data-animate="hero-image">
-                <MarketingHeroMobileImage src={contactHeroImage} priority />
+                <MarketingHeroMobileImage
+                  src={contactHeroImage}
+                  fallbackSrc={CONTACT_HERO_IMAGE}
+                  alt={t("contact.heroImageAlt")}
+                  priority
+                />
               </div>
             </div>
           </div>
