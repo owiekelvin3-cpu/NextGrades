@@ -16,6 +16,8 @@ export const BRANDED = {
   progressDashboard: "/images/marketing/progress-dashboard.png",
   /** Fortschritt dashboard close-up on desk */
   platformLaptop: "/images/marketing/platform-laptop.png",
+  /** Four students collaborating — Kleine Lerngruppen program card */
+  kleineLerngruppen: "/images/marketing/kleine-lerngruppen.png",
   /** Four students collaborating */
   studentsGroup4: "/images/marketing/students-group-4.png",
   /** Three students with branded NextGrades hoodies — shared hero (Start, Programme, Fächer) */
@@ -76,14 +78,14 @@ export const HERO_DESK_IMAGE = BRANDED.studyDesk;
 
 export const PROGRAM_CARD_IMAGES = [
   BRANDED.tutoringSession,
-  BRANDED.studentsCollab,
+  BRANDED.kleineLerngruppen,
   BRANDED.subjectBooks,
   BRANDED.platformLaptop,
 ] as const;
 
 export const PROGRAMS_PAGE_CARD_IMAGES = [
   BRANDED.tutoringSession,
-  BRANDED.studentsCollab,
+  BRANDED.kleineLerngruppen,
   BRANDED.subjectBooks,
   BRANDED.platformLaptop,
 ] as const;
