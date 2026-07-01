@@ -217,19 +217,17 @@
       "title": "What students and parents say",
       "items": [
         {
-          "quote": "Thanks to NextGrades I improved my math grade from C to A! The explanations are clear and I finally understand the concepts.",
-          "name": "Lena M.",
-          "role": "Student",
-          "school": "BRG Vienna"
-        },
-        {
-          "quote": "The small learning group really helped me. I finally understand math and feel more confident going into exams.",
-          "name": "Lukas, 11. Klasse HTL"
-        },
-        {
-          "quote": "The platform is intuitive and the materials are perfect for graduation exam preparation!",
-          "name": "Julia, 4. Klasse Gymnasium",
+          "quote": "Before NextGrades, learning was a struggle every evening at our house. Today my daughter goes to school much more confidently and finally enjoys learning again. It has not only improved her grades, but also reduced her stress.",
+          "name": "Sabine K.",
           "role": "Mother"
+        },
+        {
+          "quote": "Within a few months I improved in math from a 4 to a 2. What helped most were the clear explanations, personal support, and structured preparation for school exams.",
+          "name": "Lukas, 7. Klasse HTL"
+        },
+        {
+          "quote": "The learning platform is incredibly helpful. The videos, summaries, and worksheets save me time every week. When I do not understand something, I almost always find the right explanation right away.",
+          "name": "Julia, 4. Klasse Gymnasium"
         }
       ]
     },

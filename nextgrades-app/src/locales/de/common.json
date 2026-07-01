@@ -129,19 +129,17 @@
       "title": "Das sagen SchülerInnen und Eltern",
       "items": [
         {
-          "quote": "Dank NextGrades habe ich in Mathe von Note 3 auf 1 verbessert! Die Erklärungen sind klar und ich verstehe endlich die Zusammenhänge.",
-          "name": "Lena M.",
-          "role": "Schülerin",
-          "school": "BRG Wien"
-        },
-        {
-          "quote": "Die kleine Lerngruppe hat mir wirklich geholfen. Endlich verstehe ich Mathe und gehe selbstbewusster in Prüfungen.",
-          "name": "Lukas, 11. Klasse HTL"
-        },
-        {
-          "quote": "Die Plattform ist intuitiv und die Materialien perfekt für die Matura-Vorbereitung. Absolute Empfehlung!",
-          "name": "Julia, 4. Klasse Gymnasium",
+          "quote": "Vor NextGrades war Lernen bei uns jeden Abend ein Kampf. Heute geht meine Tochter viel selbstbewusster in die Schule und hat endlich wieder Freude am Lernen. Das hat nicht nur ihre Noten verbessert, sondern auch ihren Stress reduziert.",
+          "name": "Sabine K.",
           "role": "Mutter"
+        },
+        {
+          "quote": "Innerhalb weniger Monate habe ich mich in Mathe von einer 4 auf eine 2 verbessert. Besonders geholfen haben mir die klaren Erklärungen, die persönliche Betreuung und die strukturierte Vorbereitung auf Schularbeiten.",
+          "name": "Lukas, 7. Klasse HTL"
+        },
+        {
+          "quote": "Die Lernplattform ist unglaublich hilfreich. Die Videos, Zusammenfassungen und Übungsblätter sparen mir jede Woche Zeit. Wenn ich etwas nicht verstehe, finde ich fast immer sofort die passende Erklärung.",
+          "name": "Julia, 4. Klasse Gymnasium"
         }
       ]
     },
