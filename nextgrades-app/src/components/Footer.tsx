@@ -135,7 +135,7 @@ export default function Footer() {
             ))}
           </FooterColumn>
 
-          <div className="space-y-8 sm:col-span-2 lg:col-span-4">
+          <div className="relative space-y-8 sm:col-span-2 lg:col-span-4">
             <FooterColumn title={t("footer.helpfulLinks")}>
               {helpfulLinks.map((item) => (
                 <FooterLink key={item.href} href={item.href} className={navLinkClass}>
@@ -149,7 +149,7 @@ export default function Footer() {
             <button
               type="button"
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              className="footer-back-top static mt-2 ml-auto flex"
+              className="footer-back-top"
               aria-label={t("footer.backToTop")}
             >
               <ArrowUp className="h-4 w-4" aria-hidden />

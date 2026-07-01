@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import {
   UserRound,
-  Calendar,
   Star,
   CheckCircle2,
   ArrowRight,
@@ -15,6 +14,10 @@ import {
   BookOpen,
   GraduationCap,
   Sparkles,
+  FileText,
+  Heart,
+  Users,
+  TrendingUp,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useLocalizedContent } from "@/hooks/useLocalizedContent";
@@ -32,8 +35,9 @@ import {
 import { hero, type, section } from "@/lib/premium/tokens";
 import { cn } from "@/lib/utils";
 
-const statIcons = [UserRound, GraduationCap, Star];
+const statIcons = [UserRound, GraduationCap, FileText, Star];
 const heroFeatureIcons = [Hexagon, BookOpen, Sparkles];
+const parentsTrustIcons = [Heart, Users, BookOpen, TrendingUp];
 
 type ProgramItem = {
   type: string;
@@ -65,14 +69,16 @@ export default function ProgramsPage() {
           oneOnOne: "1:1 Premium",
           group: "Lerngruppe",
           library: "Lernbibliothek",
-          math: "Mathe Matura Komplettpaket",
+          math: "Mathematik Matura Komplettpaket",
         };
 
   const safePrograms = Array.isArray(programs) ? programs : [];
   const safeStats = Array.isArray(stats) ? stats : [];
   const safeHeroFeatures = Array.isArray(heroFeatures) ? heroFeatures : [];
   const safeCompareRows = Array.isArray(compareRows) ? compareRows : [];
+  const ctaParentsItems = useLocalizedContent<string[]>("programsPage.ctaParentsItems");
   const safeCtaTags = Array.isArray(ctaTags) ? ctaTags : [];
+  const safeCtaParentsItems = Array.isArray(ctaParentsItems) ? ctaParentsItems : [];
 
   return (
     <div className={cn("marketing-page-root flex min-h-screen flex-col", mt.page)}>
@@ -94,11 +100,11 @@ export default function ProgramsPage() {
                 <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-[#D4AF37] sm:text-sm" data-animate="hero-headline">
                   {t("programsPage.heroEyebrow")}
                 </p>
-                <h1 className={cn(type.h1, "mb-6")} data-animate="hero-headline" data-animate-delay="0.1">
+                <h1 className={cn(type.h1, "mb-4")} data-animate="hero-headline" data-animate-delay="0.1">
                   {t("programs.title")}
                 </h1>
                 <p className="mb-8 max-w-lg text-base leading-relaxed text-on-navy-muted sm:text-lg" data-animate="hero-subheadline">
-                  {t("programsPage.heroSubtitle")}
+                  {t("programs.subtitle")}
                 </p>
                 <ul className="mb-8 flex flex-wrap gap-2.5 sm:gap-3" data-animate="hero-cta">
                   {safeHeroFeatures.slice(0, 3).map((feature, index) => {
@@ -127,7 +133,7 @@ export default function ProgramsPage() {
         <section className="-mt-6 pb-2 md:-mt-8">
           <div className={section.container}>
             <Card className={cn("rounded-2xl border p-4 shadow-xl sm:p-6", mt.card)}>
-              <div className="grid grid-cols-3 gap-3 sm:gap-7">
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 sm:gap-6">
                 {safeStats.map((stat, index) => {
                   const Icon = statIcons[index];
                   return (
@@ -160,7 +166,7 @@ export default function ProgramsPage() {
             </div>
             <div className="grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-6 xl:grid-cols-4" data-animate="staggerChildren" data-stagger="0.15">
               {safePrograms.map((program, index) => {
-                const featured = index === 3;
+                const featured = index === 2;
                 return (
                   <Card
                     key={program.title}
@@ -224,26 +230,48 @@ export default function ProgramsPage() {
 
         <section className={cn("pb-14 pt-4", mt.sectionAlt)}>
           <div className={section.container}>
-            <Card className={cn("rounded-2xl border p-5 sm:p-8", mt.card)}>
-              <div className="flex flex-col items-stretch justify-between gap-6 lg:flex-row lg:items-center">
-                <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-6">
-                  <Calendar className="h-12 w-12 shrink-0 text-[var(--brand-gold)] sm:h-14 sm:w-14" />
-                  <div>
-                    <h3 className="mb-2 text-2xl font-bold text-[var(--foreground)]">{t("programsPage.ctaTitle")}</h3>
-                    <p className="text-sm text-[var(--text-muted)] md:text-base">{t("programsPage.ctaDesc")}</p>
-                    <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:gap-4">
-                      {safeCtaTags.map((tag, i) => (
-                        <span key={i} className="flex items-center gap-2 text-xs text-[var(--foreground-secondary)] sm:text-sm">
-                          <CheckCircle2 className="h-4 w-4 shrink-0 text-[var(--brand-gold)]" />
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
+            <Card className={cn("rounded-2xl border p-5 sm:p-8 lg:p-10", mt.card)}>
+              <div className="grid gap-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] lg:items-start">
+                <div>
+                  <h3 className="mb-3 text-2xl font-bold text-[var(--foreground)] md:text-3xl">
+                    {t("programsPage.ctaTitle")}
+                  </h3>
+                  <p className="text-sm leading-relaxed text-[var(--text-muted)] md:text-base">
+                    {t("programsPage.ctaDesc")}
+                  </p>
+                  <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:gap-4">
+                    {safeCtaTags.map((tag, i) => (
+                      <span key={i} className="flex items-center gap-2 text-xs text-[var(--foreground-secondary)] sm:text-sm">
+                        <CheckCircle2 className="h-4 w-4 shrink-0 text-[var(--brand-gold)]" />
+                        {tag}
+                      </span>
+                    ))}
                   </div>
+                  <Button variant="gold" size="lg" className="mt-6 w-full rounded-xl py-4 text-base font-semibold sm:w-auto" href="/consultation">
+                    {t("programsPage.ctaButton")} <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
                 </div>
-                <Button variant="gold" size="lg" className="w-full rounded-xl py-4 text-base font-semibold sm:w-auto" href="/consultation">
-                  {t("programsPage.ctaButton")} <ArrowRight className="w-5 h-5 ml-2" />
-                </Button>
+
+                {safeCtaParentsItems.length > 0 && (
+                  <div className="rounded-xl border border-[var(--border-default)] bg-[var(--surface-subtle)]/80 p-5 sm:p-6">
+                    <p className="mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--brand-gold)]">
+                      {t("programsPage.ctaParentsTitle", { defaultValue: t("contact.sideTitle") })}
+                    </p>
+                    <ul className="space-y-3">
+                      {safeCtaParentsItems.map((item, i) => {
+                        const Icon = parentsTrustIcons[i] ?? CheckCircle2;
+                        return (
+                          <li key={item} className="flex items-start gap-3">
+                            <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--brand-gold-muted)]">
+                              <Icon className="h-4 w-4 text-[var(--brand-gold)]" aria-hidden />
+                            </span>
+                            <span className="text-sm font-medium text-[var(--foreground)]">{item}</span>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                )}
               </div>
             </Card>
           </div>

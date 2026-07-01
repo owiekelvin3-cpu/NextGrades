@@ -209,19 +209,23 @@
         "desc": "Learn where you want — when you want."
       }
     ],
-    "freeConsultation": "Free consultation",
+    "freeConsultation": "Book now",
     "stats": [
       {
         "number": "100+",
-        "label": "happy students"
+        "label": "students"
       },
       {
         "number": "25+",
-        "label": "top teachers"
+        "label": "teachers"
+      },
+      {
+        "number": "500+",
+        "label": "learning materials"
       },
       {
         "number": "4.9/5",
-        "label": "rating from parents & students"
+        "label": "rating"
       }
     ],
     "sectionEyebrow": "OUR PROGRAMS",
@@ -294,19 +298,46 @@
       { "label": "One-time payment", "c1": false, "c2": false, "c3": true, "c4": true }
     ],
     "ctaTitle": "Not sure which program fits?",
-    "ctaDesc": "Book a free consultation – we'll advise you and find the best path together.",
+    "ctaDesc": "We advise you for free and find the best solution together — usually within a few hours.",
+    "ctaParentsTitle": "Why parents choose us",
+    "ctaParentsItems": [
+      "Personal support",
+      "Experienced teachers",
+      "Clear learning structure",
+      "Measurable progress"
+    ],
     "ctaTags": [
       "No obligation & free",
       "Individual consultation",
       "The best options for you"
     ],
-    "ctaButton": "Book free consultation"
+    "ctaButton": "Book consultation"
   },
   "subjectsPage": {
     "learnMore": "Learn more",
     "bookTutoring": "Book tutoring",
     "viewMaterials": "View materials",
-    "gridIntro": "We help you improve in every subject – individually, clearly, and effectively.",
+    "gridIntro": "We help you improve in every subject – individually, clearly, and effectively. For the Austrian school system from primary school through graduation exams.",
+    "schoolLevelsEyebrow": "AUSTRIAN SCHOOL SYSTEM",
+    "schoolLevelsTitle": "From primary school to graduation",
+    "schoolLevels": [
+      {
+        "label": "Primary school",
+        "desc": "Build strong foundations"
+      },
+      {
+        "label": "Middle school",
+        "desc": "HTL, gymnasium & more"
+      },
+      {
+        "label": "Upper school",
+        "desc": "Targeted exam preparation"
+      },
+      {
+        "label": "Graduation",
+        "desc": "Structured graduation prep"
+      }
+    ],
     "browseMaterials": "View materials",
     "browseHint": "Choose grade and semester to see matching materials.",
     "selectGrade": "Grade",
@@ -379,10 +410,10 @@
       {
         "id": "english",
         "title": "English",
-        "description": "Better grades through grammar, vocabulary, and confident writing.",
+        "description": "Better grades through listening & reading, grammar, vocabulary, and confident writing.",
         "features": [
+          "Listening & Reading",
           "Grammar & vocabulary",
-          "Conversation & expression",
           "Business English",
           "Essays & texts"
         ]
@@ -499,22 +530,24 @@
   "pricingPage": {
     "plansEyebrow": "CHOOSE YOUR PLAN",
     "plansTitle": "Invest in your future — pick the support that fits you",
+    "plansSubtitle": "Transparent pricing. No hidden fees. Choose the offer that fits your goals.",
+    "valueProposition": "Individual solutions for every budget and learning situation.",
     "stats": [
       {
         "value": "100+",
-        "label": "active students"
+        "label": "students"
+      },
+      {
+        "value": "25+",
+        "label": "teachers"
+      },
+      {
+        "value": "500+",
+        "label": "learning materials"
       },
       {
         "value": "4.9/5",
-        "label": "average rating"
-      },
-      {
-        "value": "100%",
-        "label": "grade improvement"
-      },
-      {
-        "value": "100%",
-        "label": "online & flexible"
+        "label": "rating"
       }
     ],
     "trustedTitle": "Trusted by 100+ students",

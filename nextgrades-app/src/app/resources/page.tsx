@@ -4,7 +4,7 @@ import { Suspense, useMemo } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/Button";
-import { ResourcesMarketplaceExperience } from "@/components/resources/ResourcesMarketplaceExperience";
+import { ResourcesLibraryGate } from "@/components/resources/ResourcesLibraryGate";
 import { MockupPageHero } from "@/components/mockup/MockupPageHero";
 import { MockupFeatureStrip } from "@/components/mockup/MockupFeatureStrip";
 import { useTranslation } from "react-i18next";
@@ -59,7 +59,7 @@ export default function ResourcesPage() {
         )}
 
         <Suspense fallback={null}>
-          <ResourcesMarketplaceExperience />
+          <ResourcesLibraryGate />
         </Suspense>
       </main>
 

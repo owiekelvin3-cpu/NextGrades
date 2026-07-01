@@ -63,7 +63,7 @@ function SectionHeading({
   return (
     <div className={cn("mb-12", center && "text-center")} data-animate="fadeUp">
       {eyebrow && <Eyebrow className={cn("mb-3", center && "mx-auto")}>{eyebrow}</Eyebrow>}
-      <h2 className={cn("text-3xl font-bold tracking-tight md:text-4xl", mt.heading)}>{title}</h2>
+      <h2 className={cn("text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl", mt.heading)}>{title}</h2>
       {subtitle && (
         <p className={cn("mt-3 max-w-2xl text-lg", mt.body, center && "mx-auto")}>{subtitle}</p>
       )}
@@ -133,7 +133,7 @@ export default function AboutPage() {
                   <span className="text-[#D4AF37]">{t("about.heroTitleHighlight")}</span>{" "}
                   {t("about.heroTitle2")}
                 </h1>
-                <p className="mt-4 max-w-xl text-sm leading-relaxed text-on-navy-muted md:mt-5 md:text-lg" data-animate="hero-subheadline">
+                <p className="mt-4 max-w-xl text-base leading-relaxed text-on-navy-muted md:mt-6 md:text-xl" data-animate="hero-subheadline">
                   {t("about.heroSubtitle")}
                 </p>
 

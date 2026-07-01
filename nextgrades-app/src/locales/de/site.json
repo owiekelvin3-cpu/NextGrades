@@ -170,7 +170,7 @@
         "desc": "Lerne, wo und wann du möchtest - nach deinem Zeitplan."
       }
     ],
-    "freeConsultation": "Kostenloses Erstgespräch buchen",
+    "freeConsultation": "Jetzt buchen",
     "stats": [
       {
         "number": "100+",
@@ -179,6 +179,10 @@
       {
         "number": "25+",
         "label": "LehrerInnen"
+      },
+      {
+        "number": "500+",
+        "label": "Lernmaterialien"
       },
       {
         "number": "4,9/5",
@@ -217,6 +221,18 @@
         "price": "29 € pro Stunde & SchülerIn"
       },
       {
+        "type": "Matura",
+        "title": "Mathematik Matura Komplettpaket",
+        "description": "Gezielte Matura-Prüfungsvorbereitung mit strukturierten Live-Sessions.",
+        "features": [
+          "Matura-Prüfungsvorbereitung",
+          "Strukturierte Live-Sessions",
+          "Schritt-für-Schritt-Erklärungen",
+          "Premium-Lernmaterialien"
+        ],
+        "price": "149 € einmalig"
+      },
+      {
         "type": "Bibliothek",
         "title": "Lernbibliothek",
         "description": "Strukturierte Lernmaterialien, Videos und Prüfungsvorbereitung an einem Ort.",
@@ -227,18 +243,6 @@
           "Für Schule & Matura"
         ],
         "price": "49 € ab pro Fach & Semester"
-      },
-      {
-        "type": "Matura",
-        "title": "Mathe Matura Komplettpaket",
-        "description": "Gezielte Matura-Prüfungsvorbereitung mit strukturierten Live-Sessions.",
-        "features": [
-          "Matura-Prüfungsvorbereitung",
-          "Gezielte Prüfungsvorbereitung",
-          "Strukturierte Live-Sessions",
-          "Schritt-für-Schritt-Erklärungen"
-        ],
-        "price": "149 € einmalig"
       }
     ],
     "compareTitle": "Programmvergleich",
@@ -248,7 +252,7 @@
       "oneOnOne": "1:1 Premium",
       "group": "Lerngruppe",
       "library": "Lernbibliothek",
-      "math": "Mathe Matura Komplettpaket"
+      "math": "Mathematik Matura Komplettpaket"
     },
     "compareRows": [
       { "label": "Live-Unterricht", "c1": true, "c2": true, "c3": false, "c4": false },
@@ -264,20 +268,47 @@
       { "label": "Sofortiger Zugriff", "c1": false, "c2": false, "c3": true, "c4": true },
       { "label": "Einmalzahlung", "c1": false, "c2": false, "c3": true, "c4": true }
     ],
-    "ctaTitle": "Unsicher, welches Programm passt?",
-    "ctaDesc": "Buche ein kostenloses Erstgespräch – wir beraten dich und finden gemeinsam den besten Weg.",
+    "ctaTitle": "Nicht sicher, welches Programm passt?",
+    "ctaDesc": "Wir beraten dich kostenlos und finden gemeinsam die beste Lösung — meist innerhalb weniger Stunden.",
+    "ctaParentsTitle": "Warum Eltern uns wählen",
+    "ctaParentsItems": [
+      "Persönliche Betreuung",
+      "Erfahrene Lehrkräfte",
+      "Klare Lernstruktur",
+      "Messbare Fortschritte"
+    ],
     "ctaTags": [
       "Unverbindlich & kostenlos",
       "Individuelle Beratung",
       "Die besten Optionen für dich"
     ],
-    "ctaButton": "Kostenloses Erstgespräch buchen"
+    "ctaButton": "Beratung buchen"
   },
   "subjectsPage": {
     "learnMore": "Mehr erfahren",
     "bookTutoring": "Nachhilfe buchen",
     "viewMaterials": "Materialien ansehen",
-    "gridIntro": "Wir helfen dir, in jedem Fach besser zu werden – individuell, verständlich und effektiv.",
+    "gridIntro": "Wir helfen dir, in jedem Fach besser zu werden – individuell, verständlich und effektiv. Für das österreichische Schulsystem von der Volksschule bis zur Matura.",
+    "schoolLevelsEyebrow": "ÖSTERREICHISCHES SCHULSYSTEM",
+    "schoolLevelsTitle": "Von der Volksschule bis zur Matura",
+    "schoolLevels": [
+      {
+        "label": "Volksschule",
+        "desc": "Grundlagen sicher aufbauen"
+      },
+      {
+        "label": "Mittelstufe",
+        "desc": "HTL, Gymnasium & mehr"
+      },
+      {
+        "label": "Oberstufe",
+        "desc": "Gezielte Prüfungsvorbereitung"
+      },
+      {
+        "label": "Matura",
+        "desc": "Strukturierte Matura-Vorbereitung"
+      }
+    ],
     "browseMaterials": "Materialien",
     "browseHint": "Wähle Klassenstufe und Semester, um passende Materialien zu sehen.",
     "selectGrade": "Klassenstufe",
@@ -350,10 +381,10 @@
       {
         "id": "english",
         "title": "Englisch",
-        "description": "Bessere Noten durch Grammatik, Wortschatz und sicheres Schreiben.",
+        "description": "Bessere Noten durch Listening & Reading, Grammatik, Wortschatz und sicheres Schreiben.",
         "features": [
+          "Listening & Reading",
           "Grammatik & Wortschatz",
-          "Konversation & Ausdruck",
           "Business English",
           "Aufsätze & Texte"
         ]
@@ -478,16 +509,16 @@
         "label": "SchülerInnen"
       },
       {
-        "value": "4,9/5",
-        "label": "Bewertung"
+        "value": "25+",
+        "label": "LehrerInnen"
       },
       {
         "value": "500+",
         "label": "Lernmaterialien"
       },
       {
-        "value": "100+",
-        "label": "Bewertungen"
+        "value": "4,9/5",
+        "label": "Bewertung"
       }
     ],
     "trustedTitle": "Vertraut von 100+ SchülerInnen",
@@ -549,7 +580,7 @@
       },
       {
         "id": "matura",
-        "name": "Mathe Matura Komplettpaket",
+        "name": "Mathematik Matura Komplettpaket",
         "description": "Komplette Matura-Vorbereitung in Mathematik",
         "monthlyPrice": 149,
         "yearlyPrice": 149,
@@ -582,7 +613,7 @@
       "library": "Lernbibliothek",
       "group": "Lerngruppe",
       "premium": "1:1 Premium",
-      "matura": "Mathe Matura"
+      "matura": "Mathematik Matura"
     },
     "compareRows": [
       { "label": "Live-Unterricht", "library": false, "group": true, "premium": true, "matura": true },

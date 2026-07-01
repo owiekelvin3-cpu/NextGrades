@@ -526,8 +526,18 @@
     "ctaButton": "Become a member now"
   },
   "resources": {
-    "heroTitle": "Knowledge that helps you progress.",
-    "heroSubtitle": "Discover free materials, useful guides and valuable tips to support your learning.",
+    "heroTitle": "Learning materials that deliver real results.",
+    "heroSubtitle": "Access structured summaries, worksheets, explainer videos, and exam preparation — developed by experienced educators.",
+    "unlockCta": "Unlock learning library",
+    "libraryGate": {
+      "materialsCount": "500+",
+      "materialsLabel": "learning materials",
+      "title": "500+ learning materials — unlocked with membership",
+      "subtitle": "The full learning library is available to registered members. Sign in or choose a plan to access all content.",
+      "loginCta": "Sign in",
+      "upgradeCta": "Unlock membership",
+      "pricingCta": "View pricing"
+    },
     "heroFeature1": "High-quality content",
     "heroFeature1Desc": "Created by experienced teachers.",
     "heroFeature2": "Free & helpful",
@@ -675,8 +685,8 @@
     "saveYearly": "Save 2 months vs monthly"
   },
   "programs": {
-    "title": "Our Programs.",
-    "subtitle": "The right support for every goal."
+    "title": "More than tutoring.",
+    "subtitle": "Structured learning systems, premium support, and digital learning materials for lasting academic success."
   },
   "subjects": {
     "title": "Our Subjects",

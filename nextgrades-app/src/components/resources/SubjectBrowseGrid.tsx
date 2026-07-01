@@ -14,21 +14,26 @@ type Props = {
   subjects: Subject[];
   subjectCounts?: Map<string, number>;
   className?: string;
+  /** When true, cards link to upgrade instead of public subject pages. */
+  locked?: boolean;
+  hideHeader?: boolean;
 };
 
-export function SubjectBrowseGrid({ subjects, subjectCounts, className }: Props) {
+export function SubjectBrowseGrid({ subjects, subjectCounts, className, locked = false, hideHeader = false }: Props) {
   const { t } = useTranslation();
 
   if (subjects.length === 0) return null;
 
   return (
     <div className={className}>
-      <div className="mb-6">
-        <h2 className="text-xl font-bold tracking-tight text-[var(--foreground)] sm:text-2xl">
-          {t("resources.browseBySubject")}
-        </h2>
-        <p className="mt-1 text-sm text-[var(--text-muted)]">{t("resources.browseBySubjectDesc")}</p>
-      </div>
+      {!hideHeader && (
+        <div className="mb-6">
+          <h2 className="text-xl font-bold tracking-tight text-[var(--foreground)] sm:text-2xl">
+            {t("resources.browseBySubject")}
+          </h2>
+          <p className="mt-1 text-sm text-[var(--text-muted)]">{t("resources.browseBySubjectDesc")}</p>
+        </div>
+      )}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4 xl:grid-cols-4">
         {subjects.map((s, index) => {
           const slug = s.slug || s.id;
@@ -36,11 +41,12 @@ export function SubjectBrowseGrid({ subjects, subjectCounts, className }: Props)
           const Icon = ui.icon;
           const count = subjectCounts?.get(slug) ?? 0;
           const imageUrl = getResourcesSubjectImage(slug, index);
+          const href = locked ? `/resources/upgrade?from=library&subject=${slug}` : `/resources/${slug}`;
 
           return (
             <Link
               key={s.id}
-              href={`/resources/${slug}`}
+              href={href}
               className="group flex flex-col overflow-hidden rounded-xl border border-[var(--border-default)] bg-[var(--card-background)] shadow-sm transition hover:border-[var(--brand-gold)]/30 hover:shadow-md"
             >
               <div className="relative h-24 overflow-hidden bg-[var(--surface-subtle)] sm:h-28">

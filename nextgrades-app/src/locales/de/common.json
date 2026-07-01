@@ -51,7 +51,7 @@
     "programs": "Programme",
     "program1": "1:1 Nachhilfe",
     "program2": "Kleine Lerngruppen",
-    "program3": "Mathe Matura Komplettpaket",
+    "program3": "Mathematik Matura Komplettpaket",
     "program4": "Lernbibliothek",
     "resources": "Lernbibliothek",
     "resource1": "Alle Materialien",
@@ -277,7 +277,7 @@
           ]
         },
         {
-          "title": "Mathe Matura Komplettpaket",
+          "title": "Mathematik Matura Komplettpaket",
           "price": "149 € einmalig",
           "features": [
             "Matura-Prüfungsvorbereitung",
@@ -626,6 +626,15 @@
     "heroTitle": "Lernmaterialien, die wirklich Ergebnisse bringen.",
     "heroSubtitle": "Greife auf strukturierte Zusammenfassungen, Übungsblätter, Erklärvideos und Prüfungsvorbereitungen zu - entwickelt von erfahrenen Lehrkräften.",
     "unlockCta": "Lernbibliothek freischalten",
+    "libraryGate": {
+      "materialsCount": "500+",
+      "materialsLabel": "Lernmaterialien",
+      "title": "500+ Lernmaterialien — mit Mitgliedschaft freigeschaltet",
+      "subtitle": "Die vollständige Lernbibliothek steht registrierten Mitgliedern zur Verfügung. Melde dich an oder wähle ein Paket, um alle Inhalte zu nutzen.",
+      "loginCta": "Anmelden",
+      "upgradeCta": "Mitgliedschaft freischalten",
+      "pricingCta": "Preise ansehen"
+    },
     "benefits": [
       { "title": "Lehrplankonform", "desc": "Inhalte passend zum österreichischen Lehrplan." },
       { "title": "Strukturiert aufgebaut", "desc": "Klare Kapitel, Übungen und Lernpfade." },
@@ -906,7 +915,7 @@
   },
   "programs": {
     "title": "Mehr als Nachhilfe.",
-    "subtitle": ""
+    "subtitle": "Strukturierte Lernsysteme, Premium-Betreuung und digitale Lernmaterialien für nachhaltigen Lernerfolg."
   },
   "subjects": {
     "title": "Unsere Fächer",

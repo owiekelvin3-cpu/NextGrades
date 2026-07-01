@@ -29,6 +29,8 @@ import {
   Library,
   Leaf,
   BarChart3,
+  FileText,
+  UserRound,
 } from "lucide-react";
 import { SubjectProgramCard } from "@/components/subjects/SubjectProgramCard";
 import { useMarketingTheme } from "@/lib/marketing-theme";
@@ -59,7 +61,7 @@ const SUBJECT_ICONS: Record<string, typeof Calculator> = {
   "technical-drawing": Ruler,
 };
 const benefitIcons = [Users, BookOpen, Calendar, TrendingUp];
-const statIcons = [GraduationCap, Users, Star, TrendingUp];
+const statIcons = [UserRound, GraduationCap, FileText, Star];
 const heroFeatureIcons = [Target, Sparkles, GraduationCap];
 
 type SubjectItem = {
@@ -97,9 +99,11 @@ export default function SubjectsPage() {
   const subjectsRaw = useLocalizedContent<SubjectItem[]>("subjectsPage.items");
   const benefitsRaw = useLocalizedContent<{ title: string; desc: string }[]>("subjectsPage.benefits");
   const statsRaw = useLocalizedContent<{ value: string; label: string }[]>("subjectsPage.stats");
+  const schoolLevelsRaw = useLocalizedContent<{ label: string; desc: string }[]>("subjectsPage.schoolLevels");
   const subjects = Array.isArray(subjectsRaw) ? subjectsRaw : [];
   const benefits = Array.isArray(benefitsRaw) ? benefitsRaw : [];
   const stats = Array.isArray(statsRaw) ? statsRaw : [];
+  const schoolLevels = Array.isArray(schoolLevelsRaw) ? schoolLevelsRaw : [];
 
   const isDark = mt.isDark;
 
@@ -207,6 +211,32 @@ export default function SubjectsPage() {
             </Card>
           </div>
         </section>
+
+        {schoolLevels.length > 0 && (
+          <section className={cn("border-b border-[var(--border-default)] py-10 md:py-12", mt.sectionAlt)}>
+            <div className={section.container}>
+              <div className="mb-8 text-center">
+                <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--brand-gold)]">
+                  {t("subjectsPage.schoolLevelsEyebrow")}
+                </p>
+                <h2 className="text-2xl font-bold text-[var(--foreground)] md:text-3xl">
+                  {t("subjectsPage.schoolLevelsTitle")}
+                </h2>
+              </div>
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
+                {schoolLevels.map((level) => (
+                  <Card
+                    key={level.label}
+                    className={cn("rounded-xl border p-4 text-center sm:p-5", mt.card)}
+                  >
+                    <p className="text-sm font-bold text-[var(--brand-gold)] sm:text-base">{level.label}</p>
+                    <p className="mt-1 text-xs leading-snug text-[var(--text-muted)] sm:text-sm">{level.desc}</p>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* Subject cards — owner mockup grid */}
         <section className="bg-[#0D1B2A] py-14 text-white md:py-20">

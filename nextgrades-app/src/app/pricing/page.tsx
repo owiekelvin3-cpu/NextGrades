@@ -14,7 +14,7 @@ import { MarketingCtaButtons } from "@/components/premium/MarketingCtaButtons";
 import { SectionHeader } from "@/components/premium/SectionHeader";
 import { MarketingImage } from "@/components/marketing/MarketingImage";
 import { Card } from "@/components/ui/Card";
-import { CheckCircle2, ChevronDown, Loader2, Star, Users, BookOpen } from "lucide-react";
+import { CheckCircle2, ChevronDown, Loader2, Star, BookOpen, GraduationCap, FileText, UserRound } from "lucide-react";
 import { supabase } from "@/lib/supabase/client";
 import { useTranslation } from "react-i18next";
 import { useLocalizedContent } from "@/hooks/useLocalizedContent";
@@ -35,7 +35,7 @@ type PlanAction = "checkout" | "resources" | "consultation";
 type PricingStat = { value: string; label: string };
 
 const CHECKOUT_PLANS = new Set(["resource", "group", "premium"]);
-const STAT_ICONS = [Users, Star, BookOpen, Star];
+const STAT_ICONS = [UserRound, GraduationCap, FileText, Star];
 
 const PLAN_IMAGE_BY_ID: Record<string, string> = {
   library: PRICING_PLAN_IMAGES[0],
@@ -81,7 +81,7 @@ function PricingContent() {
           oneOnOne: "1:1 Premium",
           group: "Lerngruppe",
           library: "Lernbibliothek",
-          math: "Mathe Matura Komplettpaket",
+          math: "Mathematik Matura Komplettpaket",
         };
   const safeCompareRows = Array.isArray(compareRows) ? compareRows : [];
 
@@ -94,7 +94,7 @@ function PricingContent() {
   const handlePlanSelect = async (plan: PricingPlanCardPlan) => {
     const action = planActionType(plan.id);
     if (action === "resources") {
-      router.push("/resources");
+      router.push("/resources/upgrade");
       return;
     }
     if (action === "consultation") {
@@ -143,7 +143,7 @@ function PricingContent() {
             className="pointer-events-none absolute inset-0 bg-[#0D1B2A] md:hidden"
             aria-hidden
           />
-          <div className="relative z-10 mx-auto w-full max-w-7xl px-5 pb-8 pt-site-nav sm:px-6 md:min-h-[600px] md:pb-20 lg:min-h-[680px] lg:px-8">
+          <div className="relative z-10 mx-auto w-full max-w-7xl px-5 pb-6 pt-site-nav sm:px-6 md:min-h-[520px] md:pb-12 lg:min-h-[560px] lg:px-8">
             <div className="grid min-w-0 items-center gap-8 lg:grid-cols-2 lg:gap-16">
               <div className="max-w-xl">
                 <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#D4AF37] sm:mb-4 sm:text-xs sm:tracking-[0.22em]" data-animate="hero-headline">
@@ -299,7 +299,7 @@ function PricingContent() {
         )}
 
         {/* CTA */}
-        <section className="border-t border-white/10 bg-[#0D1B2A] py-12 sm:py-16 md:py-20">
+        <section className="border-t border-white/10 bg-[#0D1B2A] py-10 sm:py-12 md:py-14">
           <div className={cn(section.container, "max-w-3xl text-center")}>
             <h2 className="text-xl font-bold leading-snug tracking-tight text-white sm:text-2xl md:text-3xl">
               {t("pricingPage.finalCtaTitle")}
