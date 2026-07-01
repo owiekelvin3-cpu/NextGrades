@@ -258,7 +258,7 @@
       },
       {
         "type": "Signature",
-        "title": "Math Excellence Program",
+        "title": "Mathematics Excellence Program",
         "description": "Our premium program for mathematics and graduation exam preparation.",
         "features": [
           "Weekly live sessions",
@@ -277,7 +277,7 @@
       "oneOnOne": "1:1 Premium",
       "group": "Learning group",
       "library": "Learning library",
-      "math": "Mathe Matura Komplettpaket"
+      "math": "Mathematics Graduation Package"
     },
     "compareRows": [
       { "label": "Live lessons", "c1": true, "c2": true, "c3": false, "c4": false },
@@ -754,7 +754,7 @@
     "delete": "Delete",
     "addQuestion": "Add question",
     "promptLabel": "Describe what you want to create",
-    "promptPlaceholder": "e.g. 10 math exercises on quadratic equations for grade 9...",
+    "promptPlaceholder": "e.g. 10 mathematics exercises on quadratic equations for grade 9...",
     "generate": "Generate",
     "quickAccess": "Quick access",
     "flashcards": "Generate flashcards",

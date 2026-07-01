@@ -222,7 +222,7 @@
           "role": "Mother"
         },
         {
-          "quote": "Within a few months I improved in math from a 4 to a 2. What helped most were the clear explanations, personal support, and structured preparation for school exams.",
+          "quote": "Within a few months I improved in mathematics from a 4 to a 2. What helped most were the clear explanations, personal support, and structured preparation for school exams.",
           "name": "Lukas, 7. Klasse HTL"
         },
         {
@@ -330,7 +330,7 @@
       },
       {
         "question": "Which subjects and programs do you offer?",
-        "answer": "We cover core school subjects, 1:1 tutoring, group courses, math programs, and exam preparation. Select a subject in the form and we'll share details."
+        "answer": "We cover core school subjects, 1:1 tutoring, group courses, mathematics programs, and exam preparation. Select a subject in the form and we'll share details."
       },
       {
         "question": "How do I get started after contacting you?",
@@ -805,7 +805,7 @@
       },
       {
         "title": "Career changers",
-        "description": "Refresh math, languages, or business skills for studies and applications."
+        "description": "Refresh mathematics, languages, or business skills for studies and applications."
       }
     ],
     "formTitle": "Request your free consultation",
@@ -844,7 +844,7 @@
       "Flexible"
     ],
     "goals": "Your goals (optional)",
-    "goalsPlaceholder": "e.g. Improve math grade before exams, prepare for Abitur, build study habits…",
+    "goalsPlaceholder": "e.g. Improve mathematics grade before exams, prepare for Abitur, build study habits…",
     "privacyNote": "By submitting, you agree that we may contact you about your consultation request. We never share your data with third parties.",
     "submit": "Send consultation request",
     "submitting": "Sending…",
@@ -1219,7 +1219,7 @@
       {
         "id": "math",
         "title": "Mathematics Tutor",
-        "description": "We are looking for experienced math tutors to support students from middle school through Abitur preparation. You explain concepts clearly, build confidence, and adapt to each student's level.",
+        "description": "We are looking for experienced mathematics tutors to support students from middle school through Abitur preparation. You explain concepts clearly, build confidence, and adapt to each student's level.",
         "type": "Part-time / Freelance",
         "location": "Remote (Germany)",
         "highlights": [
