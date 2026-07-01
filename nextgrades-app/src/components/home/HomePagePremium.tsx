@@ -30,7 +30,7 @@ import { TestimonialPremium, type TestimonialData } from "@/components/premium/T
 import { CTABand } from "@/components/premium/CTABand";
 import { section } from "@/lib/premium/tokens";
 
-const STAT_ICONS = [GraduationCap, UserRound, FileText, Star];
+const STAT_ICONS = [UserRound, GraduationCap, FileText, Star];
 const FEATURE_ICONS = [Users, Users, Monitor, ListChecks, Clock];
 
 type ProgramItem = {

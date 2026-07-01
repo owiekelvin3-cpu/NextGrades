@@ -59,7 +59,7 @@ const SUBJECT_ICONS: Record<string, typeof Calculator> = {
   "technical-drawing": Ruler,
 };
 const benefitIcons = [Users, BookOpen, Calendar, TrendingUp];
-const statIcons = [Users, GraduationCap, Star, TrendingUp];
+const statIcons = [GraduationCap, Users, Star, TrendingUp];
 const heroFeatureIcons = [Target, Sparkles, GraduationCap];
 
 type SubjectItem = {

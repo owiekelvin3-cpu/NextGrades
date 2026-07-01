@@ -32,7 +32,7 @@ import {
 import { hero, type, section } from "@/lib/premium/tokens";
 import { cn } from "@/lib/utils";
 
-const statIcons = [GraduationCap, UserRound, Star];
+const statIcons = [UserRound, GraduationCap, Star];
 const heroFeatureIcons = [Hexagon, BookOpen, Sparkles];
 
 type ProgramItem = {
