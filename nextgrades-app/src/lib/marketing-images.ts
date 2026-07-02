@@ -34,7 +34,7 @@ export const LOCAL_IMAGE_FALLBACK = ONLINE_IMAGE_FALLBACK;
 
 export const ABOUT_IMAGES = {
   hero: BRANDED.studentsGroup4,
-  story: BRANDED.studyDesk,
+  story: "/images/marketing/about-story.png",
   mission: [
     BRANDED.tutoringSession,
     BRANDED.subjectBooks,

@@ -192,7 +192,7 @@ export default function AboutPage() {
                 <h2 className={cn("text-3xl font-bold md:text-4xl", mt.heading)}>{t("aboutPage.storyTitle")}</h2>
                 <div className="mt-6 space-y-4">
                   {safeStory.map((para, i) => (
-                    <p key={i} className={cn("leading-relaxed", mt.body)}>{para}</p>
+                    <p key={i} className={cn("whitespace-pre-line leading-relaxed", mt.body)}>{para}</p>
                   ))}
                 </div>
                 <Link href="/consultation">
