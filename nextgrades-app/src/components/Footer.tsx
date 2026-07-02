@@ -107,7 +107,7 @@ export default function Footer() {
           </div>
 
           {/* Columns 2–5 — link groups + newsletter */}
-          <div className="grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 md:grid-cols-[1fr_1fr_1fr_1.3fr] md:gap-0">
+          <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:gap-x-8 md:grid-cols-[1fr_1fr_1fr_1.3fr] md:gap-0">
             <FooterColumn title={t("footer.programs")} className="md:pr-8">
               {programLinks.map((item) => (
                 <FooterLink key={item.key} href={item.href}>
@@ -132,7 +132,7 @@ export default function Footer() {
               ))}
             </FooterColumn>
 
-            <div className={cn(columnDivider, "md:pl-8")}>
+            <div className={cn("col-span-2 md:col-span-1", columnDivider, "md:pl-8")}>
               <FooterNewsletter />
             </div>
           </div>
@@ -142,23 +142,18 @@ export default function Footer() {
         <div className="mt-10 flex flex-col items-center gap-4 border-t border-black/10 pt-6 dark:border-white/10 md:flex-row md:justify-between">
           <nav
             aria-label={t("footer.legal", { defaultValue: "Legal" })}
-            className="flex flex-wrap items-center justify-center"
+            className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1"
           >
-            {legalLinks.map((item, index) => (
-              <span key={item.href} className="inline-flex items-center">
-                {index > 0 && (
-                  <span className="px-3 text-[#0D1B2A]/25 dark:text-white/20" aria-hidden>
-                    |
-                  </span>
-                )}
+            {legalLinks.map((item) => (
+              <span key={item.href} className="inline-flex items-center whitespace-nowrap">
                 <Link href={item.href} className={legalLinkClass}>
                   {t(item.key)}
                 </Link>
+                <span className="pl-3 text-[#0D1B2A]/25 dark:text-white/20" aria-hidden>
+                  |
+                </span>
               </span>
             ))}
-            <span className="px-3 text-[#0D1B2A]/25 dark:text-white/20" aria-hidden>
-              |
-            </span>
             {consent ? (
               <button type="button" onClick={consent.openPreferences} className={legalLinkClass}>
                 {t("footer.cookieSettings")}
@@ -170,7 +165,6 @@ export default function Footer() {
 
           <div className="flex flex-col items-center gap-1 text-center md:items-end md:text-right">
             <p className="text-sm text-[#6B7280]">{t("footer.copyright")}</p>
-            <p className="text-sm text-[#6B7280]">{t("footer.madeInAustria")}</p>
           </div>
         </div>
       </div>
