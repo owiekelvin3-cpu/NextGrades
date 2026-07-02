@@ -3,7 +3,7 @@
 import { useState, type FormEvent, type ReactNode } from "react";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
-import { ArrowUp, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+import { Mail, MapPin, Phone } from "lucide-react";
 import { BrandLogo } from "./BrandLogo";
 import { OpenCookieSettingsButton } from "@/components/cookies/OpenCookieSettingsButton";
 import { useConsentOptional } from "@/context/ConsentContext";
@@ -12,7 +12,6 @@ import {
   COMPANY_MAILTO,
   COMPANY_PHONE_DISPLAY,
   COMPANY_PHONE_TEL,
-  COMPANY_SOCIAL,
   COMPANY_SUPPORT_EMAIL,
 } from "@/lib/company";
 import { section } from "@/lib/premium/tokens";
@@ -25,18 +24,17 @@ const programLinks = [
   { href: "/resources", key: "footer.program4" },
 ] as const;
 
-const informationLinks = [
+const companyLinks = [
   { href: "/about", key: "common.about" },
-  { href: "/programs", key: "common.programs" },
   { href: "/subjects", key: "common.subjects" },
   { href: "/pricing", key: "common.pricing" },
   { href: "/resources", key: "common.resourcesShort" },
 ] as const;
 
-const helpfulLinks = [
-  { href: "/contact", key: "common.contact" },
-  { href: "/consultation", key: "navbar.consultationShort" },
+const supportLinks = [
   { href: "/help", key: "common.help" },
+  { href: "/help", key: "footer.faq" },
+  { href: "/consultation", key: "footer.process" },
   { href: "/careers", key: "common.careers" },
 ] as const;
 
@@ -52,18 +50,15 @@ export default function Footer() {
   const { theme } = useTheme();
   const logoOnDark = theme === "dark";
 
-  const headingClass = "text-sm font-bold tracking-tight text-[var(--brand-gold)]";
   const bodyMutedClass = "text-sm leading-relaxed text-[#0D1B2A]/70 dark:text-zinc-300";
   const navLinkClass =
-    "text-sm text-[#0D1B2A]/80 transition-colors hover:text-[var(--brand-gold)] dark:text-zinc-200 dark:hover:text-[var(--brand-gold)]";
+    "text-sm text-[#0D1B2A]/80 transition-colors hover:text-[var(--brand-gold)] dark:text-zinc-300 dark:hover:text-[var(--brand-gold)]";
   const contactLinkClass =
     "inline-flex items-center gap-2.5 text-sm text-[#0D1B2A]/85 transition-colors hover:text-[var(--brand-gold)] dark:text-zinc-100 dark:hover:text-[var(--brand-gold)]";
   const legalLinkClass =
-    "text-xs text-[#0D1B2A]/55 transition-colors hover:text-[var(--brand-gold)] dark:text-zinc-400 dark:hover:text-[var(--brand-gold)]";
+    "text-xs text-[#0D1B2A]/60 transition-colors hover:text-[var(--brand-gold)] dark:text-zinc-400 dark:hover:text-[var(--brand-gold)]";
   const ctaClass =
-    "inline-flex items-center justify-center rounded-lg border border-[var(--brand-gold)] bg-[var(--brand-gold)]/10 px-4 py-2.5 text-sm font-semibold text-[var(--brand-gold)] transition-all hover:bg-[var(--brand-gold)] hover:text-[#0D1B2A]";
-
-  const whatsappHref = COMPANY_SOCIAL.whatsapp;
+    "inline-flex items-center justify-center rounded-lg bg-[var(--brand-gold)] px-5 py-3 text-sm font-semibold text-[#0D1B2A] shadow-sm transition-all hover:brightness-105";
 
   return (
     <footer
@@ -75,44 +70,43 @@ export default function Footer() {
       <div
         className={cn(
           section.container,
-          "px-6 py-10 pb-[max(1rem,env(safe-area-inset-bottom))] md:py-12 lg:py-14"
+          "px-6 py-12 pb-[max(1rem,env(safe-area-inset-bottom))] md:py-14 lg:py-16"
         )}
       >
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-12 lg:gap-8 xl:gap-10">
           {/* Brand & contact */}
-          <div className="space-y-5 sm:col-span-2 lg:col-span-4">
+          <div className="space-y-6 sm:col-span-2 lg:col-span-4">
             <BrandLogo
               size="md"
               href="/"
               onDarkBackground={logoOnDark}
-              className="h-9 w-auto max-w-[180px] sm:h-10"
+              className="h-9 w-auto max-w-[190px] sm:h-10"
             />
-            <p className="text-base font-semibold tracking-tight">{t("footer.tagline")}</p>
-            <p className={cn(bodyMutedClass, "max-w-sm")}>{t("footer.description")}</p>
+            <p className="text-2xl font-extrabold leading-tight tracking-tight">
+              {t("footer.tagline")}
+            </p>
+            <p className={cn(bodyMutedClass, "max-w-xs")}>{t("footer.description")}</p>
 
-            <div>
-              <h3 className={headingClass}>{t("footer.contactTitle")}</h3>
-              <ul className="mt-3 space-y-2.5">
-                <li>
-                  <a href={COMPANY_PHONE_TEL} className={contactLinkClass}>
-                    <Phone className="h-4 w-4 shrink-0 text-[var(--brand-gold)]" aria-hidden />
-                    {COMPANY_PHONE_DISPLAY}
-                  </a>
-                </li>
-                <li>
-                  <a href={COMPANY_MAILTO} className={contactLinkClass}>
-                    <Mail className="h-4 w-4 shrink-0 text-[var(--brand-gold)]" aria-hidden />
-                    {COMPANY_SUPPORT_EMAIL}
-                  </a>
-                </li>
-                <li className={cn(contactLinkClass, "pointer-events-none")}>
-                  <MapPin className="h-4 w-4 shrink-0 text-[var(--brand-gold)]" aria-hidden />
-                  <span>
-                    {t("footer.officeAustria")} · {t("footer.officeOnline")}
-                  </span>
-                </li>
-              </ul>
-            </div>
+            <ul className="space-y-3">
+              <li>
+                <a href={COMPANY_PHONE_TEL} className={contactLinkClass}>
+                  <Phone className="h-4 w-4 shrink-0 text-[var(--brand-gold)]" aria-hidden />
+                  {COMPANY_PHONE_DISPLAY}
+                </a>
+              </li>
+              <li>
+                <a href={COMPANY_MAILTO} className={contactLinkClass}>
+                  <Mail className="h-4 w-4 shrink-0 text-[var(--brand-gold)]" aria-hidden />
+                  {COMPANY_SUPPORT_EMAIL}
+                </a>
+              </li>
+              <li className={cn(contactLinkClass, "pointer-events-none")}>
+                <MapPin className="h-4 w-4 shrink-0 text-[var(--brand-gold)]" aria-hidden />
+                <span>
+                  {t("footer.officeAustria")} · {t("footer.officeOnline")}
+                </span>
+              </li>
+            </ul>
 
             <Link href="/consultation" className={ctaClass}>
               {t("footer.ctaConsultation")}
@@ -127,73 +121,37 @@ export default function Footer() {
             ))}
           </FooterColumn>
 
-          <FooterColumn title={t("footer.information")} className="lg:col-span-2">
-            {informationLinks.map((item) => (
-              <FooterLink key={item.href} href={item.href} className={navLinkClass}>
+          <FooterColumn title={t("footer.company")} className="lg:col-span-2">
+            {companyLinks.map((item) => (
+              <FooterLink key={item.key} href={item.href} className={navLinkClass}>
                 {t(item.key)}
               </FooterLink>
             ))}
           </FooterColumn>
 
-          <div className="relative space-y-8 sm:col-span-2 lg:col-span-4">
-            <FooterColumn title={t("footer.helpfulLinks")}>
-              {helpfulLinks.map((item) => (
-                <FooterLink key={item.href} href={item.href} className={navLinkClass}>
-                  {t(item.key)}
-                </FooterLink>
-              ))}
-            </FooterColumn>
+          <FooterColumn title={t("footer.support")} className="lg:col-span-2">
+            {supportLinks.map((item) => (
+              <FooterLink key={item.key} href={item.href} className={navLinkClass}>
+                {t(item.key)}
+              </FooterLink>
+            ))}
+          </FooterColumn>
 
+          <div className="sm:col-span-2 lg:col-span-2">
             <FooterNewsletter />
-
-            <button
-              type="button"
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              className="footer-back-top"
-              aria-label={t("footer.backToTop")}
-            >
-              <ArrowUp className="h-4 w-4" aria-hidden />
-            </button>
           </div>
         </div>
 
-        <div className="mt-10 flex flex-col items-center justify-between gap-4 border-t border-black/10 pt-6 dark:border-white/10 md:flex-row">
-          <nav className="flex flex-wrap items-center justify-center gap-2" aria-label="Social">
-            {whatsappHref ? (
-              <a
-                href={whatsappHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="footer-social-icon"
-                aria-label="WhatsApp"
-              >
-                <MessageCircle className="h-4 w-4" aria-hidden />
-              </a>
-            ) : null}
-            <a href={COMPANY_MAILTO} className="footer-social-icon" aria-label="E-Mail">
-              <Mail className="h-4 w-4" aria-hidden />
-            </a>
-          </nav>
-
+        <div className="mt-12 flex flex-col items-center gap-4 border-t border-black/10 pt-6 dark:border-white/10 md:flex-row md:justify-between">
           <nav
             aria-label={t("footer.legal", { defaultValue: "Legal" })}
-            className="flex flex-wrap items-center justify-center gap-x-1 gap-y-1"
+            className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2"
           >
-            {legalLinks.map((item, index) => (
-              <span key={item.href} className="inline-flex items-center">
-                {index > 0 && (
-                  <span className="mx-1.5 text-[#0D1B2A]/25 dark:text-white/20" aria-hidden>
-                    ·
-                  </span>
-                )}
-                <Link href={item.href} className={legalLinkClass}>
-                  {t(item.key)}
-                </Link>
-              </span>
+            {legalLinks.map((item) => (
+              <Link key={item.href} href={item.href} className={legalLinkClass}>
+                {t(item.key)}
+              </Link>
             ))}
-            <span className="mx-1.5 text-[#0D1B2A]/25 dark:text-white/20" aria-hidden>
-              ·
-            </span>
             {consent ? (
               <button type="button" onClick={consent.openPreferences} className={legalLinkClass}>
                 {t("footer.cookieSettings")}
@@ -203,11 +161,11 @@ export default function Footer() {
             )}
           </nav>
 
-          <div className="flex flex-col items-center gap-2 text-center md:items-end md:text-right">
-            <p className="text-[11px] leading-snug text-[#0D1B2A]/50 dark:text-zinc-500">
+          <div className="flex flex-col items-center gap-1 text-center md:items-end md:text-right">
+            <p className="text-[11px] leading-snug text-[#0D1B2A]/55 dark:text-zinc-500">
               {t("footer.copyright")}
             </p>
-            <p className="text-[11px] font-medium text-[#0D1B2A]/45 dark:text-zinc-500">
+            <p className="text-[11px] font-medium text-[#0D1B2A]/50 dark:text-zinc-500">
               {t("footer.madeInAustria")}
             </p>
           </div>
@@ -253,11 +211,11 @@ function FooterNewsletter() {
   }
 
   return (
-    <div className="relative">
+    <div>
       <h3 className="text-sm font-bold tracking-tight text-[var(--brand-gold)]">
         {t("footer.newsletterTitle")}
       </h3>
-      <p className="mt-2 text-sm leading-relaxed text-[#0D1B2A]/70 dark:text-zinc-300">
+      <p className="mt-3 text-sm leading-relaxed text-[#0D1B2A]/70 dark:text-zinc-300">
         {t("footer.newsletterDesc")}
       </p>
 
@@ -267,7 +225,7 @@ function FooterNewsletter() {
         </label>
         <div className="footer-subscribe-field">
           <Mail
-            className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#0D1B2A]/45"
+            className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#0D1B2A]/45 dark:text-zinc-400"
             aria-hidden
           />
           <input
@@ -312,7 +270,7 @@ function FooterColumn({
   return (
     <div className={className}>
       <h3 className="text-sm font-bold tracking-tight text-[var(--brand-gold)]">{title}</h3>
-      <ul className="mt-3 space-y-2">{children}</ul>
+      <ul className="mt-4 space-y-3">{children}</ul>
     </div>
   );
 }
