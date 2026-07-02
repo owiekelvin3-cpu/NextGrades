@@ -3,7 +3,7 @@
 import { useState, type FormEvent, type ReactNode } from "react";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
-import { Mail, MapPin, Phone } from "lucide-react";
+import { ArrowRight, Mail, MapPin, Phone } from "lucide-react";
 import { BrandLogo } from "./BrandLogo";
 import { OpenCookieSettingsButton } from "@/components/cookies/OpenCookieSettingsButton";
 import { useConsentOptional } from "@/context/ConsentContext";
@@ -44,6 +44,8 @@ const legalLinks = [
   { href: "/imprint", key: "footer.imprint" },
 ] as const;
 
+const dividerClass = "md:border-l md:border-black/10 md:dark:border-white/10";
+
 export default function Footer() {
   const { t } = useTranslation();
   const consent = useConsentOptional();
@@ -58,7 +60,7 @@ export default function Footer() {
   const legalLinkClass =
     "text-xs text-[#0D1B2A]/60 transition-colors hover:text-[var(--brand-gold)] dark:text-zinc-400 dark:hover:text-[var(--brand-gold)]";
   const ctaClass =
-    "inline-flex items-center justify-center rounded-lg bg-[var(--brand-gold)] px-5 py-3 text-sm font-semibold text-[#0D1B2A] shadow-sm transition-all hover:brightness-105";
+    "inline-flex items-center justify-center gap-2 rounded-lg bg-[var(--brand-gold)] px-6 py-3.5 text-sm font-semibold text-[#0D1B2A] shadow-sm transition-all hover:brightness-105";
 
   return (
     <footer
@@ -70,24 +72,24 @@ export default function Footer() {
       <div
         className={cn(
           section.container,
-          "px-6 py-12 pb-[max(1rem,env(safe-area-inset-bottom))] md:py-14 lg:py-16"
+          "px-6 py-14 pb-[max(1.25rem,env(safe-area-inset-bottom))] md:py-16"
         )}
       >
-        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-12 lg:gap-8 xl:gap-10">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,290px)_minmax(0,1fr)] lg:gap-14">
           {/* Brand & contact */}
-          <div className="space-y-6 sm:col-span-2 lg:col-span-4">
+          <div className="space-y-6">
             <BrandLogo
               size="md"
               href="/"
               onDarkBackground={logoOnDark}
               className="h-9 w-auto max-w-[190px] sm:h-10"
             />
-            <p className="text-2xl font-extrabold leading-tight tracking-tight">
+            <p className="text-[1.75rem] font-extrabold leading-[1.15] tracking-tight">
               {t("footer.tagline")}
             </p>
-            <p className={cn(bodyMutedClass, "max-w-xs")}>{t("footer.description")}</p>
+            <p className={cn(bodyMutedClass, "max-w-[17rem]")}>{t("footer.description")}</p>
 
-            <ul className="space-y-3">
+            <ul className="space-y-3.5">
               <li>
                 <a href={COMPANY_PHONE_TEL} className={contactLinkClass}>
                   <Phone className="h-4 w-4 shrink-0 text-[var(--brand-gold)]" aria-hidden />
@@ -110,48 +112,62 @@ export default function Footer() {
 
             <Link href="/consultation" className={ctaClass}>
               {t("footer.ctaConsultation")}
+              <ArrowRight className="h-4 w-4" aria-hidden />
             </Link>
           </div>
 
-          <FooterColumn title={t("footer.programs")} className="lg:col-span-2">
-            {programLinks.map((item) => (
-              <FooterLink key={item.key} href={item.href} className={navLinkClass}>
-                {t(item.key)}
-              </FooterLink>
-            ))}
-          </FooterColumn>
+          {/* Link columns + newsletter */}
+          <div className="grid grid-cols-2 gap-x-8 gap-y-10 md:grid-cols-[1fr_1fr_0.85fr_1.6fr] md:gap-0">
+            <FooterColumn title={t("footer.programs")} className="md:pr-8">
+              {programLinks.map((item) => (
+                <FooterLink key={item.key} href={item.href} className={navLinkClass}>
+                  {t(item.key)}
+                </FooterLink>
+              ))}
+            </FooterColumn>
 
-          <FooterColumn title={t("footer.company")} className="lg:col-span-2">
-            {companyLinks.map((item) => (
-              <FooterLink key={item.key} href={item.href} className={navLinkClass}>
-                {t(item.key)}
-              </FooterLink>
-            ))}
-          </FooterColumn>
+            <FooterColumn title={t("footer.company")} className={cn(dividerClass, "md:px-8")}>
+              {companyLinks.map((item) => (
+                <FooterLink key={item.key} href={item.href} className={navLinkClass}>
+                  {t(item.key)}
+                </FooterLink>
+              ))}
+            </FooterColumn>
 
-          <FooterColumn title={t("footer.support")} className="lg:col-span-2">
-            {supportLinks.map((item) => (
-              <FooterLink key={item.key} href={item.href} className={navLinkClass}>
-                {t(item.key)}
-              </FooterLink>
-            ))}
-          </FooterColumn>
+            <FooterColumn title={t("footer.support")} className={cn(dividerClass, "md:px-8")}>
+              {supportLinks.map((item) => (
+                <FooterLink key={item.key} href={item.href} className={navLinkClass}>
+                  {t(item.key)}
+                </FooterLink>
+              ))}
+            </FooterColumn>
 
-          <div className="sm:col-span-2 lg:col-span-2">
-            <FooterNewsletter />
+            <div className={cn("col-span-2 md:col-span-1", dividerClass, "md:pl-8")}>
+              <FooterNewsletter />
+            </div>
           </div>
         </div>
 
         <div className="mt-12 flex flex-col items-center gap-4 border-t border-black/10 pt-6 dark:border-white/10 md:flex-row md:justify-between">
           <nav
             aria-label={t("footer.legal", { defaultValue: "Legal" })}
-            className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2"
+            className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2"
           >
-            {legalLinks.map((item) => (
-              <Link key={item.href} href={item.href} className={legalLinkClass}>
-                {t(item.key)}
-              </Link>
+            {legalLinks.map((item, index) => (
+              <span key={item.href} className="inline-flex items-center gap-x-3">
+                {index > 0 && (
+                  <span className="text-[#0D1B2A]/25 dark:text-white/20" aria-hidden>
+                    |
+                  </span>
+                )}
+                <Link href={item.href} className={legalLinkClass}>
+                  {t(item.key)}
+                </Link>
+              </span>
             ))}
+            <span className="text-[#0D1B2A]/25 dark:text-white/20" aria-hidden>
+              |
+            </span>
             {consent ? (
               <button type="button" onClick={consent.openPreferences} className={legalLinkClass}>
                 {t("footer.cookieSettings")}
@@ -215,11 +231,11 @@ function FooterNewsletter() {
       <h3 className="text-sm font-bold tracking-tight text-[var(--brand-gold)]">
         {t("footer.newsletterTitle")}
       </h3>
-      <p className="mt-3 text-sm leading-relaxed text-[#0D1B2A]/70 dark:text-zinc-300">
+      <p className="mt-4 text-sm leading-relaxed text-[#0D1B2A]/70 dark:text-zinc-300">
         {t("footer.newsletterDesc")}
       </p>
 
-      <form onSubmit={handleSubmit} className="mt-4 space-y-3">
+      <form onSubmit={handleSubmit} className="mt-5 space-y-3">
         <label className="sr-only" htmlFor="footer-newsletter-email">
           {t("footer.newsletterPlaceholder")}
         </label>
@@ -270,7 +286,7 @@ function FooterColumn({
   return (
     <div className={className}>
       <h3 className="text-sm font-bold tracking-tight text-[var(--brand-gold)]">{title}</h3>
-      <ul className="mt-4 space-y-3">{children}</ul>
+      <ul className="mt-4 space-y-3.5">{children}</ul>
     </div>
   );
 }
@@ -285,7 +301,11 @@ function FooterLink({
   className: string;
 }) {
   return (
-    <li>
+    <li className="flex items-start gap-2.5">
+      <span
+        className="mt-[0.5rem] h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--brand-gold)]"
+        aria-hidden
+      />
       <Link href={href} className={className}>
         {children}
       </Link>
