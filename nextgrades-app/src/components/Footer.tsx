@@ -4,17 +4,14 @@ import { useState, type FormEvent, type ReactNode } from "react";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { ArrowRight, Mail, MapPin, Phone } from "lucide-react";
-import { BrandLogo } from "./BrandLogo";
 import { OpenCookieSettingsButton } from "@/components/cookies/OpenCookieSettingsButton";
 import { useConsentOptional } from "@/context/ConsentContext";
-import { useTheme } from "@/context/ThemeContext";
 import {
   COMPANY_MAILTO,
   COMPANY_PHONE_DISPLAY,
   COMPANY_PHONE_TEL,
   COMPANY_SUPPORT_EMAIL,
 } from "@/lib/company";
-import { section } from "@/lib/premium/tokens";
 import { cn } from "@/lib/utils";
 
 const programLinks = [
@@ -44,119 +41,113 @@ const legalLinks = [
   { href: "/imprint", key: "footer.imprint" },
 ] as const;
 
-const dividerClass = "md:border-l md:border-black/10 md:dark:border-white/10";
+const goldGradient = "bg-[linear-gradient(135deg,#F2C94C_0%,#D4AF37_100%)]";
+const columnDivider = "md:border-l md:border-black/10 md:dark:border-white/10";
+const navLinkClass =
+  "text-[15px] text-[#0D1B2A]/80 transition-colors hover:text-[var(--brand-gold)] dark:text-zinc-300 dark:hover:text-[var(--brand-gold)]";
 
 export default function Footer() {
   const { t } = useTranslation();
   const consent = useConsentOptional();
-  const { theme } = useTheme();
-  const logoOnDark = theme === "dark";
 
-  const bodyMutedClass = "text-sm leading-relaxed text-[#0D1B2A]/70 dark:text-zinc-300";
-  const navLinkClass =
-    "text-sm text-[#0D1B2A]/80 transition-colors hover:text-[var(--brand-gold)] dark:text-zinc-300 dark:hover:text-[var(--brand-gold)]";
-  const contactLinkClass =
-    "inline-flex items-center gap-2.5 text-sm text-[#0D1B2A]/85 transition-colors hover:text-[var(--brand-gold)] dark:text-zinc-100 dark:hover:text-[var(--brand-gold)]";
   const legalLinkClass =
-    "text-xs text-[#0D1B2A]/60 transition-colors hover:text-[var(--brand-gold)] dark:text-zinc-400 dark:hover:text-[var(--brand-gold)]";
-  const ctaClass =
-    "inline-flex items-center justify-center gap-2 rounded-lg bg-[var(--brand-gold)] px-6 py-3.5 text-sm font-semibold text-[#0D1B2A] shadow-sm transition-all hover:brightness-105";
+    "text-sm text-[#6B7280] transition-colors hover:text-[var(--brand-gold)] hover:underline dark:text-[#6B7280]";
 
   return (
-    <footer
-      className={cn(
-        "site-footer border-t border-black/[0.08] bg-[#F8F8F6] text-[#0D1B2A]",
-        "dark:border-white/10 dark:bg-[#0D1B2A] dark:text-white"
-      )}
-    >
-      <div
-        className={cn(
-          section.container,
-          "px-6 py-14 pb-[max(1.25rem,env(safe-area-inset-bottom))] md:py-16"
-        )}
-      >
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,290px)_minmax(0,1fr)] lg:gap-14">
-          {/* Brand & contact */}
-          <div className="space-y-6">
-            <BrandLogo
-              size="md"
-              href="/"
-              onDarkBackground={logoOnDark}
-              className="h-9 w-auto max-w-[190px] sm:h-10"
-            />
-            <p className="text-[1.75rem] font-extrabold leading-[1.15] tracking-tight">
+    <footer className="site-footer border-t border-black/[0.08] bg-[#F8F8F6] text-[#0D1B2A] dark:border-white/10 dark:bg-[#0D1B2A] dark:text-white">
+      <div className="mx-auto w-full min-w-0 max-w-7xl px-6 pb-10 pt-16 sm:px-8 md:pt-20 lg:px-[72px]">
+        <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-[1.4fr_minmax(0,3.6fr)] lg:gap-14">
+          {/* Column 1 — Brand */}
+          <div>
+            <h2 className="max-w-[15rem] text-[2rem] font-bold leading-[1.1] tracking-tight text-[#0D1B2A] sm:text-[2.375rem] dark:text-white">
               {t("footer.tagline")}
+            </h2>
+            <div className="mb-5 mt-3.5 h-[3px] w-14 rounded-full bg-[var(--brand-gold)]" />
+            <p className="max-w-[20rem] text-[15px] leading-[1.6] text-[#0D1B2A]/60 dark:text-[#9CA3AF]">
+              {t("footer.description")}
             </p>
-            <p className={cn(bodyMutedClass, "max-w-[17rem]")}>{t("footer.description")}</p>
 
-            <ul className="space-y-3.5">
+            <ul className="mt-6 space-y-4">
               <li>
-                <a href={COMPANY_PHONE_TEL} className={contactLinkClass}>
-                  <Phone className="h-4 w-4 shrink-0 text-[var(--brand-gold)]" aria-hidden />
+                <a
+                  href={COMPANY_PHONE_TEL}
+                  className="inline-flex items-center gap-3 text-[15px] text-[#0D1B2A]/85 transition-colors hover:text-[var(--brand-gold)] dark:text-zinc-100 dark:hover:text-[var(--brand-gold)]"
+                >
+                  <Phone className="h-5 w-5 shrink-0 text-[var(--brand-gold)]" aria-hidden />
                   {COMPANY_PHONE_DISPLAY}
                 </a>
               </li>
               <li>
-                <a href={COMPANY_MAILTO} className={contactLinkClass}>
-                  <Mail className="h-4 w-4 shrink-0 text-[var(--brand-gold)]" aria-hidden />
+                <a
+                  href={COMPANY_MAILTO}
+                  className="inline-flex items-center gap-3 text-[15px] text-[#0D1B2A]/85 transition-colors hover:text-[var(--brand-gold)] dark:text-zinc-100 dark:hover:text-[var(--brand-gold)]"
+                >
+                  <Mail className="h-5 w-5 shrink-0 text-[var(--brand-gold)]" aria-hidden />
                   {COMPANY_SUPPORT_EMAIL}
                 </a>
               </li>
-              <li className={cn(contactLinkClass, "pointer-events-none")}>
-                <MapPin className="h-4 w-4 shrink-0 text-[var(--brand-gold)]" aria-hidden />
+              <li className="inline-flex items-center gap-3 text-[15px] text-[#0D1B2A]/85 dark:text-zinc-100">
+                <MapPin className="h-5 w-5 shrink-0 text-[var(--brand-gold)]" aria-hidden />
                 <span>
                   {t("footer.officeAustria")} · {t("footer.officeOnline")}
                 </span>
               </li>
             </ul>
 
-            <Link href="/consultation" className={ctaClass}>
+            <Link
+              href="/consultation"
+              className={cn(
+                "mt-8 inline-flex items-center gap-2 rounded-[10px] px-7 py-4 text-[15px] font-bold text-[#0D1B2A] shadow-sm transition-all hover:brightness-105",
+                goldGradient
+              )}
+            >
               {t("footer.ctaConsultation")}
               <ArrowRight className="h-4 w-4" aria-hidden />
             </Link>
           </div>
 
-          {/* Link columns + newsletter */}
-          <div className="grid grid-cols-2 gap-x-8 gap-y-10 md:grid-cols-[1fr_1fr_0.85fr_1.6fr] md:gap-0">
+          {/* Columns 2–5 — link groups + newsletter */}
+          <div className="grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 md:grid-cols-[1fr_1fr_1fr_1.3fr] md:gap-0">
             <FooterColumn title={t("footer.programs")} className="md:pr-8">
               {programLinks.map((item) => (
-                <FooterLink key={item.key} href={item.href} className={navLinkClass}>
+                <FooterLink key={item.key} href={item.href}>
                   {t(item.key)}
                 </FooterLink>
               ))}
             </FooterColumn>
 
-            <FooterColumn title={t("footer.company")} className={cn(dividerClass, "md:px-8")}>
+            <FooterColumn title={t("footer.company")} className={cn(columnDivider, "md:px-8")}>
               {companyLinks.map((item) => (
-                <FooterLink key={item.key} href={item.href} className={navLinkClass}>
+                <FooterLink key={item.key} href={item.href}>
                   {t(item.key)}
                 </FooterLink>
               ))}
             </FooterColumn>
 
-            <FooterColumn title={t("footer.support")} className={cn(dividerClass, "md:px-8")}>
+            <FooterColumn title={t("footer.support")} className={cn(columnDivider, "md:px-8")}>
               {supportLinks.map((item) => (
-                <FooterLink key={item.key} href={item.href} className={navLinkClass}>
+                <FooterLink key={item.key} href={item.href}>
                   {t(item.key)}
                 </FooterLink>
               ))}
             </FooterColumn>
 
-            <div className={cn("col-span-2 md:col-span-1", dividerClass, "md:pl-8")}>
+            <div className={cn(columnDivider, "md:pl-8")}>
               <FooterNewsletter />
             </div>
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col items-center gap-4 border-t border-black/10 pt-6 dark:border-white/10 md:flex-row md:justify-between">
+        {/* Bottom bar */}
+        <div className="mt-10 flex flex-col items-center gap-4 border-t border-black/10 pt-6 dark:border-white/10 md:flex-row md:justify-between">
           <nav
             aria-label={t("footer.legal", { defaultValue: "Legal" })}
-            className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2"
+            className="flex flex-wrap items-center justify-center"
           >
             {legalLinks.map((item, index) => (
-              <span key={item.href} className="inline-flex items-center gap-x-3">
+              <span key={item.href} className="inline-flex items-center">
                 {index > 0 && (
-                  <span className="text-[#0D1B2A]/25 dark:text-white/20" aria-hidden>
+                  <span className="px-3 text-[#0D1B2A]/25 dark:text-white/20" aria-hidden>
                     |
                   </span>
                 )}
@@ -165,7 +156,7 @@ export default function Footer() {
                 </Link>
               </span>
             ))}
-            <span className="text-[#0D1B2A]/25 dark:text-white/20" aria-hidden>
+            <span className="px-3 text-[#0D1B2A]/25 dark:text-white/20" aria-hidden>
               |
             </span>
             {consent ? (
@@ -178,12 +169,8 @@ export default function Footer() {
           </nav>
 
           <div className="flex flex-col items-center gap-1 text-center md:items-end md:text-right">
-            <p className="text-[11px] leading-snug text-[#0D1B2A]/55 dark:text-zinc-500">
-              {t("footer.copyright")}
-            </p>
-            <p className="text-[11px] font-medium text-[#0D1B2A]/50 dark:text-zinc-500">
-              {t("footer.madeInAustria")}
-            </p>
+            <p className="text-sm text-[#6B7280]">{t("footer.copyright")}</p>
+            <p className="text-sm text-[#6B7280]">{t("footer.madeInAustria")}</p>
           </div>
         </div>
       </div>
@@ -228,10 +215,10 @@ function FooterNewsletter() {
 
   return (
     <div>
-      <h3 className="text-sm font-bold tracking-tight text-[var(--brand-gold)]">
+      <h3 className="mb-6 text-lg font-bold tracking-tight text-[var(--brand-gold)]">
         {t("footer.newsletterTitle")}
       </h3>
-      <p className="mt-4 text-sm leading-relaxed text-[#0D1B2A]/70 dark:text-zinc-300">
+      <p className="text-sm leading-[1.6] text-[#0D1B2A]/60 dark:text-[#9CA3AF]">
         {t("footer.newsletterDesc")}
       </p>
 
@@ -241,7 +228,7 @@ function FooterNewsletter() {
         </label>
         <div className="footer-subscribe-field">
           <Mail
-            className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#0D1B2A]/45 dark:text-zinc-400"
+            className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--brand-gold)]"
             aria-hidden
           />
           <input
@@ -285,28 +272,20 @@ function FooterColumn({
 }) {
   return (
     <div className={className}>
-      <h3 className="text-sm font-bold tracking-tight text-[var(--brand-gold)]">{title}</h3>
-      <ul className="mt-4 space-y-3.5">{children}</ul>
+      <h3 className="mb-6 text-lg font-bold tracking-tight text-[var(--brand-gold)]">{title}</h3>
+      <ul className="space-y-[1.375rem]">{children}</ul>
     </div>
   );
 }
 
-function FooterLink({
-  href,
-  children,
-  className,
-}: {
-  href: string;
-  children: ReactNode;
-  className: string;
-}) {
+function FooterLink({ href, children }: { href: string; children: ReactNode }) {
   return (
     <li className="flex items-start gap-2.5">
       <span
         className="mt-[0.5rem] h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--brand-gold)]"
         aria-hidden
       />
-      <Link href={href} className={className}>
+      <Link href={href} className={navLinkClass}>
         {children}
       </Link>
     </li>
