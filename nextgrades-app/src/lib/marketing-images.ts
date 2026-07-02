@@ -112,28 +112,24 @@ export const LOGIN_AVATAR_IMAGES = [
   BRANDED.studentsGroup4,
 ] as const;
 
-const SUBJECT_PHOTO_PARAMS = "auto=format&fit=crop&w=800&h=500&q=80";
+const SUBJECT_IMG_DIR = "/images/marketing/subjects";
 
-/** Curated Unsplash photos — one distinct image per subject on /subjects */
-function subjectPhoto(photoId: string): string {
-  return `https://images.unsplash.com/${photoId}?${SUBJECT_PHOTO_PARAMS}`;
-}
-
+/** Distinct local cover photo per subject on /subjects and in the Lernbibliothek */
 export const SUBJECT_ONLINE_IMAGES = {
-  math: subjectPhoto("photo-1635070041078-e363dbe005cb"),
-  german: subjectPhoto("photo-1456513080510-7bf3a84b82f8"),
-  english: subjectPhoto("photo-1544716278-ca5e3f4abd8c"),
-  french: subjectPhoto("photo-1502602898657-3e91760cbb34"),
-  italian: subjectPhoto("photo-1552832230-c0197dd311b5"),
-  latin: subjectPhoto("photo-1551882547-ff40c63fe5fa"),
-  chemistry: subjectPhoto("photo-1532094349884-543bc11b234d"),
-  physics: subjectPhoto("photo-1567427017947-545c5f8d16ad"),
-  biology: subjectPhoto("photo-1582719471384-894fbb16e074"),
-  accounting: subjectPhoto("photo-1554224155-6726b3ff858f"),
-  business: subjectPhoto("photo-1556761175-5973dc0f32e7"),
-  "business-admin": subjectPhoto("photo-1460925895917-afdab827c52f"),
-  "computer-science": subjectPhoto("photo-1517694712202-14dd9538aa97"),
-  "technical-drawing": subjectPhoto("photo-1503387762-592deb58ef4e"),
+  math: `${SUBJECT_IMG_DIR}/subject-math.png`,
+  german: `${SUBJECT_IMG_DIR}/subject-german.png`,
+  english: `${SUBJECT_IMG_DIR}/subject-english.png`,
+  french: `${SUBJECT_IMG_DIR}/subject-french.png`,
+  italian: `${SUBJECT_IMG_DIR}/subject-italian.png`,
+  latin: `${SUBJECT_IMG_DIR}/subject-latin.png`,
+  chemistry: `${SUBJECT_IMG_DIR}/subject-chemistry.png`,
+  physics: `${SUBJECT_IMG_DIR}/subject-physics.png`,
+  biology: `${SUBJECT_IMG_DIR}/subject-biology.png`,
+  accounting: `${SUBJECT_IMG_DIR}/subject-accounting.png`,
+  business: `${SUBJECT_IMG_DIR}/subject-business.png`,
+  "business-admin": `${SUBJECT_IMG_DIR}/subject-business.png`,
+  "computer-science": BRANDED.platformLaptop,
+  "technical-drawing": BRANDED.studyDesk,
 } as const;
 
 export const SUBJECT_IMAGE_BY_ID: Record<string, string> = {
@@ -142,12 +138,16 @@ export const SUBJECT_IMAGE_BY_ID: Record<string, string> = {
 
 const SUBJECT_ALIASES: Record<string, string> = {
   mathematik: "math",
+  mathe: "math",
   englisch: "english",
   deutsch: "german",
   physik: "physics",
   chemie: "chemistry",
   biologie: "biology",
   wirtschaft: "business",
+  "wirtschaft-bwl": "business-admin",
+  "wirtschaft-&-bwl": "business-admin",
+  "wirtschaft-und-bwl": "business-admin",
   franzoesisch: "french",
   französisch: "french",
   italienisch: "italian",
@@ -156,6 +156,7 @@ const SUBJECT_ALIASES: Record<string, string> = {
   betriebswirtschaft: "business-admin",
   bwl: "business-admin",
   informatik: "computer-science",
+  "technisches-zeichnen": "technical-drawing",
 };
 
 export function normalizeSubjectKey(slugOrName?: string | null): string {

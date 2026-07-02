@@ -2,34 +2,51 @@
  * Resources-section images — branded marketing photos.
  */
 
-import { BRANDED } from "@/lib/marketing-images";
+import { BRANDED, SUBJECT_ONLINE_IMAGES } from "@/lib/marketing-images";
 
 export const RESOURCES_HUB_HERO = BRANDED.subjectBooks;
 export const RESOURCES_UPGRADE_HERO = BRANDED.tutoringSession;
 export const RESOURCES_DEFAULT_THUMBNAIL = BRANDED.subjectBooks;
 
-/** Subject heroes & tiles */
+/** Subject heroes & tiles — distinct online photo per subject */
 export const RESOURCES_SUBJECT_IMAGE_BY_ID: Record<string, string> = {
-  math: BRANDED.subjectBooks,
-  english: BRANDED.studyDesk,
-  german: BRANDED.subjectBooks,
-  physics: BRANDED.tutoringSession,
-  chemistry: BRANDED.studyDesk,
-  biology: BRANDED.studyDesk,
-  business: BRANDED.progressDashboard,
-  "computer-science": BRANDED.tutoringSession,
-  "technical-drawing": BRANDED.studyDesk,
+  math: SUBJECT_ONLINE_IMAGES.math,
+  english: SUBJECT_ONLINE_IMAGES.english,
+  german: SUBJECT_ONLINE_IMAGES.german,
+  french: SUBJECT_ONLINE_IMAGES.french,
+  italian: SUBJECT_ONLINE_IMAGES.italian,
+  latin: SUBJECT_ONLINE_IMAGES.latin,
+  physics: SUBJECT_ONLINE_IMAGES.physics,
+  chemistry: SUBJECT_ONLINE_IMAGES.chemistry,
+  biology: SUBJECT_ONLINE_IMAGES.biology,
+  accounting: SUBJECT_ONLINE_IMAGES.accounting,
+  business: SUBJECT_ONLINE_IMAGES.business,
+  "business-admin": SUBJECT_ONLINE_IMAGES["business-admin"],
+  "computer-science": SUBJECT_ONLINE_IMAGES["computer-science"],
+  "technical-drawing": SUBJECT_ONLINE_IMAGES["technical-drawing"],
 };
 
 const SUBJECT_ALIASES: Record<string, string> = {
   mathematik: "math",
+  mathe: "math",
   englisch: "english",
   deutsch: "german",
+  franzoesisch: "french",
+  "französisch": "french",
+  italienisch: "italian",
+  latein: "latin",
   physik: "physics",
   chemie: "chemistry",
   biologie: "biology",
   wirtschaft: "business",
+  "wirtschaft-bwl": "business-admin",
+  "wirtschaft-&-bwl": "business-admin",
+  "wirtschaft-und-bwl": "business-admin",
+  bwl: "business-admin",
+  betriebswirtschaft: "business-admin",
+  rechnungswesen: "accounting",
   informatik: "computer-science",
+  "technisches-zeichnen": "technical-drawing",
 };
 
 const SUBJECT_FALLBACK_ORDER = [
