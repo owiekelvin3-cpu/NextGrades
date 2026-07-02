@@ -276,6 +276,8 @@
     ],
     "compareTitle": "Program comparison",
     "comparePartial": "Partial",
+    "compareIncluded": "Included",
+    "compareExcluded": "Not included",
     "compareHeaders": {
       "features": "Features",
       "oneOnOne": "1:1 Premium",

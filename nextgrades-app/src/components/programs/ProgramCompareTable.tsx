@@ -1,6 +1,5 @@
 "use client";
 
-import { Check, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export type ProgramCompareCellValue = boolean | "partial" | string;
@@ -26,30 +25,36 @@ type Props = {
   headers: ProgramCompareHeaders;
   rows: ProgramCompareRow[];
   partialLabel: string;
+  includedLabel: string;
+  excludedLabel: string;
   scrollHint?: string;
   className?: string;
 };
 
-const statusIconBase =
-  "mx-auto flex h-8 w-8 items-center justify-center rounded-full border transition-colors";
+const badgeBase =
+  "mx-auto inline-flex min-w-[7rem] items-center justify-center rounded-full border px-3 py-1.5 text-xs font-medium transition-colors";
 
 function CompareStatusCell({
   value,
   partialLabel,
+  includedLabel,
+  excludedLabel,
 }: {
   value: ProgramCompareCellValue;
   partialLabel: string;
+  includedLabel: string;
+  excludedLabel: string;
 }) {
   if (value === true) {
     return (
       <span
         className={cn(
-          statusIconBase,
-          "border-[var(--alert-success-border)] bg-[var(--alert-success-bg)] text-[var(--alert-success-fg)]"
+          badgeBase,
+          "border-[var(--border-default)] bg-[var(--surface-subtle)] text-foreground"
         )}
-        aria-label="Included"
+        aria-label={includedLabel}
       >
-        <Check className="h-3.5 w-3.5 stroke-[2.75]" aria-hidden />
+        {includedLabel}
       </span>
     );
   }
@@ -57,13 +62,10 @@ function CompareStatusCell({
   if (value === false) {
     return (
       <span
-        className={cn(
-          statusIconBase,
-          "border-[var(--border-subtle)] bg-[var(--surface-inset)] text-[var(--text-subtle)]"
-        )}
-        aria-label="Not included"
+        className={cn(badgeBase, "border-[var(--border-subtle)] bg-transparent text-text-muted")}
+        aria-label={excludedLabel}
       >
-        <X className="h-3.5 w-3.5 stroke-[2.25]" aria-hidden />
+        {excludedLabel}
       </span>
     );
   }
@@ -71,10 +73,12 @@ function CompareStatusCell({
   if (value === "partial") {
     return (
       <span
-        className="mx-auto inline-flex max-w-[9.5rem] items-center justify-center gap-1.5 rounded-full border border-[var(--alert-warning-border)] bg-[var(--alert-warning-bg)] px-2.5 py-1 text-xs font-medium text-[var(--alert-warning-fg)]"
+        className={cn(
+          badgeBase,
+          "border-[var(--brand-gold)] bg-transparent text-[var(--brand-gold)]"
+        )}
         aria-label={partialLabel}
       >
-        <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--brand-gold)]" aria-hidden />
         {partialLabel}
       </span>
     );
@@ -89,6 +93,8 @@ export function ProgramCompareTable({
   headers,
   rows,
   partialLabel,
+  includedLabel,
+  excludedLabel,
   scrollHint,
   className,
 }: Props) {
@@ -143,6 +149,8 @@ export function ProgramCompareTable({
                       <CompareStatusCell
                         value={row[col] ?? false}
                         partialLabel={partialLabel}
+                        includedLabel={includedLabel}
+                        excludedLabel={excludedLabel}
                       />
                     </td>
                   ))}

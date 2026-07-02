@@ -247,6 +247,8 @@
     ],
     "compareTitle": "Programmvergleich",
     "comparePartial": "Teilweise",
+    "compareIncluded": "Inklusive",
+    "compareExcluded": "Nicht enthalten",
     "compareHeaders": {
       "features": "Merkmale",
       "oneOnOne": "1:1 Premium",

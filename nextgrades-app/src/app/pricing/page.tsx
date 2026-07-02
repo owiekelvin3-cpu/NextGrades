@@ -249,6 +249,8 @@ function PricingContent() {
             headers={compareHeaders}
             rows={safeCompareRows}
             partialLabel={t("programsPage.comparePartial", { defaultValue: "Teilweise" })}
+            includedLabel={t("programsPage.compareIncluded", { defaultValue: "Inklusive" })}
+            excludedLabel={t("programsPage.compareExcluded", { defaultValue: "Nicht enthalten" })}
             scrollHint={`← ${t("marketingNav.scrollHint", { defaultValue: "Scroll horizontally to compare" })} →`}
             className={cn("border-t border-[var(--border-default)]", mt.section)}
           />
