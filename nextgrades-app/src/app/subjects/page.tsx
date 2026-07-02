@@ -216,9 +216,6 @@ export default function SubjectsPage() {
           <section className={cn("border-b border-[var(--border-default)] py-10 md:py-12", mt.sectionAlt)}>
             <div className={section.container}>
               <div className="mb-8 text-center">
-                <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--brand-gold)]">
-                  {t("subjectsPage.schoolLevelsEyebrow")}
-                </p>
                 <h2 className="text-2xl font-bold text-[var(--foreground)] md:text-3xl">
                   {t("subjectsPage.schoolLevelsTitle")}
                 </h2>

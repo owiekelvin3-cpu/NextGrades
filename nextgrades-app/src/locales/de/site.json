@@ -289,24 +289,23 @@
     "bookTutoring": "Nachhilfe buchen",
     "viewMaterials": "Materialien ansehen",
     "gridIntro": "Wir helfen dir, in jedem Fach besser zu werden – individuell, verständlich und effektiv. Für das österreichische Schulsystem von der Volksschule bis zur Matura.",
-    "schoolLevelsEyebrow": "ÖSTERREICHISCHES SCHULSYSTEM",
     "schoolLevelsTitle": "Von der Volksschule bis zur Matura",
     "schoolLevels": [
       {
         "label": "Volksschule",
-        "desc": "Grundlagen sicher aufbauen"
+        "desc": "Fundierte Grundlagen schaffen"
       },
       {
-        "label": "Mittelstufe",
-        "desc": "HTL, Gymnasium & mehr"
+        "label": "Unterstufe",
+        "desc": "AHS, Mittelschule & individuelle Förderung"
       },
       {
         "label": "Oberstufe",
-        "desc": "Gezielte Prüfungsvorbereitung"
+        "desc": "Vertiefung des Lehrstoffs & gezielte Prüfungsvorbereitung"
       },
       {
         "label": "Matura",
-        "desc": "Strukturierte Matura-Vorbereitung"
+        "desc": "Professionelle Vorbereitung auf die Zentralmatura"
       }
     ],
     "browseMaterials": "Materialien",

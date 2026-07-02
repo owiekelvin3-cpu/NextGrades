@@ -318,24 +318,23 @@
     "bookTutoring": "Book tutoring",
     "viewMaterials": "View materials",
     "gridIntro": "We help you improve in every subject – individually, clearly, and effectively. For the Austrian school system from primary school through graduation exams.",
-    "schoolLevelsEyebrow": "AUSTRIAN SCHOOL SYSTEM",
     "schoolLevelsTitle": "From primary school to graduation",
     "schoolLevels": [
       {
         "label": "Primary school",
-        "desc": "Build strong foundations"
+        "desc": "Build solid foundations"
       },
       {
-        "label": "Middle school",
-        "desc": "HTL, gymnasium & more"
+        "label": "Lower secondary",
+        "desc": "AHS, middle school & individual support"
       },
       {
         "label": "Upper school",
-        "desc": "Targeted exam preparation"
+        "desc": "Deepening the curriculum & targeted exam preparation"
       },
       {
-        "label": "Graduation",
-        "desc": "Structured graduation prep"
+        "label": "Matura",
+        "desc": "Professional preparation for the Zentralmatura"
       }
     ],
     "browseMaterials": "View materials",
