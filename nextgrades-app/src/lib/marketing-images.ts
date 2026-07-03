@@ -36,10 +36,10 @@ export const ABOUT_IMAGES = {
   hero: BRANDED.studentsGroup4,
   story: "/images/marketing/about-story.png",
   mission: [
-    BRANDED.tutoringSession,
-    BRANDED.subjectBooks,
-    BRANDED.platformLaptop,
-    BRANDED.privacySecure,
+    "/images/marketing/mission-understand.png",
+    "/images/marketing/mission-materials.png",
+    "/images/marketing/mission-individual.png",
+    "/images/marketing/mission-results.png",
   ] as const,
   promise: BRANDED.privacySecure,
 } as const;
