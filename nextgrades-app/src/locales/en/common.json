@@ -539,9 +539,8 @@
     "libraryGate": {
       "materialsCount": "500+",
       "materialsLabel": "learning materials",
-      "badge": "Membership required",
       "title": "500+ learning materials — unlocked with membership",
-      "subtitle": "The full library is available after sign-in and an active membership. Until then, explore subjects and get an overview.",
+      "subtitle": "The full learning library is available to registered members. Sign in or choose a plan to access all content.",
       "loginCta": "Sign in",
       "upgradeCta": "Unlock membership",
       "pricingCta": "View pricing"

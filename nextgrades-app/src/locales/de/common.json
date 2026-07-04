@@ -636,9 +636,8 @@
     "libraryGate": {
       "materialsCount": "500+",
       "materialsLabel": "Lernmaterialien",
-      "badge": "Mitgliedschaft erforderlich",
       "title": "500+ Lernmaterialien — mit Mitgliedschaft freigeschaltet",
-      "subtitle": "Die vollständige Lernbibliothek ist nach Anmeldung und aktiver Mitgliedschaft verfügbar. Vorher kannst du Fächer entdecken und einen Überblick erhalten.",
+      "subtitle": "Die vollständige Lernbibliothek steht registrierten Mitgliedern zur Verfügung. Melde dich an oder wähle ein Paket, um alle Inhalte zu nutzen.",
       "loginCta": "Anmelden",
       "upgradeCta": "Mitgliedschaft freischalten",
       "pricingCta": "Preise ansehen"
