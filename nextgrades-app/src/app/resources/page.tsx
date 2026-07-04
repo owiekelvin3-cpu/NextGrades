@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/Button";
 import { ResourcesLibraryGate } from "@/components/resources/ResourcesLibraryGate";
+import { ResourcesHeroBenefits } from "@/components/resources/ResourcesHeroBenefits";
 import { MockupPageHero } from "@/components/mockup/MockupPageHero";
 import { useTranslation } from "react-i18next";
 import { useCmsImage } from "@/hooks/useCmsImage";
@@ -43,6 +44,7 @@ export default function ResourcesPage() {
               <ArrowRight className="h-4 w-4" />
             </Button>
           </div>
+          <ResourcesHeroBenefits />
         </MockupPageHero>
 
         <Suspense fallback={null}>
