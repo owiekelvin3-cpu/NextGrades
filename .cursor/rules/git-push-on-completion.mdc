@@ -1,0 +1,26 @@
+---
+description: Commit and push to main when finishing substantive work
+alwaysApply: true
+---
+
+# Push updates when done
+
+When you finish a task that changes the codebase (especially `nextgrades-app/`), **always push to `main`** before considering the work complete. Do not wait for the user to ask.
+
+## Workflow
+
+1. Verify the change builds if you touched app code (`npm run build` in `nextgrades-app/` when not already verified).
+2. Stage and commit with a concise message describing the **why**.
+3. Run `git push origin main`.
+4. If About/marketing images were updated, run `node scripts/sync-marketing-cms-images.mjs` in `nextgrades-app/` when CMS overrides may still point at old assets.
+5. Report push status in the final message (commit hash or note if nothing to push).
+
+## Scope
+
+- Push after substantive app/UI/locale/API changes.
+- Skip commit/push for docs-only or local-only assets **unless** the user asked for those changes to go live.
+- Never force-push to `main`.
+
+## Deploy
+
+After pushing app changes, follow the Vercel deploy rule: Git integration should deploy; mention that the user may need a hard refresh (Ctrl+Shift+R) after deploy.
