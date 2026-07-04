@@ -531,6 +531,13 @@
     "heroTitle": "Learning materials that deliver real results.",
     "heroSubtitle": "Access structured summaries, worksheets, explainer videos, and exam preparation — developed by experienced educators.",
     "unlockCta": "Unlock learning library",
+    "heroBenefitsDesc": "Structured learning materials, worksheets, videos and guides — tailored to your grade and semester.",
+    "heroBenefits": [
+      "Age-appropriate",
+      "Protected",
+      "Structured",
+      "Downloadable"
+    ],
     "libraryGate": {
       "materialsCount": "500+",
       "materialsLabel": "learning materials",

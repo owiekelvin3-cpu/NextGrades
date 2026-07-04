@@ -1,31 +1,27 @@
 "use client";
 
-import { Suspense, useMemo } from "react";
+import { Suspense } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/Button";
 import { ResourcesLibraryGate } from "@/components/resources/ResourcesLibraryGate";
 import { MockupPageHero } from "@/components/mockup/MockupPageHero";
-import { MockupFeatureStrip } from "@/components/mockup/MockupFeatureStrip";
 import { useTranslation } from "react-i18next";
 import { useCmsImage } from "@/hooks/useCmsImage";
 import { RESOURCES_HERO_IMAGE } from "@/lib/marketing-images";
-import { BookOpen, Sparkles, Shield, Layers, ArrowRight, Crown } from "lucide-react";
+import { ArrowRight, BookOpen, Crown, Download, Shield, Star } from "lucide-react";
 import { useMarketingTheme } from "@/lib/marketing-theme";
 import { cn } from "@/lib/utils";
 
-const BENEFIT_ICONS = [BookOpen, Sparkles, Shield, Layers];
+const HERO_BENEFIT_ICONS = [BookOpen, Shield, Star, Download] as const;
 
 export default function ResourcesPage() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const mt = useMarketingTheme();
   const heroImage = useCmsImage("cmsImages.resources.hero", RESOURCES_HERO_IMAGE);
 
-  const benefits = useMemo(() => {
-    const data = t("resources.benefits", { returnObjects: true });
-    const items = Array.isArray(data) ? (data as { title: string; desc: string }[]) : [];
-    return items.map((item, i) => ({ ...item, icon: BENEFIT_ICONS[i] ?? BookOpen }));
-  }, [t, i18n.language]);
+  const heroBenefits = t("resources.heroBenefits", { returnObjects: true });
+  const benefitLabels = Array.isArray(heroBenefits) ? (heroBenefits as string[]) : [];
 
   return (
     <div className={cn("marketing-page-root flex min-h-screen flex-col", mt.page)}>
@@ -52,11 +48,28 @@ export default function ResourcesPage() {
               <ArrowRight className="h-4 w-4" />
             </Button>
           </div>
-        </MockupPageHero>
 
-        {benefits.length > 0 && (
-          <MockupFeatureStrip items={benefits} columns={4} className={mt.sectionAlt} />
-        )}
+          {benefitLabels.length > 0 && (
+            <div className="mt-10 border-t border-white/10 pt-8">
+              <p className="mb-6 max-w-xl text-sm leading-relaxed text-on-navy-muted md:text-base">
+                {t("resources.heroBenefitsDesc")}
+              </p>
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+                {benefitLabels.map((label, i) => {
+                  const Icon = HERO_BENEFIT_ICONS[i] ?? BookOpen;
+                  return (
+                    <div key={label} className="text-center sm:text-left">
+                      <div className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 sm:mx-0">
+                        <Icon className="h-5 w-5 text-[#D4AF37]" aria-hidden />
+                      </div>
+                      <p className="text-xs font-medium text-white sm:text-sm">{label}</p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </MockupPageHero>
 
         <Suspense fallback={null}>
           <ResourcesLibraryGate />

@@ -628,6 +628,13 @@
     "heroTitle": "Lernmaterialien, die wirklich Ergebnisse bringen.",
     "heroSubtitle": "Greife auf strukturierte Zusammenfassungen, Übungsblätter, Erklärvideos und Prüfungsvorbereitungen zu - entwickelt von erfahrenen Lehrkräften.",
     "unlockCta": "Lernbibliothek freischalten",
+    "heroBenefitsDesc": "Strukturierte Lernmaterialien, Arbeitsblätter, Videos und Leitfäden – abgestimmt auf deine Schulstufe und dein Semester.",
+    "heroBenefits": [
+      "Altersgerecht",
+      "Geschützt",
+      "Strukturiert",
+      "Herunterladbar"
+    ],
     "libraryGate": {
       "materialsCount": "500+",
       "materialsLabel": "Lernmaterialien",
@@ -637,12 +644,6 @@
       "upgradeCta": "Mitgliedschaft freischalten",
       "pricingCta": "Preise ansehen"
     },
-    "benefits": [
-      { "title": "Lehrplankonform", "desc": "Inhalte passend zum österreichischen Lehrplan." },
-      { "title": "Strukturiert aufgebaut", "desc": "Klare Kapitel, Übungen und Lernpfade." },
-      { "title": "Sofort verfügbar", "desc": "Direkt online nutzen - ohne Wartezeit." },
-      { "title": "Für Schule & Matura", "desc": "Von der Volksschule bis zur Matura." }
-    ],
     "heroFeature1": "Hochwertige Inhalte",
     "heroFeature1Desc": "Von erfahrenen LehrerInnen erstellt.",
     "heroFeature2": "Kostenlos & hilfreich",
