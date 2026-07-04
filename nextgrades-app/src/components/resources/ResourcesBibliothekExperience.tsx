@@ -50,72 +50,68 @@ export function ResourcesBibliothekExperience({ access }: Props) {
 
   return (
     <>
-      {/* Search + subject pills */}
-      <section className="relative z-10 -mt-6 pb-2 md:-mt-10">
-        <div className={section.container}>
-          <div className="rounded-2xl border border-[var(--border-default)] bg-[var(--card-background)] p-5 shadow-lg md:p-6">
-            <label className="sr-only" htmlFor="bibliothek-search">
-              {t("resources.searchPlaceholder")}
-            </label>
-            <div className="relative">
-              <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[var(--text-subtle)]" />
-              <input
-                id="bibliothek-search"
-                type="search"
-                value={catalog.search}
-                onChange={(e) => catalog.setSearch(e.target.value)}
-                placeholder={t("resources.searchPlaceholder")}
-                className="w-full rounded-xl border border-[var(--input-border)] bg-[var(--input-background)] py-3.5 pl-12 pr-4 text-sm text-[var(--input-foreground)] outline-none transition focus:border-[var(--brand-gold)] focus:ring-2 focus:ring-[var(--brand-gold-ring)]"
-              />
-            </div>
-
-            <div className="mt-4 flex flex-wrap items-center gap-2">
-              {visibleSubjects.map((s) => {
-                const slug = s.slug || s.id;
-                const active = catalog.subjectSlug === slug;
-                return (
-                  <button
-                    key={s.id}
-                    type="button"
-                    onClick={() => catalog.setSubjectSlug(active ? "" : slug)}
-                    className={cn(
-                      "btn-pill shrink-0 touch-manipulation",
-                      active ? th.btnPillActive : th.btnPillInactive
-                    )}
-                  >
-                    {s.name}
-                  </button>
-                );
-              })}
-              {hasMoreSubjects && (
-                <Link
-                  href="/subjects"
-                  className={cn(
-                    "inline-flex shrink-0 items-center gap-1 rounded-full px-4 py-2 text-sm font-semibold transition",
-                    "border border-[var(--border-default)] text-[var(--foreground-secondary)] hover:border-[var(--brand-gold)]/40 hover:text-[var(--brand-gold)]"
-                  )}
-                >
-                  {t("resources.moreSubjects")}
-                  <ArrowRight className="h-4 w-4" aria-hidden />
-                </Link>
-              )}
-            </div>
-          </div>
-        </div>
-      </section>
-
       <section className="bg-[var(--surface-muted)] py-10 md:py-14">
         <div className={cn(section.container, "space-y-12 md:space-y-14")}>
-          {showSubjectBrowse && catalog.subjects.length > 0 && (
-            <SubjectBrowseGrid
-              subjects={catalog.subjects}
-              subjectCounts={catalog.subjectCounts}
-              locked={locked}
-              sectionId="faecher-entdecken"
-              headerTitle={t("resources.discoverSubjectsTitle")}
-              headerDesc={t("resources.discoverSubjectsDesc")}
-            />
-          )}
+          <div id="faecher-entdecken" className="space-y-8">
+            <div className="rounded-2xl border border-[var(--border-default)] bg-[var(--card-background)] p-5 shadow-sm md:p-6">
+              <label className="sr-only" htmlFor="bibliothek-search">
+                {t("resources.searchPlaceholder")}
+              </label>
+              <div className="relative">
+                <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[var(--text-subtle)]" />
+                <input
+                  id="bibliothek-search"
+                  type="search"
+                  value={catalog.search}
+                  onChange={(e) => catalog.setSearch(e.target.value)}
+                  placeholder={t("resources.searchPlaceholder")}
+                  className="w-full rounded-xl border border-[var(--input-border)] bg-[var(--input-background)] py-3.5 pl-12 pr-4 text-sm text-[var(--input-foreground)] outline-none transition focus:border-[var(--brand-gold)] focus:ring-2 focus:ring-[var(--brand-gold-ring)]"
+                />
+              </div>
+
+              <div className="mt-4 flex flex-wrap items-center gap-2">
+                {visibleSubjects.map((s) => {
+                  const slug = s.slug || s.id;
+                  const active = catalog.subjectSlug === slug;
+                  return (
+                    <button
+                      key={s.id}
+                      type="button"
+                      onClick={() => catalog.setSubjectSlug(active ? "" : slug)}
+                      className={cn(
+                        "btn-pill shrink-0 touch-manipulation",
+                        active ? th.btnPillActive : th.btnPillInactive
+                      )}
+                    >
+                      {s.name}
+                    </button>
+                  );
+                })}
+                {hasMoreSubjects && (
+                  <Link
+                    href="/subjects"
+                    className={cn(
+                      "inline-flex shrink-0 items-center gap-1 rounded-full px-4 py-2 text-sm font-semibold transition",
+                      "border border-[var(--border-default)] text-[var(--foreground-secondary)] hover:border-[var(--brand-gold)]/40 hover:text-[var(--brand-gold)]"
+                    )}
+                  >
+                    {t("resources.moreSubjects")}
+                    <ArrowRight className="h-4 w-4" aria-hidden />
+                  </Link>
+                )}
+              </div>
+            </div>
+
+            {showSubjectBrowse && catalog.subjects.length > 0 && (
+              <SubjectBrowseGrid
+                subjects={catalog.subjects}
+                subjectCounts={catalog.subjectCounts}
+                locked={locked}
+                headerTitle={t("resources.discoverSubjectsTitle")}
+                headerDesc={t("resources.discoverSubjectsDesc")}
+              />
+            )}
+          </div>
 
           {catalog.loading ? (
             <LoadingBlock />
