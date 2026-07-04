@@ -626,15 +626,12 @@
   },
   "resources": {
     "heroTitle": "Lernmaterialien, die wirklich Ergebnisse bringen.",
-    "heroSubtitle": "Greife auf strukturierte Zusammenfassungen, Übungsblätter, Erklärvideos und Prüfungsvorbereitungen zu - entwickelt von erfahrenen Lehrkräften.",
+    "heroSubtitle": "Entdecke hochwertige Materialien, interaktive Übungen und wertvolle Tipps. Greife auf strukturierte Zusammenfassungen, Übungsblätter, Erklärvideos und Prüfungsvorbereitungen zu - entwickelt von erfahrenen Lehrkräften.",
     "unlockCta": "Lernbibliothek freischalten",
-    "heroBenefitsDesc": "Strukturierte Lernmaterialien, Arbeitsblätter, Videos und Leitfäden – abgestimmt auf deine Schulstufe und dein Semester.",
-    "heroBenefits": [
-      "Altersgerecht",
-      "Geschützt",
-      "Strukturiert",
-      "Herunterladbar"
-    ],
+    "moreSubjects": "Mehr Fächer",
+    "discoverSubjectsTitle": "Fächer entdecken",
+    "discoverSubjectsDesc": "Wähle ein Schulfach und finde passende Lernmaterialien, Übungen und Videos.",
+    "openSubject": "Fach öffnen",
     "libraryGate": {
       "materialsCount": "500+",
       "materialsLabel": "Lernmaterialien",
@@ -670,7 +667,7 @@
       "video": "Videos",
       "pdf": "PDFs"
     },
-    "searchPlaceholder": "Materialien durchsuchen...",
+    "searchPlaceholder": "Nach Materialien suchen...",
     "sortBy": "Sortieren nach:",
     "sortNewest": "Neueste zuerst",
     "sortOldest": "Älteste zuerst",

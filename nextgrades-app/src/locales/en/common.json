@@ -529,15 +529,12 @@
   },
   "resources": {
     "heroTitle": "Learning materials that deliver real results.",
-    "heroSubtitle": "Access structured summaries, worksheets, explainer videos, and exam preparation — developed by experienced educators.",
+    "heroSubtitle": "Discover high-quality materials, interactive exercises, and valuable tips. Access structured summaries, worksheets, explainer videos, and exam preparation — developed by experienced educators.",
     "unlockCta": "Unlock learning library",
-    "heroBenefitsDesc": "Structured learning materials, worksheets, videos and guides — tailored to your grade and semester.",
-    "heroBenefits": [
-      "Age-appropriate",
-      "Protected",
-      "Structured",
-      "Downloadable"
-    ],
+    "moreSubjects": "More subjects",
+    "discoverSubjectsTitle": "Discover subjects",
+    "discoverSubjectsDesc": "Choose a school subject and find matching learning materials, exercises, and videos.",
+    "openSubject": "Open subject",
     "libraryGate": {
       "materialsCount": "500+",
       "materialsLabel": "learning materials",
@@ -573,7 +570,7 @@
       "video": "Videos",
       "pdf": "PDFs"
     },
-    "searchPlaceholder": "Search materials...",
+    "searchPlaceholder": "Search for materials...",
     "sortBy": "Sort by:",
     "sortNewest": "Newest first",
     "sortOldest": "Oldest first",

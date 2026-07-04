@@ -17,21 +17,34 @@ type Props = {
   /** When true, cards link to upgrade instead of public subject pages. */
   locked?: boolean;
   hideHeader?: boolean;
+  headerTitle?: string;
+  headerDesc?: string;
+  sectionId?: string;
 };
 
-export function SubjectBrowseGrid({ subjects, subjectCounts, className, locked = false, hideHeader = false }: Props) {
+export function SubjectBrowseGrid({
+  subjects,
+  subjectCounts,
+  className,
+  locked = false,
+  hideHeader = false,
+  headerTitle,
+  headerDesc,
+  sectionId,
+}: Props) {
   const { t } = useTranslation();
 
   if (subjects.length === 0) return null;
 
+  const title = headerTitle ?? t("resources.browseBySubject");
+  const desc = headerDesc ?? t("resources.browseBySubjectDesc");
+
   return (
-    <div className={className}>
+    <div className={className} id={sectionId}>
       {!hideHeader && (
         <div className="mb-6">
-          <h2 className="text-xl font-bold tracking-tight text-[var(--foreground)] sm:text-2xl">
-            {t("resources.browseBySubject")}
-          </h2>
-          <p className="mt-1 text-sm text-[var(--text-muted)]">{t("resources.browseBySubjectDesc")}</p>
+          <h2 className="text-xl font-bold tracking-tight text-[var(--foreground)] sm:text-2xl">{title}</h2>
+          <p className="mt-1 text-sm text-[var(--text-muted)]">{desc}</p>
         </div>
       )}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4 xl:grid-cols-4">
@@ -77,7 +90,7 @@ export function SubjectBrowseGrid({ subjects, subjectCounts, className, locked =
                   className="mt-2 inline-flex items-center gap-0.5 text-xs font-semibold sm:mt-3 sm:text-sm"
                   style={{ color: ui.color }}
                 >
-                  {t("resources.exploreSubject")}
+                  {locked ? t("resources.openSubject") : t("resources.exploreSubject")}
                   <ChevronRight className="h-3.5 w-3.5 transition group-hover:translate-x-0.5" />
                 </span>
               </div>
