@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/Button";
 import { ResourcesLibraryGate } from "@/components/resources/ResourcesLibraryGate";
+import { ResourcesHeroFeatures } from "@/components/resources/ResourcesHeroFeatures";
 import { MockupPageHero } from "@/components/mockup/MockupPageHero";
 import { useTranslation } from "react-i18next";
 import { useCmsImage } from "@/hooks/useCmsImage";
@@ -31,6 +32,7 @@ export default function ResourcesPage() {
           eyebrow={t("common.resources").toUpperCase()}
           title={t("resources.heroTitle")}
           subtitle={t("resources.heroSubtitle")}
+          titleClassName="text-4xl md:text-5xl lg:text-[3.25rem] lg:leading-[1.08]"
           heroImage={heroImage}
         >
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
@@ -43,6 +45,7 @@ export default function ResourcesPage() {
               <ArrowRight className="h-4 w-4" />
             </Button>
           </div>
+          <ResourcesHeroFeatures />
         </MockupPageHero>
 
         <Suspense fallback={null}>

@@ -35,7 +35,7 @@ import {
   COMPANY_PHONE_TEL,
   COMPANY_SUPPORT_EMAIL,
 } from "@/lib/company";
-import { hero, type } from "@/lib/premium/tokens";
+import { hero } from "@/lib/premium/tokens";
 import { themeInputClass, themeSelectClass } from "@/lib/theme/form-fields";
 import { cn } from "@/lib/utils";
 
@@ -166,14 +166,20 @@ export function ContactPageContent() {
                   <MessageSquare className="mr-1.5 h-3.5 w-3.5" />
                   {t("contact.eyebrow")}
                 </Badge>
-                <h1 className={cn(type.h1, "text-white")} data-animate="hero-headline" data-animate-delay="0.1">
+                <h1 className="text-4xl font-bold leading-[1.1] tracking-tight text-white md:text-5xl lg:text-[3.25rem]" data-animate="hero-headline" data-animate-delay="0.1">
                   {t("contact.title")}
                 </h1>
                 <p
-                  className="mt-4 max-w-xl text-sm leading-relaxed text-on-navy-muted md:mt-5 md:text-lg"
+                  className="mt-4 max-w-xl text-base leading-relaxed text-on-navy-muted md:mt-5 md:text-xl"
                   data-animate="hero-subheadline"
                 >
-                  {t("contact.subtitle")}{" "}
+                  {t("contact.subtitle")}
+                </p>
+                {t("contact.heroDesc") && (
+                  <p className="mt-3 max-w-xl text-sm leading-relaxed text-on-navy-subtle md:text-base">{t("contact.heroDesc")}</p>
+                )}
+                <p className="mt-4 text-sm text-on-navy-muted">
+                  {t("contact.directReach")}{" "}
                   <a
                     href={COMPANY_MAILTO}
                     className="font-semibold text-[var(--brand-gold)] hover:underline"
@@ -181,9 +187,6 @@ export function ContactPageContent() {
                     {COMPANY_SUPPORT_EMAIL}
                   </a>
                 </p>
-                {t("contact.heroDesc") && (
-                  <p className="mt-3 max-w-xl text-sm text-on-navy-subtle">{t("contact.heroDesc")}</p>
-                )}
                 <div data-animate="hero-cta">
                   <Button variant="gold" size="lg" href="#contact-form" className="mt-8">
                     {t("contact.heroCta")}
@@ -205,6 +208,11 @@ export function ContactPageContent() {
 
         <section className={cn("-mt-6 relative z-10 px-4 pb-4 sm:px-6 lg:px-8", mt.sectionAlt)}>
           <div className="mx-auto max-w-7xl">
+            <div className="mb-8 text-center md:mb-10">
+              <p className="text-xs font-bold uppercase tracking-[0.25em] text-[var(--brand-gold)]">
+                {t("contact.benefitsEyebrow")}
+              </p>
+            </div>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4" data-animate="staggerChildren" data-stagger="0.12">
               {(Array.isArray(benefits) ? benefits : []).map((item, i) => {
                 const Icon = BENEFIT_ICONS[i] ?? Heart;
@@ -225,10 +233,7 @@ export function ContactPageContent() {
         <section id="contact-form" className={cn("scroll-mt-24 py-16 md:py-20", mt.section)}>
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="mb-10 md:mb-12">
-              <p className="text-xs font-bold uppercase tracking-[0.25em] text-[var(--brand-gold)]">
-                {t("contact.benefitsEyebrow")}
-              </p>
-              <h2 className={cn("mt-3 text-3xl font-bold md:text-4xl", mt.heading)}>
+              <h2 className={cn("text-3xl font-bold md:text-4xl", mt.heading)}>
                 {t("contact.formTitle")}
               </h2>
               <p className={cn("mt-4 max-w-2xl", mt.body)}>{t("contact.formDesc")}</p>
@@ -487,18 +492,18 @@ export function ContactPageContent() {
           </section>
         )}
 
-        <section className="px-4 pb-16 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-5xl overflow-hidden rounded-2xl bg-gradient-to-br from-[#0D1B2A] via-[#132942] to-[#1a3555] p-8 text-center text-white sm:p-12">
+        <section className="px-4 pb-10 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-5xl overflow-hidden rounded-2xl bg-gradient-to-br from-[#0D1B2A] via-[#132942] to-[#1a3555] p-8 text-center text-white sm:p-10">
             <p className="text-sm font-semibold text-[#D4AF37]">{t("contact.ctaEyebrow")}</p>
             <h2 className="mt-2 text-2xl font-bold md:text-3xl">{t("contact.ctaTitle")}</h2>
             <p className="mx-auto mt-3 max-w-xl text-on-navy-muted">{t("contact.ctaDesc")}</p>
             <div className="mt-8 flex flex-wrap justify-center gap-4">
-              <Button variant="gold" size="lg" href="/pricing">
-                {t("common.pricing")}
+              <Button variant="gold" size="lg" href="/consultation">
+                {t("contact.ctaConsultation")}
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
-              <Button variant="onDark" size="lg" href="/consultation">
-                {t("contact.ctaConsultation")}
+              <Button variant="onDark" size="lg" href="/pricing">
+                {t("common.pricing")}
               </Button>
             </div>
           </div>

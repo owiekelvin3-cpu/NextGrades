@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useMemo } from "react";
-import { ArrowRight, BookOpen, Crown, GraduationCap, RefreshCw, Search, ShieldCheck } from "lucide-react";
+import { ArrowRight, Search } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useResourcesCatalog } from "@/hooks/useResourcesCatalog";
 import { SubjectBrowseGrid } from "@/components/resources/SubjectBrowseGrid";
@@ -12,12 +12,12 @@ import { LoadingBlock } from "@/components/dashboard/LoadingBlock";
 import { MobileResourceCard } from "@/components/mobile/MobileResourceCard";
 import { SectionHeader } from "@/components/premium/SectionHeader";
 import { Button } from "@/components/ui/Button";
+import { ResourcesLibraryPromo } from "@/components/resources/ResourcesLibraryPromo";
 import { isPremiumResource } from "@/lib/resources/ui-config";
 import { section } from "@/lib/premium/tokens";
 import { theme as th } from "@/lib/theme/tokens";
 import { cn } from "@/lib/utils";
 
-const FEATURE_ICONS = [BookOpen, RefreshCw, GraduationCap, ShieldCheck] as const;
 const VISIBLE_SUBJECT_PILLS = 5;
 
 type Props = {
@@ -41,17 +41,12 @@ export function ResourcesBibliothekExperience({ access }: Props) {
   );
   const hasMoreSubjects = catalog.subjects.length > VISIBLE_SUBJECT_PILLS;
 
-  const features = [
-    { title: t("resources.features.feature1Title"), desc: t("resources.features.feature1Desc") },
-    { title: t("resources.features.feature2Title"), desc: t("resources.features.feature2Desc") },
-    { title: t("resources.features.feature3Title"), desc: t("resources.features.feature3Desc") },
-    { title: t("resources.features.feature4Title"), desc: t("resources.features.feature4Desc") },
-  ];
-
   return (
     <>
       <section className="bg-[var(--surface-muted)] py-10 md:py-14">
         <div className={cn(section.container, "space-y-12 md:space-y-14")}>
+          {locked && <ResourcesLibraryPromo />}
+
           <div id="faecher-entdecken" className="space-y-8">
             <div className="rounded-2xl border border-[var(--border-default)] bg-[var(--card-background)] p-5 shadow-sm md:p-6">
               <label className="sr-only" htmlFor="bibliothek-search">
@@ -181,20 +176,14 @@ export function ResourcesBibliothekExperience({ access }: Props) {
             <LibraryEmptyState searching={hasActiveFilters} query={catalog.search} />
           ) : null}
 
-          {/* Unlock CTA + feature row */}
-          <div className="overflow-hidden rounded-2xl bg-gradient-to-br from-[#0D1B2A] via-[#132942] to-[#1a3555] shadow-2xl">
-            <div className="border-b border-white/10 px-6 py-8 md:px-10 md:py-10">
+          {locked && (
+            <div className="overflow-hidden rounded-2xl bg-gradient-to-br from-[#0D1B2A] via-[#132942] to-[#1a3555] px-6 py-8 shadow-2xl md:px-10 md:py-10">
               <div className="flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-center">
-                <div className="flex items-start gap-4">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#D4AF37]/20">
-                    <Crown className="h-6 w-6 text-[#D4AF37]" aria-hidden />
-                  </div>
-                  <div>
-                    <h2 className="text-xl font-bold text-white md:text-2xl">{t("resources.ctaTitle")}</h2>
-                    <p className="mt-2 max-w-xl text-sm leading-relaxed text-gray-300 md:text-base">
-                      {t("resources.ctaSubtitle")}
-                    </p>
-                  </div>
+                <div>
+                  <h2 className="text-xl font-bold text-white md:text-2xl">{t("resources.ctaTitle")}</h2>
+                  <p className="mt-2 max-w-xl text-sm leading-relaxed text-gray-300 md:text-base">
+                    {t("resources.ctaSubtitle")}
+                  </p>
                 </div>
                 <Button
                   variant="gold"
@@ -207,22 +196,7 @@ export function ResourcesBibliothekExperience({ access }: Props) {
                 </Button>
               </div>
             </div>
-
-            <div className="grid grid-cols-2 gap-6 px-6 py-8 md:grid-cols-4 md:px-10 md:py-10">
-              {features.map((feature, i) => {
-                const Icon = FEATURE_ICONS[i] ?? BookOpen;
-                return (
-                  <div key={feature.title} className="text-center md:text-left">
-                    <div className="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 md:mx-0">
-                      <Icon className="h-5 w-5 text-[#D4AF37]" aria-hidden />
-                    </div>
-                    <p className="text-sm font-bold text-white">{feature.title}</p>
-                    <p className="mt-1 text-xs leading-relaxed text-gray-400">{feature.desc}</p>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+          )}
         </div>
       </section>
     </>

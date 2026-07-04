@@ -352,11 +352,12 @@
   },
   "contact": {
     "eyebrow": "Kontakt bei NextGrades",
-    "title": "Wir helfen dir, das Beste aus deiner Lernreise zu machen.",
-    "subtitle": "Schreib uns — oder erreich uns direkt unter",
-    "heroDesc": "Ob Eltern, Schüler:in oder Schule: Unser Team berät dich persönlich und unverbindlich zum passenden Programm.",
+    "title": "Nicht sicher, welches Programm passt?",
+    "subtitle": "Wir beraten dich kostenlos und finden gemeinsam die beste Lösung.",
+    "heroDesc": "Ob Eltern oder SchülerInnen: Unser Team antwortet meist innerhalb weniger Stunden — persönlich, unverbindlich und auf Deutsch.",
+    "directReach": "Oder erreich uns direkt unter",
     "heroCta": "Nachricht senden",
-    "benefitsEyebrow": "Kontakt aufnehmen",
+    "benefitsEyebrow": "Warum Eltern uns wählen",
     "benefits": [
       {
         "title": "Persönliche Betreuung",
@@ -364,10 +365,10 @@
       },
       {
         "title": "Erfahrene Lehrkräfte",
-        "description": "Qualifizierte Tutor:innen in Kernfächern und Prüfungsvorbereitung."
+        "description": "Qualifizierte TutorInnen in Kernfächern und Prüfungsvorbereitung."
       },
       {
-        "title": "Klare Struktur",
+        "title": "Klare Lernstruktur",
         "description": "Transparente Programme, Preise und Lernwege, denen du vertrauen kannst."
       },
       {
@@ -389,7 +390,7 @@
       },
       {
         "title": "Persönliche Antwort",
-        "description": "Wir melden uns in der Regel innerhalb eines Werktags mit klaren nächsten Schritten."
+        "description": "Wir melden uns in der Regel innerhalb weniger Stunden mit klaren nächsten Schritten."
       },
       {
         "title": "Loslegen",
@@ -402,7 +403,7 @@
     "faqs": [
       {
         "question": "Wie schnell antwortet ihr?",
-        "answer": "In der Regel innerhalb eines Werktags. Dringende Anfragen bearbeiten wir während unserer Support-Zeiten priorisiert."
+        "answer": "Meist innerhalb weniger Stunden. Dringende Anfragen bearbeiten wir während unserer Support-Zeiten priorisiert."
       },
       {
         "question": "Ist die Erstberatung kostenlos?",
@@ -450,10 +451,10 @@
     "formDesc": "Fülle das Formular aus — unser Team meldet sich in Kürze bei dir.",
     "formSubject": "Kontaktformular",
     "heroImageAlt": "NextGrades Support-Team",
-    "ctaEyebrow": "Tarife entdecken",
-    "ctaTitle": "Suchst du den passenden Lernplan?",
-    "ctaDesc": "Vergleiche Mitgliedschaften und Nachhilfe-Pakete auf unserer Preisseite.",
-    "ctaConsultation": "Preise",
+    "ctaEyebrow": "Kostenlose Beratung",
+    "ctaTitle": "Gemeinsam das passende Programm finden",
+    "ctaDesc": "Vergleiche Nachhilfe, Lerngruppen und die Lernbibliothek — wir helfen dir bei der Entscheidung.",
+    "ctaConsultation": "Kostenloses Erstgespräch",
     "validationRequired": "Bitte fülle alle Pflichtfelder aus.",
     "validationEmail": "Bitte gib eine gültige E-Mail-Adresse ein.",
     "subject": "Fach / Kurs",
@@ -635,8 +636,9 @@
     "libraryGate": {
       "materialsCount": "500+",
       "materialsLabel": "Lernmaterialien",
+      "badge": "Mitgliedschaft erforderlich",
       "title": "500+ Lernmaterialien — mit Mitgliedschaft freigeschaltet",
-      "subtitle": "Die vollständige Lernbibliothek steht registrierten Mitgliedern zur Verfügung. Melde dich an oder wähle ein Paket, um alle Inhalte zu nutzen.",
+      "subtitle": "Die vollständige Lernbibliothek ist nach Anmeldung und aktiver Mitgliedschaft verfügbar. Vorher kannst du Fächer entdecken und einen Überblick erhalten.",
       "loginCta": "Anmelden",
       "upgradeCta": "Mitgliedschaft freischalten",
       "pricingCta": "Preise ansehen"

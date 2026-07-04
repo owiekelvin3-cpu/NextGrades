@@ -17,6 +17,7 @@ type Props = {
   backgroundColor?: string;
   children?: ReactNode;
   className?: string;
+  titleClassName?: string;
 };
 
 /** Standard inner-page hero — text first, mobile card image below. */
@@ -30,6 +31,7 @@ export function MockupPageHero({
   backgroundColor,
   children,
   className,
+  titleClassName,
 }: Props) {
   const isDark = variant !== "light-split-right";
   const bg = backgroundColor ?? (isDark ? "#0D1B2A" : "#FFFFFF");
@@ -61,7 +63,7 @@ export function MockupPageHero({
                 {eyebrow}
               </p>
             )}
-            <h1 className={cn(type.h1, "max-w-2xl")} data-animate="hero-headline" data-animate-delay="0.1">
+            <h1 className={cn(type.h1, "max-w-2xl", titleClassName)} data-animate="hero-headline" data-animate-delay="0.1">
               {title}
             </h1>
             {subtitle && (
