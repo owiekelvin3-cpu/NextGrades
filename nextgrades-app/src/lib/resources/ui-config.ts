@@ -7,6 +7,10 @@ import {
   Leaf,
   Briefcase,
   Monitor,
+  Globe,
+  Library,
+  BarChart3,
+  Ruler,
   type LucideIcon,
 } from "lucide-react";
 import {
@@ -70,6 +74,13 @@ export const SUBJECT_UI: Record<string, SubjectUiConfig> = {
   englisch: { slug: "english", icon: Languages, color: "#8B5CF6", heroImage: RESOURCES_SUBJECT_IMAGE_BY_ID.english },
   german: { slug: "german", icon: BookOpen, color: "#EC4899", heroImage: RESOURCES_SUBJECT_IMAGE_BY_ID.german },
   deutsch: { slug: "german", icon: BookOpen, color: "#EC4899", heroImage: RESOURCES_SUBJECT_IMAGE_BY_ID.german },
+  french: { slug: "french", icon: Languages, color: "#A855F7", heroImage: RESOURCES_SUBJECT_IMAGE_BY_ID.french },
+  franzoesisch: { slug: "french", icon: Languages, color: "#A855F7", heroImage: RESOURCES_SUBJECT_IMAGE_BY_ID.french },
+  "französisch": { slug: "french", icon: Languages, color: "#A855F7", heroImage: RESOURCES_SUBJECT_IMAGE_BY_ID.french },
+  italian: { slug: "italian", icon: Globe, color: "#22C55E", heroImage: RESOURCES_SUBJECT_IMAGE_BY_ID.italian },
+  italienisch: { slug: "italian", icon: Globe, color: "#22C55E", heroImage: RESOURCES_SUBJECT_IMAGE_BY_ID.italian },
+  latin: { slug: "latin", icon: Library, color: "#D97706", heroImage: RESOURCES_SUBJECT_IMAGE_BY_ID.latin },
+  latein: { slug: "latin", icon: Library, color: "#D97706", heroImage: RESOURCES_SUBJECT_IMAGE_BY_ID.latin },
   physics: { slug: "physics", icon: Atom, color: "#F59E0B", heroImage: RESOURCES_SUBJECT_IMAGE_BY_ID.physics },
   physik: { slug: "physics", icon: Atom, color: "#F59E0B", heroImage: RESOURCES_SUBJECT_IMAGE_BY_ID.physics },
   chemistry: { slug: "chemistry", icon: FlaskConical, color: "#10B981", heroImage: RESOURCES_SUBJECT_IMAGE_BY_ID.chemistry },
@@ -78,6 +89,36 @@ export const SUBJECT_UI: Record<string, SubjectUiConfig> = {
   biologie: { slug: "biology", icon: Leaf, color: "#22C55E", heroImage: RESOURCES_SUBJECT_IMAGE_BY_ID.biology },
   business: { slug: "business", icon: Briefcase, color: "#6366F1", heroImage: RESOURCES_SUBJECT_IMAGE_BY_ID.business },
   wirtschaft: { slug: "business", icon: Briefcase, color: "#6366F1", heroImage: RESOURCES_SUBJECT_IMAGE_BY_ID.business },
+  accounting: {
+    slug: "accounting",
+    icon: Calculator,
+    color: "#64748B",
+    heroImage: RESOURCES_SUBJECT_IMAGE_BY_ID.accounting,
+  },
+  rechnungswesen: {
+    slug: "accounting",
+    icon: Calculator,
+    color: "#64748B",
+    heroImage: RESOURCES_SUBJECT_IMAGE_BY_ID.accounting,
+  },
+  "business-admin": {
+    slug: "business-admin",
+    icon: BarChart3,
+    color: "#6366F1",
+    heroImage: RESOURCES_SUBJECT_IMAGE_BY_ID["business-admin"],
+  },
+  betriebswirtschaft: {
+    slug: "business-admin",
+    icon: BarChart3,
+    color: "#6366F1",
+    heroImage: RESOURCES_SUBJECT_IMAGE_BY_ID["business-admin"],
+  },
+  bwl: {
+    slug: "business-admin",
+    icon: BarChart3,
+    color: "#6366F1",
+    heroImage: RESOURCES_SUBJECT_IMAGE_BY_ID["business-admin"],
+  },
   "computer-science": {
     slug: "computer-science",
     icon: Monitor,
@@ -89,6 +130,18 @@ export const SUBJECT_UI: Record<string, SubjectUiConfig> = {
     icon: Monitor,
     color: "#0EA5E9",
     heroImage: RESOURCES_SUBJECT_IMAGE_BY_ID["computer-science"],
+  },
+  "technical-drawing": {
+    slug: "technical-drawing",
+    icon: Ruler,
+    color: "#94A3B8",
+    heroImage: RESOURCES_SUBJECT_IMAGE_BY_ID["technical-drawing"],
+  },
+  "technisches-zeichnen": {
+    slug: "technical-drawing",
+    icon: Ruler,
+    color: "#94A3B8",
+    heroImage: RESOURCES_SUBJECT_IMAGE_BY_ID["technical-drawing"],
   },
 };
 

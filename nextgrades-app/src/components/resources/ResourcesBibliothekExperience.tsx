@@ -5,6 +5,8 @@ import { useMemo } from "react";
 import { ArrowRight, BookOpen, Crown, GraduationCap, RefreshCw, Search, ShieldCheck } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useResourcesCatalog } from "@/hooks/useResourcesCatalog";
+import { useLocalizedContent } from "@/hooks/useLocalizedContent";
+import { mergeMarketingSubjectsWithCatalog } from "@/lib/catalog/merge-marketing-subjects";
 import { SubjectBrowseGrid } from "@/components/resources/SubjectBrowseGrid";
 import { ResourceHubCard } from "@/components/resources/shared/ResourceCards";
 import { LibraryEmptyState } from "@/components/resources/LibraryEmptyState";
@@ -18,7 +20,8 @@ import { section } from "@/lib/premium/tokens";
 import { cn } from "@/lib/utils";
 
 const FEATURE_ICONS = [BookOpen, RefreshCw, GraduationCap, ShieldCheck] as const;
-const VISIBLE_SUBJECT_PILLS = 5;
+
+type MarketingSubjectItem = { id: string; title: string };
 
 type Props = {
   access: "granted" | "locked";
@@ -27,7 +30,13 @@ type Props = {
 export function ResourcesBibliothekExperience({ access }: Props) {
   const { t } = useTranslation();
   const catalog = useResourcesCatalog();
+  const marketingSubjectsRaw = useLocalizedContent<MarketingSubjectItem[]>("subjectsPage.items");
   const locked = access === "locked";
+
+  const bibliothekSubjects = useMemo(() => {
+    const marketingItems = Array.isArray(marketingSubjectsRaw) ? marketingSubjectsRaw : [];
+    return mergeMarketingSubjectsWithCatalog(marketingItems, catalog.subjects);
+  }, [marketingSubjectsRaw, catalog.subjects]);
 
   const hasResourceFilters = Boolean(
     catalog.search.trim() ||
@@ -42,11 +51,8 @@ export function ResourcesBibliothekExperience({ access }: Props) {
   const gridItems = catalog.resources.slice(0, 12);
   const hasMaterials = catalog.resources.length > 0;
 
-  const visibleSubjects = useMemo(
-    () => catalog.subjects.slice(0, VISIBLE_SUBJECT_PILLS),
-    [catalog.subjects]
-  );
-  const hasMoreSubjects = catalog.subjects.length > VISIBLE_SUBJECT_PILLS;
+  const visibleSubjects = bibliothekSubjects;
+  const hasMoreSubjects = false;
 
   const features = [
     { title: t("resources.features.feature1Title"), desc: t("resources.features.feature1Desc") },
@@ -127,9 +133,9 @@ export function ResourcesBibliothekExperience({ access }: Props) {
                 </div>
               </div>
 
-              {showSubjectBrowse && catalog.subjects.length > 0 && (
+              {showSubjectBrowse && bibliothekSubjects.length > 0 && (
                 <SubjectBrowseGrid
-                  subjects={catalog.subjects}
+                  subjects={bibliothekSubjects}
                   subjectCounts={catalog.subjectCounts}
                   locked={locked}
                   headerTitle={t("resources.discoverSubjectsTitle")}
