@@ -33,7 +33,7 @@ export const ONLINE_IMAGE_FALLBACK = BRANDED.studyDesk;
 export const LOCAL_IMAGE_FALLBACK = ONLINE_IMAGE_FALLBACK;
 
 export const ABOUT_IMAGES = {
-  hero: BRANDED.studentsGroup4,
+  hero: BRANDED.heroStudentsBranded,
   story: "/images/marketing/about-story.png",
   mission: [
     "/images/marketing/mission-understand.png",
@@ -44,24 +44,27 @@ export const ABOUT_IMAGES = {
   promise: BRANDED.privacySecure,
 } as const;
 
-/** Shared hero photo — Start (home), Programme, Fächer */
+/** Shared hero photo — home and all marketing page heroes */
 export const SHARED_PAGE_HERO_IMAGE = BRANDED.heroStudentsBranded;
-
-export const CONTACT_HERO_IMAGE = BRANDED.studyDesk;
-export const PROGRAMS_HERO_IMAGE = SHARED_PAGE_HERO_IMAGE;
-export const CONSULTATION_HERO_IMAGE = BRANDED.tutoringSession;
-export const CAREERS_HERO_IMAGE = BRANDED.studentsGroup4;
-export const HELP_HERO_IMAGE = BRANDED.platformLaptop;
-export const RESOURCES_HERO_IMAGE = BRANDED.studentsGroup3;
-export const LOGIN_HERO_IMAGE = BRANDED.tutoringSession;
-export const PRIVACY_HERO_IMAGE = BRANDED.privacySecure;
-export const HOME_PLATFORM_THUMB = BRANDED.progressDashboard;
-export const HOME_TESTIMONIALS_BG = BRANDED.studentsCollab;
 
 /** Primary homepage hero — branded students collaborating */
 export const HOME_HERO_STUDENT_IMAGE = SHARED_PAGE_HERO_IMAGE;
 
-/** Home hero carousel — all branded lifestyle photos */
+/** CMS key + fallback for the unified marketing hero (same as home). */
+export const MARKETING_HERO_CMS_KEY = "cmsImages.home.heroStudent" as const;
+export const MARKETING_HERO_IMAGE = HOME_HERO_STUDENT_IMAGE;
+
+export const CONTACT_HERO_IMAGE = SHARED_PAGE_HERO_IMAGE;
+export const PROGRAMS_HERO_IMAGE = SHARED_PAGE_HERO_IMAGE;
+export const CONSULTATION_HERO_IMAGE = SHARED_PAGE_HERO_IMAGE;
+export const CAREERS_HERO_IMAGE = SHARED_PAGE_HERO_IMAGE;
+export const HELP_HERO_IMAGE = SHARED_PAGE_HERO_IMAGE;
+export const RESOURCES_HERO_IMAGE = SHARED_PAGE_HERO_IMAGE;
+export const LOGIN_HERO_IMAGE = SHARED_PAGE_HERO_IMAGE;
+export const PRIVACY_HERO_IMAGE = SHARED_PAGE_HERO_IMAGE;
+export const PRICING_HERO_IMAGE = SHARED_PAGE_HERO_IMAGE;
+export const HOME_PLATFORM_THUMB = BRANDED.progressDashboard;
+export const HOME_TESTIMONIALS_BG = BRANDED.studentsCollab;
 export const HOME_HERO_CAROUSEL_IMAGES = [
   BRANDED.studyDesk,
   BRANDED.tutoringSession,
@@ -89,8 +92,6 @@ export const PROGRAMS_PAGE_CARD_IMAGES = [
   BRANDED.subjectBooks,
   BRANDED.platformLaptop,
 ] as const;
-
-export const PRICING_HERO_IMAGE = BRANDED.platformLaptop;
 
 export const PRICING_PLAN_IMAGES = PROGRAMS_PAGE_CARD_IMAGES;
 

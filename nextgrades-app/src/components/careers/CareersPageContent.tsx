@@ -23,10 +23,9 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { useMarketingTheme } from "@/lib/marketing-theme";
-import { useCmsImage } from "@/hooks/useCmsImage";
+import { useMarketingHeroImage } from "@/hooks/useCmsImage";
 import { useToast } from "@/context/ToastContext";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
-import { CAREERS_HERO_IMAGE } from "@/lib/marketing-images";
 import { StatGrid } from "@/components/premium/StatGrid";
 import { hero } from "@/lib/premium/tokens";
 import { cn } from "@/lib/utils";
@@ -53,7 +52,7 @@ export function CareersPageContent() {
   const mt = useMarketingTheme();
   const { t, i18n } = useTranslation();
   const toast = useToast();
-  const heroImage = useCmsImage("cmsImages.careers.hero", CAREERS_HERO_IMAGE);
+  const heroImage = useMarketingHeroImage();
 
   const jobs = useMemo(
     () => t("careersPage.jobs", { returnObjects: true }) as Job[],

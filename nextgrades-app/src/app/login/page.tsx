@@ -29,8 +29,7 @@ import {
   AuthMobilePrimaryButton,
 } from "@/components/auth/AuthMobileField";
 import { authSurface } from "@/components/auth/auth-ui";
-import { useCmsImage } from "@/hooks/useCmsImage";
-import { LOGIN_HERO_IMAGE } from "@/lib/marketing-images";
+import { useMarketingHeroImage } from "@/hooks/useCmsImage";
 import { cn } from "@/lib/utils";
 import { AuthGuestGuard } from "@/components/auth/AuthGuestGuard";
 import { AuthModeSwitch } from "@/components/auth/AuthModeSwitch";
@@ -58,7 +57,7 @@ function LoginContent() {
   const { t } = useTranslation();
   const { theme } = useTheme();
   const toast = useToast();
-  const loginHeroImage = useCmsImage("cmsImages.auth.loginHero", LOGIN_HERO_IMAGE);
+  const loginHeroImage = useMarketingHeroImage();
   const isDark = theme === "dark";
   const s = authSurface(isDark);
   const showInviteNote = !isPublicSignupEnabled();

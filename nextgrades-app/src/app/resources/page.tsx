@@ -8,8 +8,7 @@ import { ResourcesLibraryGate } from "@/components/resources/ResourcesLibraryGat
 import { ResourcesHeroBenefits } from "@/components/resources/ResourcesHeroBenefits";
 import { MockupPageHero } from "@/components/mockup/MockupPageHero";
 import { useTranslation } from "react-i18next";
-import { useCmsImage } from "@/hooks/useCmsImage";
-import { RESOURCES_HERO_IMAGE } from "@/lib/marketing-images";
+import { useMarketingHeroImage } from "@/hooks/useCmsImage";
 import { ArrowRight, Crown } from "lucide-react";
 import { useMarketingTheme } from "@/lib/marketing-theme";
 import { cn } from "@/lib/utils";
@@ -17,7 +16,7 @@ import { cn } from "@/lib/utils";
 export default function ResourcesPage() {
   const { t } = useTranslation();
   const mt = useMarketingTheme();
-  const heroImage = useCmsImage("cmsImages.resources.hero", RESOURCES_HERO_IMAGE);
+  const heroImage = useMarketingHeroImage();
 
   return (
     <div className={cn("marketing-page-root flex min-h-screen flex-col", mt.page)}>

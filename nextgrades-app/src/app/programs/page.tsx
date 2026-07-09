@@ -23,7 +23,7 @@ import { useTranslation } from "react-i18next";
 import { useLocalizedContent } from "@/hooks/useLocalizedContent";
 import { useCmsImages } from "@/hooks/useCmsImage";
 import { useMarketingTheme } from "@/lib/marketing-theme";
-import { PROGRAMS_HERO_IMAGE, PROGRAMS_PAGE_CARD_IMAGES, SHARED_PAGE_HERO_IMAGE } from "@/lib/marketing-images";
+import { PROGRAMS_PAGE_CARD_IMAGES, SHARED_PAGE_HERO_IMAGE } from "@/lib/marketing-images";
 import { MarketingImage } from "@/components/marketing/MarketingImage";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
 import { MarketingHeroMobileImage } from "@/components/marketing/MarketingHeroMobileImage";
@@ -50,8 +50,7 @@ type ProgramItem = {
 export default function ProgramsPage() {
   const mt = useMarketingTheme();
   const { t } = useTranslation();
-  const { getImage } = useCmsImages();
-  const programsHeroImage = getImage("cmsImages.programs.hero", PROGRAMS_HERO_IMAGE);
+  const { getImage, marketingHeroImage: programsHeroImage } = useCmsImages();
   const programCardImages = PROGRAMS_PAGE_CARD_IMAGES.map((url, i) =>
     getImage(`cmsImages.programs.card.${i}`, url)
   );

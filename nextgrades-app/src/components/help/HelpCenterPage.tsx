@@ -25,8 +25,7 @@ import Footer from "@/components/Footer";
 import { MockupPageHero } from "@/components/mockup/MockupPageHero";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
-import { useCmsImage } from "@/hooks/useCmsImage";
-import { HELP_HERO_IMAGE } from "@/lib/marketing-images";
+import { useMarketingHeroImage } from "@/hooks/useCmsImage";
 import { section } from "@/lib/premium/tokens";
 import { cn } from "@/lib/utils";
 import { useMarketingTheme } from "@/lib/marketing-theme";
@@ -45,7 +44,7 @@ type PopularArticle = { title: string; views: string };
 export function HelpCenterPage() {
   const { t, i18n } = useTranslation();
   const mt = useMarketingTheme();
-  const heroImage = useCmsImage("cmsImages.help.hero", HELP_HERO_IMAGE);
+  const heroImage = useMarketingHeroImage();
   const [query, setQuery] = useState("");
 
   const categories = useMemo(

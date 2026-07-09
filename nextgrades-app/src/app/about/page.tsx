@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useLocalizedContent } from "@/hooks/useLocalizedContent";
-import { useCmsImages } from "@/hooks/useCmsImage";
+import { useCmsImages, useMarketingHeroImage } from "@/hooks/useCmsImage";
 import { useMarketingTheme } from "@/lib/marketing-theme";
 import { MarketingImage } from "@/components/marketing/MarketingImage";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
@@ -76,7 +76,7 @@ export default function AboutPage() {
   const { t } = useTranslation();
   const { getImage } = useCmsImages();
 
-  const heroImage = getImage("cmsImages.about.hero", ABOUT_IMAGES.hero);
+  const heroImage = useMarketingHeroImage();
   const storyImage = getImage("cmsImages.about.story", ABOUT_IMAGES.story);
   const promiseImage = getImage("cmsImages.about.promise", ABOUT_IMAGES.promise);
   const missionImages = ABOUT_IMAGES.mission.map((url, i) =>

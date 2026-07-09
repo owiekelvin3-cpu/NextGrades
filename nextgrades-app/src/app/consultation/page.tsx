@@ -9,9 +9,8 @@ import { Badge } from "@/components/ui/Badge";
 import { useMarketingTheme } from "@/lib/marketing-theme";
 import { useTranslation } from "react-i18next";
 import { useLocalizedContent } from "@/hooks/useLocalizedContent";
-import { useCmsImage } from "@/hooks/useCmsImage";
+import { useMarketingHeroImage } from "@/hooks/useCmsImage";
 import { useToast } from "@/context/ToastContext";
-import { CONSULTATION_HERO_IMAGE } from "@/lib/marketing-images";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
 import { MarketingHeroMobileImage } from "@/components/marketing/MarketingHeroMobileImage";
 import { COMPANY_PHONE_DISPLAY, COMPANY_PHONE_TEL } from "@/lib/company";
@@ -48,7 +47,7 @@ export default function ConsultationPage() {
   const mt = useMarketingTheme();
   const { t } = useTranslation();
   const toast = useToast();
-  const consultationHeroImage = useCmsImage("cmsImages.consultation.hero", CONSULTATION_HERO_IMAGE);
+  const consultationHeroImage = useMarketingHeroImage();
 
   const trustBadges = useLocalizedContent<string[]>("consultation.trustBadges");
   const steps = useLocalizedContent<StepItem[]>("consultation.steps");

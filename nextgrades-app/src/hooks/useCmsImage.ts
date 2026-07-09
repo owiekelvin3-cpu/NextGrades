@@ -6,6 +6,7 @@ import { useCms } from "@/context/CmsContext";
 import { getCmsImageDefault } from "@/lib/cms/marketing-images-registry";
 import { getPreviewOverrides, isCmsPreviewFrame, subscribePreviewOverrides } from "@/lib/cms/preview-store";
 import { resolveCmsImageSrc } from "@/lib/images/resolve";
+import { MARKETING_HERO_CMS_KEY, MARKETING_HERO_IMAGE } from "@/lib/marketing-images";
 import type { CmsOverrideMap } from "@/lib/cms/types";
 
 function mergeOverrides(published: CmsOverrideMap, preview: CmsOverrideMap | null): CmsOverrideMap {
@@ -36,6 +37,11 @@ export function useCmsImage(key: string, fallback?: string): string {
   return resolveCmsImageSrc(key, overrideStr, fallback, getCmsImageDefault(key));
 }
 
+/** Same hero image as the home page — used on all marketing page heroes. */
+export function useMarketingHeroImage(): string {
+  return useCmsImage(MARKETING_HERO_CMS_KEY, MARKETING_HERO_IMAGE);
+}
+
 /** Batch helper for pages with many images. */
 export function useCmsImages() {
   const overrides = useEffectiveOverrides();
@@ -48,5 +54,7 @@ export function useCmsImages() {
     return resolveCmsImageSrc(key, overrideStr, fallback, getCmsImageDefault(key));
   };
 
-  return { getImage, overrides };
+  const marketingHeroImage = getImage(MARKETING_HERO_CMS_KEY, MARKETING_HERO_IMAGE);
+
+  return { getImage, marketingHeroImage, overrides };
 }

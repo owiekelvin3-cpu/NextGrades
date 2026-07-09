@@ -25,10 +25,10 @@ import { Badge } from "@/components/ui/Badge";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
 import { MarketingHeroMobileImage } from "@/components/marketing/MarketingHeroMobileImage";
 import { useMarketingTheme } from "@/lib/marketing-theme";
-import { useCmsImage } from "@/hooks/useCmsImage";
+import { useMarketingHeroImage } from "@/hooks/useCmsImage";
 import { useLocalizedContent } from "@/hooks/useLocalizedContent";
 import { useToast } from "@/context/ToastContext";
-import { CONTACT_HERO_IMAGE } from "@/lib/marketing-images";
+import { SHARED_PAGE_HERO_IMAGE } from "@/lib/marketing-images";
 import {
   COMPANY_MAILTO,
   COMPANY_PHONE_DISPLAY,
@@ -57,7 +57,7 @@ export function ContactPageContent() {
   const mt = useMarketingTheme();
   const { t, i18n } = useTranslation();
   const toast = useToast();
-  const contactHeroImage = useCmsImage("cmsImages.contact.hero", CONTACT_HERO_IMAGE);
+  const contactHeroImage = useMarketingHeroImage();
   const consultationSubjects = useLocalizedContent<string[]>("consultation.subjects");
   const subjectOptions = Array.isArray(consultationSubjects) ? consultationSubjects : [];
 
@@ -156,7 +156,7 @@ export function ContactPageContent() {
             alt={t("contact.heroImageAlt")}
             variant="dark-split-right"
             backgroundColor="#0D1B2A"
-            fallbackSrc={CONTACT_HERO_IMAGE}
+            fallbackSrc={SHARED_PAGE_HERO_IMAGE}
             priority
           />
           <div className={hero.inner}>
@@ -197,7 +197,7 @@ export function ContactPageContent() {
               <div data-animate="hero-image">
                 <MarketingHeroMobileImage
                   src={contactHeroImage}
-                  fallbackSrc={CONTACT_HERO_IMAGE}
+                  fallbackSrc={SHARED_PAGE_HERO_IMAGE}
                   alt={t("contact.heroImageAlt")}
                   priority
                 />

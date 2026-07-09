@@ -13,12 +13,11 @@ import {
   ListChecks,
   Clock,
 } from "lucide-react";
-import { useCmsImages } from "@/hooks/useCmsImage";
+import { useCmsImages, useMarketingHeroImage } from "@/hooks/useCmsImage";
 import { useHomeCms } from "@/hooks/useHomeCms";
 import {
   PROGRAM_CARD_IMAGES,
   HOME_PLATFORM_THUMB,
-  HOME_HERO_STUDENT_IMAGE,
 } from "@/lib/marketing-images";
 import { HomeHero } from "@/components/premium/HomeHero";
 import { MockupFeatureStrip } from "@/components/mockup/MockupFeatureStrip";
@@ -44,7 +43,7 @@ export function HomePagePremium() {
   const { getImage } = useCmsImages();
   const { testimonials: cmsTestimonials } = useHomeCms();
 
-  const heroImage = getImage("cmsImages.home.heroStudent", HOME_HERO_STUDENT_IMAGE);
+  const heroImage = useMarketingHeroImage();
   const platformImage = getImage("cmsImages.home.platformThumb", HOME_PLATFORM_THUMB);
   const programCardImages = PROGRAM_CARD_IMAGES.map((url, i) =>
     getImage(`cmsImages.home.programCard.${i}`, url)

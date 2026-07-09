@@ -37,7 +37,7 @@ import { useMarketingTheme } from "@/lib/marketing-theme";
 import { useTranslation } from "react-i18next";
 import { useLocalizedContent } from "@/hooks/useLocalizedContent";
 import { useCmsImages } from "@/hooks/useCmsImage";
-import { SUBJECTS_HERO_IMAGE, SHARED_PAGE_HERO_IMAGE, getSubjectImage } from "@/lib/marketing-images";
+import { SHARED_PAGE_HERO_IMAGE, getSubjectImage } from "@/lib/marketing-images";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
 import { MarketingHeroMobileImage } from "@/components/marketing/MarketingHeroMobileImage";
 import { themeInputClass, themeSelectClass } from "@/lib/theme/form-fields";
@@ -75,8 +75,7 @@ export default function SubjectsPage() {
   const mt = useMarketingTheme();
   const { t } = useTranslation();
   const router = useRouter();
-  const { getImage } = useCmsImages();
-  const subjectsHeroImage = getImage("cmsImages.subjects.hero", SUBJECTS_HERO_IMAGE);
+  const { getImage, marketingHeroImage: subjectsHeroImage } = useCmsImages();
   const resolveSubjectImage = (subjectId: string, index: number) => {
     const fallback = getSubjectImage(subjectId, index);
     return {

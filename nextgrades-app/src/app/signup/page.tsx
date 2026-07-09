@@ -19,8 +19,7 @@ import {
   AuthRolePicker,
 } from "@/components/auth/AuthMobileField";
 import { authSurface } from "@/components/auth/auth-ui";
-import { useCmsImage } from "@/hooks/useCmsImage";
-import { LOGIN_HERO_IMAGE } from "@/lib/marketing-images";
+import { useMarketingHeroImage } from "@/hooks/useCmsImage";
 import { sanitizeRedirect } from "@/lib/auth/redirect";
 import { cn } from "@/lib/utils";
 import { AuthGuestGuard } from "@/components/auth/AuthGuestGuard";
@@ -31,7 +30,7 @@ function SignupContent() {
   const searchParams = useSearchParams();
   const { t } = useTranslation();
   const { theme } = useTheme();
-  const signupHeroImage = useCmsImage("cmsImages.auth.loginHero", LOGIN_HERO_IMAGE);
+  const signupHeroImage = useMarketingHeroImage();
   const s = authSurface(theme === "dark");
   const isDark = theme === "dark";
   const redirectTo = sanitizeRedirect(searchParams.get("redirect"));

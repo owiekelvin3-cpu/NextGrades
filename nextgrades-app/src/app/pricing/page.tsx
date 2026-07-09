@@ -23,7 +23,6 @@ import { useCmsImages } from "@/hooks/useCmsImage";
 import { buildLoginUrl } from "@/lib/auth/redirect";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
 import {
-  PRICING_HERO_IMAGE,
   PROGRAMS_PAGE_CARD_IMAGES,
   SHARED_PAGE_HERO_IMAGE,
 } from "@/lib/marketing-images";
@@ -76,8 +75,7 @@ function PricingContent() {
   const router = useRouter();
   const toast = useToast();
   const mt = useMarketingTheme();
-  const { getImage } = useCmsImages();
-  const heroImage = getImage("cmsImages.pricing.hero", PRICING_HERO_IMAGE);
+  const { getImage, marketingHeroImage: heroImage } = useCmsImages();
   const programCardImages = PROGRAMS_PAGE_CARD_IMAGES.map((url, i) =>
     getImage(`cmsImages.programs.card.${i}`, url)
   );

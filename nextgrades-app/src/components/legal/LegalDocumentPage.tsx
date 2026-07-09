@@ -22,8 +22,7 @@ import { OpenCookieSettingsButton } from "@/components/cookies/OpenCookieSetting
 import { Button } from "@/components/ui/Button";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
 import { MARKETING_LIGHT_BG } from "@/components/marketing/MarketingHeroBlend";
-import { useCmsImage } from "@/hooks/useCmsImage";
-import { PRIVACY_HERO_IMAGE } from "@/lib/marketing-images";
+import { useMarketingHeroImage } from "@/hooks/useCmsImage";
 import { LegalTableOfContents } from "@/components/legal/LegalTableOfContents";
 
 type LegalSection = {
@@ -50,7 +49,7 @@ function sectionId(index: number): string {
 export function LegalDocumentPage({ namespace }: LegalDocumentPageProps) {
   const mt = useMarketingTheme();
   const { t, i18n } = useTranslation();
-  const privacyHeroImage = useCmsImage("cmsImages.privacy.hero", PRIVACY_HERO_IMAGE);
+  const privacyHeroImage = useMarketingHeroImage();
   const showPrivacyHero = namespace === "privacy";
   const isTerms = namespace === "terms";
   const [activeSection, setActiveSection] = useState<string | null>(null);
