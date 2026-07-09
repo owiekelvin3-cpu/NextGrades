@@ -5,7 +5,7 @@ import { getAuthProfile } from "@/lib/quiz/auth";
 export const runtime = "nodejs";
 
 const FULL_SELECT =
-  "id, full_name, email, phone, bio, learning_goal, avatar_url, timezone, role, subscription_status, created_at";
+  "id, full_name, email, phone, bio, learning_goal, avatar_url, timezone, role, subscription_status, subscription_plan, subscription_billing, subscription_starts_at, subscription_ends_at, created_at";
 
 const BASE_SELECT = "id, full_name, avatar_url, role, created_at, learning_goal";
 

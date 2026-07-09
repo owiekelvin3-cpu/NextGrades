@@ -1,6 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { storagePathFromLegacyUrl } from "@/lib/catalog/subjects";
 import type { AppRole } from "@/lib/auth/roles";
+import { isSubscriptionCurrentlyActive } from "@/lib/subscriptions/types";
 
 export type MaterialAccessRow = {
   id: string;
@@ -25,6 +26,7 @@ export type AccessContext = {
   userId: string | null;
   role: AppRole | null;
   subscriptionStatus: string | null;
+  subscriptionEndsAt: string | null;
   enrollments: EnrollmentRow[];
 };
 
@@ -52,7 +54,14 @@ export function canAccessMaterial(material: MaterialAccessRow, ctx: AccessContex
   if (!isPremiumMaterial(material)) return true;
 
   if (!ctx.userId) return false;
-  if (ctx.subscriptionStatus === "active") return true;
+  if (
+    isSubscriptionCurrentlyActive({
+      subscription_status: ctx.subscriptionStatus,
+      subscription_ends_at: ctx.subscriptionEndsAt,
+    })
+  ) {
+    return true;
+  }
 
   return ctx.enrollments.some((e) => enrollmentMatchesMaterial(e, material));
 }
@@ -63,11 +72,15 @@ export async function loadAccessContext(
   role: AppRole | null
 ): Promise<AccessContext> {
   if (!userId) {
-    return { userId: null, role, subscriptionStatus: null, enrollments: [] };
+    return { userId: null, role, subscriptionStatus: null, subscriptionEndsAt: null, enrollments: [] };
   }
 
   const [{ data: profile }, { data: enrollments }] = await Promise.all([
-    db.from("profiles").select("subscription_status").eq("id", userId).maybeSingle(),
+    db
+      .from("profiles")
+      .select("subscription_status, subscription_ends_at")
+      .eq("id", userId)
+      .maybeSingle(),
     role === "student" || role === null
       ? db
           .from("enrollments")
@@ -81,6 +94,7 @@ export async function loadAccessContext(
     userId,
     role,
     subscriptionStatus: (profile as { subscription_status?: string } | null)?.subscription_status ?? null,
+    subscriptionEndsAt: (profile as { subscription_ends_at?: string } | null)?.subscription_ends_at ?? null,
     enrollments: (enrollments ?? []) as EnrollmentRow[],
   };
 }

@@ -914,7 +914,11 @@
       },
       "payments": {
         "title": "Payments",
-        "description": "View and manage payments"
+        "description": "Manage paid guest signups and enrollments"
+      },
+      "guestSignups": {
+        "title": "Paid signups",
+        "description": "Review guest payments and create accounts with the correct plan"
       },
       "resources": {
         "title": "Resources",
@@ -1286,6 +1290,7 @@
     "moderation": "Moderation",
     "memberships": "Memberships",
     "payments": "Payments",
+    "guestSignups": "Paid signups",
     "resources": "Resources",
     "chatbot": "AI Chatbot",
     "analytics": "Analytics",
@@ -1749,6 +1754,37 @@
     "createClose": "Close",
     "createSuccess": "User created — credentials sent by email",
     "createFailed": "Failed to create user"
+  },
+  "adminGuestSignups": {
+    "description": "Customers who paid — create their account with the plan and duration they purchased.",
+    "pendingCount": "{{count}} pending",
+    "filterStatus": "Filter status",
+    "filterAll": "All",
+    "fetchFailed": "Could not load requests",
+    "fulfillFailed": "Could not create account",
+    "fulfillSuccess": "Account created — invitation sent to {{email}}",
+    "empty": "No paid signups yet",
+    "colCustomer": "Customer",
+    "colPlan": "Plan",
+    "colSubject": "Subject",
+    "colAmount": "Amount",
+    "colDuration": "Duration",
+    "colStatus": "Status",
+    "billingMonthly": "Monthly",
+    "billingYearly": "Yearly",
+    "review": "Review & create account",
+    "modalTitle": "Create account from payment",
+    "modalDesc": "Plan and duration are taken automatically from the Stripe payment.",
+    "roleHint": "Students receive library or group access based on the plan they paid for.",
+    "createAccount": "Create account & send invite",
+    "alreadyFulfilled": "Already fulfilled",
+    "inviteNote": "The customer receives an email with a link to set their password.",
+    "status": {
+      "payment_received": "Payment received",
+      "details_submitted": "Details submitted",
+      "fulfilled": "Account created",
+      "cancelled": "Cancelled"
+    }
   },
   "adminTable": {
     "previous": "Previous",

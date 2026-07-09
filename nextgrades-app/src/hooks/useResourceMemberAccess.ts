@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase/client";
 import type { AppRole } from "@/lib/auth/roles";
 
+import { isSubscriptionCurrentlyActive } from "@/lib/subscriptions/types";
+
 type MemberAccessState = {
   loading: boolean;
   loggedIn: boolean;
@@ -11,10 +13,17 @@ type MemberAccessState = {
   role: AppRole | null;
 };
 
-function roleHasMemberAccess(role: AppRole | null, subscriptionStatus: string | null): boolean {
+function roleHasMemberAccess(
+  role: AppRole | null,
+  subscriptionStatus: string | null,
+  subscriptionEndsAt?: string | null
+): boolean {
   if (!role) return false;
   if (role === "admin" || role === "teacher") return true;
-  return subscriptionStatus === "active" || subscriptionStatus === "trialing";
+  return isSubscriptionCurrentlyActive({
+    subscription_status: subscriptionStatus,
+    subscription_ends_at: subscriptionEndsAt,
+  });
 }
 
 export function useResourceMemberAccess(): MemberAccessState {
@@ -47,15 +56,20 @@ export function useResourceMemberAccess(): MemberAccessState {
           return;
         }
         const data = (await res.json()) as {
-          profile?: { role?: AppRole; subscription_status?: string | null };
+          profile?: {
+            role?: AppRole;
+            subscription_status?: string | null;
+            subscription_ends_at?: string | null;
+          };
         };
         const role = (data.profile?.role ?? null) as AppRole | null;
         const subscriptionStatus = data.profile?.subscription_status ?? null;
+        const subscriptionEndsAt = data.profile?.subscription_ends_at ?? null;
         if (mounted) {
           setState({
             loading: false,
             loggedIn: true,
-            hasMemberAccess: roleHasMemberAccess(role, subscriptionStatus),
+            hasMemberAccess: roleHasMemberAccess(role, subscriptionStatus, subscriptionEndsAt),
             role,
           });
         }

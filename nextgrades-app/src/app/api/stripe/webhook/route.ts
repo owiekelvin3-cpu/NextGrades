@@ -12,6 +12,8 @@ import {
   sendAdminNotificationEmail,
 } from "@/lib/email";
 import { formatCurrency } from "@/lib/email/utils";
+import { provisionUserSubscription } from "@/lib/subscriptions/provision";
+import { upsertGuestPaymentFromStripeSession } from "@/lib/guest-account-requests/stripe-sync";
 
 async function getUserEmail(userId: string): Promise<{ email: string | null; name: string | null }> {
   if (!isSupabaseServiceRoleConfigured()) return { email: null, name: null };
@@ -77,7 +79,23 @@ export async function POST(request: Request) {
 
         if (userId && admin) {
           if (isSubscription) {
-            await admin.from("profiles").update({ subscription_status: "active" }).eq("id", userId);
+            const customerId =
+              typeof session.customer === "string" ? session.customer : session.customer?.id ?? null;
+            const subscriptionId =
+              typeof session.subscription === "string"
+                ? session.subscription
+                : session.subscription?.id ?? null;
+
+            await provisionUserSubscription(admin, {
+              userId,
+              planId,
+              billing: session.metadata?.billing,
+              subjectId,
+              classId,
+              semester,
+              stripeCustomerId: customerId,
+              stripeSubscriptionId: subscriptionId,
+            });
           } else {
             const { data: userUnits } = await admin.from("user_units").select("*").eq("student_id", userId).single();
             if (userUnits) {
@@ -88,7 +106,7 @@ export async function POST(request: Request) {
             }
           }
 
-          if (subjectId && classId) {
+          if (!isSubscription && subjectId && classId) {
             const { data: existingEnrollment } = await admin
               .from("enrollments")
               .select("id")
@@ -150,14 +168,15 @@ export async function POST(request: Request) {
           if (subjectId && classId) {
             void notifyEnrollment({ studentId: userId, subjectName: courseName });
           }
-        } else if (session.metadata?.guestCheckout === "true") {
+        } else if (session.metadata?.guestCheckout === "true" && admin) {
+          await upsertGuestPaymentFromStripeSession(admin, session);
           const payerEmail = session.customer_details?.email ?? session.customer_email ?? "unknown";
           const subjectLabel = session.metadata?.subjectName || session.metadata?.subjectSlug || courseName;
           void sendAdminNotificationEmail(
-            "Guest payment — awaiting account setup",
-            `${payerEmail} paid ${formatCurrency(amount, currency)} for ${session.metadata?.planName || planId || "subscription"} (${subjectLabel}). They will submit account details on the setup page.`,
-            `${process.env.NEXT_PUBLIC_APP_URL}/checkout/account-setup?session_id=${session.id}`,
-            "View account setup page"
+            "Guest payment — create account",
+            `${payerEmail} paid ${formatCurrency(amount, currency)} for ${session.metadata?.planName || planId || "subscription"} (${subjectLabel}). Review in Admin → Paid signups.`,
+            `${process.env.NEXT_PUBLIC_APP_URL}/portal/admin/guest-signups`,
+            "Open paid signups"
           );
         }
         break;

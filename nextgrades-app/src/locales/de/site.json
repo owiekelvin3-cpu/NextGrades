@@ -910,7 +910,11 @@
       },
       "payments": {
         "title": "Zahlungen",
-        "description": "Zahlungen anzeigen und verwalten"
+        "description": "Bezahlte Gast-Anmeldungen und Einschreibungen verwalten"
+      },
+      "guestSignups": {
+        "title": "Bezahlte Anmeldungen",
+        "description": "Gast-Zahlungen prüfen und Konten mit passendem Abo anlegen"
       },
       "resources": {
         "title": "Ressourcen",
@@ -1282,6 +1286,7 @@
     "moderation": "Moderation",
     "memberships": "Mitgliedschaften",
     "payments": "Zahlungen",
+    "guestSignups": "Bezahlte Anmeldungen",
     "resources": "Ressourcen",
     "chatbot": "KI-Chatbot",
     "analytics": "Analysen",
@@ -1746,6 +1751,37 @@
     "createClose": "Schließen",
     "createSuccess": "Benutzer erstellt — Einladung per E-Mail gesendet",
     "createFailed": "Benutzer konnte nicht erstellt werden"
+  },
+  "adminGuestSignups": {
+    "description": "Kunden, die bezahlt haben — Konto mit dem gebuchten Tarif und der Laufzeit anlegen.",
+    "pendingCount": "{{count}} offen",
+    "filterStatus": "Status filtern",
+    "filterAll": "Alle",
+    "fetchFailed": "Anfragen konnten nicht geladen werden",
+    "fulfillFailed": "Konto konnte nicht erstellt werden",
+    "fulfillSuccess": "Konto erstellt — Einladung an {{email}} gesendet",
+    "empty": "Keine bezahlten Anmeldungen",
+    "colCustomer": "Kunde",
+    "colPlan": "Tarif",
+    "colSubject": "Fach",
+    "colAmount": "Betrag",
+    "colDuration": "Laufzeit",
+    "colStatus": "Status",
+    "billingMonthly": "Monatlich",
+    "billingYearly": "Jährlich",
+    "review": "Prüfen & Konto anlegen",
+    "modalTitle": "Konto aus Zahlung anlegen",
+    "modalDesc": "Der Tarif und die Laufzeit werden automatisch aus der Stripe-Zahlung übernommen.",
+    "roleHint": "SchülerInnen erhalten Bibliotheks- oder Gruppenzugang je nach gebuchtem Tarif.",
+    "createAccount": "Konto anlegen & Einladung senden",
+    "alreadyFulfilled": "Bereits erledigt",
+    "inviteNote": "Der Kunde erhält eine E-Mail mit Link zum Passwort setzen.",
+    "status": {
+      "payment_received": "Zahlung erhalten",
+      "details_submitted": "Daten eingereicht",
+      "fulfilled": "Konto erstellt",
+      "cancelled": "Storniert"
+    }
   },
   "adminTable": {
     "previous": "Zurück",

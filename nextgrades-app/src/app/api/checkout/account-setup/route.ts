@@ -4,6 +4,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { isSupabaseServiceRoleConfigured } from "@/lib/supabase/env";
 import { isResendConfigured, sendGuestAccountSetupEmails } from "@/lib/email";
 import { enforceRateLimit } from "@/lib/security/rate-limit";
+import { guestPaymentFromStripeSession } from "@/lib/guest-account-requests/stripe-sync";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -49,33 +50,40 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Ungültige Checkout-Sitzung." }, { status: 400 });
     }
 
+    const paymentRow = guestPaymentFromStripeSession(session);
+
     if (isSupabaseServiceRoleConfigured()) {
       const admin = createAdminClient();
       const { data: existing } = await admin
         .from("guest_account_requests")
-        .select("id")
+        .select("id, status")
         .eq("stripe_session_id", sessionId)
         .maybeSingle();
 
-      if (existing) {
+      if (existing?.status === "fulfilled") {
         return NextResponse.json({ success: true, alreadySubmitted: true });
       }
 
-      await admin.from("guest_account_requests").insert({
-        stripe_session_id: sessionId,
+      if (existing?.status === "details_submitted") {
+        return NextResponse.json({ success: true, alreadySubmitted: true });
+      }
+
+      const payload = {
+        ...paymentRow,
+        status: "details_submitted",
         first_name: firstName,
         last_name: lastName,
         email,
         phone: phone || null,
         parent_name: parentName || null,
         notes: notes || null,
-        subject_slug: session.metadata?.subjectSlug || null,
-        subject_name: session.metadata?.subjectName || session.metadata?.courseName || null,
-        grade: session.metadata?.grade || null,
-        semester: session.metadata?.semester || null,
-        plan_id: session.metadata?.planId || null,
-        payment_email: session.customer_details?.email ?? session.customer_email ?? null,
-      });
+      };
+
+      if (existing) {
+        await admin.from("guest_account_requests").update(payload).eq("stripe_session_id", sessionId);
+      } else {
+        await admin.from("guest_account_requests").insert(payload);
+      }
     }
 
     const metadata = session.metadata ?? {};
