@@ -8,7 +8,6 @@ import { MobileDrawer } from "@/components/mobile/MobileDrawer";
 import { Button } from "./ui/Button";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { BrandLogo } from "./BrandLogo";
-import { ThemeToggle } from "./ThemeToggle";
 import { useTheme } from "@/context/ThemeContext";
 import { useTranslation } from "react-i18next";
 import { supabase, isSupabaseEnvConfigured } from "@/lib/supabase/client";
@@ -194,9 +193,9 @@ export default function Navbar() {
         <div className="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-5 xl:px-6 2xl:px-8">
           <div className="flex h-[var(--site-nav-height)] items-center justify-between gap-2 lg:gap-3 2xl:gap-5">
             <div className="flex shrink-0 items-center">
-              <BrandLogo size="md" priority={pathname === "/"} onDarkBackground={onDark} className="2xl:hidden" />
+              <BrandLogo size="navbar" priority={pathname === "/"} onDarkBackground={onDark} className="2xl:hidden" />
               <BrandLogo
-                size="nav"
+                size="navbarWide"
                 priority={pathname === "/"}
                 onDarkBackground={onDark}
                 className="hidden 2xl:block"
@@ -275,10 +274,7 @@ export default function Navbar() {
             </nav>
 
             <div className="hidden shrink-0 items-center gap-1.5 md:flex 2xl:gap-2">
-              <div className="flex items-center gap-1">
-                <LanguageSwitcher compact onDark={onDark} />
-                <ThemeToggle size="sm" onDark={onDark} />
-              </div>
+              <LanguageSwitcher compact onDark={onDark} />
 
               <div
                 className={cn("mx-0.5 hidden h-5 w-px 2xl:block", onDark ? "bg-white/10" : "bg-border-default")}
@@ -381,7 +377,7 @@ export default function Navbar() {
           open={isMobileMenuOpen}
           onClose={() => setIsMobileMenuOpen(false)}
           ariaLabel="Site navigation"
-          header={<BrandLogo size="md" onDarkBackground={onDark} />}
+          header={<BrandLogo size="navbar" onDarkBackground={onDark} />}
           footer={
             <div className="space-y-3">
               {session && user ? (
@@ -437,10 +433,7 @@ export default function Navbar() {
 
             <div className="my-6 h-px bg-border-default/60" aria-hidden />
 
-            <div className="space-y-4">
-              <LanguageSwitcher layout="drawer" />
-              <ThemeToggle size="sm" onDark={onDark} />
-            </div>
+            <LanguageSwitcher layout="drawer" />
 
             <div className="mt-6 space-y-1 border-t border-border-default/60 pt-4">
               {secondaryNavLinks.map((link) => (
