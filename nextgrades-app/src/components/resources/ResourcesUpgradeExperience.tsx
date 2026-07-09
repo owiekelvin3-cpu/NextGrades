@@ -1,14 +1,17 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { CheckCircle2, ChevronRight, Headphones, Shield, Clock, Lock, BarChart3, Calendar, Sparkles } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useLocalizedContent } from "@/hooks/useLocalizedContent";
 import { buildLoginUrl } from "@/lib/auth/redirect";
 import { getResourcesSubjectImage } from "@/lib/resources/images";
+import {
+  mergeMarketingSubjectsWithCatalog,
+  type CatalogSubjectLike,
+} from "@/lib/catalog/merge-marketing-subjects";
 import { appShell } from "@/lib/theme/shell";
 import { Button } from "@/components/ui/Button";
 import { hero } from "@/lib/premium/tokens";
@@ -28,20 +31,74 @@ type LocalizedPlan = {
 };
 
 type FaqItem = { question: string; answer: string };
+type MarketingSubjectItem = { id: string; title: string };
+type CatalogClass = { id: string; name: string; level: number };
 
-const SUBJECT_KEYS = ["english", "math", "german", "physics"] as const;
+const MAX_GRADE_LEVEL = 9;
 
-export function ResourcesUpgradeExperience() {
+function ResourcesUpgradeExperienceInner() {
   const mt = useMarketingTheme();
   const { t } = useTranslation();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const subjectParam = searchParams.get("subject")?.trim() ?? "";
+
   const [yearly, setYearly] = useState(false);
   const localizedPlans = useLocalizedContent<LocalizedPlan[]>("pricingPage.plans");
   const plans = Array.isArray(localizedPlans) ? localizedPlans : [];
-  const [subject, setSubject] = useState<string>("math");
-  const [grade, setGrade] = useState("3");
-  const [semester, setSemester] = useState("1");
+  const marketingSubjectsRaw = useLocalizedContent<MarketingSubjectItem[]>("subjectsPage.items");
+
+  const [catalogSubjects, setCatalogSubjects] = useState<CatalogSubjectLike[]>([]);
+  const [catalogClasses, setCatalogClasses] = useState<CatalogClass[]>([]);
+  const [subject, setSubject] = useState("");
+  const [grade, setGrade] = useState("");
+  const [semester, setSemester] = useState("");
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+
+  useEffect(() => {
+    void fetch("/api/catalog")
+      .then((r) => r.json())
+      .then((data) => {
+        if (Array.isArray(data?.subjects)) setCatalogSubjects(data.subjects);
+        if (Array.isArray(data?.classes)) setCatalogClasses(data.classes);
+      })
+      .catch(() => undefined);
+  }, []);
+
+  const subjectOptions = useMemo(() => {
+    const marketing = Array.isArray(marketingSubjectsRaw) ? marketingSubjectsRaw : [];
+    return mergeMarketingSubjectsWithCatalog(marketing, catalogSubjects);
+  }, [marketingSubjectsRaw, catalogSubjects]);
+
+  const gradeOptions = useMemo(() => {
+    const fromCatalog = catalogClasses
+      .filter((c) => c.level >= 1 && c.level <= MAX_GRADE_LEVEL)
+      .sort((a, b) => a.level - b.level);
+    if (fromCatalog.length > 0) return fromCatalog;
+    return Array.from({ length: MAX_GRADE_LEVEL }, (_, i) => ({
+      id: `grade-${i + 1}`,
+      name: t("resources.upgrade.gradeOption", { grade: i + 1 }),
+      level: i + 1,
+    }));
+  }, [catalogClasses, t]);
+
+  useEffect(() => {
+    if (subjectOptions.length === 0) return;
+    const slugs = subjectOptions.map((s) => s.slug || s.id);
+    if (subjectParam && slugs.includes(subjectParam)) {
+      setSubject(subjectParam);
+      return;
+    }
+    setSubject((current) => (current && slugs.includes(current) ? current : slugs[0]));
+  }, [subjectOptions, subjectParam]);
+
+  useEffect(() => {
+    if (gradeOptions.length === 0) return;
+    setGrade((current) => {
+      if (current && gradeOptions.some((g) => String(g.level) === current)) return current;
+      return String(gradeOptions[0].level);
+    });
+  }, [gradeOptions]);
 
   const steps = useMemo(() => {
     const data = t("resources.upgrade.steps", { returnObjects: true });
@@ -66,9 +123,15 @@ export function ResourcesUpgradeExperience() {
     { icon: Clock, title: t("resources.upgrade.trust3Title"), desc: t("resources.upgrade.trust3Desc") },
   ];
 
-  const subjectLabel = t(`resources.upgrade.subjects.${subject}`, {
-    defaultValue: subject,
-  });
+  const selectedSubject = subjectOptions.find((s) => (s.slug || s.id) === subject);
+  const subjectLabel =
+    selectedSubject?.name ??
+    t(`resources.upgrade.subjects.${subject}`, {
+      defaultValue: subject,
+    });
+
+  const selectedGrade = gradeOptions.find((g) => String(g.level) === grade);
+  const gradeLabel = selectedGrade?.name ?? t("resources.upgrade.gradeOption", { grade });
 
   const heroImage = getResourcesSubjectImage(subject);
 
@@ -138,12 +201,16 @@ export function ResourcesUpgradeExperience() {
                   value={subject}
                   onChange={(e) => setSubject(e.target.value)}
                   className={themeSelectClass(subject, "mt-1 py-2.5")}
+                  disabled={subjectOptions.length === 0}
                 >
-                  {SUBJECT_KEYS.map((key) => (
-                    <option key={key} value={key}>
-                      {t(`resources.upgrade.subjects.${key}`)}
-                    </option>
-                  ))}
+                  {subjectOptions.map((s) => {
+                    const slug = s.slug || s.id;
+                    return (
+                      <option key={slug} value={slug}>
+                        {s.name}
+                      </option>
+                    );
+                  })}
                 </select>
               </div>
               <div>
@@ -152,10 +219,11 @@ export function ResourcesUpgradeExperience() {
                   value={grade}
                   onChange={(e) => setGrade(e.target.value)}
                   className={themeSelectClass(grade, "mt-1 py-2.5")}
+                  disabled={gradeOptions.length === 0}
                 >
-                  {[1, 2, 3, 4, 5].map((g) => (
-                    <option key={g} value={g}>
-                      {t("resources.upgrade.gradeOption", { grade: g })}
+                  {gradeOptions.map((g) => (
+                    <option key={g.id} value={String(g.level)}>
+                      {g.name}
                     </option>
                   ))}
                 </select>
@@ -167,21 +235,35 @@ export function ResourcesUpgradeExperience() {
                   onChange={(e) => setSemester(e.target.value)}
                   className={themeSelectClass(semester, "mt-1 py-2.5")}
                 >
+                  <option value="">{t("resources.filters.allSemesters")}</option>
                   <option value="1">{t("resources.upgrade.semesterOption", { semester: 1 })}</option>
                   <option value="2">{t("resources.upgrade.semesterOption", { semester: 2 })}</option>
                 </select>
               </div>
             </div>
-            <p
-              className="mt-4 text-sm text-gray-600"
-              dangerouslySetInnerHTML={{
-                __html: t("resources.upgrade.accessSummary", {
-                  subject: subjectLabel,
-                  grade,
-                  semester,
-                }),
-              }}
-            />
+            <p className="mt-4 text-sm text-gray-600">
+              {semester ? (
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: t("resources.upgrade.accessSummary", {
+                      subject: subjectLabel,
+                      grade: gradeLabel,
+                      semester,
+                    }),
+                  }}
+                />
+              ) : (
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: t("resources.upgrade.accessSummaryAllSemesters", {
+                      subject: subjectLabel,
+                      grade: gradeLabel,
+                      defaultValue: `Du erhältst Zugriff auf alle Inhalte für <strong>${subjectLabel}</strong> – ${gradeLabel}, alle Semester.`,
+                    }),
+                  }}
+                />
+              )}
+            </p>
           </div>
 
           <div className="mb-8 text-center">
@@ -300,5 +382,13 @@ export function ResourcesUpgradeExperience() {
         </div>
       </section>
     </>
+  );
+}
+
+export function ResourcesUpgradeExperience() {
+  return (
+    <Suspense fallback={null}>
+      <ResourcesUpgradeExperienceInner />
+    </Suspense>
   );
 }
