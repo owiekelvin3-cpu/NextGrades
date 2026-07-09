@@ -146,9 +146,6 @@ function PricingContent() {
           <div className="relative z-10 mx-auto w-full max-w-7xl px-5 pb-6 pt-site-nav sm:px-6 md:min-h-[520px] md:pb-12 lg:min-h-[560px] lg:px-8">
             <div className="grid min-w-0 items-center gap-8 lg:grid-cols-2 lg:gap-16">
               <div className="max-w-xl">
-                <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#D4AF37] sm:mb-4 sm:text-xs sm:tracking-[0.22em]" data-animate="hero-headline">
-                  {t("pricingPage.plansEyebrow")}
-                </p>
                 <h1 className="text-[1.75rem] font-bold leading-[1.12] tracking-tight sm:text-4xl md:text-5xl lg:text-[3.25rem]" data-animate="hero-headline" data-animate-delay="0.1">
                   {t("pricingPage.plansTitle")}
                 </h1>
