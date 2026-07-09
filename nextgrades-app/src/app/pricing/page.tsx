@@ -11,23 +11,24 @@ import {
   type ProgramCompareRow,
 } from "@/components/programs/ProgramCompareTable";
 import { MarketingCtaButtons } from "@/components/premium/MarketingCtaButtons";
+import { MarketingHeroMobileImage } from "@/components/marketing/MarketingHeroMobileImage";
 import { SectionHeader } from "@/components/premium/SectionHeader";
-import { MarketingImage } from "@/components/marketing/MarketingImage";
 import { Card } from "@/components/ui/Card";
-import { CheckCircle2, ChevronDown, Loader2, Star, BookOpen, GraduationCap, FileText, UserRound } from "lucide-react";
+import { ChevronDown, Loader2, Star, GraduationCap, FileText, UserRound } from "lucide-react";
 import { supabase } from "@/lib/supabase/client";
 import { useTranslation } from "react-i18next";
 import { useLocalizedContent } from "@/hooks/useLocalizedContent";
 import { useToast } from "@/context/ToastContext";
-import { useCmsImage } from "@/hooks/useCmsImage";
+import { useCmsImages } from "@/hooks/useCmsImage";
 import { buildLoginUrl } from "@/lib/auth/redirect";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
 import {
   PRICING_HERO_IMAGE,
-  PRICING_PLAN_IMAGES,
+  PROGRAMS_PAGE_CARD_IMAGES,
+  SHARED_PAGE_HERO_IMAGE,
 } from "@/lib/marketing-images";
 import { cn } from "@/lib/utils";
-import { section } from "@/lib/premium/tokens";
+import { hero, section } from "@/lib/premium/tokens";
 import { useMarketingTheme } from "@/lib/marketing-theme";
 
 type PlanAction = "checkout" | "resources" | "consultation";
@@ -37,11 +38,23 @@ type PricingStat = { value: string; label: string };
 const CHECKOUT_PLANS = new Set(["resource", "group", "premium"]);
 const STAT_ICONS = [UserRound, GraduationCap, FileText, Star];
 
-const PLAN_IMAGE_BY_ID: Record<string, string> = {
-  library: PRICING_PLAN_IMAGES[0],
-  group: PRICING_PLAN_IMAGES[1],
-  premium: PRICING_PLAN_IMAGES[2],
-  matura: PRICING_PLAN_IMAGES[3],
+const PLAN_ORDER = ["premium", "group", "matura", "library"] as const;
+
+/** Same CMS card images as /programs — index matches program card order. */
+const PLAN_IMAGE_INDEX: Record<string, number> = {
+  premium: 0,
+  group: 1,
+  matura: 2,
+  library: 3,
+  resource: 3,
+};
+
+const PLAN_TYPE_LABEL: Record<string, string> = {
+  premium: "1:1",
+  group: "Gruppe",
+  matura: "Matura",
+  library: "Bibliothek",
+  resource: "Bibliothek",
 };
 
 function planActionType(planId: string): PlanAction {
@@ -63,10 +76,18 @@ function PricingContent() {
   const router = useRouter();
   const toast = useToast();
   const mt = useMarketingTheme();
-  const heroImage = useCmsImage("cmsImages.pricing.hero", PRICING_HERO_IMAGE);
+  const { getImage } = useCmsImages();
+  const heroImage = getImage("cmsImages.pricing.hero", PRICING_HERO_IMAGE);
+  const programCardImages = PROGRAMS_PAGE_CARD_IMAGES.map((url, i) =>
+    getImage(`cmsImages.programs.card.${i}`, url)
+  );
 
   const localizedPlans = useLocalizedContent<PricingPlanCardPlan[]>("pricingPage.plans");
-  const plans = Array.isArray(localizedPlans) ? localizedPlans : [];
+  const plans = Array.isArray(localizedPlans)
+    ? [...localizedPlans].sort(
+        (a, b) => PLAN_ORDER.indexOf(a.id as (typeof PLAN_ORDER)[number]) - PLAN_ORDER.indexOf(b.id as (typeof PLAN_ORDER)[number])
+      )
+    : [];
 
   const faqsRaw = useLocalizedContent<{ question: string; answer: string }[]>("pricingPage.faqs");
   const faqs = Array.isArray(faqsRaw) ? faqsRaw : [];
@@ -127,47 +148,46 @@ function PricingContent() {
       <Navbar />
 
       <main className="flex-1 overflow-x-hidden">
-        {/* Hero */}
-        <section className="relative overflow-hidden bg-[#0D1B2A] text-white">
-          <div className="pointer-events-none absolute inset-0 hidden md:block">
-            <MarketingHeroBlend
-              src={heroImage}
-              alt=""
-              variant="dark-split-right"
-              backgroundColor="#0D1B2A"
-              priority
-              sizes="(max-width: 1024px) 100vw, 55vw"
-            />
-          </div>
-          <div
-            className="pointer-events-none absolute inset-0 bg-[#0D1B2A] md:hidden"
-            aria-hidden
+        {/* Hero — same image pattern as Programme */}
+        <section className={cn("bg-[#0D1B2A] text-white", hero.section)}>
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(212,175,55,0.15),transparent_45%)]" />
+          <MarketingHeroBlend
+            src={heroImage}
+            alt=""
+            variant="dark-split-right"
+            backgroundColor="#0D1B2A"
+            fallbackSrc={SHARED_PAGE_HERO_IMAGE}
+            priority
+            sizes="(max-width: 1024px) 100vw, 55vw"
           />
-          <div className="relative z-10 mx-auto w-full max-w-7xl px-5 pb-6 pt-site-nav sm:px-6 md:min-h-[520px] md:pb-12 lg:min-h-[560px] lg:px-8">
-            <div className="grid min-w-0 items-center gap-8 lg:grid-cols-2 lg:gap-16">
-              <div className="max-w-xl">
-                <h1 className="text-[1.75rem] font-bold leading-[1.12] tracking-tight sm:text-4xl md:text-5xl lg:text-[3.25rem]" data-animate="hero-headline" data-animate-delay="0.1">
+          <div className={hero.inner}>
+            <div className="grid min-w-0 items-center gap-10 sm:gap-12 lg:grid-cols-2 lg:gap-16">
+              <div className="min-w-0 max-w-xl">
+                <h1
+                  className="text-[1.75rem] font-bold leading-[1.12] tracking-tight sm:text-4xl md:text-5xl lg:text-[3.25rem]"
+                  data-animate="hero-headline"
+                  data-animate-delay="0.1"
+                >
                   {t("pricingPage.plansTitle")}
                 </h1>
-                <p className="mt-4 max-w-lg text-[15px] leading-relaxed text-on-navy-muted sm:mt-6 sm:text-base md:text-lg" data-animate="hero-subheadline">
+                <p
+                  className="mt-4 max-w-lg text-[15px] leading-relaxed text-on-navy-muted sm:mt-6 sm:text-base md:text-lg"
+                  data-animate="hero-subheadline"
+                >
                   {t("pricingPage.plansSubtitle")}
                 </p>
                 <p className="mt-3 text-sm text-on-navy-subtle" data-animate="hero-subheadline" data-animate-delay="0.2">
                   {t("pricingPage.valueProposition")}
                 </p>
               </div>
-              <div className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-white/10 shadow-lg md:hidden" data-animate="hero-image">
-                <MarketingImage
+              <div data-animate="hero-image">
+                <MarketingHeroMobileImage
                   src={heroImage}
+                  fallbackSrc={SHARED_PAGE_HERO_IMAGE}
                   alt=""
-                  containerClassName="h-full w-full"
-                  sizes="100vw"
                   priority
-                  className="object-cover"
                 />
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0D1B2A]/50 to-transparent" />
               </div>
-              <div className="hidden min-h-[280px] lg:block" aria-hidden />
             </div>
           </div>
         </section>
@@ -210,31 +230,35 @@ function PricingContent() {
           </section>
         )}
 
-        {/* Plans */}
-        <section className={cn("py-10 sm:py-14 md:py-16 lg:py-20", mt.sectionAlt)}>
+        {/* Premium-Tarife — aligned with Programme cards */}
+        <section className={cn("py-14 md:py-16", mt.sectionAlt)}>
           <div className={section.container}>
-            <SectionHeader
-              eyebrow={t("pricing.badge")}
-              title={t("pricing.choosePlan")}
-              subtitle={t("pricingPage.trustedDesc")}
-              align="center"
-              className="!mb-8 sm:!mb-10 md:!mb-12"
-            />
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 xl:grid-cols-4" data-animate="staggerChildren" data-stagger="0.15">
-              {plans.map((plan) => (
-                <PricingPlanCard
-                  key={plan.id}
-                  plan={plan}
-                  imageSrc={PLAN_IMAGE_BY_ID[plan.id]}
-                  isLoading={loadingPlan === plan.id}
-                  onSelect={() => handlePlanSelect(plan)}
-                  popularLabel={t("pricing.mostPopular")}
-                  ctaLabel={
-                    (planActions && typeof planActions === "object" && planActions[plan.id]) ||
-                    t("pricing.getStarted")
-                  }
-                />
-              ))}
+            <div className="mb-10 text-center">
+              <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--brand-gold)]">
+                {t("pricing.badge")}
+              </p>
+              <h2 className="mb-2 text-3xl font-bold text-[var(--foreground)] sm:text-4xl">{t("pricing.choosePlan")}</h2>
+              <p className="mx-auto max-w-2xl text-[var(--text-muted)]">{t("pricingPage.trustedDesc")}</p>
+            </div>
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-6 xl:grid-cols-4" data-animate="staggerChildren" data-stagger="0.15">
+              {plans.map((plan) => {
+                const imageIndex = PLAN_IMAGE_INDEX[plan.id] ?? 0;
+                return (
+                  <PricingPlanCard
+                    key={plan.id}
+                    plan={plan}
+                    imageSrc={programCardImages[imageIndex]}
+                    typeLabel={PLAN_TYPE_LABEL[plan.id]}
+                    isLoading={loadingPlan === plan.id}
+                    onSelect={() => handlePlanSelect(plan)}
+                    popularLabel={t("pricing.mostPopular")}
+                    ctaLabel={
+                      (planActions && typeof planActions === "object" && planActions[plan.id]) ||
+                      t("pricing.getStarted")
+                    }
+                  />
+                );
+              })}
             </div>
           </div>
         </section>
