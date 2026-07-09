@@ -7,6 +7,7 @@ import { getSubjectUi } from "@/lib/resources/ui-config";
 import { getResourcesSubjectImage } from "@/lib/resources/images";
 import { MarketingImage } from "@/components/marketing/MarketingImage";
 import { RESOURCES_DEFAULT_THUMBNAIL } from "@/lib/resources/images";
+import { cn } from "@/lib/utils";
 
 type Subject = { id: string; name: string; slug?: string | null };
 
@@ -20,6 +21,7 @@ type Props = {
   headerTitle?: string;
   headerDesc?: string;
   sectionId?: string;
+  onDark?: boolean;
 };
 
 export function SubjectBrowseGrid({
@@ -31,6 +33,7 @@ export function SubjectBrowseGrid({
   headerTitle,
   headerDesc,
   sectionId,
+  onDark = false,
 }: Props) {
   const { t } = useTranslation();
 
@@ -43,8 +46,15 @@ export function SubjectBrowseGrid({
     <div className={className} id={sectionId}>
       {!hideHeader && (
         <div className="mb-6">
-          <h2 className="text-xl font-bold tracking-tight text-[var(--foreground)] sm:text-2xl">{title}</h2>
-          <p className="mt-1 text-sm text-[var(--text-muted)]">{desc}</p>
+          <h2
+            className={cn(
+              "text-xl font-bold tracking-tight sm:text-2xl",
+              onDark ? "text-white" : "text-[var(--foreground)]"
+            )}
+          >
+            {title}
+          </h2>
+          <p className={cn("mt-1 text-sm", onDark ? "text-on-navy-muted" : "text-[var(--text-muted)]")}>{desc}</p>
         </div>
       )}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4 xl:grid-cols-4">

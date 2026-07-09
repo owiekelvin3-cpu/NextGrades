@@ -12,9 +12,9 @@ import { LoadingBlock } from "@/components/dashboard/LoadingBlock";
 import { MobileResourceCard } from "@/components/mobile/MobileResourceCard";
 import { SectionHeader } from "@/components/premium/SectionHeader";
 import { Button } from "@/components/ui/Button";
+import { BibliothekFilterSidebar } from "@/components/resources/BibliothekFilterSidebar";
 import { isPremiumResource } from "@/lib/resources/ui-config";
 import { section } from "@/lib/premium/tokens";
-import { theme as th } from "@/lib/theme/tokens";
 import { cn } from "@/lib/utils";
 
 const FEATURE_ICONS = [BookOpen, RefreshCw, GraduationCap, ShieldCheck] as const;
@@ -29,8 +29,15 @@ export function ResourcesBibliothekExperience({ access }: Props) {
   const catalog = useResourcesCatalog();
   const locked = access === "locked";
 
-  const hasActiveFilters = Boolean(catalog.search.trim() || catalog.subjectSlug);
-  const showSubjectBrowse = !hasActiveFilters;
+  const hasResourceFilters = Boolean(
+    catalog.search.trim() ||
+      catalog.subjectSlug ||
+      catalog.classLevel ||
+      catalog.semester ||
+      catalog.accessFilter !== "all" ||
+      catalog.materialTypes.length > 0
+  );
+  const showSubjectBrowse = !hasResourceFilters;
   const featured = catalog.resources.slice(0, 4);
   const gridItems = catalog.resources.slice(0, 12);
   const hasMaterials = catalog.resources.length > 0;
@@ -50,74 +57,98 @@ export function ResourcesBibliothekExperience({ access }: Props) {
 
   return (
     <>
+      <section className="bg-[#0D1B2A] py-10 text-white md:py-14">
+        <div className={section.container}>
+          <div className="grid gap-8 lg:grid-cols-[minmax(0,280px)_minmax(0,1fr)] lg:gap-10 xl:gap-12">
+            <BibliothekFilterSidebar
+              classes={catalog.classes}
+              classLevel={catalog.classLevel}
+              semester={catalog.semester}
+              accessFilter={catalog.accessFilter}
+              materialTypes={catalog.materialTypes}
+              onClassChange={catalog.setClassLevel}
+              onSemesterChange={catalog.setSemester}
+              onAccessChange={catalog.setAccessFilter}
+              onMaterialTypesChange={catalog.setMaterialTypes}
+              onReset={catalog.resetFilters}
+              className="lg:sticky lg:top-24 lg:self-start"
+            />
+
+            <div id="faecher-entdecken" className="min-w-0 space-y-8">
+              <p className="max-w-3xl text-base leading-relaxed text-on-navy-muted sm:text-lg lg:text-xl">
+                {t("resources.gridIntro")}
+              </p>
+
+              <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 shadow-sm backdrop-blur-sm md:p-6">
+                <label className="sr-only" htmlFor="bibliothek-search">
+                  {t("resources.searchPlaceholder")}
+                </label>
+                <div className="relative">
+                  <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-white/40" />
+                  <input
+                    id="bibliothek-search"
+                    type="search"
+                    value={catalog.search}
+                    onChange={(e) => catalog.setSearch(e.target.value)}
+                    placeholder={t("resources.searchPlaceholder")}
+                    className="w-full rounded-xl border border-white/15 bg-white/10 py-3.5 pl-12 pr-4 text-sm text-white placeholder:text-white/40 outline-none transition focus:border-[#D4AF37]/50 focus:ring-2 focus:ring-[#D4AF37]/25"
+                  />
+                </div>
+
+                <div className="mt-4 flex flex-wrap items-center gap-2">
+                  {visibleSubjects.map((s) => {
+                    const slug = s.slug || s.id;
+                    const active = catalog.subjectSlug === slug;
+                    return (
+                      <button
+                        key={s.id}
+                        type="button"
+                        onClick={() => catalog.setSubjectSlug(active ? "" : slug)}
+                        className={cn(
+                          "shrink-0 touch-manipulation rounded-full px-4 py-2 text-sm font-semibold transition",
+                          active
+                            ? "bg-[#D4AF37] text-[#0D1B2A]"
+                            : "border border-white/15 text-white/80 hover:border-[#D4AF37]/40 hover:text-[#D4AF37]"
+                        )}
+                      >
+                        {s.name}
+                      </button>
+                    );
+                  })}
+                  {hasMoreSubjects && (
+                    <Link
+                      href="/subjects"
+                      className="inline-flex shrink-0 items-center gap-1 rounded-full border border-white/15 px-4 py-2 text-sm font-semibold text-white/80 transition hover:border-[#D4AF37]/40 hover:text-[#D4AF37]"
+                    >
+                      {t("resources.moreSubjects")}
+                      <ArrowRight className="h-4 w-4" aria-hidden />
+                    </Link>
+                  )}
+                </div>
+              </div>
+
+              {showSubjectBrowse && catalog.subjects.length > 0 && (
+                <SubjectBrowseGrid
+                  subjects={catalog.subjects}
+                  subjectCounts={catalog.subjectCounts}
+                  locked={locked}
+                  headerTitle={t("resources.discoverSubjectsTitle")}
+                  headerDesc={t("resources.discoverSubjectsDesc")}
+                  onDark
+                />
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="bg-[var(--surface-muted)] py-10 md:py-14">
         <div className={cn(section.container, "space-y-12 md:space-y-14")}>
-          <div id="faecher-entdecken" className="space-y-8">
-            <div className="rounded-2xl border border-[var(--border-default)] bg-[var(--card-background)] p-5 shadow-sm md:p-6">
-              <label className="sr-only" htmlFor="bibliothek-search">
-                {t("resources.searchPlaceholder")}
-              </label>
-              <div className="relative">
-                <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[var(--text-subtle)]" />
-                <input
-                  id="bibliothek-search"
-                  type="search"
-                  value={catalog.search}
-                  onChange={(e) => catalog.setSearch(e.target.value)}
-                  placeholder={t("resources.searchPlaceholder")}
-                  className="w-full rounded-xl border border-[var(--input-border)] bg-[var(--input-background)] py-3.5 pl-12 pr-4 text-sm text-[var(--input-foreground)] outline-none transition focus:border-[var(--brand-gold)] focus:ring-2 focus:ring-[var(--brand-gold-ring)]"
-                />
-              </div>
-
-              <div className="mt-4 flex flex-wrap items-center gap-2">
-                {visibleSubjects.map((s) => {
-                  const slug = s.slug || s.id;
-                  const active = catalog.subjectSlug === slug;
-                  return (
-                    <button
-                      key={s.id}
-                      type="button"
-                      onClick={() => catalog.setSubjectSlug(active ? "" : slug)}
-                      className={cn(
-                        "btn-pill shrink-0 touch-manipulation",
-                        active ? th.btnPillActive : th.btnPillInactive
-                      )}
-                    >
-                      {s.name}
-                    </button>
-                  );
-                })}
-                {hasMoreSubjects && (
-                  <Link
-                    href="/subjects"
-                    className={cn(
-                      "inline-flex shrink-0 items-center gap-1 rounded-full px-4 py-2 text-sm font-semibold transition",
-                      "border border-[var(--border-default)] text-[var(--foreground-secondary)] hover:border-[var(--brand-gold)]/40 hover:text-[var(--brand-gold)]"
-                    )}
-                  >
-                    {t("resources.moreSubjects")}
-                    <ArrowRight className="h-4 w-4" aria-hidden />
-                  </Link>
-                )}
-              </div>
-            </div>
-
-            {showSubjectBrowse && catalog.subjects.length > 0 && (
-              <SubjectBrowseGrid
-                subjects={catalog.subjects}
-                subjectCounts={catalog.subjectCounts}
-                locked={locked}
-                headerTitle={t("resources.discoverSubjectsTitle")}
-                headerDesc={t("resources.discoverSubjectsDesc")}
-              />
-            )}
-          </div>
-
           {catalog.loading ? (
             <LoadingBlock />
           ) : hasMaterials ? (
             <>
-              {!locked && featured.length > 0 && !catalog.search && !catalog.subjectSlug && (
+              {!locked && featured.length > 0 && !hasResourceFilters && (
                 <div>
                   <SectionHeader
                     eyebrow={t("resources.featuredEyebrow")}
@@ -140,7 +171,7 @@ export function ResourcesBibliothekExperience({ access }: Props) {
                 </div>
               )}
 
-              {(catalog.search || catalog.subjectSlug) && (
+              {hasResourceFilters && (
                 <div>
                   <SectionHeader
                     title={t("resources.gridTitle")}
@@ -177,8 +208,8 @@ export function ResourcesBibliothekExperience({ access }: Props) {
                 </div>
               )}
             </>
-          ) : hasActiveFilters ? (
-            <LibraryEmptyState searching={hasActiveFilters} query={catalog.search} />
+          ) : hasResourceFilters ? (
+            <LibraryEmptyState searching={Boolean(catalog.search.trim())} query={catalog.search} />
           ) : null}
 
           {/* Unlock CTA + feature row */}
