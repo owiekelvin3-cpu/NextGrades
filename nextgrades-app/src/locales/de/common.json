@@ -358,6 +358,8 @@
     "directReach": "Oder erreich uns direkt unter",
     "heroCta": "Nachricht senden",
     "benefitsEyebrow": "Warum Eltern uns wählen",
+    "benefitsTitle": "Betreuung, der Eltern vertrauen",
+    "benefitsSubtitle": "Von der ersten Frage bis zur Anmeldung — persönliche Beratung, erfahrene Lehrkräfte und messbare Fortschritte.",
     "benefits": [
       {
         "title": "Persönliche Betreuung",
@@ -398,7 +400,7 @@
       }
     ],
     "supportTitle": "Noch Fragen?",
-    "supportDesc": "Erreich uns direkt per E-Mail oder Telefon — wir helfen gerne weiter.",
+    "supportDesc": "Erreich uns direkt per E-Mail oder Telefon - wir helfen gerne weiter.",
     "faqTitle": "Häufig gestellte Fragen",
     "faqs": [
       {
@@ -448,7 +450,7 @@
     "lastNameOptional": "Nachname (optional)",
     "phoneOptional": "Telefonnummer (optional)",
     "formTitle": "Schreib uns eine Nachricht",
-    "formDesc": "Fülle das Formular aus — unser Team meldet sich in Kürze bei dir.",
+    "formDesc": "Fülle das Formular aus -unser Team meldet sich in Kürze bei dir.",
     "formSubject": "Kontaktformular",
     "heroImageAlt": "NextGrades Support-Team",
     "ctaEyebrow": "Kostenlose Beratung",

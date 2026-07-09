@@ -86,18 +86,22 @@ export function HelpCenterPage() {
           }
           subtitle={t("helpPage.subtitle")}
           heroImage={heroImage}
-        >
-          <div className="relative mt-8 max-w-xl">
-            <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[var(--text-subtle)]" />
-            <input
-              type="search"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder={t("helpPage.searchPlaceholder")}
-              className="w-full rounded-2xl border border-[var(--input-border)] bg-[var(--input-background)] py-4 pl-12 pr-4 text-sm text-[var(--input-foreground)] shadow-sm transition focus:border-[var(--brand-gold)] focus:outline-none focus:ring-2 focus:ring-[var(--brand-gold-ring)]"
-            />
+        />
+
+        <section className={cn("border-b border-[var(--border-default)] py-8", mt.section)}>
+          <div className={section.container}>
+            <div className="relative mx-auto max-w-xl">
+              <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[var(--text-subtle)]" />
+              <input
+                type="search"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder={t("helpPage.searchPlaceholder")}
+                className="w-full rounded-2xl border border-[var(--input-border)] bg-[var(--input-background)] py-4 pl-12 pr-4 text-sm text-[var(--input-foreground)] shadow-sm transition focus:border-[var(--brand-gold)] focus:outline-none focus:ring-2 focus:ring-[var(--brand-gold-ring)]"
+              />
+            </div>
           </div>
-        </MockupPageHero>
+        </section>
 
         <section className={cn("border-b border-[var(--border-default)] py-10", mt.section)}>
           <div className={section.container}>

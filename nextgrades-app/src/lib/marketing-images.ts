@@ -41,7 +41,7 @@ export const ABOUT_IMAGES = {
     "/images/marketing/mission-individual.png",
     "/images/marketing/mission-results.png",
   ] as const,
-  promise: BRANDED.privacySecure,
+  promise: "/images/marketing/about-promise.png",
 } as const;
 
 /** Shared hero photo — home and all marketing page heroes */

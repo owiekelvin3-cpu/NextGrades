@@ -40,7 +40,7 @@ export function HomeHero({
       />
 
       <div className={hero.inner}>
-        <div className="grid min-w-0 items-center gap-8 lg:grid-cols-2 lg:gap-12 xl:gap-16">
+        <div className="grid min-h-0 min-w-0 flex-1 items-center gap-8 lg:grid-cols-2 lg:gap-12 xl:gap-16">
           <div className="max-w-xl">
             <p className={`${type.eyebrow} mb-4 sm:mb-5`} data-animate="hero-headline">
               {eyebrow}

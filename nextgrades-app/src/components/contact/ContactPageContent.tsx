@@ -24,6 +24,7 @@ import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
 import { MarketingHeroMobileImage } from "@/components/marketing/MarketingHeroMobileImage";
+import { SectionHeader } from "@/components/premium/SectionHeader";
 import { useMarketingTheme } from "@/lib/marketing-theme";
 import { useMarketingHeroImage } from "@/hooks/useCmsImage";
 import { useLocalizedContent } from "@/hooks/useLocalizedContent";
@@ -41,14 +42,8 @@ import { cn } from "@/lib/utils";
 
 const BENEFIT_ICONS = [Heart, Users, BookOpen, TrendingUp];
 
-const PROGRAM_OPTIONS = [
-  { value: "1to1", labelKey: "footer.program1" },
-  { value: "group", labelKey: "footer.program2" },
-  { value: "math", labelKey: "footer.program3" },
-  { value: "exam", labelKey: "footer.program4" },
-  { value: "general", labelKey: "contact.subjectGeneral" },
-] as const;
-
+type SubjectItem = { id: string; title: string };
+type ProgramItem = { title: string };
 type Benefit = { title: string; description: string };
 type Step = { title: string; description: string };
 type Faq = { question: string; answer: string };
@@ -58,8 +53,16 @@ export function ContactPageContent() {
   const { t, i18n } = useTranslation();
   const toast = useToast();
   const contactHeroImage = useMarketingHeroImage();
-  const consultationSubjects = useLocalizedContent<string[]>("consultation.subjects");
-  const subjectOptions = Array.isArray(consultationSubjects) ? consultationSubjects : [];
+  const subjectsRaw = useLocalizedContent<SubjectItem[]>("subjectsPage.items");
+  const programsRaw = useLocalizedContent<ProgramItem[]>("programsPage.items");
+  const subjectOptions = useMemo(
+    () => (Array.isArray(subjectsRaw) ? subjectsRaw.map((item) => item.title).filter(Boolean) : []),
+    [subjectsRaw, i18n.language]
+  );
+  const programOptions = useMemo(
+    () => (Array.isArray(programsRaw) ? programsRaw.map((item) => item.title).filter(Boolean) : []),
+    [programsRaw, i18n.language]
+  );
 
   const benefits = useMemo(
     () => t("contact.benefits", { returnObjects: true }) as Benefit[],
@@ -93,7 +96,7 @@ export function ContactPageContent() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.firstName.trim() || !formData.email.trim() || !formData.message.trim()) {
+    if (!formData.firstName.trim() || !formData.lastName.trim() || !formData.email.trim() || !formData.phone.trim() || !formData.message.trim()) {
       toast.error(t("contact.validationRequired"));
       return;
     }
@@ -122,9 +125,11 @@ export function ContactPageContent() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          firstName: formData.firstName.trim(),
+          lastName: formData.lastName.trim(),
           name: [formData.firstName, formData.lastName].filter(Boolean).join(" ").trim(),
-          email: formData.email,
-          phone: formData.phone,
+          email: formData.email.trim(),
+          phone: formData.phone.trim(),
           message: messageBody,
           subject: subjectLine,
         }),
@@ -160,7 +165,7 @@ export function ContactPageContent() {
             priority
           />
           <div className={hero.inner}>
-            <div className="grid min-w-0 items-center gap-10 lg:grid-cols-2 lg:gap-16">
+            <div className="grid min-h-0 min-w-0 flex-1 items-center gap-10 lg:grid-cols-2 lg:gap-16">
               <div className="relative z-10 min-w-0 max-w-xl">
                 <Badge variant="gold" className="mb-5" data-animate="hero-headline">
                   <MessageSquare className="mr-1.5 h-3.5 w-3.5" />
@@ -174,18 +179,6 @@ export function ContactPageContent() {
                   data-animate="hero-subheadline"
                 >
                   {t("contact.subtitle")}
-                </p>
-                {t("contact.heroDesc") && (
-                  <p className="mt-3 max-w-xl text-sm leading-relaxed text-on-navy-subtle md:text-base">{t("contact.heroDesc")}</p>
-                )}
-                <p className="mt-4 text-sm text-on-navy-muted">
-                  {t("contact.directReach")}{" "}
-                  <a
-                    href={COMPANY_MAILTO}
-                    className="font-semibold text-[var(--brand-gold)] hover:underline"
-                  >
-                    {COMPANY_SUPPORT_EMAIL}
-                  </a>
                 </p>
                 <div data-animate="hero-cta">
                   <Button variant="gold" size="lg" href="#contact-form" className="mt-8">
@@ -206,23 +199,34 @@ export function ContactPageContent() {
           </div>
         </section>
 
-        <section className={cn("-mt-6 relative z-10 px-4 pb-4 sm:px-6 lg:px-8", mt.sectionAlt)}>
-          <div className="mx-auto max-w-7xl">
-            <div className="mb-8 text-center md:mb-10">
-              <p className="text-xs font-bold uppercase tracking-[0.25em] text-[var(--brand-gold)]">
-                {t("contact.benefitsEyebrow")}
-              </p>
-            </div>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4" data-animate="staggerChildren" data-stagger="0.12">
+        <section className="relative z-10 bg-[#0D1B2A] pb-14 pt-2 text-white md:pb-20 md:pt-6">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <SectionHeader
+              eyebrow={t("contact.benefitsEyebrow")}
+              title={t("contact.benefitsTitle")}
+              subtitle={t("contact.benefitsSubtitle")}
+              dark
+              className="!mb-8 md:!mb-12"
+            />
+            <div
+              className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6"
+              data-animate="staggerChildren"
+              data-stagger="0.12"
+            >
               {(Array.isArray(benefits) ? benefits : []).map((item, i) => {
                 const Icon = BENEFIT_ICONS[i] ?? Heart;
                 return (
-                  <Card key={item.title} className={cn("p-5 sm:p-6", mt.card)}>
-                    <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-[var(--brand-gold-muted)]">
-                      <Icon className="h-5 w-5 text-[var(--brand-gold)]" />
+                  <Card
+                    key={item.title}
+                    className="rounded-xl border border-white/10 bg-white/5 p-5 text-left shadow-none transition-transform hover:-translate-y-1 sm:p-6 md:text-center"
+                  >
+                    <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-[#D4AF37]/10 md:mx-auto md:mb-5 md:h-14 md:w-14 md:rounded-2xl">
+                      <Icon className="h-5 w-5 text-[#D4AF37] md:h-7 md:w-7" />
                     </div>
-                    <h3 className={cn("font-bold", mt.heading)}>{item.title}</h3>
-                    <p className={cn("mt-2 text-sm leading-relaxed", mt.body)}>{item.description}</p>
+                    <h3 className="mb-1 text-lg font-semibold leading-tight text-white md:text-base md:font-bold">
+                      {item.title}
+                    </h3>
+                    <p className="text-sm leading-relaxed text-on-navy-muted">{item.description}</p>
                   </Card>
                 );
               })}
@@ -274,10 +278,11 @@ export function ContactPageContent() {
                         </div>
                         <div>
                           <label className={cn("mb-2 block text-sm font-medium", mt.heading)}>
-                            {t("contact.lastNameOptional")}
+                            {t("contact.lastName")}
                           </label>
                           <input
                             type="text"
+                            required
                             value={formData.lastName}
                             onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
                             placeholder={t("contact.enterLastName")}
@@ -299,10 +304,11 @@ export function ContactPageContent() {
                         </div>
                         <div>
                           <label className={cn("mb-2 block text-sm font-medium", mt.heading)}>
-                            {t("contact.phoneOptional")}
+                            {t("contact.phoneNumber")}
                           </label>
                           <input
                             type="tel"
+                            required
                             value={formData.phone}
                             onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                             placeholder={t("contact.enterPhone")}
@@ -340,11 +346,12 @@ export function ContactPageContent() {
                           ))}
                         </optgroup>
                         <optgroup label={t("contact.subjectGroupPrograms")}>
-                          {PROGRAM_OPTIONS.map((opt) => (
-                            <option key={opt.value} value={t(opt.labelKey)}>
-                              {t(opt.labelKey)}
+                          {programOptions.map((program) => (
+                            <option key={program} value={program}>
+                              {program}
                             </option>
                           ))}
+                          <option value={t("contact.subjectGeneral")}>{t("contact.subjectGeneral")}</option>
                         </optgroup>
                       </select>
                       <p className={cn("mt-2 text-xs leading-relaxed", mt.isDark ? "text-[var(--foreground-secondary)]" : mt.body)}>

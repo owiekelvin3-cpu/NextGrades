@@ -94,7 +94,7 @@ export default function ProgramsPage() {
             priority
           />
           <div className={hero.inner}>
-            <div className="grid min-w-0 items-center gap-10 sm:gap-12 lg:grid-cols-2 lg:gap-16">
+            <div className="grid min-h-0 min-w-0 flex-1 items-center gap-10 lg:grid-cols-2 lg:gap-16">
               <div className="hero-enter min-w-0 max-w-xl">
                 <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-[#D4AF37] sm:text-sm" data-animate="hero-headline">
                   {t("programsPage.heroEyebrow")}

@@ -41,7 +41,7 @@ const CMS_IMAGES = {
   "cmsImages.about.mission.1": "/images/marketing/mission-materials.png",
   "cmsImages.about.mission.2": "/images/marketing/mission-individual.png",
   "cmsImages.about.mission.3": "/images/marketing/mission-results.png",
-  "cmsImages.about.promise": "/images/marketing/privacy-secure.png",
+  "cmsImages.about.promise": "/images/marketing/about-promise.png",
   "cmsImages.programs.hero": "/images/marketing/hero-students-nextgrades.png",
   "cmsImages.programs.card.0": "/images/marketing/tutoring-session.png",
   "cmsImages.programs.card.1": "/images/marketing/kleine-lerngruppen.png",

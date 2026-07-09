@@ -17,7 +17,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useMarketingTheme } from "@/lib/marketing-theme";
 import { cn } from "@/lib/utils";
-import { section, type } from "@/lib/premium/tokens";
+import { section, hero, type } from "@/lib/premium/tokens";
 import { OpenCookieSettingsButton } from "@/components/cookies/OpenCookieSettingsButton";
 import { Button } from "@/components/ui/Button";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
@@ -113,7 +113,8 @@ export function LegalDocumentPage({ namespace }: LegalDocumentPageProps) {
         {/* Premium hero */}
         <section
           className={cn(
-            "relative overflow-hidden border-b",
+            hero.section,
+            "border-b",
             showPrivacyHero
               ? "border-border-default bg-background text-foreground"
               : "border-white/10 bg-[#0D1B2A] text-white"
@@ -138,12 +139,7 @@ export function LegalDocumentPage({ namespace }: LegalDocumentPageProps) {
             />
           ) : null}
 
-          <div
-            className={cn(
-              "relative z-10 mx-auto max-w-4xl px-5 pb-14 pt-site-nav text-center sm:px-6 md:pb-16 md:pt-28 lg:px-8",
-              showPrivacyHero && "md:pt-32"
-            )}
-          >
+          <div className={cn(hero.innerCentered, "max-w-4xl")}>
             <div
               className={cn(
                 "mb-5 inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em]",

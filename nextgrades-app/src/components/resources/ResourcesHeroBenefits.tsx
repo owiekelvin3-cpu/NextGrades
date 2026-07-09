@@ -17,7 +17,7 @@ export function ResourcesHeroBenefits() {
   ];
 
   return (
-    <div className="mt-10 border-t border-white/10 pt-8">
+    <div>
       <p className="max-w-xl text-sm leading-relaxed text-on-navy-muted md:text-base">
         {t("resources.heroBenefitsTagline")}
       </p>

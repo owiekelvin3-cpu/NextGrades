@@ -125,7 +125,7 @@ export default function AboutPage() {
           />
 
           <div className={hero.inner}>
-            <div className="grid min-w-0 items-center gap-10 lg:grid-cols-2 lg:gap-14">
+            <div className="grid min-h-0 min-w-0 flex-1 items-center gap-10 lg:grid-cols-2 lg:gap-14">
               <div data-animate="hero-headline">
                 <Eyebrow className="mb-4">{t("aboutPage.heroEyebrow")}</Eyebrow>
                 <h1 className={type.h1} data-animate="hero-headline" data-animate-delay="0.1">
@@ -136,24 +136,6 @@ export default function AboutPage() {
                 <p className="mt-4 max-w-xl text-base leading-relaxed text-on-navy-muted md:mt-6 md:text-xl" data-animate="hero-subheadline">
                   {t("about.heroSubtitle")}
                 </p>
-
-                <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
-                  {safePillars.map((pillar, i) => {
-                    const Icon = PILLAR_ICONS[i] ?? Target;
-                    return (
-                      <div key={pillar.title} className="rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
-                        <Icon className="mb-2 h-5 w-5 text-[#D4AF37]" />
-                        <p className="text-sm font-bold">{pillar.title}</p>
-                        <p className="mt-1 text-xs leading-relaxed text-on-navy-subtle">{pillar.desc}</p>
-                      </div>
-                    );
-                  })}
-                </div>
-                <div className="mt-8 hidden rounded-xl border border-white/10 bg-[#0D1B2A]/90 p-5 shadow-xl backdrop-blur-md lg:block">
-                  <Quote className="mb-2 h-6 w-6 text-[#D4AF37]" />
-                  <p className="text-sm italic leading-relaxed text-on-navy-muted">&ldquo;{t("aboutPage.heroQuote")}&rdquo;</p>
-                  <p className="mt-2 text-xs text-on-navy-faint">— {t("aboutPage.heroQuoteAuthor")}</p>
-                </div>
               </div>
 
               <div data-animate="hero-image">
@@ -161,25 +143,46 @@ export default function AboutPage() {
               </div>
             </div>
           </div>
+        </section>
 
-          {/* Feature bar */}
-          <div className="relative mt-10 border-t border-white/10 bg-[#0a1520]/80 backdrop-blur-sm md:mt-14">
-            <div className={cn(section.container, "grid grid-cols-1 gap-4 py-8 md:grid-cols-2 lg:grid-cols-4 md:gap-6")} data-animate="staggerChildren" data-stagger="0.12">
-              {safeFeatures.map((feat, i) => {
-                const Icon = FEATURE_ICONS[i] ?? GraduationCap;
+        <section className="border-t border-white/10 bg-[#0a1520] text-white">
+          <div className={cn(section.container, "py-8 md:py-10")}>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+              {safePillars.map((pillar, i) => {
+                const Icon = PILLAR_ICONS[i] ?? Target;
                 return (
-                  <div key={feat.title} className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/5 p-4 md:border-0 md:bg-transparent md:p-0">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#D4AF37]/15">
-                      <Icon className="h-5 w-5 text-[#D4AF37]" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-semibold">{feat.title}</p>
-                      <p className="mt-0.5 text-xs text-on-navy-subtle">{feat.desc}</p>
-                    </div>
+                  <div key={pillar.title} className="rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
+                    <Icon className="mb-2 h-5 w-5 text-[#D4AF37]" />
+                    <p className="text-sm font-bold">{pillar.title}</p>
+                    <p className="mt-1 text-xs leading-relaxed text-on-navy-subtle">{pillar.desc}</p>
                   </div>
                 );
               })}
             </div>
+            <div className="mt-8 rounded-xl border border-white/10 bg-[#0D1B2A]/90 p-5 shadow-xl backdrop-blur-md lg:max-w-md">
+              <Quote className="mb-2 h-6 w-6 text-[#D4AF37]" />
+              <p className="text-sm italic leading-relaxed text-on-navy-muted">&ldquo;{t("aboutPage.heroQuote")}&rdquo;</p>
+              <p className="mt-2 text-xs text-on-navy-faint">— {t("aboutPage.heroQuoteAuthor")}</p>
+            </div>
+          </div>
+        </section>
+
+        <section className="border-t border-white/10 bg-[#0a1520]/80 text-white backdrop-blur-sm">
+          <div className={cn(section.container, "grid grid-cols-1 gap-4 py-8 md:grid-cols-2 lg:grid-cols-4 md:gap-6")} data-animate="staggerChildren" data-stagger="0.12">
+            {safeFeatures.map((feat, i) => {
+              const Icon = FEATURE_ICONS[i] ?? GraduationCap;
+              return (
+                <div key={feat.title} className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/5 p-4 md:border-0 md:bg-transparent md:p-0">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#D4AF37]/15">
+                    <Icon className="h-5 w-5 text-[#D4AF37]" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold">{feat.title}</p>
+                    <p className="mt-0.5 text-xs text-on-navy-subtle">{feat.desc}</p>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </section>
 

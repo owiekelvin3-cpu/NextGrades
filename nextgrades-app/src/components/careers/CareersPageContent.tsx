@@ -26,6 +26,7 @@ import { useMarketingTheme } from "@/lib/marketing-theme";
 import { useMarketingHeroImage } from "@/hooks/useCmsImage";
 import { useToast } from "@/context/ToastContext";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
+import { MarketingHeroMobileImage } from "@/components/marketing/MarketingHeroMobileImage";
 import { StatGrid } from "@/components/premium/StatGrid";
 import { hero } from "@/lib/premium/tokens";
 import { cn } from "@/lib/utils";
@@ -166,7 +167,7 @@ export function CareersPageContent() {
             priority
           />
           <div className={hero.inner}>
-            <div className="grid items-center gap-12 lg:grid-cols-2">
+            <div className="grid min-h-0 min-w-0 flex-1 items-center gap-12 lg:grid-cols-2">
               <div>
                 <Badge variant="gold" className="mb-5" data-animate="hero-headline">
                   {t("careersPage.eyebrow")}
@@ -193,7 +194,9 @@ export function CareersPageContent() {
                   </Button>
                 </div>
               </div>
-              <div className="hidden min-h-[280px] lg:block" aria-hidden />
+              <div data-animate="hero-image">
+                <MarketingHeroMobileImage src={heroImage} alt="" priority />
+              </div>
             </div>
           </div>
         </section>

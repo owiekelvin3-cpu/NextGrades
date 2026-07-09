@@ -24,10 +24,6 @@ export default function ResourcesPage() {
 
       <main className="flex-1">
         <MockupPageHero
-          breadcrumbs={[
-            { label: t("common.home"), href: "/" },
-            { label: t("common.resources") },
-          ]}
           eyebrow={t("common.resources").toUpperCase()}
           title={t("resources.heroTitle")}
           subtitle={t("resources.heroSubtitle")}
@@ -43,8 +39,13 @@ export default function ResourcesPage() {
               <ArrowRight className="h-4 w-4" />
             </Button>
           </div>
-          <ResourcesHeroBenefits />
         </MockupPageHero>
+
+        <section className="border-t border-white/10 bg-[#0D1B2A] text-white">
+          <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 md:py-10 lg:px-8">
+            <ResourcesHeroBenefits />
+          </div>
+        </section>
 
         <Suspense fallback={null}>
           <ResourcesLibraryGate />

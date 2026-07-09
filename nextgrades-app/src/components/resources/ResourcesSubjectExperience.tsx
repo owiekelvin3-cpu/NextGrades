@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
+import { MarketingHeroMobileImage } from "@/components/marketing/MarketingHeroMobileImage";
 import { Search, Shield, BookOpen, Download, Star } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useResourcesCatalog } from "@/hooks/useResourcesCatalog";
@@ -82,29 +83,36 @@ export function ResourcesSubjectExperience({ subjectSlug, subjectName, classLeve
   return (
     <>
       <section className={cn("bg-[#0D1B2A] text-white", hero.section)}>
-        <MarketingHeroBlend src={ui.heroImage} alt="" variant="dark-full" priority sizes="100vw" opacity={0.8} />
+        <MarketingHeroBlend src={ui.heroImage} alt="" variant="dark-split-right" priority sizes="100vw" opacity={0.8} />
         <div className={hero.inner}>
-          <p className="mb-2 text-sm text-gray-400">
+          <div className="grid min-h-0 min-w-0 flex-1 items-center gap-8 lg:grid-cols-2 lg:gap-12">
+            <div>
+              <h1 className={cn("mb-4 text-3xl font-bold md:text-5xl")}>{title}</h1>
+              <p className="mb-4 max-w-xl text-on-navy-muted">{heroDesc}</p>
+              <p className="text-sm font-medium text-[#D4AF37]">500+ Lernmaterialien</p>
+            </div>
+            <div data-animate="hero-image">
+              <MarketingHeroMobileImage src={ui.heroImage} alt={title} priority />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-white/10 bg-[#0a1520] text-white">
+        <div className={cn(section.container, "py-6 md:py-8")}>
+          <p className="mb-6 text-sm text-on-navy-subtle">
             {t("resources.subjectPage.breadcrumbHome")} › {t("resources.subjectPage.breadcrumbResources")} ›{" "}
             {t("resources.subjectPage.breadcrumbMaterials")} › {breadcrumbTail}
           </p>
-          <div className="grid items-center gap-8 lg:grid-cols-2">
-            <div>
-              <h1 className="mb-4 text-4xl font-bold md:text-5xl">{title}</h1>
-              <p className="mb-4 max-w-xl text-gray-300">{heroDesc}</p>
-              <p className="mb-8 text-sm font-medium text-[#D4AF37]">500+ Lernmaterialien</p>
-              <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-                {heroBenefits.map(({ icon: Icon, label }) => (
-                  <div key={label} className="text-center">
-                    <div className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-white/10">
-                      <Icon className="h-5 w-5 text-[#D4AF37]" />
-                    </div>
-                    <p className="text-xs font-medium">{label}</p>
-                  </div>
-                ))}
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+            {heroBenefits.map(({ icon: Icon, label }) => (
+              <div key={label} className="text-center sm:text-left">
+                <div className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 sm:mx-0">
+                  <Icon className="h-5 w-5 text-[#D4AF37]" />
+                </div>
+                <p className="text-xs font-medium">{label}</p>
               </div>
-            </div>
-            <div className="hidden min-h-[240px] lg:block" aria-hidden />
+            ))}
           </div>
         </div>
       </section>

@@ -2,6 +2,7 @@
 
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
+import { MarketingHeroMobileImage } from "@/components/marketing/MarketingHeroMobileImage";
 import { useRouter, useSearchParams } from "next/navigation";
 import { CheckCircle2, ChevronRight, Headphones, Shield, Clock, Lock, BarChart3, Calendar, Sparkles } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -14,7 +15,7 @@ import {
 } from "@/lib/catalog/merge-marketing-subjects";
 import { appShell } from "@/lib/theme/shell";
 import { Button } from "@/components/ui/Button";
-import { hero } from "@/lib/premium/tokens";
+import { hero, section } from "@/lib/premium/tokens";
 import { theme as th } from "@/lib/theme/tokens";
 import { useMarketingTheme } from "@/lib/marketing-theme";
 import { themeSelectClass } from "@/lib/theme/form-fields";
@@ -151,34 +152,42 @@ function ResourcesUpgradeExperienceInner() {
   return (
     <>
       <section className={cn("bg-[#0D1B2A] text-white", hero.section)}>
-        <MarketingHeroBlend src={heroImage} alt="" variant="dark-full" priority sizes="100vw" opacity={0.75} />
+        <MarketingHeroBlend src={heroImage} alt="" variant="dark-split-right" priority sizes="100vw" opacity={0.75} />
         <div className={hero.inner}>
-          <p className="mb-3 text-sm text-on-navy-subtle">
-            {t("resources.upgrade.breadcrumb", { subject: subjectLabel })}
-          </p>
-          <div className="grid items-center gap-10 lg:grid-cols-2">
+          <div className="grid min-h-0 min-w-0 flex-1 items-center gap-10 lg:grid-cols-2 lg:gap-12">
             <div>
-              <h1 className="mb-4 text-4xl font-bold leading-tight md:text-5xl">
+              <h1 className="mb-4 text-3xl font-bold leading-tight md:text-5xl">
                 {t("resources.upgrade.title")}{" "}
                 <span className="text-[#D4AF37]">{t("resources.upgrade.titleHighlight")}</span>
               </h1>
-              <p className="mb-8 max-w-lg text-on-navy-muted">{t("resources.upgrade.subtitle")}</p>
-              <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-                {heroBenefits.map(({ icon: Icon, label }) => (
-                  <div key={label} className="text-center">
-                    <div className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-[#D4AF37]/20">
-                      <Icon className="h-5 w-5 text-[#D4AF37]" />
-                    </div>
-                    <p className="text-xs">{label}</p>
-                  </div>
-                ))}
-              </div>
+              <p className="max-w-lg text-on-navy-muted">{t("resources.upgrade.subtitle")}</p>
             </div>
-            <div className="relative z-10 hidden lg:flex lg:min-h-[280px] lg:items-end lg:justify-end">
-              <div className="max-w-xs rounded-2xl border border-white/10 bg-[#112240]/90 p-4 shadow-2xl backdrop-blur-sm">
-                <Sparkles className="mb-2 h-5 w-5 text-[#D4AF37]" />
-                <p className="text-sm font-semibold">{t("resources.upgrade.cardTitle")}</p>
-              </div>
+            <div data-animate="hero-image">
+              <MarketingHeroMobileImage src={heroImage} alt={subjectLabel} priority />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-white/10 bg-[#0a1520] text-white">
+        <div className={cn(section.container, "py-6 md:py-8")}>
+          <p className="mb-6 text-sm text-on-navy-subtle">
+            {t("resources.upgrade.breadcrumb", { subject: subjectLabel })}
+          </p>
+          <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+              {heroBenefits.map(({ icon: Icon, label }) => (
+                <div key={label} className="text-center sm:text-left">
+                  <div className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-[#D4AF37]/20 sm:mx-0">
+                    <Icon className="h-5 w-5 text-[#D4AF37]" />
+                  </div>
+                  <p className="text-xs">{label}</p>
+                </div>
+              ))}
+            </div>
+            <div className="max-w-xs rounded-2xl border border-white/10 bg-[#112240]/90 p-4 shadow-2xl backdrop-blur-sm">
+              <Sparkles className="mb-2 h-5 w-5 text-[#D4AF37]" />
+              <p className="text-sm font-semibold">{t("resources.upgrade.cardTitle")}</p>
             </div>
           </div>
         </div>

@@ -155,7 +155,7 @@ export default function ConsultationPage() {
             priority
           />
           <div className={hero.inner}>
-            <div className="grid min-w-0 items-center gap-8 lg:grid-cols-2 lg:gap-12">
+            <div className="grid min-h-0 min-w-0 flex-1 items-center gap-8 lg:grid-cols-2 lg:gap-12">
               <div>
                 <p className={`${type.eyebrow} mb-3 ${textMuted}`} data-animate="hero-headline">
                   {t("consultation.heroEyebrow")}
@@ -197,15 +197,9 @@ export default function ConsultationPage() {
                 </div>
               </div>
 
-              <div data-animate="hero-image">
+              <div data-animate="hero-image" className="relative">
                 <MarketingHeroMobileImage src={consultationHeroImage} alt={t("consultation.title")} priority />
-              </div>
-
-              <div
-                data-animate="hero-image"
-                className="relative hidden min-h-[400px] lg:block"
-              >
-                <div className="absolute bottom-0 right-0 z-10 max-w-xs p-4">
+                <div className="absolute bottom-0 right-0 z-10 hidden max-w-xs p-4 lg:block">
                   <Card
                     className={`p-6 backdrop-blur-md ${
                       isDark ? "border-white/20 bg-white/10 text-white" : "border-gray-200/80 bg-white/95 text-[#0D1B2A] shadow-xl"

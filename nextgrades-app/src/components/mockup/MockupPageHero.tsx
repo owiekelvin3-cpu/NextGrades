@@ -51,7 +51,7 @@ export function MockupPageHero({
         priority
       />
       <div className={hero.inner}>
-        <div className="grid min-w-0 items-center gap-8 lg:grid-cols-2 lg:gap-12">
+        <div className="grid min-h-0 min-w-0 flex-1 items-center gap-8 lg:grid-cols-2 lg:gap-12">
           <div className="min-w-0">
             {breadcrumbs && breadcrumbs.length > 0 && (
               <MockupBreadcrumbs items={breadcrumbs} light={isDark} />

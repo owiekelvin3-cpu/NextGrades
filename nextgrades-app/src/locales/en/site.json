@@ -275,6 +275,18 @@
           "Support between sessions"
         ],
         "price": "from €99 / month"
+      },
+      {
+        "type": "Library",
+        "title": "Learning Library",
+        "description": "Structured learning materials, videos, and exam preparation in one place.",
+        "features": [
+          "500+ learning materials",
+          "Curriculum-aligned",
+          "Instant access",
+          "For school & graduation exams"
+        ],
+        "price": "from €49 per subject & semester"
       }
     ],
     "compareTitle": "Program comparison",

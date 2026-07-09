@@ -22,11 +22,11 @@ export const section = {
 /** Homepage hero spacing — shared across all marketing page heroes */
 export const hero = {
   section:
-    "relative min-h-[min(100dvh,52rem)] overflow-hidden sm:min-h-[520px] md:min-h-[560px] lg:min-h-[640px] xl:min-h-[680px]",
+    "relative flex h-[min(100dvh,52rem)] flex-col overflow-hidden sm:h-[520px] md:h-[560px] lg:h-[640px] xl:h-[680px]",
   inner:
-    "relative z-10 mx-auto flex w-full min-w-0 max-w-7xl flex-col justify-center px-5 pb-12 pt-site-nav sm:px-6 sm:pb-16 md:px-8 md:pb-20 lg:pb-20 lg:px-8 xl:px-10 2xl:px-12",
+    "relative z-10 mx-auto flex w-full min-w-0 max-w-7xl flex-1 flex-col justify-center px-5 pb-12 pt-site-nav sm:px-6 sm:pb-16 md:px-8 md:pb-20 lg:px-8 lg:pb-20 xl:px-10 2xl:px-12 min-h-0",
   innerCentered:
-    "relative z-10 mx-auto flex w-full min-w-0 max-w-3xl flex-col items-center justify-center px-5 pb-12 pt-site-nav text-center sm:px-6 sm:pb-16 md:px-8 md:pb-20 lg:px-8 xl:px-10 2xl:px-12",
+    "relative z-10 mx-auto flex w-full min-w-0 max-w-3xl flex-1 flex-col items-center justify-center px-5 pb-12 pt-site-nav text-center sm:px-6 sm:pb-16 md:px-8 md:pb-20 lg:px-8 xl:px-10 2xl:px-12 min-h-0",
 } as const;
 
 export const card = {

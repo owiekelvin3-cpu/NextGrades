@@ -143,7 +143,7 @@ export default function SubjectsPage() {
             priority
           />
           <div className={hero.inner}>
-            <div className="grid min-w-0 items-center gap-8 lg:grid-cols-2 lg:gap-12 xl:gap-16">
+            <div className="grid min-h-0 min-w-0 flex-1 items-center gap-8 lg:grid-cols-2 lg:gap-12 xl:gap-16">
               <div className="hero-enter min-w-0">
                 <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-[#D4AF37] sm:text-sm" data-animate="hero-headline">
                   {t("subjects.eyebrow")}
@@ -156,24 +156,6 @@ export default function SubjectsPage() {
                   {t("subjects.heroSubtitle")}
                 </p>
 
-                <div className="mb-10 grid grid-cols-1 gap-2.5 sm:grid-cols-3 sm:gap-4" data-animate="hero-cta">
-                  {benefits.slice(0, 3).map((item, index) => {
-                    const Icon = heroFeatureIcons[index] ?? Target;
-                    return (
-                      <div
-                        key={index}
-                        className="min-w-0 rounded-xl border border-white/10 bg-white/5 p-2.5 sm:p-4"
-                      >
-                        <Icon className="mb-1.5 h-4 w-4 text-[#D4AF37] sm:mb-2 sm:h-5 sm:w-5" />
-                        <p className="text-[11px] font-semibold leading-tight sm:text-sm">{item.title}</p>
-                        <p className="mt-1 hidden text-xs leading-snug text-on-navy-subtle sm:block">
-                          {item.desc}
-                        </p>
-                      </div>
-                    );
-                  })}
-                </div>
-
                 <Button variant="gold" size="lg" className="w-full sm:w-auto" href="/consultation">
                   {t("subjectsPage.ctaButton")} <ArrowRight className="h-5 w-5" />
                 </Button>
@@ -182,6 +164,26 @@ export default function SubjectsPage() {
               <div data-animate="hero-image">
                 <MarketingHeroMobileImage src={subjectsHeroImage} fallbackSrc={SHARED_PAGE_HERO_IMAGE} alt={t("subjects.title")} priority />
               </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="border-t border-white/10 bg-[#0a1520] text-white">
+          <div className={cn(section.container, "py-6 md:py-8")}>
+            <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-3 sm:gap-4" data-animate="staggerChildren" data-stagger="0.1">
+              {benefits.slice(0, 3).map((item, index) => {
+                const Icon = heroFeatureIcons[index] ?? Target;
+                return (
+                  <div
+                    key={index}
+                    className="min-w-0 rounded-xl border border-white/10 bg-white/5 p-3 sm:p-4"
+                  >
+                    <Icon className="mb-1.5 h-4 w-4 text-[#D4AF37] sm:mb-2 sm:h-5 sm:w-5" />
+                    <p className="text-[11px] font-semibold leading-tight sm:text-sm">{item.title}</p>
+                    <p className="mt-1 text-xs leading-snug text-on-navy-subtle">{item.desc}</p>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </section>
