@@ -420,8 +420,8 @@
     "dailyMeeting": "Daily Meeting",
     "supabaseNotConfigured": "Supabase credentials are not configured. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in .env.local.",
     "invalidEmail": "Invalid email",
-    "accountSuspended": "Your account has been suspended. Contact support@nextgrades.de if you believe this is a mistake.",
-    "inviteOnlyNote": "Accounts are created by invitation only. Contact support@nextgrades.de if you need access.",
+    "accountSuspended": "Your account has been suspended. Contact support@nextgrades.at if you believe this is a mistake.",
+    "inviteOnlyNote": "Accounts are created by invitation only. Contact support@nextgrades.at if you need access.",
     "profileIncomplete": "Your account profile is incomplete. Please contact support.",
     "enterValidEmail": "Please enter a valid email address",
     "enterPassword": "Please enter your password",
@@ -910,13 +910,13 @@
     "lastUpdated": "Last updated: May 2026",
     "intro": "NextGrades takes the protection of your personal data seriously. This Privacy Policy explains what information we collect when you use our website and learning platform, why we process it, and what rights you have under the General Data Protection Regulation (GDPR).",
     "contactTitle": "Questions about your data?",
-    "contactNote": "If you have questions about this policy or wish to exercise your rights, contact us at support@nextgrades.de.",
+    "contactNote": "If you have questions about this policy or wish to exercise your rights, contact us at support@nextgrades.at.",
     "contactCta": "Contact us",
     "sections": [
       {
         "title": "Data controller",
         "paragraphs": [
-          "The controller responsible for data processing on this website is NextGrades. For privacy-related enquiries, please contact us at support@nextgrades.de or via our contact page."
+          "The controller responsible for data processing on this website is NextGrades. For privacy-related enquiries, please contact us at support@nextgrades.at or via our contact page."
         ]
       },
       {
@@ -1018,7 +1018,7 @@
     "lastUpdated": "As of June 2026",
     "intro": "Responsible for the content of this website and the NextGrades learning platform:",
     "contactTitle": "Contact",
-    "contactNote": "For questions about imprint, terms, or privacy, contact us at support@nextgrades.de or via the contact form.",
+    "contactNote": "For questions about imprint, terms, or privacy, contact us at support@nextgrades.at or via the contact form.",
     "contactCta": "Contact us",
     "sections": [
       {
@@ -1026,7 +1026,7 @@
         "paragraphs": [
           "NextGrades",
           "Austria",
-          "Email: support@nextgrades.de",
+          "Email: support@nextgrades.at",
           "Phone: +43 670 206 4399"
         ]
       },
@@ -1064,7 +1064,7 @@
     "lastUpdated": "Last updated: May 2026",
     "intro": "These General Terms and Conditions govern your use of the NextGrades website and learning platform. By creating an account, booking a consultation, or purchasing a program, you agree to these terms. Please read them carefully before using our services.",
     "contactTitle": "Questions about these terms?",
-    "contactNote": "If anything is unclear, our team is happy to help at support@nextgrades.de.",
+    "contactNote": "If anything is unclear, our team is happy to help at support@nextgrades.at.",
     "contactCta": "Get in touch",
     "trustBadge1": "Consumer-friendly policies",
     "trustBadge2": "Clear billing & cancellation",
@@ -1407,7 +1407,7 @@
       {
         "title": "Contact",
         "paragraphs": [
-          "Questions about this policy: support@nextgrades.de or our contact page."
+          "Questions about this policy: support@nextgrades.at or our contact page."
         ]
       }
     ]

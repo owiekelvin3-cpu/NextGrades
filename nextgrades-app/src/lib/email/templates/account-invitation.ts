@@ -22,7 +22,7 @@ export function accountInvitationEmail(params: {
     ),
     emailButton(params.setupUrl, "Passwort festlegen"),
     emailParagraph(
-      "Falls du diese Einladung nicht erwartet hast, kannst du diese E-Mail ignorieren oder uns unter support@nextgrades.de kontaktieren."
+      "Falls du diese Einladung nicht erwartet hast, kannst du diese E-Mail ignorieren oder uns unter support@nextgrades.at kontaktieren."
     ),
     emailSignature(),
   ].join("");

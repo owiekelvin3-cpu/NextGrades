@@ -13,7 +13,7 @@ import { useMarketingHeroImage } from "@/hooks/useCmsImage";
 import { useToast } from "@/context/ToastContext";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
 import { MarketingHeroMobileImage } from "@/components/marketing/MarketingHeroMobileImage";
-import { COMPANY_PHONE_DISPLAY, COMPANY_PHONE_TEL } from "@/lib/company";
+import { COMPANY_PHONE_DISPLAY, COMPANY_PHONE_TEL, COMPANY_MAILTO, COMPANY_SUPPORT_EMAIL } from "@/lib/company";
 import {
   Calendar,
   CheckCircle2,
@@ -323,7 +323,7 @@ export default function ConsultationPage() {
 
                 <ul className="space-y-4">
                   {[
-                    { icon: Mail, text: "support@nextgrades.de", href: "mailto:support@nextgrades.de" },
+                    { icon: Mail, text: COMPANY_SUPPORT_EMAIL, href: COMPANY_MAILTO },
                     { icon: Phone, text: COMPANY_PHONE_DISPLAY, href: COMPANY_PHONE_TEL },
                     { icon: Clock, text: t("consultation.responseTime") },
                   ].map(({ icon: Icon, text, href }) => (

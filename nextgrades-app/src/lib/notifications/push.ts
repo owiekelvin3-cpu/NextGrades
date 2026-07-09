@@ -1,5 +1,6 @@
 import { createAdminClient } from "@/lib/supabase/admin";
 import { isSupabaseServiceRoleConfigured } from "@/lib/supabase/env";
+import { COMPANY_SUPPORT_EMAIL } from "@/lib/company";
 
 type PushPayload = {
   title: string;
@@ -45,7 +46,7 @@ export async function sendPushToUser(userId: string, payload: PushPayload): Prom
   }
 
   webpush.setVapidDetails(
-    `mailto:${process.env.VAPID_CONTACT_EMAIL || "support@nextgrades.de"}`,
+    `mailto:${process.env.VAPID_CONTACT_EMAIL || COMPANY_SUPPORT_EMAIL}`,
     getVapidPublicKey(),
     getVapidPrivateKey()
   );

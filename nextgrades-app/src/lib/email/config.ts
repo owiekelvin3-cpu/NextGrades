@@ -2,7 +2,7 @@
 
 import { brandLogoUrl } from "@/lib/brand";
 import { getAppUrl } from "@/lib/app-url";
-import { COMPANY_ADDRESS_DEFAULT } from "@/lib/company";
+import { COMPANY_ADDRESS_DEFAULT, COMPANY_SUPPORT_EMAIL } from "@/lib/company";
 
 export { getAppUrl };
 
@@ -22,7 +22,7 @@ export const EMAIL_BRAND = {
     danger: "#EF4444",
     info: "#4DA3FF",
   },
-  supportEmail: process.env.SUPPORT_EMAIL || "support@nextgrades.de",
+  supportEmail: process.env.SUPPORT_EMAIL || COMPANY_SUPPORT_EMAIL,
   companyAddress: process.env.COMPANY_ADDRESS || COMPANY_ADDRESS_DEFAULT,
 } as const;
 

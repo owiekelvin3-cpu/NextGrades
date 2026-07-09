@@ -23,6 +23,7 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { useMarketingTheme } from "@/lib/marketing-theme";
+import { COMPANY_MAILTO, COMPANY_SUPPORT_EMAIL } from "@/lib/company";
 import { useMarketingHeroImage } from "@/hooks/useCmsImage";
 import { useToast } from "@/context/ToastContext";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
@@ -322,11 +323,11 @@ export function CareersPageContent() {
                   <p className={cn("font-bold", mt.heading)}>{t("careersPage.supportTitle")}</p>
                   <p className={cn("mt-2 text-sm", mt.body)}>{t("careersPage.supportDesc")}</p>
                   <Link
-                    href="mailto:support@nextgrades.de"
+                    href={COMPANY_MAILTO}
                     className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[#D4AF37] hover:underline"
                   >
                     <Mail className="h-4 w-4" />
-                    support@nextgrades.de
+                    {COMPANY_SUPPORT_EMAIL}
                   </Link>
                 </Card>
               </div>

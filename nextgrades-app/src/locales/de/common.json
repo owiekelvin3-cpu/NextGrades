@@ -498,7 +498,7 @@
     "dailyMeeting": "Tägliche Besprechung",
     "supabaseNotConfigured": "Supabase-Anmeldedaten sind nicht konfiguriert. Bitte setze NEXT_PUBLIC_SUPABASE_URL und NEXT_PUBLIC_SUPABASE_ANON_KEY in .env.local.",
     "invalidEmail": "Ungültige E-Mail-Adresse",
-    "accountSuspended": "Dein Konto wurde gesperrt. Kontaktiere support@nextgrades.de, wenn du glaubst, dass dies ein Fehler ist.",
+    "accountSuspended": "Dein Konto wurde gesperrt. Kontaktiere support@nextgrades.at, wenn du glaubst, dass dies ein Fehler ist.",
     "profileIncomplete": "Dein Profil ist unvollständig. Bitte kontaktiere den Support.",
     "enterValidEmail": "Bitte gib eine gültige E-Mail-Adresse ein",
     "enterPassword": "Bitte gib dein Passwort ein",
@@ -523,7 +523,7 @@
     "heroBenefit2": "Lernbibliothek",
     "heroBenefit3": "Lernvideos",
     "heroBenefit4": "Bessere Ergebnisse",
-    "inviteOnlyNote": "Konten werden nur auf Einladung erstellt. Bei Fragen: support@nextgrades.de",
+    "inviteOnlyNote": "Konten werden nur auf Einladung erstellt. Bei Fragen: support@nextgrades.at",
     "goToLogin": "Zur Anmeldung",
     "noAccount": "Du hast noch kein Konto?",
     "haveAccount": "Du hast bereits ein Konto?",
@@ -1323,13 +1323,13 @@
     "lastUpdated": "Zuletzt aktualisiert: Mai 2026",
     "intro": "NextGrades nimmt den Schutz deiner personenbezogenen Daten ernst. Diese Datenschutzerklärung erläutert, welche Informationen wir bei der Nutzung unserer Website und Lernplattform erheben, warum wir sie verarbeiten und welche Rechte du nach der Datenschutz-Grundverordnung (DSGVO) hast.",
     "contactTitle": "Fragen zu deinen Daten?",
-    "contactNote": "Bei Fragen zu dieser Erklärung oder zur Ausübung deiner Rechte erreichst du uns unter support@nextgrades.de.",
+    "contactNote": "Bei Fragen zu dieser Erklärung oder zur Ausübung deiner Rechte erreichst du uns unter support@nextgrades.at.",
     "contactCta": "Kontakt aufnehmen",
     "sections": [
       {
         "title": "Verantwortlicher",
         "paragraphs": [
-          "Verantwortlich für die Datenverarbeitung auf dieser Website ist NextGrades. Datenschutzanfragen richtest du bitte an support@nextgrades.de oder über unsere Kontaktseite."
+          "Verantwortlich für die Datenverarbeitung auf dieser Website ist NextGrades. Datenschutzanfragen richtest du bitte an support@nextgrades.at oder über unsere Kontaktseite."
         ]
       },
       {
@@ -1432,7 +1432,7 @@
     "lastUpdated": "Stand: Juni 2026",
     "intro": "Verantwortlich für den Inhalt dieser Website und der NextGrades-Lernplattform:",
     "contactTitle": "Kontakt",
-    "contactNote": "Bei Fragen zu Impressum, AGB oder Datenschutz erreichst du uns unter support@nextgrades.de oder über das Kontaktformular.",
+    "contactNote": "Bei Fragen zu Impressum, AGB oder Datenschutz erreichst du uns unter support@nextgrades.at oder über das Kontaktformular.",
     "contactCta": "Kontakt aufnehmen",
     "sections": [
       {
@@ -1440,7 +1440,7 @@
         "paragraphs": [
           "NextGrades",
           "Österreich",
-          "E-Mail: support@nextgrades.de",
+          "E-Mail: support@nextgrades.at",
           "Telefon: +43 670 206 4399"
         ]
       },
@@ -1478,7 +1478,7 @@
     "lastUpdated": "Zuletzt aktualisiert: Mai 2026",
     "intro": "Diese Allgemeinen Geschäftsbedingungen regeln die Nutzung der NextGrades-Website und Lernplattform. Mit der Kontoerstellung, Buchung einer Beratung oder dem Kauf eines Programms akzeptierst du diese AGB. Bitte lies sie vor der Nutzung unserer Leistungen sorgfältig.",
     "contactTitle": "Fragen zu den AGB?",
-    "contactNote": "Bei Unklarheiten hilft dir unser Team gerne unter support@nextgrades.de weiter.",
+    "contactNote": "Bei Unklarheiten hilft dir unser Team gerne unter support@nextgrades.at weiter.",
     "contactCta": "Kontakt aufnehmen",
     "trustBadge1": "Verbraucherfreundliche Regelungen",
     "trustBadge2": "Klare Abrechnung & Kündigung",
@@ -1853,7 +1853,7 @@
       {
         "title": "Kontakt",
         "paragraphs": [
-          "Fragen: support@nextgrades.de oder unsere Kontaktseite."
+          "Fragen: support@nextgrades.at oder unsere Kontaktseite."
         ]
       }
     ]

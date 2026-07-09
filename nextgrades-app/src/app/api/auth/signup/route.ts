@@ -22,7 +22,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         error:
-          "Konten werden nur auf Einladung erstellt. Bitte wende dich an support@nextgrades.de, wenn du Zugang benötigst.",
+          "Konten werden nur auf Einladung erstellt. Bitte wende dich an support@nextgrades.at, wenn du Zugang benötigst.",
       },
       { status: 403 }
     );
