@@ -48,6 +48,7 @@ const CMS_IMAGES = {
   "cmsImages.programs.card.2": "/images/marketing/subject-books.png",
   "cmsImages.programs.card.3": "/images/marketing/platform-laptop.png",
   "cmsImages.subjects.hero": "/images/marketing/hero-students-nextgrades.png",
+  "cmsImages.subjects.computer-science": "/images/marketing/subjects/subject-informatik.png",
   "cmsImages.contact.hero": "/images/marketing/study-desk.png",
   "cmsImages.consultation.hero": "/images/marketing/tutoring-session.png",
   "cmsImages.resources.hero": "/images/marketing/students-group-3.png",

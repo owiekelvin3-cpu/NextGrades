@@ -128,7 +128,7 @@ export const SUBJECT_ONLINE_IMAGES = {
   accounting: `${SUBJECT_IMG_DIR}/subject-accounting.png`,
   business: `${SUBJECT_IMG_DIR}/subject-business.png`,
   "business-admin": `${SUBJECT_IMG_DIR}/subject-business.png`,
-  "computer-science": BRANDED.platformLaptop,
+  "computer-science": `${SUBJECT_IMG_DIR}/subject-informatik.png`,
   "technical-drawing": BRANDED.studyDesk,
 } as const;
 
