@@ -130,7 +130,11 @@ export function useResourcesCatalog(initial?: FetchParams) {
 
   const openResource = async (resource: LearningResource) => {
     if (resource.locked) {
-      router.push("/resources/upgrade");
+      const q = new URLSearchParams({ plan: "library", billing: "monthly", from: "library" });
+      if (subjectSlug) q.set("subject", subjectSlug);
+      if (classLevel) q.set("grade", classLevel);
+      if (semester) q.set("semester", semester);
+      router.push(`/checkout?${q.toString()}`);
       return;
     }
 

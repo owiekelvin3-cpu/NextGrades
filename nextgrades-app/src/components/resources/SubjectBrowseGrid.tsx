@@ -64,7 +64,9 @@ export function SubjectBrowseGrid({
           const Icon = ui.icon;
           const count = subjectCounts?.get(slug) ?? 0;
           const imageUrl = getResourcesSubjectImage(slug, index);
-          const href = locked ? `/resources/upgrade?from=library&subject=${slug}` : `/resources/${slug}`;
+          const href = locked
+            ? `/checkout?${new URLSearchParams({ plan: "library", subject: slug, from: "library" }).toString()}`
+            : `/resources/${slug}`;
 
           return (
             <Link

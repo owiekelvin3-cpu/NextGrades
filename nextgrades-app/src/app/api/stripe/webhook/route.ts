@@ -69,9 +69,13 @@ export async function POST(request: Request) {
           semesterRaw === "1" || semesterRaw === "2" ? parseInt(semesterRaw, 10) : null;
         const amount = (session.amount_total ?? 0) / 100;
         const currency = (session.currency || "eur").toUpperCase();
+        const isSubscription =
+          productType === "subscription" ||
+          planId === "resource" ||
+          planId === "group" ||
+          planId === "premium";
 
         if (userId && admin) {
-          const isSubscription = productType === "subscription" || planId === "resource" || planId === "group" || planId === "premium";
           if (isSubscription) {
             await admin.from("profiles").update({ subscription_status: "active" }).eq("id", userId);
           } else {
@@ -146,6 +150,15 @@ export async function POST(request: Request) {
           if (subjectId && classId) {
             void notifyEnrollment({ studentId: userId, subjectName: courseName });
           }
+        } else if (session.metadata?.guestCheckout === "true") {
+          const payerEmail = session.customer_details?.email ?? session.customer_email ?? "unknown";
+          const subjectLabel = session.metadata?.subjectName || session.metadata?.subjectSlug || courseName;
+          void sendAdminNotificationEmail(
+            "Guest payment — awaiting account setup",
+            `${payerEmail} paid ${formatCurrency(amount, currency)} for ${session.metadata?.planName || planId || "subscription"} (${subjectLabel}). They will submit account details on the setup page.`,
+            `${process.env.NEXT_PUBLIC_APP_URL}/checkout/account-setup?session_id=${session.id}`,
+            "View account setup page"
+          );
         }
         break;
       }

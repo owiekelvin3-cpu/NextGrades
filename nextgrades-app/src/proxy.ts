@@ -279,7 +279,7 @@ export async function proxy(request: NextRequest) {
 
   if (
     !user &&
-    (requestedPath.startsWith("/checkout") || requestedPath.startsWith("/ai-generator"))
+    requestedPath.startsWith("/ai-generator")
   ) {
     const redirectUrl = request.nextUrl.clone();
     redirectUrl.pathname = "/login";

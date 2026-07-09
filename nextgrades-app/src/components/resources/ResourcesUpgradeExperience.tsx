@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { CheckCircle2, ChevronRight, Headphones, Shield, Clock, Lock, BarChart3, Calendar, Sparkles } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useLocalizedContent } from "@/hooks/useLocalizedContent";
-import { buildLoginUrl } from "@/lib/auth/redirect";
+import { buildCheckoutQuery } from "@/lib/checkout/catalog-context";
 import { getResourcesSubjectImage } from "@/lib/resources/images";
 import {
   mergeMarketingSubjectsWithCatalog,
@@ -136,7 +136,16 @@ function ResourcesUpgradeExperienceInner() {
   const heroImage = getResourcesSubjectImage(subject);
 
   const handleSelect = (planId: string) => {
-    router.push(buildLoginUrl(`/checkout?plan=${planId}&billing=${yearly ? "yearly" : "monthly"}&from=resources`));
+    const checkoutPlan = planId === "library" ? "library" : planId;
+    const q = buildCheckoutQuery({
+      plan: checkoutPlan,
+      billing: yearly ? "yearly" : "monthly",
+      subject,
+      grade,
+      semester,
+      from: "resources",
+    });
+    router.push(`/checkout?${q}`);
   };
 
   return (

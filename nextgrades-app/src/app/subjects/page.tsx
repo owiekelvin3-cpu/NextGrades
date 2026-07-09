@@ -112,15 +112,17 @@ export default function SubjectsPage() {
     setBrowseSemester("");
   };
 
-  const goToResources = () => {
+  const goToCheckout = () => {
     if (!browseSubject) return;
-    const slug = browseSubject.id;
-    if (browseGrade) {
-      const q = browseSemester ? `?semester=${browseSemester}` : "";
-      router.push(`/resources/${slug}/${browseGrade}${q}`);
-    } else {
-      router.push(`/resources/${slug}`);
-    }
+    const params = new URLSearchParams({
+      plan: "library",
+      billing: "monthly",
+      subject: browseSubject.id,
+      from: "subjects",
+    });
+    if (browseGrade) params.set("grade", browseGrade);
+    if (browseSemester) params.set("semester", browseSemester);
+    router.push(`/checkout?${params.toString()}`);
   };
 
   const selectCls = (value: string) => themeSelectClass(value, "py-3");
@@ -380,8 +382,8 @@ export default function SubjectsPage() {
                     <option value="2">{t("resources.filters.semester2", { defaultValue: "Semester 2" })}</option>
                   </select>
                 </div>
-                <button type="button" onClick={goToResources} className="btn-card-primary group">
-                  <span>{t("subjectsPage.viewResources", { defaultValue: "View resources" })}</span>
+                <button type="button" onClick={goToCheckout} className="btn-card-primary group">
+                  <span>{t("subjectsPage.unlockLibrary", { defaultValue: "Unlock library access" })}</span>
                   <span className="btn-card-primary-icon" aria-hidden>
                     <ArrowRight className="h-4 w-4" />
                   </span>

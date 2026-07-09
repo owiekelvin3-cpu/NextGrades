@@ -15,12 +15,10 @@ import { MarketingHeroMobileImage } from "@/components/marketing/MarketingHeroMo
 import { SectionHeader } from "@/components/premium/SectionHeader";
 import { Card } from "@/components/ui/Card";
 import { ChevronDown, Loader2, Star, GraduationCap, FileText, UserRound } from "lucide-react";
-import { supabase } from "@/lib/supabase/client";
 import { useTranslation } from "react-i18next";
 import { useLocalizedContent } from "@/hooks/useLocalizedContent";
 import { useToast } from "@/context/ToastContext";
 import { useCmsImages } from "@/hooks/useCmsImage";
-import { buildLoginUrl } from "@/lib/auth/redirect";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
 import {
   PROGRAMS_PAGE_CARD_IMAGES,
@@ -113,7 +111,7 @@ function PricingContent() {
   const handlePlanSelect = async (plan: PricingPlanCardPlan) => {
     const action = planActionType(plan.id);
     if (action === "resources") {
-      router.push("/resources/upgrade");
+      router.push("/checkout?plan=library&billing=monthly");
       return;
     }
     if (action === "consultation") {
@@ -124,15 +122,7 @@ function PricingContent() {
     setLoadingPlan(plan.id);
     try {
       const stripePlan = checkoutPlanId(plan.id);
-      const checkoutUrl = `/checkout?plan=${stripePlan}&billing=monthly`;
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      if (!session?.user) {
-        router.push(buildLoginUrl(checkoutUrl));
-        return;
-      }
-      router.push(checkoutUrl);
+      router.push(`/checkout?plan=${stripePlan}&billing=monthly`);
     } catch (error) {
       console.error("Error:", error);
       toast.error(t("misc.errorGeneric"));

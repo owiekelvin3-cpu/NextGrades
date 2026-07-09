@@ -292,6 +292,69 @@ export function contactAdminEmail(
   return wrapEmail(content, `[Contact] ${subject}`);
 }
 
+export function guestAccountSetupAdminEmail(details: {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone?: string;
+  parentName?: string;
+  notes?: string;
+  subjectName?: string;
+  grade?: string;
+  semester?: string;
+  planName?: string;
+  stripeSessionId: string;
+  paymentEmail?: string;
+}) {
+  const fullName = `${details.firstName} ${details.lastName}`.trim();
+  const content = [
+    emailHeading("New paid signup — create account"),
+    emailParagraph(
+      "A new customer completed payment and submitted their details. Please create their NextGrades account and grant access."
+    ),
+    emailDetailTable([
+      { label: "Student name", value: escapeHtml(fullName) },
+      { label: "Contact email", value: `<a href="mailto:${escapeHtml(details.email)}" style="color:#D4AF37;">${escapeHtml(details.email)}</a>` },
+      ...(details.paymentEmail && details.paymentEmail !== details.email
+        ? [{ label: "Stripe payment email", value: escapeHtml(details.paymentEmail) }]
+        : []),
+      ...(details.phone ? [{ label: "Phone", value: escapeHtml(details.phone) }] : []),
+      ...(details.parentName ? [{ label: "Parent / guardian", value: escapeHtml(details.parentName) }] : []),
+      ...(details.planName ? [{ label: "Plan", value: escapeHtml(details.planName) }] : []),
+      ...(details.subjectName ? [{ label: "Subject", value: escapeHtml(details.subjectName) }] : []),
+      ...(details.grade ? [{ label: "Grade", value: escapeHtml(details.grade) }] : []),
+      ...(details.semester ? [{ label: "Semester", value: escapeHtml(details.semester) }] : []),
+      { label: "Stripe session", value: escapeHtml(details.stripeSessionId) },
+    ]),
+    ...(details.notes
+      ? [emailSubheading("Additional notes"), emailParagraph(escapeHtml(details.notes).replace(/\n/g, "<br />"))]
+      : []),
+    emailButton(`mailto:${details.email}`, "Reply to customer", "secondary"),
+  ].join("");
+  return wrapEmail(content, "[NextGrades] Paid signup — create account");
+}
+
+export function guestAccountSetupConfirmationEmail(firstName: string, subjectName?: string) {
+  const name = displayName(firstName);
+  const content = [
+    emailHeading("Payment received — we're setting up your account"),
+    emailParagraph(`Hello ${name},`),
+    emailParagraph(
+      "Thank you for your payment. We received your details and the NextGrades team will create your account shortly."
+    ),
+    ...(subjectName
+      ? [emailParagraph(`<strong>Subject:</strong> ${escapeHtml(subjectName)}`)]
+      : []),
+    emailNotice(
+      "info",
+      "You will receive another email once your login is ready. If you have questions, reply to this email or contact support."
+    ),
+    emailButton(`${appUrl()}/contact`, "Contact support", "secondary"),
+    emailSignature(),
+  ].join("");
+  return wrapEmail(content, "NextGrades — we're creating your account");
+}
+
 export function adminNotificationEmail(title: string, message: string, actionUrl?: string, actionLabel = "View Details") {
   const content = [
     emailHeading(title),

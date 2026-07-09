@@ -4,6 +4,7 @@ import { requireAuthenticatedApi } from "@/lib/auth/api-auth";
 import { resolveCheckoutStripePrice } from "@/lib/stripe/prices";
 import { logSecurityEvent } from "@/lib/auth/audit-log";
 import { getAppUrl } from "@/lib/app-url";
+import { resolveCheckoutCatalogContext } from "@/lib/checkout/catalog-context";
 
 export async function POST(request: Request) {
   const gate = await requireAuthenticatedApi();
@@ -24,6 +25,8 @@ export async function POST(request: Request) {
       classId,
       semester,
       courseName,
+      subjectSlug,
+      grade,
     } = body;
 
     const resolution = resolveCheckoutStripePrice({
@@ -62,6 +65,16 @@ export async function POST(request: Request) {
     const userId = gate.auth!.profile!.id;
     const appUrl = getAppUrl();
 
+    const catalog = await resolveCheckoutCatalogContext({
+      subjectSlug: subjectSlug || courseName,
+      grade,
+      semester: semester ? String(semester) : undefined,
+    });
+
+    const resolvedSubjectId = subjectId || catalog.subjectId || "";
+    const resolvedClassId = classId || catalog.classId || "";
+    const resolvedCourseName = courseName || catalog.subjectName || "";
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: [{ price: priceId, quantity: 1 }],
@@ -73,10 +86,13 @@ export async function POST(request: Request) {
         productType: productType || "",
         planId: plan,
         billing: resolvedBilling,
-        subjectId: subjectId || "",
-        classId: classId || "",
+        subjectId: resolvedSubjectId,
+        classId: resolvedClassId,
         semester: semester ? String(semester) : "",
-        courseName: courseName || "",
+        courseName: resolvedCourseName,
+        subjectSlug: catalog.subjectSlug ?? subjectSlug ?? "",
+        subjectName: catalog.subjectName ?? "",
+        grade: grade ? String(grade) : "",
         planName: plan === "resource" ? "Resource Membership" : plan,
         billingCycle: resolvedBilling === "yearly" ? "Yearly" : "Monthly",
         stripePriceId: priceId,

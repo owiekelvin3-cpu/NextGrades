@@ -20,6 +20,8 @@ import {
   paymentReceiptEmail,
   contactConfirmationEmail,
   contactAdminEmail,
+  guestAccountSetupAdminEmail,
+  guestAccountSetupConfirmationEmail,
   adminNotificationEmail,
   securityAlertEmail,
   notificationEmail,
@@ -241,6 +243,34 @@ export async function sendAdminNotificationEmail(
   actionLabel?: string
 ) {
   return sendToAdmin(`[Admin] ${title}`, adminNotificationEmail(title, message, actionUrl, actionLabel));
+}
+
+export async function sendGuestAccountSetupEmails(details: {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone?: string;
+  parentName?: string;
+  notes?: string;
+  subjectName?: string;
+  grade?: string;
+  semester?: string;
+  planName?: string;
+  stripeSessionId: string;
+  paymentEmail?: string;
+}) {
+  const [adminResult, userResult] = await Promise.all([
+    sendToAdmin(
+      "[NextGrades] Paid signup — create account",
+      guestAccountSetupAdminEmail(details)
+    ),
+    sendEmail({
+      to: details.email,
+      subject: "NextGrades — we're creating your account",
+      html: guestAccountSetupConfirmationEmail(details.firstName, details.subjectName),
+    }),
+  ]);
+  return { admin: adminResult, user: userResult };
 }
 
 export async function sendSecurityAlertEmail(

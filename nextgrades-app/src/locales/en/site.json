@@ -322,6 +322,7 @@
     "learnMore": "Learn more",
     "bookTutoring": "Book tutoring",
     "viewMaterials": "View materials",
+    "unlockLibrary": "Unlock library access",
     "gridIntro": "We help you improve in every subject – individually, clearly, and effectively. For the Austrian school system from primary school through graduation exams.",
     "schoolLevelsTitle": "From primary school to graduation",
     "schoolLevels": [
@@ -1656,7 +1657,27 @@
     "successDesc": "Your subscription is active. You can start learning right away.",
     "successHint": "Check your email for a receipt and next steps.",
     "goDashboard": "Go to dashboard",
-    "browseResources": "Browse resources"
+    "browseResources": "Browse resources",
+    "guestHint": "No account needed — after payment you'll submit your details so our team can create your account.",
+    "haveAccount": "Already have an account?",
+    "accountSetup": {
+      "title": "Almost done — set up your account",
+      "subtitle": "Your payment was successful. Send us your details so we can create your NextGrades account.",
+      "purchaseSummary": "Your purchase",
+      "gradeLabel": "Grade {{grade}}",
+      "semesterLabel": "Semester {{semester}}",
+      "emailHint": "We'll send your login details to this address.",
+      "parentName": "Parent / guardian (optional)",
+      "notes": "Additional notes (optional)",
+      "notesPlaceholder": "e.g. school name, special requests, or preferred contact time",
+      "submit": "Send details to NextGrades",
+      "submitError": "Could not send your details. Please try again.",
+      "successTitle": "Thank you — we're setting up your account",
+      "successDesc": "We received your information. The NextGrades team will contact you shortly with your login details.",
+      "successHint": "Questions? Reach us at {{email}}.",
+      "invalidSession": "Payment could not be verified",
+      "invalidSessionDesc": "Please complete checkout again or contact our support team."
+    }
   },
   "adminPortal": {
     "badge": "Admin Portal",

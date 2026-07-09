@@ -294,6 +294,7 @@
     "learnMore": "Mehr erfahren",
     "bookTutoring": "Nachhilfe buchen",
     "viewMaterials": "Materialien ansehen",
+    "unlockLibrary": "Lernbibliothek freischalten",
     "gridIntro": "Wir helfen dir, in jedem Fach besser zu werden – individuell, verständlich und effektiv. Für das österreichische Schulsystem von der Volksschule bis zur Matura.",
     "schoolLevelsTitle": "Von der Volksschule bis zur Matura",
     "schoolLevels": [
@@ -1655,7 +1656,27 @@
     "successDesc": "Dein Abonnement ist aktiv. Du kannst sofort loslegen.",
     "successHint": "Prüfe deine E-Mails für die Quittung und die nächsten Schritte.",
     "goDashboard": "Zum Dashboard",
-    "browseResources": "Ressourcen durchsuchen"
+    "browseResources": "Ressourcen durchsuchen",
+    "guestHint": "Kein Konto nötig — nach der Zahlung gibst du deine Daten ein, damit unser Team dein Konto einrichten kann.",
+    "haveAccount": "Bereits ein Konto?",
+    "accountSetup": {
+      "title": "Fast geschafft — Konto einrichten",
+      "subtitle": "Deine Zahlung war erfolgreich. Sende uns deine Daten, damit wir dein NextGrades-Konto anlegen können.",
+      "purchaseSummary": "Dein Kauf",
+      "gradeLabel": "Klasse {{grade}}",
+      "semesterLabel": "Semester {{semester}}",
+      "emailHint": "An diese Adresse senden wir deine Zugangsdaten.",
+      "parentName": "Elternteil / Erziehungsberechtigte(r) (optional)",
+      "notes": "Zusätzliche Hinweise (optional)",
+      "notesPlaceholder": "z. B. Schule, besondere Wünsche oder bevorzugte Kontaktzeit",
+      "submit": "Details an NextGrades senden",
+      "submitError": "Details konnten nicht gesendet werden. Bitte versuche es erneut.",
+      "successTitle": "Danke — wir richten dein Konto ein",
+      "successDesc": "Wir haben deine Angaben erhalten. Das NextGrades-Team meldet sich in Kürze mit deinen Zugangsdaten.",
+      "successHint": "Bei Fragen erreichst du uns unter {{email}}.",
+      "invalidSession": "Zahlung konnte nicht bestätigt werden",
+      "invalidSessionDesc": "Bitte schließe den Checkout erneut ab oder kontaktiere unseren Support."
+    }
   },
   "adminPortal": {
     "badge": "Admin-Portal",
