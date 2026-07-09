@@ -163,6 +163,12 @@ function PricingContent() {
           <div className={hero.inner}>
             <div className="grid min-w-0 items-center gap-10 sm:gap-12 lg:grid-cols-2 lg:gap-16">
               <div className="min-w-0 max-w-xl">
+                <p
+                  className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-[#D4AF37] sm:text-sm"
+                  data-animate="hero-headline"
+                >
+                  {t("pricingPage.plansEyebrow")}
+                </p>
                 <h1
                   className="text-[1.75rem] font-bold leading-[1.12] tracking-tight sm:text-4xl md:text-5xl lg:text-[3.25rem]"
                   data-animate="hero-headline"
