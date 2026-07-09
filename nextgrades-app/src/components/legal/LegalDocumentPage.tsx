@@ -21,7 +21,7 @@ import { section, hero, type } from "@/lib/premium/tokens";
 import { OpenCookieSettingsButton } from "@/components/cookies/OpenCookieSettingsButton";
 import { Button } from "@/components/ui/Button";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
-import { MARKETING_LIGHT_BG } from "@/components/marketing/MarketingHeroBlend";
+import { MARKETING_NAVY } from "@/components/marketing/MarketingHeroBlend";
 import { useMarketingHeroImage } from "@/hooks/useCmsImage";
 import { LegalTableOfContents } from "@/components/legal/LegalTableOfContents";
 
@@ -50,7 +50,7 @@ export function LegalDocumentPage({ namespace }: LegalDocumentPageProps) {
   const mt = useMarketingTheme();
   const { t, i18n } = useTranslation();
   const privacyHeroImage = useMarketingHeroImage();
-  const showPrivacyHero = namespace === "privacy";
+  const hasHeroImage = namespace === "privacy";
   const isTerms = namespace === "terms";
   const [activeSection, setActiveSection] = useState<string | null>(null);
 
@@ -114,26 +114,19 @@ export function LegalDocumentPage({ namespace }: LegalDocumentPageProps) {
         <section
           className={cn(
             hero.section,
-            "border-b",
-            showPrivacyHero
-              ? "border-border-default bg-background text-foreground"
-              : "border-white/10 bg-[#0D1B2A] text-white"
+            "border-b border-white/10 bg-[#0D1B2A] text-white"
           )}
         >
-          {!showPrivacyHero ? (
-            <>
-              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(212,175,55,0.18),transparent_55%)]" />
-              <div className="pointer-events-none absolute -right-24 top-1/4 h-72 w-72 rounded-full bg-[#D4AF37]/10 blur-3xl" />
-              <div className="pointer-events-none absolute -left-16 bottom-0 h-56 w-56 rounded-full bg-[#1e3a5f]/80 blur-3xl" />
-            </>
-          ) : null}
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(212,175,55,0.18),transparent_55%)]" />
+          <div className="pointer-events-none absolute -right-24 top-1/4 h-72 w-72 rounded-full bg-[#D4AF37]/10 blur-3xl" />
+          <div className="pointer-events-none absolute -left-16 bottom-0 h-56 w-56 rounded-full bg-[#1e3a5f]/80 blur-3xl" />
 
-          {showPrivacyHero ? (
+          {hasHeroImage ? (
             <MarketingHeroBlend
               src={privacyHeroImage}
               alt=""
-              variant="light-split-right"
-              backgroundColor={MARKETING_LIGHT_BG}
+              variant="dark-split-right"
+              backgroundColor={MARKETING_NAVY}
               priority
               widthClassName="w-[65%] lg:w-[55%]"
             />
@@ -141,12 +134,7 @@ export function LegalDocumentPage({ namespace }: LegalDocumentPageProps) {
 
           <div className={cn(hero.innerCentered, "max-w-4xl")}>
             <div
-              className={cn(
-                "mb-5 inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em]",
-                showPrivacyHero
-                  ? "border-[var(--brand-gold)]/30 bg-[var(--brand-gold)]/10 text-[var(--brand-gold)]"
-                  : "border-white/15 bg-white/5 text-[#D4AF37]"
-              )}
+              className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[#D4AF37]"
               data-animate="hero-headline"
             >
               {isTerms ? <Scale className="h-3.5 w-3.5" /> : <FileText className="h-3.5 w-3.5" />}
@@ -154,10 +142,7 @@ export function LegalDocumentPage({ namespace }: LegalDocumentPageProps) {
             </div>
 
             <h1
-              className={cn(
-                type.h1,
-                showPrivacyHero ? "text-foreground" : "text-white"
-              )}
+              className={cn(type.h1, "text-white")}
               data-animate="hero-headline"
               data-animate-delay="0.1"
             >
@@ -165,20 +150,14 @@ export function LegalDocumentPage({ namespace }: LegalDocumentPageProps) {
             </h1>
 
             <p
-              className={cn(
-                "mx-auto mt-5 max-w-2xl text-base leading-relaxed md:text-lg",
-                showPrivacyHero ? "text-foreground-secondary" : "text-on-navy-muted"
-              )}
+              className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-on-navy-muted md:text-lg"
               data-animate="hero-subheadline"
             >
               {t(`${namespace}.subtitle`)}
             </p>
 
             <p
-              className={cn(
-                "mt-4 text-sm",
-                showPrivacyHero ? "text-text-muted" : "text-on-navy-subtle"
-              )}
+              className="mt-4 text-sm text-on-navy-subtle"
               data-animate="hero-subheadline"
               data-animate-delay="0.15"
             >
