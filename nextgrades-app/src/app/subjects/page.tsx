@@ -33,7 +33,6 @@ import {
   UserRound,
 } from "lucide-react";
 import { SubjectProgramCard } from "@/components/subjects/SubjectProgramCard";
-import { SubjectsPremiumFilterSidebar } from "@/components/subjects/SubjectsPremiumFilterSidebar";
 import { useMarketingTheme } from "@/lib/marketing-theme";
 import { useTranslation } from "react-i18next";
 import { useLocalizedContent } from "@/hooks/useLocalizedContent";
@@ -88,20 +87,7 @@ export default function SubjectsPage() {
   const [browseSubject, setBrowseSubject] = useState<SubjectItem | null>(null);
   const [browseGrade, setBrowseGrade] = useState("");
   const [browseSemester, setBrowseSemester] = useState("");
-  const [gridClassLevel, setGridClassLevel] = useState("");
-  const [gridSemester, setGridSemester] = useState("");
-  const [gridAccessFilter, setGridAccessFilter] = useState<"all" | "free" | "premium">("all");
-  const [gridMaterialTypes, setGridMaterialTypes] = useState<string[]>([]);
   const [catalogClasses, setCatalogClasses] = useState<Array<{ id: string; name: string; level: number }>>([]);
-
-  const primaryClasses = catalogClasses.filter((c) => c.level >= 1 && c.level <= 9);
-
-  const resetGridFilters = () => {
-    setGridClassLevel("");
-    setGridSemester("");
-    setGridAccessFilter("all");
-    setGridMaterialTypes([]);
-  };
 
   useEffect(() => {
     void fetch("/api/catalog")
@@ -123,24 +109,18 @@ export default function SubjectsPage() {
 
   const openBrowse = (subject: SubjectItem) => {
     setBrowseSubject(subject);
-    setBrowseGrade(gridClassLevel);
-    setBrowseSemester(gridSemester);
+    setBrowseGrade("");
+    setBrowseSemester("");
   };
 
   const goToResources = () => {
     if (!browseSubject) return;
     const slug = browseSubject.id;
-    const params = new URLSearchParams();
-    const semester = browseSemester || gridSemester;
-    const access = gridAccessFilter;
-    if (semester) params.set("semester", semester);
-    if (access !== "all") params.set("access", access);
-    const query = params.toString() ? `?${params.toString()}` : "";
-    const grade = browseGrade || gridClassLevel;
-    if (grade) {
-      router.push(`/resources/${slug}/${grade}${query}`);
+    if (browseGrade) {
+      const q = browseSemester ? `?semester=${browseSemester}` : "";
+      router.push(`/resources/${slug}/${browseGrade}${q}`);
     } else {
-      router.push(`/resources/${slug}${query}`);
+      router.push(`/resources/${slug}`);
     }
   };
 
@@ -255,49 +235,31 @@ export default function SubjectsPage() {
           </section>
         )}
 
-        {/* Subject cards — filter sidebar + intro */}
+        {/* Subject cards — owner mockup grid */}
         <section className="bg-[#0D1B2A] py-14 text-white md:py-20">
           <div className={section.container}>
-            <div className="grid gap-8 lg:grid-cols-[minmax(0,280px)_minmax(0,1fr)] lg:gap-10 xl:gap-12">
-              <SubjectsPremiumFilterSidebar
-                classes={primaryClasses}
-                classLevel={gridClassLevel}
-                semester={gridSemester}
-                accessFilter={gridAccessFilter}
-                materialTypes={gridMaterialTypes}
-                onClassChange={setGridClassLevel}
-                onSemesterChange={setGridSemester}
-                onAccessChange={setGridAccessFilter}
-                onMaterialTypesChange={setGridMaterialTypes}
-                onReset={resetGridFilters}
-                className="lg:sticky lg:top-24 lg:self-start"
-              />
+            <p className="mx-auto mb-10 max-w-3xl text-center text-base leading-relaxed text-on-navy-muted sm:mb-12 sm:text-lg">
+              {t("subjectsPage.gridIntro")}
+            </p>
 
-              <div className="min-w-0">
-                <p className="mb-8 max-w-3xl text-base leading-relaxed text-on-navy-muted sm:mb-10 sm:text-lg lg:text-xl">
-                  {t("subjectsPage.gridIntro")}
-                </p>
-
-                <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3" data-animate="staggerChildren" data-stagger="0.12">
-                  {subjects.map((subject, index) => {
-                    const Icon = SUBJECT_ICONS[subject.id] ?? BookOpen;
-                    const { src: image, fallback: imageFallback } = resolveSubjectImage(subject.id, index);
-                    return (
-                      <div key={subject.id} id={`subject-${subject.id}`} className="h-full">
-                        <SubjectProgramCard
-                          subject={subject}
-                          imageSrc={image}
-                          imageFallback={imageFallback}
-                          icon={Icon}
-                          bookTutoringLabel={t("subjectsPage.bookTutoring")}
-                          viewMaterialsLabel={t("subjectsPage.viewMaterials")}
-                          onViewMaterials={() => openBrowse(subject)}
-                        />
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5" data-animate="staggerChildren" data-stagger="0.12">
+              {subjects.map((subject, index) => {
+                const Icon = SUBJECT_ICONS[subject.id] ?? BookOpen;
+                const { src: image, fallback: imageFallback } = resolveSubjectImage(subject.id, index);
+                return (
+                  <div key={subject.id} id={`subject-${subject.id}`} className="h-full">
+                      <SubjectProgramCard
+                        subject={subject}
+                        imageSrc={image}
+                        imageFallback={imageFallback}
+                        icon={Icon}
+                        bookTutoringLabel={t("subjectsPage.bookTutoring")}
+                        viewMaterialsLabel={t("subjectsPage.viewMaterials")}
+                        onViewMaterials={() => openBrowse(subject)}
+                      />
+                  </div>
+                );
+              })}
             </div>
           </div>
         </section>
@@ -404,7 +366,7 @@ export default function SubjectsPage() {
                   </label>
                   <select value={browseGrade} onChange={(e) => setBrowseGrade(e.target.value)} className={selectCls(browseGrade)}>
                     <option value="">{t("resources.filters.allGrades", { defaultValue: "All grades" })}</option>
-                    {primaryClasses.map((c) => (
+                    {catalogClasses.map((c) => (
                       <option key={c.id} value={String(c.level)}>{c.name}</option>
                     ))}
                   </select>
