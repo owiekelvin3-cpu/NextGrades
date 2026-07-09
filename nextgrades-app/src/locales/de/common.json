@@ -964,6 +964,8 @@
     "searchPlaceholder": "Suche nach Hilfeartikeln...",
     "allCategories": "Alle Hilfe-Kategorien",
     "showAllArticles": "Alle {{count}} Artikel anzeigen",
+    "showFewerArticles": "Weniger anzeigen",
+    "articleFallback": "Für persönliche Hilfe zu diesem Thema erreichst du uns über das Kontaktformular.",
     "popularTitle": "Beliebte Artikel",
     "supportTitle": "Support",
     "supportDesc": "Unser Support-Team hilft dir gerne persönlich weiter.",
@@ -980,10 +982,22 @@
         "title": "Erste Schritte",
         "desc": "Alles für den Einstieg bei NextGrades.",
         "articles": [
-          { "title": "So funktioniert NextGrades" },
-          { "title": "Dein erstes Erstgespräch buchen" },
-          { "title": "Programme im Überblick" },
-          { "title": "Lernbibliothek nutzen" }
+          {
+            "title": "So funktioniert NextGrades",
+            "answer": "NextGrades verbindet dich mit erfahrenen Lehrkräften für 1:1-Nachhilfe, Lerngruppen und Matura-Vorbereitung. Nach einem kostenlosen Erstgespräch erhältst du einen passenden Lernplan und Zugang zu Materialien in deinem Dashboard."
+          },
+          {
+            "title": "Dein erstes Erstgespräch buchen",
+            "answer": "Gehe auf „Kostenloses Erstgespräch“ und wähle einen Termin im Kalender. Das Gespräch dauert etwa 30 Minuten, ist unverbindlich und hilft uns, das richtige Programm für dich zu finden."
+          },
+          {
+            "title": "Programme im Überblick",
+            "answer": "Wir bieten 1:1 Premium-Nachhilfe, Lerngruppen, Matura-Komplettpakete und eine Lernbibliothek mit Videos und Übungen. Alle Programme findest du unter „Programme“ im Menü."
+          },
+          {
+            "title": "Lernbibliothek nutzen",
+            "answer": "Mit einem Bibliotheks-Abo erhältst du Zugang zu Erklärvideos, PDFs und Übungen. Melde dich an, gehe zu „Ressourcen“ und filtere nach Fach, Klassenstufe oder Thema."
+          }
         ]
       },
       {
@@ -991,10 +1005,22 @@
         "title": "Konto & Zugang",
         "desc": "Anmeldung, Passwort und Profil.",
         "articles": [
-          { "title": "Einladung und Passwort einrichten" },
-          { "title": "Passwort zurücksetzen" },
-          { "title": "Profil bearbeiten" },
-          { "title": "Zwei-Faktor-Anmeldung" }
+          {
+            "title": "Einladung und Passwort einrichten",
+            "answer": "Nach der Anmeldung erhältst du eine E-Mail mit Einladungslink. Klicke darauf, lege dein Passwort fest und melde dich anschließend unter „Login“ mit deiner E-Mail-Adresse an."
+          },
+          {
+            "title": "Passwort zurücksetzen",
+            "answer": "Auf der Login-Seite „Passwort vergessen“ wählen, E-Mail eingeben und den Link in der E-Mail öffnen. Dort kannst du ein neues Passwort festlegen."
+          },
+          {
+            "title": "Profil bearbeiten",
+            "answer": "Nach dem Login findest du unter „Dashboard“ → „Einstellungen“ deine Profildaten. Dort kannst du Name, Kontaktdaten und Benachrichtigungen anpassen."
+          },
+          {
+            "title": "Zwei-Faktor-Anmeldung",
+            "answer": "Die Zwei-Faktor-Anmeldung ist optional und kann in den Kontoeinstellungen aktiviert werden. Du erhältst dann bei jedem Login einen Bestätigungscode per E-Mail."
+          }
         ]
       },
       {
@@ -1002,10 +1028,22 @@
         "title": "Zahlung & Abo",
         "desc": "Preise, Rechnungen und Kündigung.",
         "articles": [
-          { "title": "Preise und Tarife" },
-          { "title": "Zahlungsmethoden" },
-          { "title": "Rechnungen herunterladen" },
-          { "title": "Abo kündigen oder pausieren" }
+          {
+            "title": "Preise und Tarife",
+            "answer": "Alle aktuellen Preise und Leistungen findest du auf unserer Preisseite. Dort kannst du 1:1-Nachhilfe, Lerngruppen, Matura-Pakete und die Lernbibliothek vergleichen."
+          },
+          {
+            "title": "Zahlungsmethoden",
+            "answer": "Wir akzeptieren gängige Kreditkarten und weitere sichere Zahlungsmethoden über Stripe. Die Abrechnung erfolgt monatlich oder je nach gewähltem Tarif."
+          },
+          {
+            "title": "Rechnungen herunterladen",
+            "answer": "Rechnungen findest du nach dem Login in deinem Dashboard unter „Abrechnung“ oder „Einstellungen“. Dort kannst du vergangene Rechnungen als PDF herunterladen."
+          },
+          {
+            "title": "Abo kündigen oder pausieren",
+            "answer": "Du kannst dein Abo jederzeit im Dashboard unter „Abrechnung“ kündigen oder pausieren. Bei Fragen hilft dir unser Support-Team gerne weiter."
+          }
         ]
       },
       {
@@ -1013,10 +1051,22 @@
         "title": "Lernmaterialien",
         "desc": "Downloads, Videos und Übungen.",
         "articles": [
-          { "title": "Materialien finden und filtern" },
-          { "title": "PDFs herunterladen" },
-          { "title": "Erklärvideos ansehen" },
-          { "title": "Premium-Inhalte freischalten" }
+          {
+            "title": "Materialien finden und filtern",
+            "answer": "Unter „Ressourcen“ kannst du nach Fach, Klassenstufe und Materialtyp filtern. Nutze die Suchleiste, um gezielt nach Themen oder Stichwörtern zu suchen."
+          },
+          {
+            "title": "PDFs herunterladen",
+            "answer": "Öffne das gewünschte Material und klicke auf „Herunterladen“. PDFs werden in deinem Browser gespeichert und stehen bei aktivem Abo jederzeit zur Verfügung."
+          },
+          {
+            "title": "Erklärvideos ansehen",
+            "answer": "Videos findest du in der Lernbibliothek unter dem Filter „Video“. Klicke auf ein Video, um es direkt im Browser abzuspielen – ohne zusätzliche Software."
+          },
+          {
+            "title": "Premium-Inhalte freischalten",
+            "answer": "Premium-Inhalte sind mit einem passenden Abo oder Programm verfügbar. Nach der Buchung werden sie automatisch in deinem Dashboard freigeschaltet."
+          }
         ]
       },
       {
@@ -1024,10 +1074,22 @@
         "title": "Nachhilfe & Termine",
         "desc": "Online-Sessions und Zoom.",
         "articles": [
-          { "title": "Termine und Zoom-Links" },
-          { "title": "Termin verschieben oder absagen" },
-          { "title": "1:1 vs. Lerngruppe" },
-          { "title": "Vorbereitung auf die Session" }
+          {
+            "title": "Termine und Zoom-Links",
+            "answer": "Deine Termine und Zoom-Links findest du im Dashboard unter „Meine Sessions“. Du erhältst außerdem eine Erinnerung per E-Mail vor jeder Stunde."
+          },
+          {
+            "title": "Termin verschieben oder absagen",
+            "answer": "Termine kannst du im Dashboard bis 24 Stunden vor Beginn verschieben oder absagen. Bei kurzfristigen Änderungen kontaktiere bitte unser Support-Team."
+          },
+          {
+            "title": "1:1 vs. Lerngruppe",
+            "answer": "1:1-Nachhilfe bietet individuelle Betreuung mit voller Aufmerksamkeit. In Lerngruppen lernst du mit wenigen Gleichaltrigen zu einem günstigeren Preis – ideal bei ähnlichen Themen."
+          },
+          {
+            "title": "Vorbereitung auf die Session",
+            "answer": "Bereite konkrete Fragen oder Übungsaufgaben vor, teste Kamera und Mikrofon und melde dich einige Minuten vor Beginn über den Zoom-Link an."
+          }
         ]
       },
       {
@@ -1035,19 +1097,51 @@
         "title": "Technik & Geräte",
         "desc": "Browser, App und Fehlerbehebung.",
         "articles": [
-          { "title": "Systemanforderungen" },
-          { "title": "Zoom-Probleme beheben" },
-          { "title": "Mobilgerät nutzen" },
-          { "title": "Cookies und Datenschutz" }
+          {
+            "title": "Systemanforderungen",
+            "answer": "NextGrades funktioniert in modernen Browsern (Chrome, Firefox, Safari, Edge) auf Computer, Tablet und Smartphone. Für Zoom-Sessions werden Kamera und Mikrofon empfohlen."
+          },
+          {
+            "title": "Zoom-Probleme beheben",
+            "answer": "Stelle sicher, dass Zoom installiert ist oder nutze den Browser-Link. Bei Verbindungsproblemen: Internetverbindung prüfen, Browser neu laden oder Zoom neu starten."
+          },
+          {
+            "title": "Mobilgerät nutzen",
+            "answer": "Die Website ist für Mobilgeräte optimiert. Du kannst Materialien ansehen, Termine einsehen und an Zoom-Sessions über die Zoom-App teilnehmen."
+          },
+          {
+            "title": "Cookies und Datenschutz",
+            "answer": "Wir verwenden Cookies für Login und grundlegende Funktionen. Details findest du in unserer Datenschutzerklärung unter „Rechtliches“ im Footer."
+          }
         ]
       }
     ],
     "popular": [
-      { "title": "Wie buche ich ein Erstgespräch?", "views": "12,4K" },
-      { "title": "Lernbibliothek freischalten", "views": "9,8K" },
-      { "title": "Passwort vergessen", "views": "7,2K" },
-      { "title": "Zoom-Meeting beitreten", "views": "6,1K" },
-      { "title": "Preise und Programme", "views": "5,4K" }
+      {
+        "title": "Wie buche ich ein Erstgespräch?",
+        "views": "12,4K",
+        "answer": "Klicke auf „Kostenloses Erstgespräch“ in der Navigation, wähle einen freien Termin im Kalender und bestätige deine Buchung. Du erhältst eine Bestätigung per E-Mail."
+      },
+      {
+        "title": "Lernbibliothek freischalten",
+        "views": "9,8K",
+        "answer": "Wähle auf der Preisseite den Bibliotheks-Tarif und schließe die Buchung ab. Nach der Zahlung ist die Lernbibliothek sofort in deinem Dashboard verfügbar."
+      },
+      {
+        "title": "Passwort vergessen",
+        "views": "7,2K",
+        "answer": "Auf der Login-Seite „Passwort vergessen“ anklicken, E-Mail eingeben und den Link in der E-Mail öffnen, um ein neues Passwort zu setzen."
+      },
+      {
+        "title": "Zoom-Meeting beitreten",
+        "views": "6,1K",
+        "answer": "Öffne den Zoom-Link aus deinem Dashboard oder der Termin-E-Mail. Klicke auf „Beitreten“ und erlaube Kamera/Mikrofon, wenn du möchtest."
+      },
+      {
+        "title": "Preise und Programme",
+        "views": "5,4K",
+        "answer": "Alle Programme und Preise findest du unter „Preise“ und „Programme“ in der Navigation. Dort kannst du Tarife vergleichen und direkt buchen."
+      }
     ]
   },
   "aiGenerator": {
@@ -1161,9 +1255,9 @@
     "gradeLevel": "Klasse / Niveau",
     "gradePlaceholder": "Niveau wählen",
     "grades": [
-      "Klasse 5–7",
-      "Klasse 8–10",
-      "Abitur / Oberstufe",
+      "Klasse 1–4",
+      "Klasse 5–9",
+      "Matura / Oberstufe",
       "Studium / Erwachsene"
     ],
     "subject": "Interessensfach",
@@ -1567,7 +1661,7 @@
         "title": "Mathe-NachhilfelehrerIn",
         "description": "Wir suchen erfahrene Mathe-TutorInnen für SchülerInnen von der Mittelstufe bis zur Abiturvorbereitung. Du erklärst verständlich, stärkst Selbstvertrauen und passt dich dem Niveau an.",
         "type": "Teilzeit / Freiberuflich",
-        "location": "Remote (Österreich)",
+        "location": "Remote",
         "highlights": [
           "Erfahrung im Unterrichten von Schulmathematik",
           "Klare Kommunikation auf Deutsch und/oder Englisch",
@@ -1580,7 +1674,7 @@
         "title": "Englisch-NachhilfelehrerIn",
         "description": "Verstärke unser Englisch-Team und hilf beim Grammatik-, Schreib- und Konversationstraining sowie bei Prüfungsvorbereitung. Du gestaltest motivierende Stunden mit sichtbarem Fortschritt.",
         "type": "Teilzeit / Freiberuflich",
-        "location": "Remote (Österreich)",
+        "location": "Remote",
         "highlights": [
           "Sehr gute Englischkenntnisse (native oder nahezu native)",
           "Erfahrung mit dem österreichischen Schul-Englisch",

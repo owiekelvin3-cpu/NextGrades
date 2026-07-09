@@ -842,9 +842,9 @@
     "gradeLevel": "Grade / level",
     "gradePlaceholder": "Select level",
     "grades": [
-      "Grade 5–7",
-      "Grade 8–10",
-      "Abitur / Oberstufe",
+      "Grade 1–4",
+      "Grade 5–9",
+      "Matura / upper secondary",
       "University / adult learner"
     ],
     "subject": "Subject of interest",
@@ -1246,7 +1246,7 @@
         "title": "Mathematics Tutor",
         "description": "We are looking for experienced mathematics tutors to support students from middle school through Abitur preparation. You explain concepts clearly, build confidence, and adapt to each student's level.",
         "type": "Part-time / Freelance",
-        "location": "Remote (Germany)",
+        "location": "Remote",
         "highlights": [
           "Experience teaching German school mathematics",
           "Strong communication in German and/or English",
@@ -1259,7 +1259,7 @@
         "title": "English Tutor",
         "description": "Join our English team to help students improve grammar, writing, conversation, and exam skills. You create engaging sessions and guide learners toward measurable progress.",
         "type": "Part-time / Freelance",
-        "location": "Remote (Germany)",
+        "location": "Remote",
         "highlights": [
           "Native or near-native English proficiency",
           "Experience with German school English curriculum",

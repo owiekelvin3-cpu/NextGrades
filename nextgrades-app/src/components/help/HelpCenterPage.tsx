@@ -36,16 +36,23 @@ type Category = {
   id: string;
   title: string;
   desc: string;
-  articles: { title: string; href?: string }[];
+  articles: { title: string; answer?: string; href?: string }[];
 };
 
-type PopularArticle = { title: string; views: string };
+type PopularArticle = { title: string; views: string; answer?: string };
+
+function articleKey(categoryId: string, title: string) {
+  return `${categoryId}::${title}`;
+}
 
 export function HelpCenterPage() {
   const { t, i18n } = useTranslation();
   const mt = useMarketingTheme();
   const heroImage = useMarketingHeroImage();
   const [query, setQuery] = useState("");
+  const [openArticle, setOpenArticle] = useState<string | null>(null);
+  const [openPopular, setOpenPopular] = useState<string | null>(null);
+  const [expandedCategories, setExpandedCategories] = useState<Set<string>>(() => new Set());
 
   const categories = useMemo(
     () => t("helpPage.categories", { returnObjects: true }) as Category[],
@@ -146,28 +153,80 @@ export function HelpCenterPage() {
                           </div>
                         </div>
                         <ul className="divide-y divide-[var(--border-default)] overflow-hidden rounded-2xl border border-[var(--border-default)] bg-[var(--card-background)]">
-                          {cat.articles.slice(0, 4).map((article) => (
-                            <li key={article.title}>
-                              <Link
-                                href={article.href ?? "/contact"}
-                                className="flex items-center justify-between gap-4 px-5 py-4 text-sm transition hover:bg-[var(--surface-muted)]"
-                              >
-                                <span className="flex items-center gap-3">
-                                  <FileText className="h-4 w-4 shrink-0 text-[var(--brand-gold)]" />
-                                  <span className="font-medium text-[var(--foreground)]">{article.title}</span>
-                                </span>
-                                <ChevronRight className="h-4 w-4 shrink-0 text-[var(--text-subtle)]" />
-                              </Link>
-                            </li>
-                          ))}
+                          {(expandedCategories.has(cat.id) ? cat.articles : cat.articles.slice(0, 4)).map(
+                            (article) => {
+                              const key = articleKey(cat.id, article.title);
+                              const isOpen = openArticle === key;
+                              const content = article.answer?.trim() || t("helpPage.articleFallback");
+
+                              if (article.href && !article.answer) {
+                                return (
+                                  <li key={article.title}>
+                                    <Link
+                                      href={article.href}
+                                      className="flex items-center justify-between gap-4 px-5 py-4 text-sm transition hover:bg-[var(--surface-muted)]"
+                                    >
+                                      <span className="flex items-center gap-3">
+                                        <FileText className="h-4 w-4 shrink-0 text-[var(--brand-gold)]" />
+                                        <span className="font-medium text-[var(--foreground)]">{article.title}</span>
+                                      </span>
+                                      <ChevronRight className="h-4 w-4 shrink-0 text-[var(--text-subtle)]" />
+                                    </Link>
+                                  </li>
+                                );
+                              }
+
+                              return (
+                                <li key={article.title}>
+                                  <button
+                                    type="button"
+                                    onClick={() => setOpenArticle(isOpen ? null : key)}
+                                    className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left text-sm transition hover:bg-[var(--surface-muted)] touch-manipulation"
+                                    aria-expanded={isOpen}
+                                  >
+                                    <span className="flex items-center gap-3">
+                                      <FileText className="h-4 w-4 shrink-0 text-[var(--brand-gold)]" />
+                                      <span className="font-medium text-[var(--foreground)]">{article.title}</span>
+                                    </span>
+                                    <ChevronDown
+                                      className={cn(
+                                        "h-4 w-4 shrink-0 text-[var(--text-subtle)] transition-transform",
+                                        isOpen && "rotate-180"
+                                      )}
+                                    />
+                                  </button>
+                                  {isOpen && (
+                                    <div className="border-t border-[var(--border-default)] px-5 pb-4 pt-3 text-sm leading-relaxed text-[var(--text-muted)]">
+                                      {content}
+                                    </div>
+                                  )}
+                                </li>
+                              );
+                            }
+                          )}
                         </ul>
                         {cat.articles.length > 4 && (
                           <button
                             type="button"
+                            onClick={() =>
+                              setExpandedCategories((prev) => {
+                                const next = new Set(prev);
+                                if (next.has(cat.id)) next.delete(cat.id);
+                                else next.add(cat.id);
+                                return next;
+                              })
+                            }
                             className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-[#4DA3FF]"
                           >
-                            {t("helpPage.showAllArticles", { count: cat.articles.length })}
-                            <ChevronDown className="h-4 w-4" />
+                            {expandedCategories.has(cat.id)
+                              ? t("helpPage.showFewerArticles")
+                              : t("helpPage.showAllArticles", { count: cat.articles.length })}
+                            <ChevronDown
+                              className={cn(
+                                "h-4 w-4 transition-transform",
+                                expandedCategories.has(cat.id) && "rotate-180"
+                              )}
+                            />
                           </button>
                         )}
                       </div>
@@ -179,21 +238,38 @@ export function HelpCenterPage() {
               <aside className="space-y-6 lg:sticky lg:top-28 lg:self-start">
                 <Card className="p-6">
                   <h3 className="font-bold text-[var(--foreground)]">{t("helpPage.popularTitle")}</h3>
-                  <ul className="mt-4 space-y-3">
-                    {(Array.isArray(popular) ? popular : []).map((item) => (
-                      <li key={item.title}>
-                        <Link
-                          href="/contact"
-                          className="flex items-start justify-between gap-2 text-sm transition hover:text-[var(--brand-gold)]"
-                        >
-                          <span className="font-medium text-[var(--foreground)]">{item.title}</span>
-                          <span className="flex shrink-0 items-center gap-1 text-xs text-[var(--text-muted)]">
-                            <Eye className="h-3.5 w-3.5" />
-                            {item.views}
-                          </span>
-                        </Link>
-                      </li>
-                    ))}
+                  <ul className="mt-4 space-y-1">
+                    {(Array.isArray(popular) ? popular : []).map((item) => {
+                      const isOpen = openPopular === item.title;
+                      const content = item.answer?.trim() || t("helpPage.articleFallback");
+                      return (
+                        <li key={item.title} className="overflow-hidden rounded-xl border border-[var(--border-default)]">
+                          <button
+                            type="button"
+                            onClick={() => setOpenPopular(isOpen ? null : item.title)}
+                            className="flex w-full items-start justify-between gap-2 px-3 py-3 text-left text-sm transition hover:bg-[var(--surface-muted)] touch-manipulation"
+                            aria-expanded={isOpen}
+                          >
+                            <span className="font-medium text-[var(--foreground)]">{item.title}</span>
+                            <span className="flex shrink-0 items-center gap-1 text-xs text-[var(--text-muted)]">
+                              <Eye className="h-3.5 w-3.5" />
+                              {item.views}
+                              <ChevronDown
+                                className={cn(
+                                  "h-3.5 w-3.5 transition-transform",
+                                  isOpen && "rotate-180"
+                                )}
+                              />
+                            </span>
+                          </button>
+                          {isOpen && (
+                            <div className="border-t border-[var(--border-default)] px-3 pb-3 pt-2 text-xs leading-relaxed text-[var(--text-muted)]">
+                              {content}
+                            </div>
+                          )}
+                        </li>
+                      );
+                    })}
                   </ul>
                 </Card>
 
@@ -218,15 +294,15 @@ export function HelpCenterPage() {
           </div>
         </section>
 
-        <section className="border-t border-[#D4AF37]/20 bg-[#FFF8E7] py-10">
+        <section className="border-t border-white/10 bg-[#0D1B2A] py-10 text-white">
           <div className={`${section.container} flex flex-col items-center justify-between gap-6 sm:flex-row`}>
             <div className="flex items-center gap-4">
               <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#D4AF37]/15">
                 <Headphones className="h-7 w-7 text-[#D4AF37]" />
               </div>
               <div>
-                <p className="font-bold text-[#0D1B2A]">{t("helpPage.bannerTitle")}</p>
-                <p className="text-sm text-gray-600">{t("helpPage.bannerDesc")}</p>
+                <p className="font-bold text-white">{t("helpPage.bannerTitle")}</p>
+                <p className="text-sm text-gray-400">{t("helpPage.bannerDesc")}</p>
               </div>
             </div>
             <Button variant="gold" href="/contact">

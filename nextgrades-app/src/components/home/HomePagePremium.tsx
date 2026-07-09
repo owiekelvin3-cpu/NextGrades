@@ -142,7 +142,7 @@ export function HomePagePremium() {
           <div className="mt-10 text-center md:mt-12" data-animate="fadeUp">
             <Link
               href="/programs"
-              className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl border border-[#0D1B2A]/15 bg-white px-8 py-4 text-base font-semibold text-[#0D1B2A] shadow-sm transition hover:border-[#D4AF37]/40 hover:shadow-md md:w-auto md:min-h-[48px] md:py-3 md:text-sm"
+              className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl border-2 border-[#0D1B2A]/30 bg-white px-8 py-4 text-base font-semibold text-[#0D1B2A] shadow-sm transition hover:border-[#D4AF37]/50 hover:shadow-md md:w-auto md:min-h-[48px] md:py-3 md:text-sm"
             >
               {t("home.viewAllPrograms")}
             </Link>

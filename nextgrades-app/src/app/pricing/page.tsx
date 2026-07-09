@@ -136,8 +136,13 @@ function PricingContent() {
       <Navbar />
 
       <main className="flex-1 overflow-x-hidden">
-        {/* Hero - same image pattern as Programme */}
-        <section className={cn("bg-[#0D1B2A] text-white", hero.section)}>
+        {/* Hero - compact top alignment (less copy than Programme) */}
+        <section
+          className={cn(
+            "relative flex flex-col overflow-hidden bg-[#0D1B2A] text-white",
+            "min-h-[20rem] sm:h-[420px] md:h-[460px] lg:h-[500px] xl:h-[540px]"
+          )}
+        >
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(212,175,55,0.15),transparent_45%)]" />
           <MarketingHeroBlend
             src={heroImage}
@@ -148,7 +153,12 @@ function PricingContent() {
             priority
             sizes="(max-width: 1024px) 100vw, 55vw"
           />
-          <div className={hero.inner}>
+          <div
+            className={cn(
+              hero.inner,
+              "justify-start pt-[calc(var(--site-nav-height)+0.5rem+env(safe-area-inset-top,0px))] sm:pt-[calc(var(--site-nav-height)+0.75rem+env(safe-area-inset-top,0px))] md:pb-16 lg:pb-16"
+            )}
+          >
             <div className="grid min-h-0 min-w-0 flex-1 items-center gap-10 sm:gap-12 lg:grid-cols-2 lg:gap-16">
               <div className="min-w-0 max-w-xl">
                 <p
