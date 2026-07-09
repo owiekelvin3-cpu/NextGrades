@@ -482,6 +482,39 @@
           "Investition & Finanzierung",
           "Prüfungsvorbereitung"
         ]
+      },
+      {
+        "id": "business",
+        "title": "Wirtschaft",
+        "description": "Wirtschaft verstehen – von Grundlagen bis zur Matura.",
+        "features": [
+          "Mikro- & Makroökonomie",
+          "Marktanalyse",
+          "Fallstudien",
+          "Prüfungsvorbereitung"
+        ]
+      },
+      {
+        "id": "computer-science",
+        "title": "Informatik",
+        "description": "Programmieren und Informatik-Grundlagen – praxisnah und verständlich.",
+        "features": [
+          "Programmierung",
+          "Algorithmen",
+          "Datenstrukturen",
+          "Prüfungsvorbereitung"
+        ]
+      },
+      {
+        "id": "technical-drawing",
+        "title": "Technisches Zeichnen",
+        "description": "Technisches Zeichnen und Konstruktion – präzise und strukturiert.",
+        "features": [
+          "Normgerechtes Zeichnen",
+          "Konstruktion",
+          "CAD-Grundlagen",
+          "Prüfungsvorbereitung"
+        ]
       }
     ]
   },

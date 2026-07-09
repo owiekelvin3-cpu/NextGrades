@@ -52,8 +52,14 @@ export function StudentQuizHub() {
         fetch("/api/quiz/quizzes?published=true"),
         fetch("/api/quiz/attempts"),
       ]);
-      if (qRes.ok) setQuizzes(await qRes.json());
-      if (aRes.ok) setAttempts(await aRes.json());
+      if (qRes.ok) {
+        const json = await qRes.json();
+        setQuizzes(Array.isArray(json) ? json : []);
+      }
+      if (aRes.ok) {
+        const json = await aRes.json();
+        setAttempts(Array.isArray(json) ? json : []);
+      }
     } finally {
       setLoading(false);
     }

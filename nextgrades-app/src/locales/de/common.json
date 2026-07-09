@@ -464,7 +464,7 @@
     "subjectGroupSubjects": "Fächer",
     "subjectGroupPrograms": "Programme",
     "subjectHint": "Optional - hilft uns, deine Anfrage an das richtige Team weiterzuleiten.",
-    "subjectGeneral": "Allgemeine Anfrage"
+    "subjectOther": "Sonstiges"
   },
   "login": {
     "welcomeBack": "Willkommen zurück",

@@ -19,11 +19,13 @@ export function StudentLiveClassesExperience() {
   const todayLabel = t("dashboardCommon.today", { defaultValue: "Today" });
   const [lessons, setLessons] = useState<DashboardLesson[]>([]);
   const [loading, setLoading] = useState(true);
+  const [signedIn, setSignedIn] = useState(true);
 
   useEffect(() => {
     void (async () => {
       const uid = await getSessionUserId();
       if (!uid) {
+        setSignedIn(false);
         setLoading(false);
         return;
       }
@@ -47,7 +49,9 @@ export function StudentLiveClassesExperience() {
   return (
     <StudentDashboardLayout title={title} description={description}>
       <div className="mx-auto max-w-3xl">
-        {loading ? (
+        {!signedIn ? (
+          <p className={cn("text-center", st.textMuted)}>{t("studentDashboard.signInRequired")}</p>
+        ) : loading ? (
           <LoadingBlock />
         ) : lessons.length === 0 ? (
           <div className={cn(studentPanel(), "p-12 text-center")}>

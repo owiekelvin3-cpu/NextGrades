@@ -93,9 +93,8 @@ export default function TeacherAnalyticsPage() {
     return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
   };
 
-  const maxValue = Math.max(
-    ...(analytics?.chartData.map(d => Math.max(d.views, d.downloads)) || [1])
-  );
+  const chartRows = analytics?.chartData ?? [];
+  const maxValue = Math.max(...chartRows.map((d) => Math.max(d.views, d.downloads)), 1);
 
   return (
     <TeacherDashboardLayout title="Analytics">

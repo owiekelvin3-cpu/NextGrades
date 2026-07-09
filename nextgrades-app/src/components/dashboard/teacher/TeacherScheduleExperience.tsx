@@ -49,10 +49,19 @@ function ScheduleContent() {
 
   const load = useCallback(async () => {
     setLoading(true);
-    const res = await fetch("/api/zoom/meetings");
-    const data = await res.json();
-    setMeetings((data.meetings ?? []) as LessonRow[]);
-    setLoading(false);
+    try {
+      const res = await fetch("/api/zoom/meetings");
+      const data = await res.json();
+      if (!res.ok) {
+        setMeetings([]);
+        return;
+      }
+      setMeetings(Array.isArray(data.meetings) ? (data.meetings as LessonRow[]) : []);
+    } catch {
+      setMeetings([]);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   useEffect(() => {

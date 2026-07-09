@@ -264,8 +264,6 @@ export async function fetchStudentOverviewData(): Promise<StudentOverviewData | 
   const courses = buildCourseRows(enrollments, allLessons);
   const unreadNotifications = notifications.filter((n) => !n.is_read).length;
 
-  const firstName = profile?.full_name?.split(" ")[0] ?? "";
-
   return {
     profile: {
       fullName: profile?.full_name ?? "",

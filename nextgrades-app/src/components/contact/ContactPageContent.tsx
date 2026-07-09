@@ -351,8 +351,8 @@ export function ContactPageContent() {
                               {program}
                             </option>
                           ))}
-                          <option value={t("contact.subjectGeneral")}>{t("contact.subjectGeneral")}</option>
                         </optgroup>
+                        <option value={t("contact.subjectOther")}>{t("contact.subjectOther")}</option>
                       </select>
                       <p className={cn("mt-2 text-xs leading-relaxed", mt.isDark ? "text-[var(--foreground-secondary)]" : mt.body)}>
                         {t("contact.subjectHint")}

@@ -522,6 +522,39 @@
           "Investment & finance",
           "Exam preparation"
         ]
+      },
+      {
+        "id": "business",
+        "title": "Business & Economics",
+        "description": "Understand economics – from fundamentals through graduation exams.",
+        "features": [
+          "Micro & macroeconomics",
+          "Market analysis",
+          "Case studies",
+          "Exam preparation"
+        ]
+      },
+      {
+        "id": "computer-science",
+        "title": "Computer Science",
+        "description": "Programming and computer science fundamentals – practical and clear.",
+        "features": [
+          "Programming",
+          "Algorithms",
+          "Data structures",
+          "Exam preparation"
+        ]
+      },
+      {
+        "id": "technical-drawing",
+        "title": "Technical Drawing",
+        "description": "Technical drawing and construction – precise and structured.",
+        "features": [
+          "Standards-compliant drawing",
+          "Construction",
+          "CAD basics",
+          "Exam preparation"
+        ]
       }
     ]
   },

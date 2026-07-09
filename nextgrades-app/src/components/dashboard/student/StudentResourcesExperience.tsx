@@ -40,6 +40,7 @@ export function StudentResourcesExperience() {
   const locale = getDateLocale(i18n.language);
   const { toggle, isBookmarked } = useBookmarks();
   const [loading, setLoading] = useState(true);
+  const [pageData, setPageData] = useState<Awaited<ReturnType<typeof fetchStudentResourcesPageData>>>(null);
   const [materials, setMaterials] = useState<Material[]>([]);
   const [enrollments, setEnrollments] = useState<{ subject_name?: string }[]>([]);
   const [tab, setTab] = useState<Tab>("all");
@@ -52,6 +53,7 @@ export function StudentResourcesExperience() {
   useEffect(() => {
     fetchStudentResourcesPageData()
       .then((d) => {
+        setPageData(d);
         if (!d) return;
         setMaterials(d.materials);
         setEnrollments(d.enrollments);
@@ -93,6 +95,14 @@ export function StudentResourcesExperience() {
     return (
       <StudentDashboardLayout title={title} description={description}>
         <LoadingBlock />
+      </StudentDashboardLayout>
+    );
+  }
+
+  if (!pageData) {
+    return (
+      <StudentDashboardLayout title={title} description={description}>
+        <p className={cn("text-center", st.textMuted)}>{t("studentDashboard.signInRequired")}</p>
       </StudentDashboardLayout>
     );
   }

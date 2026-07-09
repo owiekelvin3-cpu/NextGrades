@@ -36,7 +36,7 @@ import { SubjectProgramCard } from "@/components/subjects/SubjectProgramCard";
 import { useMarketingTheme } from "@/lib/marketing-theme";
 import { useTranslation } from "react-i18next";
 import { useLocalizedContent } from "@/hooks/useLocalizedContent";
-import { useCmsImages } from "@/hooks/useCmsImage";
+import { useCmsImages, useMarketingHeroImage } from "@/hooks/useCmsImage";
 import { SHARED_PAGE_HERO_IMAGE, getSubjectImage } from "@/lib/marketing-images";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
 import { MarketingHeroMobileImage } from "@/components/marketing/MarketingHeroMobileImage";
@@ -75,7 +75,8 @@ export default function SubjectsPage() {
   const mt = useMarketingTheme();
   const { t } = useTranslation();
   const router = useRouter();
-  const { getImage, marketingHeroImage: subjectsHeroImage } = useCmsImages();
+  const { getImage } = useCmsImages();
+  const subjectsHeroImage = useMarketingHeroImage();
   const resolveSubjectImage = (subjectId: string, index: number) => {
     const fallback = getSubjectImage(subjectId, index);
     return {
@@ -128,68 +129,77 @@ export default function SubjectsPage() {
   const selectCls = (value: string) => themeSelectClass(value, "py-3");
 
   return (
-    <div className={cn("marketing-page-root flex min-h-screen flex-col", mt.page)}>
+    <div className={cn("marketing-page-root flex min-h-screen flex-col overflow-x-hidden", mt.page)}>
       <Navbar />
 
       <main className="flex-1 overflow-x-hidden">
-        {/* Hero */}
+        {/* Hero - same shell as Programme / Pricing */}
         <section className={cn("bg-[#0D1B2A] text-white", hero.section)}>
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(212,175,55,0.12)_0%,_transparent_55%)]" />
+          <div className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(circle_at_top_right,rgba(212,175,55,0.15),transparent_45%)]" />
           <MarketingHeroBlend
             src={subjectsHeroImage}
-            alt={t("subjects.title")}
+            alt=""
             variant="dark-split-right"
+            backgroundColor="#0D1B2A"
             fallbackSrc={SHARED_PAGE_HERO_IMAGE}
             priority
+            sizes="(max-width: 1024px) 100vw, 55vw"
+            className="z-0"
           />
           <div className={hero.inner}>
-            <div className="grid min-h-0 min-w-0 flex-1 items-center gap-8 lg:grid-cols-2 lg:gap-12 xl:gap-16">
-              <div className="hero-enter min-w-0">
-                <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-[#D4AF37] sm:text-sm" data-animate="hero-headline">
+            <div className="grid min-h-0 min-w-0 flex-1 items-center gap-10 sm:gap-12 lg:grid-cols-2 lg:gap-16">
+              <div className="relative z-10 min-w-0 max-w-xl">
+                <p
+                  className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-[#D4AF37] sm:text-sm"
+                  data-animate="hero-headline"
+                >
                   {t("subjects.eyebrow")}
                 </p>
-                <h1 className={cn(type.h1, "mb-6")} data-animate="hero-headline" data-animate-delay="0.1">
+                <h1 className={cn(type.h1, "mb-4")} data-animate="hero-headline" data-animate-delay="0.1">
                   {t("subjects.heroTitle")}{" "}
                   <span className="text-[#D4AF37]">{t("subjects.heroTitleHighlight")}</span>
                 </h1>
-                <p className="mb-8 max-w-xl text-base leading-relaxed text-on-navy-muted sm:text-lg" data-animate="hero-subheadline">
+                <p
+                  className="mb-8 max-w-lg text-base leading-relaxed text-on-navy-muted sm:text-lg"
+                  data-animate="hero-subheadline"
+                >
                   {t("subjects.heroSubtitle")}
                 </p>
-
-                <Button variant="gold" size="lg" className="w-full sm:w-auto" href="/consultation">
-                  {t("subjectsPage.ctaButton")} <ArrowRight className="h-5 w-5" />
-                </Button>
+                <ul className="mb-8 flex flex-wrap gap-2.5 sm:gap-3" data-animate="hero-cta">
+                  {benefits.slice(0, 3).map((item, index) => {
+                    const Icon = heroFeatureIcons[index] ?? Target;
+                    return (
+                      <li key={index}>
+                        <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3.5 py-2 text-sm font-medium text-white/90">
+                          <Icon className="h-4 w-4 shrink-0 text-[#D4AF37]" aria-hidden />
+                          {item.title}
+                        </span>
+                      </li>
+                    );
+                  })}
+                </ul>
+                <div data-animate="hero-cta">
+                  <Button variant="gold" size="md" className="w-full px-8 sm:w-auto" href="/consultation">
+                    {t("subjectsPage.ctaButton")} <ArrowRight className="h-5 w-5" />
+                  </Button>
+                </div>
               </div>
 
-              <div data-animate="hero-image">
-                <MarketingHeroMobileImage src={subjectsHeroImage} fallbackSrc={SHARED_PAGE_HERO_IMAGE} alt={t("subjects.title")} priority />
+              <div className="relative z-10 max-w-xl lg:max-w-none" data-animate="hero-image">
+                <MarketingHeroMobileImage
+                  src={subjectsHeroImage}
+                  fallbackSrc={SHARED_PAGE_HERO_IMAGE}
+                  alt={t("subjects.title")}
+                  priority
+                  className="max-w-xl lg:max-w-none"
+                />
               </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="border-t border-white/10 bg-[#0a1520] text-white">
-          <div className={cn(section.container, "py-6 md:py-8")}>
-            <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-3 sm:gap-4" data-animate="staggerChildren" data-stagger="0.1">
-              {benefits.slice(0, 3).map((item, index) => {
-                const Icon = heroFeatureIcons[index] ?? Target;
-                return (
-                  <div
-                    key={index}
-                    className="min-w-0 rounded-xl border border-white/10 bg-white/5 p-3 sm:p-4"
-                  >
-                    <Icon className="mb-1.5 h-4 w-4 text-[#D4AF37] sm:mb-2 sm:h-5 sm:w-5" />
-                    <p className="text-[11px] font-semibold leading-tight sm:text-sm">{item.title}</p>
-                    <p className="mt-1 text-xs leading-snug text-on-navy-subtle">{item.desc}</p>
-                  </div>
-                );
-              })}
             </div>
           </div>
         </section>
 
         {/* Stats strip */}
-        <section className="relative z-10 -mt-4 pb-4">
+        <section className="-mt-6 pb-2 md:-mt-8">
           <div className={section.container}>
             <Card className={cn("border-0 p-4 shadow-xl sm:p-6", mt.card)}>
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 sm:gap-6">

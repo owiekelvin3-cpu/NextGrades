@@ -473,7 +473,17 @@ export function TeacherStudentsExperience() {
     );
   }
 
-  if (!data || data.students.length === 0) {
+  if (!data) {
+    return (
+      <TeacherDashboardLayout title={t("teacherDashboard.nav.students")}>
+        <div className={`${teacherPanel()} p-10 text-center text-text-muted`}>
+          {t("teacherDashboard.signInRequired")}
+        </div>
+      </TeacherDashboardLayout>
+    );
+  }
+
+  if (data.students.length === 0) {
     return (
       <TeacherDashboardLayout
         title={t("teacherDashboard.nav.students")}
