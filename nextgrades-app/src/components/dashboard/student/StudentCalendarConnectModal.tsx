@@ -137,7 +137,7 @@ export function StudentCalendarConnectModal({ open, onClose }: StudentCalendarCo
                     defaultValue: "{{count}} lessons will stay in sync.",
                   })
                 : t("studentDashboard.calendarNoLessons", {
-                    defaultValue: "No lessons yet — your calendar will update automatically when lessons are scheduled.",
+                    defaultValue: "No lessons yet - your calendar will update automatically when lessons are scheduled.",
                   })}
             </p>
 

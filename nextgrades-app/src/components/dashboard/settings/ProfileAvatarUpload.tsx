@@ -85,7 +85,7 @@ export function ProfileAvatarUpload({
         />
       </div>
       <div className="text-center sm:text-left">
-        <p className="text-sm font-semibold text-foreground">{name || "—"}</p>
+        <p className="text-sm font-semibold text-foreground">{name || "-"}</p>
         <p className="mt-1 text-xs text-text-muted">JPG, PNG or WebP · Max 5 MB</p>
         <div className="mt-3 flex flex-wrap justify-center gap-2 sm:justify-start">
           <button

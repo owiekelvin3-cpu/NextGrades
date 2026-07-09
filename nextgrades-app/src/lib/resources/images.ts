@@ -1,5 +1,5 @@
 /**
- * Resources-section images — branded marketing photos.
+ * Resources-section images - branded marketing photos.
  */
 
 import { BRANDED, SUBJECT_ONLINE_IMAGES } from "@/lib/marketing-images";
@@ -8,7 +8,7 @@ export const RESOURCES_HUB_HERO = BRANDED.subjectBooks;
 export const RESOURCES_UPGRADE_HERO = BRANDED.tutoringSession;
 export const RESOURCES_DEFAULT_THUMBNAIL = BRANDED.subjectBooks;
 
-/** Subject heroes & tiles — distinct online photo per subject */
+/** Subject heroes & tiles - distinct online photo per subject */
 export const RESOURCES_SUBJECT_IMAGE_BY_ID: Record<string, string> = {
   math: SUBJECT_ONLINE_IMAGES.math,
   english: SUBJECT_ONLINE_IMAGES.english,

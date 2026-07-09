@@ -31,7 +31,7 @@ export function ImageFieldEditor({ value, onChange, inputClass, isDark, label }:
       }
       if (typeof data.url === "string" && data.url) {
         onChange(data.url);
-        toast.success("Photo added — tap Put on live website below when you are done");
+        toast.success("Photo added - tap Put on live website below when you are done");
         return;
       }
       throw new Error("Upload succeeded but no image URL was returned");

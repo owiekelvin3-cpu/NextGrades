@@ -206,10 +206,10 @@ export function TeacherMobileDashboard({ data }: Props) {
               </div>
               <div className="min-w-0 flex-1">
                 <p className="truncate font-semibold text-foreground">
-                  {nextLesson.student_name || "—"}
+                  {nextLesson.student_name || "-"}
                 </p>
                 <p className="mt-0.5 truncate text-xs text-text-muted">
-                  {nextLesson.subject_name || "—"} · {monthLabel}
+                  {nextLesson.subject_name || "-"} · {monthLabel}
                 </p>
                 <p className="mt-1 text-xs font-medium text-[#D4AF37]">
                   {formatTimeRange(nextLesson.start_time, nextLesson.duration, locale)}
@@ -331,10 +331,10 @@ export function TeacherMobileDashboard({ data }: Props) {
                     </div>
                     <div className="p-4">
                       <p className="truncate font-semibold text-foreground">
-                        {lesson.student_name || "—"}
+                        {lesson.student_name || "-"}
                       </p>
                       <p className="mt-1 text-xs text-text-muted">
-                        {lesson.subject_name || "—"} ·{" "}
+                        {lesson.subject_name || "-"} ·{" "}
                         {start.toLocaleDateString(locale, { weekday: "short", day: "numeric", month: "short" })}
                       </p>
                       <p className="mt-2 text-xs font-medium text-[#D4AF37]">

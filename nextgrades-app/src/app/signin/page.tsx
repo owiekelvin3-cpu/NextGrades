@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { buildLoginUrl } from "@/lib/auth/redirect";
 
-/** Alias for /login — no public signup mode. */
+/** Alias for /login - no public signup mode. */
 export default async function SignInPage({
   searchParams,
 }: {

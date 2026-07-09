@@ -114,7 +114,7 @@ export function TeacherOverviewDashboard() {
           eyebrow={todayLabel}
           title={t("teacherDashboard.welcomeBack", { name: firstName || t("teacherDashboard.sidebarGuest") })}
           subtitle={t("teacherDashboard.overviewSubtitle", {
-            defaultValue: "Your teaching hub — schedule lessons, track earnings, and connect with students.",
+            defaultValue: "Your teaching hub - schedule lessons, track earnings, and connect with students.",
           })}
           actions={[
             { href: "/dashboard/chat", label: t("teacherDashboard.openAi"), icon: Sparkles },
@@ -257,9 +257,9 @@ export function TeacherOverviewDashboard() {
                           <span className="text-lg font-bold leading-tight text-foreground">{start.getDate()}</span>
                         </div>
                         <div className="min-w-0">
-                          <p className="truncate font-semibold text-foreground">{lesson.student_name || "—"}</p>
+                          <p className="truncate font-semibold text-foreground">{lesson.student_name || "-"}</p>
                           <p className="mt-0.5 truncate text-sm text-text-muted">
-                            {lesson.subject_name || "—"} · {lesson.duration} min
+                            {lesson.subject_name || "-"} · {lesson.duration} min
                           </p>
                           <p className="mt-1 text-xs text-text-muted">
                             {formatTimeRange(lesson.start_time, lesson.duration, locale)}

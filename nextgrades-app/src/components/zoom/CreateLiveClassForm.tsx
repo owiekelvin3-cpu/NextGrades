@@ -248,7 +248,7 @@ export function CreateLiveClassForm({
               required
               value={form.title}
               onChange={(e) => setForm({ ...form, title: e.target.value })}
-              placeholder={t("zoom.titlePlaceholder", { defaultValue: "e.g. Algebra — Quadratic equations" })}
+              placeholder={t("zoom.titlePlaceholder", { defaultValue: "e.g. Algebra - Quadratic equations" })}
               className={inputCls}
             />
           </div>

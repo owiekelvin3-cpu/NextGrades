@@ -21,7 +21,7 @@ export function CmsPublishBar({ pageId }: Props) {
       <div className="mx-auto flex max-w-3xl flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-sm font-medium text-amber-800">
           {t("cmsEditor.unsavedBanner", {
-            defaultValue: "{{count}} unsaved change(s) — save to update the live website",
+            defaultValue: "{{count}} unsaved change(s) - save to update the live website",
             count,
           })}
         </p>

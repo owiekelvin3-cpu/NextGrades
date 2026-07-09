@@ -1,6 +1,6 @@
 /**
  * Lightweight text analysis for rule-based quiz generation.
- * Server-side only — no heavy processing on the client.
+ * Server-side only - no heavy processing on the client.
  */
 
 export interface ParsedContent {
@@ -65,7 +65,7 @@ function splitSentences(text: string): string[] {
     .filter((s) => s.split(/\s+/).length >= 4);
 }
 
-/** Frequency-based keyword extraction — O(n) single pass. */
+/** Frequency-based keyword extraction - O(n) single pass. */
 export function extractKeywords(text: string, limit = 20): string[] {
   const words = text.toLowerCase().match(/\b[\p{L}]{4,}\b/gu) || [];
   const frequency: Record<string, number> = {};
@@ -120,7 +120,7 @@ export function isExerciseSentence(sentence: string): boolean {
   );
 }
 
-/** Build true/false pairs — half true statements, half plausible false variants. */
+/** Build true/false pairs - half true statements, half plausible false variants. */
 export function extractTrueFalseQuestions(
   sentences: string[]
 ): Array<{ statement: string; isTrue: boolean }> {

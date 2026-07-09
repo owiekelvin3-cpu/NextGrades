@@ -9,7 +9,7 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       title: "Preise & Tarife | NextGrades",
       description:
-        "Finde das passende Lernpaket — von der Lernbibliothek bis zur persönlichen Matura-Vorbereitung.",
+        "Finde das passende Lernpaket - von der Lernbibliothek bis zur persönlichen Matura-Vorbereitung.",
     },
   });
 }

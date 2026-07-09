@@ -104,7 +104,7 @@ export function isClientLoginOtpRequired(): boolean {
 
 
 
-/** @deprecated Use isSignupEmailVerificationRequired — kept for existing imports. */
+/** @deprecated Use isSignupEmailVerificationRequired - kept for existing imports. */
 
 export function isEmailVerificationRequired(): boolean {
 

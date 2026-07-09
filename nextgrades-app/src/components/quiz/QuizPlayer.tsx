@@ -150,7 +150,7 @@ export function QuizPlayer({
                   <div>
                     <p className={`font-medium ${textPrimary}`}>{q.question_text}</p>
                     <p className="text-sm text-gray-500 mt-2">
-                      Your answer: {g?.answer || "—"}
+                      Your answer: {g?.answer || "-"}
                     </p>
                     {!ok && (
                       <p className="text-sm text-[#D4AF37] mt-1">Correct: {q.correct_answer}</p>

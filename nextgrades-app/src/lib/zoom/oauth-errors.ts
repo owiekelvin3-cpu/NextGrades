@@ -22,7 +22,7 @@ export function resolveZoomOAuthErrorMessage(
   if (decoded.includes("invalid_client") || decoded.includes("application not found")) {
     return t("zoom.errorAppNotFound", {
       defaultValue:
-        "Zoom could not find this app for your account. The server may be using Development credentials — only the app owner's Zoom account can connect until Production OAuth is enabled.",
+        "Zoom could not find this app for your account. The server may be using Development credentials - only the app owner's Zoom account can connect until Production OAuth is enabled.",
     });
   }
   if (decoded.includes("token exchange") || decoded === "token_exchange_failed") {

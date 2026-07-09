@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { isResendConfigured } from "@/lib/email";
 import { EmailTemplates } from "@/lib/email";
 
-/** Preview email templates in development — GET /api/email/preview?template=welcome */
+/** Preview email templates in development - GET /api/email/preview?template=welcome */
 export async function GET(request: Request) {
   if (process.env.NODE_ENV === "production") {
     return NextResponse.json({ error: "Not available in production" }, { status: 404 });

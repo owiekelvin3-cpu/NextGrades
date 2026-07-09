@@ -22,7 +22,7 @@ const directionClass: Record<Direction, string> = {
   scale: "reveal-scale",
 };
 
-/** GPU-friendly scroll reveal — skipped when user prefers reduced motion. */
+/** GPU-friendly scroll reveal - skipped when user prefers reduced motion. */
 export function RevealOnScroll({
   children,
   className,

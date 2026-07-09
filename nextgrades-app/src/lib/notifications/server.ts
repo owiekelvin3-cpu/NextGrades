@@ -20,7 +20,7 @@ export async function getUserNotificationPreferences(
 /** Create a single in-app notification (server-only, uses service role). */
 export async function createNotification(input: CreateNotificationInput): Promise<string | null> {
   if (!isSupabaseServiceRoleConfigured()) {
-    console.warn("[notifications] Service role not configured — skipping notification");
+    console.warn("[notifications] Service role not configured - skipping notification");
     return null;
   }
 

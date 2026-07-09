@@ -194,7 +194,7 @@ function StudentDetailPanel({
                               month: "short",
                             })}
                             {" · "}
-                            {lesson.subject_name || "—"}
+                            {lesson.subject_name || "-"}
                           </p>
                           <p className="text-xs text-text-muted">
                             {formatTimeRange(lesson.start_time, lesson.duration, locale)} · {lesson.duration} min
@@ -226,7 +226,7 @@ function StudentDetailPanel({
                     >
                       <FileText className="h-8 w-8 text-text-muted" />
                       <p className="mt-2 text-xs font-medium text-foreground">
-                        {student.subject} — {type}
+                        {student.subject} - {type}
                       </p>
                       <button type="button" className="mt-2 text-[11px] text-[#D4AF37]">
                         <Download className="mx-auto h-3.5 w-3.5" />
@@ -260,7 +260,7 @@ function StudentDetailPanel({
                       <div>
                         <p className="text-sm font-medium text-foreground">
                           {new Date(lesson.start_time).toLocaleDateString(locale, { weekday: "short", day: "numeric", month: "short" })}
-                          {" · "}{lesson.subject_name || "—"}
+                          {" · "}{lesson.subject_name || "-"}
                         </p>
                         <p className="text-xs text-text-muted">
                           {formatTimeRange(lesson.start_time, lesson.duration, locale)} · {lesson.duration} min
@@ -350,7 +350,7 @@ function StudentDetailPanel({
                 {["PDF", "Excel", "Video"].map((type) => (
                   <div key={type} className="flex flex-col items-center rounded-xl border border-border-default bg-surface-subtle p-4 text-center">
                     <FileText className="h-8 w-8 text-text-muted" />
-                    <p className="mt-2 text-xs font-medium text-foreground">{student.subject} — {type}</p>
+                    <p className="mt-2 text-xs font-medium text-foreground">{student.subject} - {type}</p>
                   </div>
                 ))}
               </div>

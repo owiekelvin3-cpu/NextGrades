@@ -122,7 +122,7 @@ export function ZoomConnectCard() {
               )}
               {status.connected && status.expired && (
                 <p className="mt-1 text-xs text-amber-700">
-                  {t("zoom.tokenExpired", { defaultValue: "Session expired — reconnect to continue scheduling." })}
+                  {t("zoom.tokenExpired", { defaultValue: "Session expired - reconnect to continue scheduling." })}
                 </p>
               )}
               {status.connectedAt && status.connected && (

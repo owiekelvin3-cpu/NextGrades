@@ -6,7 +6,7 @@ import { createZoomMeetingOAuth } from "@/lib/zoom/meetings";
 import { getZoomConnection } from "@/lib/zoom/tokens";
 import { notifyLiveClassScheduled } from "@/lib/notifications/triggers";
 
-/** @deprecated Prefer POST /api/zoom/meetings — kept for backward compatibility */
+/** @deprecated Prefer POST /api/zoom/meetings - kept for backward compatibility */
 export async function POST(request: Request) {
   const gate = await requireTeacherOrAdminApi();
   if (gate.error) return gate.error;

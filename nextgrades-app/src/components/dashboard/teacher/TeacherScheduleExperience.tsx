@@ -163,7 +163,7 @@ function ScheduleContent() {
           </div>
         </div>
 
-        {/* Setup progress — only when not fully set up */}
+        {/* Setup progress - only when not fully set up */}
         {(!zoomReady || upcoming.length === 0) && (
           <div className={teacherPanel("p-5 sm:p-6")}>
             <div className="mb-4 flex items-center gap-2">
@@ -215,7 +215,7 @@ function ScheduleContent() {
                 </h2>
                 <p className="mt-0.5 text-xs text-text-muted">
                   {t("zoom.scheduledMeetingsDesc", {
-                    defaultValue: "Your upcoming live sessions — join or cancel anytime.",
+                    defaultValue: "Your upcoming live sessions - join or cancel anytime.",
                   })}
                 </p>
               </div>

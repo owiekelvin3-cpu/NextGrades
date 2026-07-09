@@ -14,7 +14,7 @@ type AuthPageShellProps = {
   className?: string;
 };
 
-/** Minimal chrome for login, verify, and password flows — no marketing nav clutter. */
+/** Minimal chrome for login, verify, and password flows - no marketing nav clutter. */
 export function AuthPageShell({ children, footer, className }: AuthPageShellProps) {
   const { theme } = useTheme();
   const { t: translate } = useTranslation();

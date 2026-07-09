@@ -18,7 +18,7 @@ type Props = {
   items: Item[];
   defaultOpenId?: string;
   className?: string;
-  /** Dark navy surface — Pathora-style feature cards on mobile */
+  /** Dark navy surface - Pathora-style feature cards on mobile */
   variant?: "light" | "dark";
   /** Show on all breakpoints (default: mobile only) */
   alwaysVisible?: boolean;

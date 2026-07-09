@@ -389,12 +389,12 @@ export async function fetchTeacherStudents(teacherId: string, locale: string): P
           hour: "2-digit",
           minute: "2-digit",
         })
-      : "—";
+      : "-";
 
     return {
       id,
       name: nameMap.get(id) ?? "Student",
-      subject: subjectId ? (subjectMap.get(subjectId) ?? "—") : "—",
+      subject: subjectId ? (subjectMap.get(subjectId) ?? "-") : "-",
       next_lesson: nextLesson,
     };
   });
@@ -430,7 +430,7 @@ const EMPTY_ADMIN_STATS: AdminStats = {
   total_earnings: 0,
 };
 
-/** Single round-trip admin dashboard payload (stats + activity) — server-cached. */
+/** Single round-trip admin dashboard payload (stats + activity) - server-cached. */
 export async function fetchAdminDashboard(activityLimit = 10): Promise<{
   stats: AdminStats;
   activities: ActivityLogRow[];

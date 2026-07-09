@@ -28,7 +28,7 @@ export function ResourcesCategoryTabs({ active, onChange, className }: Props) {
   return (
     <div className={cn("border-b border-border-default bg-surface-elevated", className)}>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Mobile — pill carousel */}
+        {/* Mobile - pill carousel */}
         <div className="snap-carousel py-3 md:hidden">
           {RESOURCE_TABS.map((tab, index) => {
             const label = t(tab.labelKey, { defaultValue: TAB_LABELS[index] });
@@ -49,7 +49,7 @@ export function ResourcesCategoryTabs({ active, onChange, className }: Props) {
           })}
         </div>
 
-        {/* Desktop — underline tabs */}
+        {/* Desktop - underline tabs */}
         <div className="scrollbar-hide hidden gap-1 overflow-x-auto py-1 md:flex">
           {RESOURCE_TABS.map((tab, index) => {
             const label = t(tab.labelKey, { defaultValue: TAB_LABELS[index] });

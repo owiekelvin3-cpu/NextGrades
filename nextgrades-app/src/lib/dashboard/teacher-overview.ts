@@ -141,7 +141,7 @@ function buildStudentList(lessons: DashboardLesson[]): TeacherStudentOverview[] 
     const existing = byStudent.get(lesson.student_id) || {
       id: lesson.student_id,
       name: lesson.student_name,
-      subject: lesson.subject_name || "—",
+      subject: lesson.subject_name || "-",
       count: 0,
       minutes: 0,
     };
@@ -180,7 +180,7 @@ function buildRecentPayments(
     .slice(0, 5)
     .map((l) => ({
       id: l.id,
-      studentName: l.student_name || "—",
+      studentName: l.student_name || "-",
       method: "Überweisung",
       date: l.start_time,
       amount: Math.round((l.duration / 60) * ratePerHour * 100) / 100,
@@ -191,7 +191,7 @@ function buildRecentPayments(
 export function getTeacherFirstName(fullName: string): string {
   const parts = fullName.trim().split(/\s+/);
   if (parts.length >= 2 && parts[0].toLowerCase().includes("herr")) return `${parts[0]} ${parts[1]}`;
-  return parts[0] || fullName || "—";
+  return parts[0] || fullName || "-";
 }
 
 export async function fetchTeacherOverviewData(): Promise<TeacherOverviewData | null> {

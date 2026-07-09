@@ -20,6 +20,6 @@ export async function recordConsentToServer(
       }),
     });
   } catch {
-    /* Non-blocking — local storage remains source of truth */
+    /* Non-blocking - local storage remains source of truth */
   }
 }

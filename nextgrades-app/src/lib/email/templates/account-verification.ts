@@ -27,7 +27,7 @@ export function accountVerificationEmail(verifyUrl: string, userName?: string) {
     emailParagraph(`Hallo ${name},`),
     emailParagraph(
       `vielen Dank für deine Registrierung bei <strong style="color:${C.navy};">NextGrades</strong>. ` +
-        "Um dein Konto zu aktivieren und loszulegen, bestätige bitte deine E-Mail-Adresse — das dauert nur einen Klick."
+        "Um dein Konto zu aktivieren und loszulegen, bestätige bitte deine E-Mail-Adresse - das dauert nur einen Klick."
     ),
     emailNumberedSteps([
       "Öffne dein Postfach (auch den Spam-Ordner bei Gmail).",
@@ -53,7 +53,7 @@ export function accountVerificationEmail(verifyUrl: string, userName?: string) {
 
   return wrapEmail(
     content,
-    "NextGrades — Bitte bestätige deine E-Mail-Adresse, um dein Konto zu aktivieren."
+    "NextGrades - Bitte bestätige deine E-Mail-Adresse, um dein Konto zu aktivieren."
   );
 }
 
@@ -72,7 +72,7 @@ export function accountVerificationEmailPlain(verifyUrl: string, userName?: stri
     "",
     "Der Link ist 24 Stunden gültig. Wenn du kein Konto erstellt hast, ignoriere diese E-Mail.",
     "",
-    `— ${EMAIL_BRAND.name}`,
+    `- ${EMAIL_BRAND.name}`,
     EMAIL_BRAND.supportEmail,
   ].join("\n");
 }

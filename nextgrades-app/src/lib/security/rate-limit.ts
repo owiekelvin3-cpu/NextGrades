@@ -75,7 +75,7 @@ export async function enforceRateLimit(
   );
 }
 
-/** Global API throttle — applied at the edge proxy for /api/* routes. */
+/** Global API throttle - applied at the edge proxy for /api/* routes. */
 export async function enforceGlobalApiRateLimit(request: Request): Promise<NextResponse | null> {
   return enforceRateLimit(request, { bucket: "api:global", limit: 180, windowSec: 60 });
 }

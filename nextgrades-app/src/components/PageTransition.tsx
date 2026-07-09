@@ -21,7 +21,7 @@ function getReducedMotionServerSnapshot() {
   return false;
 }
 
-/** Lightweight route fade (CSS only — no framer-motion on marketing routes). */
+/** Lightweight route fade (CSS only - no framer-motion on marketing routes). */
 export default function PageTransition({ children }: PageTransitionProps) {
   const pathname = usePathname();
   const isAppShell =

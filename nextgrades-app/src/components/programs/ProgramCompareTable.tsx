@@ -87,7 +87,7 @@ function CompareStatusCell({
   return <span className="text-sm font-medium text-foreground-secondary">{value}</span>;
 }
 
-/** Program comparison table — clean check / X / partial layout. */
+/** Program comparison table - clean check / X / partial layout. */
 export function ProgramCompareTable({
   title,
   headers,

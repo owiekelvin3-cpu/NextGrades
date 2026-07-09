@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 
 const BENEFIT_ICONS = [BookOpen, Shield, Star, Download] as const;
 
-/** Value props under Bibliothek hero CTAs — matches subject-page benefit row. */
+/** Value props under Bibliothek hero CTAs - matches subject-page benefit row. */
 export function ResourcesHeroBenefits() {
   const { t } = useTranslation();
 

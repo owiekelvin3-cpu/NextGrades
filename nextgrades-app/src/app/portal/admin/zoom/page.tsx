@@ -87,7 +87,7 @@ export function AdminZoomDashboard() {
         <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950">
           <p className="font-semibold">
             {t("zoom.admin.oauthDevWarning", {
-              defaultValue: "Zoom OAuth is in Development mode — external teachers cannot connect.",
+              defaultValue: "Zoom OAuth is in Development mode - external teachers cannot connect.",
             })}
           </p>
           <p className="mt-2 text-amber-900">

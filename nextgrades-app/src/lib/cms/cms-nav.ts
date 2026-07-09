@@ -26,7 +26,7 @@ export type CmsNavItem = {
   description?: string;
 };
 
-/** All editable marketing pages — derived from page registry (single source of truth). */
+/** All editable marketing pages - derived from page registry (single source of truth). */
 export const CMS_SIDEBAR_PAGES: CmsNavItem[] = CMS_PAGES.map((page) => ({
   id: page.id,
   label: page.label,
@@ -47,7 +47,7 @@ export const CMS_PAGE_NAV_GROUPS: CmsPageNavGroup[] = CMS_PAGE_CATEGORIES.map((c
   pages: CMS_SIDEBAR_PAGES.filter((p) => CMS_PAGES.find((m) => m.id === p.id)?.category === cat.id),
 }));
 
-/** Primary CMS sidebar — content editing first, site tools second. */
+/** Primary CMS sidebar - content editing first, site tools second. */
 export const CMS_SIDEBAR_SECTIONS: CmsNavItem[] = [
   { id: "pages-hub", label: "All pages", href: `${BASE}/pages`, icon: LayoutGrid },
   { id: "media", label: "Media library", href: `${BASE}/media`, icon: ImageIcon },
@@ -57,7 +57,7 @@ export const CMS_SIDEBAR_SECTIONS: CmsNavItem[] = [
   { id: "history", label: "Version history", href: `${BASE}/history`, icon: History },
 ];
 
-/** Advanced structured content (cards, nav, blog) — separate from page text fields. */
+/** Advanced structured content (cards, nav, blog) - separate from page text fields. */
 export const CMS_SIDEBAR_TOOLS: CmsNavItem[] = [
   { id: "testimonials-data", label: "Testimonials", href: `${BASE}/testimonials`, icon: MessageSquareQuote },
   { id: "faqs-data", label: "FAQs", href: `${BASE}/faqs`, icon: HelpCircle },

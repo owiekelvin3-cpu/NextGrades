@@ -186,7 +186,7 @@ export function getCmsPageMeta(pageId: string): CmsPageMeta | undefined {
 export function friendlySectionLabel(sectionId: string, fallback: string): string {
   if (sectionId.startsWith("images-")) {
     const page = sectionId.replace("images-", "");
-    return `${CMS_SECTION_LABELS.images} — ${page}`;
+    return `${CMS_SECTION_LABELS.images} - ${page}`;
   }
   return CMS_SECTION_LABELS[sectionId] ?? fallback;
 }

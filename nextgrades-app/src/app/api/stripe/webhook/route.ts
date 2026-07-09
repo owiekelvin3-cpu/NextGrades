@@ -173,7 +173,7 @@ export async function POST(request: Request) {
           const payerEmail = session.customer_details?.email ?? session.customer_email ?? "unknown";
           const subjectLabel = session.metadata?.subjectName || session.metadata?.subjectSlug || courseName;
           void sendAdminNotificationEmail(
-            "Guest payment — create account",
+            "Guest payment - create account",
             `${payerEmail} paid ${formatCurrency(amount, currency)} for ${session.metadata?.planName || planId || "subscription"} (${subjectLabel}). Review in Admin → Paid signups.`,
             `${process.env.NEXT_PUBLIC_APP_URL}/portal/admin/guest-signups`,
             "Open paid signups"
@@ -218,7 +218,7 @@ export async function POST(request: Request) {
       }
 
       case "customer.subscription.deleted": {
-        // Subscription cancelled or lapsed — revoke access
+        // Subscription cancelled or lapsed - revoke access
         const subscription = event.data.object as Stripe.Subscription;
         const customerId = typeof subscription.customer === "string"
           ? subscription.customer

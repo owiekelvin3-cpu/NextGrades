@@ -5,7 +5,7 @@ export type CreateZoomMeetingInput = {
   teacherId: string;
   topic: string;
   description?: string;
-  /** Local wall time, e.g. 2026-05-31T10:00:00 — paired with timezone for Zoom API */
+  /** Local wall time, e.g. 2026-05-31T10:00:00 - paired with timezone for Zoom API */
   startTimeLocal: string;
   duration: number;
   timezone: string;

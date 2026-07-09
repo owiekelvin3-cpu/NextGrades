@@ -60,7 +60,7 @@ export function CmsThemePage() {
         const data = await res.json();
         throw new Error(data.error || "Save failed");
       }
-      toast.success("Theme updated — refresh the public site to see changes");
+      toast.success("Theme updated - refresh the public site to see changes");
       document.documentElement.style.setProperty("--cms-primary", form.primary_color);
       document.documentElement.style.setProperty("--cms-secondary", form.secondary_color);
       document.documentElement.style.setProperty("--cms-accent", form.accent_color);

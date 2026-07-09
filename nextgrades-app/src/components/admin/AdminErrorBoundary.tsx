@@ -27,7 +27,7 @@ export class AdminErrorBoundary extends Component<Props, State> {
           <div className="max-w-lg rounded-2xl border border-red-500/30 bg-[#112240] p-8 text-center">
             <h2 className="text-lg font-bold text-white">Something went wrong</h2>
             <p className="mt-2 text-sm text-gray-400">
-              The admin page hit an error. Try refreshing — your data is safe.
+              The admin page hit an error. Try refreshing - your data is safe.
             </p>
             <p className="mt-3 truncate font-mono text-xs text-red-300/80">{this.state.error.message}</p>
             <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">

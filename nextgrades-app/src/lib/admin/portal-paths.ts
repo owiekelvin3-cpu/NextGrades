@@ -1,4 +1,4 @@
-/** Dedicated admin portal routes — isolated from student/teacher dashboards. */
+/** Dedicated admin portal routes - isolated from student/teacher dashboards. */
 
 export const ADMIN_PORTAL_LOGIN = "/portal/login";
 export const ADMIN_PORTAL_HOME = "/portal/admin";

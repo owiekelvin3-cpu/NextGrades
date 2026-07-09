@@ -1,4 +1,4 @@
-/** Premium EdTech design tokens — shared across marketing surfaces */
+/** Premium EdTech design tokens - shared across marketing surfaces */
 
 export const premium = {
   navy: "var(--brand-navy)",
@@ -13,13 +13,13 @@ export const premium = {
 } as const;
 
 export const section = {
-  /** Standard vertical rhythm — mobile-first px-5 py-14 */
+  /** Standard vertical rhythm - mobile-first px-5 py-14 */
   py: "py-14 md:py-20 lg:py-28 xl:py-32",
   pyCompact: "py-14 md:py-16 lg:py-20",
   container: "site-container mx-auto w-full min-w-0 max-w-7xl",
 } as const;
 
-/** Homepage hero spacing — shared across all marketing page heroes */
+/** Homepage hero spacing - shared across all marketing page heroes */
 export const hero = {
   section:
     "relative flex h-[min(100dvh,52rem)] flex-col overflow-hidden sm:h-[520px] md:h-[560px] lg:h-[640px] xl:h-[680px]",

@@ -11,7 +11,7 @@ type Props = {
   fallbackSrc?: string;
 };
 
-/** Stacked hero image for phones & tablets — keeps copy readable above the fold. */
+/** Stacked hero image for phones & tablets - keeps copy readable above the fold. */
 export function MarketingHeroMobileImage({ src, alt = "", className, priority, fallbackSrc }: Props) {
   return (
     <div

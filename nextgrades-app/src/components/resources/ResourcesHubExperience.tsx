@@ -180,7 +180,7 @@ export function ResourcesHubExperience() {
                     <SectionHeader
                       title={t("resources.resourcesBySubject", { defaultValue: "Resources by subject" })}
                     />
-                    {/* Mobile — horizontal subject carousel */}
+                    {/* Mobile - horizontal subject carousel */}
                     <div className="snap-carousel pb-1 sm:hidden">
                       {catalog.subjects.slice(0, 5).map((s, index) => {
                         const slug = s.slug || s.id;

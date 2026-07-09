@@ -13,12 +13,12 @@ type AuthMobileShellProps = {
   /** Optional illustration above the form card */
   illustration?: React.ReactNode;
   showBack?: boolean;
-  /** Custom back handler — defaults to home link */
+  /** Custom back handler - defaults to home link */
   onBack?: () => void;
   className?: string;
 };
 
-/** MBA-style mobile auth layout — decorative header + rounded form sheet. */
+/** MBA-style mobile auth layout - decorative header + rounded form sheet. */
 export function AuthMobileShell({
   title,
   subtitle,
@@ -41,7 +41,7 @@ export function AuthMobileShell({
       )}
       style={{ paddingTop: "env(safe-area-inset-top)", paddingBottom: "env(safe-area-inset-bottom)" }}
     >
-      {/* Decorative arc — mockup top-right */}
+      {/* Decorative arc - mockup top-right */}
       <div
         className={cn(
           "pointer-events-none absolute right-0 top-0 h-40 w-40 rounded-bl-[100%]",

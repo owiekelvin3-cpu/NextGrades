@@ -27,7 +27,7 @@ type Props = {
   popularLabel?: string;
 };
 
-/** Pricing card — matches Programs page image layout and typography. */
+/** Pricing card - matches Programs page image layout and typography. */
 export function PricingPlanCard({
   plan,
   imageSrc,

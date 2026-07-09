@@ -46,7 +46,7 @@ type Props = {
   verificationPanel?: ReactNode;
 };
 
-/** Mobile login sheet — invite-only (no self-registration). */
+/** Mobile login sheet - invite-only (no self-registration). */
 export function AuthMobileSheet({
   error,
   duplicateEmail,

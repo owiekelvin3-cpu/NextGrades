@@ -20,7 +20,7 @@
       },
       {
         "title": "Vision",
-        "desc": "A new generation of learning — modern, structured, and results-driven."
+        "desc": "A new generation of learning - modern, structured, and results-driven."
       },
       {
         "title": "Values",
@@ -61,7 +61,7 @@
     "missionCards": [
       {
         "title": "Make knowledge understandable",
-        "desc": "Complex topics broken down clearly — so students truly grasp the material."
+        "desc": "Complex topics broken down clearly - so students truly grasp the material."
       },
       {
         "title": "Provide high-quality materials",
@@ -69,7 +69,7 @@
       },
       {
         "title": "Support individually",
-        "desc": "Every student learns differently — we adapt to their pace and goals."
+        "desc": "Every student learns differently - we adapt to their pace and goals."
       },
       {
         "title": "Achieve measurable results",
@@ -81,7 +81,7 @@
     "principles": [
       {
         "title": "Personal approach",
-        "desc": "Every student is unique — we tailor our support to individual needs and learning styles."
+        "desc": "Every student is unique - we tailor our support to individual needs and learning styles."
       },
       {
         "title": "Experienced teachers",
@@ -93,7 +93,7 @@
       },
       {
         "title": "Real results",
-        "desc": "Our focus is on measurable progress — better grades and lasting confidence."
+        "desc": "Our focus is on measurable progress - better grades and lasting confidence."
       },
       {
         "title": "Passion for education",
@@ -101,7 +101,7 @@
       }
     ],
     "promiseEyebrow": "OUR PROMISE",
-    "promiseTitle": "We always give our best — for your success.",
+    "promiseTitle": "We always give our best - for your success.",
     "promiseItems": [
       "High-quality learning materials created by experienced teachers",
       "Carefully selected, qualified tutors",
@@ -187,7 +187,7 @@
       }
     ],
     "communityTitle": "Education changes lives",
-    "communityDesc": "That's why we give our best every day — so students can learn more successfully, gain more self-confidence, and reach their full potential.",
+    "communityDesc": "That's why we give our best every day - so students can learn more successfully, gain more self-confidence, and reach their full potential.",
     "communityCta": "Book free consultation",
     "communityTags": [
       "No obligation",
@@ -197,7 +197,7 @@
   },
   "programsPage": {
     "heroEyebrow": "OUR PROGRAMS",
-    "heroSubtitle": "Choose the program that fits you best — personal support, modern methods, and flexible online learning.",
+    "heroSubtitle": "Choose the program that fits you best - personal support, modern methods, and flexible online learning.",
     "heroFeatures": [
       {
         "title": "Premium support",
@@ -209,7 +209,7 @@
       },
       {
         "title": "Flexible & online",
-        "desc": "Learn where you want — when you want."
+        "desc": "Learn where you want - when you want."
       }
     ],
     "freeConsultation": "Book now",
@@ -315,7 +315,7 @@
       { "label": "One-time payment", "c1": false, "c2": false, "c3": true, "c4": true }
     ],
     "ctaTitle": "Not sure which program fits?",
-    "ctaDesc": "We advise you for free and find the best solution together — usually within a few hours.",
+    "ctaDesc": "We advise you for free and find the best solution together - usually within a few hours.",
     "ctaParentsTitle": "Why parents choose us",
     "ctaParentsItems": [
       "Personal support",
@@ -546,7 +546,7 @@
   },
   "pricingPage": {
     "plansEyebrow": "FAIR & TRANSPARENT PRICING",
-    "plansTitle": "Invest in your future — pick the support that fits you",
+    "plansTitle": "Invest in your future - pick the support that fits you",
     "plansSubtitle": "Transparent pricing. No hidden fees. Choose the offer that fits your goals.",
     "valueProposition": "Individual solutions for every budget and learning situation.",
     "stats": [
@@ -571,7 +571,7 @@
     "trustedDesc": "4.9/5 average rating from real students and parents",
     "loading": "Loading...",
     "finalCtaTitle": "Together we achieve great things",
-    "finalCtaDesc": "Not sure which plan fits? Book a free consultation — no obligation.",
+    "finalCtaDesc": "Not sure which plan fits? Book a free consultation - no obligation.",
     "finalCtaButton": "Book free consultation",
     "finalCtaTags": [
       "No obligation",
@@ -970,7 +970,7 @@
     },
     "welcomeSubtitleMock": "Great to see you keep working toward your goals.",
     "welcomeBack": "Welcome back, {{name}}!",
-    "welcomeSubtitle": "Your learning hub — track progress, join lessons, and study smarter.",
+    "welcomeSubtitle": "Your learning hub - track progress, join lessons, and study smarter.",
     "signInRequired": "Please sign in to view your dashboard.",
     "yourGoal": "Your goal",
     "noGoalSet": "Set a learning goal to stay motivated.",
@@ -1004,7 +1004,7 @@
     "lessonUnits": "{{count}} lessons",
     "toMyCourses": "All courses",
     "tasks": "Tasks & quizzes",
-    "noTasks": "No open tasks — great job!",
+    "noTasks": "No open tasks - great job!",
     "taskInProgress": "In progress",
     "taskOpen": "Open",
     "allTasks": "All tasks",
@@ -1014,7 +1014,7 @@
     "joinZoom": "Join Zoom",
     "openAi": "Open NextGrades AI",
     "aiTitle": "NextGrades AI",
-    "aiDesc": "Ask questions, get explanations, and translate content — your personal study assistant.",
+    "aiDesc": "Ask questions, get explanations, and translate content - your personal study assistant.",
     "helpCenter": "Help center",
     "contactSupport": "Contact support",
     "giveFeedback": "Give feedback",
@@ -1045,7 +1045,7 @@
     "connectCalendarTitle": "Connect your calendar",
     "connectCalendarDesc": "Sync your NextGrades lessons with Google Calendar, Apple Calendar, or Outlook.",
     "calendarLessonCount": "{{count}} lessons will stay in sync.",
-    "calendarNoLessons": "No lessons yet — your calendar will update automatically when lessons are scheduled.",
+    "calendarNoLessons": "No lessons yet - your calendar will update automatically when lessons are scheduled.",
     "calendarSubscribeLink": "Subscription link",
     "calendarSubscribeHint": "Paste this link in your calendar app under “Add calendar” or “Subscribe”.",
     "calendarLinkCopied": "Calendar link copied.",
@@ -1108,7 +1108,7 @@
     "tabActiveCourses": "Active courses",
     "tabCompletedCourses": "Completed courses",
     "sortBy": "Sort by: Course name (A–Z)",
-    "keepGoingBanner": "You're on track — keep going!",
+    "keepGoingBanner": "You're on track - keep going!",
     "yourLearningProgress": "Your learning progress",
     "legendCompleted": "Completed",
     "legendInProgress": "In progress",
@@ -1125,7 +1125,7 @@
   },
   "teacherDashboard": {
     "overviewTitle": "Teacher dashboard",
-    "overviewSubtitle": "Your teaching hub — schedule lessons, track earnings, and connect with students.",
+    "overviewSubtitle": "Your teaching hub - schedule lessons, track earnings, and connect with students.",
     "signInRequired": "Please sign in to view your teacher dashboard.",
     "sidebarHello": "Hello, {{name}}!",
     "sidebarGuest": "Welcome, teacher",
@@ -1156,7 +1156,7 @@
     "quickLinksTitle": "Quick access",
     "quickLinksSubtitle": "Jump to the tools you use most.",
     "contentPageDesc": "View, edit, and manage your published learning content.",
-    "publishPageDesc": "Upload worksheets, videos, or guides — published items appear on the public Resources page.",
+    "publishPageDesc": "Upload worksheets, videos, or guides - published items appear on the public Resources page.",
     "welcome": "Welcome back! 👋",
     "subtitle": "Here is your overview for today",
     "newAppointment": "New appointment",
@@ -1242,7 +1242,7 @@
     "progressLabel": "Progress",
     "availableMaterials": "Available materials",
     "lastPayment": "Last payment",
-    "sampleNote": "Good progress in calculus — next lesson: integrals.",
+    "sampleNote": "Good progress in calculus - next lesson: integrals.",
     "addNote": "Add new note",
     "tabComingSoon": "This section will be available soon.",
     "tabs": {
@@ -1362,7 +1362,7 @@
     "imageHint": "Upload or paste an image URL",
     "resetField": "Reset",
     "saveSection": "Save section",
-    "unsavedBanner": "{{count}} unsaved change(s) — save to update the live website",
+    "unsavedBanner": "{{count}} unsaved change(s) - save to update the live website",
     "saveDraft": "Save draft",
     "saveAll": "Save all changes",
     "setupTitle": "Set up your website content",
@@ -1404,11 +1404,11 @@
     "accessGuideTitle": "CMS & website access",
     "accessGuideIntro": "How to review the frontend, user flows, and website content:",
     "accessGuideSteps": [
-      "Public website at www.nextgrades.at — marketing pages in German.",
+      "Public website at www.nextgrades.at - marketing pages in German.",
       "Student and teacher login at /login (accounts are created by admins).",
       "Admin portal at /portal/login with your administrator account.",
-      "Website content (CMS): Admin portal → Edit website content — edit copy, images, team, FAQs, and testimonials.",
-      "New users: Admin portal → Users → New user — invitation email with password setup link."
+      "Website content (CMS): Admin portal → Edit website content - edit copy, images, team, FAQs, and testimonials.",
+      "New users: Admin portal → Users → New user - invitation email with password setup link."
     ],
     "accessGuideCmsLink": "Edit website content",
     "accessGuideUsersLink": "Manage users",
@@ -1433,7 +1433,7 @@
     "connectedSuccess": "Zoom account connected successfully!",
     "connectedError": "Zoom connection failed. Please try again.",
     "errorAccessDenied": "Zoom authorization was cancelled. Try again and approve access for your own Zoom account.",
-    "errorAppNotFound": "Zoom could not find this app for your account. The server may be using Development credentials — only the app owner's Zoom account can connect until Production OAuth is enabled.",
+    "errorAppNotFound": "Zoom could not find this app for your account. The server may be using Development credentials - only the app owner's Zoom account can connect until Production OAuth is enabled.",
     "errorInvalidState": "Your sign-in session expired. Please try connecting Zoom again.",
     "errorTokenExchange": "Zoom rejected the authorization. Verify Production Client ID, Client Secret, and redirect URL in Zoom Marketplace match your server environment.",
     "devModeWarning": "Zoom is in Development mode on the server. Only the Zoom account that created the app can connect until Production OAuth credentials are configured.",
@@ -1443,7 +1443,7 @@
     "notConfigured": "Zoom OAuth is not configured on the server.",
     "statusConnected": "Connected",
     "statusDisconnected": "Not connected",
-    "tokenExpired": "Session expired — reconnect to continue scheduling.",
+    "tokenExpired": "Session expired - reconnect to continue scheduling.",
     "connectedSince": "Connected since {{date}}",
     "createLiveClass": "Create live class",
     "classCreated": "Live class created and students notified!",
@@ -1469,12 +1469,12 @@
     "scheduleNew": "Schedule a live class",
     "scheduleNewDesc": "Pick a type, set the time, and students get an automatic invite.",
     "setupRequired": "Connect Zoom to start scheduling",
-    "setupRequiredDesc": "One quick step — link your Zoom account, then create your first live class.",
+    "setupRequiredDesc": "One quick step - link your Zoom account, then create your first live class.",
     "readyToSchedule": "Ready to schedule",
     "connectBeforeSchedule": "Connect your Zoom account above to create meetings.",
     "when": "When",
     "minShort": "min",
-    "titlePlaceholder": "e.g. Algebra — Quadratic equations",
+    "titlePlaceholder": "e.g. Algebra - Quadratic equations",
     "descriptionPlaceholder": "Optional notes for students…",
     "moreOptions": "More options",
     "createAndNotify": "Create & notify students",
@@ -1486,7 +1486,7 @@
     "statUpcomingDesc": "Scheduled live sessions",
     "statNext": "Next class",
     "noMeetingsShort": "Nothing scheduled yet",
-    "scheduledMeetingsDesc": "Your upcoming live sessions — join or cancel anytime.",
+    "scheduledMeetingsDesc": "Your upcoming live sessions - join or cancel anytime.",
     "emptyTitle": "No classes scheduled yet",
     "emptyDescReady": "Use the form on the left to schedule your first live class.",
     "emptyDescConnect": "Connect Zoom first, then schedule your first session.",
@@ -1517,7 +1517,7 @@
       "connections": "Connected Zoom accounts",
       "noConnections": "No teachers connected yet",
       "teacherStatus": "Teacher Zoom status",
-      "oauthDevWarning": "Zoom OAuth is in Development mode — external teachers cannot connect.",
+      "oauthDevWarning": "Zoom OAuth is in Development mode - external teachers cannot connect.",
       "oauthDevHint": "Set ZOOM_OAUTH_ENV=production and use the Production Client ID, Client Secret, and redirect URL from Zoom Marketplace (Beta Test or Published app). Development credentials only work for the Zoom account that created the app.",
       "oauthProductionOk": "Zoom OAuth is configured for multi-teacher use (Production mode).",
       "oauthRedirect": "Current redirect URI: {{uri}}"
@@ -1608,9 +1608,9 @@
     "photoRemoved": "Photo removed",
     "personalInfo": "Personal information",
     "phone": "Phone number",
-    "phoneHint": "Optional — for appointment reminders",
+    "phoneHint": "Optional - for appointment reminders",
     "bio": "About you",
-    "bioHint": "Shown to students — experience, subjects, teaching style",
+    "bioHint": "Shown to students - experience, subjects, teaching style",
     "bioPlaceholder": "Tell students about your teaching experience…",
     "goalHint": "Displayed on your dashboard",
     "goalPlaceholder": "e.g. Pass my Abitur in Mathematics with grade 1…",
@@ -1675,10 +1675,10 @@
     "successHint": "Check your email for a receipt and next steps.",
     "goDashboard": "Go to dashboard",
     "browseResources": "Browse resources",
-    "guestHint": "No account needed — after payment you'll submit your details so our team can create your account.",
+    "guestHint": "No account needed - after payment you'll submit your details so our team can create your account.",
     "haveAccount": "Already have an account?",
     "accountSetup": {
-      "title": "Almost done — set up your account",
+      "title": "Almost done - set up your account",
       "subtitle": "Your payment was successful. Send us your details so we can create your NextGrades account.",
       "purchaseSummary": "Your purchase",
       "gradeLabel": "Grade {{grade}}",
@@ -1689,7 +1689,7 @@
       "notesPlaceholder": "e.g. school name, special requests, or preferred contact time",
       "submit": "Send details to NextGrades",
       "submitError": "Could not send your details. Please try again.",
-      "successTitle": "Thank you — we're setting up your account",
+      "successTitle": "Thank you - we're setting up your account",
       "successDesc": "We received your information. The NextGrades team will contact you shortly with your login details.",
       "successHint": "Questions? Reach us at {{email}}.",
       "invalidSession": "Payment could not be verified",
@@ -1711,7 +1711,7 @@
   },
   "consultation": {
     "calendlyTitle": "Schedule your consultation",
-    "calendlySubtitle": "Pick a time that works for you — we'll confirm by email."
+    "calendlySubtitle": "Pick a time that works for you - we'll confirm by email."
   },
   "pricing": {
     "saveYearly": "Save with yearly billing"
@@ -1738,7 +1738,7 @@
     "fetchFailed": "Failed to fetch users",
     "suspendConfirm": "Suspend this user? They will be signed out and unable to log in.",
     "reactivateConfirm": "Reactivate this user? They will be able to log in again.",
-    "suspendSuccess": "User suspended — they can no longer sign in",
+    "suspendSuccess": "User suspended - they can no longer sign in",
     "reactivateSuccess": "User reactivated",
     "updateFailed": "Failed to update user",
     "deleteConfirm": "Permanently delete {{name}}?\n\nThis removes their account, profile, and all associated data. This cannot be undone.",
@@ -1764,17 +1764,17 @@
     "createSending": "Sending…",
     "createCancel": "Cancel",
     "createClose": "Close",
-    "createSuccess": "User created — credentials sent by email",
+    "createSuccess": "User created - credentials sent by email",
     "createFailed": "Failed to create user"
   },
   "adminGuestSignups": {
-    "description": "Customers who paid — create their account with the plan and duration they purchased.",
+    "description": "Customers who paid - create their account with the plan and duration they purchased.",
     "pendingCount": "{{count}} pending",
     "filterStatus": "Filter status",
     "filterAll": "All",
     "fetchFailed": "Could not load requests",
     "fulfillFailed": "Could not create account",
-    "fulfillSuccess": "Account created — invitation sent to {{email}}",
+    "fulfillSuccess": "Account created - invitation sent to {{email}}",
     "empty": "No paid signups yet",
     "colCustomer": "Customer",
     "colPlan": "Plan",

@@ -17,7 +17,7 @@ const sizes = {
   lg: { track: "h-9 w-[58px]", thumb: "h-8 w-8", on: 27 },
 };
 
-/** iOS-style switch — large touch target, smooth spring animation */
+/** iOS-style switch - large touch target, smooth spring animation */
 export function Toggle({ checked, onChange, disabled, label, size = "md" }: ToggleProps) {
   const s = sizes[size];
 

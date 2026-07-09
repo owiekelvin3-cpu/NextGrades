@@ -133,7 +133,7 @@ export function MobileAppShell({
                       {initials}
                     </span>
                   )}
-                  <span className="max-w-[120px] truncate font-medium">{displayName || "—"}</span>
+                  <span className="max-w-[120px] truncate font-medium">{displayName || "-"}</span>
                   <ChevronDown className="h-4 w-4 text-text-muted" />
                 </Link>
               </div>

@@ -21,7 +21,7 @@ function CellValue({ value }: { value: string | boolean | undefined }) {
     return <CheckCircle2 className="h-4 w-4 text-[var(--brand-gold)]" aria-hidden />;
   }
   if (value === false || value === undefined) {
-    return <span className="text-[var(--text-subtle)]">—</span>;
+    return <span className="text-[var(--text-subtle)]">-</span>;
   }
   return <span className="text-sm text-[var(--foreground-secondary)]">{value}</span>;
 }

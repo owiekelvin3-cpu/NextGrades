@@ -3,7 +3,7 @@ import { isSupabaseServiceRoleConfigured } from "@/lib/supabase/env";
 import { normalizeEmail } from "@/lib/auth/registration";
 import type { User } from "@supabase/supabase-js";
 
-/** Indexed profile lookup — avoids auth.admin.listUsers() which breaks past 1000 users. */
+/** Indexed profile lookup - avoids auth.admin.listUsers() which breaks past 1000 users. */
 export async function lookupAuthUserIdByEmail(email: string): Promise<string | null> {
   const normalized = normalizeEmail(email);
   if (!normalized || !isSupabaseServiceRoleConfigured()) return null;

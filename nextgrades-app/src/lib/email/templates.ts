@@ -1,5 +1,5 @@
 /**
- * Centralized NextGrades email templates — all transactional emails in one place.
+ * Centralized NextGrades email templates - all transactional emails in one place.
  */
 import { getAppUrl } from "./config";
 import {
@@ -43,7 +43,7 @@ export function welcomeEmail(userName?: string, role: "student" | "teacher" = "s
     emailNotice("info", "<strong>Tipp:</strong> Vervollständige dein Profil für personalisierte Empfehlungen."),
     emailSignature(),
   ].join("");
-  return wrapEmail(content, "Willkommen bei NextGrades — deine Lernreise beginnt jetzt");
+  return wrapEmail(content, "Willkommen bei NextGrades - deine Lernreise beginnt jetzt");
 }
 
 export { accountVerificationEmail as emailVerificationEmail } from "./templates/account-verification";
@@ -72,7 +72,7 @@ export function passwordResetEmail(resetUrl: string, userName?: string) {
     emailParagraph(`Hi ${name},`),
     emailParagraph("We received a request to reset your password. Click the button below to choose a new one:"),
     emailButton(resetUrl, "Reset Password"),
-    emailNotice("security", "<strong>Security:</strong> This link expires in <strong>1 hour</strong>. If you didn't request this, ignore this email — your account remains secure."),
+    emailNotice("security", "<strong>Security:</strong> This link expires in <strong>1 hour</strong>. If you didn't request this, ignore this email - your account remains secure."),
     emailSubheading("Or copy this link"),
     emailLinkBlock(resetUrl),
     emailButton(`${appUrl()}/contact`, "Contact Support", "secondary"),
@@ -207,9 +207,9 @@ export function subscriptionRenewalReminderEmail(userName: string | undefined, d
     emailDetailTable([
       { label: "Plan", value: escapeHtml(details.planName) },
       { label: "Amount", value: escapeHtml(details.amount) },
-      { label: "Renewal date", value: escapeHtml(details.renewalDate || "—") },
+      { label: "Renewal date", value: escapeHtml(details.renewalDate || "-") },
     ]),
-    emailNotice("info", "No action needed — your payment method on file will be charged automatically."),
+    emailNotice("info", "No action needed - your payment method on file will be charged automatically."),
     emailButton(`${appUrl()}/dashboard/student/settings`, "Manage Subscription"),
     emailSignature(),
   ].join("");
@@ -221,7 +221,7 @@ export function subscriptionExpiryEmail(userName: string | undefined, details: S
   const content = [
     emailHeading("Subscription Expiring Soon"),
     emailParagraph(`Hi ${name},`),
-    emailParagraph(`Your <strong>${escapeHtml(details.planName)}</strong> subscription expires on <strong>${escapeHtml(details.expiryDate || "—")}</strong>.`),
+    emailParagraph(`Your <strong>${escapeHtml(details.planName)}</strong> subscription expires on <strong>${escapeHtml(details.expiryDate || "-")}</strong>.`),
     emailNotice("warning", "Renew now to keep access to premium courses, AI tools, and resources."),
     emailButton(`${appUrl()}/pricing`, "Renew Subscription"),
     emailSignature(),
@@ -267,7 +267,7 @@ export function contactConfirmationEmail(userName: string, subject: string) {
     emailButton(`${appUrl()}/help`, "Visit Help Center"),
     emailSignature(),
   ].join("");
-  return wrapEmail(content, "We received your message — NextGrades");
+  return wrapEmail(content, "We received your message - NextGrades");
 }
 
 export function contactAdminEmail(
@@ -308,7 +308,7 @@ export function guestAccountSetupAdminEmail(details: {
 }) {
   const fullName = `${details.firstName} ${details.lastName}`.trim();
   const content = [
-    emailHeading("New paid signup — create account"),
+    emailHeading("New paid signup - create account"),
     emailParagraph(
       "A new customer completed payment and submitted their details. Please create their NextGrades account and grant access."
     ),
@@ -331,13 +331,13 @@ export function guestAccountSetupAdminEmail(details: {
       : []),
     emailButton(`mailto:${details.email}`, "Reply to customer", "secondary"),
   ].join("");
-  return wrapEmail(content, "[NextGrades] Paid signup — create account");
+  return wrapEmail(content, "[NextGrades] Paid signup - create account");
 }
 
 export function guestAccountSetupConfirmationEmail(firstName: string, subjectName?: string) {
   const name = displayName(firstName);
   const content = [
-    emailHeading("Payment received — we're setting up your account"),
+    emailHeading("Payment received - we're setting up your account"),
     emailParagraph(`Hello ${name},`),
     emailParagraph(
       "Thank you for your payment. We received your details and the NextGrades team will create your account shortly."
@@ -352,7 +352,7 @@ export function guestAccountSetupConfirmationEmail(firstName: string, subjectNam
     emailButton(`${appUrl()}/contact`, "Contact support", "secondary"),
     emailSignature(),
   ].join("");
-  return wrapEmail(content, "NextGrades — we're creating your account");
+  return wrapEmail(content, "NextGrades - we're creating your account");
 }
 
 export function adminNotificationEmail(title: string, message: string, actionUrl?: string, actionLabel = "View Details") {

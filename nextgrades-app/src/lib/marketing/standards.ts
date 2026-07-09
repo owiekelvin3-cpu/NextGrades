@@ -1,4 +1,4 @@
-/** Canonical marketing statistics — use across all public pages */
+/** Canonical marketing statistics - use across all public pages */
 export const GLOBAL_STATS = [
   { number: "100+", label: "SchülerInnen" },
   { number: "25+", label: "LehrerInnen" },

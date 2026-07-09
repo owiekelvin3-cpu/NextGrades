@@ -1,4 +1,4 @@
-/** Mobile-first design tokens — Pathora-inspired spacing & rhythm, NextGrades colors. */
+/** Mobile-first design tokens - Pathora-inspired spacing & rhythm, NextGrades colors. */
 
 export const mobile = {
   /** Generous edge padding (20px) */
@@ -13,13 +13,13 @@ export const mobile = {
   cardGap: "gap-4 md:gap-5",
   /** Minimum 48×48 touch target */
   touchTarget: "min-h-12 min-w-12 touch-manipulation",
-  /** Primary CTA — full-width pill style */
+  /** Primary CTA - full-width pill style */
   button:
     "min-h-[52px] px-6 text-base font-semibold rounded-2xl touch-manipulation active:scale-[0.98] transition-transform",
   /** Outline / secondary button */
   buttonOutline:
     "min-h-[52px] px-6 text-base font-semibold rounded-2xl border-2 border-border-default bg-transparent touch-manipulation active:scale-[0.98]",
-  /** Soft card — large radius like reference UI */
+  /** Soft card - large radius like reference UI */
   card:
     "rounded-3xl border border-border-default/80 bg-surface-elevated shadow-[0_2px_24px_rgba(13,27,42,0.06)] overflow-hidden dark:shadow-[0_2px_24px_rgba(0,0,0,0.25)]",
   /** Tappable card */

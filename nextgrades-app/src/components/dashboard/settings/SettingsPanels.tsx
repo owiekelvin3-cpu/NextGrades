@@ -320,11 +320,11 @@ export function StudentSettingsPanel({ role = "student" }: StudentSettingsPanelP
                 <SettingsField label={t("login.fullName", { defaultValue: "Full name" })}>
                   <SettingsInput value={fullName} onChange={(e) => setFullName(e.target.value)} />
                 </SettingsField>
-                <SettingsField label={t("settings.phone", { defaultValue: "Phone number" })} hint={t("settings.phoneHint", { defaultValue: "Optional — for appointment reminders" })}>
+                <SettingsField label={t("settings.phone", { defaultValue: "Phone number" })} hint={t("settings.phoneHint", { defaultValue: "Optional - for appointment reminders" })}>
                   <SettingsInput type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+43 670 …" />
                 </SettingsField>
                 {isTeacher ? (
-                  <SettingsField label={t("settings.bio", { defaultValue: "About you" })} hint={t("settings.bioHint", { defaultValue: "Shown to students — experience, subjects, teaching style" })}>
+                  <SettingsField label={t("settings.bio", { defaultValue: "About you" })} hint={t("settings.bioHint", { defaultValue: "Shown to students - experience, subjects, teaching style" })}>
                     <SettingsTextarea rows={4} value={bio} onChange={(e) => setBio(e.target.value)} placeholder={t("settings.bioPlaceholder", { defaultValue: "Tell students about your teaching experience…" })} />
                   </SettingsField>
                 ) : (
@@ -347,7 +347,7 @@ export function StudentSettingsPanel({ role = "student" }: StudentSettingsPanelP
                 </SettingsField>
                 <SettingsField label={t("settings.memberSince", { defaultValue: "Member since" })}>
                   <SettingsInput
-                    value={profile?.created_at ? new Date(profile.created_at).toLocaleDateString() : "—"}
+                    value={profile?.created_at ? new Date(profile.created_at).toLocaleDateString() : "-"}
                     readOnly
                     disabled
                     className="bg-gray-100 text-gray-500"

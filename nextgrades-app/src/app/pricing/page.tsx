@@ -37,7 +37,7 @@ const STAT_ICONS = [UserRound, GraduationCap, FileText, Star];
 
 const PLAN_ORDER = ["premium", "group", "matura", "library"] as const;
 
-/** Same CMS card images as /programs — index matches program card order. */
+/** Same CMS card images as /programs - index matches program card order. */
 const PLAN_IMAGE_INDEX: Record<string, number> = {
   premium: 0,
   group: 1,
@@ -136,7 +136,7 @@ function PricingContent() {
       <Navbar />
 
       <main className="flex-1 overflow-x-hidden">
-        {/* Hero — same image pattern as Programme */}
+        {/* Hero - same image pattern as Programme */}
         <section className={cn("bg-[#0D1B2A] text-white", hero.section)}>
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(212,175,55,0.15),transparent_45%)]" />
           <MarketingHeroBlend
@@ -224,7 +224,7 @@ function PricingContent() {
           </section>
         )}
 
-        {/* Premium-Tarife — aligned with Programme cards */}
+        {/* Premium-Tarife - aligned with Programme cards */}
         <section className={cn("py-14 md:py-16", mt.sectionAlt)}>
           <div className={section.container}>
             <div className="mb-10 text-center">

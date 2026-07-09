@@ -328,7 +328,7 @@ function AdminUsersPageContent() {
                   )}
                 </div>
                 <div className="min-w-0">
-                  <p className="font-medium text-foreground">{user.full_name || "—"}</p>
+                  <p className="font-medium text-foreground">{user.full_name || "-"}</p>
                   <p className="truncate text-sm text-text-muted">
                     {user.email || user.auth_user?.email}
                     {user.username ? ` · @${user.username}` : ""}

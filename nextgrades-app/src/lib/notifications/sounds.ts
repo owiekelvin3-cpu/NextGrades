@@ -50,7 +50,7 @@ function playToneSequence(steps: ToneStep[], masterGain = 0.2): void {
   }
 }
 
-/** Rich notification tones — Web Audio synthesis (no external files). */
+/** Rich notification tones - Web Audio synthesis (no external files). */
 const SOUND_SEQUENCES: Record<NotificationSoundId, ToneStep[]> = {
   chime: [
     { freq: 1046.5, at: 0, dur: 0.55, type: "sine", gain: 0.9 },

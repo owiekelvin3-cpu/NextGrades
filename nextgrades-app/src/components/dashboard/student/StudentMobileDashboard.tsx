@@ -124,7 +124,7 @@ export function StudentMobileDashboard({ data, firstName, dateLocale }: Props) {
           {t("studentDashboard.welcomeBack", { name: firstName })}
         </p>
 
-        {/* Hero — quiz promo */}
+        {/* Hero - quiz promo */}
         <div className="px-5">
           <div className={st.mobileHero}>
             <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-[var(--brand-gold)]/10 blur-2xl" />
@@ -152,7 +152,7 @@ export function StudentMobileDashboard({ data, firstName, dateLocale }: Props) {
           </div>
         </div>
 
-        {/* Subjects — horizontal chips */}
+        {/* Subjects - horizontal chips */}
         {subjects.length > 0 && (
           <section>
             <SectionHeader
@@ -191,7 +191,7 @@ export function StudentMobileDashboard({ data, firstName, dateLocale }: Props) {
           </section>
         )}
 
-        {/* Top courses — horizontal cards */}
+        {/* Top courses - horizontal cards */}
         <section>
           <SectionHeader
             title={t("studentDashboard.mobileTopCourses", {
@@ -300,7 +300,7 @@ export function StudentMobileDashboard({ data, firstName, dateLocale }: Props) {
           </section>
         )}
 
-        {/* Upcoming — topic list */}
+        {/* Upcoming - topic list */}
         <section>
           <SectionHeader
             title={t("studentDashboard.upcomingAppointments")}
@@ -366,7 +366,7 @@ export function StudentMobileDashboard({ data, firstName, dateLocale }: Props) {
                       day: "numeric",
                       month: "short",
                     })
-                  : "—"}
+                  : "-"}
               </p>
             </Link>
             <Link

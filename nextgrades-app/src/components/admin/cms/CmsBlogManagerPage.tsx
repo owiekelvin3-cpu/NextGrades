@@ -120,14 +120,14 @@ export function CmsBlogManagerPage() {
                     )}
                   </td>
                   <td className="px-4 py-3 font-medium text-foreground">{post.title}</td>
-                  <td className="px-4 py-3 text-text-muted">{(post.tags ?? []).join(", ") || "—"}</td>
+                  <td className="px-4 py-3 text-text-muted">{(post.tags ?? []).join(", ") || "-"}</td>
                   <td className="px-4 py-3">
                     <Badge variant={post.status === "published" ? "success" : "default"}>
                       {post.status === "published" ? "Published" : "Draft"}
                     </Badge>
                   </td>
                   <td className="px-4 py-3 text-text-muted">
-                    {post.published_at ? new Date(post.published_at).toLocaleDateString() : "—"}
+                    {post.published_at ? new Date(post.published_at).toLocaleDateString() : "-"}
                   </td>
                   <td className="px-4 py-3 text-right">
                     <div className="flex justify-end gap-2">

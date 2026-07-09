@@ -83,7 +83,7 @@ export function ResourceLearningCard({
   const muted = "text-text-muted";
   const panel = theme === "dark" ? "bg-[#112240] border-white/10" : "bg-white border-gray-200";
   const thumb = getResourceThumbnail(resource);
-  const summary = resource.short_description || resource.description || "—";
+  const summary = resource.short_description || resource.description || "-";
   const typeLabel = contentTypeLabel(resource.content_type || resource.type || "resource");
 
   return (

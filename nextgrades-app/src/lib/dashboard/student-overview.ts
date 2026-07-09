@@ -127,7 +127,7 @@ export function buildCourseRows(
 
     return {
       enrollmentId: e.id,
-      subjectName: e.subject_name ?? "—",
+      subjectName: e.subject_name ?? "-",
       teacherName: latest?.teacher_name,
       lessonCount: total,
       progressPercent,
@@ -336,7 +336,7 @@ function buildCourseDetails(
 
     return {
       enrollmentId: e.id,
-      subjectName: e.subject_name ?? "—",
+      subjectName: e.subject_name ?? "-",
       teacherName: latest?.teacher_name,
       lessonCount: total,
       progressPercent,
@@ -440,5 +440,5 @@ export async function fetchStudentResourcesPageData(): Promise<{
 }
 
 export function getFirstName(fullName: string): string {
-  return fullName.trim().split(/\s+/)[0] || fullName || "—";
+  return fullName.trim().split(/\s+/)[0] || fullName || "-";
 }

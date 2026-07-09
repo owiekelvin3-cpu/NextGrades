@@ -27,7 +27,7 @@ const actions = [
   },
 ] as const;
 
-/** Full-width stacked actions — less crowded than a 3-column grid */
+/** Full-width stacked actions - less crowded than a 3-column grid */
 export function TeacherMobileQuickActions() {
   const { t } = useTranslation();
 
@@ -66,4 +66,4 @@ export function TeacherMobileQuickActions() {
   );
 }
 
-/** Removed from student overview — bottom nav covers these routes */
+/** Removed from student overview - bottom nav covers these routes */

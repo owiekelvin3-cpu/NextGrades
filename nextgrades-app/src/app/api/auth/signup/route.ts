@@ -208,7 +208,7 @@ export async function POST(request: Request) {
     void logSecurityEvent({ eventType: "signup_otp_sent", success: true, userId, email }, request);
     return NextResponse.json({
       success: true,
-      message: "Account created! We sent a 6-digit code to your email — enter it below to activate your account.",
+      message: "Account created! We sent a 6-digit code to your email - enter it below to activate your account.",
       emailSent: true,
       verificationRequired: true,
       verificationMode: "code",

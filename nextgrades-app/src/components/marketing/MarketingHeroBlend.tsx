@@ -5,7 +5,7 @@ import { MarketingImage } from "@/components/marketing/MarketingImage";
 import { cn } from "@/lib/utils";
 
 export const MARKETING_NAVY = "#0D1B2A";
-/** Light marketing page background — matches `--background` in design-tokens.css */
+/** Light marketing page background - matches `--background` in design-tokens.css */
 export const MARKETING_LIGHT_BG = "#faf9f6";
 
 export type HeroBlendVariant =
@@ -41,12 +41,12 @@ const DEFAULT_BG: Record<HeroBlendVariant, string> = {
   "dark-fade-bottom": MARKETING_NAVY,
 };
 
-/** Alpha blend stop — works with hex and CSS variables (unlike `${hex}cc`). */
+/** Alpha blend stop - works with hex and CSS variables (unlike `${hex}cc`). */
 function mixBg(bg: string, opacityPercent: number): string {
   return `color-mix(in srgb, ${bg} ${opacityPercent}%, transparent)`;
 }
 
-/** Blended hero photo layer — no borders; gradients match mockup fades. */
+/** Blended hero photo layer - no borders; gradients match mockup fades. */
 export function MarketingHeroBlend({
   src,
   alt = "",

@@ -307,7 +307,7 @@ export function StudentResourcesExperience() {
                             </div>
                           </div>
                         </td>
-                        <td className="px-5 py-4 text-text-muted">—</td>
+                        <td className="px-5 py-4 text-text-muted">-</td>
                         <td className="px-5 py-4">
                           <span className={cn("rounded-full px-2.5 py-0.5 text-xs font-medium", materialTypeColor(m.type))}>
                             {materialTypeLabel(m.type, t)}
@@ -316,7 +316,7 @@ export function StudentResourcesExperience() {
                         <td className="px-5 py-4 text-text-muted">
                           {m.created_at
                             ? new Date(m.created_at).toLocaleDateString(locale, { day: "numeric", month: "short", year: "numeric" })
-                            : "—"}
+                            : "-"}
                         </td>
                         <td className="px-5 py-4">
                           <div className="flex items-center justify-end gap-1">

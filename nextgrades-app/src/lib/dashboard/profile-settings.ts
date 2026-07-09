@@ -76,7 +76,7 @@ export async function updateProfileSettings(
     notifyProfileUpdated(data.profile ?? undefined);
     return { error: null, profile: data.profile ?? null };
   } catch {
-    return { error: "Network error — could not save profile" };
+    return { error: "Network error - could not save profile" };
   }
 }
 
@@ -98,7 +98,7 @@ export async function uploadProfileAvatar(file: File): Promise<{ url: string | n
     notifyProfileUpdated({ avatar_url: data.url ?? null });
     return { url: data.url ?? null, error: null };
   } catch {
-    return { url: null, error: "Network error — could not upload photo" };
+    return { url: null, error: "Network error - could not upload photo" };
   }
 }
 
@@ -110,7 +110,7 @@ export async function removeProfileAvatar(): Promise<{ error: string | null }> {
     notifyProfileUpdated({ avatar_url: null });
     return { error: null };
   } catch {
-    return { error: "Network error — could not remove photo" };
+    return { error: "Network error - could not remove photo" };
   }
 }
 
@@ -134,7 +134,7 @@ export async function saveChatLanguage(language: "de" | "en"): Promise<{ error: 
     if (!res.ok) return { error: data.error ?? "Failed to save AI language" };
     return { error: null };
   } catch {
-    return { error: "Network error — could not save AI language" };
+    return { error: "Network error - could not save AI language" };
   }
 }
 

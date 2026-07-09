@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 const selectBase =
   "theme-select transition-all focus:border-[var(--brand-gold)] focus:outline-none focus:ring-2 focus:ring-[var(--brand-gold-ring)]";
 
-/** Standard text input — matches marketing contact form fields. */
+/** Standard text input - matches marketing contact form fields. */
 export const themeInputClass =
   "w-full rounded-xl border border-[var(--input-border)] bg-[var(--input-background)] px-4 py-3.5 text-sm text-[var(--input-foreground)] transition-all placeholder:text-[var(--input-placeholder)] focus:border-[var(--brand-gold)] focus:outline-none focus:ring-2 focus:ring-[var(--brand-gold-ring)]";
 

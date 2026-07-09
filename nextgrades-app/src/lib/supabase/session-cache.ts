@@ -5,7 +5,7 @@ let sessionPromise: Promise<Session | null> | null = null;
 let sessionResolvedAt = 0;
 const SESSION_CACHE_MS = 30_000;
 
-/** Reuse auth session within a short window — avoids duplicate getSession() on dashboard load. */
+/** Reuse auth session within a short window - avoids duplicate getSession() on dashboard load. */
 export async function getCachedSession(): Promise<Session | null> {
   const now = Date.now();
   if (sessionPromise && now - sessionResolvedAt < SESSION_CACHE_MS) {

@@ -1,4 +1,4 @@
-/** Legacy notification template — re-exported for backward compatibility */
+/** Legacy notification template - re-exported for backward compatibility */
 import {
   wrapEmail,
   emailHeading,

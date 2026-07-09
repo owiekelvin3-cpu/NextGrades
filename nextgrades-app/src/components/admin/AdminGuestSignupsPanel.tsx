@@ -44,7 +44,7 @@ const STATUS_VARIANT: Record<string, "success" | "warning" | "default" | "outlin
 };
 
 function formatDate(value?: string | null) {
-  if (!value) return "—";
+  if (!value) return "-";
   try {
     return new Date(value).toLocaleDateString("de-AT", {
       day: "2-digit",
@@ -57,7 +57,7 @@ function formatDate(value?: string | null) {
 }
 
 function formatMoney(amount: number | null, currency?: string | null) {
-  if (amount == null) return "—";
+  if (amount == null) return "-";
   return new Intl.NumberFormat("de-AT", {
     style: "currency",
     currency: currency || "EUR",
@@ -165,8 +165,8 @@ export function AdminGuestSignupsPanel() {
             id: "customer",
             header: t("adminGuestSignups.colCustomer"),
             cell: (row) => {
-              const name = [row.first_name, row.last_name].filter(Boolean).join(" ") || "—";
-              const email = row.email || row.payment_email || "—";
+              const name = [row.first_name, row.last_name].filter(Boolean).join(" ") || "-";
+              const email = row.email || row.payment_email || "-";
               return (
                 <div className="min-w-0">
                   <p className="font-medium text-foreground">{name}</p>
@@ -199,7 +199,7 @@ export function AdminGuestSignupsPanel() {
               <p className="text-sm text-text-muted">
                 {[row.subject_name, row.grade ? `Klasse ${row.grade}` : null, row.semester ? `S${row.semester}` : null]
                   .filter(Boolean)
-                  .join(" · ") || "—"}
+                  .join(" · ") || "-"}
               </p>
             ),
           },
@@ -284,7 +284,7 @@ export function AdminGuestSignupsPanel() {
               <div className="flex justify-between gap-4">
                 <dt className="text-text-muted">{t("adminGuestSignups.colCustomer")}</dt>
                 <dd className="text-right">
-                  {[selected.first_name, selected.last_name].filter(Boolean).join(" ") || "—"}
+                  {[selected.first_name, selected.last_name].filter(Boolean).join(" ") || "-"}
                   <br />
                   <span className="text-xs text-text-muted">{selected.email || selected.payment_email}</span>
                 </dd>

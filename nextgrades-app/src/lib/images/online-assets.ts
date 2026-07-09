@@ -1,4 +1,4 @@
-/** Image helpers — remote Unsplash + local /public assets. */
+/** Image helpers - remote Unsplash + local /public assets. */
 
 import { ONLINE_IMAGE_FALLBACK } from "@/lib/marketing-images";
 

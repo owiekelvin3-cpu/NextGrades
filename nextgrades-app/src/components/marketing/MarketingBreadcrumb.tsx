@@ -13,7 +13,7 @@ type Props = {
   className?: string;
 };
 
-/** Clickable breadcrumb — Home always links to `/`. */
+/** Clickable breadcrumb - Home always links to `/`. */
 export function MarketingBreadcrumb({ items, variant = "light", className }: Props) {
   const { t } = useTranslation();
 

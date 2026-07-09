@@ -10,7 +10,7 @@ type Props = {
   stats: MockupStat[];
 };
 
-/** Stats bar — 2×2 card grid on mobile, 4-column on desktop. */
+/** Stats bar - 2×2 card grid on mobile, 4-column on desktop. */
 export function MockupStatsBar({ stats }: Props) {
   return (
     <section className="bg-[#0D1B2A] py-14 md:py-14">

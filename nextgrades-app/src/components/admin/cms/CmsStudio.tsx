@@ -39,7 +39,7 @@ import { cn } from "@/lib/utils";
 import { useSidebar } from "@/context/SidebarContext";
 import { appShell } from "@/lib/theme/shell";
 
-/** Main pages shown first — simple picker for non-technical users. */
+/** Main pages shown first - simple picker for non-technical users. */
 const PRIMARY_PAGES = ["home", "about", "programs", "pricing", "contact", "resources"] as const;
 
 type EditorTab = "words" | "pictures" | "preview";
@@ -501,7 +501,7 @@ export function CmsStudio() {
               <p className="text-sm text-gray-600">
                 {hasChanges ? (
                   <span className="font-medium text-amber-700">
-                    {pageDirty.length} change{pageDirty.length === 1 ? "" : "s"} waiting — visitors do not see these yet
+                    {pageDirty.length} change{pageDirty.length === 1 ? "" : "s"} waiting - visitors do not see these yet
                   </span>
                 ) : (
                   <span className="inline-flex items-center gap-1 text-green-700">

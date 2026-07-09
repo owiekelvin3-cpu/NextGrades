@@ -74,7 +74,7 @@ export function ResourceHubCard({ resource, onOpen, variant, subjectSlug }: HubC
       </div>
       <div className="flex flex-1 flex-col p-4">
         <p className="text-xs font-medium text-[var(--text-muted)]">
-          {resource.class?.name || resource.subject?.name || "—"}
+          {resource.class?.name || resource.subject?.name || "-"}
         </p>
         <h3 className="mt-1 line-clamp-2 text-sm font-bold text-[var(--foreground)]">
           {isVideo && !locked ? (

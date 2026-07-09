@@ -28,7 +28,7 @@ function isMissingColumnError(message: string, column: string): boolean {
   return message.includes(column) && (message.includes("column") || message.includes("schema cache"));
 }
 
-/** True only when the table/relation is missing — not when a column is missing. */
+/** True only when the table/relation is missing - not when a column is missing. */
 function isMissingTableError(message: string): boolean {
   const lower = message.toLowerCase();
   if (!lower.includes("login_otp_challenges")) return false;
@@ -345,7 +345,7 @@ export async function probeLoginOtpStorage(): Promise<{
       ok: true,
       tableExists: true,
       fullSchema: false,
-      message: "Table exists but missing columns — run APPLY_LOGIN_VERIFICATION.sql to upgrade",
+      message: "Table exists but missing columns - run APPLY_LOGIN_VERIFICATION.sql to upgrade",
     };
   }
 

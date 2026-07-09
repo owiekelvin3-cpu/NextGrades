@@ -24,7 +24,7 @@ type Props = {
   className?: string;
 };
 
-/** Subject card — compact accent layout on mobile, image card on desktop. */
+/** Subject card - compact accent layout on mobile, image card on desktop. */
 export function SubjectProgramCard({
   subject,
   imageSrc,

@@ -135,7 +135,7 @@ export function StudentOverviewDashboard() {
                 value={
                   data.units
                     ? t("studentDashboard.unitsOf", { remaining: unitsRemaining, total: unitsTotal })
-                    : "—"
+                    : "-"
                 }
                 href="/pricing"
                 icon={Target}
@@ -159,7 +159,7 @@ export function StudentOverviewDashboard() {
                         day: "numeric",
                         month: "short",
                       })
-                    : "—"
+                    : "-"
                 }
                 href="/dashboard/student/appointments"
                 icon={Calendar}

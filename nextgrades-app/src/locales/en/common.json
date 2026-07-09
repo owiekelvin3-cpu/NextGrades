@@ -80,7 +80,7 @@
     "newsletterDesc": "Stay up to date on programs, learning tips, and news from NextGrades.",
     "newsletterPlaceholder": "Enter your e-mail address",
     "newsletterCta": "Sign Up",
-    "newsletterSuccess": "Thanks — you're on the list!",
+    "newsletterSuccess": "Thanks - you're on the list!",
     "cookieSettings": "Cookie settings",
     "aboutTitle": "About us",
     "contactTitle": "Contact",
@@ -235,10 +235,10 @@
     },
     "whySection": {
       "eyebrow": "WHY NEXTGRADES",
-      "title": "More than tutoring — a complete learning system",
+      "title": "More than tutoring - a complete learning system",
       "subtitle": "We combine personal support, modern technology, and structured materials for measurable results.",
       "items": [
-        { "title": "Personal support", "desc": "Every student gets individual attention — no one-size-fits-all teaching." },
+        { "title": "Personal support", "desc": "Every student gets individual attention - no one-size-fits-all teaching." },
         { "title": "Experienced teachers", "desc": "Carefully selected educators with proven expertise and passion." },
         { "title": "Modern learning platform", "desc": "Videos, exercises, and progress tracking - all in one place." }
       ]
@@ -246,7 +246,7 @@
     "howItWorks": {
       "eyebrow": "HOW IT WORKS",
       "title": "Four steps to learning success",
-      "subtitle": "From first conversation to exam success — clear and transparent.",
+      "subtitle": "From first conversation to exam success - clear and transparent.",
       "steps": [
         { "title": "Free consultation", "desc": "We learn about your goals and recommend the right program." },
         { "title": "Choose a program", "desc": "1:1 tutoring, group learning, or the learning library." },
@@ -258,7 +258,7 @@
       "eyebrow": "FAQ",
       "title": "Everything you need to know",
       "items": [
-        { "question": "Who is NextGrades for?", "answer": "Students of all levels in Austria — from primary school to graduation exams." },
+        { "question": "Who is NextGrades for?", "answer": "Students of all levels in Austria - from primary school to graduation exams." },
         { "question": "How does the free consultation work?", "answer": "A no-obligation online call to discuss goals and recommend the right program." },
         { "question": "Is tutoring online?", "answer": "Yes, all sessions take place online. You only need a laptop or tablet." },
         { "question": "What does NextGrades cost?", "answer": "Prices vary by program. You receive a transparent quote in the consultation." },
@@ -276,12 +276,12 @@
     "eyebrow": "Contact NextGrades",
     "title": "Not sure which program fits?",
     "subtitle": "We offer free guidance and find the best solution together.",
-    "heroDesc": "Whether you're a parent or student: our team usually replies within a few hours — personal, no obligation, and in clear language.",
+    "heroDesc": "Whether you're a parent or student: our team usually replies within a few hours - personal, no obligation, and in clear language.",
     "directReach": "Or reach us directly at",
     "heroCta": "Send a message",
     "benefitsEyebrow": "Why parents choose us",
     "benefitsTitle": "Support parents and students can rely on",
-    "benefitsSubtitle": "From your first question through enrollment — personal guidance, expert tutors, and progress you can measure.",
+    "benefitsSubtitle": "From your first question through enrollment - personal guidance, expert tutors, and progress you can measure.",
     "benefits": [
       {
         "title": "Personal support",
@@ -322,7 +322,7 @@
       }
     ],
     "supportTitle": "Still have questions?",
-    "supportDesc": "Reach us directly — we're happy to help by email or phone.",
+    "supportDesc": "Reach us directly - we're happy to help by email or phone.",
     "faqTitle": "Frequently asked questions",
     "faqs": [
       {
@@ -371,7 +371,7 @@
     "heroImageAlt": "NextGrades support team",
     "ctaEyebrow": "Free consultation",
     "ctaTitle": "Find the right program together",
-    "ctaDesc": "Compare tutoring, group learning, and the library — we help you decide.",
+    "ctaDesc": "Compare tutoring, group learning, and the library - we help you decide.",
     "ctaConsultation": "Book free consultation",
     "validationRequired": "Please fill in all required fields.",
     "validationEmail": "Please enter a valid email address.",
@@ -381,7 +381,7 @@
     "subjectPlaceholder": "Select a subject or program",
     "subjectGroupSubjects": "Subjects",
     "subjectGroupPrograms": "Programs",
-    "subjectHint": "Optional — helps us route your message to the right team.",
+    "subjectHint": "Optional - helps us route your message to the right team.",
     "subjectGeneral": "General inquiry",
     "sidePoint1": "Personal support tailored to your goals",
     "sidePoint2": "Experienced, qualified tutors",
@@ -438,7 +438,7 @@
     "privacy": "Privacy Policy",
     "welcomeBackTitle": "Welcome back",
     "loginSubtitle": "Sign in to continue your learning journey.",
-    "heroCaption": "Premium tutoring, digital materials, and structured learning — all in one place.",
+    "heroCaption": "Premium tutoring, digital materials, and structured learning - all in one place.",
     "goToLogin": "Go to login",
     "noAccount": "Don't have an account?",
     "haveAccount": "Already have an account?",
@@ -474,7 +474,7 @@
     "verifyCodeButton": "Verify email",
     "emailNotVerified": "Please confirm your email first. Enter the 6-digit code we sent you, or request a new one.",
     "resendVerification": "Send new code",
-    "resendVerificationSent": "New code sent — check your inbox.",
+    "resendVerificationSent": "New code sent - check your inbox.",
     "resendVerificationFailed": "Could not resend. Try again in a few minutes.",
     "accountCreatedSignIn": "Account created! Sign in to continue.",
     "accountCreatedTitle": "Account created",
@@ -498,7 +498,7 @@
     "resendCode": "Resend code",
     "resending": "Sending…",
     "resendIn": "Resend in {{seconds}}s",
-    "resendSuccess": "New code sent — check your inbox and spam folder.",
+    "resendSuccess": "New code sent - check your inbox and spam folder.",
     "resendFailed": "Could not resend. Please wait and try again.",
     "sendFailed": "Could not send verification code. Please try again.",
     "invalidCode": "Invalid or expired code. Please try again.",
@@ -532,9 +532,9 @@
   },
   "resources": {
     "heroTitle": "Learning materials that deliver real results.",
-    "heroSubtitle": "Access structured summaries, worksheets, explainer videos, and exam preparation — developed by experienced educators.",
+    "heroSubtitle": "Access structured summaries, worksheets, explainer videos, and exam preparation - developed by experienced educators.",
     "unlockCta": "Unlock learning library",
-    "heroBenefitsTagline": "Structured learning materials, worksheets, videos and guides — tailored to your grade and semester.",
+    "heroBenefitsTagline": "Structured learning materials, worksheets, videos and guides - tailored to your grade and semester.",
     "gridIntro": "We help you improve in every subject – individually, clearly, and effectively. For the Austrian school system from primary school through graduation exams.",
     "heroBenefitAgeAppropriate": "Age-appropriate",
     "heroBenefitProtected": "Protected",
@@ -547,7 +547,7 @@
     "libraryGate": {
       "materialsCount": "500+",
       "materialsLabel": "learning materials",
-      "title": "500+ learning materials — unlocked with membership",
+      "title": "500+ learning materials - unlocked with membership",
       "subtitle": "The full learning library is available to registered members. Sign in or choose a plan to access all content.",
       "loginCta": "Sign in",
       "upgradeCta": "Unlock membership",
@@ -684,7 +684,7 @@
     "subtitle": "Choose the right package for you",
     "badge": "Premium Plans",
     "heroTitle": "Choose your perfect plan",
-    "heroSubtitle": "Whether you just need resources or full 1:1 support — we have the right plan for you.",
+    "heroSubtitle": "Whether you just need resources or full 1:1 support - we have the right plan for you.",
     "monthly": "Monthly",
     "yearly": "Yearly",
     "yearlyDiscount": "(2 months free)",
@@ -709,7 +709,7 @@
     "eyebrow": "OUR SUBJECTS",
     "heroTitle": "All subjects. One goal:",
     "heroTitleHighlight": "Your success.",
-    "heroSubtitle": "We offer tutoring in all relevant school subjects — individual, structured, and with real results."
+    "heroSubtitle": "We offer tutoring in all relevant school subjects - individual, structured, and with real results."
   },
   "careers": {
     "title": "Careers at NextGrades",
@@ -741,12 +741,12 @@
     "heroEyebrow": "FREE CONSULTATION",
     "title": "Free Consultation",
     "titleHighlight": "Your learning plan starts here.",
-    "subtitle": "Speak with our education advisors and discover the right tutoring path — tailored to your goals, schedule, and budget.",
+    "subtitle": "Speak with our education advisors and discover the right tutoring path - tailored to your goals, schedule, and budget.",
     "heroDesc": "No commitment. No pressure. Just clear guidance from experts who understand German school systems and university preparation.",
     "bookNow": "Request consultation",
     "viewPrograms": "Explore programs",
     "cardTitle": "Book your free consultation",
-    "cardSubtitle": "Tell us about your goals — we respond within one business day.",
+    "cardSubtitle": "Tell us about your goals - we respond within one business day.",
     "trustBadges": [
       "100% free",
       "No obligation",
@@ -771,7 +771,7 @@
       }
     ],
     "processTitle": "How your consultation works",
-    "processSubtitle": "A simple, structured process designed to give you clarity — not a sales pitch.",
+    "processSubtitle": "A simple, structured process designed to give you clarity - not a sales pitch.",
     "steps": [
       {
         "title": "Share your situation",
@@ -783,7 +783,7 @@
       },
       {
         "title": "Receive a learning plan",
-        "description": "We recommend the best format — 1:1, group, or exam prep — with transparent next steps."
+        "description": "We recommend the best format - 1:1, group, or exam prep - with transparent next steps."
       },
       {
         "title": "Start when you're ready",
@@ -791,7 +791,7 @@
       }
     ],
     "benefitsTitle": "What you'll get from this session",
-    "benefitsSubtitle": "Every consultation is focused on outcomes — not generic advice.",
+    "benefitsSubtitle": "Every consultation is focused on outcomes - not generic advice.",
     "benefits": [
       {
         "title": "Personalized assessment",
@@ -822,7 +822,7 @@
     "audiences": [
       {
         "title": "Students",
-        "description": "From middle school to university prep — build confidence and consistent results."
+        "description": "From middle school to university prep - build confidence and consistent results."
       },
       {
         "title": "Parents",
@@ -874,7 +874,7 @@
     "submit": "Send consultation request",
     "submitting": "Sending…",
     "successTitle": "Request received!",
-    "successMessage": "Thank you — we'll reach out shortly to schedule your free consultation.",
+    "successMessage": "Thank you - we'll reach out shortly to schedule your free consultation.",
     "faqTitle": "Frequently asked questions",
     "faqs": [
       {
@@ -883,7 +883,7 @@
       },
       {
         "question": "How long does the session take?",
-        "answer": "Most consultations last about 30 minutes — enough time to understand your needs and recommend a path."
+        "answer": "Most consultations last about 30 minutes - enough time to understand your needs and recommend a path."
       },
       {
         "question": "Online or in person?",
@@ -899,7 +899,7 @@
       }
     ],
     "ctaTitle": "Ready to take the next step?",
-    "ctaDesc": "Explore our programs and pricing, or speak with us first — whichever works best for you.",
+    "ctaDesc": "Explore our programs and pricing, or speak with us first - whichever works best for you.",
     "ctaPrograms": "View programs",
     "ctaPricing": "See pricing"
   },
@@ -946,16 +946,16 @@
           "We process personal data on the following legal bases under the GDPR:"
         ],
         "bullets": [
-          "Contract performance — to provide the services you register for",
-          "Legitimate interests — to secure our platform, prevent fraud, and improve our offering",
-          "Consent — for optional features such as marketing emails or non-essential cookies",
-          "Legal obligation — where we must retain or disclose data to comply with applicable law"
+          "Contract performance - to provide the services you register for",
+          "Legitimate interests - to secure our platform, prevent fraud, and improve our offering",
+          "Consent - for optional features such as marketing emails or non-essential cookies",
+          "Legal obligation - where we must retain or disclose data to comply with applicable law"
         ]
       },
       {
         "title": "Cookies and analytics",
         "paragraphs": [
-          "Our website uses cookies and similar technologies to keep you signed in, remember your preferences (such as language and theme), and — only with your consent — understand how the site is used.",
+          "Our website uses cookies and similar technologies to keep you signed in, remember your preferences (such as language and theme), and - only with your consent - understand how the site is used.",
           "Use Cookie settings in the footer or our Cookie Policy to accept, reject, or customize categories. Disabling essential cookies may limit certain features."
         ]
       },
@@ -979,13 +979,13 @@
           "Under the GDPR, you have the following rights regarding your personal data:"
         ],
         "bullets": [
-          "Right of access — request a copy of the data we hold about you",
-          "Right to rectification — correct inaccurate or incomplete data",
-          "Right to erasure — request deletion of your data where applicable",
-          "Right to restriction — limit how we use your data in certain circumstances",
-          "Right to data portability — receive your data in a structured, machine-readable format",
-          "Right to object — object to processing based on legitimate interests",
-          "Right to withdraw consent — where processing is based on consent",
+          "Right of access - request a copy of the data we hold about you",
+          "Right to rectification - correct inaccurate or incomplete data",
+          "Right to erasure - request deletion of your data where applicable",
+          "Right to restriction - limit how we use your data in certain circumstances",
+          "Right to data portability - receive your data in a structured, machine-readable format",
+          "Right to object - object to processing based on legitimate interests",
+          "Right to withdraw consent - where processing is based on consent",
           "Right to lodge a complaint with a supervisory authority"
         ]
       },
@@ -1133,7 +1133,7 @@
       {
         "title": "Intellectual property",
         "paragraphs": [
-          "All content on the NextGrades platform — including text, videos, quizzes, branding, and software — is protected by copyright and other intellectual property laws.",
+          "All content on the NextGrades platform - including text, videos, quizzes, branding, and software - is protected by copyright and other intellectual property laws.",
           "You receive a limited, non-transferable licence to access materials for your personal learning purposes. You may not copy, redistribute, or commercially exploit platform content without written consent from NextGrades."
         ]
       },
@@ -1173,7 +1173,7 @@
   },
   "careersPage": {
     "title": "Careers at NextGrades",
-    "subtitle": "Help students succeed — teach online with a team that values quality, flexibility, and growth.",
+    "subtitle": "Help students succeed - teach online with a team that values quality, flexibility, and growth.",
     "eyebrow": "Join our team",
     "heroDesc": "We are building a modern learning platform for German school students. If you are passionate about teaching and want to make a real impact, we would love to hear from you.",
     "viewPositions": "View open positions",
@@ -1188,7 +1188,7 @@
       },
       {
         "title": "Modern platform",
-        "description": "Use our digital tools, resources, and scheduling system — no admin headaches."
+        "description": "Use our digital tools, resources, and scheduling system - no admin headaches."
       },
       {
         "title": "Supportive team",
@@ -1196,7 +1196,7 @@
       },
       {
         "title": "Flexible work",
-        "description": "Online tutoring with schedules that fit your life — part-time or full-time."
+        "description": "Online tutoring with schedules that fit your life - part-time or full-time."
       }
     ],
     "stats": [
@@ -1219,7 +1219,7 @@
     ],
     "positionsEyebrow": "Open roles",
     "positionsTitle": "Current opportunities",
-    "positionsDesc": "We are actively looking for dedicated tutors. Don't see your subject? Send us an open application — we are always growing.",
+    "positionsDesc": "We are actively looking for dedicated tutors. Don't see your subject? Send us an open application - we are always growing.",
     "processEyebrow": "How it works",
     "processTitle": "Your path to joining us",
     "stepLabel": "Step {{number}}",
@@ -1289,7 +1289,7 @@
     "openSettings": "Cookie settings",
     "banner": {
       "title": "We value your privacy",
-      "description": "We use cookies to run NextGrades securely, remember your preferences, and — only with your consent — understand how our site is used.",
+      "description": "We use cookies to run NextGrades securely, remember your preferences, and - only with your consent - understand how our site is used.",
       "learnMore": "Learn more",
       "acceptAll": "Accept all",
       "reject": "Reject non-essential",
@@ -1368,14 +1368,14 @@
       {
         "title": "What are cookies?",
         "paragraphs": [
-          "Cookies are small text files stored on your device when you visit a website. They help the site remember your login, preferences, and — if you agree — how you use our pages.",
+          "Cookies are small text files stored on your device when you visit a website. They help the site remember your login, preferences, and - if you agree - how you use our pages.",
           "We also use similar technologies such as local storage for theme and language settings."
         ]
       },
       {
         "title": "Why NextGrades uses cookies",
         "paragraphs": [
-          "We use cookies to keep you signed in, protect your account, deliver our learning platform, remember your language and theme, and — only with consent — measure site usage and marketing performance."
+          "We use cookies to keep you signed in, protect your account, deliver our learning platform, remember your language and theme, and - only with consent - measure site usage and marketing performance."
         ]
       },
       {
@@ -1384,10 +1384,10 @@
           "We group cookies into four categories:"
         ],
         "bullets": [
-          "Essential — required for security, authentication, and core features (always on)",
-          "Analytics — optional; help us improve the website (e.g. Google Analytics)",
-          "Marketing — optional; used for ads and conversion tracking",
-          "Functional — optional; remember preferences beyond essential session data"
+          "Essential - required for security, authentication, and core features (always on)",
+          "Analytics - optional; help us improve the website (e.g. Google Analytics)",
+          "Marketing - optional; used for ads and conversion tracking",
+          "Functional - optional; remember preferences beyond essential session data"
         ]
       },
       {

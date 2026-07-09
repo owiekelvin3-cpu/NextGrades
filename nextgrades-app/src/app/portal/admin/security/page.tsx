@@ -67,25 +67,25 @@ export default function AdminSecurityPage() {
       <AdminKpiStrip className="mb-6 xl:grid-cols-4 2xl:grid-cols-4">
         <AdminKpiCard
           label={t("adminSecurity.failedLogins")}
-          value={stats?.failedLogins7d ?? "—"}
+          value={stats?.failedLogins7d ?? "-"}
           icon={AlertTriangle}
           iconTone="warning"
         />
         <AdminKpiCard
           label={t("adminSecurity.activeLockouts")}
-          value={stats?.activeLockouts ?? "—"}
+          value={stats?.activeLockouts ?? "-"}
           icon={Lock}
           iconTone="gold"
         />
         <AdminKpiCard
           label={t("adminSecurity.loginOtpSent")}
-          value={stats?.loginOtpSent ?? "—"}
+          value={stats?.loginOtpSent ?? "-"}
           icon={Activity}
           iconTone="info"
         />
         <AdminKpiCard
           label={t("adminSecurity.suspiciousEvents")}
-          value={stats?.suspiciousEvents ?? "—"}
+          value={stats?.suspiciousEvents ?? "-"}
           icon={Shield}
           iconTone={stats?.suspiciousEvents ? "warning" : "success"}
         />
@@ -108,12 +108,12 @@ export default function AdminSecurityPage() {
             {
               id: "email",
               header: t("adminSecurity.colEmail"),
-              cell: (e) => <span className="text-text-muted">{e.email || "—"}</span>,
+              cell: (e) => <span className="text-text-muted">{e.email || "-"}</span>,
             },
             {
               id: "ip",
               header: t("adminSecurity.colIp"),
-              cell: (e) => <span className="text-text-muted">{e.ip_address || "—"}</span>,
+              cell: (e) => <span className="text-text-muted">{e.ip_address || "-"}</span>,
             },
             {
               id: "time",
@@ -152,7 +152,7 @@ export default function AdminSecurityPage() {
                       {t("adminSecurity.until", {
                         date: lockout.locked_until
                           ? new Date(lockout.locked_until).toLocaleString()
-                          : "—",
+                          : "-",
                       })}
                     </p>
                   </li>

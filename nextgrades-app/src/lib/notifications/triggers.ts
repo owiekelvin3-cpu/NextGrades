@@ -1,5 +1,5 @@
 /**
- * High-level notification triggers — call from API routes after domain events.
+ * High-level notification triggers - call from API routes after domain events.
  */
 import {
   createNotification,
@@ -99,7 +99,7 @@ export async function notifyLiveClassScheduled(params: {
     type: "info",
     category: "live_class",
     title: "Live class scheduled",
-    message: `${className} with ${teacher} — ${when}${params.joinUrl ? " · Tap to join when it's time." : ""}`,
+    message: `${className} with ${teacher} - ${when}${params.joinUrl ? " · Tap to join when it's time." : ""}`,
     actionUrl: params.joinUrl ?? `/dashboard/student/live-classes`,
     entityType: "lesson",
     entityId: params.lessonId,

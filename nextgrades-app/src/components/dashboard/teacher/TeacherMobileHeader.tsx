@@ -17,7 +17,7 @@ function getFirstName(name: string) {
   return name.trim().split(/\s+/)[0] || name;
 }
 
-/** Mobile teacher header — theme-aware (light surface / dark navy). */
+/** Mobile teacher header - theme-aware (light surface / dark navy). */
 export function TeacherMobileHeader({ displayName }: Props) {
   const { t } = useTranslation();
   const { theme } = useTheme();

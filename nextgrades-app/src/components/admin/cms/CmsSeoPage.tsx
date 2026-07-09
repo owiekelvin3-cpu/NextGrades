@@ -17,7 +17,7 @@ function seoScore(title: string, desc: string): { score: number; tips: string[] 
     tips.push("Add a meta title");
   } else if (title.length > 60) {
     score -= 10;
-    tips.push("Meta title is long — aim for under 60 characters");
+    tips.push("Meta title is long - aim for under 60 characters");
   }
   if (!desc.trim()) {
     score -= 25;

@@ -17,7 +17,7 @@ export async function register() {
       console.error("[security] SUPABASE_SERVICE_ROLE_KEY missing in production.");
     } else {
       console.warn(
-        "[storage] SUPABASE_SERVICE_ROLE_KEY missing — teacher file uploads will fail until it is set in .env.local"
+        "[storage] SUPABASE_SERVICE_ROLE_KEY missing - teacher file uploads will fail until it is set in .env.local"
       );
     }
     return;

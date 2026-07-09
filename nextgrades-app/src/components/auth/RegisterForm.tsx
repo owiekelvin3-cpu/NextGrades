@@ -45,7 +45,7 @@ type RegisterFormProps = {
   hideFooterLink?: boolean;
   /** Skip role picker when role was chosen on a prior mobile step */
   hideRolePicker?: boolean;
-  /** Hide inline errors — parent shows them (login page) */
+  /** Hide inline errors - parent shows them (login page) */
   hideInlineError?: boolean;
   onError?: (message: string | null, duplicateEmail?: boolean) => void;
 };

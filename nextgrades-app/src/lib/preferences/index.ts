@@ -24,7 +24,7 @@ export function getStoredTheme(): UiTheme {
   return parseTheme(localStorage.getItem(THEME_STORAGE_KEY)) ?? "dark";
 }
 
-/** Theme for SSR — read from the `theme` cookie set by preferences-init / persistThemeLocally. */
+/** Theme for SSR - read from the `theme` cookie set by preferences-init / persistThemeLocally. */
 export function getThemeFromCookieValue(value: string | null | undefined): UiTheme {
   return parseTheme(value) ?? "dark";
 }
@@ -153,7 +153,7 @@ export async function saveRemotePreferences(
         body: JSON.stringify(payload),
       });
     } catch {
-      /* ignore network errors — localStorage remains source for offline */
+      /* ignore network errors - localStorage remains source for offline */
     }
   }, 300);
 }

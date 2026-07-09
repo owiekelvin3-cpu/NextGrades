@@ -1,10 +1,10 @@
 /**
- * Marketing images — branded NextGrades photography in /public/images/marketing.
+ * Marketing images - branded NextGrades photography in /public/images/marketing.
  */
 
 /** Branded NextGrades photography (see /public/images/marketing). */
 export const BRANDED = {
-  /** Girl studying at desk — primary lifestyle hero */
+  /** Girl studying at desk - primary lifestyle hero */
   studyDesk: "/images/marketing/study-desk.png",
   /** 1:1 online tutoring session on laptop */
   tutoringSession: "/images/marketing/tutoring-session.png",
@@ -16,13 +16,13 @@ export const BRANDED = {
   progressDashboard: "/images/marketing/progress-dashboard.png",
   /** Fortschritt dashboard close-up on desk */
   platformLaptop: "/images/marketing/platform-laptop.png",
-  /** Four students collaborating — Kleine Lerngruppen program card */
+  /** Four students collaborating - Kleine Lerngruppen program card */
   kleineLerngruppen: "/images/marketing/kleine-lerngruppen.png",
   /** Four students collaborating */
   studentsGroup4: "/images/marketing/students-group-4.png",
-  /** Three students with branded NextGrades hoodies — shared hero (Start, Programme, Fächer) */
+  /** Three students with branded NextGrades hoodies - shared hero (Start, Programme, Fächer) */
   heroStudentsBranded: "/images/marketing/hero-students-nextgrades.png",
-  /** Three students collaborating with laptop — legacy marketing hero */
+  /** Three students collaborating with laptop - legacy marketing hero */
   heroStudentsCollab: "/images/marketing/hero-students-collab.png",
   /** Three students with laptop */
   studentsGroup3: "/images/marketing/students-group-3.png",
@@ -44,10 +44,10 @@ export const ABOUT_IMAGES = {
   promise: "/images/marketing/about-promise.png",
 } as const;
 
-/** Shared hero photo — home and all marketing page heroes */
+/** Shared hero photo - home and all marketing page heroes */
 export const SHARED_PAGE_HERO_IMAGE = BRANDED.heroStudentsBranded;
 
-/** Primary homepage hero — branded students collaborating */
+/** Primary homepage hero - branded students collaborating */
 export const HOME_HERO_STUDENT_IMAGE = SHARED_PAGE_HERO_IMAGE;
 
 /** CMS key + fallback for the unified marketing hero (same as home). */
@@ -97,7 +97,7 @@ export const PRICING_PLAN_IMAGES = PROGRAMS_PAGE_CARD_IMAGES;
 
 export const SUBJECTS_HERO_IMAGE = SHARED_PAGE_HERO_IMAGE;
 
-/** Team portrait fallbacks when CMS has no photo — branded lifestyle shots */
+/** Team portrait fallbacks when CMS has no photo - branded lifestyle shots */
 export const ABOUT_TEAM_IMAGES = [
   BRANDED.tutoringSession,
   BRANDED.studentsGroup4,
@@ -106,7 +106,7 @@ export const ABOUT_TEAM_IMAGES = [
   BRANDED.studentsGroup3,
 ] as const;
 
-/** Login page social-proof avatars — cropped branded photos */
+/** Login page social-proof avatars - cropped branded photos */
 export const LOGIN_AVATAR_IMAGES = [
   BRANDED.studentsGroup3,
   BRANDED.studentsCollab,

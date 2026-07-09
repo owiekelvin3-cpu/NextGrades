@@ -1,5 +1,5 @@
 /**
- * NextGrades Email Service — centralized Resend integration
+ * NextGrades Email Service - centralized Resend integration
  * All platform emails are sent through this module.
  */
 import { sendEmail, sendToAdmin, isResendConfigured } from "./send";
@@ -59,7 +59,7 @@ export async function sendVerificationEmail(email: string, verifyUrl: string, us
   const { accountVerificationEmailPlain } = await import("./templates/account-verification");
   return sendEmail({
     to: email,
-    subject: "NextGrades — Bitte bestätige deine E-Mail-Adresse",
+    subject: "NextGrades - Bitte bestätige deine E-Mail-Adresse",
     html: emailVerificationEmail(verifyUrl, userName),
     text: accountVerificationEmailPlain(verifyUrl, userName),
     tags: [{ name: "category", value: "verification" }],
@@ -72,7 +72,7 @@ export async function sendVerificationCodeEmail(email: string, code: string, use
   );
   return sendEmail({
     to: email,
-    subject: `NextGrades — Dein Bestätigungscode: ${code}`,
+    subject: `NextGrades - Dein Bestätigungscode: ${code}`,
     html: accountVerificationCodeEmail(code, userName),
     text: accountVerificationCodeEmailPlain(code, userName),
     tags: [{ name: "category", value: "verification-code" }],
@@ -228,7 +228,7 @@ export async function sendContactFormEmails(
     sendToAdmin(`[NextGrades Contact] ${subject}`, contactAdminEmail(name, email, message, subject, phone)),
     sendEmail({
       to: email,
-      subject: "We received your message — NextGrades",
+      subject: "We received your message - NextGrades",
       html: contactConfirmationEmail(name, subject),
       replyTo: undefined,
     }),
@@ -261,12 +261,12 @@ export async function sendGuestAccountSetupEmails(details: {
 }) {
   const [adminResult, userResult] = await Promise.all([
     sendToAdmin(
-      "[NextGrades] Paid signup — create account",
+      "[NextGrades] Paid signup - create account",
       guestAccountSetupAdminEmail(details)
     ),
     sendEmail({
       to: details.email,
-      subject: "NextGrades — we're creating your account",
+      subject: "NextGrades - we're creating your account",
       html: guestAccountSetupConfirmationEmail(details.firstName, details.subjectName),
     }),
   ]);
@@ -280,7 +280,7 @@ export async function sendSecurityAlertEmail(
 ) {
   return sendEmail({
     to: email,
-    subject: "Security alert — NextGrades account activity",
+    subject: "Security alert - NextGrades account activity",
     html: securityAlertEmail(userName, details),
     tags: [{ name: "category", value: "security" }],
   });
@@ -350,7 +350,7 @@ export async function sendAccountInvitationEmail(params: {
 }) {
   return sendEmail({
     to: params.email,
-    subject: "Deine NextGrades Einladung — Passwort festlegen",
+    subject: "Deine NextGrades Einladung - Passwort festlegen",
     html: accountInvitationEmail(params),
     text: accountInvitationEmailPlain(params),
     tags: [{ name: "category", value: "admin-invitation" }],

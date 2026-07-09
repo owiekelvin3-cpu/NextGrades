@@ -321,7 +321,7 @@ export function PublishContentForm({ resourceId, initialData }: PublishContentFo
                     ) : (
                       <div className="flex flex-col items-center justify-center h-full gap-2">
                         <ImageIcon className={`w-8 h-8 ${muted(theme)}`} />
-                        <span className={`text-sm ${muted(theme)}`}>16:9 preview — click to upload</span>
+                        <span className={`text-sm ${muted(theme)}`}>16:9 preview - click to upload</span>
                       </div>
                     )}
                   </div>

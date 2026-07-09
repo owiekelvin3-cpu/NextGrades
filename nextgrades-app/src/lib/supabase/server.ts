@@ -16,7 +16,7 @@ export async function createClient(): Promise<SupabaseClient> {
         try {
           cookieStore.set({ name, value, ...options });
         } catch {
-          /* Server Component — middleware handles session refresh */
+          /* Server Component - middleware handles session refresh */
         }
       },
       remove(name: string, options: CookieOptions) {

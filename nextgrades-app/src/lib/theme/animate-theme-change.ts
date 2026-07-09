@@ -13,7 +13,7 @@ function overlayBackground(theme: UiTheme): string {
   return theme === "dark" ? "var(--background)" : "var(--background)";
 }
 
-/** Circular reveal before applying the new theme — subtle, no gold flash. */
+/** Circular reveal before applying the new theme - subtle, no gold flash. */
 export async function runThemeTransition(
   nextTheme: UiTheme,
   origin: ThemeTransitionOrigin,

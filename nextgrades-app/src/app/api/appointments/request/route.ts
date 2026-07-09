@@ -11,7 +11,7 @@ type RequestBody = {
   preferredDate?: string;  // ISO date string e.g. "2026-06-20"
   preferredTime?: string;  // e.g. "15:00"
   message?: string;
-  teacherId?: string;      // optional — if student wants a specific teacher
+  teacherId?: string;      // optional - if student wants a specific teacher
 };
 
 /**

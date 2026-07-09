@@ -74,7 +74,7 @@ export async function fulfillGuestAccountRequest(
       ok: false,
       error:
         row.status === "payment_received"
-          ? "Keine gültige E-Mail — warte auf Kontodaten des Kunden."
+          ? "Keine gültige E-Mail - warte auf Kontodaten des Kunden."
           : "Ungültige E-Mail in der Anfrage.",
       status: 400,
     };

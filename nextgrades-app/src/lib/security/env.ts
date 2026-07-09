@@ -49,7 +49,7 @@ export function validateProductionEnv(): EnvIssue[] {
     issues.push({
       level: "warn",
       message:
-        "Signup email verification is disabled — set REQUIRE_SIGNUP_EMAIL_VERIFICATION=true in production.",
+        "Signup email verification is disabled - set REQUIRE_SIGNUP_EMAIL_VERIFICATION=true in production.",
     });
   }
 
@@ -57,28 +57,28 @@ export function validateProductionEnv(): EnvIssue[] {
   if (process.env.ALLOW_ADMIN_BOOTSTRAP === "true") {
     issues.push({
       level: "warn",
-      message: "ALLOW_ADMIN_BOOTSTRAP=true — disable after creating your admin account.",
+      message: "ALLOW_ADMIN_BOOTSTRAP=true - disable after creating your admin account.",
     });
   }
 
   if (!process.env.RESEND_API_KEY) {
     issues.push({
       level: "warn",
-      message: "RESEND_API_KEY missing — password reset and contact form emails will fail.",
+      message: "RESEND_API_KEY missing - password reset and contact form emails will fail.",
     });
   }
 
   if (process.env.RESEND_SENDER_EMAIL?.includes("resend.dev")) {
     issues.push({
       level: "warn",
-      message: "RESEND_SENDER_EMAIL uses resend.dev — verify a custom domain for production email.",
+      message: "RESEND_SENDER_EMAIL uses resend.dev - verify a custom domain for production email.",
     });
   }
 
   if (process.env.STRIPE_SECRET_KEY && !process.env.STRIPE_WEBHOOK_SECRET) {
     issues.push({
       level: "warn",
-      message: "STRIPE_WEBHOOK_SECRET missing — subscription payments will not sync to the database.",
+      message: "STRIPE_WEBHOOK_SECRET missing - subscription payments will not sync to the database.",
     });
   }
 
@@ -94,7 +94,7 @@ export function validateProductionEnv(): EnvIssue[] {
   if (process.env.ZOOM_CLIENT_ID && (process.env.ZOOM_REDIRECT_URI?.includes("localhost") ?? false)) {
     issues.push({
       level: "warn",
-      message: "ZOOM_REDIRECT_URI still points to localhost — update for production Zoom OAuth.",
+      message: "ZOOM_REDIRECT_URI still points to localhost - update for production Zoom OAuth.",
     });
   }
 

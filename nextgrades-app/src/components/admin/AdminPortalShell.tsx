@@ -7,7 +7,7 @@ import { appShell } from "@/lib/theme/shell";
 import { cn } from "@/lib/utils";
 import { useSidebar } from "@/context/SidebarContext";
 
-/** Persistent admin shell — mounts once per portal session (sidebar + nav). */
+/** Persistent admin shell - mounts once per portal session (sidebar + nav). */
 export function AdminPortalShell({ children }: { children: React.ReactNode }) {
   const { width: sidebarWidth } = useSidebar();
 

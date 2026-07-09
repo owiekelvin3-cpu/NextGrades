@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { theme as t } from "@/lib/theme/tokens";
 
-/** Shared auth surface tokens — automatic light/dark via CSS variables. */
+/** Shared auth surface tokens - automatic light/dark via CSS variables. */
 export function authSurface(_isDark?: boolean) {
   return {
     pageBg: t.dashboard,

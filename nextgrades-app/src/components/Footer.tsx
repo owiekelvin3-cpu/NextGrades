@@ -57,7 +57,7 @@ export default function Footer() {
     <footer className="site-footer border-t border-black/[0.08] bg-[#F8F8F6] text-[#0D1B2A] dark:border-white/10 dark:bg-[#0D1B2A] dark:text-white">
       <div className="mx-auto w-full min-w-0 max-w-7xl px-6 pb-10 pt-16 sm:px-8 md:pt-20 lg:px-[72px]">
         <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-[1.4fr_minmax(0,3.6fr)] lg:gap-14">
-          {/* Column 1 — Brand */}
+          {/* Column 1 - Brand */}
           <div>
             <h2 className="max-w-[15rem] text-[2rem] font-bold leading-[1.1] tracking-tight text-[#0D1B2A] sm:text-[2.375rem] dark:text-white">
               {t("footer.tagline")}
@@ -106,7 +106,7 @@ export default function Footer() {
             </Link>
           </div>
 
-          {/* Columns 2–5 — link groups + newsletter */}
+          {/* Columns 2–5 - link groups + newsletter */}
           <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:gap-x-8 md:grid-cols-[1fr_1fr_1fr_1.3fr] md:gap-0">
             <FooterColumn title={t("footer.programs")} className="md:pr-8">
               {programLinks.map((item) => (

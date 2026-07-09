@@ -45,7 +45,7 @@ export function SidebarToggle({ className }: { className?: string }) {
   );
 }
 
-/** Compact reveal tab when sidebar is fully hidden — top-left corner fallback */
+/** Compact reveal tab when sidebar is fully hidden - top-left corner fallback */
 export function SidebarRevealTab() {
   const { t } = useTranslation();
   const { collapsed, expand } = useSidebar();

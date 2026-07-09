@@ -176,12 +176,12 @@ export function ZoomSetupStrip({ returnPath = "/dashboard/teacher/schedule", onS
           <div>
             <p className="text-sm font-semibold text-[#0D1B2A]">
               {status?.expired
-                ? t("zoom.tokenExpired", { defaultValue: "Session expired — reconnect to continue scheduling." })
+                ? t("zoom.tokenExpired", { defaultValue: "Session expired - reconnect to continue scheduling." })
                 : t("zoom.setupRequired", { defaultValue: "Connect Zoom to start scheduling" })}
             </p>
             <p className="mt-0.5 text-xs text-gray-600">
               {t("zoom.setupRequiredDesc", {
-                defaultValue: "One quick step — link your Zoom account, then create your first live class.",
+                defaultValue: "One quick step - link your Zoom account, then create your first live class.",
               })}
             </p>
           </div>

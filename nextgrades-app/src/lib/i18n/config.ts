@@ -35,7 +35,7 @@ function mergeLocale<T extends object, S extends object>(common: T, site: S): T 
 let englishBundleLoaded = false;
 let englishBundlePromise: Promise<void> | null = null;
 
-/** Load English strings on demand — German is bundled as the default locale. */
+/** Load English strings on demand - German is bundled as the default locale. */
 export async function ensureEnglishBundle(): Promise<void> {
   if (englishBundleLoaded || i18n.hasResourceBundle("en", "common")) {
     englishBundleLoaded = true;
@@ -61,7 +61,7 @@ export async function ensureEnglishBundle(): Promise<void> {
   return englishBundlePromise;
 }
 
-/** @deprecated Use ensureEnglishBundle — kept for imports that still reference this name. */
+/** @deprecated Use ensureEnglishBundle - kept for imports that still reference this name. */
 export const ensureGermanBundle = ensureEnglishBundle;
 
 const deBundle = mergeLocale(de, deSite);

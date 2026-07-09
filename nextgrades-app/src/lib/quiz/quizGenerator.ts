@@ -1,5 +1,5 @@
 /**
- * Rule-Based Quiz Generator — no external AI APIs.
+ * Rule-Based Quiz Generator - no external AI APIs.
  */
 
 import type { QuestionType, AiGeneratedQuestion, AiGeneratedFlashcard } from "./types";

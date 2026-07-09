@@ -15,7 +15,7 @@ type AuthSplitCardProps = {
   className?: string;
 };
 
-/** Havenix-style split auth card — form left, curved hero right (desktop). */
+/** Havenix-style split auth card - form left, curved hero right (desktop). */
 export function AuthSplitCard({ children, heroImage, heroCaption, heroPanel, className }: AuthSplitCardProps) {
   const { theme } = useTheme();
   const isDark = theme === "dark";

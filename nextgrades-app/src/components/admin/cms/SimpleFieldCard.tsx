@@ -81,7 +81,7 @@ export function SimpleFieldCard({ field, editLocale, isDirty, onChange, onReset 
         )}
         {isDirty && (
           <p className="mt-3 text-sm font-medium text-amber-700">
-            ● Changed — tap &quot;Put on live website&quot; below to save
+            ● Changed - tap &quot;Put on live website&quot; below to save
           </p>
         )}
       </div>

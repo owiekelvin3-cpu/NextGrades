@@ -77,14 +77,14 @@ function LessonCards({
           <Badge variant="gold" className="mb-3">
             {lesson.status}
           </Badge>
-          <h3 className={`font-bold text-lg mb-1 ${text}`}>{lesson.subject_name ?? "—"}</h3>
+          <h3 className={`font-bold text-lg mb-1 ${text}`}>{lesson.subject_name ?? "-"}</h3>
           <p className={`text-sm mb-2 ${muted}`}>
             <Clock className="w-4 h-4 inline mr-1" />
             {formatDate(lesson.start_time)} · {formatTime(lesson.start_time)}
           </p>
           <p className={`text-sm ${muted}`}>
             {t("dashboardCommon.with", { defaultValue: "with" })}{" "}
-            {showStudent ? lesson.student_name : lesson.teacher_name ?? "—"}
+            {showStudent ? lesson.student_name : lesson.teacher_name ?? "-"}
           </p>
           {(lesson.zoom_meeting_id || lesson.zoom_link) ? (
             <div className="mt-4 w-full">
@@ -177,7 +177,7 @@ export function StudentCoursesSection() {
           <Card key={e.id} className={`p-6`}>
             <BookOpen className="w-8 h-8 text-[#D4AF37] mb-3" />
             <h3 className={`font-bold mb-1 text-foreground`}>
-              {e.subject_name ?? "—"}
+              {e.subject_name ?? "-"}
             </h3>
             <p className="text-sm text-text-muted mb-4">
               {e.class_name ?? ""}
@@ -557,7 +557,7 @@ export function AdminProfilesTable({ role }: { role: "student" | "teacher" }) {
           header: t("login.fullName"),
           sortable: true,
           sortValue: (u) => u.full_name ?? "",
-          cell: (u) => u.full_name ?? "—",
+          cell: (u) => u.full_name ?? "-",
         },
         {
           id: "role",
@@ -571,7 +571,7 @@ export function AdminProfilesTable({ role }: { role: "student" | "teacher" }) {
           sortValue: (u) => u.created_at ?? "",
           cell: (u) => (
             <span className="text-sm text-text-muted">
-              {u.created_at ? new Date(u.created_at).toLocaleDateString() : "—"}
+              {u.created_at ? new Date(u.created_at).toLocaleDateString() : "-"}
             </span>
           ),
         },
@@ -618,7 +618,7 @@ function AdminEnrollmentsSection() {
         const nameMap = new Map<string, string>(
           (profiles.data || []).map((p: { id: string; full_name: string | null }) => [
             p.id,
-            p.full_name ?? "—",
+            p.full_name ?? "-",
           ])
         );
         const subjectMap = new Map<string, string>(
@@ -628,8 +628,8 @@ function AdminEnrollmentsSection() {
           enrollmentRows.map((e) => ({
             id: e.id,
             status: e.status,
-            student_name: nameMap.get(e.student_id) ?? "—",
-            subject_name: subjectMap.get(e.subject_id) ?? "—",
+            student_name: nameMap.get(e.student_id) ?? "-",
+            subject_name: subjectMap.get(e.subject_id) ?? "-",
           }))
         );
       }

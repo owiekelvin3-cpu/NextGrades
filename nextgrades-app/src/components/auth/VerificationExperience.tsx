@@ -21,7 +21,7 @@ type VerificationExperienceProps = {
   onVerified: (userId: string, role?: AppRole | null) => void | Promise<void>;
   onChangeEmail?: () => void;
   autoSendCode?: boolean;
-  /** Flat layout inside AuthMobileShell — no outer card */
+  /** Flat layout inside AuthMobileShell - no outer card */
   embedded?: boolean;
 };
 

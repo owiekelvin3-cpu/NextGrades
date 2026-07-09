@@ -12,7 +12,7 @@ const CmsThemeInjector = dynamic(
   { ssr: false }
 );
 
-/** CMS preview + theme — code-split from the main bundle, client-only. */
+/** CMS preview + theme - code-split from the main bundle, client-only. */
 export function DeferredCmsExtras() {
   return (
     <>

@@ -4,7 +4,7 @@ import { resolveUserRole } from "@/lib/auth/roles";
 import { ADMIN_PORTAL_HOME, ADMIN_PORTAL_LOGIN, isAdminPortalPath } from "@/lib/admin/portal-paths";
 import type { User } from "@supabase/supabase-js";
 
-/** Safe redirect path — only internal app routes. */
+/** Safe redirect path - only internal app routes. */
 export function sanitizeRedirect(path: string | null | undefined): string | null {
   if (!path || !path.startsWith("/") || path.startsWith("//")) return null;
   if (
@@ -37,7 +37,7 @@ export function canRoleAccessPath(role: AppRole, path: string): boolean {
   return false;
 }
 
-/** Pick redirect target after login — never send users to another role's dashboard. */
+/** Pick redirect target after login - never send users to another role's dashboard. */
 export function resolvePostAuthRedirect(role: AppRole, redirectTo: string | null | undefined): string {
   const safe = sanitizeRedirect(redirectTo);
   if (safe && canRoleAccessPath(role, safe)) return safe;

@@ -20,7 +20,7 @@ type PlatformShowcaseProps = {
   ctaHref?: string;
 };
 
-/** Platform section — copy first, image, then features on mobile. */
+/** Platform section - copy first, image, then features on mobile. */
 export function PlatformShowcase({
   eyebrow,
   title,

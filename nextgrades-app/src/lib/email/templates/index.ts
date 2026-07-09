@@ -1,4 +1,4 @@
-/** @deprecated Use `@/lib/email/templates` — re-exports for backward compatibility */
+/** @deprecated Use `@/lib/email/templates` - re-exports for backward compatibility */
 export { wrapEmail as baseEmailTemplate } from "../layout";
 export {
   welcomeEmail,

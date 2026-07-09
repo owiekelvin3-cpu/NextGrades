@@ -238,7 +238,7 @@ export default function SubjectsPage() {
           </section>
         )}
 
-        {/* Subject cards — owner mockup grid */}
+        {/* Subject cards - owner mockup grid */}
         <section className="bg-[#0D1B2A] py-14 text-white md:py-20">
           <div className={section.container}>
             <p className="mx-auto mb-10 max-w-3xl text-center text-base leading-relaxed text-on-navy-muted sm:mb-12 sm:text-lg">

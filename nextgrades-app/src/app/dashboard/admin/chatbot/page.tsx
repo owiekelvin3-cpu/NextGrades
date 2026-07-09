@@ -79,10 +79,10 @@ export default function AdminChatbotPage() {
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {[
-            { label: "Requests (30d)", value: stats?.totalRequests30d ?? "—", icon: MessageSquare },
-            { label: "Success rate", value: stats ? `${stats.successRate}%` : "—", icon: Shield },
-            { label: "Avg latency", value: stats ? `${stats.avgLatencyMs}ms` : "—", icon: Zap },
-            { label: "Sessions (30d)", value: stats?.sessions30d ?? "—", icon: Sparkles },
+            { label: "Requests (30d)", value: stats?.totalRequests30d ?? "-", icon: MessageSquare },
+            { label: "Success rate", value: stats ? `${stats.successRate}%` : "-", icon: Shield },
+            { label: "Avg latency", value: stats ? `${stats.avgLatencyMs}ms` : "-", icon: Zap },
+            { label: "Sessions (30d)", value: stats?.sessions30d ?? "-", icon: Sparkles },
           ].map(({ label, value, icon: Icon }) => (
             <Card key={label} className="p-5">
               <Icon className="mb-2 h-5 w-5 text-[#D4AF37]" />

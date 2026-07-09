@@ -13,7 +13,7 @@ const links = [
   { href: "/consultation", labelKey: "navbar.freeConsultation" },
 ] as const;
 
-/** Horizontal category strip — Coursera-style explore row on mobile home. */
+/** Horizontal category strip - Coursera-style explore row on mobile home. */
 export function MarketingQuickLinks() {
   const { t } = useTranslation();
   const { theme } = useTheme();

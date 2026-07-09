@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { runWhenIdle } from "@/lib/performance/idle";
 
-/** Applies CMS theme settings as CSS variables — deferred until idle. */
+/** Applies CMS theme settings as CSS variables - deferred until idle. */
 export function CmsThemeInjector() {
   useEffect(() => {
     return runWhenIdle(() => {

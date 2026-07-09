@@ -17,7 +17,7 @@ export interface SendEmailOptions {
 
 export async function sendEmail(options: SendEmailOptions): Promise<SendEmailResult> {
   if (!isResendConfigured()) {
-    console.warn("[email] RESEND_API_KEY not configured — skipping send:", options.subject);
+    console.warn("[email] RESEND_API_KEY not configured - skipping send:", options.subject);
     return { success: false, error: "Email service is not configured" };
   }
 

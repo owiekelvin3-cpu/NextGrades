@@ -122,7 +122,7 @@ function AdminAccessContent() {
 
                 <div className="space-y-6">
                   <section>
-                    <h2 className="font-semibold mb-2">Option 1 — Quick setup (recommended for owner)</h2>
+                    <h2 className="font-semibold mb-2">Option 1 - Quick setup (recommended for owner)</h2>
                     <ol className={`list-decimal list-inside space-y-2 text-sm ${muted}`}>
                       <li>Add to <code className="text-[#D4AF37]">.env.local</code>: <code>ADMIN_BOOTSTRAP_EMAIL=your@email.com</code></li>
                       <li>Ensure <code className="text-[#D4AF37]">SUPABASE_SERVICE_ROLE_KEY</code> is set</li>
@@ -145,7 +145,7 @@ function AdminAccessContent() {
                   </section>
 
                   <section>
-                    <h2 className="font-semibold mb-2">Option 2 — Supabase SQL</h2>
+                    <h2 className="font-semibold mb-2">Option 2 - Supabase SQL</h2>
                     <p className={`text-sm mb-3 ${muted}`}>
                       Run in Supabase → SQL Editor (file: <code>supabase/GRANT_ADMIN.sql</code>):
                     </p>

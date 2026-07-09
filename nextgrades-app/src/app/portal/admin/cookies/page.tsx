@@ -197,7 +197,7 @@ export default function AdminCookiesPage() {
                   recent.slice(0, 20).map((row) => (
                     <tr key={`${row.consent_id}-${row.created_at}`} className="border-b border-border-default/50">
                       <td className="py-2 pr-4 capitalize text-foreground">{row.action.replace(/_/g, " ")}</td>
-                      <td className="py-2 pr-4 text-text-muted">{row.locale ?? "—"}</td>
+                      <td className="py-2 pr-4 text-text-muted">{row.locale ?? "-"}</td>
                       <td className="py-2 text-text-muted">
                         {new Date(row.created_at).toLocaleString()}
                       </td>

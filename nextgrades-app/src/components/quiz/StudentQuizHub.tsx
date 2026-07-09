@@ -134,7 +134,7 @@ export function StudentQuizHub() {
                 <p className="text-sm text-text-muted mb-4">
                   {Array.isArray(q.quiz_questions)
                     ? q.quiz_questions.length
-                    : (q.quiz_questions as unknown as { count?: number })?.count ?? "—"}{" "}
+                    : (q.quiz_questions as unknown as { count?: number })?.count ?? "-"}{" "}
                   questions
                   {q.time_limit_minutes ? ` · ${q.time_limit_minutes} min` : ""}
                 </p>

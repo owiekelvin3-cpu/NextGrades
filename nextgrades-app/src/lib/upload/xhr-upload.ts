@@ -122,7 +122,7 @@ export function formatUploadBytes(bytes: number): string {
 }
 
 export function formatUploadSpeed(bps: number): string {
-  if (bps <= 0) return "—";
+  if (bps <= 0) return "-";
   return `${formatUploadBytes(bps)}/s`;
 }
 

@@ -71,7 +71,7 @@ export function MobileResourceCard({ resource, onOpen, variant, subjectSlug }: P
       <div className={cn(mobile.cardPad, "flex flex-1 flex-col gap-3")}>
         <div>
           <p className="text-xs font-medium uppercase tracking-wide text-text-muted">
-            {resource.class?.name || resource.subject?.name || "—"}
+            {resource.class?.name || resource.subject?.name || "-"}
           </p>
           <h3 className="mt-1 line-clamp-2 text-base font-bold leading-snug text-foreground">
             {resource.title}

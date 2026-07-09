@@ -27,7 +27,7 @@ function useEffectiveOverrides(): CmsOverrideMap {
   return useMemo(() => mergeOverrides(overrides, preview), [overrides, preview]);
 }
 
-/** Resolved marketing image URL — CMS override or Unsplash default; never empty. */
+/** Resolved marketing image URL - CMS override or Unsplash default; never empty. */
 export function useCmsImage(key: string, fallback?: string): string {
   const overrides = useEffectiveOverrides();
   const { i18n } = useTranslation();
@@ -37,7 +37,7 @@ export function useCmsImage(key: string, fallback?: string): string {
   return resolveCmsImageSrc(key, overrideStr, fallback, getCmsImageDefault(key));
 }
 
-/** Same hero image as the home page — used on all marketing page heroes. */
+/** Same hero image as the home page - used on all marketing page heroes. */
 export function useMarketingHeroImage(): string {
   return useCmsImage(MARKETING_HERO_CMS_KEY, MARKETING_HERO_IMAGE);
 }

@@ -1,4 +1,4 @@
-/** Shared marketing page surfaces — driven by CSS design tokens (no hardcoded theme branches). */
+/** Shared marketing page surfaces - driven by CSS design tokens (no hardcoded theme branches). */
 
 export const marketingTheme = {
   page: "bg-background text-foreground",

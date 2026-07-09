@@ -30,7 +30,7 @@ export function accountVerificationCodeEmail(code: string, userName?: string) {
     ]),
     emailNotice(
       "security",
-      "<strong>Sicherheit:</strong> Der Code ist <strong>10 Minuten</strong> gültig. Teile ihn mit niemandem — NextGrades wird dich niemals danach fragen. " +
+      "<strong>Sicherheit:</strong> Der Code ist <strong>10 Minuten</strong> gültig. Teile ihn mit niemandem - NextGrades wird dich niemals danach fragen. " +
         "Wenn du kein Konto erstellt hast, kannst du diese Nachricht ignorieren."
     ),
     emailSignature(),
@@ -38,7 +38,7 @@ export function accountVerificationCodeEmail(code: string, userName?: string) {
 
   return wrapEmail(
     content,
-    `NextGrades — Dein Bestätigungscode: ${escapeHtml(code)}`
+    `NextGrades - Dein Bestätigungscode: ${escapeHtml(code)}`
   );
 }
 
@@ -57,7 +57,7 @@ export function accountVerificationCodeEmailPlain(code: string, userName?: strin
     "",
     "Der Code ist 10 Minuten gültig. Wenn du kein Konto erstellt hast, ignoriere diese E-Mail.",
     "",
-    `— ${EMAIL_BRAND.name}`,
+    `- ${EMAIL_BRAND.name}`,
     EMAIL_BRAND.supportEmail,
   ].join("\n");
 }

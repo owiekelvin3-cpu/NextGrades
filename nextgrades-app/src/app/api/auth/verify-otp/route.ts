@@ -32,7 +32,7 @@ export async function POST(request: Request) {
 
     await logRegistrationAttempt(email, "verify_otp", true, undefined, { userId: result.userId }, request);
 
-    // Signup OTP counts as login MFA — skip a second code email after registration.
+    // Signup OTP counts as login MFA - skip a second code email after registration.
     if (result.userId) {
       await setMfaVerifiedCookie(result.userId);
     }

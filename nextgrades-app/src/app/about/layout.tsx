@@ -4,7 +4,7 @@ import { generateCmsMetadata } from "@/lib/cms/create-page-metadata";
 export async function generateMetadata(): Promise<Metadata> {
   return generateCmsMetadata("about", {
     title: "About | NextGrades",
-    description: "Learn about NextGrades — expert tutoring for students in Austria.",
+    description: "Learn about NextGrades - expert tutoring for students in Austria.",
   });
 }
 

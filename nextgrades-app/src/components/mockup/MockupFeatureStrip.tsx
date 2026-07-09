@@ -16,7 +16,7 @@ type Props = {
   columns?: 3 | 4 | 5;
 };
 
-/** Feature highlights — stacked cards on mobile, grid on desktop. */
+/** Feature highlights - stacked cards on mobile, grid on desktop. */
 export function MockupFeatureStrip({ items, className, columns = 5 }: Props) {
   const gridCols =
     columns === 3

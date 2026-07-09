@@ -49,7 +49,7 @@ export type StripePriceResolution =
 
 /**
  * Resolve checkout price exclusively from server mappings.
- * Client-supplied priceId is never trusted — only used to detect tampering.
+ * Client-supplied priceId is never trusted - only used to detect tampering.
  */
 export function resolveCheckoutStripePrice(input: {
   planId?: string;

@@ -55,7 +55,7 @@ function GoldRadio({
   );
 }
 
-/** Dark premium filter panel for Bibliothek — grades 1–9, semester, material type, access. */
+/** Dark premium filter panel for Bibliothek - grades 1–9, semester, material type, access. */
 export function BibliothekFilterSidebar({
   classes,
   classLevel,

@@ -1,4 +1,4 @@
-/** Shared styles and helpers for student dashboard — theme-aware via design tokens */
+/** Shared styles and helpers for student dashboard - theme-aware via design tokens */
 
 import type { LucideIcon } from "lucide-react";
 import {

@@ -1,5 +1,5 @@
 /**
- * Semantic theme class bundles — always prefer these over hardcoded hex + dark: pairs.
+ * Semantic theme class bundles - always prefer these over hardcoded hex + dark: pairs.
  * All colors resolve via CSS variables in design-tokens.css.
  */
 
@@ -64,7 +64,7 @@ export const theme = {
   brandGold: "text-[var(--brand-gold)]",
   brandGoldBg: "bg-[var(--brand-gold-muted)] text-[var(--brand-gold)]",
 
-  /** Buttons — pair with size/rounding utilities */
+  /** Buttons - pair with size/rounding utilities */
   btnGold: "theme-btn-interaction theme-btn-gold",
   btnSecondary: "theme-btn-interaction theme-btn-secondary",
   btnOutline: "theme-btn-interaction theme-btn-outline",
@@ -90,7 +90,7 @@ export const theme = {
   /** States */
   disabled: "theme-disabled",
 
-  /** Dashboard card — use on Card or div */
+  /** Dashboard card - use on Card or div */
   dashboardCard: "p-6",
 } as const;
 

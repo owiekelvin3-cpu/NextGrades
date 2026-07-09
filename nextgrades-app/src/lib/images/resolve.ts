@@ -20,7 +20,7 @@ export function isCanonicalSharedHeroOverride(src?: string | null): boolean {
 
 /**
  * Shared page heroes must use the branded students photo.
- * CMS may still store legacy paths (tutoring-session, subject-books, etc.) — ignore those.
+ * CMS may still store legacy paths (tutoring-session, subject-books, etc.) - ignore those.
  */
 export function resolveSharedMarketingHero(
   override: string | null | undefined,
@@ -32,7 +32,7 @@ export function resolveSharedMarketingHero(
   return isValidImageSrc(canonical) ? canonical.trim() : SHARED_PAGE_HERO_IMAGE;
 }
 
-/** Ignore stale CMS uploads (generic placeholder rectangles) — use branded defaults instead. */
+/** Ignore stale CMS uploads (generic placeholder rectangles) - use branded defaults instead. */
 const LEGACY_CMS_PLACEHOLDER = /Rectangle_40443|resource-thumbnails\/cms\/\d+-Rectangle/i;
 
 export function isLegacyCmsPlaceholderImage(src?: string | null): boolean {
@@ -54,7 +54,7 @@ export function isValidImageSrc(src?: string | null): src is string {
   );
 }
 
-/** Resolve CMS image — optional key applies shared-hero guardrails. */
+/** Resolve CMS image - optional key applies shared-hero guardrails. */
 export function resolveCmsImageSrc(
   key: string | undefined,
   override?: string | null,
@@ -68,7 +68,7 @@ export function resolveCmsImageSrc(
   return resolveImageChain(override, fallback, registryDefault, ONLINE_IMAGE_FALLBACK);
 }
 
-/** CMS override or fallback — ignores empty/invalid overrides; never returns empty. */
+/** CMS override or fallback - ignores empty/invalid overrides; never returns empty. */
 export function resolveImageSrc(override?: string | null, fallback?: string): string {
   if (isValidImageSrc(override)) return override.trim();
   if (isValidImageSrc(fallback)) return fallback.trim();

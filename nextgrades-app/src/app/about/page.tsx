@@ -111,7 +111,7 @@ export default function AboutPage() {
       <Navbar />
 
       <main className="flex-1 overflow-x-hidden">
-        {/* Hero — always dark */}
+        {/* Hero - always dark */}
         <section className={cn("bg-[#0D1B2A] text-white", hero.section)}>
           <div className="pointer-events-none absolute inset-0 overflow-hidden">
             <div className="absolute -right-1/4 top-0 h-[min(500px,100vw)] w-[min(500px,100vw)] rounded-full bg-[#D4AF37]/8 blur-3xl" />
@@ -162,7 +162,7 @@ export default function AboutPage() {
             <div className="mt-8 rounded-xl border border-white/10 bg-[#0D1B2A]/90 p-5 shadow-xl backdrop-blur-md lg:max-w-md">
               <Quote className="mb-2 h-6 w-6 text-[#D4AF37]" />
               <p className="text-sm italic leading-relaxed text-on-navy-muted">&ldquo;{t("aboutPage.heroQuote")}&rdquo;</p>
-              <p className="mt-2 text-xs text-on-navy-faint">— {t("aboutPage.heroQuoteAuthor")}</p>
+              <p className="mt-2 text-xs text-on-navy-faint">- {t("aboutPage.heroQuoteAuthor")}</p>
             </div>
           </div>
         </section>
@@ -283,7 +283,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Promise — always dark */}
+        {/* Promise - always dark */}
         <section className="bg-[#0D1B2A] py-20 text-white lg:py-24">
           <div className={section.container}>
             <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">

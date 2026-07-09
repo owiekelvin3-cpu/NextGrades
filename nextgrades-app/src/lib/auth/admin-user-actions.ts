@@ -69,7 +69,7 @@ export async function deleteUserAccount(userId: string, adminUserId: string) {
   try {
     await admin.auth.admin.signOut(userId, "global");
   } catch {
-    // User may already have no active sessions — continue with deletion
+    // User may already have no active sessions - continue with deletion
   }
 
   const { error: rpcError } = await admin.rpc("admin_delete_user", { p_user_id: userId });

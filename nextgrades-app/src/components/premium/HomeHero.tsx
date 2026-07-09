@@ -18,7 +18,7 @@ type HomeHeroProps = {
   heroImage: string;
 };
 
-/** Full-bleed hero — matches uploaded homepage mockup. */
+/** Full-bleed hero - matches uploaded homepage mockup. */
 export function HomeHero({
   eyebrow,
   title,

@@ -30,7 +30,7 @@ export function StudentWelcomeHeader({ firstName, learningGoal, dateLocale }: St
           </h2>
           <p className="mt-2 max-w-xl text-sm leading-relaxed text-text-muted">
             {t("studentDashboard.welcomeSubtitle", {
-              defaultValue: "Dein Lernzentrum — Fortschritt verfolgen, Unterricht besuchen und smarter lernen.",
+              defaultValue: "Dein Lernzentrum - Fortschritt verfolgen, Unterricht besuchen und smarter lernen.",
             })}
           </p>
 

@@ -374,7 +374,7 @@ export function StudentAppointmentsExperience() {
           </div>
         </div>
 
-        {/* Right sidebar — next appointment first on mobile */}
+        {/* Right sidebar - next appointment first on mobile */}
         <aside className={st.asideWidgets}>
           {data.nextLesson && (
             <div className={studentPanel("p-5")}>

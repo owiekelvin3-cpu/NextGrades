@@ -161,8 +161,8 @@ export function ResourcesMaterialsTable({
                       {contentTypeLabel(r.content_type || r.type || "resource")}
                     </span>
                   </td>
-                  <td className="hidden px-3 py-3 text-gray-500 md:table-cell">{r.category?.name || "—"}</td>
-                  <td className="hidden px-3 py-3 text-gray-500 lg:table-cell">{r.class?.name || "—"}</td>
+                  <td className="hidden px-3 py-3 text-gray-500 md:table-cell">{r.category?.name || "-"}</td>
+                  <td className="hidden px-3 py-3 text-gray-500 lg:table-cell">{r.class?.name || "-"}</td>
                   <td className="hidden px-3 py-3 lg:table-cell">
                     {locked ? (
                       <span className="text-xs font-semibold text-[#D4AF37]">{t("resources.premium")}</span>

@@ -5,7 +5,7 @@ export const COMPANY_COUNTRY = {
   de: "Österreich",
 } as const;
 
-/** E.164 — no spaces (for tel: links and APIs). */
+/** E.164 - no spaces (for tel: links and APIs). */
 export const COMPANY_PHONE_E164 = "+436702064399";
 
 /** Human-readable display. */
@@ -24,7 +24,7 @@ export const COMPANY_DEFAULT_TIMEZONE = "Europe/Vienna";
 
 export const COMPANY_ADDRESS_DEFAULT = `NextGrades, ${COMPANY_COUNTRY.de}`;
 
-/** Optional public social profiles — omit entries to hide icons in the footer. */
+/** Optional public social profiles - omit entries to hide icons in the footer. */
 export const COMPANY_SOCIAL = {
   whatsapp: `https://wa.me/${COMPANY_PHONE_E164.replace("+", "")}`,
   instagram: null as string | null,

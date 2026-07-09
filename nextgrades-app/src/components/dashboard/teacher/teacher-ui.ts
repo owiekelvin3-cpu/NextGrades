@@ -1,4 +1,4 @@
-/** Shared styles and helpers for teacher dashboard — theme-aware via design tokens */
+/** Shared styles and helpers for teacher dashboard - theme-aware via design tokens */
 
 export const TEACHER_AVATAR_COLORS = ["#D4AF37", "#4DA3FF", "#22C55E", "#A855F7", "#F97316", "#EC4899"];
 

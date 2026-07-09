@@ -143,7 +143,7 @@ export function emailFooter(): string {
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
       <tr>
         <td style="padding:32px 24px;background:linear-gradient(135deg,${C.navy} 0%,#1a2e4a 100%);text-align:center;">
-          <p style="margin:0 0 8px;font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:600;color:#FFFFFF;">${EMAIL_BRAND.name} — The Future of Learning</p>
+          <p style="margin:0 0 8px;font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:600;color:#FFFFFF;">${EMAIL_BRAND.name} - The Future of Learning</p>
           <p style="margin:0 0 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.6;color:#A0AEC0;">Premium education platform for students and teachers worldwide</p>
           <p style="margin:0 0 12px;font-family:Arial,Helvetica,sans-serif;font-size:13px;">
             <a href="${appUrl}/help" style="color:${C.gold};text-decoration:none;margin:0 8px;">Help Center</a>

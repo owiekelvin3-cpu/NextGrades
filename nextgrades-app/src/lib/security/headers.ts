@@ -50,7 +50,7 @@ export function securityHeaders(): NonNullable<NextConfig["headers"]> {
       source: "/(.*)",
       headers,
     },
-    /** Long-cache public images (img-*, team, logos, etc.) — extension match avoids invalid :param patterns */
+    /** Long-cache public images (img-*, team, logos, etc.) - extension match avoids invalid :param patterns */
     {
       source: "/:path*\\.(png|jpg|jpeg|webp|avif|ico|svg)",
       headers: staticCache,

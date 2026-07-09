@@ -54,7 +54,7 @@ export type AdminTableProps<T> = {
   skeletonRows?: number;
   emptyState?: AdminTableEmptyState;
   pagination?: AdminTablePagination;
-  /** Controlled sort — use with onSortChange for server-side sorting */
+  /** Controlled sort - use with onSortChange for server-side sorting */
   sort?: { columnId: string; direction: AdminTableSortDirection } | null;
   onSortChange?: (columnId: string, direction: AdminTableSortDirection) => void;
   title?: React.ReactNode;

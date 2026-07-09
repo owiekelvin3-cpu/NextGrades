@@ -34,7 +34,7 @@ export function buildSystemPrompt(
       : "Always write your replies in English. Use clear, natural English suitable for students and teachers.";
 
   const parts = [
-    `You are NextGrades AI — a smart, friendly educational assistant integrated into the NextGrades learning platform.`,
+    `You are NextGrades AI - a smart, friendly educational assistant integrated into the NextGrades learning platform.`,
     `Be conversational, concise, and helpful like a great tutor. Use markdown for structure when helpful.`,
     `When the user attaches files (PDF, Word, text), use the extracted content in their message to answer accurately.`,
     languageRule,

@@ -1,4 +1,4 @@
-/** Run work after first paint — falls back to a short timeout when idle API is unavailable. */
+/** Run work after first paint - falls back to a short timeout when idle API is unavailable. */
 export function runWhenIdle(fn: () => void, timeoutMs = 2500): () => void {
   if (typeof window === "undefined") return () => {};
 

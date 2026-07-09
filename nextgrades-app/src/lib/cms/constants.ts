@@ -17,7 +17,7 @@ export const CMS_PAGE_GROUPS = [
   { id: "misc", label: "Other copy", prefixes: ["misc", "images", "aiGenerator", "aiGeneratorPage"] },
 ] as const;
 
-/** Dashboard-only keys — not shown in public CMS. */
+/** Dashboard-only keys - not shown in public CMS. */
 export const CMS_EXCLUDED_PREFIXES = [
   "dashboardNav",
   "dashboardPages",
@@ -29,7 +29,7 @@ export const CMS_EXCLUDED_PREFIXES = [
   "admin.",
 ];
 
-/** Keys removed from the public site — hidden from CMS editors and seed. */
+/** Keys removed from the public site - hidden from CMS editors and seed. */
 const CMS_EXCLUDED_KEY_SUFFIXES = [".breadcrumb"];
 
 export function isCmsEditableKey(i18nKey: string): boolean {

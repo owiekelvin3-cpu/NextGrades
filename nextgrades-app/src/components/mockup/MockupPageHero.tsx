@@ -19,7 +19,7 @@ type Props = {
   className?: string;
 };
 
-/** Standard inner-page hero — text first, mobile card image below. */
+/** Standard inner-page hero - text first, mobile card image below. */
 export function MockupPageHero({
   breadcrumbs,
   eyebrow,

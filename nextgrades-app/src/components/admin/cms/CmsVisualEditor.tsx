@@ -129,7 +129,7 @@ export function CmsVisualEditor({ pageId }: Props) {
           <div className="flex items-center gap-2">
             <MousePointer2 className="h-4 w-4 text-[#D4AF37]" />
             <span className="text-sm font-semibold text-[#0D1B2A]">
-              {pageMeta?.label ?? pageId} — Live preview
+              {pageMeta?.label ?? pageId} - Live preview
             </span>
             <span className="hidden text-xs text-gray-500 sm:inline">Click highlighted text to edit</span>
           </div>

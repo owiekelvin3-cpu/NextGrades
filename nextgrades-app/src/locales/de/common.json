@@ -80,7 +80,7 @@
     "newsletterDesc": "Bleib auf dem Laufenden zu Programmen, Lerntipps und Neuigkeiten von NextGrades.",
     "newsletterPlaceholder": "E-Mail-Adresse eingeben",
     "newsletterCta": "Anmelden",
-    "newsletterSuccess": "Danke — du bist angemeldet!",
+    "newsletterSuccess": "Danke - du bist angemeldet!",
     "cookieSettings": "Cookie-Einstellungen",
     "aboutTitle": "Über uns",
     "contactTitle": "Kontakt",
@@ -147,12 +147,12 @@
     },
     "whySection": {
       "eyebrow": "WARUM NEXTGRADES",
-      "title": "Mehr als Nachhilfe — ein ganzheitliches Lernsystem",
+      "title": "Mehr als Nachhilfe - ein ganzheitliches Lernsystem",
       "subtitle": "Wir verbinden persönliche Betreuung, moderne Technologie und strukturierte Materialien für messbare Ergebnisse.",
       "items": [
         {
           "title": "Persönliche Betreuung",
-          "desc": "Jede Schülerin und jeder Schüler erhält individuelle Aufmerksamkeit — kein Einheitsunterricht."
+          "desc": "Jede Schülerin und jeder Schüler erhält individuelle Aufmerksamkeit - kein Einheitsunterricht."
         },
         {
           "title": "Erfahrene LehrerInnen",
@@ -167,7 +167,7 @@
     "howItWorks": {
       "eyebrow": "SO FUNKTIONIERT'S",
       "title": "In vier Schritten zum Lernerfolg",
-      "subtitle": "Vom ersten Gespräch bis zur bestandenen Prüfung — klar strukturiert und transparent.",
+      "subtitle": "Vom ersten Gespräch bis zur bestandenen Prüfung - klar strukturiert und transparent.",
       "steps": [
         {
           "title": "Kostenloses Erstgespräch",
@@ -175,7 +175,7 @@
         },
         {
           "title": "Programm wählen",
-          "desc": "1:1 Nachhilfe, Lerngruppe oder Lernbibliothek — individuell auf dich abgestimmt."
+          "desc": "1:1 Nachhilfe, Lerngruppe oder Lernbibliothek - individuell auf dich abgestimmt."
         },
         {
           "title": "Strukturiert lernen",
@@ -193,11 +193,11 @@
       "items": [
         {
           "question": "Für wen ist NextGrades geeignet?",
-          "answer": "Für SchülerInnen aller Klassenstufen in Österreich — von der Volksschule bis zur Matura. Wir unterstützen bei allen wichtigen Schulfächern."
+          "answer": "Für SchülerInnen aller Klassenstufen in Österreich - von der Volksschule bis zur Matura. Wir unterstützen bei allen wichtigen Schulfächern."
         },
         {
           "question": "Wie läuft das kostenlose Erstgespräch ab?",
-          "answer": "In einem unverbindlichen Online-Gespräch besprechen wir deine Ziele, analysieren den Lernstand und empfehlen das passende Programm — völlig kostenlos."
+          "answer": "In einem unverbindlichen Online-Gespräch besprechen wir deine Ziele, analysieren den Lernstand und empfehlen das passende Programm - völlig kostenlos."
         },
         {
           "question": "Findet die Nachhilfe online statt?",
@@ -205,11 +205,11 @@
         },
         {
           "question": "Was kostet NextGrades?",
-          "answer": "Die Preise variieren je nach Programm. Im Erstgespräch erhältst du ein transparentes Angebot — ohne versteckte Kosten."
+          "answer": "Die Preise variieren je nach Programm. Im Erstgespräch erhältst du ein transparentes Angebot - ohne versteckte Kosten."
         },
         {
           "question": "Kann ich die Lernbibliothek auch ohne Nachhilfe nutzen?",
-          "answer": "Ja, die Lernbibliothek steht als eigenständiges Programm zur Verfügung — mit hunderten kostenlosen und Premium-Materialien."
+          "answer": "Ja, die Lernbibliothek steht als eigenständiges Programm zur Verfügung - mit hunderten kostenlosen und Premium-Materialien."
         }
       ]
     },
@@ -354,12 +354,12 @@
     "eyebrow": "Kontakt bei NextGrades",
     "title": "Nicht sicher, welches Programm passt?",
     "subtitle": "Wir beraten dich kostenlos und finden gemeinsam die beste Lösung.",
-    "heroDesc": "Ob Eltern oder SchülerInnen: Unser Team antwortet meist innerhalb weniger Stunden — persönlich, unverbindlich und auf Deutsch.",
+    "heroDesc": "Ob Eltern oder SchülerInnen: Unser Team antwortet meist innerhalb weniger Stunden - persönlich, unverbindlich und auf Deutsch.",
     "directReach": "Oder erreich uns direkt unter",
     "heroCta": "Nachricht senden",
     "benefitsEyebrow": "Warum Eltern uns wählen",
     "benefitsTitle": "Betreuung, der Eltern vertrauen",
-    "benefitsSubtitle": "Von der ersten Frage bis zur Anmeldung — persönliche Beratung, erfahrene Lehrkräfte und messbare Fortschritte.",
+    "benefitsSubtitle": "Von der ersten Frage bis zur Anmeldung - persönliche Beratung, erfahrene Lehrkräfte und messbare Fortschritte.",
     "benefits": [
       {
         "title": "Persönliche Betreuung",
@@ -409,11 +409,11 @@
       },
       {
         "question": "Ist die Erstberatung kostenlos?",
-        "answer": "Ja. Wir bieten eine kostenlose Beratung, damit du das passende Programm finden kannst — ohne Verpflichtung."
+        "answer": "Ja. Wir bieten eine kostenlose Beratung, damit du das passende Programm finden kannst - ohne Verpflichtung."
       },
       {
         "question": "Welche Fächer und Programme bietet ihr an?",
-        "answer": "Wir decken Kernfächer, Einzelnachhilfe, Gruppenkurse, Mathe-Programme und Prüfungsvorbereitung ab. Wähle ein Fach im Formular — wir senden dir die Details."
+        "answer": "Wir decken Kernfächer, Einzelnachhilfe, Gruppenkurse, Mathe-Programme und Prüfungsvorbereitung ab. Wähle ein Fach im Formular - wir senden dir die Details."
       },
       {
         "question": "Wie geht es nach der Kontaktaufnahme weiter?",
@@ -455,7 +455,7 @@
     "heroImageAlt": "NextGrades Support-Team",
     "ctaEyebrow": "Kostenlose Beratung",
     "ctaTitle": "Gemeinsam das passende Programm finden",
-    "ctaDesc": "Vergleiche Nachhilfe, Lerngruppen und die Lernbibliothek — wir helfen dir bei der Entscheidung.",
+    "ctaDesc": "Vergleiche Nachhilfe, Lerngruppen und die Lernbibliothek - wir helfen dir bei der Entscheidung.",
     "ctaConsultation": "Kostenloses Erstgespräch",
     "validationRequired": "Bitte fülle alle Pflichtfelder aus.",
     "validationEmail": "Bitte gib eine gültige E-Mail-Adresse ein.",
@@ -463,7 +463,7 @@
     "subjectPlaceholder": "Fach oder Programm wählen",
     "subjectGroupSubjects": "Fächer",
     "subjectGroupPrograms": "Programme",
-    "subjectHint": "Optional — hilft uns, deine Anfrage an das richtige Team weiterzuleiten.",
+    "subjectHint": "Optional - hilft uns, deine Anfrage an das richtige Team weiterzuleiten.",
     "subjectGeneral": "Allgemeine Anfrage"
   },
   "login": {
@@ -515,7 +515,7 @@
     "privacy": "Datenschutzerklärung",
     "welcomeBackTitle": "Willkommen zurück",
     "loginSubtitle": "Melde dich an, um deine Lernreise fortzusetzen.",
-    "heroCaption": "Premium-Nachhilfe, digitale Materialien und strukturiertes Lernen — alles an einem Ort.",
+    "heroCaption": "Premium-Nachhilfe, digitale Materialien und strukturiertes Lernen - alles an einem Ort.",
     "heroHeadline": "DEIN LERNERFOLG. UNSER ZIEL.",
     "heroTagline": "Lerne smarter. Erreiche mehr.",
     "heroDesc": "Greife auf Nachhilfe, Lernmaterialien, Lernvideos und Prüfungsvorbereitung zu - alles an einem Ort.",
@@ -560,7 +560,7 @@
     "verifyCodeButton": "E-Mail bestätigen",
     "emailNotVerified": "Bitte bestätige zuerst deine E-Mail. Gib den 6-stelligen Code ein oder fordere einen neuen an.",
     "resendVerification": "Neuen Code senden",
-    "resendVerificationSent": "Neuer Code gesendet — bitte Postfach prüfen.",
+    "resendVerificationSent": "Neuer Code gesendet - bitte Postfach prüfen.",
     "resendVerificationFailed": "Senden fehlgeschlagen. Bitte in ein paar Minuten erneut versuchen.",
     "accountCreatedSignIn": "Konto erstellt! Melde dich an, um fortzufahren.",
     "accountCreatedTitle": "Konto erstellt",
@@ -576,7 +576,7 @@
   },
   "forgotPasswordPage": {
     "title": "Passwort zurücksetzen",
-    "subtitle": "Gib deine E-Mail ein — wir senden dir einen sicheren Link.",
+    "subtitle": "Gib deine E-Mail ein - wir senden dir einen sicheren Link.",
     "submit": "Link senden",
     "sendFailed": "E-Mail konnte nicht gesendet werden.",
     "successTitle": "E-Mail gesendet",
@@ -594,7 +594,7 @@
     "resendCode": "Code erneut senden",
     "resending": "Wird gesendet…",
     "resendIn": "Erneut senden in {{seconds}}s",
-    "resendSuccess": "Neuer Code gesendet — bitte Posteingang und Spam prüfen.",
+    "resendSuccess": "Neuer Code gesendet - bitte Posteingang und Spam prüfen.",
     "resendFailed": "Senden fehlgeschlagen. Bitte warten und erneut versuchen.",
     "sendFailed": "Bestätigungscode konnte nicht gesendet werden. Bitte erneut versuchen.",
     "invalidCode": "Ungültiger oder abgelaufener Code. Bitte erneut versuchen.",
@@ -644,7 +644,7 @@
     "libraryGate": {
       "materialsCount": "500+",
       "materialsLabel": "Lernmaterialien",
-      "title": "500+ Lernmaterialien — mit Mitgliedschaft freigeschaltet",
+      "title": "500+ Lernmaterialien - mit Mitgliedschaft freigeschaltet",
       "subtitle": "Die vollständige Lernbibliothek steht registrierten Mitgliedern zur Verfügung. Melde dich an oder wähle ein Paket, um alle Inhalte zu nutzen.",
       "loginCta": "Anmelden",
       "upgradeCta": "Mitgliedschaft freischalten",
@@ -795,7 +795,7 @@
       "faqs": [
         {
           "question": "Kann ich jederzeit kündigen?",
-          "answer": "Ja — alle Tarife sind monatlich kündbar."
+          "answer": "Ja - alle Tarife sind monatlich kündbar."
         },
         {
           "question": "Welche Zahlungsmethoden gibt es?",
@@ -815,10 +815,10 @@
         },
         {
           "question": "Kann ich den Tarif wechseln?",
-          "answer": "Ja — upgrade oder downgrade jederzeit in deinem Dashboard."
+          "answer": "Ja - upgrade oder downgrade jederzeit in deinem Dashboard."
         }
       ],
-      "supportPrompt": "Support — unser Team hilft dir gerne.",
+      "supportPrompt": "Support - unser Team hilft dir gerne.",
       "contactCta": "Kontakt",
       "consultationCta": "Kostenloses Erstgespräch vereinbaren",
       "unlockCta": "Upgrade oder Zugang sichern"
@@ -899,7 +899,7 @@
     "subtitle": "Wähle das passende Paket für dich",
     "badge": "Premium-Tarife",
     "heroTitle": "Wähle deinen perfekten Tarif",
-    "heroSubtitle": "Ob du nur Ressourcen brauchst oder volle 1:1-Betreuung — wir haben den passenden Tarif für dich.",
+    "heroSubtitle": "Ob du nur Ressourcen brauchst oder volle 1:1-Betreuung - wir haben den passenden Tarif für dich.",
     "monthly": "Monatlich",
     "yearly": "Jährlich",
     "yearlyDiscount": "(2 Monate gratis)",
@@ -1088,7 +1088,7 @@
       }
     ],
     "processTitle": "So läuft deine Beratung ab",
-    "processSubtitle": "Ein einfacher, strukturierter Ablauf — für Klarheit, nicht für Verkaufsgespräche.",
+    "processSubtitle": "Ein einfacher, strukturierter Ablauf - für Klarheit, nicht für Verkaufsgespräche.",
     "steps": [
       {
         "title": "Deine Situation schildern",
@@ -1100,7 +1100,7 @@
       },
       {
         "title": "Lernplan erhalten",
-        "description": "Wir empfehlen das passende Format — 1:1, Gruppe oder Prüfungsvorbereitung — mit klaren nächsten Schritten."
+        "description": "Wir empfehlen das passende Format - 1:1, Gruppe oder Prüfungsvorbereitung - mit klaren nächsten Schritten."
       },
       {
         "title": "Starten, wenn du bereit bist",
@@ -1108,7 +1108,7 @@
       }
     ],
     "benefitsTitle": "Das nimmst du aus dem Gespräch mit",
-    "benefitsSubtitle": "Jede Beratung zielt auf Ergebnisse — nicht auf allgemeine Ratschläge.",
+    "benefitsSubtitle": "Jede Beratung zielt auf Ergebnisse - nicht auf allgemeine Ratschläge.",
     "benefits": [
       {
         "title": "Individuelle Einschätzung",
@@ -1151,7 +1151,7 @@
       }
     ],
     "formTitle": "Kostenlose Beratung anfragen",
-    "formSubtitle": "Fülle das Formular aus — unser Team meldet sich zur Terminvereinbarung.",
+    "formSubtitle": "Fülle das Formular aus - unser Team meldet sich zur Terminvereinbarung.",
     "responseTime": "Antwortzeit: < 24h",
     "validationRequired": "Bitte fülle alle Felder aus.",
     "firstName": "Vorname",
@@ -1193,7 +1193,7 @@
     "submit": "Beratung anfragen",
     "submitting": "Wird gesendet…",
     "successTitle": "Anfrage erhalten!",
-    "successMessage": "Danke — wir melden uns in Kürze zur Terminvereinbarung.",
+    "successMessage": "Danke - wir melden uns in Kürze zur Terminvereinbarung.",
     "faqTitle": "Häufig gestellte Fragen",
     "faqs": [
       {
@@ -1202,11 +1202,11 @@
       },
       {
         "question": "Wie lange dauert das Gespräch?",
-        "answer": "In der Regel etwa 30 Minuten — genug, um deine Ziele zu verstehen und einen Weg zu empfehlen."
+        "answer": "In der Regel etwa 30 Minuten - genug, um deine Ziele zu verstehen und einen Weg zu empfehlen."
       },
       {
         "question": "Online oder vor Ort?",
-        "answer": "Primär online per Videocall — flexibel von überall. Vor-Ort-Termine je nach Standort möglich."
+        "answer": "Primär online per Videocall - flexibel von überall. Vor-Ort-Termine je nach Standort möglich."
       },
       {
         "question": "Müssen Eltern dabei sein?",
@@ -1218,7 +1218,7 @@
       }
     ],
     "ctaTitle": "Bereit für den nächsten Schritt?",
-    "ctaDesc": "Entdecke Programme und Preise — oder sprich zuerst mit uns, ganz wie es dir passt.",
+    "ctaDesc": "Entdecke Programme und Preise - oder sprich zuerst mit uns, ganz wie es dir passt.",
     "ctaPrograms": "Programme ansehen",
     "ctaPricing": "Preise ansehen"
   },
@@ -1265,10 +1265,10 @@
           "Wir verarbeiten personenbezogene Daten auf folgenden Rechtsgrundlagen der DSGVO:"
         ],
         "bullets": [
-          "Vertragserfüllung — zur Erbringung der von dir gebuchten Leistungen",
-          "Berechtigte Interessen — zur Absicherung der Plattform, Betrugsprävention und Serviceverbesserung",
-          "Einwilligung — für optionale Funktionen wie Marketing-E-Mails oder nicht notwendige Cookies",
-          "Rechtliche Verpflichtung — wenn wir Daten aufbewahren oder offenlegen müssen"
+          "Vertragserfüllung - zur Erbringung der von dir gebuchten Leistungen",
+          "Berechtigte Interessen - zur Absicherung der Plattform, Betrugsprävention und Serviceverbesserung",
+          "Einwilligung - für optionale Funktionen wie Marketing-E-Mails oder nicht notwendige Cookies",
+          "Rechtliche Verpflichtung - wenn wir Daten aufbewahren oder offenlegen müssen"
         ]
       },
       {
@@ -1298,20 +1298,20 @@
           "Nach der DSGVO hast du folgende Rechte in Bezug auf deine personenbezogenen Daten:"
         ],
         "bullets": [
-          "Auskunft — eine Kopie der über dich gespeicherten Daten anfordern",
-          "Berichtigung — unrichtige oder unvollständige Daten korrigieren lassen",
-          "Löschung — Löschung deiner Daten verlangen, soweit anwendbar",
-          "Einschränkung — die Verarbeitung in bestimmten Fällen einschränken lassen",
-          "Datenübertragbarkeit — deine Daten in einem strukturierten Format erhalten",
-          "Widerspruch — gegen Verarbeitung auf Basis berechtigter Interessen widersprechen",
-          "Widerruf der Einwilligung — soweit die Verarbeitung auf Einwilligung beruht",
+          "Auskunft - eine Kopie der über dich gespeicherten Daten anfordern",
+          "Berichtigung - unrichtige oder unvollständige Daten korrigieren lassen",
+          "Löschung - Löschung deiner Daten verlangen, soweit anwendbar",
+          "Einschränkung - die Verarbeitung in bestimmten Fällen einschränken lassen",
+          "Datenübertragbarkeit - deine Daten in einem strukturierten Format erhalten",
+          "Widerspruch - gegen Verarbeitung auf Basis berechtigter Interessen widersprechen",
+          "Widerruf der Einwilligung - soweit die Verarbeitung auf Einwilligung beruht",
           "Beschwerde bei einer Aufsichtsbehörde"
         ]
       },
       {
         "title": "Sicherheit",
         "paragraphs": [
-          "Wir setzen angemessene technische und organisatorische Maßnahmen ein, um deine Daten vor unbefugtem Zugriff, Verlust oder Missbrauch zu schützen — u. a. verschlüsselte Verbindungen (HTTPS), Zugriffskontrollen und sichere Authentifizierung.",
+          "Wir setzen angemessene technische und organisatorische Maßnahmen ein, um deine Daten vor unbefugtem Zugriff, Verlust oder Missbrauch zu schützen - u. a. verschlüsselte Verbindungen (HTTPS), Zugriffskontrollen und sichere Authentifizierung.",
           "Eine vollständige Sicherheit bei der Übertragung im Internet ist nicht möglich. Bitte verwende ein starkes Passwort und behandle deine Zugangsdaten vertraulich."
         ]
       },
@@ -1426,13 +1426,13 @@
         "paragraphs": [
           "Beratungen, Nachhilfestunden und Programm-Abonnements werden über unsere Website oder nach Vereinbarung gebucht. Es gelten die zum Buchungszeitpunkt angezeigten Preise, sofern nicht schriftlich anders vereinbart.",
           "Zahlungen werden sicher über unseren Zahlungsdienstleister abgewickelt. Mit dem Kauf autorisierst du die Belastung für die gewählte Leistung oder Abo-Periode.",
-          "Abonnements verlängern sich automatisch, sofern sie nicht vor dem Verlängerungsdatum gekündigt werden — wie im Checkout beschrieben."
+          "Abonnements verlängern sich automatisch, sofern sie nicht vor dem Verlängerungsdatum gekündigt werden - wie im Checkout beschrieben."
         ]
       },
       {
         "title": "Stornierung und Erstattungen",
         "paragraphs": [
-          "Eine kostenlose Beratung kannst du jederzeit vor dem Termin stornieren — per Kontakt oder über die Stornierungsoption in der Bestätigung.",
+          "Eine kostenlose Beratung kannst du jederzeit vor dem Termin stornieren - per Kontakt oder über die Stornierungsoption in der Bestätigung.",
           "Für kostenpflichtige Programme und Abos gelten die jeweils beim Kauf genannten Kündigungs- und Erstattungsbedingungen. Gebühren für bereits durchgeführte Stunden sind grundsätzlich nicht erstattungsfähig.",
           "NextGrades kann Termine bei Ausfall der Lehrkraft oder technischen Problemen absagen oder verschieben. In diesem Fall bieten wir Ersatztermine oder angemessene Gutschriften an."
         ]
@@ -1453,7 +1453,7 @@
       {
         "title": "Geistiges Eigentum",
         "paragraphs": [
-          "Alle Inhalte auf der NextGrades-Plattform — Texte, Videos, Quizze, Marken und Software — sind urheberrechtlich und durch andere Schutzrechte geschützt.",
+          "Alle Inhalte auf der NextGrades-Plattform - Texte, Videos, Quizze, Marken und Software - sind urheberrechtlich und durch andere Schutzrechte geschützt.",
           "Du erhältst eine beschränkte, nicht übertragbare Lizenz zur Nutzung der Materialien für persönliche Lernzwecke. Eine Vervielfältigung, Weitergabe oder kommerzielle Nutzung ohne schriftliche Zustimmung ist untersagt."
         ]
       },
@@ -1481,7 +1481,7 @@
         "title": "Anwendbares Recht und Gerichtsstand",
         "paragraphs": [
           "Es gilt österreichisches Recht unter Ausschluss des UN-Kaufrechts (CISG).",
-          "Bist du VerbraucherIn in der EU, können zwingende Verbraucherschutzvorschriften deines Wohnsitzlandes gelten. Gerichtsstand ist — soweit gesetzlich zulässig — Österreich."
+          "Bist du VerbraucherIn in der EU, können zwingende Verbraucherschutzvorschriften deines Wohnsitzlandes gelten. Gerichtsstand ist - soweit gesetzlich zulässig - Österreich."
         ]
       }
     ],
@@ -1509,7 +1509,7 @@
       },
       {
         "title": "Moderne Plattform",
-        "description": "Nutze unsere digitalen Tools, Materialien und Terminplanung — ohne Admin-Chaos."
+        "description": "Nutze unsere digitalen Tools, Materialien und Terminplanung - ohne Admin-Chaos."
       },
       {
         "title": "Starkes Team",
@@ -1517,7 +1517,7 @@
       },
       {
         "title": "Flexible Arbeit",
-        "description": "Online-Nachhilfe mit Zeiten, die zu deinem Leben passen — Teilzeit oder Vollzeit."
+        "description": "Online-Nachhilfe mit Zeiten, die zu deinem Leben passen - Teilzeit oder Vollzeit."
       }
     ],
     "stats": [
@@ -1540,7 +1540,7 @@
     ],
     "positionsEyebrow": "Offene Stellen",
     "positionsTitle": "Aktuelle Möglichkeiten",
-    "positionsDesc": "Wir suchen engagierte TutorInnen. Dein Fach ist nicht dabei? Sende eine Initiativbewerbung — wir wachsen stetig.",
+    "positionsDesc": "Wir suchen engagierte TutorInnen. Dein Fach ist nicht dabei? Sende eine Initiativbewerbung - wir wachsen stetig.",
     "processEyebrow": "So funktioniert's",
     "processTitle": "Dein Weg zu uns",
     "stepLabel": "Schritt {{number}}",
@@ -1613,7 +1613,7 @@
       },
       {
         "question": "Wie flexibel ist die Arbeit?",
-        "answer": "Du bestimmst weitgehend deine Verfügbarkeit. Die meisten Stunden finden online statt — Teilzeit oder freiberuflich ist möglich."
+        "answer": "Du bestimmst weitgehend deine Verfügbarkeit. Die meisten Stunden finden online statt - Teilzeit oder freiberuflich ist möglich."
       },
       {
         "question": "Wie läuft das Onboarding ab?",
@@ -1641,7 +1641,7 @@
     "openSettings": "Cookie-Einstellungen",
     "banner": {
       "title": "Deine Privatsphäre ist uns wichtig",
-      "description": "Wir verwenden Cookies, um NextGrades sicher zu betreiben, deine Einstellungen zu speichern und — nur mit deiner Einwilligung — die Nutzung der Website zu verstehen.",
+      "description": "Wir verwenden Cookies, um NextGrades sicher zu betreiben, deine Einstellungen zu speichern und - nur mit deiner Einwilligung - die Nutzung der Website zu verstehen.",
       "learnMore": "Mehr erfahren",
       "acceptAll": "Alle akzeptieren",
       "reject": "Nur notwendige",
@@ -1720,14 +1720,14 @@
       {
         "title": "Was sind Cookies?",
         "paragraphs": [
-          "Cookies sind kleine Textdateien, die beim Besuch einer Website auf deinem Gerät gespeichert werden. Sie helfen, dich angemeldet zu halten, Einstellungen zu speichern und — mit deiner Zustimmung — die Nutzung zu analysieren.",
+          "Cookies sind kleine Textdateien, die beim Besuch einer Website auf deinem Gerät gespeichert werden. Sie helfen, dich angemeldet zu halten, Einstellungen zu speichern und - mit deiner Zustimmung - die Nutzung zu analysieren.",
           "Wir nutzen auch localStorage für Design- und Spracheinstellungen."
         ]
       },
       {
         "title": "Warum NextGrades Cookies nutzt",
         "paragraphs": [
-          "Cookies ermöglichen Anmeldung, Sicherheit, die Lernplattform, Sprache und Design — sowie optional Statistik und Marketing."
+          "Cookies ermöglichen Anmeldung, Sicherheit, die Lernplattform, Sprache und Design - sowie optional Statistik und Marketing."
         ]
       },
       {
@@ -1736,10 +1736,10 @@
           "Wir unterscheiden vier Kategorien:"
         ],
         "bullets": [
-          "Notwendig — Sicherheit, Anmeldung, Kernfunktionen (immer aktiv)",
-          "Analyse — optional; Verbesserung der Website (z. B. Google Analytics)",
-          "Marketing — optional; Werbung und Conversion-Tracking",
-          "Funktional — optional; Einstellungen über die Sitzung hinaus"
+          "Notwendig - Sicherheit, Anmeldung, Kernfunktionen (immer aktiv)",
+          "Analyse - optional; Verbesserung der Website (z. B. Google Analytics)",
+          "Marketing - optional; Werbung und Conversion-Tracking",
+          "Funktional - optional; Einstellungen über die Sitzung hinaus"
         ]
       },
       {

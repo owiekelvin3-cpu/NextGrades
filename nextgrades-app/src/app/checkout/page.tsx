@@ -142,7 +142,7 @@ function CheckoutContent() {
               </p>
             )}
             <div className="mb-6 text-4xl font-bold text-foreground">
-              {plan?.priceLabel ?? `€${price ?? "—"}`}
+              {plan?.priceLabel ?? `€${price ?? "-"}`}
               {!plan?.priceLabel && (
                 <span className="ml-2 text-lg font-normal text-gray-500">
                   /{billing === "yearly" ? t("pricing.perYear") : t("pricing.perMonth")}

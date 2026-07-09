@@ -108,7 +108,7 @@ export async function ensureAllStorageBuckets(admin?: SupabaseClient): Promise<S
   };
 }
 
-/** Teacher publish + avatar uploads — resources + thumbnails only. */
+/** Teacher publish + avatar uploads - resources + thumbnails only. */
 export async function ensureTeacherUploadBuckets(admin?: SupabaseClient): Promise<StorageSetupResult> {
   const full = await ensureAllStorageBuckets(admin);
   return {

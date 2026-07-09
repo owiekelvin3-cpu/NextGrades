@@ -41,7 +41,7 @@ export function CmsFieldEditor({
         <div className="min-w-0 flex-1">
           <p className={cn("font-semibold", textPrimary)}>{displayName}</p>
           {field.field_type === "image" && (
-            <p className={cn("mt-0.5 text-xs", textMuted)}>Image — same for English and German</p>
+            <p className={cn("mt-0.5 text-xs", textMuted)}>Image - same for English and German</p>
           )}
         </div>
         <div className="flex flex-wrap items-center gap-1.5">

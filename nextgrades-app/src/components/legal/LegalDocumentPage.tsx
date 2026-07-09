@@ -203,7 +203,7 @@ export function LegalDocumentPage({ namespace }: LegalDocumentPageProps) {
           </div>
         </section>
 
-        {/* Highlights strip — Terms */}
+        {/* Highlights strip - Terms */}
         {highlights.length > 0 ? (
           <section className="border-b border-border-default bg-surface-muted">
             <div className={cn(section.container, "py-8 md:py-10")}>
@@ -228,7 +228,7 @@ export function LegalDocumentPage({ namespace }: LegalDocumentPageProps) {
         <section className={cn(section.pyCompact, "bg-background")}>
           <div className={cn(section.container)}>
             <div className="lg:grid lg:grid-cols-[minmax(0,15rem)_minmax(0,1fr)] lg:gap-12 xl:grid-cols-[minmax(0,17rem)_minmax(0,1fr)] xl:gap-16">
-              {/* Sticky TOC — desktop */}
+              {/* Sticky TOC - desktop */}
               {tocItems.length > 0 ? (
                 <aside className="mb-10 hidden lg:block">
                   <div className="sticky top-28 rounded-2xl border border-border-default bg-surface-elevated p-5 shadow-[var(--card-shadow)]">

@@ -11,7 +11,7 @@ export default function TeacherPublishPage() {
     <TeacherDashboardLayout
       title={t("teacherDashboard.nav.publish", { defaultValue: "Publish new" })}
       description={t("teacherDashboard.publishPageDesc", {
-        defaultValue: "Upload worksheets, videos, or guides — published items appear on the public Resources page.",
+        defaultValue: "Upload worksheets, videos, or guides - published items appear on the public Resources page.",
       })}
     >
       <div className="mx-auto max-w-4xl">

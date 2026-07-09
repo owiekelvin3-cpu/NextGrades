@@ -112,7 +112,7 @@ export function ContactPageContent() {
     setIsSubmitting(true);
     try {
       const subjectLine = formData.subject
-        ? `${t("contact.formSubject")} — ${formData.subject}`
+        ? `${t("contact.formSubject")} - ${formData.subject}`
         : t("contact.formSubject");
       const messageBody = [
         formData.message.trim(),
