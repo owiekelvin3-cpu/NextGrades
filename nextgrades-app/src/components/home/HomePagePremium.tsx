@@ -131,11 +131,11 @@ export function HomePagePremium() {
                 features={program.features}
                 image={programCardImages[index] ?? programCardImages[0]}
                 fallbackImage={PROGRAM_CARD_IMAGES[index] ?? PROGRAM_CARD_IMAGES[0]}
-                href="/programs"
+                href="/pricing"
                 price={program.price}
                 badge={index === 2 ? t("home.mostPopular") : undefined}
                 featured={index === 2}
-                ctaLabel={t("home.learnMore")}
+                ctaLabel={t("home.programsSection.cta")}
               />
             ))}
           </div>

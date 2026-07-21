@@ -208,7 +208,7 @@ export default function ProgramsPage() {
                         ))}
                       </ul>
                       <Button variant={featured ? "gold" : "dark"} size="md" className="w-full rounded-lg" href="/pricing">
-                        {t("programsPage.learnMore")} <ArrowRight className="ml-2 h-4 w-4" />
+                        {t("programsPage.ctaButton")} <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </div>
                   </Card>

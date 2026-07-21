@@ -49,7 +49,7 @@ export function useResourcesCatalog(initial?: FetchParams) {
       .then((r) => r.json())
       .then((data) => {
         if (data?.subjects) setSubjects(data.subjects);
-        if (data?.classes) setClasses(data.classes);
+        if (data?.classes) setClasses((data.classes as CatalogClass[]).filter((c) => c.level >= 1 && c.level <= 9));
       });
   }, []);
 

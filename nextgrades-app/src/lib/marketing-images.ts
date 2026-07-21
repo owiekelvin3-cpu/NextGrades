@@ -130,7 +130,7 @@ export const SUBJECT_ONLINE_IMAGES = {
   business: `${SUBJECT_IMG_DIR}/subject-business.png`,
   "business-admin": `${SUBJECT_IMG_DIR}/subject-business.png`,
   "computer-science": `${SUBJECT_IMG_DIR}/subject-informatik.png`,
-  "technical-drawing": BRANDED.studyDesk,
+  "technical-drawing": `${SUBJECT_IMG_DIR}/subject-technical-drawing.png`,
 } as const;
 
 export const SUBJECT_IMAGE_BY_ID: Record<string, string> = {
