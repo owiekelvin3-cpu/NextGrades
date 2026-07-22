@@ -97,7 +97,7 @@ export function CmsSeoPage() {
               type="button"
               onClick={() => setActivePage(p.id)}
               className={`rounded-xl px-4 py-2 text-sm font-medium ${
-                activePage === p.id ? "bg-[#D4AF37] text-foreground" : "bg-white border border-gray-200 text-text-muted"
+                activePage === p.id ? "bg-[var(--brand-gold)] text-[var(--brand-navy)]" : "border border-border-default bg-surface-elevated text-text-muted"
               }`}
             >
               {p.label}

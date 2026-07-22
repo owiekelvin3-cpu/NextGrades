@@ -141,7 +141,7 @@ export function CmsMediaPage() {
               onClick={() => setFilter(f)}
               className={cn(
                 "rounded-xl px-4 py-2 text-sm font-medium capitalize",
-                filter === f ? "bg-[#0D1B2A] text-white" : "bg-white text-text-muted border border-gray-200"
+                filter === f ? "bg-[var(--brand-navy)] text-white" : "border border-border-default bg-surface-elevated text-text-muted"
               )}
             >
               {f}
