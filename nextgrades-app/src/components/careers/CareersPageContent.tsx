@@ -128,7 +128,8 @@ export function CareersPageContent() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name: `${form.firstName} ${form.lastName}`.trim(),
+          firstName: form.firstName.trim(),
+          lastName: form.lastName.trim(),
           email: form.email,
           phone: form.phone,
           subject: t("careersPage.applicationSubject"),

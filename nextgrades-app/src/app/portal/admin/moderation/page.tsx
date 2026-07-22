@@ -51,7 +51,7 @@ export default function AdminModerationPage() {
     setActing(id);
     try {
       const res = await fetch(`/api/admin/moderation/${id}`, {
-        method: "PATCH",
+        method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ moderation_status: status }),
       });

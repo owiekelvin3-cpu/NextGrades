@@ -90,6 +90,10 @@ function AdminUsersPageContent() {
         sort: sortBy,
       });
       const response = await fetch(`/api/admin/users?${params}`);
+      if (!response.ok) {
+        const err = await response.json().catch(() => ({}));
+        throw new Error(err.error || `HTTP ${response.status}`);
+      }
       const data = await response.json();
       setUsers(data.users || []);
       setTotalPages(data.pagination?.totalPages || 1);

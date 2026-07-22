@@ -14,15 +14,31 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
-    const firstName = String(body.firstName || body.name || "").trim();
-    const lastName = String(body.lastName || "").trim();
+    let firstName = String(body.firstName || "").trim();
+    let lastName = String(body.lastName || "").trim();
+    const combinedName = String(body.name || "").trim();
     const email = String(body.email || "").trim();
     const message = String(body.message || "").trim();
     const phone = String(body.phone || "").trim();
-    const fullName = [firstName, lastName].filter(Boolean).join(" ").trim();
     const subject = body.subject ? String(body.subject).trim() : "Neue Kontaktanfrage";
+    const isNewsletterSignup = /newsletter/i.test(subject);
 
-    if (!firstName || !lastName || !email || !phone || !message) {
+    if (!firstName && combinedName) {
+      const parts = combinedName.split(/\s+/).filter(Boolean);
+      firstName = parts[0] ?? "";
+      lastName = parts.slice(1).join(" ") || parts[0] || "";
+    }
+
+    const fullName = [firstName, lastName].filter(Boolean).join(" ").trim();
+
+    if (!firstName || !email || !message) {
+      return NextResponse.json(
+        { error: "Vorname, E-Mail und Nachricht sind Pflichtfelder." },
+        { status: 400 }
+      );
+    }
+
+    if (!isNewsletterSignup && (!lastName || !phone)) {
       return NextResponse.json(
         { error: "Vorname, Nachname, E-Mail, Telefonnummer und Nachricht sind Pflichtfelder." },
         { status: 400 }

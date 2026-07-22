@@ -215,7 +215,7 @@ export function PublishContentForm({ resourceId, initialData }: PublishContentFo
       if (thumbnail) fd.append("thumbnail", thumbnail);
       if (resourceId) fd.append("resource_id", resourceId);
 
-      const result = await xhrUploadJson<{ error?: string }>(
+      const result = await xhrUploadJson<{ error?: string; moderation_status?: string; status?: string }>(
         "/api/teacher/publish",
         fd,
         setUploadProgress
@@ -226,7 +226,15 @@ export function PublishContentForm({ resourceId, initialData }: PublishContentFo
         return;
       }
 
-      success(form.status === "published" ? "Resource published! It is now live on the Resources page." : "Draft saved successfully.");
+      const submittedForReview =
+        form.status === "published" && result.data?.moderation_status === "pending";
+      success(
+        submittedForReview
+          ? "Submitted for review. An admin will approve it before it goes live."
+          : form.status === "published"
+            ? "Resource published! It is now live on the Resources page."
+            : "Draft saved successfully."
+      );
       router.push("/dashboard/teacher/content");
     } catch {
       toastError("Upload failed. Please try again.");

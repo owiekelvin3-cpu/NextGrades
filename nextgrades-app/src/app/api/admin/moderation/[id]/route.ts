@@ -7,6 +7,21 @@ export async function PUT(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  return moderateResource(request, params);
+}
+
+// PATCH alias for older admin UI clients
+export async function PATCH(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  return moderateResource(request, params);
+}
+
+async function moderateResource(
+  request: Request,
+  params: Promise<{ id: string }>
+) {
   try {
     const { id } = await params;
     const supabase = await createClient();
