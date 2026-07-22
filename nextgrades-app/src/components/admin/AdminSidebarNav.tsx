@@ -76,16 +76,16 @@ export function AdminSidebarNav({ onNavigate, onLogout }: Props) {
                       className={cn(
                         "group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200",
                         active
-                          ? "bg-[var(--brand-gold-muted)] text-[var(--brand-gold)] shadow-[inset_0_0_0_1px_rgba(212,175,55,0.18)]"
-                          : "text-[var(--sidebar-text)] hover:bg-[var(--sidebar-surface)] hover:text-[var(--sidebar-text-active)]"
+                          ? "bg-[var(--brand-gold)]/12 text-[var(--brand-gold-light)] shadow-[inset_3px_0_0_0_var(--brand-gold)]"
+                          : "text-[var(--sidebar-text)] hover:bg-white/[0.06] hover:text-[var(--sidebar-text-active)]"
                       )}
                     >
                       <span
                         className={cn(
                           "flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition-colors",
                           active
-                            ? "bg-[var(--brand-gold)]/15 text-[var(--brand-gold)]"
-                            : "bg-[var(--sidebar-surface)] text-[var(--sidebar-text)] group-hover:text-[var(--sidebar-text-active)]"
+                            ? "bg-[var(--brand-gold)]/20 text-[var(--brand-gold-light)]"
+                            : "bg-white/[0.05] text-[var(--sidebar-text)] group-hover:text-[var(--sidebar-text-active)]"
                         )}
                       >
                         <Icon className="h-4 w-4" aria-hidden />
@@ -106,8 +106,8 @@ export function AdminSidebarNav({ onNavigate, onLogout }: Props) {
       </nav>
 
       <div className="mt-auto shrink-0 border-t border-[var(--sidebar-border)]/80 pt-4">
-        <div className="mb-2 flex items-center gap-3 rounded-xl border border-[var(--sidebar-border)]/60 bg-[var(--sidebar-surface)] px-3 py-2.5">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[var(--brand-gold-muted)] to-[var(--brand-gold)]/20 text-sm font-bold text-[var(--brand-gold)] ring-1 ring-[var(--brand-gold)]/20">
+        <div className="mb-2 flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2.5">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[var(--brand-gold)] to-[var(--brand-gold-hover)] text-sm font-bold text-[var(--brand-navy)] shadow-sm">
             {initial}
           </div>
           <div className="min-w-0 flex-1">

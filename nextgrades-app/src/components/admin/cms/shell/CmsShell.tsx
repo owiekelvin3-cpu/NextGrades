@@ -4,8 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Sidebar } from "@/components/dashboard/Sidebar";
-import { MobileBottomNav, MOBILE_BOTTOM_NAV_PADDING } from "@/components/mobile/MobileBottomNav";
 import { CmsEditorProvider, useCmsEditor } from "@/context/CmsEditorContext";
 import {
   CMS_PAGE_NAV_GROUPS,
@@ -14,8 +12,6 @@ import {
   CMS_HUB_HREF,
 } from "@/lib/cms/cms-nav";
 import { ADMIN_PORTAL_HOME } from "@/lib/admin/portal-paths";
-import { useSidebar } from "@/context/SidebarContext";
-import { appShell } from "@/lib/theme/shell";
 import { cn } from "@/lib/utils";
 import { ChevronLeft, Globe, Loader2, Menu, Sparkles, X } from "lucide-react";
 import { Button } from "@/components/ui/Button";
@@ -241,7 +237,6 @@ function PageEditorGate({ children, pageId }: { children: React.ReactNode; pageI
 function CmsShellInner({ children }: { children: React.ReactNode }) {
   const { t } = useTranslation();
   const pathname = usePathname();
-  const { width: sidebarWidth } = useSidebar();
   const pageEditor = isPageEditorPath(pathname);
   const pageMatch = pathname?.match(/\/cms\/pages\/([^/]+)/);
   const activePageId = pageMatch?.[1] ?? null;
@@ -261,36 +256,30 @@ function CmsShellInner({ children }: { children: React.ReactNode }) {
   }, [mobileNavOpen]);
 
   return (
-    <div className={cn(appShell.dashboardShell, "bg-surface-muted")} style={{ ["--sidebar-width" as string]: `${sidebarWidth}px` }}>
-      <Sidebar role="admin" />
+    <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden lg:flex-row">
+      <CmsShellSidebar
+        pathname={pathname}
+        mobileOpen={mobileNavOpen}
+        onMobileClose={() => setMobileNavOpen(false)}
+      />
 
-      <div className={cn("flex min-h-screen flex-1 md:ml-[var(--sidebar-width)]", MOBILE_BOTTOM_NAV_PADDING)}>
-        <CmsShellSidebar
-          pathname={pathname}
-          mobileOpen={mobileNavOpen}
-          onMobileClose={() => setMobileNavOpen(false)}
-        />
-
-        <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
-          <div className="flex items-center gap-3 border-b border-border-default bg-surface-elevated px-4 py-3 lg:hidden">
-            <Button variant="outline" size="sm" onClick={() => setMobileNavOpen(true)}>
-              <Menu className="mr-2 h-4 w-4" />
-              {t("cmsEditor.titleShort", { defaultValue: "Content" })}
-            </Button>
-            <Link href={ADMIN_PORTAL_HOME} className="text-sm text-text-muted hover:text-[var(--brand-gold)]">
-              {t("cmsEditor.backToAdmin", { defaultValue: "Back to admin" })}
-            </Link>
-          </div>
-
-          {pageEditor ? (
-            <PageEditorGate pageId={activePageId}>{children}</PageEditorGate>
-          ) : (
-            <div className="flex-1 overflow-auto">{children}</div>
-          )}
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden bg-surface-elevated">
+        <div className="flex items-center gap-3 border-b border-border-default bg-surface-elevated px-4 py-3 lg:hidden">
+          <Button variant="outline" size="sm" onClick={() => setMobileNavOpen(true)}>
+            <Menu className="mr-2 h-4 w-4" />
+            {t("cmsEditor.titleShort", { defaultValue: "Content" })}
+          </Button>
+          <Link href={ADMIN_PORTAL_HOME} className="text-sm text-text-muted hover:text-[var(--brand-gold)]">
+            {t("cmsEditor.backToAdmin", { defaultValue: "Back to admin" })}
+          </Link>
         </div>
-      </div>
 
-      <MobileBottomNav role="admin" />
+        {pageEditor ? (
+          <PageEditorGate pageId={activePageId}>{children}</PageEditorGate>
+        ) : (
+          <div className="flex-1 overflow-auto p-4 sm:p-6">{children}</div>
+        )}
+      </div>
     </div>
   );
 }

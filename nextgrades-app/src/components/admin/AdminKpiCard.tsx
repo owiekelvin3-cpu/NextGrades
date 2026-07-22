@@ -39,7 +39,7 @@ export function AdminKpiCard({
     trend?.direction === "up" ? ChevronUp : trend?.direction === "down" ? ChevronDown : null;
 
   return (
-    <Card hoverable={false} className={cn("p-5 sm:p-6", className)}>
+    <Card hoverable={false} className={cn("admin-panel admin-panel-accent p-5 sm:p-6", className)}>
       <div className="mb-4 flex items-start justify-between gap-3">
         <div
           className={cn(

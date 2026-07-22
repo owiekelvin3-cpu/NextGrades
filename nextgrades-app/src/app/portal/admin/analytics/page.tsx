@@ -1,13 +1,18 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { DashboardPage } from "@/components/dashboard/DashboardPage";
 import { AdminKpiCard, AdminKpiStrip } from "@/components/admin/AdminKpiCard";
-import { AdminAnalyticsCharts } from "@/components/admin/AdminAnalyticsCharts";
 import { fetchAdminStats } from "@/lib/dashboard/data";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Users, GraduationCap, TrendingUp, DollarSign } from "lucide-react";
 import { DashboardStatsSkeleton } from "@/components/ui/Skeleton";
+
+const AdminAnalyticsCharts = dynamic(
+  () => import("@/components/admin/AdminAnalyticsCharts").then((m) => ({ default: m.AdminAnalyticsCharts })),
+  { loading: () => <DashboardStatsSkeleton count={2} />, ssr: false }
+);
 
 export default function AdminAnalyticsPage() {
   const { t } = useTranslation();

@@ -26,7 +26,7 @@ export function AdminTopBar() {
                 <ChevronRight className="h-3.5 w-3.5 shrink-0 text-text-muted/60" aria-hidden />
               ) : null}
               {isLast ? (
-                <span className="truncate font-semibold text-foreground">{t(crumb.labelKey)}</span>
+                <span className="truncate font-semibold text-[var(--brand-navy)] dark:text-foreground">{t(crumb.labelKey)}</span>
               ) : (
                 <Link
                   href={crumb.href}
@@ -44,8 +44,8 @@ export function AdminTopBar() {
         <Link
           href="/portal/admin/users"
           className={cn(
-            "hidden min-w-0 flex-1 items-center gap-2 rounded-xl border border-border-default bg-surface-subtle/80 px-3 py-2 text-sm text-text-muted transition-colors sm:flex sm:max-w-xs lg:max-w-sm",
-            "hover:border-[var(--border-strong)] hover:bg-surface-elevated hover:text-foreground"
+            "hidden min-w-0 flex-1 items-center gap-2 rounded-lg border border-border-default bg-surface-muted px-3 py-2 text-sm text-text-muted transition-colors sm:flex sm:max-w-xs lg:max-w-sm",
+            "hover:border-[var(--brand-gold)]/40 hover:bg-surface-elevated hover:text-foreground"
           )}
         >
           <Search className="h-4 w-4 shrink-0" aria-hidden />

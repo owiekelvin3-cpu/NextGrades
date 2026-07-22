@@ -26,7 +26,7 @@ export function AdminActivityFeed({ activities, loading = false, limit = 10, cla
   const rows = activities.slice(0, limit);
 
   return (
-    <Card hoverable={false} className={cn("p-5 sm:p-6", className)}>
+    <Card hoverable={false} className={cn("admin-panel p-5 sm:p-6", className)}>
       <div className="mb-5 flex items-center justify-between gap-3">
         <div className="flex items-center gap-2">
           <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--brand-gold-muted)]">

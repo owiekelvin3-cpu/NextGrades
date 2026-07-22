@@ -487,18 +487,76 @@ html.theme-animate *::after {
   color: var(--sidebar-text-active);
 }
 
+/* Admin portal — crisp navy + gold (no dull cream/beige) */
+.admin-portal {
+  --background: #eef1f7;
+  --foreground: #0d1b2a;
+  --foreground-secondary: #1a2740;
+  --text-muted: #5c6b80;
+  --text-subtle: rgba(13, 27, 42, 0.48);
+
+  --surface-base: #eef1f7;
+  --surface-muted: #e4eaf2;
+  --surface-subtle: #d8e0eb;
+  --surface-elevated: #ffffff;
+  --surface-dashboard: #e8edf4;
+  --surface-inset: #dce3ee;
+
+  --border-default: rgba(13, 27, 42, 0.09);
+  --border-strong: rgba(212, 175, 55, 0.42);
+  --border-subtle: rgba(13, 27, 42, 0.05);
+
+  --card-background: #ffffff;
+  --card-border: rgba(13, 27, 42, 0.08);
+  --card-shadow: 0 1px 2px rgba(13, 27, 42, 0.04), 0 6px 24px rgba(13, 27, 42, 0.06);
+
+  --table-header: #f3f5f9;
+  --table-row-hover: rgba(212, 175, 55, 0.06);
+  --chart-text: #5c6b80;
+
+  --input-placeholder: rgba(92, 107, 128, 0.65);
+  --button-secondary-hover: #e8edf4;
+  --button-ghost-hover-bg: #e8edf4;
+  --ring-offset: #eef1f7;
+
+  --sidebar-text: rgba(255, 255, 255, 0.72);
+  --sidebar-text-active: #ffffff;
+}
+
+.dark .admin-portal {
+  --text-muted: rgba(229, 193, 88, 0.82);
+  --surface-dashboard: #0d1b2a;
+  --card-shadow: 0 1px 2px rgba(0, 0, 0, 0.32), 0 10px 36px rgba(0, 0, 0, 0.38);
+}
+
 /* Admin dashboard content canvas */
 .admin-dashboard-main {
   background-color: var(--surface-dashboard);
   background-image:
-    radial-gradient(ellipse 80% 50% at 100% -10%, rgba(212, 175, 55, 0.07), transparent 55%),
-    radial-gradient(ellipse 60% 40% at 0% 100%, rgba(13, 27, 42, 0.04), transparent 50%);
+    radial-gradient(ellipse 72% 48% at 100% -5%, rgba(212, 175, 55, 0.08), transparent 52%),
+    radial-gradient(ellipse 55% 38% at 0% 100%, rgba(13, 27, 42, 0.035), transparent 48%);
 }
 
-.dark .admin-dashboard-main {
+.dark .admin-portal .admin-dashboard-main {
   background-image:
-    radial-gradient(ellipse 80% 50% at 100% -10%, rgba(212, 175, 55, 0.08), transparent 55%),
-    radial-gradient(ellipse 60% 40% at 0% 100%, rgba(255, 255, 255, 0.03), transparent 50%);
+    radial-gradient(ellipse 72% 48% at 100% -5%, rgba(212, 175, 55, 0.11), transparent 52%),
+    radial-gradient(ellipse 55% 38% at 0% 100%, rgba(255, 255, 255, 0.025), transparent 48%);
+}
+
+.admin-portal .admin-panel {
+  border: 1px solid var(--card-border);
+  background: var(--card-background);
+  border-radius: 1rem;
+  box-shadow: var(--card-shadow);
+}
+
+.admin-portal .admin-panel-accent {
+  border-top: 3px solid var(--brand-gold);
+}
+
+/* Snappier panels — less animation overhead on large admin grids */
+.admin-portal :is(.rounded-2xl, .rounded-xl) {
+  transition-duration: 150ms;
 }
 
 /* Marketing site header — dark brand bar overrides nav tokens */

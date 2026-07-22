@@ -27,7 +27,7 @@ export function AdminQuickActions({ className, hrefs = PRIMARY_HREFS }: Props) {
   const items = ADMIN_QUICK_ACTIONS.filter((item) => hrefs.includes(item.href));
 
   return (
-    <Card hoverable={false} className={cn("p-5 sm:p-6", className)}>
+    <Card hoverable={false} className={cn("admin-panel p-5 sm:p-6", className)}>
       <h2 className="mb-1 text-lg font-bold text-foreground">{t("adminDashboard.quickActions")}</h2>
       <p className="mb-4 text-sm text-text-muted">{t("adminShell.quickActionsHint")}</p>
       <div className="flex flex-wrap gap-2">

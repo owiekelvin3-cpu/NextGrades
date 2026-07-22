@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { AdminTopBar } from "@/components/admin/AdminTopBar";
 import { MobileTopBar } from "@/components/mobile/MobileTopBar";
@@ -11,6 +12,8 @@ import { useSidebar } from "@/context/SidebarContext";
 /** Persistent admin shell - mounts once per portal session (sidebar + nav). */
 export function AdminPortalShell({ children }: { children: React.ReactNode }) {
   const { width: sidebarWidth } = useSidebar();
+  const pathname = usePathname();
+  const isCmsRoute = pathname?.startsWith("/portal/admin/cms") ?? false;
 
   return (
     <div
@@ -26,8 +29,10 @@ export function AdminPortalShell({ children }: { children: React.ReactNode }) {
         )}
       >
         <MobileTopBar role="admin" />
-        <AdminTopBar />
-        <main className={appShell.adminMain}>{children}</main>
+        {!isCmsRoute ? <AdminTopBar /> : null}
+        <main className={cn(appShell.adminMain, isCmsRoute && "overflow-hidden p-0 sm:p-0 lg:p-0")}>
+          {children}
+        </main>
       </div>
 
       <MobileBottomNav role="admin" />
