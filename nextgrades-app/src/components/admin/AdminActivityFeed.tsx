@@ -26,10 +26,14 @@ export function AdminActivityFeed({ activities, loading = false, limit = 10, cla
   const rows = activities.slice(0, limit);
 
   return (
-    <Card className={cn("p-5 sm:p-6", className)}>
-      <div className="mb-5 flex items-center gap-2">
-        <Activity className="h-5 w-5 text-[var(--brand-gold)]" aria-hidden />
-        <h2 className="text-lg font-bold text-foreground">{t("adminDashboard.recentActivity")}</h2>
+    <Card hoverable={false} className={cn("p-5 sm:p-6", className)}>
+      <div className="mb-5 flex items-center justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--brand-gold-muted)]">
+            <Activity className="h-4 w-4 text-[var(--brand-gold)]" aria-hidden />
+          </span>
+          <h2 className="text-lg font-bold text-foreground">{t("adminDashboard.recentActivity")}</h2>
+        </div>
       </div>
 
       {loading ? (

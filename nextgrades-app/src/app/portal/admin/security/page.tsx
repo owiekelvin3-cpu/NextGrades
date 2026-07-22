@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { Card } from "@/components/ui/Card";
 import { AdminKpiCard, AdminKpiStrip } from "@/components/admin/AdminKpiCard";
 import { AdminTable, AdminTableStatusBadge } from "@/components/admin/AdminTable";
+import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 
 type SecurityPayload = {
   stats: {
@@ -52,16 +53,14 @@ export default function AdminSecurityPage() {
 
   return (
     <div className="mx-auto max-w-7xl">
-      <div className="mb-6">
-        <h1 className="flex items-center gap-2 text-2xl font-bold text-foreground">
-          <Shield className="h-7 w-7 text-[var(--brand-gold)]" />
-          {t("adminSecurity.title")}
-        </h1>
-        <p className="mt-1 text-sm text-text-muted">{t("adminSecurity.subtitle")}</p>
-      </div>
+      <AdminPageHeader
+        title={t("adminSecurity.title")}
+        description={t("adminSecurity.subtitle")}
+        showBack={false}
+      />
 
       {error && (
-        <Card className="theme-alert-error mb-4 p-4 text-sm">{error}</Card>
+        <Card hoverable={false} className="theme-alert-error mb-4 p-4 text-sm">{error}</Card>
       )}
 
       <AdminKpiStrip className="mb-6 xl:grid-cols-4 2xl:grid-cols-4">

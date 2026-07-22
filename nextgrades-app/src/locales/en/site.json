@@ -1349,6 +1349,11 @@
     "sectionSystem": "System",
     "adminUser": "Administrator"
   },
+  "adminShell": {
+    "portalBadge": "Admin portal",
+    "searchUsers": "Search users…",
+    "quickActionsHint": "Jump to the tools you use most often."
+  },
   "adminHub": {
     "featuredLabel": "Most important",
     "websiteDesc": "Change text, images, and SEO on your public website. Pick a page, edit, then publish.",

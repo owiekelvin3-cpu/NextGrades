@@ -1,6 +1,7 @@
 "use client";
 
 import { Sidebar } from "@/components/dashboard/Sidebar";
+import { AdminTopBar } from "@/components/admin/AdminTopBar";
 import { MobileTopBar } from "@/components/mobile/MobileTopBar";
 import { MobileBottomNav, MOBILE_BOTTOM_NAV_PADDING } from "@/components/mobile/MobileBottomNav";
 import { appShell } from "@/lib/theme/shell";
@@ -25,7 +26,8 @@ export function AdminPortalShell({ children }: { children: React.ReactNode }) {
         )}
       >
         <MobileTopBar role="admin" />
-        <main className="flex-1 overflow-y-auto overflow-x-hidden p-4 sm:p-6 lg:p-8">{children}</main>
+        <AdminTopBar />
+        <main className={appShell.adminMain}>{children}</main>
       </div>
 
       <MobileBottomNav role="admin" />

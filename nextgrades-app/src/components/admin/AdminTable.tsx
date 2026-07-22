@@ -429,5 +429,5 @@ export function AdminTable<T>({
 
   if (!wrapInCard) return tableBody;
 
-  return <Card className={cn("overflow-hidden p-0", cardClassName)}>{tableBody}</Card>;
+  return <Card hoverable={false} className={cn("overflow-hidden p-0", cardClassName)}>{tableBody}</Card>;
 }

@@ -54,16 +54,16 @@ export function AdminSidebarNav({ onNavigate, onLogout }: Props) {
 
   return (
     <div className="flex h-full min-h-0 flex-col">
-      <nav className="min-h-0 flex-1 space-y-5 overflow-y-auto pr-1">
+      <nav className="min-h-0 flex-1 space-y-6 overflow-y-auto pr-1">
         {ADMIN_NAV_SECTIONS.map((section, sectionIndex) => (
           <div key={section.id}>
             {sectionIndex > 0 ? (
-              <div className="mb-3 border-t border-[var(--sidebar-border)]" aria-hidden />
+              <div className="mb-3 border-t border-[var(--sidebar-border)]/80" aria-hidden />
             ) : null}
-            <p className="mb-2 px-3 text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--sidebar-text)]">
+            <p className="mb-2.5 px-3 text-[10px] font-bold uppercase tracking-[0.22em] text-[var(--sidebar-text)]/80">
               {t(section.labelKey)}
             </p>
-            <ul className="space-y-0.5">
+            <ul className="space-y-1">
               {section.items.map((item) => {
                 const active = isLinkActive(pathname, item.href);
                 const showBadge = item.badge === "notifications" && badgeCount > 0;
@@ -74,13 +74,22 @@ export function AdminSidebarNav({ onNavigate, onLogout }: Props) {
                       href={item.href}
                       onClick={onNavigate}
                       className={cn(
-                        "relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
+                        "group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200",
                         active
-                          ? "border-l-2 border-[var(--brand-gold)] bg-[var(--brand-gold-muted)] pl-[10px] text-[var(--brand-gold)]"
-                          : "border-l-2 border-transparent text-[var(--sidebar-text)] hover:bg-[var(--sidebar-surface)] hover:text-[var(--sidebar-text-active)]"
+                          ? "bg-[var(--brand-gold-muted)] text-[var(--brand-gold)] shadow-[inset_0_0_0_1px_rgba(212,175,55,0.18)]"
+                          : "text-[var(--sidebar-text)] hover:bg-[var(--sidebar-surface)] hover:text-[var(--sidebar-text-active)]"
                       )}
                     >
-                      <Icon className="h-4 w-4 shrink-0" aria-hidden />
+                      <span
+                        className={cn(
+                          "flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition-colors",
+                          active
+                            ? "bg-[var(--brand-gold)]/15 text-[var(--brand-gold)]"
+                            : "bg-[var(--sidebar-surface)] text-[var(--sidebar-text)] group-hover:text-[var(--sidebar-text-active)]"
+                        )}
+                      >
+                        <Icon className="h-4 w-4" aria-hidden />
+                      </span>
                       <span className="flex-1 truncate">{t(item.labelKey)}</span>
                       {showBadge ? (
                         <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-[var(--brand-gold)] px-1 text-[10px] font-bold text-[var(--brand-navy)]">
@@ -96,9 +105,9 @@ export function AdminSidebarNav({ onNavigate, onLogout }: Props) {
         ))}
       </nav>
 
-      <div className="mt-auto shrink-0 border-t border-[var(--sidebar-border)] pt-3">
-        <div className="mb-2 flex items-center gap-3 rounded-xl bg-[var(--sidebar-surface)] px-3 py-2.5">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[var(--brand-gold-muted)] text-sm font-bold text-[var(--brand-gold)]">
+      <div className="mt-auto shrink-0 border-t border-[var(--sidebar-border)]/80 pt-4">
+        <div className="mb-2 flex items-center gap-3 rounded-xl border border-[var(--sidebar-border)]/60 bg-[var(--sidebar-surface)] px-3 py-2.5">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[var(--brand-gold-muted)] to-[var(--brand-gold)]/20 text-sm font-bold text-[var(--brand-gold)] ring-1 ring-[var(--brand-gold)]/20">
             {initial}
           </div>
           <div className="min-w-0 flex-1">
@@ -110,7 +119,7 @@ export function AdminSidebarNav({ onNavigate, onLogout }: Props) {
         <button
           type="button"
           onClick={onLogout}
-          className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm font-medium text-[var(--sidebar-text)] transition-colors hover:bg-[var(--sidebar-surface)] hover:text-[var(--sidebar-text-active)]"
+          className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium text-[var(--sidebar-text)] transition-colors hover:bg-[var(--sidebar-surface)] hover:text-[var(--sidebar-text-active)]"
         >
           <LogOut className="h-4 w-4" aria-hidden />
           <span>{t("dashboardNav.logout")}</span>

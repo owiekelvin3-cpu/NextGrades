@@ -24,6 +24,7 @@ import {
   AdminTableStatusBadge,
   type AdminTableSortDirection,
 } from "@/components/admin/AdminTable";
+import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 
 interface UserProfile {
   id: string;
@@ -289,22 +290,23 @@ function AdminUsersPageContent() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-foreground md:text-3xl">{t("adminUsers.title")}</h1>
-          <p className="mt-1 text-text-muted">{t("adminUsers.description")}</p>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          <Button variant="gold" size="md" onClick={() => setCreateOpen(true)}>
-            <Plus className="mr-2 h-4 w-4" />
-            {t("adminUsers.addUser")}
-          </Button>
-          <Button variant="outline" size="md" onClick={() => void fetchUsers()} disabled={loading}>
-            <RefreshCw className={cn("mr-2 h-4 w-4", loading && "animate-spin")} />
-            {t("adminUsers.refresh")}
-          </Button>
-        </div>
-      </div>
+      <AdminPageHeader
+        title={t("adminUsers.title")}
+        description={t("adminUsers.description")}
+        showBack={false}
+        actions={
+          <>
+            <Button variant="gold" size="md" onClick={() => setCreateOpen(true)}>
+              <Plus className="mr-2 h-4 w-4" />
+              {t("adminUsers.addUser")}
+            </Button>
+            <Button variant="outline" size="md" onClick={() => void fetchUsers()} disabled={loading}>
+              <RefreshCw className={cn("mr-2 h-4 w-4", loading && "animate-spin")} />
+              {t("adminUsers.refresh")}
+            </Button>
+          </>
+        }
+      />
 
       <AdminCreateUserModal
         open={createOpen}
@@ -312,7 +314,7 @@ function AdminUsersPageContent() {
         onSuccess={handleCreateSuccess}
       />
 
-      <Card className="p-4">{filtersToolbar}</Card>
+      <Card hoverable={false} className="p-4">{filtersToolbar}</Card>
 
       <AdminTable
         columns={[

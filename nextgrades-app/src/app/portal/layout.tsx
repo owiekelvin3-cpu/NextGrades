@@ -32,7 +32,7 @@ export default function PortalLayout({ children }: { children: React.ReactNode }
   return (
     <NotificationProvider>
       <SidebarProvider>
-        <div className="flex h-[100dvh] min-h-0 flex-col overflow-hidden bg-[#0D1B2A]">
+        <div className="flex h-[100dvh] min-h-0 flex-col overflow-hidden bg-[var(--brand-navy)]">
           <Suspense fallback={null}>
             <PortalLayoutInner>{children}</PortalLayoutInner>
           </Suspense>

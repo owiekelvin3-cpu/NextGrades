@@ -27,7 +27,7 @@ export function MobileTopBar({ role, className }: Props) {
     <>
       <header
         className={cn(
-          "sticky top-0 z-40 border-b border-border-default bg-surface-elevated md:hidden",
+          "sticky top-0 z-40 border-b border-border-default/70 bg-surface-elevated/90 backdrop-blur-md md:hidden",
           mobile.topSafe,
           className
         )}

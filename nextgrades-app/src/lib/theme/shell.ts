@@ -15,6 +15,14 @@ export const appShell = {
   sectionAlt: "bg-surface-muted",
   sectionSubtle: "bg-surface-subtle",
   dashboardShell: "flex h-full min-h-0 max-h-[100dvh] overflow-hidden bg-surface-dashboard text-foreground",
+  adminTopBar:
+    "sticky top-0 z-20 hidden h-16 shrink-0 items-center gap-4 border-b border-border-default/70 bg-surface-elevated/85 px-4 backdrop-blur-md sm:px-6 md:flex lg:px-8",
+  adminMain:
+    "admin-dashboard-main flex-1 overflow-y-auto overflow-x-hidden p-4 sm:p-6 lg:p-8",
+  adminEyebrow:
+    "inline-flex items-center rounded-full border border-[var(--brand-gold)]/25 bg-[var(--brand-gold-muted)] px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--brand-gold)]",
+  adminPageTitle: "text-2xl font-bold tracking-tight text-foreground sm:text-3xl",
+  adminPageDescription: "mt-1.5 max-w-2xl text-sm leading-relaxed text-text-muted sm:text-base",
   dashboardHeader:
     "sticky top-0 z-30 border-b border-border-default/80 bg-surface-elevated/95 backdrop-blur-sm",
   dashboardTitle: "text-xl font-bold tracking-tight text-foreground sm:text-2xl",

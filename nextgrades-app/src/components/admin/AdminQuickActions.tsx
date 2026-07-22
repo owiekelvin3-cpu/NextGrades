@@ -27,8 +27,9 @@ export function AdminQuickActions({ className, hrefs = PRIMARY_HREFS }: Props) {
   const items = ADMIN_QUICK_ACTIONS.filter((item) => hrefs.includes(item.href));
 
   return (
-    <Card className={cn("p-5 sm:p-6", className)}>
-      <h2 className="mb-4 text-lg font-bold text-foreground">{t("adminDashboard.quickActions")}</h2>
+    <Card hoverable={false} className={cn("p-5 sm:p-6", className)}>
+      <h2 className="mb-1 text-lg font-bold text-foreground">{t("adminDashboard.quickActions")}</h2>
+      <p className="mb-4 text-sm text-text-muted">{t("adminShell.quickActionsHint")}</p>
       <div className="flex flex-wrap gap-2">
         {items.map((item) => {
           const Icon = item.icon;
@@ -36,7 +37,7 @@ export function AdminQuickActions({ className, hrefs = PRIMARY_HREFS }: Props) {
             <Link
               key={item.href}
               href={item.href}
-              className="group inline-flex min-h-10 items-center gap-2 rounded-xl border border-border-default bg-surface-subtle px-3 py-2 text-sm font-medium text-foreground transition-colors hover:border-[var(--brand-gold)]/40 hover:bg-[var(--table-row-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-gold-ring)]"
+              className="group inline-flex min-h-11 items-center gap-2.5 rounded-xl border border-border-default bg-surface-elevated px-3.5 py-2.5 text-sm font-medium text-foreground shadow-sm transition-all hover:border-[var(--brand-gold)]/35 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-gold-ring)]"
             >
               <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--brand-gold-muted)] transition-colors group-hover:bg-[var(--brand-gold)]/20">
                 <Icon className="h-4 w-4 text-[var(--brand-gold)]" aria-hidden />

@@ -1333,6 +1333,11 @@
     "sectionSystem": "System",
     "adminUser": "Administrator"
   },
+  "adminShell": {
+    "portalBadge": "Admin-Portal",
+    "searchUsers": "Benutzer suchen…",
+    "quickActionsHint": "Schnellzugriff auf Ihre wichtigsten Werkzeuge."
+  },
   "adminHub": {
     "featuredLabel": "Am wichtigsten",
     "websiteDesc": "Texte, Bilder und SEO auf der öffentlichen Website ändern. Seite wählen, bearbeiten, veröffentlichen.",

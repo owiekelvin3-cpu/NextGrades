@@ -135,6 +135,14 @@ function SidebarContent({
           size="lg"
           onClick={() => setIsMobileMenuOpen?.(false)}
         />
+        {isAdmin ? (
+          <div className="mt-3 inline-flex items-center gap-1.5 rounded-full border border-[var(--brand-gold)]/20 bg-[var(--brand-gold-muted)] px-2.5 py-1">
+            <span className="h-1.5 w-1.5 rounded-full bg-[var(--brand-gold)]" aria-hidden />
+            <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--brand-gold)]">
+              {t("adminShell.portalBadge")}
+            </span>
+          </div>
+        ) : null}
       </div>
 
       {isTeacher && (
@@ -241,7 +249,8 @@ export function Sidebar({
           "hidden md:fixed md:inset-y-0 md:left-0 md:z-40 md:flex md:flex-col md:overflow-hidden",
           "transition-[width,box-shadow] duration-300 ease-out",
           sidebarClass,
-          collapsed ? "shadow-none" : "shadow-[4px_0_24px_rgba(0,0,0,0.08)] dark:shadow-[4px_0_24px_rgba(0,0,0,0.35)]"
+          collapsed ? "shadow-none" : "shadow-[4px_0_32px_rgba(0,0,0,0.12)] dark:shadow-[4px_0_32px_rgba(0,0,0,0.45)]",
+          role === "admin" && !collapsed && "shadow-[4px_0_40px_rgba(13,27,42,0.35)]"
         )}
         style={{ width: collapsed ? 0 : SIDEBAR_WIDTH }}
         aria-hidden={collapsed}
