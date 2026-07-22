@@ -958,6 +958,15 @@
         "title": "Analysen",
         "description": "Plattform-Statistiken und Einblicke"
       },
+      "moderation": {
+        "title": "Inhaltsmoderation",
+        "description": "Von Lehrkräften hochgeladene Lernmaterialien prüfen und freigeben",
+        "empty": "Keine {{status}} Ressourcen."
+      },
+      "quizMonitor": {
+        "title": "Quiz-Monitor",
+        "description": "KI-Quiz-Generierung, Uploads und Schüleraktivität verfolgen"
+      },
       "cookies": {
         "title": "Cookie-Verwaltung",
         "description": "Einwilligungen, Tracking-Skripte und Export"
@@ -1532,6 +1541,7 @@
     "joinLink": "Beitrittslink",
     "admin": {
       "title": "Zoom-Übersicht",
+      "subtitle": "Lehrkräfte-Verbindungen, anstehende Meetings und OAuth-Status überwachen",
       "connectedTeachers": "Verbundene Lehrkräfte",
       "totalMeetings": "Zoom-Meetings gesamt",
       "upcomingMeetings": "Bevorstehende Meetings",

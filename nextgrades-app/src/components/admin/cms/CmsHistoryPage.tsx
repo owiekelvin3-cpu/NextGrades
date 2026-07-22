@@ -8,8 +8,8 @@ export function CmsHistoryPage() {
     <div className="h-full overflow-y-auto p-6">
       <div className="mx-auto max-w-3xl space-y-10">
         <div>
-          <h1 className="text-2xl font-bold text-[#0D1B2A]">Version history</h1>
-          <p className="mt-1 text-gray-600">Restore previous content or review recent changes.</p>
+          <h1 className="text-2xl font-bold text-foreground">Version history</h1>
+          <p className="mt-1 text-text-muted">Restore previous content or review recent changes.</p>
         </div>
         <CmsVersionHistory isDark={false} onRollback={() => window.location.reload()} />
         <CmsActivityPanel isDark={false} />

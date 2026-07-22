@@ -10,6 +10,7 @@ import { EmptyState } from "@/components/dashboard/EmptyState";
 import { useTranslation } from "react-i18next";
 import { useToast } from "@/context/ToastContext";
 import { CheckCircle2, XCircle, ExternalLink } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 type ModerationItem = {
   id: string;
@@ -24,12 +25,14 @@ type ModerationItem = {
   category?: { name: string } | null;
 };
 
+const FILTERS = ["pending", "approved", "rejected"] as const;
+
 export default function AdminModerationPage() {
   const { t } = useTranslation();
   const toast = useToast();
   const [items, setItems] = useState<ModerationItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState<"pending" | "approved" | "rejected">("pending");
+  const [filter, setFilter] = useState<(typeof FILTERS)[number]>("pending");
   const [acting, setActing] = useState<string | null>(null);
 
   const load = useCallback(async () => {
@@ -56,10 +59,12 @@ export default function AdminModerationPage() {
         body: JSON.stringify({ moderation_status: status }),
       });
       if (!res.ok) throw new Error((await res.json()).error || "Failed");
-      toast.success(status === "approved" ? "Resource approved" : "Resource rejected");
+      toast.success(
+        status === "approved" ? t("adminModeration.approved") : t("adminModeration.rejected")
+      );
       await load();
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Action failed");
+      toast.error(e instanceof Error ? e.message : t("adminModeration.actionFailed"));
     } finally {
       setActing(null);
     }
@@ -68,15 +73,16 @@ export default function AdminModerationPage() {
   return (
     <DashboardPage
       role="admin"
-      titleKey="dashboardPages.admin.resources.title"
-      descriptionKey="dashboardCommon.comingSoonDesc"
+      titleKey="dashboardPages.admin.moderation.title"
+      descriptionKey="dashboardPages.admin.moderation.description"
     >
-      <div className="mb-6 flex flex-wrap gap-2">
-        {(["pending", "approved", "rejected"] as const).map((s) => (
+      <div className="mb-6 flex flex-wrap gap-2 rounded-2xl border border-border-default bg-surface-elevated p-2">
+        {FILTERS.map((s) => (
           <Button
             key={s}
-            variant={filter === s ? "gold" : "outline"}
+            variant={filter === s ? "gold" : "ghost"}
             size="sm"
+            className={cn(filter !== s && "text-text-muted")}
             onClick={() => setFilter(s)}
           >
             {s.charAt(0).toUpperCase() + s.slice(1)}
@@ -88,13 +94,16 @@ export default function AdminModerationPage() {
         <LoadingBlock />
       ) : items.length === 0 ? (
         <EmptyState
-          title={t("dashboardPages.admin.resources.title", { defaultValue: "Content moderation" })}
-          description={`No ${filter} resources.`}
+          title={t("dashboardPages.admin.moderation.title")}
+          description={t("dashboardPages.admin.moderation.empty", {
+            status: filter,
+            defaultValue: `No ${filter} resources.`,
+          })}
         />
       ) : (
         <div className="space-y-4">
           {items.map((item) => (
-            <Card key={item.id} className={`p-6`}>
+            <Card key={item.id} hoverable={false} className="p-5 sm:p-6">
               <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                 <div className="min-w-0 flex-1">
                   <div className="mb-2 flex flex-wrap items-center gap-2">
@@ -103,7 +112,7 @@ export default function AdminModerationPage() {
                     <Badge>{item.access_type}</Badge>
                   </div>
                   {item.description && (
-                    <p className="mb-2 text-sm text-text-muted line-clamp-2">{item.description}</p>
+                    <p className="mb-2 line-clamp-2 text-sm text-text-muted">{item.description}</p>
                   )}
                   <p className="text-xs text-text-muted">
                     {item.profiles?.full_name ?? "Teacher"} ·{" "}

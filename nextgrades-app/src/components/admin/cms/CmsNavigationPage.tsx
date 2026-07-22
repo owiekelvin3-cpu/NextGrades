@@ -100,8 +100,8 @@ export function CmsNavigationPage() {
       <div className="mx-auto max-w-3xl">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-[#0D1B2A]">Navigation</h1>
-            <p className="mt-1 text-gray-600">Header and footer menu links.</p>
+            <h1 className="text-2xl font-bold text-foreground">Navigation</h1>
+            <p className="mt-1 text-text-muted">Header and footer menu links.</p>
           </div>
           <Button variant="gold" onClick={() => void saveAll()} disabled={saving}>
             <Save className="mr-2 h-4 w-4" />
@@ -158,7 +158,7 @@ function NavSection({
   return (
     <Card className="mt-8 space-y-3 p-5">
       <div className="flex items-center justify-between">
-        <h2 className="font-bold text-[#0D1B2A]">{title}</h2>
+        <h2 className="font-bold text-foreground">{title}</h2>
         <Button variant="outline" size="sm" onClick={onAdd}>
           <Plus className="mr-1 h-4 w-4" />
           Add link

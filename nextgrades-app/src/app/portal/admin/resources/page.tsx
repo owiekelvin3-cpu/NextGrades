@@ -16,7 +16,7 @@ export default function AdminResourcesPage() {
       titleKey="dashboardPages.admin.resources.title"
       descriptionKey="dashboardPages.admin.resources.description"
     >
-      <Card className="flex flex-col items-center px-6 py-14 text-center sm:px-10">
+      <Card hoverable={false} className="flex flex-col items-center px-6 py-14 text-center sm:px-10">
         <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[var(--brand-gold-muted)]">
           <FileText className="h-7 w-7 text-[var(--brand-gold)]" aria-hidden />
         </div>

@@ -51,7 +51,7 @@ function CmsNavLink({
       className={cn(
         "mb-0.5 flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
         compact && "justify-center px-2",
-        active ? "bg-[var(--brand-gold)] text-[var(--brand-navy)]" : "text-gray-300 hover:bg-white/10 hover:text-white"
+        active ? "bg-[var(--brand-gold)] text-[var(--brand-navy)]" : "text-[var(--sidebar-text)] hover:bg-[var(--sidebar-surface)] hover:text-[var(--sidebar-text-active)]"
       )}
     >
       <Icon className="h-4 w-4 shrink-0" />
@@ -90,12 +90,12 @@ function CmsSidebarNav({
 
       {inCms ? (
         <>
-          <p className="px-3 pb-2 pt-2 text-[10px] font-bold uppercase tracking-widest text-gray-500">
+          <p className="px-3 pb-2 pt-2 text-[10px] font-bold uppercase tracking-widest text-[var(--sidebar-text)]/70">
             {t("cmsEditor.sidebarPages", { defaultValue: "Edit by page" })}
           </p>
           {CMS_PAGE_NAV_GROUPS.map((group) => (
             <div key={group.id} className="mb-3">
-              <p className="px-3 pb-1 text-[10px] font-semibold uppercase tracking-wide text-gray-500">
+              <p className="px-3 pb-1 text-[10px] font-semibold uppercase tracking-wide text-[var(--sidebar-text)]/70">
                 {group.label}
               </p>
               {group.pages.map((item) => {
@@ -107,7 +107,7 @@ function CmsSidebarNav({
             </div>
           ))}
 
-          <p className="mt-4 px-3 pb-2 text-[10px] font-bold uppercase tracking-widest text-gray-500">
+          <p className="mt-4 px-3 pb-2 text-[10px] font-bold uppercase tracking-widest text-[var(--sidebar-text)]/70">
             {t("cmsEditor.sidebarSite", { defaultValue: "Site settings" })}
           </p>
           {CMS_SIDEBAR_SECTIONS.filter((s) => s.id !== "pages-hub").map((item) => {
@@ -116,7 +116,7 @@ function CmsSidebarNav({
             return <CmsNavLink key={item.id} item={item} active={Boolean(active)} onNavigate={onNavigate} />;
           })}
 
-          <p className="mt-4 px-3 pb-2 text-[10px] font-bold uppercase tracking-widest text-gray-500">
+          <p className="mt-4 px-3 pb-2 text-[10px] font-bold uppercase tracking-widest text-[var(--sidebar-text)]/70">
             {t("cmsEditor.sidebarAdvanced", { defaultValue: "Advanced" })}
           </p>
           {CMS_SIDEBAR_TOOLS.map((item) => {
@@ -145,7 +145,7 @@ function CmsShellSidebar({
     <>
       <Link
         href={ADMIN_PORTAL_HOME}
-        className="flex items-center gap-2 text-sm text-gray-400 hover:text-[var(--brand-gold)]"
+        className="flex items-center gap-2 text-sm text-[var(--sidebar-text)] hover:text-[var(--brand-gold)]"
       >
         <ChevronLeft className="h-4 w-4" />
         {t("cmsEditor.backToAdmin", { defaultValue: "Back to admin" })}
@@ -154,7 +154,7 @@ function CmsShellSidebar({
         <Globe className="h-5 w-5 text-[var(--brand-gold)]" />
         {t("cmsEditor.title", { defaultValue: "Edit website content" })}
       </h2>
-      <p className="mt-1 text-xs leading-relaxed text-gray-400">
+      <p className="mt-1 text-xs leading-relaxed text-[var(--sidebar-text)]">
         {t("cmsEditor.subtitle", { defaultValue: "Update text and images on your live website" })}
       </p>
     </>
@@ -181,7 +181,7 @@ function CmsShellSidebar({
               <button
                 type="button"
                 onClick={closeMobile}
-                className="ml-2 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-gray-400 hover:bg-white/10"
+                className="ml-2 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-[var(--sidebar-text)] hover:bg-[var(--sidebar-surface)]"
                 aria-label="Close menu"
               >
                 <X className="h-5 w-5" />

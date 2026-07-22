@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import { Cookie, Download, Save, BarChart3 } from "lucide-react";
 import type { CookieConsentSettings, ConsentStats } from "@/lib/cookies/types";
 import { useToast } from "@/context/ToastContext";
+import { AdminKpiCard, AdminKpiStrip } from "@/components/admin/AdminKpiCard";
 
 type RecentRecord = {
   consent_id: string;
@@ -73,22 +74,15 @@ export default function AdminCookiesPage() {
     >
       <div className="space-y-6">
         {stats && (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {[
-              { label: t("cookies.admin.stats.total"), value: stats.total, icon: Cookie },
-              { label: t("cookies.admin.stats.acceptAll"), value: stats.acceptAll, icon: BarChart3 },
-              { label: t("cookies.admin.stats.reject"), value: stats.rejectNonEssential, icon: BarChart3 },
-              { label: t("cookies.admin.stats.analytics"), value: stats.analyticsOptIn, icon: BarChart3 },
-            ].map((item) => (
-              <Card key={item.label} className="p-4">
-                <p className="text-xs font-medium text-text-muted">{item.label}</p>
-                <p className="mt-1 text-2xl font-bold text-foreground">{item.value}</p>
-              </Card>
-            ))}
-          </div>
+          <AdminKpiStrip className="sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-4">
+            <AdminKpiCard label={t("cookies.admin.stats.total")} value={stats.total} icon={Cookie} iconTone="gold" />
+            <AdminKpiCard label={t("cookies.admin.stats.acceptAll")} value={stats.acceptAll} icon={BarChart3} iconTone="success" />
+            <AdminKpiCard label={t("cookies.admin.stats.reject")} value={stats.rejectNonEssential} icon={BarChart3} iconTone="warning" />
+            <AdminKpiCard label={t("cookies.admin.stats.analytics")} value={stats.analyticsOptIn} icon={BarChart3} iconTone="info" />
+          </AdminKpiStrip>
         )}
 
-        <Card className="p-6">
+        <Card hoverable={false} className="p-6">
           <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
             <h2 className="text-lg font-bold text-foreground">{t("cookies.admin.settingsTitle")}</h2>
             <div className="flex gap-2">
@@ -175,7 +169,7 @@ export default function AdminCookiesPage() {
           )}
         </Card>
 
-        <Card className="p-6">
+        <Card hoverable={false} className="p-6">
           <h2 className="mb-4 text-lg font-bold text-foreground">{t("cookies.admin.recentTitle")}</h2>
           <div className="responsive-table-wrap">
             <table className="w-full min-w-[520px] text-left text-sm">

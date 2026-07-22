@@ -6,6 +6,8 @@ import { useToast } from "@/context/ToastContext";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { ChevronDown, ChevronUp, Plus, Save, Trash2 } from "lucide-react";
+import { themeInputClass } from "@/lib/theme/form-fields";
+import { cn } from "@/lib/utils";
 
 type FieldDef = { key: string; label: string; textarea?: boolean };
 
@@ -175,8 +177,8 @@ export function CmsStructuredDataPage({ kind }: { kind: keyof typeof CONFIGS }) 
       <div className="mx-auto max-w-4xl">
         <div className="flex items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-[#0D1B2A]">{config.title}</h1>
-            <p className="mt-1 text-gray-600">Add, edit, delete, and reorder items.</p>
+            <h1 className="text-2xl font-bold text-foreground">{config.title}</h1>
+            <p className="mt-1 text-sm text-text-muted">Add, edit, delete, and reorder items.</p>
           </div>
           <Button variant="gold" onClick={addNew}>
             <Plus className="mr-2 h-4 w-4" />
@@ -185,22 +187,30 @@ export function CmsStructuredDataPage({ kind }: { kind: keyof typeof CONFIGS }) 
         </div>
 
         {loading ? (
-          <p className="mt-8 text-gray-500">Loading…</p>
+          <p className="mt-8 text-text-muted">Loading…</p>
         ) : (
           <div className="mt-6 space-y-4">
             {items.map((item, i) => (
-              <Card key={String(item.id ?? `new-${i}`)} className="space-y-3 p-5">
+              <Card key={String(item.id ?? `new-${i}`)} hoverable={false} className="space-y-3 p-5">
                 <div className="flex justify-end gap-1">
-                  <button type="button" className="rounded-lg border p-2" onClick={() => void move(i, -1)}>
+                  <button
+                    type="button"
+                    className="rounded-lg border border-border-default p-2 text-foreground transition-colors hover:bg-surface-subtle"
+                    onClick={() => void move(i, -1)}
+                  >
                     <ChevronUp className="h-4 w-4" />
                   </button>
-                  <button type="button" className="rounded-lg border p-2" onClick={() => void move(i, 1)}>
+                  <button
+                    type="button"
+                    className="rounded-lg border border-border-default p-2 text-foreground transition-colors hover:bg-surface-subtle"
+                    onClick={() => void move(i, 1)}
+                  >
                     <ChevronDown className="h-4 w-4" />
                   </button>
                   {item.id != null ? (
                     <button
                       type="button"
-                      className="rounded-lg border p-2 text-red-500"
+                      className="rounded-lg border border-border-default p-2 text-[var(--alert-error-fg)] transition-colors hover:bg-[var(--alert-error-bg)]"
                       onClick={() => void remove(String(item.id))}
                     >
                       <Trash2 className="h-4 w-4" />
@@ -210,19 +220,19 @@ export function CmsStructuredDataPage({ kind }: { kind: keyof typeof CONFIGS }) 
                 {config.fields.map((f) =>
                   f.textarea ? (
                     <label key={f.key} className="block text-sm">
-                      <span className="font-medium text-gray-700">{f.label}</span>
+                      <span className="font-medium text-foreground">{f.label}</span>
                       <textarea
                         rows={2}
-                        className="mt-1 w-full rounded-xl border px-3 py-2"
+                        className={cn(themeInputClass, "mt-1 py-2.5")}
                         value={String(item[f.key] ?? "")}
                         onChange={(e) => updateField(i, f.key, e.target.value)}
                       />
                     </label>
                   ) : (
                     <label key={f.key} className="block text-sm">
-                      <span className="font-medium text-gray-700">{f.label}</span>
+                      <span className="font-medium text-foreground">{f.label}</span>
                       <input
-                        className="mt-1 w-full rounded-xl border px-3 py-2"
+                        className={cn(themeInputClass, "mt-1 py-2.5")}
                         value={String(item[f.key] ?? "")}
                         onChange={(e) => updateField(i, f.key, e.target.value)}
                       />

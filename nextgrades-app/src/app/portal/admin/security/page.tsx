@@ -130,7 +130,7 @@ export default function AdminSecurityPage() {
           stickyHeader
         />
 
-        <Card className="overflow-hidden">
+        <Card hoverable={false} className="overflow-hidden">
           <div className="border-b border-[var(--table-border)] px-4 py-3 font-semibold text-foreground">
             {t("adminSecurity.lockoutsTitle")}
           </div>

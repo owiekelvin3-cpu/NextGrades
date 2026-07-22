@@ -98,15 +98,15 @@ export function CmsMediaPage() {
   return (
     <div className="h-full overflow-y-auto p-6">
       <div className="mx-auto max-w-6xl">
-        <h1 className="text-2xl font-bold text-[#0D1B2A]">Media library</h1>
-        <p className="mt-1 text-gray-600">Upload and manage images, videos, and documents for your website.</p>
+        <h1 className="text-2xl font-bold text-foreground">Media library</h1>
+        <p className="mt-1 text-text-muted">Upload and manage images, videos, and documents for your website.</p>
 
         <div
           ref={dropRef}
-          className="mt-6 flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-[#D4AF37]/40 bg-[#D4AF37]/5 px-6 py-12"
+          className="mt-6 flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-[var(--brand-gold)]/40 bg-[var(--brand-gold-muted)] px-6 py-12"
         >
-          <Upload className="h-10 w-10 text-[#D4AF37]" />
-          <p className="mt-2 font-medium text-[#0D1B2A]">Drag & drop files here</p>
+          <Upload className="h-10 w-10 text-[var(--brand-gold)]" />
+          <p className="mt-2 font-medium text-foreground">Drag & drop files here</p>
           <p className="text-sm text-gray-500">JPG, PNG, WebP up to 5 MB</p>
           <input
             ref={fileRef}
@@ -141,7 +141,7 @@ export function CmsMediaPage() {
               onClick={() => setFilter(f)}
               className={cn(
                 "rounded-xl px-4 py-2 text-sm font-medium capitalize",
-                filter === f ? "bg-[#0D1B2A] text-white" : "bg-white text-gray-600 border border-gray-200"
+                filter === f ? "bg-[#0D1B2A] text-white" : "bg-white text-text-muted border border-gray-200"
               )}
             >
               {f}
@@ -173,7 +173,7 @@ export function CmsMediaPage() {
                   </button>
                 </div>
                 <div className="p-3">
-                  <p className="truncate text-sm font-medium text-[#0D1B2A]">{item.file_name}</p>
+                  <p className="truncate text-sm font-medium text-foreground">{item.file_name}</p>
                   <p className="truncate text-xs text-gray-400">{item.url}</p>
                 </div>
               </div>

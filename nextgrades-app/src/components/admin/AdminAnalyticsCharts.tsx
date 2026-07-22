@@ -58,7 +58,7 @@ export function AdminAnalyticsCharts() {
     return (
       <div className="grid gap-6 lg:grid-cols-2">
         {[1, 2, 3].map((i) => (
-          <Card key={i} className={cn(i === 3 ? "lg:col-span-2" : "", "h-72 animate-pulse bg-surface-subtle")} />
+          <Card key={i} hoverable={false} className={cn(i === 3 ? "lg:col-span-2" : "", "h-72 animate-pulse bg-surface-subtle")} />
         ))}
       </div>
     );
@@ -66,7 +66,7 @@ export function AdminAnalyticsCharts() {
 
   return (
     <div className="grid gap-6 lg:grid-cols-2">
-      <Card className="p-5 sm:p-6">
+      <Card hoverable={false} className="p-5 sm:p-6">
         <h3 className="mb-4 text-base font-bold text-foreground">{t("adminAnalytics.signupsTitle")}</h3>
         <div className="h-64">
           <ResponsiveContainer width="100%" height="100%">
@@ -86,7 +86,7 @@ export function AdminAnalyticsCharts() {
         </div>
       </Card>
 
-      <Card className="p-5 sm:p-6">
+      <Card hoverable={false} className="p-5 sm:p-6">
         <h3 className="mb-4 text-base font-bold text-foreground">{t("adminAnalytics.activityTitle")}</h3>
         <div className="h-64">
           <ResponsiveContainer width="100%" height="100%">
@@ -106,7 +106,7 @@ export function AdminAnalyticsCharts() {
         </div>
       </Card>
 
-      <Card className="p-5 sm:p-6 lg:col-span-2">
+      <Card hoverable={false} className="p-5 sm:p-6 lg:col-span-2">
         <h3 className="mb-4 text-base font-bold text-foreground">{t("adminAnalytics.rolesTitle")}</h3>
         <div className="mx-auto h-64 max-w-sm">
           <ResponsiveContainer width="100%" height="100%">

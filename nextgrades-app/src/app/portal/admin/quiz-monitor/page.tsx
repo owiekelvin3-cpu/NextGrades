@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { DashboardPage } from "@/components/dashboard/DashboardPage";
 import { Card } from "@/components/ui/Card";
 import { LoadingBlock } from "@/components/dashboard/LoadingBlock";
-import { useTheme } from "@/context/ThemeContext";
+import { AdminKpiCard, AdminKpiStrip } from "@/components/admin/AdminKpiCard";
+import { AdminTableStatusBadge } from "@/components/admin/AdminTable";
 import { Brain, FileText, Users, Zap, CheckCircle2, XCircle } from "lucide-react";
 
 type Stats = {
@@ -20,14 +21,11 @@ type Stats = {
 };
 
 export default function AdminQuizMonitorPage() {
-  const { theme } = useTheme();
   const [stats, setStats] = useState<Stats | null>(null);
   const [loading, setLoading] = useState(true);
-  const isDark = theme === "dark";
-  const textPrimary = "text-foreground";
 
   useEffect(() => {
-    (async () => {
+    void (async () => {
       try {
         const res = await fetch("/api/quiz/admin/stats");
         if (res.ok) setStats(await res.json());
@@ -40,47 +38,46 @@ export default function AdminQuizMonitorPage() {
   return (
     <DashboardPage
       role="admin"
-      titleKey="dashboardPages.teacher.aiGenerator.title"
-      descriptionKey="dashboardPages.teacher.aiGenerator.description"
+      titleKey="dashboardPages.admin.quizMonitor.title"
+      descriptionKey="dashboardPages.admin.quizMonitor.description"
     >
       {loading ? (
         <LoadingBlock />
       ) : !stats ? (
-        <p className="text-gray-500">Unable to load quiz analytics. Ensure you are logged in as admin.</p>
+        <Card hoverable={false} className="p-8 text-center">
+          <p className="text-text-muted">Unable to load quiz analytics. Ensure you are logged in as admin.</p>
+        </Card>
       ) : (
-        <div className="space-y-8">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {[
-              { icon: FileText, label: "Materials", value: stats.counts.materials },
-              { icon: Brain, label: "Quizzes", value: stats.counts.quizzes },
-              { icon: Users, label: "Attempts", value: stats.counts.attempts },
-              { icon: Zap, label: "Student scores", value: stats.counts.studentScores },
-            ].map((s) => (
-              <Card key={s.label} className={`p-5`}>
-                <s.icon className="w-6 h-6 text-[#D4AF37] mb-2" />
-                <p className={`text-2xl font-bold ${textPrimary}`}>{s.value}</p>
-                <p className="text-sm text-gray-500">{s.label}</p>
-              </Card>
-            ))}
-          </div>
+        <div className="space-y-6">
+          <AdminKpiStrip className="sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-4">
+            <AdminKpiCard label="Materials" value={stats.counts.materials} icon={FileText} iconTone="info" />
+            <AdminKpiCard label="Quizzes" value={stats.counts.quizzes} icon={Brain} iconTone="gold" />
+            <AdminKpiCard label="Attempts" value={stats.counts.attempts} icon={Users} iconTone="success" />
+            <AdminKpiCard label="Student scores" value={stats.counts.studentScores} icon={Zap} iconTone="warning" />
+          </AdminKpiStrip>
 
-          <Card className={`p-6`}>
-            <h3 className={`font-bold mb-2 ${textPrimary}`}>Generation engine</h3>
-            <p className="text-sm text-gray-500 mb-4">
-              {stats.generation.engine} · {stats.generation.completedJobs} completed ·{" "}
-              {stats.generation.failedJobs} failed
-            </p>
-            <ul className="space-y-2 text-sm max-h-48 overflow-y-auto">
+          <Card hoverable={false} className="overflow-hidden p-0">
+            <div className="border-b border-[var(--table-border)] px-5 py-4">
+              <h3 className="font-bold text-foreground">Generation engine</h3>
+              <p className="mt-1 text-sm text-text-muted">
+                {stats.generation.engine} · {stats.generation.completedJobs} completed ·{" "}
+                {stats.generation.failedJobs} failed
+              </p>
+            </div>
+            <ul className="max-h-56 space-y-2 overflow-y-auto p-5 text-sm">
               {stats.generation.recentJobs.map((j) => (
-                <li key={j.id} className="flex items-center justify-between gap-2">
-                  <span className={textPrimary}>
+                <li
+                  key={j.id}
+                  className="flex items-center justify-between gap-3 rounded-xl border border-border-default bg-surface-subtle px-3 py-2.5"
+                >
+                  <span className="text-foreground">
                     {j.mode} · {new Date(j.created_at).toLocaleString()}
                   </span>
-                  <span className="flex items-center gap-1 text-gray-500">
+                  <span className="flex items-center gap-1.5 text-text-muted">
                     {j.status === "completed" ? (
-                      <CheckCircle2 className="w-4 h-4 text-green-500" />
+                      <CheckCircle2 className="h-4 w-4 text-green-600" />
                     ) : j.status === "failed" ? (
-                      <XCircle className="w-4 h-4 text-red-500" />
+                      <XCircle className="h-4 w-4 text-red-500" />
                     ) : null}
                     {j.status}
                   </span>
@@ -89,25 +86,38 @@ export default function AdminQuizMonitorPage() {
             </ul>
           </Card>
 
-          <div className="grid lg:grid-cols-2 gap-6">
-            <Card className={`p-6`}>
-              <h3 className={`font-bold mb-4 ${textPrimary}`}>Recent uploads</h3>
-              <ul className="space-y-2 text-sm">
+          <div className="grid gap-6 lg:grid-cols-2">
+            <Card hoverable={false} className="overflow-hidden p-0">
+              <div className="border-b border-[var(--table-border)] px-5 py-4">
+                <h3 className="font-bold text-foreground">Recent uploads</h3>
+              </div>
+              <ul className="space-y-2 p-5 text-sm">
                 {stats.recentMaterials.map((m) => (
-                  <li key={m.id} className="flex justify-between gap-2 text-gray-500">
-                    <span className={textPrimary}>{m.title}</span>
-                    <span>{m.extraction_status}</span>
+                  <li
+                    key={m.id}
+                    className="flex justify-between gap-2 rounded-xl border border-border-default bg-surface-subtle px-3 py-2.5"
+                  >
+                    <span className="truncate font-medium text-foreground">{m.title}</span>
+                    <AdminTableStatusBadge label={m.extraction_status} variant="info" />
                   </li>
                 ))}
               </ul>
             </Card>
-            <Card className={`p-6`}>
-              <h3 className={`font-bold mb-4 ${textPrimary}`}>Recent quizzes</h3>
-              <ul className="space-y-2 text-sm">
+            <Card hoverable={false} className="overflow-hidden p-0">
+              <div className="border-b border-[var(--table-border)] px-5 py-4">
+                <h3 className="font-bold text-foreground">Recent quizzes</h3>
+              </div>
+              <ul className="space-y-2 p-5 text-sm">
                 {stats.recentQuizzes.map((q) => (
-                  <li key={q.id} className="flex justify-between gap-2">
-                    <span className={textPrimary}>{q.title}</span>
-                    <span className="text-gray-500">{q.is_published ? "Published" : "Draft"}</span>
+                  <li
+                    key={q.id}
+                    className="flex justify-between gap-2 rounded-xl border border-border-default bg-surface-subtle px-3 py-2.5"
+                  >
+                    <span className="truncate font-medium text-foreground">{q.title}</span>
+                    <AdminTableStatusBadge
+                      label={q.is_published ? "Published" : "Draft"}
+                      variant={q.is_published ? "success" : "default"}
+                    />
                   </li>
                 ))}
               </ul>

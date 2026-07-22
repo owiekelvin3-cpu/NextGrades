@@ -77,7 +77,7 @@ export function CmsHubDashboard({ focusPages = false }: { focusPages?: boolean }
   if (!seeded) {
     return (
       <div className="flex flex-1 items-center justify-center p-8">
-        <Card className="max-w-lg p-8 text-center">
+        <Card hoverable={false} className="max-w-lg p-8 text-center">
           <Sparkles className="mx-auto h-12 w-12 text-[var(--brand-gold)]" />
           <h2 className="mt-4 text-xl font-bold text-foreground">
             {t("cmsEditor.setupTitle", { defaultValue: "Set up your website content" })}
@@ -124,19 +124,19 @@ export function CmsHubDashboard({ focusPages = false }: { focusPages?: boolean }
 
       {stats ? (
         <div className="grid gap-4 sm:grid-cols-3">
-          <Card className="p-4">
+          <Card hoverable={false} className="p-4">
             <p className="text-xs font-semibold uppercase tracking-wide text-text-muted">
               {t("cmsEditor.statFields", { defaultValue: "Editable fields" })}
             </p>
             <p className="mt-1 text-2xl font-bold text-foreground">{stats.totalFields}</p>
           </Card>
-          <Card className="p-4">
+          <Card hoverable={false} className="p-4">
             <p className="text-xs font-semibold uppercase tracking-wide text-text-muted">
               {t("cmsEditor.statDrafts", { defaultValue: "Unsaved drafts" })}
             </p>
-            <p className="mt-1 text-2xl font-bold text-amber-600">{stats.unpublishedFields}</p>
+            <p className="mt-1 text-2xl font-bold text-[var(--alert-warning-fg)]">{stats.unpublishedFields}</p>
           </Card>
-          <Card className="p-4">
+          <Card hoverable={false} className="p-4">
             <p className="text-xs font-semibold uppercase tracking-wide text-text-muted">
               {t("cmsEditor.statPages", { defaultValue: "Pages" })}
             </p>

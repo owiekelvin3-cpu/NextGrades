@@ -87,8 +87,8 @@ export function CmsSeoPage() {
   return (
     <div className="h-full overflow-y-auto p-6">
       <div className="mx-auto max-w-3xl">
-        <h1 className="text-2xl font-bold text-[#0D1B2A]">SEO settings</h1>
-        <p className="mt-1 text-gray-600">Control how each page appears in Google and social shares.</p>
+        <h1 className="text-2xl font-bold text-foreground">SEO settings</h1>
+        <p className="mt-1 text-text-muted">Control how each page appears in Google and social shares.</p>
 
         <div className="mt-6 flex flex-wrap gap-2">
           {CMS_SIDEBAR_PAGES.map((p) => (
@@ -97,7 +97,7 @@ export function CmsSeoPage() {
               type="button"
               onClick={() => setActivePage(p.id)}
               className={`rounded-xl px-4 py-2 text-sm font-medium ${
-                activePage === p.id ? "bg-[#D4AF37] text-[#0D1B2A]" : "bg-white border border-gray-200 text-gray-600"
+                activePage === p.id ? "bg-[#D4AF37] text-foreground" : "bg-white border border-gray-200 text-text-muted"
               }`}
             >
               {p.label}
@@ -107,10 +107,10 @@ export function CmsSeoPage() {
 
         <Card className="mt-6 space-y-4 p-6">
           <div className="flex items-center gap-3 rounded-xl bg-gray-50 p-4">
-            <Gauge className="h-8 w-8 text-[#D4AF37]" />
+            <Gauge className="h-8 w-8 text-[var(--brand-gold)]" />
             <div>
-              <p className="font-bold text-[#0D1B2A]">SEO score: {analysis.score}/100</p>
-              <ul className="mt-1 text-sm text-gray-600">
+              <p className="font-bold text-foreground">SEO score: {analysis.score}/100</p>
+              <ul className="mt-1 text-sm text-text-muted">
                 {analysis.tips.length ? analysis.tips.map((t) => <li key={t}>• {t}</li>) : <li>Looking good!</li>}
               </ul>
             </div>

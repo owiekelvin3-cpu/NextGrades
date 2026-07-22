@@ -75,8 +75,8 @@ export function CmsThemePage() {
   return (
     <div className="h-full overflow-y-auto p-6">
       <div className="mx-auto max-w-2xl">
-        <h1 className="text-2xl font-bold text-[#0D1B2A]">Theme settings</h1>
-        <p className="mt-1 text-gray-600">Brand colors, logos, and global styling.</p>
+        <h1 className="text-2xl font-bold text-foreground">Theme settings</h1>
+        <p className="mt-1 text-text-muted">Brand colors, logos, and global styling.</p>
 
         <Card className="mt-6 space-y-5 p-6">
           <div className="grid gap-4 sm:grid-cols-3">
@@ -104,7 +104,7 @@ export function CmsThemePage() {
           </h2>
           <button
             type="button"
-            className="mt-4 px-6 py-2 font-semibold text-[#0D1B2A]"
+            className="mt-4 px-6 py-2 font-semibold text-foreground"
             style={{ backgroundColor: form.primary_color, borderRadius: form.border_radius }}
           >
             Sample button

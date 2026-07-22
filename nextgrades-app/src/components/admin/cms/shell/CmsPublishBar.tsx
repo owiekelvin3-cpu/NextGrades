@@ -17,9 +17,9 @@ export function CmsPublishBar({ pageId }: Props) {
   if (!count) return null;
 
   return (
-    <div className="sticky bottom-0 z-40 border-t border-gray-200 bg-white/95 px-4 py-3 shadow-[0_-8px_32px_rgba(0,0,0,0.08)] backdrop-blur-md sm:px-6">
+    <div className="sticky bottom-0 z-40 border-t border-border-default bg-surface-elevated/95 px-4 py-3 shadow-[0_-8px_32px_rgba(0,0,0,0.08)] backdrop-blur-md sm:px-6">
       <div className="mx-auto flex max-w-3xl flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-sm font-medium text-amber-800">
+        <p className="text-sm font-medium text-[var(--alert-warning-fg)]">
           {t("cmsEditor.unsavedBanner", {
             defaultValue: "{{count}} unsaved change(s) - save to update the live website",
             count,

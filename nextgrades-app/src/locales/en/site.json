@@ -974,6 +974,15 @@
         "title": "Analytics",
         "description": "Platform statistics and insights"
       },
+      "moderation": {
+        "title": "Content moderation",
+        "description": "Review and approve teacher-uploaded learning resources",
+        "empty": "No {{status}} resources."
+      },
+      "quizMonitor": {
+        "title": "Quiz monitor",
+        "description": "Track AI quiz generation, uploads, and student activity"
+      },
       "cookies": {
         "title": "Cookie management",
         "description": "Consent settings, tracking scripts, and exports"
@@ -1548,6 +1557,7 @@
     "joinLink": "Join link",
     "admin": {
       "title": "Zoom overview",
+      "subtitle": "Monitor teacher connections, upcoming meetings, and OAuth status",
       "connectedTeachers": "Connected teachers",
       "totalMeetings": "Total Zoom meetings",
       "upcomingMeetings": "Upcoming meetings",
