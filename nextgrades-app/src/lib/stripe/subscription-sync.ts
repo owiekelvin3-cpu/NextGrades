@@ -48,6 +48,28 @@ function subscriptionIsActive(status: Stripe.Subscription.Status): boolean {
   return status === "active" || status === "trialing";
 }
 
+type SubscriptionItemPeriod = {
+  current_period_end?: number | null;
+  current_period_start?: number | null;
+};
+
+/** Stripe Basil+ moved billing periods onto subscription items. */
+export function getSubscriptionPeriodBounds(subscription: Stripe.Subscription): {
+  periodStart: Date;
+  periodEnd: Date;
+} | null {
+  const item = subscription.items?.data?.[0] as SubscriptionItemPeriod | undefined;
+  const periodEnd = item?.current_period_end ?? null;
+  const periodStart = item?.current_period_start ?? null;
+
+  if (periodEnd == null || periodStart == null) return null;
+
+  return {
+    periodStart: new Date(periodStart * 1000),
+    periodEnd: new Date(periodEnd * 1000),
+  };
+}
+
 /** Sync profile subscription dates and IDs from a Stripe subscription object. */
 export async function syncProfileFromStripeSubscription(
   admin: SupabaseClient,
@@ -55,8 +77,10 @@ export async function syncProfileFromStripeSubscription(
   subscription: Stripe.Subscription
 ): Promise<void> {
   const customerId = stripeId(subscription.customer);
-  const periodEnd = new Date(subscription.current_period_end * 1000);
-  const periodStart = new Date(subscription.current_period_start * 1000);
+  const period = getSubscriptionPeriodBounds(subscription);
+  if (!period) return;
+
+  const { periodStart, periodEnd } = period;
   const active = subscriptionIsActive(subscription.status);
 
   const metadataPlan = subscription.metadata?.planId;
@@ -107,13 +131,33 @@ export async function syncProfileFromStripeSubscription(
   }
 }
 
+type InvoiceWithParent = Stripe.Invoice & {
+  subscription?: string | Stripe.Subscription | null;
+  parent?: {
+    type?: string;
+    subscription_details?: {
+      subscription?: string | Stripe.Subscription | null;
+    };
+  };
+};
+
+/** Resolve subscription ID from invoices across Stripe API versions. */
+export function getInvoiceSubscriptionId(invoice: Stripe.Invoice): string | null {
+  const inv = invoice as InvoiceWithParent;
+  if (inv.parent?.type === "subscription_details") {
+    const fromParent = stripeId(inv.parent.subscription_details?.subscription);
+    if (fromParent) return fromParent;
+  }
+  return stripeId(inv.subscription);
+}
+
 /** Renew or sync access after a successful invoice payment. */
 export async function renewSubscriptionFromInvoice(
   admin: SupabaseClient,
   stripe: Stripe,
   invoice: Stripe.Invoice
 ): Promise<void> {
-  const subscriptionId = stripeId(invoice.subscription);
+  const subscriptionId = getInvoiceSubscriptionId(invoice);
   if (!subscriptionId) return;
 
   const customerId = stripeId(invoice.customer);
@@ -154,7 +198,7 @@ export async function fetchSubscriptionPeriodEnd(
   if (!subscriptionId) return null;
   try {
     const subscription = await stripe.subscriptions.retrieve(subscriptionId);
-    return new Date(subscription.current_period_end * 1000);
+    return getSubscriptionPeriodBounds(subscription)?.periodEnd ?? null;
   } catch {
     return null;
   }
