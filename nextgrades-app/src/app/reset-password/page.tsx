@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useTheme } from "@/context/ThemeContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -17,6 +18,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
 import { supabase } from "@/lib/supabase/client";
+import { bootstrapRecoverySession } from "@/lib/auth/recovery-session";
 import { getDashboardPathForUser } from "@/lib/auth/redirect";
 import { cn } from "@/lib/utils";
 import { FontAwesomeSetup } from "@/components/auth/FontAwesomeSetup";
@@ -28,12 +30,36 @@ export default function ResetPasswordPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [sessionLoading, setSessionLoading] = useState(true);
+  const [sessionReady, setSessionReady] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [passwordStrength, setPasswordStrength] = useState(0);
   const { theme } = useTheme();
   const { t } = useTranslation();
   const router = useRouter();
+
+  useEffect(() => {
+    let cancelled = false;
+
+    void (async () => {
+      const result = await bootstrapRecoverySession(supabase);
+      if (cancelled) return;
+
+      if (result.ok) {
+        setSessionReady(true);
+        setError(null);
+      } else {
+        setSessionReady(false);
+        setError(result.error);
+      }
+      setSessionLoading(false);
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const calculatePasswordStrength = (pwd: string): number => {
     let strength = 0;
@@ -87,8 +113,8 @@ export default function ResetPasswordPage() {
       return;
     }
 
-    if (passwordStrength < 33) {
-      setError("Password is too weak. Please use a stronger password");
+    if (!sessionReady) {
+      setError("Your reset session expired. Please request a new reset link.");
       setLoading(false);
       return;
     }
@@ -182,7 +208,7 @@ export default function ResetPasswordPage() {
               </div>
 
               {/* Error Message */}
-              {error && (
+              {error && sessionReady && !sessionLoading && (
                 <div className={`mb-6 p-4 rounded-xl text-sm border-l-4 flex items-start gap-3 animate-in fade-in slide-in-from-top-2 ${
                   theme === "dark"
                     ? "bg-red-500/10 border-red-500 text-red-300"
@@ -193,8 +219,27 @@ export default function ResetPasswordPage() {
                 </div>
               )}
 
-              {/* Success State */}
-              {success ? (
+              {/* Session bootstrap / invalid link */}
+              {sessionLoading ? (
+                <div className="space-y-4 py-6 text-center">
+                  <div className="mx-auto h-10 w-10 animate-spin rounded-full border-2 border-[#D4AF37] border-t-transparent" />
+                  <p className={cn("text-sm", theme === "dark" ? "text-gray-300" : "text-gray-600")}>
+                    Verifying your reset link…
+                  </p>
+                </div>
+              ) : !sessionReady ? (
+                <div className="space-y-6 text-center">
+                  <p className={cn("text-sm leading-relaxed", theme === "dark" ? "text-gray-300" : "text-gray-600")}>
+                    {error || "This reset link is invalid or has expired."}
+                  </p>
+                  <Button variant="gold" size="md" href="/forgot-password" className="w-full">
+                    Request a new reset link
+                  </Button>
+                  <Link href="/login" className="text-sm font-medium text-[#D4AF37] hover:underline">
+                    Back to login
+                  </Link>
+                </div>
+              ) : success ? (
                 <div className="space-y-6 text-center animate-in fade-in">
                   <div className={`p-6 rounded-xl border-2 ${
                     theme === "dark"
@@ -350,6 +395,7 @@ export default function ResetPasswordPage() {
 
                   {/* Submit Button */}
                   <Button
+                    type="submit"
                     variant="gold"
                     size="xl"
                     className="w-full !rounded-xl mt-7 transform hover:scale-105 transition-all duration-200 flex items-center justify-center gap-2 group"
@@ -373,7 +419,7 @@ export default function ResetPasswordPage() {
           </div>
 
           {/* Security Info */}
-          {!success && (
+          {!success && sessionReady && !sessionLoading && (
             <div className={`mt-8 p-4 rounded-xl border ${
               theme === "dark"
                 ? "border-white/10 bg-white/5"

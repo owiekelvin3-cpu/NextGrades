@@ -10,7 +10,8 @@ export function getAuthCallbackUrl() {
 }
 
 export function getPasswordResetRedirectUrl() {
-  return `${getAppUrl()}/reset-password`;
+  const next = encodeURIComponent("/reset-password");
+  return `${getAppUrl()}/auth/callback?next=${next}`;
 }
 
 export function getAuthConfigError(): string | null {

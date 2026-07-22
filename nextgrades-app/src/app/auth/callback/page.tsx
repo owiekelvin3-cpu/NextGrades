@@ -36,6 +36,12 @@ export default function AuthCallbackPage() {
           }
         }
 
+        const nextPath = params.get("next");
+        if (nextPath === "/reset-password") {
+          router.replace("/reset-password");
+          return;
+        }
+
         const {
           data: { session },
           error: sessionError,
