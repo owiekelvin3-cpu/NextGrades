@@ -1702,7 +1702,7 @@
     "title": "Abonnement abschließen",
     "backToPricing": "Zurück zu Preise",
     "secure": "Sicherer Checkout",
-    "cards": "Karte, PayPal & Überweisung",
+    "cards": "Sichere Kartenzahlung über Stripe",
     "payNow": "Jetzt bezahlen",
     "secureNote": "Zahlungen werden sicher über Stripe abgewickelt.",
     "failed": "Checkout fehlgeschlagen",

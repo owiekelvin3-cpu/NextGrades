@@ -10,8 +10,12 @@ function readPriceEnvMap(): Record<PlanKey, Record<BillingKey, string | undefine
       yearly: process.env.STRIPE_PRICE_GROUP_YEARLY,
     },
     premium: {
-      monthly: process.env.STRIPE_PRICE_INDIVIDUAL_MONTHLY,
-      yearly: process.env.STRIPE_PRICE_INDIVIDUAL_YEARLY,
+      monthly:
+        process.env.STRIPE_PRICE_PREMIUM_MONTHLY?.trim() ||
+        process.env.STRIPE_PRICE_INDIVIDUAL_MONTHLY?.trim(),
+      yearly:
+        process.env.STRIPE_PRICE_PREMIUM_YEARLY?.trim() ||
+        process.env.STRIPE_PRICE_INDIVIDUAL_YEARLY?.trim(),
     },
     resource: {
       monthly: process.env.STRIPE_PRICE_RESOURCE_MONTHLY,

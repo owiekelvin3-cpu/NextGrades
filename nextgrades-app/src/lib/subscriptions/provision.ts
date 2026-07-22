@@ -52,6 +52,10 @@ export async function provisionUserSubscription(
     profileUpdate.stripe_customer_id = input.stripeCustomerId;
   }
 
+  if (input.stripeSubscriptionId) {
+    profileUpdate.stripe_subscription_id = input.stripeSubscriptionId;
+  }
+
   const { error: profileError } = await admin.from("profiles").update(profileUpdate).eq("id", input.userId);
   if (profileError) throw profileError;
 

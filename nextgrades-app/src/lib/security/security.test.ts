@@ -102,6 +102,20 @@ describe("stripe price resolution", () => {
     if (result.ok) expect(result.priceId).toBe("price_group_yearly");
   });
 
+  it("resolves premium price from STRIPE_PRICE_PREMIUM env", () => {
+    vi.stubEnv("STRIPE_PRICE_PREMIUM_MONTHLY", "price_premium_monthly");
+    const result = resolveCheckoutStripePrice({ planId: "premium", billing: "monthly" });
+    expect(result.ok).toBe(true);
+    if (result.ok) expect(result.priceId).toBe("price_premium_monthly");
+  });
+
+  it("falls back to legacy STRIPE_PRICE_INDIVIDUAL env for premium", () => {
+    vi.stubEnv("STRIPE_PRICE_INDIVIDUAL_YEARLY", "price_individual_yearly");
+    const result = resolveCheckoutStripePrice({ planId: "premium", billing: "yearly" });
+    expect(result.ok).toBe(true);
+    if (result.ok) expect(result.priceId).toBe("price_individual_yearly");
+  });
+
   it("rejects unknown client price ids", () => {
     vi.stubEnv("STRIPE_PRICE_GROUP_MONTHLY", "price_server");
     expect(isApprovedStripePriceId("price_unknown")).toBe(false);

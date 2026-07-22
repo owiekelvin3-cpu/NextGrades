@@ -1715,7 +1715,7 @@
     "title": "Complete your subscription",
     "backToPricing": "Back to pricing",
     "secure": "Secure checkout",
-    "cards": "Card, PayPal & bank transfer",
+    "cards": "Secure card payment via Stripe",
     "payNow": "Pay now",
     "secureNote": "Payments are processed securely via Stripe.",
     "failed": "Checkout failed",

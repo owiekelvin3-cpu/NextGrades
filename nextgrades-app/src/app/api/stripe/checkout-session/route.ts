@@ -81,6 +81,20 @@ export async function POST(request: Request) {
       mode: productType === "subscription" ? "subscription" : "payment",
       success_url: `${appUrl}/checkout/success?plan=${plan}&billing=${resolvedBilling}`,
       cancel_url: `${appUrl}/pricing`,
+      ...(productType === "subscription"
+        ? {
+            subscription_data: {
+              metadata: {
+                userId,
+                planId: plan,
+                billing: resolvedBilling,
+                subjectId: resolvedSubjectId,
+                classId: resolvedClassId,
+                semester: semester ? String(semester) : "",
+              },
+            },
+          }
+        : {}),
       metadata: {
         userId,
         productType: productType || "",

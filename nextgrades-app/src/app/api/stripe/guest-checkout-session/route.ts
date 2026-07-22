@@ -52,6 +52,16 @@ export async function POST(request: Request) {
       line_items: [{ price: priceId, quantity: 1 }],
       mode: "subscription",
       customer_email: customerEmail?.trim() || undefined,
+      subscription_data: {
+        metadata: {
+          guestCheckout: "true",
+          planId: plan,
+          billing: resolvedBilling,
+          subjectId: catalog.subjectId ?? "",
+          classId: catalog.classId ?? "",
+          semester: semester ? String(semester) : "",
+        },
+      },
       success_url: `${appUrl}/checkout/account-setup?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${appUrl}/checkout?${new URLSearchParams({
         plan: rawPlanId === "library" ? "library" : plan,

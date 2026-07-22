@@ -14,6 +14,13 @@ import {
 import { formatCurrency } from "@/lib/email/utils";
 import { provisionUserSubscription } from "@/lib/subscriptions/provision";
 import { upsertGuestPaymentFromStripeSession } from "@/lib/guest-account-requests/stripe-sync";
+import {
+  fetchSubscriptionPeriodEnd,
+  findProfileByStripeCustomer,
+  renewSubscriptionFromInvoice,
+  revokeSubscriptionAccess,
+  syncProfileFromStripeSubscription,
+} from "@/lib/stripe/subscription-sync";
 
 async function getUserEmail(userId: string): Promise<{ email: string | null; name: string | null }> {
   if (!isSupabaseServiceRoleConfigured()) return { email: null, name: null };
@@ -86,6 +93,8 @@ export async function POST(request: Request) {
                 ? session.subscription
                 : session.subscription?.id ?? null;
 
+            const subscriptionEndsAt = await fetchSubscriptionPeriodEnd(stripe, subscriptionId);
+
             await provisionUserSubscription(admin, {
               userId,
               planId,
@@ -95,6 +104,7 @@ export async function POST(request: Request) {
               semester,
               stripeCustomerId: customerId,
               stripeSubscriptionId: subscriptionId,
+              subscriptionEndsAt,
             });
           } else {
             const { data: userUnits } = await admin.from("user_units").select("*").eq("student_id", userId).single();
@@ -169,7 +179,12 @@ export async function POST(request: Request) {
             void notifyEnrollment({ studentId: userId, subjectName: courseName });
           }
         } else if (session.metadata?.guestCheckout === "true" && admin) {
-          await upsertGuestPaymentFromStripeSession(admin, session);
+          const subscriptionId =
+            typeof session.subscription === "string"
+              ? session.subscription
+              : session.subscription?.id ?? null;
+          const subscriptionEndsAt = await fetchSubscriptionPeriodEnd(stripe, subscriptionId);
+          await upsertGuestPaymentFromStripeSession(admin, session, { subscriptionEndsAt });
           const payerEmail = session.customer_details?.email ?? session.customer_email ?? "unknown";
           const subjectLabel = session.metadata?.subjectName || session.metadata?.subjectSlug || courseName;
           void sendAdminNotificationEmail(
@@ -188,6 +203,10 @@ export async function POST(request: Request) {
         const amount = (invoice.amount_paid ?? 0) / 100;
         const currency = (invoice.currency || "eur").toUpperCase();
 
+        if (admin) {
+          await renewSubscriptionFromInvoice(admin, stripe, invoice);
+        }
+
         if (customerEmail) {
           void sendPaymentReceiptEmail(
             customerEmail,
@@ -197,6 +216,32 @@ export async function POST(request: Request) {
             invoice.id,
             invoice.hosted_invoice_url ?? undefined
           );
+        }
+        break;
+      }
+
+      case "invoice.payment_failed": {
+        const invoice = event.data.object as Stripe.Invoice;
+        const customerId =
+          typeof invoice.customer === "string" ? invoice.customer : invoice.customer?.id ?? null;
+
+        if (customerId && admin) {
+          const profile = await findProfileByStripeCustomer(admin, customerId, stripe);
+          if (profile) {
+            await admin
+              .from("profiles")
+              .update({ subscription_status: "inactive", updated_at: new Date().toISOString() })
+              .eq("id", profile.id);
+
+            void createNotification({
+              userId: profile.id,
+              type: "warning",
+              category: "account",
+              title: "Payment failed",
+              message: "Your subscription payment could not be processed. Update your payment method to keep access.",
+              actionUrl: "/pricing",
+            });
+          }
         }
         break;
       }
@@ -218,74 +263,39 @@ export async function POST(request: Request) {
       }
 
       case "customer.subscription.deleted": {
-        // Subscription cancelled or lapsed - revoke access
         const subscription = event.data.object as Stripe.Subscription;
-        const customerId = typeof subscription.customer === "string"
-          ? subscription.customer
-          : subscription.customer?.id;
+        const customerId =
+          typeof subscription.customer === "string" ? subscription.customer : subscription.customer?.id;
 
         if (customerId && admin) {
-          // Find user by Stripe customer ID stored in profiles or via customer email
-          const stripeCustomer = await stripe!.customers.retrieve(customerId);
-          const customerEmail = !("deleted" in stripeCustomer) ? stripeCustomer.email : null;
+          const profile = await findProfileByStripeCustomer(admin, customerId, stripe);
 
-          if (customerEmail) {
-            const { data: profile } = await admin
-              .from("profiles")
-              .select("id, full_name")
-              .ilike("email", customerEmail)
-              .maybeSingle();
+          if (profile?.id) {
+            await revokeSubscriptionAccess(admin, profile.id);
 
-            if (profile?.id) {
-              await admin
-                .from("profiles")
-                .update({ subscription_status: "inactive", updated_at: new Date().toISOString() })
-                .eq("id", profile.id);
-
-              // Notify the user
-              const { notifyPaymentReceived } = await import("@/lib/notifications/triggers");
-              void createNotification({
-                userId: profile.id,
-                type: "warning",
-                category: "account",
-                title: "Subscription cancelled",
-                message: "Your subscription has ended. Renew to regain access to premium content.",
-                actionUrl: "/pricing",
-              });
-            }
+            void createNotification({
+              userId: profile.id,
+              type: "warning",
+              category: "account",
+              title: "Subscription cancelled",
+              message: "Your subscription has ended. Renew to regain access to premium content.",
+              actionUrl: "/pricing",
+            });
           }
         }
         break;
       }
 
       case "customer.subscription.updated": {
-        // Handle subscription paused or reactivated
         const subscription = event.data.object as Stripe.Subscription;
-        const customerId = typeof subscription.customer === "string"
-          ? subscription.customer
-          : subscription.customer?.id;
+        const customerId =
+          typeof subscription.customer === "string" ? subscription.customer : subscription.customer?.id;
 
         if (customerId && admin) {
-          const stripeCustomer = await stripe!.customers.retrieve(customerId);
-          const customerEmail = !("deleted" in stripeCustomer) ? stripeCustomer.email : null;
+          const profile = await findProfileByStripeCustomer(admin, customerId, stripe);
 
-          if (customerEmail) {
-            const { data: profile } = await admin
-              .from("profiles")
-              .select("id")
-              .ilike("email", customerEmail)
-              .maybeSingle();
-
-            if (profile?.id) {
-              const isActive = subscription.status === "active" || subscription.status === "trialing";
-              await admin
-                .from("profiles")
-                .update({
-                  subscription_status: isActive ? "active" : "inactive",
-                  updated_at: new Date().toISOString(),
-                })
-                .eq("id", profile.id);
-            }
+          if (profile?.id) {
+            await syncProfileFromStripeSubscription(admin, profile.id, subscription);
           }
         }
         break;

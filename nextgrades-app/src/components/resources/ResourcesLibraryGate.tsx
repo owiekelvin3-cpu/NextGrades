@@ -6,6 +6,8 @@ import { LoadingBlock } from "@/components/dashboard/LoadingBlock";
 import { ResourcesBibliothekExperience } from "@/components/resources/ResourcesBibliothekExperience";
 import { section } from "@/lib/premium/tokens";
 
+import { isSubscriptionCurrentlyActive } from "@/lib/subscriptions/types";
+
 type AccessState = "loading" | "granted" | "locked";
 
 async function resolveLibraryAccess(): Promise<AccessState> {
@@ -16,12 +18,19 @@ async function resolveLibraryAccess(): Promise<AccessState> {
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("subscription_status, role")
+    .select("subscription_status, subscription_ends_at, role")
     .eq("id", session.user.id)
     .maybeSingle();
 
   if (profile?.role === "admin" || profile?.role === "teacher") return "granted";
-  if (profile?.subscription_status === "active") return "granted";
+  if (
+    isSubscriptionCurrentlyActive({
+      subscription_status: profile?.subscription_status,
+      subscription_ends_at: profile?.subscription_ends_at,
+    })
+  ) {
+    return "granted";
+  }
 
   return "locked";
 }
