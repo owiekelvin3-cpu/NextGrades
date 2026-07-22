@@ -9,9 +9,20 @@ export function getAuthCallbackUrl() {
   return `${getAppUrl()}/auth/callback`;
 }
 
+/** Redirect target for Supabase action_link fallback (no query params — must match Supabase allow list). */
 export function getPasswordResetRedirectUrl() {
-  const next = encodeURIComponent("/reset-password");
-  return `${getAppUrl()}/auth/callback?next=${next}`;
+  return `${getAppUrl()}/reset-password`;
+}
+
+/** App-hosted setup link — avoids Supabase redirect URL / PKCE issues for admin invites and forgot-password. */
+export function buildAppPasswordSetupUrl(
+  hashedToken: string,
+  linkType: "recovery" | "invite" | "signup" = "recovery"
+): string {
+  const url = new URL("/reset-password", getAppUrl());
+  url.searchParams.set("token_hash", hashedToken);
+  url.searchParams.set("type", linkType);
+  return url.toString();
 }
 
 export function getAuthConfigError(): string | null {
@@ -38,6 +49,7 @@ export async function generateAuthLink(params: {
   }
 
   const admin = createAdminClient();
+  const redirectTo = params.redirectTo ?? getPasswordResetRedirectUrl();
   const linkParams =
     params.type === "signup"
       ? {
@@ -46,7 +58,7 @@ export async function generateAuthLink(params: {
           password: params.password!,
           options: {
             data: params.metadata,
-            redirectTo: params.redirectTo ?? getAuthCallbackUrl(),
+            redirectTo,
           },
         }
       : {
@@ -54,7 +66,7 @@ export async function generateAuthLink(params: {
           email: params.email,
           options: {
             data: params.metadata,
-            redirectTo: params.redirectTo ?? getAuthCallbackUrl(),
+            redirectTo,
           },
         };
 
@@ -64,9 +76,47 @@ export async function generateAuthLink(params: {
     return { actionLink: null, userId: null, error: error.message };
   }
 
+  const hashedToken = data.properties?.hashed_token;
+  if (
+    hashedToken &&
+    (params.type === "recovery" || params.type === "invite" || params.type === "signup")
+  ) {
+    return {
+      actionLink: buildAppPasswordSetupUrl(hashedToken, params.type),
+      userId: data.user?.id ?? null,
+      error: null,
+    };
+  }
+
   return {
     actionLink: data.properties?.action_link ?? null,
     userId: data.user?.id ?? null,
     error: null,
   };
+}
+
+const RECOVERY_LINK_RETRY_MS = 400;
+
+/** Recovery link right after createUser can race auth replication — retry briefly. */
+export async function generateRecoveryLinkForEmail(email: string) {
+  const maxAttempts = 3;
+  let lastError: string | null = null;
+
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    const result = await generateAuthLink({
+      type: "recovery",
+      email,
+      redirectTo: getPasswordResetRedirectUrl(),
+    });
+
+    if (result.actionLink && !result.error) return result;
+
+    lastError = result.error;
+    const retryable = lastError?.toLowerCase().includes("not found");
+    if (!retryable || attempt === maxAttempts - 1) break;
+
+    await new Promise((resolve) => setTimeout(resolve, RECOVERY_LINK_RETRY_MS * (attempt + 1)));
+  }
+
+  return { actionLink: null, userId: null, error: lastError ?? "Failed to generate reset link" };
 }

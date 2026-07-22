@@ -1,7 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { emailExists, normalizeEmail, EMAIL_REGEX } from "@/lib/auth/registration";
 import { generateTemporaryPassword } from "@/lib/auth/generate-temp-password";
-import { generateAuthLink, getPasswordResetRedirectUrl } from "@/lib/auth/auth-links";
+import { generateRecoveryLinkForEmail } from "@/lib/auth/auth-links";
 import { ensureRoleProfile } from "@/lib/auth/profile-setup";
 import { sendAccountInvitationEmail } from "@/lib/email";
 import { provisionUserSubscription } from "@/lib/subscriptions/provision";
@@ -130,11 +130,7 @@ export async function fulfillGuestAccountRequest(
       subscriptionEndsAt: row.subscription_ends_at,
     });
 
-    const { actionLink, error: linkError } = await generateAuthLink({
-      type: "recovery",
-      email,
-      redirectTo: getPasswordResetRedirectUrl(),
-    });
+    const { actionLink, error: linkError } = await generateRecoveryLinkForEmail(email);
 
     if (linkError || !actionLink) {
       throw new Error(linkError || "Einladungslink konnte nicht erstellt werden.");

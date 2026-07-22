@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { normalizeEmail, EMAIL_REGEX } from "@/lib/auth/registration";
-import { findUserByEmail, generateAuthLink, getAuthConfigError, getPasswordResetRedirectUrl } from "@/lib/auth/auth-links";
+import { findUserByEmail, generateRecoveryLinkForEmail, getAuthConfigError } from "@/lib/auth/auth-links";
 import { isResendConfigured, sendPasswordResetEmail } from "@/lib/email";
 import { enforceRateLimit } from "@/lib/security/rate-limit";
 import { verifyTurnstileToken } from "@/lib/security/turnstile";
@@ -52,11 +52,7 @@ export async function POST(request: Request) {
       });
     }
 
-    const { actionLink, error } = await generateAuthLink({
-      type: "recovery",
-      email,
-      redirectTo: getPasswordResetRedirectUrl(),
-    });
+    const { actionLink, error } = await generateRecoveryLinkForEmail(email);
 
     if (error || !actionLink) {
       return NextResponse.json({ error: error || "Failed to generate reset link" }, { status: 500 });

@@ -37,7 +37,8 @@ export default function AuthCallbackPage() {
         }
 
         const nextPath = params.get("next");
-        if (nextPath === "/reset-password") {
+        const flowType = params.get("type");
+        if (nextPath === "/reset-password" || flowType === "recovery" || flowType === "invite") {
           router.replace("/reset-password");
           return;
         }
