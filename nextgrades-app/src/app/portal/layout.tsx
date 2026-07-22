@@ -8,10 +8,12 @@ import PageTransition from "@/components/PageTransition";
 import { AdminPortalGuard } from "@/components/admin/AdminPortalGuard";
 import { AdminErrorBoundary } from "@/components/admin/AdminErrorBoundary";
 import { ADMIN_PORTAL_LOGIN } from "@/lib/admin/portal-paths";
+import { useAdminPortalDarkTheme } from "@/hooks/useAdminPortalDarkTheme";
 
 function PortalLayoutInner({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isLogin = pathname === ADMIN_PORTAL_LOGIN;
+  useAdminPortalDarkTheme(true);
 
   if (isLogin) {
     return <>{children}</>;

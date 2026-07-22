@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 import { ChevronRight, Search } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { NotificationBell } from "@/components/notifications/NotificationBell";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import { resolveAdminBreadcrumbs } from "@/lib/admin/admin-breadcrumbs";
 import { appShell } from "@/lib/theme/shell";
 import { cn } from "@/lib/utils";
@@ -26,7 +25,7 @@ export function AdminTopBar() {
                 <ChevronRight className="h-3.5 w-3.5 shrink-0 text-text-muted/60" aria-hidden />
               ) : null}
               {isLast ? (
-                <span className="truncate font-semibold text-[var(--brand-navy)] dark:text-foreground">{t(crumb.labelKey)}</span>
+                <span className="truncate font-semibold text-foreground">{t(crumb.labelKey)}</span>
               ) : (
                 <Link
                   href={crumb.href}
@@ -53,7 +52,6 @@ export function AdminTopBar() {
         </Link>
 
         <NotificationBell />
-        <ThemeToggle size="sm" />
       </div>
     </header>
   );

@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { CheckCircle2, Eye, EyeOff, Shield } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { useTheme } from "@/context/ThemeContext";
 import { BrandLogo } from "@/components/BrandLogo";
 import {
   AuthField,
@@ -35,8 +34,7 @@ function AdminPortalLoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { t } = useTranslation();
-  const { theme } = useTheme();
-  const s = authSurface(theme === "dark");
+  const s = authSurface(true);
   const heroImage = useMarketingHeroImage();
 
   const redirectTo = sanitizeRedirect(searchParams.get("redirect")) ?? ADMIN_PORTAL_HOME;

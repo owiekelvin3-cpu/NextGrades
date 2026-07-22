@@ -21,7 +21,7 @@ export const appShell = {
     "admin-dashboard-main flex-1 overflow-y-auto overflow-x-hidden p-4 sm:p-6 lg:p-8",
   adminEyebrow:
     "inline-flex items-center gap-1.5 rounded-md border-l-[3px] border-[var(--brand-gold)] bg-[var(--brand-navy)] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--brand-gold)]",
-  adminPageTitle: "text-2xl font-bold tracking-tight text-[var(--brand-navy)] dark:text-foreground sm:text-3xl",
+  adminPageTitle: "text-2xl font-bold tracking-tight text-foreground sm:text-3xl",
   adminPageDescription: "mt-1.5 max-w-2xl text-sm leading-relaxed text-text-muted sm:text-base",
   dashboardHeader:
     "sticky top-0 z-30 border-b border-border-default/80 bg-surface-elevated/95 backdrop-blur-sm",

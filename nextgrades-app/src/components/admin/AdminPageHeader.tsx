@@ -33,7 +33,7 @@ export function AdminPageHeader({
             {showBack ? (
               <Link
                 href={ADMIN_PORTAL_HOME}
-                className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-border-default bg-surface-elevated text-[var(--brand-navy)] shadow-sm transition-colors hover:border-[var(--brand-gold)]/40 hover:bg-surface-muted md:hidden dark:text-foreground"
+                className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-border-default bg-surface-elevated text-foreground shadow-sm transition-colors hover:border-[var(--brand-gold)]/40 hover:bg-surface-muted md:hidden"
                 aria-label={t("adminHub.backToOverview")}
               >
                 <ArrowLeft className="h-4 w-4" />

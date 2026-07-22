@@ -47,7 +47,7 @@ export function MobileMenuSheet({ open, onClose, role }: Props) {
       footer={
         <div className="space-y-4">
           <LanguageSwitcher layout="drawer" />
-          <ThemeToggle variant="full" />
+          {role !== "admin" ? <ThemeToggle variant="full" /> : null}
           <Link
             href="/"
             onClick={onClose}
