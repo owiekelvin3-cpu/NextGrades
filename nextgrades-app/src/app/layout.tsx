@@ -98,8 +98,8 @@ export default async function RootLayout({
         />
         {supabaseHost && (
           <>
-            <link rel="preconnect" href={supabaseHost} crossOrigin="anonymous" />
-            <link rel="dns-prefetch" href={supabaseHost} />
+            <link key="supabase-preconnect" rel="preconnect" href={supabaseHost} crossOrigin="anonymous" />
+            <link key="supabase-dns-prefetch" rel="dns-prefetch" href={supabaseHost} />
           </>
         )}
       </head>

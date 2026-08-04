@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createServerReadClient } from "@/lib/supabase/admin";
+import { filterCatalogClasses } from "@/lib/catalog/classes";
 import { enrichSubject, type CatalogSubjectRow } from "@/lib/catalog/subjects";
 
 export async function GET() {
@@ -38,7 +39,7 @@ export async function GET() {
 
     return NextResponse.json({
       subjects: subjectRows.map(enrichSubject),
-      classes: classes ?? [],
+      classes: filterCatalogClasses(classes ?? []),
       semesters: [
         { value: 1, label: "Semester 1" },
         { value: 2, label: "Semester 2" },

@@ -15,6 +15,10 @@ export const appShell = {
   sectionAlt: "bg-surface-muted",
   sectionSubtle: "bg-surface-subtle",
   dashboardShell: "admin-portal flex h-full min-h-0 max-h-[100dvh] overflow-hidden bg-surface-dashboard text-foreground",
+  studentDashboardShell:
+    "student-portal flex h-full min-h-0 max-h-[100dvh] overflow-hidden bg-surface-dashboard text-foreground",
+  teacherDashboardShell:
+    "admin-portal flex h-full min-h-0 max-h-[100dvh] overflow-hidden bg-surface-dashboard text-foreground",
   adminTopBar:
     "sticky top-0 z-20 hidden h-14 shrink-0 items-center gap-4 border-b border-border-default bg-surface-elevated px-4 sm:px-6 md:flex lg:px-8",
   adminMain:

@@ -94,7 +94,7 @@ function CheckoutContent() {
         return;
       }
       if (data.url) {
-        window.location.href = data.url;
+        globalThis.location.assign(data.url);
       }
     } catch {
       toast.error(t("checkout.failed", { defaultValue: "Checkout failed" }));

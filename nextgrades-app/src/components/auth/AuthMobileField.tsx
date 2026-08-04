@@ -1,8 +1,10 @@
 "use client";
 
+import { AnimatePresence, motion } from "framer-motion";
 import { useTheme } from "@/context/ThemeContext";
 import { theme as th } from "@/lib/theme/tokens";
 import { cn } from "@/lib/utils";
+import { authFadeUp, AUTH_EASE } from "@/components/auth/auth-motion";
 
 type Props = {
   id: string;
@@ -32,11 +34,11 @@ export function AuthMobileField({
   const isDark = theme === "dark";
 
   return (
-    <div className="space-y-2">
+    <motion.div variants={authFadeUp} className="space-y-2">
       <label htmlFor={id} className={cn("text-sm font-medium", isDark ? "text-gray-300" : "text-[#374151]")}>
         {label}
       </label>
-      <div className="relative">
+      <div className="group relative">
         <input
           id={id}
           type={type}
@@ -45,18 +47,31 @@ export function AuthMobileField({
           placeholder={placeholder}
           autoComplete={autoComplete}
           className={cn(
-            "w-full rounded-xl border px-4 py-3.5 text-sm transition focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/25",
+            "w-full rounded-xl border px-4 py-3.5 text-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/25",
             trailing && "pr-12",
             isDark
-              ? "border-white/15 bg-[#0D1B2A]/50 text-white placeholder:text-gray-500 focus:border-[#D4AF37]/50"
+              ? "border-white/15 bg-[#0D1B2A]/50 text-white placeholder:text-gray-500 focus:border-[#D4AF37]/50 focus:bg-[#0D1B2A]/70"
               : "border-gray-200 bg-white text-[#0D1B2A] placeholder:text-gray-400 focus:border-[#D4AF37]",
-            error && "border-red-400"
+            error && "border-red-400",
+            "group-focus-within:shadow-[0_0_0_1px_rgba(212,175,55,0.15)]"
           )}
         />
         {trailing}
       </div>
-      {error && <p className="text-xs text-red-500">{error}</p>}
-    </div>
+      <AnimatePresence mode="wait">
+        {error ? (
+          <motion.p
+            key={error}
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            className="text-xs text-red-500"
+          >
+            {error}
+          </motion.p>
+        ) : null}
+      </AnimatePresence>
+    </motion.div>
   );
 }
 
@@ -76,10 +91,13 @@ export function AuthMobilePrimaryButton({
   onClick?: () => void;
 }) {
   return (
-    <button
+    <motion.button
       type={type}
       onClick={onClick}
       disabled={disabled || loading}
+      whileHover={disabled || loading ? undefined : { y: -2 }}
+      whileTap={disabled || loading ? undefined : { scale: 0.98, y: 0 }}
+      transition={{ duration: 0.2, ease: AUTH_EASE }}
       className={cn(
         "theme-btn-interaction w-full rounded-xl px-4 py-3.5 text-sm font-bold uppercase tracking-wide",
         variant === "gold" ? th.btnGold : th.btnDark,
@@ -91,7 +109,7 @@ export function AuthMobilePrimaryButton({
       ) : (
         children
       )}
-    </button>
+    </motion.button>
   );
 }
 

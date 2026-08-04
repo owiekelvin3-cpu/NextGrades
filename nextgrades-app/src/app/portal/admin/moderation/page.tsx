@@ -16,13 +16,20 @@ type ModerationItem = {
   id: string;
   title: string;
   description: string | null;
+  short_description?: string | null;
   type: string;
-  url: string;
+  content_type?: string | null;
+  url: string | null;
+  storage_path?: string | null;
   moderation_status: string;
   access_type: string;
+  is_premium?: boolean;
+  price?: number | string | null;
   created_at: string;
-  profiles?: { full_name: string | null };
+  author?: { full_name: string | null } | null;
   category?: { name: string } | null;
+  subject?: { name: string } | null;
+  class?: { name: string } | null;
 };
 
 const FILTERS = ["pending", "approved", "rejected"] as const;
@@ -34,13 +41,21 @@ export default function AdminModerationPage() {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<(typeof FILTERS)[number]>("pending");
   const [acting, setActing] = useState<string | null>(null);
+  const [loadError, setLoadError] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
+    setLoadError(null);
     try {
       const res = await fetch(`/api/admin/moderation?status=${filter}`);
-      if (res.ok) setItems(await res.json());
-      else setItems([]);
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to load moderation queue");
+      }
+      setItems(Array.isArray(data) ? data : []);
+    } catch (e) {
+      setItems([]);
+      setLoadError(e instanceof Error ? e.message : "Failed to load moderation queue");
     } finally {
       setLoading(false);
     }
@@ -90,6 +105,12 @@ export default function AdminModerationPage() {
         ))}
       </div>
 
+      {loadError && (
+        <Card hoverable={false} className="mb-4 border-l-4 border-red-500 p-4">
+          <p className="text-sm text-red-600">{loadError}</p>
+        </Card>
+      )}
+
       {loading ? (
         <LoadingBlock />
       ) : items.length === 0 ? (
@@ -108,26 +129,32 @@ export default function AdminModerationPage() {
                 <div className="min-w-0 flex-1">
                   <div className="mb-2 flex flex-wrap items-center gap-2">
                     <h3 className="font-bold text-foreground">{item.title}</h3>
-                    <Badge variant="gold">{item.type}</Badge>
-                    <Badge>{item.access_type}</Badge>
+                    <Badge variant="gold">{item.content_type || item.type}</Badge>
+                    <Badge variant={item.access_type === "premium" ? "warning" : "success"}>
+                      {item.access_type === "premium" ? "Premium" : "Free"}
+                    </Badge>
                   </div>
-                  {item.description && (
-                    <p className="mb-2 line-clamp-2 text-sm text-text-muted">{item.description}</p>
+                  {(item.short_description || item.description) && (
+                    <p className="mb-2 line-clamp-2 text-sm text-text-muted">
+                      {item.short_description || item.description}
+                    </p>
                   )}
                   <p className="text-xs text-text-muted">
-                    {item.profiles?.full_name ?? "Teacher"} ·{" "}
-                    {item.category?.name ?? "Uncategorized"} ·{" "}
-                    {new Date(item.created_at).toLocaleDateString()}
+                    {item.author?.full_name ?? "Teacher"} ·{" "}
+                    {[item.subject?.name, item.class?.name].filter(Boolean).join(" · ") ||
+                      item.category?.name ||
+                      "Uncategorized"}{" "}
+                    · {new Date(item.created_at).toLocaleDateString()}
                   </p>
                 </div>
                 <div className="flex shrink-0 flex-wrap gap-2">
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => window.open(item.url, "_blank", "noopener,noreferrer")}
+                    href={`/portal/admin/resources/${item.id}/edit`}
                   >
                     <ExternalLink className="mr-1 h-4 w-4" />
-                    Preview
+                    Review
                   </Button>
                   {filter === "pending" && (
                     <>

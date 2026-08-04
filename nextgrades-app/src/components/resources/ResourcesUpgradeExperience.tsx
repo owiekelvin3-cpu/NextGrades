@@ -19,6 +19,7 @@ import { hero, section } from "@/lib/premium/tokens";
 import { theme as th } from "@/lib/theme/tokens";
 import { useMarketingTheme } from "@/lib/marketing-theme";
 import { themeSelectClass } from "@/lib/theme/form-fields";
+import { MAX_CLASS_LEVEL } from "@/lib/catalog/classes";
 import { cn } from "@/lib/utils";
 
 type LocalizedPlan = {
@@ -34,8 +35,6 @@ type LocalizedPlan = {
 type FaqItem = { question: string; answer: string };
 type MarketingSubjectItem = { id: string; title: string };
 type CatalogClass = { id: string; name: string; level: number };
-
-const MAX_GRADE_LEVEL = 9;
 
 function ResourcesUpgradeExperienceInner() {
   const mt = useMarketingTheme();
@@ -73,10 +72,10 @@ function ResourcesUpgradeExperienceInner() {
 
   const gradeOptions = useMemo(() => {
     const fromCatalog = catalogClasses
-      .filter((c) => c.level >= 1 && c.level <= MAX_GRADE_LEVEL)
+      .filter((c) => c.level >= 1 && c.level <= MAX_CLASS_LEVEL)
       .sort((a, b) => a.level - b.level);
     if (fromCatalog.length > 0) return fromCatalog;
-    return Array.from({ length: MAX_GRADE_LEVEL }, (_, i) => ({
+    return Array.from({ length: MAX_CLASS_LEVEL }, (_, i) => ({
       id: `grade-${i + 1}`,
       name: t("resources.upgrade.gradeOption", { grade: i + 1 }),
       level: i + 1,

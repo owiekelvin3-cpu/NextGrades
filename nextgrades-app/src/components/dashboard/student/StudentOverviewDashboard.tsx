@@ -17,6 +17,7 @@ import { useTranslation } from "react-i18next";
 import { getDateLocale } from "@/lib/i18n/locales";
 import { useSearchParams } from "next/navigation";
 import { useToast } from "@/context/ToastContext";
+import { motion } from "framer-motion";
 import { LoadingBlock } from "@/components/dashboard/LoadingBlock";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
@@ -27,15 +28,14 @@ import {
   type StudentOverviewData,
 } from "@/lib/dashboard/student-overview";
 import { StudentDashboardLayout } from "./StudentDashboardLayout";
-import { StudentWelcomeHeader } from "./StudentWelcomeHeader";
+import { StudentHeroBand } from "./StudentHeroBand";
 import { StudentQuickNav } from "./StudentQuickNav";
 import { StudentMobileDashboard } from "./StudentMobileDashboard";
+import { StudentKpiCard, StudentKpiStrip } from "./StudentKpiCard";
+import { StudentPanel } from "./StudentPanel";
 import { formatTimeRange, lessonDateParts, st } from "./student-ui";
-import {
-  OverviewStatCard,
-  OverviewPanel,
-} from "@/components/dashboard/overview/OverviewPrimitives";
-import { SwipeableCardRow, SwipeableCard } from "@/components/mobile/SwipeableCardRow";
+import { studentStaggerContainer, studentStaggerItem } from "./student-motion";
+import { OverviewEmptyState } from "@/components/dashboard/overview/OverviewPrimitives";
 import { cn } from "@/lib/utils";
 import { ZoomMeetingButton } from "@/components/zoom/ZoomMeetingButton";
 
@@ -51,7 +51,13 @@ function ProgressSparkline({ values }: { values: number[] }) {
     .join(" ");
   return (
     <svg viewBox="0 0 80 32" className="h-7 w-16" aria-hidden>
-      <polyline fill="none" stroke="#D4AF37" strokeWidth="2" strokeLinecap="round" points={points} />
+      <polyline
+        fill="none"
+        stroke="var(--brand-gold)"
+        strokeWidth="2"
+        strokeLinecap="round"
+        points={points}
+      />
     </svg>
   );
 }
@@ -91,7 +97,7 @@ export function StudentOverviewDashboard() {
     return (
       <StudentDashboardLayout title={title}>
         <div className={`${st.panel} mx-auto max-w-md p-10 text-center`}>
-          <GraduationCap className="mx-auto mb-4 h-12 w-12 text-[#D4AF37]" />
+          <GraduationCap className="mx-auto mb-4 h-12 w-12 text-[var(--brand-gold)]" />
           <p className={st.textMuted}>{t("studentDashboard.signInRequired")}</p>
           <Button variant="gold" size="md" href="/login" className="mt-6">
             {t("common.login")}
@@ -114,121 +120,128 @@ export function StudentOverviewDashboard() {
       })
     : t("studentDashboard.noAppointments");
 
+  const nextLessonCta = data.nextLesson
+    ? new Date(data.nextLesson.start_time).toLocaleDateString(dateLocale, {
+        day: "numeric",
+        month: "short",
+        hour: "2-digit",
+        minute: "2-digit",
+      })
+    : undefined;
+
   return (
     <StudentDashboardLayout title={title} suppressMobileTitle hideTopBar>
       <StudentMobileDashboard data={data} firstName={firstName} dateLocale={dateLocale} />
 
-      <div className="hidden md:flex content-ready mx-auto max-w-6xl flex-col gap-6 md:gap-8">
-        <StudentWelcomeHeader
-          firstName={firstName}
-          learningGoal={data.learningGoal}
-          dateLocale={dateLocale}
-        />
+      <motion.div
+        className="hidden md:flex content-ready mx-auto max-w-6xl flex-col gap-6 md:gap-8"
+        variants={studentStaggerContainer}
+        initial="hidden"
+        animate="show"
+      >
+        <motion.div variants={studentStaggerItem}>
+          <StudentHeroBand
+            firstName={firstName}
+            learningGoal={data.learningGoal}
+            dateLocale={dateLocale}
+            overallProgress={data.overallProgress}
+            nextLessonLabel={nextLessonCta}
+          />
+        </motion.div>
 
-        <StudentQuickNav openTaskCount={data.openTaskCount} appointmentHint={appointmentHint} />
+        <motion.div variants={studentStaggerItem}>
+          <StudentQuickNav openTaskCount={data.openTaskCount} appointmentHint={appointmentHint} />
+        </motion.div>
 
-        <section>
-          <SwipeableCardRow desktopCols={4}>
-            <SwipeableCard>
-              <OverviewStatCard
-                label={t("studentDashboard.remainingUnits")}
-                value={
-                  data.units
-                    ? t("studentDashboard.unitsOf", { remaining: unitsRemaining, total: unitsTotal })
-                    : "-"
-                }
-                href="/pricing"
-                icon={Target}
-                iconClassName={st.statIconGold}
-                footer={
-                  data.units ? (
-                    <div className={st.progressTrack}>
-                      <div className={st.progressBar} style={{ width: `${unitsPercent}%` }} />
-                    </div>
-                  ) : undefined
-                }
-              />
-            </SwipeableCard>
-
-            <SwipeableCard>
-              <OverviewStatCard
-                label={t("studentDashboard.nextAppointment")}
-                value={
-                  data.nextLesson
-                    ? new Date(data.nextLesson.start_time).toLocaleDateString(dateLocale, {
-                        day: "numeric",
-                        month: "short",
-                      })
-                    : "-"
-                }
-                href="/dashboard/student/appointments"
-                icon={Calendar}
-                iconClassName={st.statIconGold}
-                footer={
-                  data.nextLesson ? (
-                    <p className={cn("text-xs", st.textMuted)}>
-                      {formatTimeRange(data.nextLesson.start_time, data.nextLesson.duration, dateLocale)} ·{" "}
-                      {data.nextLesson.subject_name}
-                    </p>
-                  ) : (
-                    <p className={cn("text-xs", st.textMuted)}>{t("studentDashboard.noAppointments")}</p>
-                  )
-                }
-              />
-            </SwipeableCard>
-
-            <SwipeableCard>
-              <OverviewStatCard
-                label={t("studentDashboard.totalProgress")}
-                value={`${data.overallProgress}%`}
-                href="/dashboard/student/progress"
-                icon={TrendingUp}
-                iconClassName={st.statIconGold}
-                footer={
-                  <div className="flex items-center justify-between gap-2">
-                    <p className={cn("text-xs", st.textMuted)}>
-                      {t("studentDashboard.progressKeepGoing", { defaultValue: "Weiter so!" })}
-                    </p>
-                    <ProgressSparkline values={data.progressSparkline} />
+        <motion.section variants={studentStaggerItem}>
+          <StudentKpiStrip>
+            <StudentKpiCard
+              label={t("studentDashboard.remainingUnits")}
+              value={
+                data.units
+                  ? t("studentDashboard.unitsOf", { remaining: unitsRemaining, total: unitsTotal })
+                  : "-"
+              }
+              href="/pricing"
+              icon={Target}
+              footer={
+                data.units ? (
+                  <div className={st.progressTrack}>
+                    <div className={st.progressBar} style={{ width: `${unitsPercent}%` }} />
                   </div>
-                }
-              />
-            </SwipeableCard>
-
-            <SwipeableCard>
-              <OverviewStatCard
-                label={t("studentDashboard.openTasks")}
-                value={data.openTaskCount}
-                href="/dashboard/student/quizzes"
-                icon={ListChecks}
-                iconClassName={st.statIconGold}
-                footer={
+                ) : undefined
+              }
+            />
+            <StudentKpiCard
+              label={t("studentDashboard.nextAppointment")}
+              value={
+                data.nextLesson
+                  ? new Date(data.nextLesson.start_time).toLocaleDateString(dateLocale, {
+                      day: "numeric",
+                      month: "short",
+                    })
+                  : "-"
+              }
+              href="/dashboard/student/appointments"
+              icon={Calendar}
+              accent="navy"
+              footer={
+                data.nextLesson ? (
                   <p className={cn("text-xs", st.textMuted)}>
-                    {data.openTaskCount === 0
-                      ? t("studentDashboard.noOpenTasks")
-                      : t("studentDashboard.tasksWaitingDesc", { defaultValue: "Aufgaben warten auf dich" })}
+                    {formatTimeRange(data.nextLesson.start_time, data.nextLesson.duration, dateLocale)} ·{" "}
+                    {data.nextLesson.subject_name}
                   </p>
-                }
-              />
-            </SwipeableCard>
-          </SwipeableCardRow>
-        </section>
+                ) : (
+                  <p className={cn("text-xs", st.textMuted)}>{t("studentDashboard.noAppointments")}</p>
+                )
+              }
+            />
+            <StudentKpiCard
+              label={t("studentDashboard.totalProgress")}
+              value={`${data.overallProgress}%`}
+              href="/dashboard/student/progress"
+              icon={TrendingUp}
+              accent="emerald"
+              footer={
+                <div className="flex items-center justify-between gap-2">
+                  <p className={cn("text-xs", st.textMuted)}>{t("studentDashboard.progressKeepGoing")}</p>
+                  <ProgressSparkline values={data.progressSparkline} />
+                </div>
+              }
+            />
+            <StudentKpiCard
+              label={t("studentDashboard.openTasks")}
+              value={data.openTaskCount}
+              href="/dashboard/student/quizzes"
+              icon={ListChecks}
+              accent="violet"
+              footer={
+                <p className={cn("text-xs", st.textMuted)}>
+                  {data.openTaskCount === 0
+                    ? t("studentDashboard.noOpenTasks")
+                    : t("studentDashboard.tasksWaitingDesc", { defaultValue: "Tasks waiting for you" })}
+                </p>
+              }
+            />
+          </StudentKpiStrip>
+        </motion.section>
 
-        <div className="grid gap-5 lg:grid-cols-5">
-          <OverviewPanel
+        <motion.div variants={studentStaggerItem} className="grid gap-5 lg:grid-cols-5">
+          <StudentPanel
             className="lg:col-span-3"
             title={t("studentDashboard.upcomingAppointments")}
             href="/dashboard/student/appointments"
             linkLabel={t("studentDashboard.showAllAppointments")}
+            icon={Calendar}
             noPadding
           >
             {data.lessons.length === 0 ? (
-              <div className="px-5 py-12 text-center">
-                <p className={st.empty}>{t("studentDashboard.noAppointments")}</p>
-                <Button variant="gold" size="sm" href="/consultation" className="mt-4">
-                  {t("studentDashboard.bookConsultation")}
-                </Button>
-              </div>
+              <OverviewEmptyState
+                icon={Calendar}
+                title={t("studentDashboard.noAppointments")}
+                actionHref="/consultation"
+                actionLabel={t("studentDashboard.bookConsultation")}
+              />
             ) : (
               <ul className="divide-y divide-border-default">
                 {data.lessons.slice(0, 4).map((lesson) => {
@@ -244,7 +257,9 @@ export function StudentOverviewDashboard() {
                       <div className="flex min-w-0 flex-1 items-center gap-4">
                         <div className={cn(st.dateBadge, parts.isToday && st.dateBadgeToday)}>
                           <span className={st.dateDay}>{parts.day}</span>
-                          <span className="text-[10px] font-bold uppercase text-[#D4AF37]">{parts.month}</span>
+                          <span className="text-[10px] font-bold uppercase text-[var(--brand-gold)]">
+                            {parts.month}
+                          </span>
                         </div>
                         <div className="min-w-0">
                           <p className={cn("font-semibold", st.textPrimary)}>{lesson.subject_name}</p>
@@ -265,7 +280,12 @@ export function StudentOverviewDashboard() {
                       </div>
                       <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center">
                         {lesson.zoom_meeting_id || lesson.zoom_link ? (
-                          <ZoomMeetingButton lessonId={lesson.id} mode="join" size="sm" className="w-full justify-center sm:w-auto" />
+                          <ZoomMeetingButton
+                            lessonId={lesson.id}
+                            mode="join"
+                            size="sm"
+                            className="w-full justify-center sm:w-auto"
+                          />
                         ) : (
                           <span className={cn("text-xs", st.textSubtle)}>{t("studentDashboard.noZoomLink")}</span>
                         )}
@@ -275,13 +295,14 @@ export function StudentOverviewDashboard() {
                 })}
               </ul>
             )}
-          </OverviewPanel>
+          </StudentPanel>
 
-          <OverviewPanel
+          <StudentPanel
             className="lg:col-span-2"
             title={t("studentDashboard.nav.notifications")}
             href="/dashboard/notifications"
-            linkLabel={t("studentDashboard.showAll", { defaultValue: "Alle" })}
+            linkLabel={t("studentDashboard.showAll", { defaultValue: "All" })}
+            icon={Bell}
             noPadding
           >
             {data.notifications.length === 0 ? (
@@ -297,8 +318,8 @@ export function StudentOverviewDashboard() {
                         !n.is_read && st.unreadBg
                       )}
                     >
-                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-surface-subtle">
-                        <Bell className="h-4 w-4 text-text-muted" />
+                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[var(--brand-gold-muted)]">
+                        <Bell className="h-4 w-4 text-[var(--brand-gold)]" />
                       </div>
                       <div className="min-w-0 flex-1">
                         <p className={cn("text-sm", !n.is_read && "font-semibold", st.textPrimary)}>{n.title}</p>
@@ -311,14 +332,15 @@ export function StudentOverviewDashboard() {
                 ))}
               </ul>
             )}
-          </OverviewPanel>
-        </div>
+          </StudentPanel>
+        </motion.div>
 
-        <section className="grid gap-5 lg:grid-cols-3">
-          <OverviewPanel
+        <motion.section variants={studentStaggerItem} className="grid gap-5 lg:grid-cols-3">
+          <StudentPanel
             title={t("studentDashboard.myCourses")}
             href="/dashboard/student/courses"
             linkLabel={t("studentDashboard.toMyCourses")}
+            icon={GraduationCap}
             noPadding
           >
             {data.courses.length === 0 ? (
@@ -329,7 +351,9 @@ export function StudentOverviewDashboard() {
                   <li key={course.enrollmentId} className="px-5 py-4">
                     <div className="mb-2 flex items-center justify-between gap-2">
                       <span className={cn("truncate text-sm font-semibold", st.textPrimary)}>{course.subjectName}</span>
-                      <span className="text-sm font-semibold tabular-nums text-[#D4AF37]">{course.progressPercent}%</span>
+                      <span className="text-sm font-semibold tabular-nums text-[var(--brand-gold)]">
+                        {course.progressPercent}%
+                      </span>
                     </div>
                     {course.teacherName && <p className={cn("mb-2 text-xs", st.textSubtle)}>{course.teacherName}</p>}
                     <div className={st.progressTrackMd}>
@@ -339,12 +363,13 @@ export function StudentOverviewDashboard() {
                 ))}
               </ul>
             )}
-          </OverviewPanel>
+          </StudentPanel>
 
-          <OverviewPanel
+          <StudentPanel
             title={t("studentDashboard.myMaterials")}
             href="/dashboard/student/resources"
-            linkLabel={t("studentDashboard.toMaterialLibraryBtn", { defaultValue: "Bibliothek" })}
+            linkLabel={t("studentDashboard.toMaterialLibraryBtn", { defaultValue: "Library" })}
+            icon={FileText}
             noPadding
           >
             {data.materials.length === 0 ? (
@@ -367,12 +392,13 @@ export function StudentOverviewDashboard() {
                 ))}
               </ul>
             )}
-          </OverviewPanel>
+          </StudentPanel>
 
-          <OverviewPanel
+          <StudentPanel
             title={t("studentDashboard.tasks")}
             href="/dashboard/student/quizzes"
             linkLabel={t("studentDashboard.allTasks")}
+            icon={ListChecks}
             noPadding
           >
             {data.tasks.length === 0 ? (
@@ -385,20 +411,25 @@ export function StudentOverviewDashboard() {
                       <p className={cn("truncate text-sm font-medium", st.textPrimary)}>{task.title}</p>
                       {task.dueLabel && (
                         <p className={cn("text-xs", st.textSubtle)}>
-                          {new Date(task.dueLabel).toLocaleDateString(dateLocale, { day: "numeric", month: "short" })}
+                          {new Date(task.dueLabel).toLocaleDateString(dateLocale, {
+                            day: "numeric",
+                            month: "short",
+                          })}
                         </p>
                       )}
                     </div>
                     <Badge variant={task.status === "in_progress" ? "success" : "warning"}>
-                      {task.status === "in_progress" ? t("studentDashboard.taskInProgress") : t("studentDashboard.taskOpen")}
+                      {task.status === "in_progress"
+                        ? t("studentDashboard.taskInProgress")
+                        : t("studentDashboard.taskOpen")}
                     </Badge>
                   </li>
                 ))}
               </ul>
             )}
-          </OverviewPanel>
-        </section>
-      </div>
+          </StudentPanel>
+        </motion.section>
+      </motion.div>
     </StudentDashboardLayout>
   );
 }

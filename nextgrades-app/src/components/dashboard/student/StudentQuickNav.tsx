@@ -7,6 +7,8 @@ import {
   BookOpen,
   FileText,
   ListChecks,
+  Video,
+  Sparkles,
   type LucideIcon,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -41,39 +43,56 @@ export function StudentQuickNav({ openTaskCount = 0, appointmentHint }: StudentQ
       href: "/dashboard/student/appointments",
       icon: CalendarDays,
       labelKey: "studentDashboard.nav.appointments",
-      defaultLabel: "Termine",
+      defaultLabel: "Appointments",
       meta: appointmentHint,
+      matchPrefix: true,
+    },
+    {
+      href: "/dashboard/student/live-classes",
+      icon: Video,
+      labelKey: "studentDashboard.nav.liveClasses",
+      defaultLabel: "Live classes",
       matchPrefix: true,
     },
     {
       href: "/dashboard/student/courses",
       icon: BookOpen,
       labelKey: "studentDashboard.nav.courses",
-      defaultLabel: "Kurse",
+      defaultLabel: "Courses",
       matchPrefix: true,
     },
     {
       href: "/dashboard/student/resources",
       icon: FileText,
       labelKey: "studentDashboard.nav.materials",
-      defaultLabel: "Materialien",
+      defaultLabel: "Materials",
       matchPrefix: true,
     },
     {
       href: "/dashboard/student/quizzes",
       icon: ListChecks,
       labelKey: "studentDashboard.nav.tasks",
-      defaultLabel: "Aufgaben",
+      defaultLabel: "Tasks",
       meta:
         openTaskCount > 0
-          ? t("studentDashboard.tasksWaiting", { count: openTaskCount, defaultValue: `${openTaskCount} offen` })
+          ? t("studentDashboard.tasksWaiting", { count: openTaskCount, defaultValue: `${openTaskCount} open` })
           : t("studentDashboard.noOpenTasks"),
+      matchPrefix: true,
+    },
+    {
+      href: "/dashboard/chat",
+      icon: Sparkles,
+      labelKey: "studentDashboard.nav.aiChat",
+      defaultLabel: "AI Chat",
       matchPrefix: true,
     },
   ];
 
   return (
-    <nav aria-label={t("studentDashboard.quickAccess", { defaultValue: "Schnellzugriff" })} className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+    <nav
+      aria-label={t("studentDashboard.quickAccess", { defaultValue: "Quick access" })}
+      className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6"
+    >
       {items.map((item) => {
         const active = isActive(pathname, item.href, item.matchPrefix);
         const Icon = item.icon;
@@ -85,10 +104,10 @@ export function StudentQuickNav({ openTaskCount = 0, appointmentHint }: StudentQ
             href={item.href}
             aria-current={active ? "page" : undefined}
             className={cn(
-              "group flex min-h-[5.5rem] flex-col justify-between rounded-xl border bg-surface-elevated p-4 transition",
-                active
-                  ? "border-[var(--brand-gold)]/40 shadow-sm ring-1 ring-[var(--brand-gold)]/15"
-                  : "border-border-default hover:border-[var(--brand-gold)]/25 hover:shadow-sm"
+              "group flex min-h-[5.75rem] flex-col justify-between rounded-xl border p-4 transition",
+              active
+                ? "student-panel-accent border-[var(--brand-gold)]/35 bg-[var(--brand-gold-muted)]/40 shadow-sm ring-1 ring-[var(--brand-gold)]/15"
+                : "student-panel hover:border-[var(--border-strong)] hover:shadow-md"
             )}
           >
             <span
@@ -103,7 +122,9 @@ export function StudentQuickNav({ openTaskCount = 0, appointmentHint }: StudentQ
             </span>
             <span>
               <span className="block text-sm font-semibold text-foreground">{label}</span>
-              {item.meta && <span className="mt-0.5 block truncate text-xs text-text-muted">{item.meta}</span>}
+              {item.meta ? (
+                <span className="mt-0.5 block truncate text-xs text-text-muted">{item.meta}</span>
+              ) : null}
             </span>
           </Link>
         );

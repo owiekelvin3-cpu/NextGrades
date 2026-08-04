@@ -4,6 +4,7 @@ import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { supabase } from "@/lib/supabase/client";
 import { fetchProfileRole, resolvePostAuthRedirect, sanitizeRedirect } from "@/lib/auth/redirect";
+import { isPasswordSetupRequired, buildPasswordSetupUrl } from "@/lib/auth/password-setup";
 import { isAuthUserEmailVerified, isClientEmailVerificationRequired, isClientLoginOtpRequired } from "@/lib/auth/config";
 import { buildVerifyUrl, savePendingVerification } from "@/lib/auth/pending-verification-storage";
 
@@ -61,6 +62,11 @@ function AuthGuestGuardInner({
         } catch {
           /* continue */
         }
+      }
+
+      if (await isPasswordSetupRequired(supabase, user.id)) {
+        router.replace(buildPasswordSetupUrl());
+        return;
       }
 
       const role = await fetchProfileRole(user.id);

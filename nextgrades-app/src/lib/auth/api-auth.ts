@@ -122,7 +122,9 @@ export async function requireTeacherOrAdminApi(): Promise<AuthGateResult> {
     return { error: forbidden(), auth: null };
   }
 
-  const secureError = await enforceSecureSession(auth.user);
+  const secureError = await enforceSecureSession(auth.user, {
+    skipLoginOtp: auth.profile?.role === "admin",
+  });
   if (secureError) return { error: secureError, auth: null };
 
   return { error: null, auth: auth as ApiAuthContext };

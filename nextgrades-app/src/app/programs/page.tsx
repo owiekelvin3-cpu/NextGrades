@@ -34,6 +34,7 @@ import {
 } from "@/components/programs/ProgramCompareTable";
 import { hero, type, section } from "@/lib/premium/tokens";
 import { cn } from "@/lib/utils";
+import { consultationCheckoutHref } from "@/lib/checkout/catalog-context";
 
 const statIcons = [UserRound, GraduationCap, FileText, Star];
 const heroFeatureIcons = [Hexagon, BookOpen, Sparkles];
@@ -154,15 +155,9 @@ export default function ProgramsPage() {
 
         <section className={cn("py-14 md:py-16", mt.sectionAlt)}>
           <div className={section.container}>
-            <div className="mb-10 text-center">
-              <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--brand-gold)]">
-                {t("programsPage.sectionEyebrow")}
-              </p>
-              <h2 className="mb-2 text-3xl font-bold text-[var(--foreground)] sm:text-4xl">
-                {t("programsPage.sectionTitle")}
-              </h2>
-              <p className="mx-auto max-w-2xl text-[var(--text-muted)]">{t("programsPage.sectionDesc")}</p>
-            </div>
+            <h2 className="mb-6 text-center text-2xl font-bold text-foreground md:mb-8 md:text-3xl">
+              {t("programsPage.sectionTitle")}
+            </h2>
             <div className="grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-6 xl:grid-cols-4" data-animate="staggerChildren" data-stagger="0.15">
               {safePrograms.map((program, index) => {
                 const featured = index === 2;
@@ -207,7 +202,7 @@ export default function ProgramsPage() {
                           </li>
                         ))}
                       </ul>
-                      <Button variant={featured ? "gold" : "dark"} size="md" className="w-full rounded-lg" href="/pricing">
+                      <Button variant={featured ? "gold" : "dark"} size="md" className="w-full rounded-lg" href={consultationCheckoutHref()}>
                         {t("programsPage.ctaButton")} <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </div>
@@ -248,7 +243,7 @@ export default function ProgramsPage() {
                       </span>
                     ))}
                   </div>
-                  <Button variant="gold" size="lg" className="mt-6 w-full rounded-xl py-4 text-base font-semibold sm:w-auto" href="/consultation">
+                  <Button variant="gold" size="lg" className="mt-6 w-full rounded-xl py-4 text-base font-semibold sm:w-auto" href={consultationCheckoutHref()}>
                     {t("programsPage.ctaButton")} <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </div>

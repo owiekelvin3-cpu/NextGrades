@@ -176,7 +176,7 @@ function NavTab({
       >
         <span className="relative flex h-6 w-6 items-center justify-center sm:h-7 sm:w-7">
           <Icon
-            className={cn("h-5 w-5 sm:h-[22px] sm:w-[22px]", active ? "text-[#D4AF37]" : "text-text-muted")}
+            className={cn("h-5 w-5 sm:h-[22px] sm:w-[22px]", active ? "text-[var(--brand-gold)]" : "text-text-muted")}
             strokeWidth={active ? 2.25 : 1.65}
           />
           {showBadge && (
@@ -188,13 +188,13 @@ function NavTab({
         <span
           className={cn(
             "max-w-full truncate text-[10px] leading-tight",
-            active ? "font-semibold text-[#D4AF37]" : "font-medium text-text-muted"
+            active ? "font-semibold text-[var(--brand-gold)]" : "font-medium text-text-muted"
           )}
         >
           {label}
         </span>
         {active && (
-          <span className="absolute bottom-1 h-1 w-1 rounded-full bg-[#D4AF37]" aria-hidden />
+          <span className="absolute bottom-1 h-1 w-1 rounded-full bg-[var(--brand-gold)]" aria-hidden />
         )}
       </Link>
     </li>
@@ -210,7 +210,7 @@ export function MobileBottomNav({ role: roleProp }: Props) {
   if (!role) return null;
 
   const items = buildItems(role);
-  const usePillNav = role === "teacher";
+  const usePillNav = role === "teacher" || role === "student";
 
   return (
     <nav

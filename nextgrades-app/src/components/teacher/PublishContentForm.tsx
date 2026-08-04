@@ -22,7 +22,17 @@ import {
   resolveUploadMimeType,
 } from "@/lib/storage/config";
 import { compressImageFile } from "@/lib/resources/image-utils";
-import { xhrUploadJson, type UploadProgressSnapshot } from "@/lib/upload/xhr-upload";
+import { filterCatalogClasses } from "@/lib/catalog/classes";
+import {
+  removeClientUpload,
+  uploadResourceFileFromBrowser,
+  uploadThumbnailFromBrowser,
+  parseApiError,
+} from "@/lib/resources/client-upload";
+import { RESOURCES_BUCKET, THUMBNAILS_BUCKET } from "@/lib/storage/config";
+import { buildServerVerifyPath } from "@/lib/auth/verification-routes";
+import { createBrowserClient } from "@/lib/supabase/client";
+import type { UploadProgressSnapshot } from "@/lib/upload/xhr-upload";
 import { PublishUploadProgress } from "@/components/teacher/PublishUploadProgress";
 import {
   Upload,
@@ -50,6 +60,10 @@ interface Tag {
 type PublishContentFormProps = {
   resourceId?: string;
   initialData?: Partial<FormState>;
+  /** Where to navigate after a successful save */
+  redirectPath?: string;
+  /** Admin uploads publish immediately without moderation */
+  isAdmin?: boolean;
 };
 
 type FormState = {
@@ -92,7 +106,12 @@ const defaultForm: FormState = {
   external_url: "",
 };
 
-export function PublishContentForm({ resourceId, initialData }: PublishContentFormProps) {
+export function PublishContentForm({
+  resourceId,
+  initialData,
+  redirectPath = "/dashboard/teacher/content",
+  isAdmin = false,
+}: PublishContentFormProps) {
   const { theme } = useTheme();
   const { success, error: toastError } = useToast();
   const router = useRouter();
@@ -119,9 +138,11 @@ export function PublishContentForm({ resourceId, initialData }: PublishContentFo
       if (Array.isArray(cats)) setCategories(cats);
       if (Array.isArray(tgs)) setTags(tgs);
       if (Array.isArray(catalog?.subjects)) setCatalogSubjects(catalog.subjects);
-      if (Array.isArray(catalog?.classes)) setCatalogClasses(catalog.classes);
+      if (Array.isArray(catalog?.classes)) setCatalogClasses(filterCatalogClasses(catalog.classes));
+    }).catch(() => {
+      toastError("Could not load subjects and categories. Refresh the page and try again.");
     });
-  }, []);
+  }, [toastError]);
 
   const inputCls = themeInputClass;
   const selectCls = (value: string) => themeSelectClass(value, "rounded-lg py-3");
@@ -166,6 +187,18 @@ export function PublishContentForm({ resourceId, initialData }: PublishContentFo
       return;
     }
 
+    if (form.status === "published" && (!form.subject_id || !form.class_id)) {
+      toastError("Select a subject and grade so this resource appears in the Library filters and search.");
+      setStep(2);
+      return;
+    }
+
+    if (!file && !form.external_url && !resourceId) {
+      toastError("Please upload a file or provide an external URL.");
+      setStep(1);
+      return;
+    }
+
     if (file) {
       const err = resourceFileValidationError(file);
       if (err) {
@@ -193,51 +226,176 @@ export function PublishContentForm({ resourceId, initialData }: PublishContentFo
     });
 
     try {
-      const fd = new FormData();
-      fd.append("title", form.title.trim());
-      fd.append("short_description", form.short_description.trim());
-      fd.append("full_description", form.full_description.trim());
-      fd.append("content_type", form.content_type);
-      if (form.category_id) fd.append("category_id", form.category_id);
-      if (form.subject_id) fd.append("subject_id", form.subject_id);
-      if (form.class_id) fd.append("class_id", form.class_id);
-      if (form.semester) fd.append("semester", form.semester);
-      fd.append("tag_ids", JSON.stringify(form.tag_ids));
-      fd.append("difficulty_level", form.difficulty_level);
-      fd.append("age_range", form.age_range);
-      if (form.estimated_minutes) fd.append("estimated_minutes", form.estimated_minutes);
-      fd.append("language", form.language);
-      fd.append("status", form.status);
-      fd.append("access_type", form.access_type);
-      if (form.access_type === "premium") fd.append("price", form.price || "0");
-      if (form.external_url) fd.append("external_url", form.external_url);
-      if (file) fd.append("file", file);
-      if (thumbnail) fd.append("thumbnail", thumbnail);
-      if (resourceId) fd.append("resource_id", resourceId);
+      const supabase = createBrowserClient();
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
 
-      const result = await xhrUploadJson<{ error?: string; moderation_status?: string; status?: string }>(
-        "/api/teacher/publish",
-        fd,
-        setUploadProgress
-      );
-
-      if (!result.ok) {
-        toastError(result.data?.error || "Failed to publish");
+      if (userError || !user) {
+        toastError("Please sign in again to publish.");
         return;
       }
 
+      setUploadProgress((p) => (p ? { ...p, phase: "preparing", percent: 8 } : p));
+
+      const validateRes = await fetch("/api/teacher/publish/validate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
+        body: JSON.stringify({
+          title: form.title.trim(),
+          content_type: form.content_type,
+          status: form.status,
+          subject_id: form.subject_id || null,
+          class_id: form.class_id || null,
+          external_url: form.external_url || "",
+          resource_id: resourceId || null,
+          file_size: file?.size ?? null,
+          has_new_file: Boolean(file),
+          has_new_thumbnail: Boolean(thumbnail),
+        }),
+      });
+
+      if (!validateRes.ok) {
+        const message = await parseApiError(validateRes);
+        if (
+          validateRes.status === 403 &&
+          (message.includes("Login verification") || message.includes("Email verification"))
+        ) {
+          toastError(message);
+          router.push(
+            buildServerVerifyPath(
+              message.includes("Email verification") ? "signup" : "login",
+              { redirect: redirectPath }
+            )
+          );
+          return;
+        }
+        toastError(message);
+        if (message.includes("Subject and grade")) setStep(2);
+        return;
+      }
+
+      let storagePath: string | null = null;
+      let fileName: string | null = null;
+      let fileSize: number | null = null;
+      let mimeType: string | null = null;
+      let thumbPath: string | null = null;
+      let thumbnailUrl: string | null = null;
+
+      if (file) {
+        setUploadProgress((p) => (p ? { ...p, phase: "uploading", percent: 15 } : p));
+        const upload = await uploadResourceFileFromBrowser(supabase, user.id, file);
+        if (upload.error || !upload.data) {
+          toastError(upload.error || "File upload failed");
+          return;
+        }
+        storagePath = upload.data.storagePath;
+        fileName = upload.data.fileName;
+        fileSize = upload.data.fileSize;
+        mimeType = upload.data.mimeType;
+        setUploadProgress((p) => (p ? { ...p, phase: "uploading", percent: 55 } : p));
+      }
+
+      if (thumbnail) {
+        setUploadProgress((p) => (p ? { ...p, phase: "uploading", percent: 65 } : p));
+        const thumb = await uploadThumbnailFromBrowser(supabase, user.id, thumbnail);
+        if (thumb.error) {
+          if (storagePath) await removeClientUpload(supabase, RESOURCES_BUCKET, storagePath);
+          toastError(thumb.error);
+          return;
+        }
+        thumbPath = thumb.storagePath;
+        thumbnailUrl = thumb.publicUrl;
+        setUploadProgress((p) => (p ? { ...p, phase: "uploading", percent: 80 } : p));
+      }
+
+      setUploadProgress((p) => (p ? { ...p, phase: "processing", percent: 90 } : p));
+
+      const payload = {
+        title: form.title.trim(),
+        short_description: form.short_description.trim(),
+        full_description: form.full_description.trim(),
+        content_type: form.content_type,
+        category_id: form.category_id || null,
+        subject_id: form.subject_id || null,
+        class_id: form.class_id || null,
+        semester: form.semester || null,
+        tag_ids: form.tag_ids,
+        difficulty_level: form.difficulty_level,
+        age_range: form.age_range,
+        estimated_minutes: form.estimated_minutes || null,
+        language: form.language,
+        status: form.status,
+        access_type: form.access_type,
+        price: form.access_type === "premium" ? form.price || "0" : "0",
+        external_url: form.external_url || "",
+        resource_id: resourceId || null,
+        storage_path: storagePath,
+        file_name: fileName,
+        file_size: fileSize,
+        mime_type: mimeType,
+        thumbnail_storage_path: thumbPath,
+        thumbnail_url: thumbnailUrl,
+      };
+
+      const res = await fetch("/api/teacher/publish", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
+        body: JSON.stringify(payload),
+      });
+
+      let result: { error?: string; moderation_status?: string; status?: string } = {};
+      if (!res.ok) {
+        const message = await parseApiError(res);
+        if (storagePath) await removeClientUpload(supabase, RESOURCES_BUCKET, storagePath);
+        if (thumbPath) await removeClientUpload(supabase, THUMBNAILS_BUCKET, thumbPath);
+        if (
+          res.status === 403 &&
+          (message.includes("Login verification") || message.includes("Email verification"))
+        ) {
+          toastError(message);
+          router.push(
+            buildServerVerifyPath(
+              message.includes("Email verification") ? "signup" : "login",
+              { redirect: redirectPath }
+            )
+          );
+          return;
+        }
+        toastError(message);
+        if (message.includes("Subject and grade")) setStep(2);
+        return;
+      }
+
+      try {
+        result = await res.json();
+      } catch {
+        result = {};
+      }
+
+      setUploadProgress((p) => (p ? { ...p, phase: "complete", percent: 100 } : p));
+
+      const actualStatus = result?.status ?? form.status;
+      const actualModeration = result?.moderation_status;
+      const isLive = actualStatus === "published" && actualModeration === "approved";
       const submittedForReview =
-        form.status === "published" && result.data?.moderation_status === "pending";
+        form.status === "published" &&
+        !isLive &&
+        (actualModeration === "pending" || actualStatus === "draft");
       success(
         submittedForReview
-          ? "Submitted for review. An admin will approve it before it goes live."
-          : form.status === "published"
-            ? "Resource published! It is now live on the Resources page."
+          ? "Submitted for review. An admin must approve it before it appears in the public Library."
+          : isLive
+            ? "Resource published! It is now live in the public Library."
             : "Draft saved successfully."
       );
-      router.push("/dashboard/teacher/content");
-    } catch {
-      toastError("Upload failed. Please try again.");
+      router.push(redirectPath);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Upload failed. Please try again.";
+      toastError(message);
     } finally {
       setUploading(false);
       setUploadProgress(null);
@@ -360,7 +518,13 @@ export function PublishContentForm({ resourceId, initialData }: PublishContentFo
             </div>
             <div>
               <label className={labelCls}>Short Description</label>
-              <input value={form.short_description} onChange={(e) => setForm({ ...form, short_description: e.target.value })} className={inputCls} placeholder="Brief summary for cards" maxLength={200} />
+              <input
+                value={form.short_description}
+                onChange={(e) => setForm({ ...form, short_description: e.target.value })}
+                className={inputCls}
+                placeholder="Brief summary shown on Library cards (auto-generated from title if left blank)"
+                maxLength={200}
+              />
             </div>
             <div>
               <label className={labelCls}>Full Description</label>
@@ -375,16 +539,16 @@ export function PublishContentForm({ resourceId, initialData }: PublishContentFo
             </div>
             <div className="grid sm:grid-cols-3 gap-4">
               <div>
-                <label className={labelCls}>Subject</label>
-                <select value={form.subject_id} onChange={(e) => setForm({ ...form, subject_id: e.target.value })} className={selectCls(form.subject_id)}>
-                  <option value="">Any subject</option>
+                <label className={labelCls}>Subject *</label>
+                <select value={form.subject_id} onChange={(e) => setForm({ ...form, subject_id: e.target.value })} className={selectCls(form.subject_id)} required>
+                  <option value="">Select subject</option>
                   {catalogSubjects.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
                 </select>
               </div>
               <div>
-                <label className={labelCls}>Grade</label>
-                <select value={form.class_id} onChange={(e) => setForm({ ...form, class_id: e.target.value })} className={selectCls(form.class_id)}>
-                  <option value="">Any grade</option>
+                <label className={labelCls}>Grade *</label>
+                <select value={form.class_id} onChange={(e) => setForm({ ...form, class_id: e.target.value })} className={selectCls(form.class_id)} required>
+                  <option value="">Select grade</option>
                   {catalogClasses.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
                 </select>
               </div>
@@ -441,7 +605,19 @@ export function PublishContentForm({ resourceId, initialData }: PublishContentFo
             </div>
             <div className="flex gap-3">
               <Button variant="outline" className="flex-1" onClick={() => setStep(1)}>Back</Button>
-              <Button variant="gold" className="flex-1" onClick={() => setStep(3)}>Continue <ArrowRight className="w-5 h-5 ml-2" /></Button>
+              <Button
+                variant="gold"
+                className="flex-1"
+                onClick={() => {
+                  if (form.status === "published" && (!form.subject_id || !form.class_id)) {
+                    toastError("Select a subject and grade so this resource appears in the Library filters and search.");
+                    return;
+                  }
+                  setStep(3);
+                }}
+              >
+                Continue <ArrowRight className="w-5 h-5 ml-2" />
+              </Button>
             </div>
           </Card>
         </motion.div>
@@ -467,11 +643,32 @@ export function PublishContentForm({ resourceId, initialData }: PublishContentFo
               </div>
             )}
             <div>
-              <label className={labelCls}>Status</label>
+              <label className={labelCls}>{isAdmin ? "Status" : "Publishing"}</label>
+              {!isAdmin && (
+                <p className={`mb-3 text-xs ${muted(theme)}`}>
+                  Submit for review sends your resource to the admin moderation queue. It goes live after approval.
+                </p>
+              )}
+              {isAdmin && (
+                <p className={`mb-3 text-xs ${muted(theme)}`}>
+                  Published resources go live in the public Library immediately. Subject and grade are required.
+                </p>
+              )}
               <div className="grid grid-cols-2 gap-3">
-                {["draft", "published"].map((s) => (
-                  <button key={s} type="button" onClick={() => setForm({ ...form, status: s })} className={`p-3 rounded-lg border text-sm capitalize ${form.status === s ? "border-[#D4AF37] bg-[#D4AF37]/10 text-[#D4AF37]" : theme === "dark" ? "border-white/10 text-white" : "border-gray-200"}`}>
-                    {s}
+                {(["draft", "published"] as const).map((s) => (
+                  <button
+                    key={s}
+                    type="button"
+                    onClick={() => setForm({ ...form, status: s })}
+                    className={`p-3 rounded-lg border text-sm font-medium ${form.status === s ? "border-[#D4AF37] bg-[#D4AF37]/10 text-[#D4AF37]" : theme === "dark" ? "border-white/10 text-white" : "border-gray-200"}`}
+                  >
+                    {isAdmin
+                      ? s === "published"
+                        ? "Published"
+                        : "Draft"
+                      : s === "published"
+                        ? "Submit for review"
+                        : "Save draft"}
                   </button>
                 ))}
               </div>
@@ -507,7 +704,9 @@ export function PublishContentForm({ resourceId, initialData }: PublishContentFo
                       ? `Uploading ${uploadProgress.percent}%`
                       : "Preparing…"
                   : form.status === "published"
-                    ? "Publish Now"
+                    ? isAdmin
+                      ? "Publish Now"
+                      : "Submit for Review"
                     : "Save Draft"}
               </Button>
             </div>

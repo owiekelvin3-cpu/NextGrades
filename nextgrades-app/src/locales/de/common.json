@@ -501,6 +501,8 @@
     "invalidEmail": "Ungültige E-Mail-Adresse",
     "accountSuspended": "Dein Konto wurde gesperrt. Kontaktiere support@nextgrades.at, wenn du glaubst, dass dies ein Fehler ist.",
     "profileIncomplete": "Dein Profil ist unvollständig. Bitte kontaktiere den Support.",
+    "passwordSetupRequired": "Bitte nutze den Einladungslink in deiner E-Mail, um zuerst dein Passwort festzulegen.",
+    "passwordSetSuccess": "Passwort gespeichert. Melde dich mit deinem neuen Passwort an.",
     "enterValidEmail": "Bitte gib eine gültige E-Mail-Adresse ein",
     "enterPassword": "Bitte gib dein Passwort ein",
     "authFailed": "Anmeldung fehlgeschlagen",

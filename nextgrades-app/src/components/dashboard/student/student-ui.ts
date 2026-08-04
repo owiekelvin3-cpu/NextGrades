@@ -18,7 +18,7 @@ export const st = {
   textPrimary: "text-foreground",
   textMuted: "text-text-muted",
   textSubtle: "text-text-muted/80",
-  panel: "rounded-2xl border border-border-default bg-surface-elevated shadow-[var(--card-shadow)]",
+  panel: "student-panel rounded-2xl border border-border-default bg-surface-elevated shadow-[var(--card-shadow)]",
   panelHeader: "border-b border-border-default px-5 py-3.5",
   listRow: "rounded-xl px-3 py-3 transition hover:bg-[var(--table-row-hover)]",
   empty: "text-sm text-text-muted",
@@ -100,7 +100,7 @@ export function subjectIcon(name: string): LucideIcon {
 }
 
 export function studentPanel(className = "") {
-  return `${st.panel} ${className}`;
+  return `student-panel ${className}`;
 }
 
 export function subjectInitials(name: string) {

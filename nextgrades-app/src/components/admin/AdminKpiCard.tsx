@@ -12,7 +12,7 @@ export type AdminKpiTrend = {
 
 export type AdminKpiCardProps = {
   label: string;
-  value: string | number;
+  value: React.ReactNode;
   icon: LucideIcon;
   iconTone?: "gold" | "info" | "success" | "warning" | "muted";
   trend?: AdminKpiTrend;

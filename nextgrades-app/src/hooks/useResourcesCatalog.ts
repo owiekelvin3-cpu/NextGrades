@@ -7,6 +7,8 @@ import { useToast } from "@/context/ToastContext";
 import { useTranslation } from "react-i18next";
 import { buildLoginUrl } from "@/lib/auth/redirect";
 import { isFreeResource, isPremiumResource } from "@/lib/resources/ui-config";
+import { filterCatalogClasses } from "@/lib/catalog/classes";
+import { materialMatchesExtendedSearch } from "@/lib/resources/public-catalog";
 import { isVideoResource, resourceWatchPath } from "@/lib/resources/video";
 
 export type CatalogSubject = { id: string; name: string; slug?: string | null };
@@ -49,7 +51,7 @@ export function useResourcesCatalog(initial?: FetchParams) {
       .then((r) => r.json())
       .then((data) => {
         if (data?.subjects) setSubjects(data.subjects);
-        if (data?.classes) setClasses((data.classes as CatalogClass[]).filter((c) => c.level >= 1 && c.level <= 9));
+        if (data?.classes) setClasses(filterCatalogClasses(data.classes as CatalogClass[]));
       });
   }, []);
 
@@ -73,13 +75,7 @@ export function useResourcesCatalog(initial?: FetchParams) {
       }
 
       if (search.trim()) {
-        const q = search.trim().toLowerCase();
-        data = data.filter(
-          (r) =>
-            r.title.toLowerCase().includes(q) ||
-            (r.description ?? "").toLowerCase().includes(q) ||
-            (r.short_description ?? "").toLowerCase().includes(q)
-        );
+        data = data.filter((r) => materialMatchesExtendedSearch(r, search.trim()));
       }
 
       setResources(data);

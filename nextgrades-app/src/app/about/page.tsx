@@ -24,52 +24,22 @@ import { useMarketingTheme } from "@/lib/marketing-theme";
 import { MarketingImage } from "@/components/marketing/MarketingImage";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
 import { MarketingHeroMobileImage } from "@/components/marketing/MarketingHeroMobileImage";
+import { MockupFeatureStrip } from "@/components/mockup/MockupFeatureStrip";
+import { SectionHeader } from "@/components/premium/SectionHeader";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
 import { cn } from "@/lib/utils";
 import { hero, section, type } from "@/lib/premium/tokens";
-import {
-  ABOUT_IMAGES,
-} from "@/lib/marketing-images";
+import { ABOUT_IMAGES, SHARED_PAGE_HERO_IMAGE } from "@/lib/marketing-images";
+import { consultationCheckoutHref } from "@/lib/checkout/catalog-context";
 
 const PILLAR_ICONS = [Target, Eye, Sparkles];
 const FEATURE_ICONS = [GraduationCap, Target, Users, Sparkles];
 const PRINCIPLE_ICONS = [User, GraduationCap, BookOpen, TrendingUp, Heart];
 const MISSION_ICONS = [BookOpen, FileText, Users, TrendingUp];
 const STAT_ICONS = [Smile, GraduationCap, TrendingUp, Heart];
-
-function Eyebrow({ children, className }: { children: React.ReactNode; className?: string }) {
-  return (
-    <p className={cn("text-xs font-bold uppercase tracking-[0.25em] text-[#D4AF37]", className)}>
-      {children}
-    </p>
-  );
-}
-
-function SectionHeading({
-  eyebrow,
-  title,
-  subtitle,
-  center = false,
-  mt,
-}: {
-  eyebrow?: string;
-  title: string;
-  subtitle?: string;
-  center?: boolean;
-  mt: ReturnType<typeof useMarketingTheme>;
-}) {
-  return (
-    <div className={cn("mb-12", center && "text-center")} data-animate="fadeUp">
-      {eyebrow && <Eyebrow className={cn("mb-3", center && "mx-auto")}>{eyebrow}</Eyebrow>}
-      <h2 className={cn("text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl", mt.heading)}>{title}</h2>
-      {subtitle && (
-        <p className={cn("mt-3 max-w-2xl text-lg", mt.body, center && "mx-auto")}>{subtitle}</p>
-      )}
-    </div>
-  );
-}
 
 export default function AboutPage() {
   const mt = useMarketingTheme();
@@ -101,6 +71,14 @@ export default function AboutPage() {
   const safeStats = Array.isArray(stats) ? stats : [];
   const safeTags = Array.isArray(communityTags) ? communityTags : [];
 
+  const featureStripItems = safeFeatures.map((feat, i) => ({
+    ...feat,
+    icon: FEATURE_ICONS[i] ?? GraduationCap,
+  }));
+
+  const titleHighlight = t("about.heroTitleHighlight");
+  const titleTail = t("about.heroTitle2");
+
   const cardClass = cn(
     "rounded-2xl border transition-shadow hover:shadow-lg",
     mt.isDark ? "border-white/10 bg-[#112240] hover:shadow-black/30" : "border-gray-100 bg-white hover:shadow-gray-200/80"
@@ -111,104 +89,108 @@ export default function AboutPage() {
       <Navbar />
 
       <main className="flex-1 overflow-x-hidden">
-        {/* Hero - always dark */}
-        <section className={cn("bg-[#0D1B2A] text-white", hero.section)}>
-          <div className="pointer-events-none absolute inset-0 overflow-hidden">
-            <div className="absolute -right-1/4 top-0 h-[min(500px,100vw)] w-[min(500px,100vw)] rounded-full bg-[#D4AF37]/8 blur-3xl" />
-            <div className="absolute bottom-0 left-0 h-72 w-72 max-w-[80vw] rounded-full bg-[#4DA3FF]/8 blur-3xl" />
-          </div>
+        {/* Hero — same shell as Programmes / Subjects / Home */}
+        <section className={cn("relative bg-[#0D1B2A] text-white", hero.section)}>
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(212,175,55,0.15),transparent_45%)]" />
           <MarketingHeroBlend
             src={heroImage}
             alt={t("images.studentsCollaborating")}
             variant="dark-split-right"
+            backgroundColor="#0D1B2A"
+            fallbackSrc={SHARED_PAGE_HERO_IMAGE}
             priority
+            sizes="(max-width: 1024px) 100vw, 55vw"
           />
 
           <div className={hero.inner}>
-            <div className="grid min-h-0 min-w-0 flex-1 items-center gap-10 lg:grid-cols-2 lg:gap-14">
-              <div data-animate="hero-headline">
-                <Eyebrow className="mb-4">{t("aboutPage.heroEyebrow")}</Eyebrow>
+            <div className="grid min-h-0 min-w-0 flex-1 items-center gap-10 sm:gap-12 lg:grid-cols-2 lg:gap-16">
+              <div className="relative z-10 min-w-0 max-w-xl" data-animate="hero-headline">
+                <p className={cn(type.eyebrow, "mb-4 sm:mb-5")}>{t("aboutPage.heroEyebrow")}</p>
                 <h1 className={type.h1} data-animate="hero-headline" data-animate-delay="0.1">
                   {t("about.heroTitle")}{" "}
-                  <span className="text-[#D4AF37]">{t("about.heroTitleHighlight")}</span>{" "}
-                  {t("about.heroTitle2")}
+                  {titleHighlight ? <span className="text-[#D4AF37]">{titleHighlight}</span> : null}
+                  {titleTail ? <> {titleTail}</> : null}
                 </h1>
-                <p className="mt-4 max-w-xl text-base leading-relaxed text-on-navy-muted md:mt-6 md:text-xl" data-animate="hero-subheadline">
+                <p
+                  className="mt-5 max-w-lg text-base leading-relaxed text-on-navy-muted sm:mt-6 sm:text-lg md:text-xl"
+                  data-animate="hero-subheadline"
+                >
                   {t("about.heroSubtitle")}
                 </p>
               </div>
 
-              <div data-animate="hero-image">
-                <MarketingHeroMobileImage src={heroImage} alt={t("images.studentsCollaborating")} priority />
+              <div className="relative z-10 max-w-xl lg:max-w-none" data-animate="hero-image">
+                <MarketingHeroMobileImage
+                  src={heroImage}
+                  fallbackSrc={SHARED_PAGE_HERO_IMAGE}
+                  alt={t("images.studentsCollaborating")}
+                  priority
+                  className="max-w-xl lg:max-w-none"
+                />
               </div>
             </div>
           </div>
         </section>
 
-        <section className="border-t border-white/10 bg-[#0a1520] text-white">
-          <div className={cn(section.container, "py-8 md:py-10")}>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-              {safePillars.map((pillar, i) => {
-                const Icon = PILLAR_ICONS[i] ?? Target;
-                return (
-                  <div key={pillar.title} className="rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
-                    <Icon className="mb-2 h-5 w-5 text-[#D4AF37]" />
-                    <p className="text-sm font-bold">{pillar.title}</p>
-                    <p className="mt-1 text-xs leading-relaxed text-on-navy-subtle">{pillar.desc}</p>
-                  </div>
-                );
-              })}
-            </div>
-            <div className="mt-8 rounded-xl border border-white/10 bg-[#0D1B2A]/90 p-5 shadow-xl backdrop-blur-md lg:max-w-md">
-              <Quote className="mb-2 h-6 w-6 text-[#D4AF37]" />
-              <p className="text-sm italic leading-relaxed text-on-navy-muted">&ldquo;{t("aboutPage.heroQuote")}&rdquo;</p>
-              <p className="mt-2 text-xs text-on-navy-faint">- {t("aboutPage.heroQuoteAuthor")}</p>
-            </div>
+        {/* Mission / Vision / Values + quote — elevated card band like Subjects stats */}
+        <section className="-mt-6 pb-2 md:-mt-10">
+          <div className={section.container}>
+            <Card className={cn("border-0 p-6 shadow-xl sm:p-8 md:p-10", mt.card)} data-animate="fadeUp">
+              <div className="grid gap-8 sm:grid-cols-3 sm:gap-6">
+                {safePillars.map((pillar, i) => {
+                  const Icon = PILLAR_ICONS[i] ?? Target;
+                  return (
+                    <div
+                      key={pillar.title}
+                      className="flex flex-col items-center text-center sm:items-start sm:text-left"
+                    >
+                      <div className="mb-3 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[var(--brand-gold-muted)]">
+                        <Icon className="h-5 w-5 text-[var(--brand-gold)]" strokeWidth={1.75} />
+                      </div>
+                      <p className="text-sm font-bold text-foreground md:text-base">{pillar.title}</p>
+                      <p className="mt-2 text-sm leading-relaxed text-text-muted">{pillar.desc}</p>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="mt-8 border-t border-border-default pt-8 md:mt-10 md:pt-10">
+                <blockquote className="mx-auto max-w-2xl text-center">
+                  <Quote className="mx-auto mb-3 h-6 w-6 text-[var(--brand-gold)]" aria-hidden />
+                  <p className="text-base italic leading-relaxed text-foreground-secondary md:text-lg">
+                    &ldquo;{t("aboutPage.heroQuote")}&rdquo;
+                  </p>
+                  <footer className="mt-3 text-sm text-text-muted">— {t("aboutPage.heroQuoteAuthor")}</footer>
+                </blockquote>
+              </div>
+            </Card>
           </div>
         </section>
 
-        <section className="border-t border-white/10 bg-[#0a1520]/80 text-white backdrop-blur-sm">
-          <div className={cn(section.container, "grid grid-cols-1 gap-4 py-8 md:grid-cols-2 lg:grid-cols-4 md:gap-6")} data-animate="staggerChildren" data-stagger="0.12">
-            {safeFeatures.map((feat, i) => {
-              const Icon = FEATURE_ICONS[i] ?? GraduationCap;
-              return (
-                <div key={feat.title} className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/5 p-4 md:border-0 md:bg-transparent md:p-0">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#D4AF37]/15">
-                    <Icon className="h-5 w-5 text-[#D4AF37]" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold">{feat.title}</p>
-                    <p className="mt-0.5 text-xs text-on-navy-subtle">{feat.desc}</p>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </section>
+        {featureStripItems.length > 0 && <MockupFeatureStrip items={featureStripItems} columns={4} />}
 
         {/* Story */}
         <section className={cn("py-14 lg:py-24", mt.sectionAlt)}>
           <div className={section.container}>
             <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
               <div data-animate="slideInLeft">
-                <Eyebrow className="mb-3">{t("aboutPage.storyEyebrow")}</Eyebrow>
-                <h2 className={cn("text-3xl font-bold md:text-4xl", mt.heading)}>{t("aboutPage.storyTitle")}</h2>
+                <p className={cn(type.eyebrow, "mb-3")}>{t("aboutPage.storyEyebrow")}</p>
+                <h2 className={cn(type.h2, mt.heading)}>{t("aboutPage.storyTitle")}</h2>
                 <div className="mt-6 space-y-4">
                   {safeStory.map((para, i) => (
-                    <p key={i} className={cn("whitespace-pre-line leading-relaxed", mt.body)}>{para}</p>
+                    <p key={i} className={cn("whitespace-pre-line leading-relaxed", mt.body)}>
+                      {para}
+                    </p>
                   ))}
                 </div>
-                <Link href="/consultation">
+                <Link href="/programs">
                   <Button variant="dark" size="md" className="mt-8">
                     {t("aboutPage.storyCta")}
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </Link>
               </div>
-              <div
-                data-animate="slideInRight"
-                className="overflow-hidden rounded-2xl shadow-xl"
-              >
+              <div data-animate="slideInRight" className="overflow-hidden rounded-2xl shadow-xl">
                 <MarketingImage
                   src={storyImage}
                   alt={t("images.modernLearning")}
@@ -223,11 +205,10 @@ export default function AboutPage() {
         {/* Mission detail */}
         <section className={cn("py-20 lg:py-24", mt.section)}>
           <div className={section.container}>
-            <SectionHeading
+            <SectionHeader
               eyebrow={t("aboutPage.missionEyebrow")}
               title={t("aboutPage.missionTitle")}
-              center
-              mt={mt}
+              align="center"
             />
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4" data-animate="staggerChildren" data-stagger="0.12">
               {safeMission.map((card, i) => {
@@ -260,11 +241,10 @@ export default function AboutPage() {
         {/* Principles */}
         <section className={cn("py-14 lg:py-24", mt.sectionAlt)}>
           <div className={section.container}>
-            <SectionHeading
+            <SectionHeader
               eyebrow={t("aboutPage.principlesEyebrow")}
               title={t("aboutPage.principlesTitle")}
-              center
-              mt={mt}
+              align="center"
             />
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-5" data-animate="staggerChildren" data-stagger="0.1">
               {safePrinciples.map((item, i) => {
@@ -283,14 +263,11 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Promise - always dark */}
+        {/* Promise */}
         <section className="bg-[#0D1B2A] py-20 text-white lg:py-24">
           <div className={section.container}>
             <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-              <div
-                data-animate="slideInLeft"
-                className="overflow-hidden rounded-2xl shadow-2xl"
-              >
+              <div data-animate="slideInLeft" className="overflow-hidden rounded-2xl shadow-2xl">
                 <MarketingImage
                   src={promiseImage}
                   alt={t("images.nextGradesLearning")}
@@ -299,8 +276,8 @@ export default function AboutPage() {
                 />
               </div>
               <div data-animate="slideInRight">
-                <Eyebrow className="mb-3">{t("aboutPage.promiseEyebrow")}</Eyebrow>
-                <h2 className="text-3xl font-bold md:text-4xl">{t("aboutPage.promiseTitle")}</h2>
+                <p className={cn(type.eyebrow, "mb-3")}>{t("aboutPage.promiseEyebrow")}</p>
+                <h2 className={type.h2}>{t("aboutPage.promiseTitle")}</h2>
                 <ul className="mt-8 space-y-4">
                   {safePromise.map((item) => (
                     <li key={item} className="flex items-start gap-3">
@@ -317,11 +294,10 @@ export default function AboutPage() {
         {/* Stats */}
         <section className={cn("py-14 lg:py-24", mt.sectionAlt)}>
           <div className={section.container}>
-            <SectionHeading
+            <SectionHeader
               eyebrow={t("aboutPage.statsEyebrow")}
               title={t("aboutPage.statsTitle")}
-              center
-              mt={mt}
+              align="center"
             />
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
               {safeStats.map((stat, i) => {
@@ -341,31 +317,36 @@ export default function AboutPage() {
         {/* CTA */}
         <section className="py-14 md:py-16">
           <div className={section.container}>
-          <div className="mx-auto max-w-5xl overflow-hidden rounded-2xl bg-gradient-to-br from-[#0D1B2A] via-[#132942] to-[#1a3555] p-8 shadow-2xl sm:p-12">
-            <div className="flex flex-col items-center gap-8 lg:flex-row lg:justify-between">
-              <div className="flex items-center gap-6">
-                <div className="hidden h-20 w-20 shrink-0 items-center justify-center rounded-2xl border border-[#D4AF37]/30 bg-[#D4AF37]/10 sm:flex">
-                  <GraduationCap className="h-10 w-10 text-[#D4AF37]" />
+            <div className="mx-auto max-w-5xl overflow-hidden rounded-2xl bg-gradient-to-br from-[#0D1B2A] via-[#132942] to-[#1a3555] p-8 shadow-2xl sm:p-12">
+              <div className="flex flex-col items-center gap-8 lg:flex-row lg:justify-between">
+                <div className="flex items-center gap-6">
+                  <div className="hidden h-20 w-20 shrink-0 items-center justify-center rounded-2xl border border-[#D4AF37]/30 bg-[#D4AF37]/10 sm:flex">
+                    <GraduationCap className="h-10 w-10 text-[#D4AF37]" />
+                  </div>
+                  <div className="text-center lg:text-left">
+                    <h2 className="text-2xl font-bold text-white md:text-3xl">{t("aboutPage.communityTitle")}</h2>
+                    <p className="mt-2 max-w-lg text-on-navy-muted">{t("aboutPage.communityDesc")}</p>
+                  </div>
                 </div>
-                <div className="text-center lg:text-left">
-                  <h2 className="text-2xl font-bold text-white md:text-3xl">{t("aboutPage.communityTitle")}</h2>
-                  <p className="mt-2 max-w-lg text-on-navy-muted">{t("aboutPage.communityDesc")}</p>
-                </div>
+                <Button
+                  variant="gold"
+                  size="xl"
+                  href={consultationCheckoutHref()}
+                  className="w-full shrink-0 rounded-xl py-4 text-base font-semibold lg:w-auto"
+                >
+                  {t("aboutPage.communityCta")}
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
               </div>
-              <Button variant="gold" size="xl" href="/consultation" className="w-full shrink-0 rounded-xl py-4 text-base font-semibold lg:w-auto">
-                {t("aboutPage.communityCta")}
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
+              <div className="mt-8 flex flex-wrap justify-center gap-6 border-t border-white/10 pt-8 lg:justify-start">
+                {safeTags.map((tag) => (
+                  <div key={tag} className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-[#D4AF37]" />
+                    <span className="text-sm font-medium text-white">{tag}</span>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className="mt-8 flex flex-wrap justify-center gap-6 border-t border-white/10 pt-8 lg:justify-start">
-              {safeTags.map((tag) => (
-                <div key={tag} className="flex items-center gap-2">
-                  <CheckCircle2 className="h-5 w-5 text-[#D4AF37]" />
-                  <span className="text-sm font-medium text-white">{tag}</span>
-                </div>
-              ))}
-            </div>
-          </div>
           </div>
         </section>
       </main>

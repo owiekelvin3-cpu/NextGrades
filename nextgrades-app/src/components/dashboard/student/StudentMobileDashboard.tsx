@@ -7,8 +7,7 @@ import {
   Calendar,
   Clock,
   Crown,
-  Lightbulb,
-  Sparkles,
+  ListChecks,
   Star,
   Video,
 } from "lucide-react";
@@ -23,6 +22,8 @@ import {
   subjectInitials,
 } from "./student-ui";
 import { StudentMobileHeader } from "./StudentMobileHeader";
+import { StudentHeroBand } from "./StudentHeroBand";
+import { StudentKpiCard, StudentKpiStrip } from "./StudentKpiCard";
 import { ZoomMeetingButton } from "@/components/zoom/ZoomMeetingButton";
 import { cn } from "@/lib/utils";
 
@@ -53,19 +54,6 @@ function SectionHeader({
   );
 }
 
-function HeroIllustration() {
-  return (
-    <div className="relative h-28 w-28 shrink-0" aria-hidden>
-      <div className="absolute right-2 top-2 h-16 w-16 rounded-2xl bg-[var(--brand-gold)]/25 dark:bg-[var(--brand-gold)]/15" />
-      <div className="absolute bottom-0 right-0 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-[var(--brand-navy)] to-[var(--brand-navy-muted)] shadow-lg dark:from-[var(--brand-gold)] dark:to-[var(--brand-gold-hover)]">
-        <Lightbulb className="h-9 w-9 text-[var(--brand-gold)] dark:text-[var(--brand-navy)]" />
-      </div>
-      <div className="absolute left-0 top-6 flex h-12 w-12 items-center justify-center rounded-xl bg-surface-elevated shadow-md ring-2 ring-[var(--brand-gold)]/30">
-        <Sparkles className="h-6 w-6 text-[var(--brand-gold)]" />
-      </div>
-    </div>
-  );
-}
 
 export function StudentMobileDashboard({ data, firstName, dateLocale }: Props) {
   const { t } = useTranslation();
@@ -112,44 +100,54 @@ export function StudentMobileDashboard({ data, firstName, dateLocale }: Props) {
     (l) => new Date(l.start_time).getTime() >= Date.now()
   );
 
-  const pageTitle = t("studentDashboard.mobileAllClasses", { defaultValue: "All Classes" });
+  const pageTitle = t("studentDashboard.overviewTitle", { defaultValue: "Overview" });
+
+  const nextLessonCta = data.nextLesson
+    ? new Date(data.nextLesson.start_time).toLocaleDateString(dateLocale, {
+        day: "numeric",
+        month: "short",
+      })
+    : undefined;
 
   return (
     <div className="bg-surface-dashboard pb-6 md:hidden">
       <StudentMobileHeader title={pageTitle} />
 
-      <div className="space-y-7 pt-4">
-        {/* Greeting strip */}
-        <p className="px-5 text-sm text-text-muted">
-          {t("studentDashboard.welcomeBack", { name: firstName })}
-        </p>
-
-        {/* Hero - quiz promo */}
+      <div className="space-y-6 pt-4">
         <div className="px-5">
-          <div className={st.mobileHero}>
-            <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-[var(--brand-gold)]/10 blur-2xl" />
-            <div className="relative flex items-center justify-between gap-3">
-              <div className="min-w-0 flex-1">
-                <p className="text-xl font-bold leading-snug text-foreground sm:text-2xl">
-                  {t("studentDashboard.mobileQuizHero", {
-                    defaultValue: "Testing your knowledge",
-                  })}
-                </p>
-                <p className="mt-1 text-sm text-text-muted">
-                  {t("studentDashboard.mobileQuizHeroSub", {
-                    defaultValue: "Quick quizzes keep you on track.",
-                  })}
-                </p>
-                <Link
-                  href="/dashboard/student/quizzes"
-                  className="mt-4 inline-flex min-h-10 items-center rounded-full border border-border-default bg-surface-elevated px-5 text-sm font-semibold text-foreground shadow-sm transition active:scale-[0.98] dark:border-white/10 dark:bg-white/10 dark:text-white"
-                >
-                  {t("studentDashboard.takeQuiz", { defaultValue: "Take Quiz" })}
-                </Link>
-              </div>
-              <HeroIllustration />
-            </div>
-          </div>
+          <StudentHeroBand
+            firstName={firstName}
+            learningGoal={data.learningGoal}
+            dateLocale={dateLocale}
+            overallProgress={data.overallProgress}
+            nextLessonLabel={nextLessonCta}
+            compact
+          />
+        </div>
+
+        <div className="px-5">
+          <StudentKpiStrip>
+            <StudentKpiCard
+              label={t("studentDashboard.nextAppointment")}
+              value={
+                data.nextLesson
+                  ? new Date(data.nextLesson.start_time).toLocaleDateString(dateLocale, {
+                      day: "numeric",
+                      month: "short",
+                    })
+                  : "-"
+              }
+              href="/dashboard/student/appointments"
+              icon={Calendar}
+            />
+            <StudentKpiCard
+              label={t("studentDashboard.openTasks")}
+              value={data.openTaskCount}
+              href="/dashboard/student/quizzes"
+              icon={ListChecks}
+              accent="violet"
+            />
+          </StudentKpiStrip>
         </div>
 
         {/* Subjects - horizontal chips */}

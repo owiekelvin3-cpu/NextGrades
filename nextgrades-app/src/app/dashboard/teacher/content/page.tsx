@@ -39,6 +39,7 @@ interface Resource {
   url: string;
   thumbnail_url: string | null;
   status: string;
+  moderation_status?: string | null;
   access_type: string;
   price: number;
   view_count: number;
@@ -53,6 +54,25 @@ interface Resource {
     id: string;
     name: string;
   } | null;
+}
+
+function getResourceStatusLabel(resource: Resource): { label: string; className: string } {
+  if (resource.moderation_status === "pending" && resource.status === "draft") {
+    return { label: "Pending review", className: "bg-yellow-500/10 text-yellow-600 dark:text-yellow-400" };
+  }
+  if (resource.moderation_status === "rejected") {
+    return { label: "Needs revision", className: "bg-red-500/10 text-red-500" };
+  }
+  switch (resource.status) {
+    case "published":
+      return { label: "Published", className: "bg-green-500/10 text-green-500" };
+    case "draft":
+      return { label: "Draft", className: "bg-gray-500/10 text-gray-500" };
+    case "archived":
+      return { label: "Archived", className: "bg-red-500/10 text-red-500" };
+    default:
+      return { label: resource.status.replace("_", " "), className: "bg-gray-500/10 text-gray-500" };
+  }
 }
 
 export default function TeacherContentPage() {
@@ -142,17 +162,8 @@ export default function TeacherContentPage() {
     (resource.description && resource.description.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "published": return "bg-green-500/10 text-green-500";
-      case "draft": return "bg-gray-500/10 text-gray-500";
-      case "pending_review": return "bg-yellow-500/10 text-yellow-500";
-      case "private": return "bg-purple-500/10 text-purple-500";
-      case "scheduled": return "bg-blue-500/10 text-blue-500";
-      case "archived": return "bg-red-500/10 text-red-500";
-      default: return "bg-gray-500/10 text-gray-500";
-    }
-  };
+  const getStatusColor = (resource: Resource) => getResourceStatusLabel(resource).className;
+  const getStatusLabel = (resource: Resource) => getResourceStatusLabel(resource).label;
 
   const getAccessColor = (access: string) => {
     switch (access) {
@@ -327,8 +338,8 @@ export default function TeacherContentPage() {
                         </div>
                       )}
                       <div className="absolute top-3 right-3 flex gap-2">
-                        <Badge className={getStatusColor(resource.status)}>
-                          {resource.status.replace("_", " ")}
+                        <Badge className={getStatusColor(resource)}>
+                          {getStatusLabel(resource)}
                         </Badge>
                       </div>
                     </div>

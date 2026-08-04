@@ -75,10 +75,10 @@ const nextConfig: NextConfig = {
       "lucide-react": lucideShim,
     },
   },
-  webpack: (config) => {
+  webpack: (config, { dir }) => {
     config.resolve.alias = {
       ...config.resolve.alias,
-      "lucide-react": require("path").join(__dirname, "src/lib/icons/lucide-react.tsx"),
+      "lucide-react": `${dir}/src/lib/icons/lucide-react.tsx`,
     };
     return config;
   },

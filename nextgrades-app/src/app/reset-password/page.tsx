@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useTheme } from "@/context/ThemeContext";
 import Navbar from "@/components/Navbar";
@@ -19,12 +19,25 @@ import {
 import { useTranslation } from "react-i18next";
 import { supabase } from "@/lib/supabase/client";
 import { bootstrapRecoverySession } from "@/lib/auth/recovery-session";
-import { getDashboardPathForUser } from "@/lib/auth/redirect";
 import { cn } from "@/lib/utils";
 import { FontAwesomeSetup } from "@/components/auth/FontAwesomeSetup";
 import { sendPasswordChangedEmail } from "@/lib/email";
 
 export default function ResetPasswordPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center">
+          <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#D4AF37] border-t-transparent" />
+        </div>
+      }
+    >
+      <ResetPasswordContent />
+    </Suspense>
+  );
+}
+
+function ResetPasswordContent() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -38,6 +51,8 @@ export default function ResetPasswordPage() {
   const { theme } = useTheme();
   const { t } = useTranslation();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const isInviteSetup = searchParams.get("setup") === "required";
 
   useEffect(() => {
     let cancelled = false;
@@ -133,12 +148,19 @@ export default function ResetPasswordPage() {
         void sendPasswordChangedEmail(user.email, user.user_metadata?.full_name as string | undefined);
       }
 
+      const completeRes = await fetch("/api/auth/complete-password-setup", { method: "POST" });
+      if (!completeRes.ok) {
+        const body = await completeRes.json().catch(() => ({}));
+        throw new Error(body.error || "Could not finalize password setup.");
+      }
+
+      await supabase.auth.signOut();
+
       setSuccess(true);
-      setTimeout(async () => {
-        const path = await getDashboardPathForUser();
-        router.push(path);
+      setTimeout(() => {
+        router.push("/login?password_set=1");
         router.refresh();
-      }, 2500);
+      }, 2200);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Failed to reset password");
     } finally {
@@ -193,7 +215,7 @@ export default function ResetPasswordPage() {
                     ? "from-white to-[#D4AF37]"
                     : "from-[#0D1B2A] to-[#D4AF37]"
                 } bg-clip-text text-transparent`}>
-                  {success ? "Password Reset!" : "Create New Password"}
+                  {success ? "Password Set!" : isInviteSetup ? "Activate Your Account" : "Create New Password"}
                 </h1>
                 
                 <p className={`text-sm ${
@@ -202,8 +224,10 @@ export default function ResetPasswordPage() {
                     : "text-gray-600"
                 }`}>
                   {success
-                    ? "Your password has been successfully updated"
-                    : "Enter a strong password to secure your account"}
+                    ? "Your password is ready. Sign in to open your dashboard."
+                    : isInviteSetup
+                      ? "Choose a personal password to finish setting up your NextGrades account."
+                      : "Enter a strong password to secure your account"}
                 </p>
               </div>
 
@@ -251,14 +275,14 @@ export default function ResetPasswordPage() {
                         ? "text-gray-300"
                         : "text-gray-600"
                     }`}>
-                      Your password has been successfully changed. 
+                      Your password has been saved. You will be redirected to sign in shortly.
                     </p>
                     <p className={`text-xs ${
                       theme === "dark"
                         ? "text-gray-400"
                         : "text-gray-500"
                     }`}>
-                      Redirecting to your dashboard...
+                      Use your email and new password to access your dashboard.
                     </p>
                   </div>
 
@@ -408,7 +432,7 @@ export default function ResetPasswordPage() {
                       </>
                     ) : (
                       <>
-                        Reset Password
+                        {isInviteSetup ? "Set password" : "Reset Password"}
                         <FontAwesomeIcon icon={faArrowRight} className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                       </>
                     )}

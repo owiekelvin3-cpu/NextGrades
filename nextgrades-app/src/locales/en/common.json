@@ -424,6 +424,8 @@
     "accountSuspended": "Your account has been suspended. Contact support@nextgrades.at if you believe this is a mistake.",
     "inviteOnlyNote": "Accounts are created by invitation only. Contact support@nextgrades.at if you need access.",
     "profileIncomplete": "Your account profile is incomplete. Please contact support.",
+    "passwordSetupRequired": "Please use the invitation link in your email to set your password before signing in.",
+    "passwordSetSuccess": "Password saved. Sign in with your new password.",
     "enterValidEmail": "Please enter a valid email address",
     "enterPassword": "Please enter your password",
     "authFailed": "Authentication failed",
@@ -515,7 +517,8 @@
   },
   "about": {
     "heroTitle": "More than tutoring.",
-    "heroTitle2": "A new vision for education.",
+    "heroTitleHighlight": "A new vision for education.",
+    "heroTitle2": "",
     "heroSubtitle": "We have set ourselves the task of providing students with a modern, structured and motivating learning environment – online, flexible and at the highest level.",
     "heroFeature1": "High-quality content",
     "heroFeature1Desc": "Created by experienced teachers.",

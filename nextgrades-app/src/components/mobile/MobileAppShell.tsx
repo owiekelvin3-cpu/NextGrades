@@ -79,9 +79,16 @@ export function MobileAppShell({
         ? `${ADMIN_PORTAL_PREFIX}/users`
         : "/dashboard/student/settings";
 
+  const shellClass =
+    role === "student"
+      ? appShell.studentDashboardShell
+      : role === "teacher"
+        ? appShell.teacherDashboardShell
+        : appShell.dashboardShell;
+
   return (
     <div
-      className={cn(appShell.dashboardShell, "md:bg-surface-dashboard")}
+      className={cn(shellClass, "md:bg-surface-dashboard")}
       style={{ ["--sidebar-width" as string]: `${sidebarWidth}px` }}
     >
       <Sidebar
@@ -94,6 +101,7 @@ export function MobileAppShell({
       <div
         className={cn(
           "flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden bg-surface-dashboard transition-[margin-left] duration-300 ease-out md:ml-[var(--sidebar-width)]",
+          role === "student" && "student-dashboard-main",
           !hideBottomNav && MOBILE_BOTTOM_NAV_PADDING
         )}
       >
@@ -129,7 +137,7 @@ export function MobileAppShell({
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={avatarUrl} alt="" className="h-8 w-8 rounded-full object-cover" />
                   ) : (
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#D4AF37]/20 text-xs font-bold text-[#D4AF37]">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--brand-gold-muted)] text-xs font-bold text-[var(--brand-gold)]">
                       {initials}
                     </span>
                   )}

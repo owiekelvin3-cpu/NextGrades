@@ -150,7 +150,7 @@ export function StudentSidebarNav({ unreadNotifications = 0, onNavigate }: Props
                     />
                     <span className="flex-1">{t(item.labelKey)}</span>
                     {showBadge && (
-                      <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-[#D4AF37] px-1.5 text-[10px] font-bold text-[#0D1B2A]">
+                      <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-[var(--brand-gold)] px-1.5 text-[10px] font-bold text-[var(--brand-navy)]">
                         {unreadNotifications > 9 ? "9+" : unreadNotifications}
                       </span>
                     )}

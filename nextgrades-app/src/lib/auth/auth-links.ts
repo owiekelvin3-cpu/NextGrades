@@ -120,3 +120,27 @@ export async function generateRecoveryLinkForEmail(email: string) {
 
   return { actionLink: null, userId: null, error: lastError ?? "Failed to generate reset link" };
 }
+
+/** Invite / first-time password setup link for admin-created accounts. */
+export async function generateInviteLinkForEmail(email: string) {
+  const maxAttempts = 3;
+  let lastError: string | null = null;
+
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    const result = await generateAuthLink({
+      type: "invite",
+      email,
+      redirectTo: getPasswordResetRedirectUrl(),
+    });
+
+    if (result.actionLink && !result.error) return result;
+
+    lastError = result.error;
+    const retryable = lastError?.toLowerCase().includes("not found");
+    if (!retryable || attempt === maxAttempts - 1) break;
+
+    await new Promise((resolve) => setTimeout(resolve, RECOVERY_LINK_RETRY_MS * (attempt + 1)));
+  }
+
+  return { actionLink: null, userId: null, error: lastError ?? "Failed to generate invite link" };
+}

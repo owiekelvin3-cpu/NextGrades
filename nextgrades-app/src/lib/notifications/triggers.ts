@@ -50,28 +50,56 @@ export async function notifyTeacherResourceUploaded(params: {
   materialId: string;
   title: string;
   status: string;
+  submittedForReview?: boolean;
   isUpdate?: boolean;
 }) {
-  const published = params.status === "published";
+  const published = params.status === "published" && !params.submittedForReview;
+  const submittedForReview = params.submittedForReview === true;
   const isUpdate = params.isUpdate === true;
 
   await createNotification({
     userId: params.teacherId,
-    type: "success",
+    type: submittedForReview ? "info" : published ? "success" : "info",
     category: "resource",
     title: published
       ? isUpdate
         ? "Resource updated & published"
         : "Resource published successfully"
-      : isUpdate
-        ? "Draft updated"
-        : "Resource uploaded",
+      : submittedForReview
+        ? isUpdate
+          ? "Update submitted for review"
+          : "Submitted for review"
+        : isUpdate
+          ? "Draft updated"
+          : "Draft saved",
     message: published
       ? `"${params.title}" is now live on the Resources page.`
-      : `"${params.title}" was saved as a draft. Publish it anytime from My materials.`,
-    actionUrl: published
+      : submittedForReview
+        ? `"${params.title}" is in the admin review queue. You will be notified when it is approved.`
+        : `"${params.title}" was saved as a draft. Submit it for review when you are ready.`,
+    actionUrl: submittedForReview
       ? "/dashboard/teacher/content"
-      : `/dashboard/teacher/content/${params.materialId}/edit`,
+      : published
+        ? "/dashboard/teacher/content"
+        : `/dashboard/teacher/content/${params.materialId}/edit`,
+    entityType: "material",
+    entityId: params.materialId,
+  });
+}
+
+export async function notifyAdminModerationPending(params: {
+  materialId: string;
+  title: string;
+  accessType?: string;
+  teacherName?: string;
+}) {
+  const accessLabel = params.accessType === "premium" ? "Premium" : "Free";
+  await createNotificationsForRole("admin", {
+    type: "info",
+    category: "resource",
+    title: "Resource awaiting review",
+    message: `${params.teacherName ?? "A teacher"} submitted "${params.title}" (${accessLabel}) for moderation.`,
+    actionUrl: "/portal/admin/moderation",
     entityType: "material",
     entityId: params.materialId,
   });

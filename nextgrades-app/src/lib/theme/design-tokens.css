@@ -554,6 +554,80 @@ html.theme-animate *::after {
   transition-duration: 150ms;
 }
 
+/* Student portal — warm cream learning hub (respects site light/dark, not forced dark) */
+.student-portal {
+  --student-hero-from: #0d1b2a;
+  --student-hero-to: #162a45;
+  --student-hero-glow: rgba(212, 175, 55, 0.14);
+  --student-kpi-shadow: 0 1px 2px rgba(13, 27, 42, 0.05), 0 8px 24px rgba(13, 27, 42, 0.07);
+}
+
+.dark .student-portal {
+  --student-hero-from: #0d1b2a;
+  --student-hero-to: #112240;
+  --student-hero-glow: rgba(212, 175, 55, 0.18);
+  --student-kpi-shadow: 0 1px 2px rgba(0, 0, 0, 0.32), 0 10px 32px rgba(0, 0, 0, 0.38);
+}
+
+.student-portal .student-dashboard-main {
+  background-color: var(--surface-dashboard);
+  background-image:
+    radial-gradient(ellipse 78% 52% at 100% -8%, rgba(212, 175, 55, 0.1), transparent 54%),
+    radial-gradient(ellipse 58% 42% at 0% 100%, rgba(13, 27, 42, 0.05), transparent 50%);
+}
+
+.dark .student-portal .student-dashboard-main {
+  background-image:
+    radial-gradient(ellipse 78% 52% at 100% -8%, rgba(212, 175, 55, 0.12), transparent 54%),
+    radial-gradient(ellipse 58% 42% at 0% 100%, rgba(255, 255, 255, 0.025), transparent 50%);
+}
+
+.student-portal .student-panel {
+  border: 1px solid var(--card-border);
+  background: var(--card-background);
+  border-radius: 1rem;
+  box-shadow: var(--student-kpi-shadow);
+}
+
+.student-portal .student-panel-accent {
+  border-top: 3px solid var(--brand-gold);
+}
+
+.student-portal .student-hero {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.25rem;
+  border: 1px solid rgba(212, 175, 55, 0.22);
+  background: linear-gradient(135deg, var(--student-hero-from) 0%, var(--student-hero-to) 100%);
+  box-shadow: var(--student-kpi-shadow);
+  color: #f5f7fa;
+}
+
+.student-portal .student-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 88% 12%, var(--student-hero-glow), transparent 42%),
+    radial-gradient(circle at 8% 88%, rgba(255, 255, 255, 0.04), transparent 38%);
+  pointer-events: none;
+}
+
+.student-portal .student-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  border-left: 3px solid var(--brand-gold);
+  border-radius: 0.375rem;
+  background: rgba(212, 175, 55, 0.12);
+  padding: 0.25rem 0.625rem;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--brand-gold-light);
+}
+
 /* Marketing site header — dark brand bar overrides nav tokens */
 .site-header-dark {
   --nav-text: rgba(255, 255, 255, 0.78);

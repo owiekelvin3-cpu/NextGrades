@@ -13,7 +13,14 @@ export async function GET() {
       .eq("settings_key", "default")
       .maybeSingle();
     if (error) {
-      if (error.message.includes("cms_theme_settings")) return NextResponse.json(null);
+      const code = (error as { code?: string }).code;
+      if (
+        code === "PGRST205" ||
+        code === "42P01" ||
+        error.message.includes("cms_theme_settings")
+      ) {
+        return NextResponse.json(null);
+      }
       throw error;
     }
     return NextResponse.json(data, {

@@ -149,7 +149,7 @@
       }
     ],
     "communityTitle": "Bildung verändert Leben",
-    "communityDesc": "Deshalb geben wir jeden Tag unser Bestes, damit Schüler:innen erfolgreicher lernen, mehr Selbstvertrauen gewinnen und ihr Potenzial voll ausschöpfen können.",
+    "communityDesc": "Deshalb geben wir jeden Tag unser Bestes, damit SchülerInnen erfolgreicher lernen, mehr Selbstvertrauen gewinnen und ihr Potenzial voll ausschöpfen können.",
     "communityCta": "Kostenloses Erstgespräch buchen",
     "communityTags": [
       "Unverbindlich",
@@ -952,7 +952,7 @@
       },
       "resources": {
         "title": "Ressourcen",
-        "description": "Plattform-Lernressourcen verwalten"
+        "description": "Lernmaterialien für die öffentliche Ressourcenseite hochladen und verwalten"
       },
       "analytics": {
         "title": "Analysen",
@@ -1850,6 +1850,15 @@
     "colActions": "Aktionen"
   },
   "adminAnalytics": {
+    "heroBadge": "Einblicke",
+    "heroTitle": "Plattform-Analytik",
+    "heroSubtitle": "Anmeldungen, tägliche Aktivität und Verteilung der Rollen im Überblick.",
+    "last30Days": "Letzte 30 Tage",
+    "totalSignups": "Neue Anmeldungen",
+    "avgDailyActivity": "Ø Ereignisse/Tag",
+    "totalUsers": "Benutzer gesamt",
+    "users": "Benutzer",
+    "rolesSubtitle": "Verteilung Schüler, Lehrkräfte und Admins",
     "signupsTitle": "Neue Anmeldungen (30 Tage)",
     "activityTitle": "Plattform-Aktivität (30 Tage)",
     "rolesTitle": "Benutzer nach Rolle"
@@ -1873,10 +1882,40 @@
     "ipUnknown": "unbekannt"
   },
   "adminResources": {
-    "emptyTitle": "Ressourcen werden im CMS verwaltet",
-    "emptyDesc": "Lernmaterialien im Website-Editor hochladen und organisieren. Veröffentlichte Ressourcen erscheinen auf der öffentlichen Ressourcenseite.",
-    "openCms": "Ressourcen im CMS öffnen",
-    "viewPublic": "Öffentliche Seite anzeigen"
+    "emptyTitle": "Noch keine Ressourcen",
+    "emptyDesc": "PDFs, Videos und Arbeitsblätter hier hochladen. Veröffentlichte Inhalte erscheinen sofort auf der öffentlichen Ressourcenseite.",
+    "emptySearch": "Suche oder Filter anpassen",
+    "uploadNew": "Ressource hochladen",
+    "uploadTitle": "Ressource hochladen",
+    "uploadDesc": "Lernmaterialien zur öffentlichen Bibliothek hinzufügen. Admin-Uploads gehen sofort live.",
+    "editTitle": "Ressource bearbeiten",
+    "editDesc": "Details, Vorschaubild oder Zugriffseinstellungen aktualisieren.",
+    "backToList": "Zurück zur Bibliothek",
+    "notFound": "Ressource nicht gefunden.",
+    "reviewQueue": "Prüfwarteschlange",
+    "viewPublic": "Öffentliche Seite",
+    "searchPlaceholder": "Ressourcen suchen…",
+    "deleteConfirm": "Diese Ressource endgültig löschen?",
+    "deleteSuccess": "Ressource gelöscht",
+    "deleteFailed": "Löschen fehlgeschlagen",
+    "archiveSuccess": "Ressource archiviert",
+    "archiveFailed": "Archivieren fehlgeschlagen",
+    "loadFailed": "Ressourcen konnten nicht geladen werden",
+    "statusAll": "Alle Status",
+    "statusPublished": "Veröffentlicht",
+    "statusDraft": "Entwurf",
+    "statusPending": "In Prüfung",
+    "statusArchived": "Archiviert",
+    "categoryAll": "Alle Kategorien",
+    "sortNewest": "Neueste",
+    "sortOldest": "Älteste",
+    "sortTitle": "Titel",
+    "premium": "Premium",
+    "views": "Aufrufe",
+    "preview": "Vorschau",
+    "edit": "Bearbeiten",
+    "archive": "Archivieren",
+    "delete": "Löschen"
   },
   "teacherContent": {
     "searchPlaceholder": "Ressourcen suchen…",

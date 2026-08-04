@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { requireAdminApi } from "@/lib/auth/api-auth";
 import { emailExists, normalizeEmail, EMAIL_REGEX } from "@/lib/auth/registration";
 import { generateTemporaryPassword } from "@/lib/auth/generate-temp-password";
-import { generateRecoveryLinkForEmail } from "@/lib/auth/auth-links";
+import { generateInviteLinkForEmail } from "@/lib/auth/auth-links";
 import { ensureRoleProfile } from "@/lib/auth/profile-setup";
 import { sendAccountInvitationEmail, isResendConfigured } from "@/lib/email";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -142,9 +142,10 @@ export async function POST(request: Request) {
       fullName,
       email,
       verified: true,
+      passwordSetupRequired: true,
     });
 
-    const { actionLink, error: linkError } = await generateRecoveryLinkForEmail(email);
+    const { actionLink, error: linkError } = await generateInviteLinkForEmail(email);
 
     if (linkError || !actionLink) {
       await admin.auth.admin.deleteUser(userId);

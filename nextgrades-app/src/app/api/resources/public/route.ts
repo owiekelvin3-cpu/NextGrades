@@ -3,8 +3,10 @@ import { createClient } from "@/lib/supabase/server";
 import { createServerReadClient } from "@/lib/supabase/admin";
 import { getApiAuth } from "@/lib/auth/api-auth";
 import { loadAccessContext, sanitizePublicMaterial } from "@/lib/resources/access";
+import { clampClassLevel } from "@/lib/catalog/classes";
 import { sortOrderForSlug, enrichSubject } from "@/lib/catalog/subjects";
 import { publicCacheHeaders } from "@/lib/cache/public-cache";
+import { buildMaterialTextSearchOr, materialMatchesExtendedSearch } from "@/lib/resources/public-catalog";
 
 export async function GET(request: Request) {
   try {
@@ -52,8 +54,8 @@ export async function GET(request: Request) {
     }
 
     if (classLevel && !classId) {
-      const level = parseInt(classLevel, 10);
-      if (!Number.isNaN(level)) {
+      const level = clampClassLevel(parseInt(classLevel, 10));
+      if (level != null) {
         const { data: classRow } = await db.from("classes").select("id").eq("level", level).maybeSingle();
         classId = classRow?.id ?? null;
       }
@@ -74,6 +76,7 @@ export async function GET(request: Request) {
       storage_path,
       thumbnail_url,
       file_size,
+      file_name,
       is_premium,
       access_type,
       download_count,
@@ -109,7 +112,13 @@ export async function GET(request: Request) {
     if (language) query = query.eq("language", language);
     if (subjectId) query = query.eq("subject_id", subjectId);
     if (classId) query = query.eq("class_id", classId);
-    if (semester === "1" || semester === "2") query = query.eq("semester", parseInt(semester, 10));
+    if (semester === "1" || semester === "2") {
+      const sem = parseInt(semester, 10);
+      query = query.or(`semester.eq.${sem},semester.is.null`);
+    }
+
+    const textSearchOr = buildMaterialTextSearchOr(search);
+    if (textSearchOr) query = query.or(textSearchOr);
 
     if (access === "free") {
       query = query.or("access_type.eq.free,is_premium.eq.false,is_premium.is.null");
@@ -160,20 +169,9 @@ export async function GET(request: Request) {
     });
 
     if (search) {
-      const q = search.toLowerCase();
-      results = results.filter((item) => {
-        const row = item as {
-          title?: string;
-          description?: string;
-          short_description?: string;
-          full_description?: string;
-        };
-        const haystack = [row.title, row.description, row.short_description, row.full_description]
-          .filter(Boolean)
-          .join(" ")
-          .toLowerCase();
-        return haystack.includes(q);
-      });
+      results = results.filter((item) =>
+        materialMatchesExtendedSearch(item as Parameters<typeof materialMatchesExtendedSearch>[0], search)
+      );
     }
 
     const isPublicCatalog =

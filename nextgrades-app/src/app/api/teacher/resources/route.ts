@@ -20,6 +20,8 @@ export async function GET(request: Request) {
     const page = parseInt(searchParams.get("page") || "1", 10);
     const limit = parseInt(searchParams.get("limit") || "20", 10);
 
+    const isAdmin = auth.profile?.role === "admin";
+
     let query = supabase
       .from("materials")
       .select(
@@ -30,10 +32,17 @@ export async function GET(request: Request) {
         resource_tag_relations(tag_id, resource_tags(id, name, slug, color))
       `,
         { count: "exact" }
-      )
-      .eq("created_by", auth.user.id);
+      );
 
-    if (status && status !== "all") query = query.eq("status", status);
+    if (!isAdmin) {
+      query = query.eq("created_by", auth.user.id);
+    }
+
+    if (status === "pending_review") {
+      query = query.eq("moderation_status", "pending").eq("status", "draft");
+    } else if (status && status !== "all") {
+      query = query.eq("status", status);
+    }
     if (category && category !== "all") query = query.eq("category_id", category);
     if (search) query = query.ilike("title", `%${search}%`);
 
@@ -95,8 +104,19 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Title and URL are required" }, { status: 400 });
     }
 
-    const ct = content_type as ContentType;
     const wantsPublish = status === "published";
+    if (wantsPublish) {
+      const subjectId = body.subject_id ? String(body.subject_id).trim() : "";
+      const classId = body.class_id ? String(body.class_id).trim() : "";
+      if (!subjectId || !classId) {
+        return NextResponse.json(
+          { error: "Subject and grade are required to publish to the Library." },
+          { status: 400 }
+        );
+      }
+    }
+
+    const ct = content_type as ContentType;
     const isAdmin = auth.profile?.role === "admin";
     const isPublished = wantsPublish && isAdmin;
 
@@ -123,7 +143,7 @@ export async function POST(request: Request) {
         estimated_minutes,
         language,
         created_by: auth.user.id,
-        moderation_status: isPublished ? "approved" : wantsPublish ? "pending" : "pending",
+        moderation_status: isPublished ? "approved" : wantsPublish ? "pending" : null,
         publish_date: isPublished ? new Date().toISOString() : null,
       })
       .select()

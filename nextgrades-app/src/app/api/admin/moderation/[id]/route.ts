@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient, isSupabaseServiceRoleConfigured } from "@/lib/supabase/admin";
 import { requireRole } from "@/lib/auth/auth-utils";
 
 // PUT - Approve or reject a resource
@@ -28,8 +29,10 @@ async function moderateResource(
     const auth = await requireRole(supabase, "admin");
     
     if (!auth.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: auth.error || "Unauthorized" }, { status: 401 });
     }
+
+    const db = isSupabaseServiceRoleConfigured() ? createAdminClient() : supabase;
 
     const body = await request.json();
     const { moderation_status, moderation_notes } = body;
@@ -41,14 +44,16 @@ async function moderateResource(
       );
     }
 
-    const { data, error } = await supabase
+    const now = new Date().toISOString();
+    const { data, error } = await db
       .from("materials")
       .update({
         moderation_status,
         moderation_notes,
         moderated_by: auth.user.id,
-        moderated_at: new Date().toISOString(),
+        moderated_at: now,
         status: moderation_status === "approved" ? "published" : "draft",
+        publish_date: moderation_status === "approved" ? now : null,
       })
       .eq("id", id)
       .select()

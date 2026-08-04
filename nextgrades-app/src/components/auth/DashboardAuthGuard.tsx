@@ -9,6 +9,7 @@ import {
   fetchProfileRole,
   getDashboardPathForRole,
 } from "@/lib/auth/redirect";
+import { buildPasswordSetupUrl, isPasswordSetupRequired } from "@/lib/auth/password-setup";
 import { Button } from "@/components/ui/Button";
 
 type Props = {
@@ -69,6 +70,14 @@ export function DashboardAuthGuard({ children }: Props) {
           if (!cancelled) {
             setStatus("denied");
             router.replace(buildLoginUrl(pathname));
+          }
+          return;
+        }
+
+        if (await isPasswordSetupRequired(supabase, user.id)) {
+          if (!cancelled) {
+            setStatus("denied");
+            router.replace(buildPasswordSetupUrl());
           }
           return;
         }

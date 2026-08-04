@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { Construction } from "lucide-react";
 import { TeacherDashboardLayout } from "@/components/dashboard/teacher/TeacherDashboardLayout";
+import { StudentDashboardLayout } from "@/components/dashboard/student/StudentDashboardLayout";
 import { isAdminPortalPath } from "@/lib/admin/portal-paths";
 
 interface DashboardPageProps {
@@ -28,7 +29,7 @@ export function DashboardPage({ role, titleKey, descriptionKey, children, action
     <>
       {role === "admin" && inAdminPortal ? (
         <AdminPageHeader title={title} description={description} actions={actions} />
-      ) : role !== "teacher" ? (
+      ) : role === "admin" && !inAdminPortal ? (
         <div className="mb-6 hidden md:block">
           <h1 className="text-2xl font-bold text-foreground md:text-3xl">{title}</h1>
           {description ? <p className="mt-1 text-text-muted">{description}</p> : null}
@@ -60,6 +61,14 @@ export function DashboardPage({ role, titleKey, descriptionKey, children, action
       <TeacherDashboardLayout title={title} description={description}>
         <div className="mx-auto max-w-7xl">{body}</div>
       </TeacherDashboardLayout>
+    );
+  }
+
+  if (role === "student") {
+    return (
+      <StudentDashboardLayout title={title} description={description}>
+        <div className="mx-auto max-w-6xl">{body}</div>
+      </StudentDashboardLayout>
     );
   }
 

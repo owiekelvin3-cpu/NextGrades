@@ -4,6 +4,7 @@ import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { MarketingImage } from "@/components/marketing/MarketingImage";
+import { tutoringCheckoutHref } from "@/lib/checkout/catalog-context";
 import { cn } from "@/lib/utils";
 
 export type SubjectCardData = {
@@ -80,7 +81,7 @@ export function SubjectProgramCard({
 
         <div className="mt-4 flex flex-wrap gap-2 border-t border-white/10 pt-4 md:mt-5 md:flex-col md:gap-2.5 md:pt-5">
           <Link
-            href="/consultation"
+            href={tutoringCheckoutHref(subject.id)}
             className="btn-card-primary group min-h-10 flex-1 px-3 py-2 text-xs md:min-h-0 md:flex-none md:text-sm"
           >
             <span className="min-w-0 truncate pr-1">{bookTutoringLabel}</span>

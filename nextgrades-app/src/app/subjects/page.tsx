@@ -42,6 +42,7 @@ import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
 import { MarketingHeroMobileImage } from "@/components/marketing/MarketingHeroMobileImage";
 import { themeInputClass, themeSelectClass } from "@/lib/theme/form-fields";
 import { cn } from "@/lib/utils";
+import { consultationCheckoutHref } from "@/lib/checkout/catalog-context";
 import { hero, type, section } from "@/lib/premium/tokens";
 
 const SUBJECT_ICONS: Record<string, typeof Calculator> = {
@@ -179,7 +180,7 @@ export default function SubjectsPage() {
                   })}
                 </ul>
                 <div data-animate="hero-cta">
-                  <Button variant="gold" size="md" className="w-full px-8 sm:w-auto" href="/consultation">
+                  <Button variant="gold" size="md" className="w-full px-8 sm:w-auto" href={consultationCheckoutHref()}>
                     {t("subjectsPage.ctaButton")} <ArrowRight className="h-5 w-5" />
                   </Button>
                 </div>
@@ -322,7 +323,7 @@ export default function SubjectsPage() {
             <h2 className="mb-4 text-3xl font-bold md:text-4xl">{t("subjectsPage.ctaTitle")}</h2>
             <p className="mb-8 text-lg text-on-navy-muted">{t("subjectsPage.ctaDesc")}</p>
             <div className="flex w-full max-w-lg flex-col items-stretch justify-center gap-3 sm:max-w-none sm:flex-row sm:items-center">
-              <Button variant="gold" size="lg" className="w-full sm:w-auto" href="/consultation">
+              <Button variant="gold" size="lg" className="w-full sm:w-auto" href={consultationCheckoutHref()}>
                 {t("subjectsPage.ctaButton")} <ArrowRight className="h-5 w-5" />
               </Button>
               <Button

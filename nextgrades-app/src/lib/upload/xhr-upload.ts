@@ -88,7 +88,13 @@ export function xhrUploadJson<T = unknown>(
 
       let data: T;
       try {
-        data = (xhr.response ?? {}) as T;
+        if (xhr.response != null && typeof xhr.response === "object") {
+          data = xhr.response as T;
+        } else if (xhr.responseText) {
+          data = JSON.parse(xhr.responseText) as T;
+        } else {
+          data = {} as T;
+        }
       } catch {
         data = {} as T;
       }

@@ -1,17 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { Download, Lock, Play, Gift, Crown, ChevronRight } from "lucide-react";
+import { Crown, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { LearningResource } from "@/components/resources/ResourceLearningCard";
-import { contentTypeLabel } from "@/lib/resources/constants";
 import { getResourceThumbnail, RESOURCES_DEFAULT_THUMBNAIL } from "@/lib/resources/images";
 import { isPremiumResource } from "@/lib/resources/ui-config";
-import { isVideoResource, resourceWatchPath } from "@/lib/resources/video";
-import { appShell } from "@/lib/theme/shell";
 import { theme as th } from "@/lib/theme/tokens";
 import { MarketingImage } from "@/components/marketing/MarketingImage";
 import { useTranslation } from "react-i18next";
+import {
+  LibraryCardBody,
+  LibraryCardThumbnail,
+} from "@/components/resources/shared/LibraryResourceCardParts";
 
 type HubCardProps = {
   resource: LearningResource;
@@ -20,109 +21,18 @@ type HubCardProps = {
   subjectSlug?: string;
 };
 
-function ResourceThumb({
-  src,
-  alt,
-  locked,
-}: {
-  src: string;
-  alt: string;
-  locked?: boolean;
-}) {
-  return (
-    <MarketingImage
-      src={src}
-      fallbackSrc={RESOURCES_DEFAULT_THUMBNAIL}
-      alt={alt}
-      containerClassName="absolute inset-0"
-      className={cn("transition duration-300 group-hover:scale-[1.02]", locked && "brightness-50")}
-      sizes="(max-width: 640px) 100vw, 25vw"
-    />
-  );
-}
-
 export function ResourceHubCard({ resource, onOpen, variant, subjectSlug }: HubCardProps) {
-  const { t } = useTranslation();
-  const premium = variant === "premium" || isPremiumResource(resource);
-  const locked = resource.locked ?? (premium && resource.canAccess === false);
-  const thumb = getResourceThumbnail(resource, subjectSlug);
-  const type = contentTypeLabel(resource.content_type || resource.type || "resource");
-  const isVideo = isVideoResource(resource);
+  const locked = resource.locked ?? ((variant === "premium" || isPremiumResource(resource)) && resource.canAccess === false);
 
   return (
-    <article className={cn("group flex flex-col overflow-hidden transition hover:shadow-md", appShell.elevatedCard)}>
-      <div className="relative aspect-[4/3] overflow-hidden bg-[var(--surface-subtle)]">
-        {locked ? (
-          <ResourceThumb src={thumb} alt={resource.title} locked />
-        ) : isVideo ? (
-          <Link href={resourceWatchPath(resource.id)} className="block h-full w-full">
-            <ResourceThumb src={thumb} alt={resource.title} />
-          </Link>
-        ) : (
-          <ResourceThumb src={thumb} alt={resource.title} />
-        )}
-        <span className="absolute left-3 top-3 rounded-md bg-[#0D1B2A]/85 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
-          {isVideo ? "Video" : type.includes("Video") ? "Video" : "PDF"}
-        </span>
-        {locked && (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/90">
-              <Lock className="h-5 w-5 text-[#0D1B2A]" />
-            </div>
-          </div>
-        )}
-      </div>
-      <div className="flex flex-1 flex-col p-4">
-        <p className="text-xs font-medium text-[var(--text-muted)]">
-          {resource.class?.name || resource.subject?.name || "-"}
-        </p>
-        <h3 className="mt-1 line-clamp-2 text-sm font-bold text-[var(--foreground)]">
-          {isVideo && !locked ? (
-            <Link href={resourceWatchPath(resource.id)} className="hover:text-[#D4AF37] transition">
-              {resource.title}
-            </Link>
-          ) : (
-            resource.title
-          )}
-        </h3>
-        <p className="mt-2 line-clamp-2 flex-1 text-xs text-[var(--text-muted)]">
-          {resource.short_description || resource.description || ""}
-        </p>
-        <div className="mt-4 flex items-center justify-between">
-          {premium ? (
-            <span className="inline-flex items-center gap-1 text-xs font-semibold text-[#D4AF37]">
-              <Lock className="h-3.5 w-3.5" /> {t("resources.membersOnly", { defaultValue: "Members only" })}
-            </span>
-          ) : (
-            <span className="inline-flex items-center gap-1 text-xs font-semibold text-[#22C55E]">
-              <Gift className="h-3.5 w-3.5" /> {t("resources.freeLabel", { defaultValue: "Free" })}
-            </span>
-          )}
-          {locked ? (
-            <Link
-              href="/resources/upgrade"
-              className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-[var(--border-default)] text-[var(--text-muted)] hover:border-[var(--brand-gold)] hover:text-[var(--brand-gold)]"
-            >
-              <Lock className="h-4 w-4" />
-            </Link>
-          ) : isVideo ? (
-            <Link
-              href={resourceWatchPath(resource.id)}
-              className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-[var(--border-default)] text-[var(--text-muted)] hover:border-[var(--brand-gold)] hover:text-[var(--brand-gold)]"
-            >
-              <Play className="h-4 w-4" />
-            </Link>
-          ) : (
-            <button
-              type="button"
-              onClick={onOpen}
-              className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-[var(--border-default)] text-[var(--text-muted)] hover:border-[var(--brand-gold)] hover:text-[var(--brand-gold)]"
-            >
-              <Download className="h-4 w-4" />
-            </button>
-          )}
-        </div>
-      </div>
+    <article
+      className={cn(
+        "group flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--border-default)] bg-[var(--surface-elevated)] shadow-sm transition duration-300",
+        "hover:-translate-y-0.5 hover:border-[#D4AF37]/35 hover:shadow-lg"
+      )}
+    >
+      <LibraryCardThumbnail resource={resource} subjectSlug={subjectSlug} locked={locked} />
+      <LibraryCardBody resource={resource} subjectSlug={subjectSlug} onOpen={onOpen} />
     </article>
   );
 }
@@ -143,7 +53,9 @@ export function ResourceSubjectTile({ name, slug, count, color, icon, imageUrl }
   return (
     <Link
       href={`/resources/${slug}`}
-      className={cn("group flex flex-col overflow-hidden transition hover:shadow-md", appShell.elevatedCard)}
+      className={cn(
+        "group flex flex-col overflow-hidden rounded-2xl border border-[var(--border-default)] bg-[var(--surface-elevated)] shadow-sm transition hover:shadow-md"
+      )}
     >
       <div className="relative aspect-[16/9] overflow-hidden bg-gray-100 dark:bg-[#0D1B2A]">
         <MarketingImage

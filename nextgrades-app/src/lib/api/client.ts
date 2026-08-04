@@ -1,3 +1,4 @@
+import { filterCatalogClasses } from "@/lib/catalog/classes";
 import { supabase } from "@/lib/supabase/client";
 import {
   fetchSubjects,
@@ -113,7 +114,7 @@ export class NextGradesAPI {
     try {
       const { data, error } = await supabase.from("classes").select("*").order("level", { ascending: true });
       if (error) throw error;
-      return (data || []) as Class[];
+      return filterCatalogClasses((data || []) as Class[]);
     } catch (error) {
       console.warn("Error fetching classes:", error);
       return [];

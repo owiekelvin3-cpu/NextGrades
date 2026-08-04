@@ -1,7 +1,5 @@
 "use client";
 
-export const dynamic = "force-dynamic";
-
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTheme } from "@/context/ThemeContext";
@@ -61,6 +59,17 @@ export default function AuthCallbackPage() {
         }
 
         const user = session.user;
+
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("password_setup_required")
+          .eq("id", user.id)
+          .maybeSingle();
+
+        if (profile?.password_setup_required) {
+          router.replace("/reset-password?setup=required");
+          return;
+        }
 
         if (user.email_confirmed_at) {
           void fetch("/api/auth/sync-email-verified", { method: "POST" });

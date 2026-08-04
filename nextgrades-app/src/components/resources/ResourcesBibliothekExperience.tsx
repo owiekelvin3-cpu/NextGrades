@@ -47,8 +47,9 @@ export function ResourcesBibliothekExperience({ access }: Props) {
       catalog.materialTypes.length > 0
   );
   const showSubjectBrowse = !hasResourceFilters;
-  const featured = catalog.resources.slice(0, 4);
-  const gridItems = catalog.resources.slice(0, 12);
+  const useFeaturedRow = !hasResourceFilters && catalog.resources.length > 4;
+  const featured = useFeaturedRow ? catalog.resources.slice(0, 4) : [];
+  const gridItems = useFeaturedRow ? catalog.resources.slice(4) : catalog.resources;
   const hasMaterials = catalog.resources.length > 0;
 
   const visibleSubjects = bibliothekSubjects;
@@ -154,7 +155,7 @@ export function ResourcesBibliothekExperience({ access }: Props) {
             <LoadingBlock />
           ) : hasMaterials ? (
             <>
-              {!locked && featured.length > 0 && !hasResourceFilters && (
+              {!locked && featured.length > 0 && (
                 <div>
                   <SectionHeader
                     eyebrow={t("resources.featuredEyebrow")}
@@ -177,21 +178,31 @@ export function ResourcesBibliothekExperience({ access }: Props) {
                 </div>
               )}
 
-              {hasResourceFilters && (
+              {gridItems.length > 0 && (
                 <div>
                   <SectionHeader
-                    title={t("resources.gridTitle")}
+                    title={
+                      hasResourceFilters
+                        ? t("resources.gridTitle")
+                        : useFeaturedRow
+                          ? t("resources.moreMaterialsTitle", { defaultValue: "More materials" })
+                          : t("resources.allMaterialsTitle", { defaultValue: "All materials" })
+                    }
                     subtitle={
                       catalog.search
                         ? t("resources.searchResultsFor", { query: catalog.search })
-                        : undefined
+                        : hasResourceFilters
+                          ? undefined
+                          : t("resources.allMaterialsSubtitle", {
+                              defaultValue: "Browse everything currently available in the Library.",
+                            })
                     }
                     align="left"
                     className="!mb-6"
                   />
-                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                  <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                     {gridItems.map((r) => (
-                      <div key={r.id} className="hidden sm:block">
+                      <div key={r.id} className="hidden h-full sm:block">
                         <ResourceHubCard
                           resource={r}
                           variant={isPremiumResource(r) ? "premium" : "free"}
@@ -201,7 +212,7 @@ export function ResourcesBibliothekExperience({ access }: Props) {
                       </div>
                     ))}
                     {gridItems.map((r) => (
-                      <div key={`m-${r.id}`} className="sm:hidden">
+                      <div key={`m-${r.id}`} className="h-full sm:hidden">
                         <MobileResourceCard
                           resource={r}
                           variant={isPremiumResource(r) ? "premium" : "free"}

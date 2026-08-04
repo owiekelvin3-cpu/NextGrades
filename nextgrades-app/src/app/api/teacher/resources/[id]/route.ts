@@ -14,7 +14,9 @@ export async function GET(request: Request, { params }: RouteParams) {
       return NextResponse.json({ error: auth.error || "Unauthorized" }, { status: auth.error === "Forbidden" ? 403 : 401 });
     }
 
-    const { data: resource, error } = await supabase
+    const isAdmin = auth.profile?.role === "admin";
+
+    let fetchQuery = supabase
       .from("materials")
       .select(`
         *,
@@ -22,9 +24,13 @@ export async function GET(request: Request, { params }: RouteParams) {
         folder:resource_folders(id, name),
         resource_tag_relations(tag_id, resource_tags(id, name, slug, color))
       `)
-      .eq("id", id)
-      .eq("created_by", auth.user.id)
-      .single();
+      .eq("id", id);
+
+    if (!isAdmin) {
+      fetchQuery = fetchQuery.eq("created_by", auth.user.id);
+    }
+
+    const { data: resource, error } = await fetchQuery.single();
 
     if (error || !resource) {
       return NextResponse.json({ error: "Resource not found" }, { status: 404 });
@@ -166,7 +172,7 @@ export async function PATCH(request: Request, { params }: RouteParams) {
       .eq("id", id)
       .single();
 
-    if (!existing || existing.created_by !== auth.user.id) {
+    if (!existing || (existing.created_by !== auth.user.id && auth.profile?.role !== "admin")) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 

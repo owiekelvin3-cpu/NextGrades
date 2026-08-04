@@ -2,9 +2,8 @@
 
 import { useTranslation } from "react-i18next";
 import { MATERIAL_TYPE_FILTERS } from "@/lib/resources/ui-config";
+import { MAX_CLASS_LEVEL } from "@/lib/catalog/classes";
 import { cn } from "@/lib/utils";
-
-const MAX_GRADE_LEVEL = 9;
 
 type ClassItem = { id: string; name: string; level: number };
 
@@ -71,7 +70,7 @@ export function BibliothekFilterSidebar({
 }: Props) {
   const { t } = useTranslation(["common", "site"]);
 
-  const gradeClasses = classes.filter((c) => c.level >= 1 && c.level <= MAX_GRADE_LEVEL);
+  const gradeClasses = classes.filter((c) => c.level >= 1 && c.level <= MAX_CLASS_LEVEL);
 
   const toggleMaterialType = (types: string[]) => {
     const key = types.join(",");

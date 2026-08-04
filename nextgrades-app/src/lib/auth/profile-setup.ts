@@ -19,7 +19,7 @@ export async function ensureRoleProfile(
   admin: SupabaseClient,
   userId: string,
   role: SetupRole,
-  fields: { fullName: string; email: string; verified: boolean }
+  fields: { fullName: string; email: string; verified: boolean; passwordSetupRequired?: boolean }
 ) {
   const now = new Date().toISOString();
 
@@ -38,6 +38,11 @@ export async function ensureRoleProfile(
     email_verified_at: fields.verified ? now : null,
     updated_at: now,
   };
+
+  if (fields.passwordSetupRequired === true) {
+    profilePatch.password_setup_required = true;
+    profilePatch.password_set_at = null;
+  }
 
   if (role === "student" && !existing?.student_id) {
     profilePatch.student_id = generateStudentMemberId();

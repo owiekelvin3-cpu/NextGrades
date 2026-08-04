@@ -1,6 +1,7 @@
 "use client";
 
 import { Suspense, useEffect, useMemo, useState } from "react";
+import { motion } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Eye, EyeOff, CheckCircle2 } from "lucide-react";
@@ -33,6 +34,8 @@ import { useMarketingHeroImage } from "@/hooks/useCmsImage";
 import { cn } from "@/lib/utils";
 import { AuthGuestGuard } from "@/components/auth/AuthGuestGuard";
 import { AuthModeSwitch } from "@/components/auth/AuthModeSwitch";
+import { AuthAlert } from "@/components/auth/AuthAlert";
+import { AuthMotionItem, authStaggerContainer, AUTH_EASE } from "@/components/auth/auth-motion";
 import { isPublicSignupEnabled } from "@/lib/auth/public-signup";
 import {
   isAuthUserEmailVerified,
@@ -109,6 +112,12 @@ function LoginContent() {
     }
     if (searchParams.get("suspended") === "1") {
       setError(t("login.accountSuspended"));
+    } else if (searchParams.get("password_set") === "1") {
+      toast.success(
+        t("login.passwordSetSuccess", {
+          defaultValue: "Password saved. Sign in with your new password.",
+        })
+      );
     } else if (errorParam === "profile_incomplete") {
       setError(t("login.profileIncomplete"));
     } else if (errorParam && errorParam !== "email_not_verified" && errorParam !== "login_otp_required") {
@@ -157,6 +166,25 @@ function LoginContent() {
           body: JSON.stringify({ email: normalizedEmail, turnstileToken }),
         });
         throw new Error(translateAuthError(result.error.message));
+      }
+
+      const userId = result.data.user?.id;
+      if (userId) {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("password_setup_required")
+          .eq("id", userId)
+          .maybeSingle();
+
+        if (profile?.password_setup_required) {
+          await supabase.auth.signOut();
+          throw new Error(
+            t("login.passwordSetupRequired", {
+              defaultValue:
+                "Please use the invitation link in your email to set your password before signing in.",
+            })
+          );
+        }
       }
 
       if (
@@ -209,15 +237,42 @@ function LoginContent() {
 
   const heroPanel = (
     <div className="max-w-md">
-      <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-[#D4AF37]">{t("login.heroHeadline")}</p>
-      <h2 className="mb-3 text-3xl font-bold leading-tight text-white">{t("login.heroTagline")}</h2>
-      <p className="mb-6 text-sm leading-relaxed text-gray-200">{t("login.heroDesc")}</p>
+      <motion.p
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.45, ease: AUTH_EASE }}
+        className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-[#D4AF37]"
+      >
+        {t("login.heroHeadline")}
+      </motion.p>
+      <motion.h2
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.08, duration: 0.5, ease: AUTH_EASE }}
+        className="mb-3 text-3xl font-bold leading-tight text-white"
+      >
+        {t("login.heroTagline")}
+      </motion.h2>
+      <motion.p
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.14, duration: 0.45, ease: AUTH_EASE }}
+        className="mb-6 text-sm leading-relaxed text-gray-200"
+      >
+        {t("login.heroDesc")}
+      </motion.p>
       <ul className="space-y-3">
-        {heroBenefits.map((item) => (
-          <li key={item} className="flex items-center gap-2 text-sm text-white/90">
+        {heroBenefits.map((item, i) => (
+          <motion.li
+            key={item}
+            initial={{ opacity: 0, x: -12 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.22 + i * 0.07, duration: 0.4, ease: AUTH_EASE }}
+            className="flex items-center gap-2 text-sm text-white/90"
+          >
             <CheckCircle2 className="h-4 w-4 shrink-0 text-[#D4AF37]" />
             {item}
-          </li>
+          </motion.li>
         ))}
       </ul>
     </div>
@@ -233,35 +288,31 @@ function LoginContent() {
         }
       >
         {showInviteNote && (
-          <p
-            className={cn(
-              "mb-4 rounded-xl border px-4 py-3 text-sm leading-relaxed",
-              isDark
-                ? "border-[var(--brand-gold)]/25 bg-[var(--brand-gold)]/10 text-zinc-300"
-                : "border-[var(--brand-gold)]/30 bg-[var(--brand-gold-muted)] text-[#0D1B2A]/80"
-            )}
-            role="status"
-          >
-            {t("login.inviteOnlyNote")}
-          </p>
+          <AuthMotionItem>
+            <p
+              className={cn(
+                "mb-4 rounded-xl border px-4 py-3 text-sm leading-relaxed",
+                isDark
+                  ? "border-[var(--brand-gold)]/25 bg-[var(--brand-gold)]/10 text-zinc-300"
+                  : "border-[var(--brand-gold)]/30 bg-[var(--brand-gold-muted)] text-[#0D1B2A]/80"
+              )}
+              role="status"
+            >
+              {t("login.inviteOnlyNote")}
+            </p>
+          </AuthMotionItem>
         )}
 
-        {error && (
-          <div
-            className={cn(
-              "mb-5 rounded-xl border-l-4 px-4 py-3 text-sm",
-              isDark
-                ? "border-red-500 bg-red-500/10 text-red-300"
-                : "border-red-500 bg-red-50 text-red-700"
-            )}
-            role="alert"
-          >
-            {error}
-          </div>
-        )}
+        <AuthAlert message={error} className="mb-5" />
 
-        <form className="space-y-4" onSubmit={handleSubmit}>
-          <AuthMobileField
+        <motion.form
+          variants={authStaggerContainer}
+          initial="hidden"
+          animate="show"
+          className="space-y-4"
+          onSubmit={handleSubmit}
+        >
+            <AuthMobileField
             id="login-email-mobile"
             label={t("login.email")}
             type="email"
@@ -290,39 +341,48 @@ function LoginContent() {
               </button>
             }
           />
-          <div className="flex items-center justify-between gap-3 pt-1">
-            <label
-              className={cn(
-                "flex cursor-pointer items-center gap-2 text-sm",
-                isDark ? "text-gray-300" : "text-gray-600"
-              )}
-            >
-              <input
-                type="checkbox"
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
-                className="h-4 w-4 rounded border-gray-300 text-[#D4AF37] focus:ring-[#D4AF37]"
+          <AuthMotionItem>
+            <div className="flex items-center justify-between gap-3 pt-1">
+              <label
+                className={cn(
+                  "flex cursor-pointer items-center gap-2 text-sm",
+                  isDark ? "text-gray-300" : "text-gray-600"
+                )}
+              >
+                <input
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  className="h-4 w-4 rounded border-gray-300 text-[#D4AF37] focus:ring-[#D4AF37]"
+                />
+                {t("login.rememberMe")}
+              </label>
+              <Link
+                href="/forgot-password"
+                className={cn("text-sm font-medium text-[#D4AF37] hover:opacity-90")}
+              >
+                {t("login.forgotPassword")}
+              </Link>
+            </div>
+          </AuthMotionItem>
+            <AuthMotionItem>
+              <TurnstileWidget
+                onToken={setTurnstileToken}
+                theme={isDark ? "dark" : "light"}
+                className="flex justify-center"
               />
-              {t("login.rememberMe")}
-            </label>
-            <Link
-              href="/forgot-password"
-              className={cn("text-sm font-medium text-[#D4AF37] hover:opacity-90")}
-            >
-              {t("login.forgotPassword")}
-            </Link>
-          </div>
-          <TurnstileWidget
-            onToken={setTurnstileToken}
-            theme={isDark ? "dark" : "light"}
-            className="flex justify-center"
-          />
-          <AuthMobilePrimaryButton loading={loading}>{t("login.signIn")}</AuthMobilePrimaryButton>
-        </form>
+            </AuthMotionItem>
+            <AuthMotionItem>
+              <AuthMobilePrimaryButton loading={loading}>{t("login.signIn")}</AuthMobilePrimaryButton>
+            </AuthMotionItem>
+        </motion.form>
 
-        <AuthModeSwitch mode="login" className="mt-6" />
+        <AuthMotionItem>
+          <AuthModeSwitch mode="login" className="mt-6" />
+        </AuthMotionItem>
 
-        <p
+        <AuthMotionItem>
+          <p
           className={cn(
             "mt-8 text-center text-xs leading-relaxed",
             isDark ? "text-gray-500" : "text-gray-500"
@@ -337,6 +397,7 @@ function LoginContent() {
             {t("login.privacy")}
           </Link>
         </p>
+        </AuthMotionItem>
       </AuthMobileShell>
 
       <div className="hidden lg:contents">
@@ -346,27 +407,31 @@ function LoginContent() {
               <AuthSplitHeader title={t("login.welcomeBackTitle")} subtitle={t("login.loginSubtitle")} />
 
               {showInviteNote && (
-                <p
-                  className={cn(
-                    "mb-5 rounded-2xl border px-4 py-3 text-sm leading-relaxed",
-                    isDark
-                      ? "border-[var(--brand-gold)]/25 bg-[var(--brand-gold)]/10 text-zinc-300"
-                      : "border-[var(--brand-gold)]/30 bg-[var(--brand-gold-muted)] text-[#0D1B2A]/80"
-                  )}
-                  role="status"
-                >
-                  {t("login.inviteOnlyNote")}
-                </p>
+                <AuthMotionItem>
+                  <p
+                    className={cn(
+                      "mb-5 rounded-2xl border px-4 py-3 text-sm leading-relaxed",
+                      isDark
+                        ? "border-[var(--brand-gold)]/25 bg-[var(--brand-gold)]/10 text-zinc-300"
+                        : "border-[var(--brand-gold)]/30 bg-[var(--brand-gold-muted)] text-[#0D1B2A]/80"
+                    )}
+                    role="status"
+                  >
+                    {t("login.inviteOnlyNote")}
+                  </p>
+                </AuthMotionItem>
               )}
 
-              {error && (
-                <div className={cn("mb-6 rounded-2xl border px-4 py-3 text-sm", s.errorBox)}>
-                  <p>{error}</p>
-                </div>
-              )}
+              <AuthAlert message={error} className="mb-6" />
 
-              <form className="space-y-5" onSubmit={handleSubmit}>
-                <AuthField
+              <motion.form
+                variants={authStaggerContainer}
+                initial="hidden"
+                animate="show"
+                className="space-y-5"
+                onSubmit={handleSubmit}
+              >
+                  <AuthField
                   id="login-email"
                   label={t("login.email")}
                   type="email"
@@ -393,7 +458,8 @@ function LoginContent() {
                     </button>
                   }
                 />
-                <div className="flex items-center justify-between gap-3 pt-1">
+                  <AuthMotionItem>
+                    <div className="flex items-center justify-between gap-3 pt-1">
                   <label className={cn("flex cursor-pointer items-center gap-2 text-sm", s.body)}>
                     <input
                       type="checkbox"
@@ -406,16 +472,24 @@ function LoginContent() {
                   <Link href="/forgot-password" className={cn("text-sm", s.link)}>
                     {t("login.forgotPassword")}
                   </Link>
-                </div>
-                <TurnstileWidget onToken={setTurnstileToken} theme={isDark ? "dark" : "light"} className="flex justify-center" />
-                <AuthPrimaryButton loading={loading} variant="gold">
-                  {t("login.signIn")}
-                </AuthPrimaryButton>
-              </form>
+                    </div>
+                  </AuthMotionItem>
+                  <AuthMotionItem>
+                    <TurnstileWidget onToken={setTurnstileToken} theme={isDark ? "dark" : "light"} className="flex justify-center" />
+                  </AuthMotionItem>
+                  <AuthMotionItem>
+                    <AuthPrimaryButton loading={loading} variant="gold">
+                      {t("login.signIn")}
+                    </AuthPrimaryButton>
+                  </AuthMotionItem>
+              </motion.form>
 
-              <AuthModeSwitch mode="login" className="mt-6" />
+              <AuthMotionItem>
+                <AuthModeSwitch mode="login" className="mt-6" />
+              </AuthMotionItem>
 
-              <p className={cn("mt-8 text-center text-xs leading-relaxed", s.body)}>
+              <AuthMotionItem>
+                <p className={cn("mt-8 text-center text-xs leading-relaxed", s.body)}>
                 {t("login.termsPrefix")}{" "}
                 <Link href="/terms" className={s.link}>
                   {t("login.terms")}
@@ -425,6 +499,7 @@ function LoginContent() {
                   {t("login.privacy")}
                 </Link>
               </p>
+              </AuthMotionItem>
             </AuthSplitCard>
           </div>
         </AuthPageShell>
@@ -438,8 +513,8 @@ export default function LoginPage() {
     <AuthGuestGuard>
       <Suspense
         fallback={
-          <div className="flex min-h-screen items-center justify-center bg-background text-text-muted">
-            …
+          <div className="flex min-h-screen items-center justify-center bg-background">
+            <div className="h-8 w-8 animate-spin rounded-full border-2 border-[var(--brand-gold)] border-t-transparent" />
           </div>
         }
       >

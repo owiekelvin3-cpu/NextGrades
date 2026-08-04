@@ -1,5 +1,6 @@
 import { createAdminClient } from "@/lib/supabase/admin";
 import { isSupabaseServiceRoleConfigured } from "@/lib/supabase/env";
+import { clampClassLevel } from "@/lib/catalog/classes";
 import { normalizeSubjectKey } from "@/lib/marketing-images";
 
 export type CheckoutCatalogContext = {
@@ -63,8 +64,8 @@ export async function resolveCheckoutCatalogContext(input: {
 
   let classId = "";
   let className = "";
-  const gradeLevel = parseInt(grade, 10);
-  if (!Number.isNaN(gradeLevel) && gradeLevel >= 1) {
+  const gradeLevel = clampClassLevel(parseInt(grade, 10));
+  if (gradeLevel != null) {
     const { data: classRow } = await admin
       .from("classes")
       .select("id, name, level")
@@ -110,4 +111,25 @@ export function buildCheckoutQuery(params: {
   if (params.semester) q.set("semester", params.semester);
   if (params.from) q.set("from", params.from);
   return q.toString();
+}
+
+export const CHECKOUT_PATH = "/checkout";
+
+/** Book consultation / intro — group tutoring checkout. */
+export function consultationCheckoutHref(): string {
+  return `${CHECKOUT_PATH}?${buildCheckoutQuery({
+    plan: "group",
+    billing: "monthly",
+    from: "consultation",
+  })}`;
+}
+
+/** Book 1:1 tutoring for a subject. */
+export function tutoringCheckoutHref(subjectId: string): string {
+  return `${CHECKOUT_PATH}?${buildCheckoutQuery({
+    plan: "premium",
+    billing: "monthly",
+    subject: subjectId,
+    from: "subjects",
+  })}`;
 }

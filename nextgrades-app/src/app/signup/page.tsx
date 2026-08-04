@@ -34,24 +34,7 @@ function SignupContent() {
   const s = authSurface(theme === "dark");
   const isDark = theme === "dark";
   const redirectTo = sanitizeRedirect(searchParams.get("redirect"));
-
-  useEffect(() => {
-    if (!isPublicSignupEnabled()) {
-      const q = new URLSearchParams();
-      q.set("invite", "1");
-      if (redirectTo) q.set("redirect", redirectTo);
-      router.replace(`/login?${q.toString()}`);
-    }
-  }, [router, redirectTo]);
-
-  if (!isPublicSignupEnabled()) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-background text-text-muted">
-        …
-      </div>
-    );
-  }
-
+  const signupEnabled = isPublicSignupEnabled();
   const [mobileStep, setMobileStep] = useState<"role" | "form">("role");
   const [mobileRole, setMobileRole] = useState<"student" | "teacher">("student");
 
@@ -64,6 +47,23 @@ function SignupContent() {
     ],
     [t]
   );
+
+  useEffect(() => {
+    if (!signupEnabled) {
+      const q = new URLSearchParams();
+      q.set("invite", "1");
+      if (redirectTo) q.set("redirect", redirectTo);
+      router.replace(`/login?${q.toString()}`);
+    }
+  }, [router, redirectTo, signupEnabled]);
+
+  if (!signupEnabled) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background text-text-muted">
+        …
+      </div>
+    );
+  }
 
   const heroPanel = (
     <div className="max-w-md">

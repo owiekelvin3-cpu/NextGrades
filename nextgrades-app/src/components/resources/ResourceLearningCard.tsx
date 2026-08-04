@@ -24,6 +24,7 @@ export type LearningResource = {
   title: string;
   description?: string | null;
   short_description?: string | null;
+  full_description?: string | null;
   type?: string;
   content_type?: string;
   url?: string | null;

@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient, isSupabaseServiceRoleConfigured } from "@/lib/supabase/admin";
 import type { User } from "@supabase/supabase-js";
 import {
   getApiAuth,
@@ -15,14 +16,17 @@ import { resolveUserRole } from "@/lib/auth/roles";
 
 type SupabaseServerClient = Awaited<ReturnType<typeof createClient>>;
 
-async function enforceSecureSession(user: User | null): Promise<string | null> {
+async function enforceSecureSession(
+  user: User | null,
+  options?: { skipLoginOtp?: boolean }
+): Promise<string | null> {
   if (!user) return "Unauthorized";
 
   if (isSignupEmailVerificationRequired() && !isAuthUserEmailVerified(user)) {
     return "Email verification required";
   }
 
-  if (!(await isLoginMfaSatisfied(user.id))) {
+  if (!options?.skipLoginOtp && !(await isLoginMfaSatisfied(user.id))) {
     return "Login verification required";
   }
 
@@ -45,12 +49,8 @@ async function secureAuthFromClient(supabase: SupabaseServerClient): Promise<Aut
     return { user: null, profile: null, error: "Unauthorized" };
   }
 
-  const secureError = await enforceSecureSession(user);
-  if (secureError) {
-    return { user: null, profile: null, error: secureError };
-  }
-
-  const { data: profileRow } = await supabase
+  const profileClient = isSupabaseServiceRoleConfigured() ? createAdminClient() : supabase;
+  const { data: profileRow } = await profileClient
     .from("profiles")
     .select("id, role, full_name, email, is_active")
     .eq("id", user.id)
@@ -63,6 +63,13 @@ async function secureAuthFromClient(supabase: SupabaseServerClient): Promise<Aut
   const resolvedRole = resolveUserRole(profileRow?.role, user.user_metadata);
   if (!resolvedRole) {
     return { user: null, profile: null, error: "Profile not found" };
+  }
+
+  const secureError = await enforceSecureSession(user, {
+    skipLoginOtp: resolvedRole === "admin",
+  });
+  if (secureError) {
+    return { user: null, profile: null, error: secureError };
   }
 
   return {

@@ -17,6 +17,7 @@ import {
 } from "@/lib/auth/config";
 import { isLoginMfaSatisfiedFromRequest } from "@/lib/auth/mfa-cookies";
 import { isVerificationPath, redirectToVerification } from "@/lib/auth/verification-routes";
+import { PASSWORD_SETUP_PATH, isPasswordSetupPath } from "@/lib/auth/password-setup";
 import { enforceGlobalApiRateLimit } from "@/lib/security/rate-limit";
 
 const DASHBOARD_ROLE_PREFIXES: Record<string, AppRole[]> = {
@@ -88,29 +89,34 @@ export async function proxy(request: NextRequest) {
 
   let userRole: AppRole | null = null;
   let userActive = true;
+  let passwordSetupRequired = false;
   if (user) {
     let profileRole: unknown = null;
     let profileActive: boolean | null = null;
+    let profilePasswordSetupRequired: boolean | null = null;
 
     if (isSupabaseServiceRoleConfigured()) {
       const { data: profile } = await createAdminClient()
         .from("profiles")
-        .select("role, is_active")
+        .select("role, is_active, password_setup_required")
         .eq("id", user.id)
         .maybeSingle();
       profileRole = profile?.role;
       profileActive = profile?.is_active ?? null;
+      profilePasswordSetupRequired = profile?.password_setup_required ?? null;
     } else {
       const { data: profile } = await supabase
         .from("profiles")
-        .select("role, is_active")
+        .select("role, is_active, password_setup_required")
         .eq("id", user.id)
         .maybeSingle();
       profileRole = profile?.role;
       profileActive = profile?.is_active ?? null;
+      profilePasswordSetupRequired = profile?.password_setup_required ?? null;
     }
 
     userActive = profileActive !== false;
+    passwordSetupRequired = profilePasswordSetupRequired === true;
     userRole = resolveUserRole(profileRole, user.user_metadata);
 
     if (!userActive) {
@@ -119,6 +125,19 @@ export async function proxy(request: NextRequest) {
       redirectUrl.pathname = "/login";
       redirectUrl.searchParams.set("suspended", "1");
       redirectUrl.searchParams.delete("redirect");
+      return NextResponse.redirect(redirectUrl);
+    }
+
+    if (
+      passwordSetupRequired &&
+      isProtectedAppPath(requestedPath) &&
+      !isPasswordSetupPath(requestedPath) &&
+      !isVerificationPath(requestedPath)
+    ) {
+      const redirectUrl = request.nextUrl.clone();
+      redirectUrl.pathname = PASSWORD_SETUP_PATH;
+      redirectUrl.search = "";
+      redirectUrl.searchParams.set("setup", "required");
       return NextResponse.redirect(redirectUrl);
     }
 
@@ -269,6 +288,13 @@ export async function proxy(request: NextRequest) {
       redirectUrl.pathname = "/login";
       return NextResponse.redirect(redirectUrl);
     }
+    if (passwordSetupRequired) {
+      const redirectUrl = request.nextUrl.clone();
+      redirectUrl.pathname = PASSWORD_SETUP_PATH;
+      redirectUrl.search = "";
+      redirectUrl.searchParams.set("setup", "required");
+      return NextResponse.redirect(redirectUrl);
+    }
     if (userRole) {
       const redirectUrl = request.nextUrl.clone();
       redirectUrl.pathname = userRole === "admin" ? ADMIN_PORTAL_HOME : `/dashboard/${userRole}`;
@@ -292,6 +318,14 @@ export async function proxy(request: NextRequest) {
   }
 
   if (user && isGuestAuthPath(requestedPath)) {
+    if (passwordSetupRequired) {
+      const redirectUrl = request.nextUrl.clone();
+      redirectUrl.pathname = PASSWORD_SETUP_PATH;
+      redirectUrl.search = "";
+      redirectUrl.searchParams.set("setup", "required");
+      return NextResponse.redirect(redirectUrl);
+    }
+
     const needsSignupVerify =
       isSignupEmailVerificationRequired() && !isAuthUserEmailVerified(user);
     const needsLoginMfa =

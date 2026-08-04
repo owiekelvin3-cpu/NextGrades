@@ -968,7 +968,7 @@
       },
       "resources": {
         "title": "Resources",
-        "description": "Manage platform learning resources"
+        "description": "Upload and manage learning materials for the public Resources page"
       },
       "analytics": {
         "title": "Analytics",
@@ -1865,6 +1865,15 @@
     "colActions": "Actions"
   },
   "adminAnalytics": {
+    "heroBadge": "Insights",
+    "heroTitle": "Platform analytics",
+    "heroSubtitle": "Track signups, daily activity, and how users are distributed across roles.",
+    "last30Days": "Last 30 days",
+    "totalSignups": "New signups",
+    "avgDailyActivity": "Avg. daily events",
+    "totalUsers": "Total users",
+    "users": "users",
+    "rolesSubtitle": "Distribution across students, teachers, and admins",
     "signupsTitle": "New signups (30 days)",
     "activityTitle": "Platform activity (30 days)",
     "rolesTitle": "Users by role"
@@ -1888,10 +1897,40 @@
     "ipUnknown": "unknown"
   },
   "adminResources": {
-    "emptyTitle": "Resources are managed in the CMS",
-    "emptyDesc": "Upload and organize learning materials in the website content editor. Published resources appear on the public resources page.",
-    "openCms": "Open resources in CMS",
-    "viewPublic": "View public page"
+    "emptyTitle": "No resources yet",
+    "emptyDesc": "Upload PDFs, videos, and worksheets here. Published items appear on the public Resources page immediately.",
+    "emptySearch": "Try adjusting your search or filters",
+    "uploadNew": "Upload resource",
+    "uploadTitle": "Upload resource",
+    "uploadDesc": "Add learning materials to the public Resources library. Admin uploads go live immediately.",
+    "editTitle": "Edit resource",
+    "editDesc": "Update details, thumbnail, or access settings.",
+    "backToList": "Back to library",
+    "notFound": "Resource not found.",
+    "reviewQueue": "Review queue",
+    "viewPublic": "View public page",
+    "searchPlaceholder": "Search resources…",
+    "deleteConfirm": "Delete this resource permanently?",
+    "deleteSuccess": "Resource deleted",
+    "deleteFailed": "Delete failed",
+    "archiveSuccess": "Resource archived",
+    "archiveFailed": "Archive failed",
+    "loadFailed": "Failed to load resources",
+    "statusAll": "All status",
+    "statusPublished": "Published",
+    "statusDraft": "Draft",
+    "statusPending": "Pending review",
+    "statusArchived": "Archived",
+    "categoryAll": "All categories",
+    "sortNewest": "Newest",
+    "sortOldest": "Oldest",
+    "sortTitle": "Title",
+    "premium": "Premium",
+    "views": "views",
+    "preview": "Preview",
+    "edit": "Edit",
+    "archive": "Archive",
+    "delete": "Delete"
   },
   "teacherContent": {
     "searchPlaceholder": "Search resources…",
