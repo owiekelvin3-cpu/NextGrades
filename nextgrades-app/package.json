@@ -28,6 +28,7 @@
     "sync-marketing-cms-images": "node scripts/sync-marketing-cms-images.mjs",
     "test:responsive": "playwright test tests/e2e/responsive-audit.spec.ts",
     "test:console": "playwright test tests/e2e/console-audit.spec.ts",
+    "test:dashboard": "playwright test tests/e2e/dashboard-audit.spec.ts",
     "test:consent": "playwright test tests/e2e/consent-persistence.spec.ts"
   },
   "dependencies": {
