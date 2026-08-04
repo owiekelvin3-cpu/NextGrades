@@ -14,8 +14,10 @@ describe("auth config", () => {
 
   it("requires email verification in production by default", () => {
     vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("REQUIRE_SIGNUP_EMAIL_VERIFICATION", "");
     vi.stubEnv("REQUIRE_EMAIL_VERIFICATION", "");
     expect(isEmailVerificationRequired()).toBe(true);
+    vi.stubEnv("REQUIRE_SIGNUP_EMAIL_VERIFICATION", "false");
     vi.stubEnv("REQUIRE_EMAIL_VERIFICATION", "false");
     expect(isEmailVerificationRequired()).toBe(false);
   });
@@ -110,6 +112,7 @@ describe("stripe price resolution", () => {
   });
 
   it("falls back to legacy STRIPE_PRICE_INDIVIDUAL env for premium", () => {
+    vi.stubEnv("STRIPE_PRICE_PREMIUM_YEARLY", "");
     vi.stubEnv("STRIPE_PRICE_INDIVIDUAL_YEARLY", "price_individual_yearly");
     const result = resolveCheckoutStripePrice({ planId: "premium", billing: "yearly" });
     expect(result.ok).toBe(true);
