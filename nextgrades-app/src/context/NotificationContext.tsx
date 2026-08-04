@@ -153,16 +153,16 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
     const unlock = () => unlockAudio();
 
     const start = () => {
-      fetch("/api/user/notification-preferences")
-        .then((r) => (r.ok ? r.json() : null))
-        .then((json) => {
-          if (json?.preferences) setPreferences(json.preferences);
-        })
-        .catch(() => {});
-
       void supabase.auth.getUser().then(({ data }) => {
         userIdRef.current = data.user?.id ?? null;
         if (data.user) {
+          fetch("/api/user/notification-preferences")
+            .then((r) => (r.ok ? r.json() : null))
+            .then((json) => {
+              if (json?.preferences) setPreferences(json.preferences);
+            })
+            .catch(() => {});
+
           void refresh();
         } else {
           setLoading(false);
