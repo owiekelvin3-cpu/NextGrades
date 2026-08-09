@@ -21,7 +21,6 @@ import { supabase } from "@/lib/supabase/client";
 import { bootstrapRecoverySession } from "@/lib/auth/recovery-session";
 import { cn } from "@/lib/utils";
 import { FontAwesomeSetup } from "@/components/auth/FontAwesomeSetup";
-import { sendPasswordChangedEmail } from "@/lib/email";
 
 export default function ResetPasswordPage() {
   return (
@@ -135,26 +134,20 @@ function ResetPasswordContent() {
     }
 
     try {
-      const { error } = await supabase.auth.updateUser({
-        password: password,
+      const res = await fetch("/api/auth/reset-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
+        body: JSON.stringify({ password }),
       });
+      const data = (await res.json()) as { error?: string; code?: string };
 
-      if (error) {
-        throw new Error(error.message);
+      if (!res.ok) {
+        if (res.status === 401 || data.code === "session_missing") {
+          setSessionReady(false);
+        }
+        throw new Error(data.error || "Failed to reset password");
       }
-
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user?.email) {
-        void sendPasswordChangedEmail(user.email, user.user_metadata?.full_name as string | undefined);
-      }
-
-      const completeRes = await fetch("/api/auth/complete-password-setup", { method: "POST" });
-      if (!completeRes.ok) {
-        const body = await completeRes.json().catch(() => ({}));
-        throw new Error(body.error || "Could not finalize password setup.");
-      }
-
-      await supabase.auth.signOut();
 
       setSuccess(true);
       setTimeout(() => {

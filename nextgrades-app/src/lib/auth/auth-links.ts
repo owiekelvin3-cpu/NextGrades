@@ -77,14 +77,18 @@ export async function generateAuthLink(params: {
   }
 
   const hashedToken = data.properties?.hashed_token;
-  if (
-    hashedToken &&
-    (params.type === "recovery" || params.type === "invite" || params.type === "signup")
-  ) {
+  if (params.type === "recovery" || params.type === "invite" || params.type === "signup") {
+    if (hashedToken) {
+      return {
+        actionLink: buildAppPasswordSetupUrl(hashedToken, params.type),
+        userId: data.user?.id ?? null,
+        error: null,
+      };
+    }
     return {
-      actionLink: buildAppPasswordSetupUrl(hashedToken, params.type),
+      actionLink: null,
       userId: data.user?.id ?? null,
-      error: null,
+      error: "Could not generate a secure password setup link. Please try again.",
     };
   }
 

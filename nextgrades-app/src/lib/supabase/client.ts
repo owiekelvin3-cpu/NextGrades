@@ -24,7 +24,14 @@ export function getSupabaseClient(): SupabaseClient | null {
   if (existing) return existing;
 
   const { url, anonKey } = requireSupabaseEnv();
-  const client = createSupabaseBrowserClient(url, anonKey);
+  const client = createSupabaseBrowserClient(url, anonKey, {
+    auth: {
+      detectSessionInUrl: true,
+      persistSession: true,
+      autoRefreshToken: true,
+      flowType: "pkce",
+    },
+  });
   storeClient(client);
   return client;
 }
@@ -55,6 +62,8 @@ function createAuthStub() {
     resetPasswordForEmail: async () => ({ data: {}, error: notConfigured }),
     updateUser: async () => ({ data: { user: null }, error: notConfigured }),
     exchangeCodeForSession: async () => ({ data: { session: null }, error: notConfigured }),
+    verifyOtp: async () => ({ data: { session: null, user: null }, error: notConfigured }),
+    setSession: async () => ({ data: { session: null }, error: notConfigured }),
   };
 }
 

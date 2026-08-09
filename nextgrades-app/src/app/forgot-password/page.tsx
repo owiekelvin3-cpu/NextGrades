@@ -12,6 +12,7 @@ import { authSurface } from "@/components/auth/auth-ui";
 import { cn } from "@/lib/utils";
 import { AuthGuestGuard } from "@/components/auth/AuthGuestGuard";
 import { Button } from "@/components/ui/Button";
+import { TurnstileWidget, isTurnstileEnabled } from "@/components/auth/TurnstileWidget";
 
 function ForgotPasswordContent() {
   const [email, setEmail] = useState("");
@@ -19,6 +20,7 @@ function ForgotPasswordContent() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const { theme } = useTheme();
   const { t } = useTranslation();
   const isDark = theme === "dark";
@@ -34,6 +36,11 @@ function ForgotPasswordContent() {
       return;
     }
 
+    if (isTurnstileEnabled() && !turnstileToken) {
+      setError(t("login.completeSecurityCheck", { defaultValue: "Please complete the security check." }));
+      return;
+    }
+
     setLoading(true);
     setError(null);
     setSuccess(false);
@@ -42,7 +49,7 @@ function ForgotPasswordContent() {
       const res = await fetch("/api/auth/forgot-password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email.trim().toLowerCase() }),
+        body: JSON.stringify({ email: email.trim().toLowerCase(), turnstileToken }),
       });
       const data = await res.json();
 
@@ -117,6 +124,13 @@ function ForgotPasswordContent() {
                 onChange={setEmail}
                 placeholder={t("login.emailPlaceholder")}
               />
+              {isTurnstileEnabled() && (
+                <TurnstileWidget
+                  onToken={setTurnstileToken}
+                  theme={isDark ? "dark" : "light"}
+                  className="flex justify-center"
+                />
+              )}
               <AuthPrimaryButton loading={loading} variant="gold">
                 {t("forgotPasswordPage.submit")}
               </AuthPrimaryButton>
