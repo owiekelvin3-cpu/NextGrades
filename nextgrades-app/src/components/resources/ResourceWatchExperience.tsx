@@ -13,6 +13,7 @@ import { buildLoginUrl } from "@/lib/auth/redirect";
 import { cn } from "@/lib/utils";
 import { contentTypeLabel } from "@/lib/resources/constants";
 import { resolveMediaKind, viewActionKey, type MediaKind } from "@/lib/resources/media-type";
+import { resourceStreamPath } from "@/lib/resources/video";
 import { Button } from "@/components/ui/Button";
 import { appShell } from "@/lib/theme/shell";
 
@@ -82,7 +83,18 @@ export function ResourceWatchExperience({ resourceId }: { resourceId: string }) 
           return;
         }
 
-        if (!accessRes.ok || !accessData.url) {
+        const mediaKind =
+          detailData?.mediaKind ??
+          resolveMediaKind({
+            content_type: detailData?.content_type,
+            type: detailData?.type,
+            file_name: detailData?.file_name,
+            mime_type: detailData?.mime_type,
+          });
+
+        if (mediaKind === "video") {
+          setStreamUrl(resourceStreamPath(resourceId));
+        } else if (!accessRes.ok || !accessData.url) {
           if (accessRes.status === 403) {
             setError("locked");
           } else {
@@ -92,9 +104,9 @@ export function ResourceWatchExperience({ resourceId }: { resourceId: string }) 
             );
           }
           return;
+        } else {
+          setStreamUrl(accessData.url);
         }
-
-        setStreamUrl(accessData.url);
 
         if (!detailData) {
           setDetail({

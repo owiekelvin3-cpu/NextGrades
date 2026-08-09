@@ -55,3 +55,7 @@ export function isVideoCourseResource(resource: {
 export function resourceWatchPath(id: string): string {
   return `/resources/watch/${id}`;
 }
+
+export function resourceStreamPath(id: string): string {
+  return `/api/resources/${id}/stream`;
+}

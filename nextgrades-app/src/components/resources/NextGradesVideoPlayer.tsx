@@ -243,7 +243,6 @@ export function NextGradesVideoPlayer({ src, poster, title, onPlay, onEnded, cla
         className="h-full w-full object-contain bg-black"
         playsInline
         preload="metadata"
-        crossOrigin="anonymous"
         onClick={togglePlay}
       />
 
