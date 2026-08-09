@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/Button";
 import { BibliothekFilterSidebar } from "@/components/resources/BibliothekFilterSidebar";
 import { isPremiumResource } from "@/lib/resources/ui-config";
 import { section } from "@/lib/premium/tokens";
+import { VideoCoursesSection } from "@/components/resources/VideoCoursesSection";
 import { cn } from "@/lib/utils";
 
 const FEATURE_ICONS = [BookOpen, RefreshCw, GraduationCap, ShieldCheck] as const;
@@ -153,8 +154,17 @@ export function ResourcesBibliothekExperience({ access }: Props) {
         <div className={cn(section.container, "space-y-12 md:space-y-14")}>
           {catalog.loading ? (
             <LoadingBlock />
-          ) : hasMaterials ? (
+          ) : (
             <>
+              <VideoCoursesSection
+                resources={catalog.resources}
+                subjects={catalog.subjects}
+                libraryLocked={locked}
+                onOpen={(r) => void catalog.openResource(r)}
+              />
+
+              {hasMaterials ? (
+                <>
               {!locked && featured.length > 0 && (
                 <div>
                   <SectionHeader
@@ -224,10 +234,12 @@ export function ResourcesBibliothekExperience({ access }: Props) {
                   </div>
                 </div>
               )}
+                </>
+              ) : hasResourceFilters ? (
+                <LibraryEmptyState searching={Boolean(catalog.search.trim())} query={catalog.search} />
+              ) : null}
             </>
-          ) : hasResourceFilters ? (
-            <LibraryEmptyState searching={Boolean(catalog.search.trim())} query={catalog.search} />
-          ) : null}
+          )}
 
           {/* Unlock CTA + feature row */}
           <div className="overflow-hidden rounded-2xl bg-gradient-to-br from-[#0D1B2A] via-[#132942] to-[#1a3555] shadow-2xl">

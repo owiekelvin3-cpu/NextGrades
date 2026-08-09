@@ -10,6 +10,7 @@ import { isFreeResource, isPremiumResource } from "@/lib/resources/ui-config";
 import { filterCatalogClasses } from "@/lib/catalog/classes";
 import { materialMatchesExtendedSearch } from "@/lib/resources/public-catalog";
 import { isVideoResource, resourceWatchPath } from "@/lib/resources/video";
+import { resolveMediaKind } from "@/lib/resources/media-type";
 
 export type CatalogSubject = { id: string; name: string; slug?: string | null };
 export type CatalogClass = { id: string; name: string; level: number };
@@ -135,6 +136,12 @@ export function useResourcesCatalog(initial?: FetchParams) {
     }
 
     if (isVideoResource(resource)) {
+      router.push(resourceWatchPath(resource.id));
+      return;
+    }
+
+    const kind = resolveMediaKind(resource);
+    if (kind !== "unknown") {
       router.push(resourceWatchPath(resource.id));
       return;
     }

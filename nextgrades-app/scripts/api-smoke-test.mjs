@@ -58,6 +58,17 @@ const postChecks = [
     expect: [400],
     label: "consent validation",
   },
+  {
+    path: "/api/teacher/live-classes",
+    body: {
+      title: "Test",
+      date: "2026-08-10",
+      startTime: "10:00",
+      meetingLink: "https://zoom.us/j/123",
+    },
+    expect: [401],
+    label: "live-classes auth gate",
+  },
 ];
 
 const protectedGets = [

@@ -6,6 +6,9 @@ import { isAdminBootstrapAllowed, isProduction, validateProductionEnv } from "@/
 import { resolveCheckoutStripePrice, isApprovedStripePriceId } from "@/lib/stripe/prices";
 import { validateStrongPassword } from "@/lib/auth/password-policy";
 import { hashOtpCode, verifyOtpHash } from "@/lib/auth/otp-crypto";
+import { detectMeetingProvider, validateMeetingLink, lessonHasMeetingLink } from "@/lib/meetings/link";
+import { resolveMediaKind } from "@/lib/resources/media-type";
+import { isVideoResource } from "@/lib/resources/video";
 
 describe("auth config", () => {
   afterEach(() => {
@@ -142,5 +145,44 @@ describe("otp hashing", () => {
     const hash = hashOtpCode("123456", "user@example.com");
     expect(verifyOtpHash("123456", "user@example.com", hash)).toBe(true);
     expect(verifyOtpHash("000000", "user@example.com", hash)).toBe(false);
+  });
+});
+
+describe("meeting link validation", () => {
+  it("detects Zoom, Meet, and Teams providers", () => {
+    expect(detectMeetingProvider("https://zoom.us/j/123")).toBe("zoom");
+    expect(detectMeetingProvider("https://meet.google.com/abc-def")).toBe("google_meet");
+    expect(detectMeetingProvider("https://teams.microsoft.com/l/meetup")).toBe("microsoft_teams");
+  });
+
+  it("accepts valid HTTPS links and rejects insecure URLs", () => {
+    expect(validateMeetingLink("https://zoom.us/j/123456789").ok).toBe(true);
+    expect(validateMeetingLink("http://zoom.us/j/123").ok).toBe(false);
+    expect(validateMeetingLink("").ok).toBe(false);
+  });
+
+  it("detects lessons with pasted meeting links", () => {
+    expect(lessonHasMeetingLink({ meeting_url: "https://zoom.us/j/1", zoom_link: null })).toBe(true);
+    expect(lessonHasMeetingLink({ meeting_url: null, zoom_link: "https://zoom.us/j/1" })).toBe(true);
+    expect(lessonHasMeetingLink({ meeting_url: null, zoom_link: null, zoom_meeting_id: "123" })).toBe(true);
+    expect(lessonHasMeetingLink({ meeting_url: null, zoom_link: null })).toBe(false);
+  });
+});
+
+describe("library media type detection", () => {
+  it("detects video files by extension even when content type is learning_material", () => {
+    expect(
+      resolveMediaKind({
+        content_type: "learning_material",
+        type: "pdf",
+        file_name: "lesson.mp4",
+      })
+    ).toBe("video");
+    expect(isVideoResource({ content_type: "learning_material", file_name: "lesson.mp4" })).toBe(true);
+  });
+
+  it("detects PDFs and images from file names", () => {
+    expect(resolveMediaKind({ file_name: "worksheet.pdf" })).toBe("pdf");
+    expect(resolveMediaKind({ file_name: "diagram.png" })).toBe("image");
   });
 });

@@ -2,11 +2,13 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
-import { ChevronRight, Download, Lock, Play, HelpCircle, Sparkles } from "lucide-react";
+import { ChevronRight, Eye, Lock, Play, HelpCircle, Sparkles, BookOpen } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { contentTypeLabel } from "@/lib/resources/constants";
 import type { LearningResource } from "@/components/resources/ResourceLearningCard";
 import { isFreeResource, isPremiumResource } from "@/lib/resources/ui-config";
+import { isVideoResource } from "@/lib/resources/video";
+import { resolveMediaKind, viewActionKey } from "@/lib/resources/media-type";
 
 type SidebarProps = {
   resources: LearningResource[];
@@ -149,7 +151,9 @@ export function ResourcesMaterialsTable({
           <tbody className="divide-y divide-gray-50">
             {resources.slice(0, 10).map((r) => {
               const locked = r.locked ?? (r.is_premium && !r.canAccess);
-              const isVideo = (r.content_type || "").includes("video");
+              const mediaKind = resolveMediaKind(r);
+              const isVideo = isVideoResource(r);
+              const actionKey = viewActionKey(mediaKind);
               return (
                 <tr key={r.id} className="hover:bg-gray-50/50">
                   <td className="px-5 py-3">
@@ -180,15 +184,18 @@ export function ResourcesMaterialsTable({
                         <Lock className="h-3.5 w-3.5" />
                       ) : isVideo ? (
                         <Play className="h-3.5 w-3.5" />
+                      ) : actionKey === "read" ? (
+                        <BookOpen className="h-3.5 w-3.5" />
                       ) : (
-                        <Download className="h-3.5 w-3.5" />
+                        <Eye className="h-3.5 w-3.5" />
                       )}
                       <span className="hidden sm:inline">
                         {locked
                           ? t("resources.premium")
-                          : isVideo
-                            ? t("resources.subjectPage.watch")
-                            : t("resources.subjectPage.download")}
+                          : t(`resources.viewer.${actionKey}`, {
+                              defaultValue:
+                                actionKey === "watch" ? "Watch" : actionKey === "read" ? "Read" : "View",
+                            })}
                       </span>
                     </button>
                   </td>

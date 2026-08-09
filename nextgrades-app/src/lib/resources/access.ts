@@ -117,16 +117,20 @@ export function sanitizePublicMaterial<T extends MaterialAccessRow & Record<stri
 
 export async function resolveMaterialDownloadUrl(
   admin: SupabaseClient,
-  material: MaterialAccessRow,
-  expiresIn = 3600
+  material: MaterialAccessRow & { file_name?: string | null },
+  options?: { expiresIn?: number; download?: boolean }
 ): Promise<string | null> {
+  const expiresIn = options?.expiresIn ?? 3600;
   const storagePath =
     material.storage_path?.trim() || storagePathFromLegacyUrl(material.url) || null;
 
   if (storagePath) {
-    const { data, error } = await admin.storage
-      .from("resources")
-      .createSignedUrl(storagePath, expiresIn);
+    const downloadName = options?.download ? material.file_name?.trim() || "download" : undefined;
+    const { data, error } = await admin.storage.from("resources").createSignedUrl(
+      storagePath,
+      expiresIn,
+      downloadName ? { download: downloadName } : undefined
+    );
     if (error || !data?.signedUrl) return null;
     return data.signedUrl;
   }

@@ -34,9 +34,12 @@ export default function ResourcesPage() {
               <Crown className="h-4 w-4" />
               {t("resources.unlockCta")}
             </Button>
+            <Button variant="onDark" size="md" href="#video-courses" className="w-full rounded-xl py-4 text-base font-semibold sm:w-auto md:py-3">
+              {t("resources.videoCourses.title", { defaultValue: "Video Courses" })}
+              <ArrowRight className="h-4 w-4" />
+            </Button>
             <Button variant="onDark" size="md" href="#faecher-entdecken" className="w-full rounded-xl py-4 text-base font-semibold sm:w-auto md:py-3">
               {t("resources.browseBySubject")}
-              <ArrowRight className="h-4 w-4" />
             </Button>
           </div>
         </MockupPageHero>

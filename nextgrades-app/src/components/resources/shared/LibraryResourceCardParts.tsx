@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Lock, Play, Download, Gift, Crown } from "lucide-react";
+import { Lock, Play, Eye, BookOpen, Gift, Crown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { MarketingImage } from "@/components/marketing/MarketingImage";
 import { getResourceThumbnail, RESOURCES_DEFAULT_THUMBNAIL } from "@/lib/resources/images";
@@ -14,7 +14,14 @@ import {
   resourceIsPremium,
 } from "@/lib/resources/library-display";
 import { isVideoResource, resourceWatchPath } from "@/lib/resources/video";
+import { resolveMediaKind, viewActionKey } from "@/lib/resources/media-type";
 import { useTranslation } from "react-i18next";
+
+function actionIcon(kind: ReturnType<typeof resolveMediaKind>) {
+  if (kind === "video") return Play;
+  if (kind === "pdf" || kind === "text") return BookOpen;
+  return Eye;
+}
 
 export function LibraryCardThumbnail({
   resource,
@@ -67,10 +74,14 @@ export function LibraryCardThumbnail({
           </span>
         </div>
       )}
-      {!locked && isVideo && (
+      {!locked && (
         <div className="absolute inset-0 flex items-center justify-center opacity-0 transition group-hover:opacity-100">
           <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[#D4AF37] text-[#0D1B2A] shadow-lg">
-            <Play className="ml-0.5 h-5 w-5 fill-current" />
+            {isVideo ? (
+              <Play className="ml-0.5 h-5 w-5 fill-current" />
+            ) : (
+              <Eye className="h-5 w-5" />
+            )}
           </span>
         </div>
       )}
@@ -91,8 +102,9 @@ export function LibraryCardBody({
 }) {
   const { t } = useTranslation();
   const locked = resourceIsLocked(resource);
-  const premium = resourceIsPremium(resource);
-  const isVideo = isVideoResource(resource);
+  const mediaKind = resolveMediaKind(resource);
+  const actionKey = viewActionKey(mediaKind);
+  const ActionIcon = actionIcon(mediaKind);
   const meta = formatResourceCatalogLine(resource, {
     semester: (sem) =>
       t("resources.filters.semesterShort", {
@@ -107,11 +119,12 @@ export function LibraryCardBody({
     }),
   });
 
-  const actionHref = locked
-    ? "/resources/upgrade"
-    : isVideo
-      ? resourceWatchPath(resource.id)
-      : undefined;
+  const actionHref = locked ? "/resources/upgrade" : resourceWatchPath(resource.id);
+  const actionLabel = locked
+    ? t("resources.premiumCta", { defaultValue: "Unlock access" })
+    : t(`resources.viewer.${actionKey}`, {
+        defaultValue: actionKey === "watch" ? "Watch" : actionKey === "read" ? "Read" : "View",
+      });
 
   return (
     <div className={cn("flex flex-1 flex-col", compact ? "p-4" : "p-4 sm:p-5")}>
@@ -127,7 +140,7 @@ export function LibraryCardBody({
           compact ? "text-base" : "text-[15px] sm:text-base"
         )}
       >
-        {isVideo && !locked ? (
+        {!locked ? (
           <Link
             href={resourceWatchPath(resource.id)}
             className="transition hover:text-[#D4AF37]"
@@ -148,46 +161,28 @@ export function LibraryCardBody({
       </p>
 
       <div className="mt-4 border-t border-[var(--border-default)] pt-4">
-        {actionHref ? (
-          <Link
-            href={actionHref}
-            onClick={onOpen}
-            className={cn(
-              "inline-flex w-full min-h-10 items-center justify-center gap-2 rounded-xl text-sm font-semibold transition",
-              locked
-                ? "border border-[var(--border-default)] bg-[var(--surface-subtle)] text-[var(--foreground)] hover:border-[#D4AF37]/40"
-                : "bg-[#D4AF37] text-[#0D1B2A] hover:bg-[#e0bc4a]"
-            )}
-          >
-            {locked ? (
-              <>
-                <Lock className="h-4 w-4" />
-                {t("resources.premiumCta", { defaultValue: "Unlock access" })}
-              </>
-            ) : isVideo ? (
-              <>
-                <Play className="h-4 w-4" />
-                {t("resources.video.watch", { defaultValue: "Watch" })}
-              </>
-            ) : (
-              <>
-                <Download className="h-4 w-4" />
-                {t("resources.openMaterial", { defaultValue: "Open material" })}
-              </>
-            )}
-          </Link>
-        ) : (
-          <button
-            type="button"
-            onClick={onOpen}
-            className="inline-flex w-full min-h-10 items-center justify-center gap-2 rounded-xl bg-[#D4AF37] text-sm font-semibold text-[#0D1B2A] transition hover:bg-[#e0bc4a]"
-          >
-            <Download className="h-4 w-4" />
-            {premium
-              ? t("resources.openMaterial", { defaultValue: "Open material" })
-              : t("resources.freeButton", { defaultValue: "Open" })}
-          </button>
-        )}
+        <Link
+          href={actionHref}
+          onClick={onOpen}
+          className={cn(
+            "inline-flex w-full min-h-10 items-center justify-center gap-2 rounded-xl text-sm font-semibold transition",
+            locked
+              ? "border border-[var(--border-default)] bg-[var(--surface-subtle)] text-[var(--foreground)] hover:border-[#D4AF37]/40"
+              : "bg-[#D4AF37] text-[#0D1B2A] hover:bg-[#e0bc4a]"
+          )}
+        >
+          {locked ? (
+            <>
+              <Lock className="h-4 w-4" />
+              {actionLabel}
+            </>
+          ) : (
+            <>
+              <ActionIcon className="h-4 w-4" />
+              {actionLabel}
+            </>
+          )}
+        </Link>
       </div>
     </div>
   );

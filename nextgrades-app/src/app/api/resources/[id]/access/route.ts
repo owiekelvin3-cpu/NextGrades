@@ -10,15 +10,17 @@ import {
 
 type RouteParams = { params: Promise<{ id: string }> };
 
-export async function GET(_request: Request, { params }: RouteParams) {
+export async function GET(request: Request, { params }: RouteParams) {
   try {
     const { id } = await params;
+    const { searchParams } = new URL(request.url);
+    const forceDownload = searchParams.get("download") === "1";
     const { user, profile, supabase } = await getApiAuth();
     const db = await createServerReadClient(supabase);
 
     const { data: material, error } = await db
       .from("materials")
-      .select("id, url, storage_path, access_type, is_premium, subject_id, class_id, semester, created_by, status, moderation_status")
+      .select("id, url, storage_path, file_name, access_type, is_premium, subject_id, class_id, semester, created_by, status, moderation_status")
       .eq("id", id)
       .maybeSingle();
 
@@ -48,7 +50,9 @@ export async function GET(_request: Request, { params }: RouteParams) {
     }
 
     const admin = createAdminClient();
-    const url = await resolveMaterialDownloadUrl(admin, material as MaterialAccessRow);
+    const url = await resolveMaterialDownloadUrl(admin, material as MaterialAccessRow, {
+      download: forceDownload,
+    });
     if (!url) {
       return NextResponse.json({ error: "File not available" }, { status: 404 });
     }

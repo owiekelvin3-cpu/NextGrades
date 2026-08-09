@@ -12,6 +12,7 @@ import {
   Headphones,
   ArrowRight,
   Filter,
+  Eye,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { getDateLocale } from "@/lib/i18n/locales";
@@ -257,16 +258,13 @@ export function StudentResourcesExperience() {
                     >
                       <Star className={cn("h-5 w-5", isBookmarked(m.id) && "fill-[#D4AF37]")} />
                     </button>
-                    {m.url && (
-                      <a
-                        href={m.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={cn(mobile.touchTarget, "flex items-center justify-center rounded-xl bg-[#D4AF37]/15 text-[#D4AF37]")}
-                      >
-                        <Download className="h-5 w-5" />
-                      </a>
-                    )}
+                    <Link
+                      href={`/resources/watch/${m.id}`}
+                      className={cn(mobile.touchTarget, "flex items-center justify-center rounded-xl bg-[#D4AF37]/15 text-[#D4AF37]")}
+                      aria-label={t("resources.viewer.view", { defaultValue: "View" })}
+                    >
+                      <Eye className="h-5 w-5" />
+                    </Link>
                   </div>
                 </article>
               ))
@@ -341,17 +339,13 @@ export function StudentResourcesExperience() {
                             >
                               <Star className={cn("h-4 w-4", isBookmarked(m.id) && "fill-current")} />
                             </button>
-                            {m.url && (
-                              <a
-                                href={m.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="rounded-lg p-2 text-text-muted/80 hover:text-foreground"
-                                aria-label="Download"
-                              >
-                                <Download className="h-4 w-4" />
-                              </a>
-                            )}
+                            <Link
+                              href={`/resources/watch/${m.id}`}
+                              className="rounded-lg p-2 text-text-muted/80 hover:text-foreground"
+                              aria-label={t("resources.viewer.view", { defaultValue: "View" })}
+                            >
+                              <Eye className="h-4 w-4" />
+                            </Link>
                             <button type="button" className={cn(st.iconBtn)} aria-label="More">
                               <MoreHorizontal className="h-4 w-4" />
                             </button>

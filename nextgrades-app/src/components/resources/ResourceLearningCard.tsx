@@ -9,13 +9,15 @@ import { contentTypeLabel, AGE_RANGES } from "@/lib/resources/constants";
 import { MarketingImage } from "@/components/marketing/MarketingImage";
 import { getResourceThumbnail, RESOURCES_DEFAULT_THUMBNAIL } from "@/lib/resources/images";
 import { isVideoResource, resourceWatchPath } from "@/lib/resources/video";
+import { resolveMediaKind, viewActionKey } from "@/lib/resources/media-type";
 import {
   Bookmark,
   BookmarkCheck,
   Clock,
-  Download,
   Lock,
   Play,
+  Eye,
+  BookOpen,
   User,
 } from "lucide-react";
 
@@ -27,6 +29,8 @@ export type LearningResource = {
   full_description?: string | null;
   type?: string;
   content_type?: string;
+  file_name?: string | null;
+  mime_type?: string | null;
   url?: string | null;
   thumbnail_url?: string | null;
   access_type?: string;
@@ -80,6 +84,8 @@ export function ResourceLearningCard({
   const access = resourceAccess(resource);
   const locked = resource.locked ?? (access === "premium" && resource.canAccess === false);
   const isVideo = isVideoResource(resource);
+  const mediaKind = resolveMediaKind(resource);
+  const actionKey = viewActionKey(mediaKind);
   const text = "text-foreground";
   const muted = "text-text-muted";
   const panel = theme === "dark" ? "bg-[#112240] border-white/10" : "bg-white border-gray-200";
@@ -174,18 +180,19 @@ export function ResourceLearningCard({
                 {premiumCta}
               </Button>
             </Link>
-          ) : isVideo ? (
+          ) : (
             <Link href={resourceWatchPath(resource.id)} onClick={onView}>
               <Button variant="gold" size="sm">
-                <Play className="w-4 h-4 mr-1" />
-                Watch
+                {isVideo ? (
+                  <Play className="w-4 h-4 mr-1" />
+                ) : actionKey === "read" ? (
+                  <BookOpen className="w-4 h-4 mr-1" />
+                ) : (
+                  <Eye className="w-4 h-4 mr-1" />
+                )}
+                {actionKey === "watch" ? "Watch" : actionKey === "read" ? "Read" : freeCta}
               </Button>
             </Link>
-          ) : (
-            <Button variant="outline" size="sm" onClick={onDownload}>
-              <Download className="w-4 h-4 mr-1" />
-              {access === "premium" ? premiumCta : freeCta}
-            </Button>
           )}
         </div>
       </div>

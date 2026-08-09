@@ -655,6 +655,28 @@
       "notFound": "Video not found.",
       "loadFailed": "Could not load video.",
       "lockedDesc": "Upgrade your membership to watch this video on NextGrades."
+    },
+    "viewer": {
+      "back": "Back to library",
+      "watch": "Watch",
+      "read": "Read",
+      "view": "View",
+      "download": "Download",
+      "title": "Resource",
+      "notFound": "Resource not found.",
+      "loadFailed": "Could not load this resource.",
+      "lockedDesc": "Upgrade your membership to access this resource on NextGrades."
+    },
+    "videoCourses": {
+      "eyebrow": "Video learning",
+      "title": "Video Courses",
+      "subtitle": "Structured video courses across all subjects — watch inline without downloading.",
+      "count": "{{count}} courses",
+      "views": "{{count}} views",
+      "nextGrades": "NextGrades",
+      "unlockCourse": "Unlock {{title}}",
+      "watchCourse": "Watch {{title}}",
+      "emptyFilter": "No video courses for this subject yet."
     }
   },
   "dashboard": {

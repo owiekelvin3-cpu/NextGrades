@@ -738,6 +738,28 @@
       "loadFailed": "Video konnte nicht geladen werden.",
       "lockedDesc": "Upgrade deine Mitgliedschaft, um dieses Video auf NextGrades anzusehen."
     },
+    "viewer": {
+      "back": "Zurück zur Lernbibliothek",
+      "watch": "Ansehen",
+      "read": "Lesen",
+      "view": "Ansehen",
+      "download": "Herunterladen",
+      "title": "Material",
+      "notFound": "Material nicht gefunden.",
+      "loadFailed": "Material konnte nicht geladen werden.",
+      "lockedDesc": "Upgrade deine Mitgliedschaft, um dieses Material auf NextGrades zu nutzen."
+    },
+    "videoCourses": {
+      "eyebrow": "Video-Lernen",
+      "title": "Video-Kurse",
+      "subtitle": "Strukturierte Video-Kurse für alle Fächer — direkt in der Bibliothek ansehen.",
+      "count": "{{count}} Kurse",
+      "views": "{{count}} Aufrufe",
+      "nextGrades": "NextGrades",
+      "unlockCourse": "{{title}} freischalten",
+      "watchCourse": "{{title}} ansehen",
+      "emptyFilter": "Für dieses Fach gibt es noch keine Video-Kurse."
+    },
     "freeButton": "Kostenlos",
     "membersOnly": "Nur für Mitglieder",
     "freeLabel": "Kostenlos",

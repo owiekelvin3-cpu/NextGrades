@@ -1,7 +1,5 @@
 import { test, expect, type Page } from "@playwright/test";
 
-const BASE = process.env.PLAYWRIGHT_BASE_URL ?? "https://www.nextgrades.at";
-
 const STUDENT_ROUTES = [
   "/dashboard/student",
   "/dashboard/student/appointments",
