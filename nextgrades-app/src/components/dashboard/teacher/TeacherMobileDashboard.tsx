@@ -22,6 +22,7 @@ import {
   tt,
 } from "./teacher-ui";
 import { ZoomMeetingButton } from "@/components/zoom/ZoomMeetingButton";
+import { lessonHasMeetingLink } from "@/lib/meetings/link";
 import { ZoomSetupStrip } from "@/components/zoom/ZoomSetupStrip";
 import { cn } from "@/lib/utils";
 import { Suspense } from "react";
@@ -340,9 +341,14 @@ export function TeacherMobileDashboard({ data }: Props) {
                       <p className="mt-2 text-xs font-medium text-[#D4AF37]">
                         {formatTimeRange(lesson.start_time, lesson.duration, locale)}
                       </p>
-                      {lesson.zoom_meeting_id && (
+                      {lessonHasMeetingLink(lesson) && (
                         <div className="mt-3">
-                          <ZoomMeetingButton lessonId={lesson.id} mode="start" size="sm" />
+                          <ZoomMeetingButton
+                            lessonId={lesson.id}
+                            mode="start"
+                            provider={lesson.meeting_provider}
+                            size="sm"
+                          />
                         </div>
                       )}
                     </div>

@@ -25,6 +25,7 @@ import { studentPanel, formatTimeRange, lessonDateParts, st } from "./student-ui
 import { StudentTabBar } from "./StudentTabBar";
 import { StudentCalendarConnectModal } from "./StudentCalendarConnectModal";
 import { ZoomMeetingButton } from "@/components/zoom/ZoomMeetingButton";
+import { lessonHasMeetingLink } from "@/lib/meetings/link";
 import { useToast } from "@/context/ToastContext";
 import { mobile } from "@/lib/mobile/tokens";
 import { cn } from "@/lib/utils";
@@ -337,8 +338,13 @@ export function StudentAppointmentsExperience() {
                           </div>
                         </div>
                         <div className="flex w-full shrink-0 flex-col gap-2 sm:w-auto sm:flex-row sm:items-center">
-                          {lesson.zoom_meeting_id && tab === "upcoming" ? (
-                            <ZoomMeetingButton lessonId={lesson.id} mode="join" className="w-full justify-center sm:w-auto" />
+                          {lessonHasMeetingLink(lesson) && tab === "upcoming" ? (
+                            <ZoomMeetingButton
+                              lessonId={lesson.id}
+                              mode="join"
+                              provider={lesson.meeting_provider}
+                              className="w-full justify-center sm:w-auto"
+                            />
                           ) : null}
                           <button type="button" className={st.iconBtn} aria-label="More">
                             <MoreHorizontal className="h-4 w-4" />
@@ -390,8 +396,13 @@ export function StudentAppointmentsExperience() {
                   {data.nextLesson.subject_name}
                 </span>
               )}
-              {data.nextLesson.zoom_meeting_id && (
-                <ZoomMeetingButton lessonId={data.nextLesson.id} mode="join" className="mt-4 w-full justify-center" />
+              {data.nextLesson && lessonHasMeetingLink(data.nextLesson) && (
+                <ZoomMeetingButton
+                  lessonId={data.nextLesson.id}
+                  mode="join"
+                  provider={data.nextLesson.meeting_provider}
+                  className="mt-4 w-full justify-center"
+                />
               )}
             </div>
           )}

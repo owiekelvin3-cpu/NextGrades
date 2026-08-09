@@ -66,6 +66,9 @@ type LessonRow = {
   start_time: string;
   duration: number | null;
   zoom_link: string | null;
+  zoom_meeting_id: string | null;
+  meeting_url: string | null;
+  meeting_provider: string | null;
   status: string | null;
   notes: string | null;
 };
@@ -121,6 +124,9 @@ async function fetchTeacherAllLessons(teacherId: string): Promise<DashboardLesso
     start_time: r.start_time,
     duration: r.duration ?? 60,
     zoom_link: r.zoom_link,
+    zoom_meeting_id: r.zoom_meeting_id,
+    meeting_url: r.meeting_url,
+    meeting_provider: r.meeting_provider,
     status: r.status ?? "scheduled",
     student_id: r.student_id,
     teacher_name: undefined,

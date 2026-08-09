@@ -9,6 +9,8 @@ export type DashboardLesson = {
   duration: number;
   zoom_link?: string | null;
   zoom_meeting_id?: string | null;
+  meeting_url?: string | null;
+  meeting_provider?: string | null;
   status: string;
   notes?: string | null;
   student_id?: string | null;

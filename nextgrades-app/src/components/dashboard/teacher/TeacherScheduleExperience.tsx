@@ -20,6 +20,8 @@ import { ZoomSetupStrip, useZoomStatus } from "@/components/zoom/ZoomSetupStrip"
 import { teacherPanel, teacherStatCard } from "./teacher-ui";
 import { formatTimeRange, lessonDateParts } from "@/components/dashboard/student/student-ui";
 import { ZoomMeetingButton } from "@/components/zoom/ZoomMeetingButton";
+import { MeetingProviderBadge } from "@/components/meetings/MeetingProviderIcon";
+import { lessonHasMeetingLink } from "@/lib/meetings/link";
 import { cn } from "@/lib/utils";
 
 const SCHEDULE_PATH = "/dashboard/teacher/schedule";
@@ -31,6 +33,8 @@ type LessonRow = {
   duration: number;
   zoom_link: string | null;
   zoom_meeting_id: string | null;
+  meeting_url: string | null;
+  meeting_provider: string | null;
   meeting_title: string | null;
   meeting_type: string | null;
   status: string;
@@ -93,8 +97,8 @@ function ScheduleContent() {
   const setupSteps = [
     {
       step: 1,
-      title: t("zoom.stepConnect", { defaultValue: "Connect Zoom" }),
-      done: zoomReady,
+      title: t("zoom.stepPasteLink", { defaultValue: "Paste your meeting link" }),
+      done: upcoming.length > 0,
     },
     {
       step: 2,
@@ -103,8 +107,8 @@ function ScheduleContent() {
     },
     {
       step: 3,
-      title: t("zoom.stepGoLive", { defaultValue: "Go live with one click" }),
-      done: false,
+      title: t("zoom.stepGoLive", { defaultValue: "Students join with one tap" }),
+      done: upcoming.length > 0,
     },
   ];
 
@@ -166,14 +170,14 @@ function ScheduleContent() {
             </p>
             <p className="mt-1 text-xs text-text-muted">
               {zoomReady
-                ? t("zoom.readyToSchedule", { defaultValue: "Ready to schedule" })
-                : t("zoom.setupRequired", { defaultValue: "Connect Zoom to start scheduling" })}
+                ? t("zoom.readyToSchedule", { defaultValue: "Paste a link or auto-create" })
+                : t("zoom.pasteLinkReady", { defaultValue: "Paste a Zoom link to schedule" })}
             </p>
           </div>
         </div>
 
         {/* Setup progress - only when not fully set up */}
-        {(!zoomReady || upcoming.length === 0) && (
+        {upcoming.length === 0 && (
           <div className={teacherPanel("p-5 sm:p-6")}>
             <div className="mb-4 flex items-center gap-2">
               <Sparkles className="h-4 w-4 text-[#D4AF37]" />
@@ -248,10 +252,10 @@ function ScheduleContent() {
                 <p className="mx-auto mt-1 max-w-xs text-xs text-text-muted">
                   {zoomReady
                     ? t("zoom.emptyDescReady", {
-                        defaultValue: "Use the form on the left to schedule your first live class.",
+                        defaultValue: "Use the form on the left to paste a meeting link and schedule your first class.",
                       })
-                    : t("zoom.emptyDescConnect", {
-                        defaultValue: "Connect Zoom first, then schedule your first session.",
+                    : t("zoom.emptyDescPaste", {
+                        defaultValue: "Create a meeting in Zoom, paste the link in the form, and schedule your first session.",
                       })}
                 </p>
               </div>
@@ -289,10 +293,8 @@ function ScheduleContent() {
                               <Clock className="h-3 w-3" />
                               {formatTimeRange(m.start_time, m.duration, locale)}
                             </span>
-                            {m.meeting_type && (
-                              <span className="rounded-full bg-surface-subtle px-2 py-0.5 capitalize text-text-muted">
-                                {m.meeting_type.replace(/_/g, " ")}
-                              </span>
+                            {m.meeting_provider && (
+                              <MeetingProviderBadge provider={m.meeting_provider} />
                             )}
                             {parts.isToday && (
                               <span className="rounded-full bg-[#D4AF37]/15 px-2 py-0.5 font-semibold text-[#B8941F]">
@@ -303,8 +305,13 @@ function ScheduleContent() {
                         </div>
                       </div>
                       <div className="flex shrink-0 gap-2">
-                        {m.zoom_meeting_id && (
-                          <ZoomMeetingButton lessonId={m.id} mode="start" size="md" />
+                        {lessonHasMeetingLink(m) && (
+                          <ZoomMeetingButton
+                            lessonId={m.id}
+                            mode="start"
+                            provider={m.meeting_provider}
+                            size="md"
+                          />
                         )}
                         <button
                           type="button"

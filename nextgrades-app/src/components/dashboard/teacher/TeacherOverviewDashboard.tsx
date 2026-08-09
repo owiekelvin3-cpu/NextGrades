@@ -30,6 +30,7 @@ import { TEACHER_AVATAR_COLORS, formatTeacherEuro, studentInitials } from "./tea
 import { SwipeableCardRow, SwipeableCard } from "@/components/mobile/SwipeableCardRow";
 import { ZoomSetupStrip } from "@/components/zoom/ZoomSetupStrip";
 import { ZoomMeetingButton } from "@/components/zoom/ZoomMeetingButton";
+import { lessonHasMeetingLink } from "@/lib/meetings/link";
 import {
   OverviewHero,
   OverviewStatCard,
@@ -268,8 +269,13 @@ export function TeacherOverviewDashboard() {
                       </div>
                       <div className="flex shrink-0 items-center gap-2 pl-[4.5rem] sm:pl-0">
                         <Badge variant="success">{t("teacherDashboard.statusBooked")}</Badge>
-                        {lesson.zoom_meeting_id ? (
-                          <ZoomMeetingButton lessonId={lesson.id} mode="start" size="sm" />
+                        {lessonHasMeetingLink(lesson) ? (
+                          <ZoomMeetingButton
+                            lessonId={lesson.id}
+                            mode="start"
+                            provider={lesson.meeting_provider}
+                            size="sm"
+                          />
                         ) : null}
                       </div>
                     </li>

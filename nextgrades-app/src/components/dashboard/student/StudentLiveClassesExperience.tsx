@@ -11,6 +11,8 @@ import type { DashboardLesson } from "@/lib/dashboard/data";
 import { StudentDashboardLayout } from "./StudentDashboardLayout";
 import { studentPanel, formatTimeRange, lessonDateParts, st } from "./student-ui";
 import { ZoomMeetingButton } from "@/components/zoom/ZoomMeetingButton";
+import { MeetingProviderIcon } from "@/components/meetings/MeetingProviderIcon";
+import { lessonHasMeetingLink } from "@/lib/meetings/link";
 import { cn } from "@/lib/utils";
 
 export function StudentLiveClassesExperience() {
@@ -32,7 +34,7 @@ export function StudentLiveClassesExperience() {
       const all = await fetchAllStudentLessonsForStudent(uid);
       const live = all.filter(
         (l) =>
-          l.zoom_link &&
+          lessonHasMeetingLink(l) &&
           l.status === "scheduled" &&
           new Date(l.start_time).getTime() >= Date.now() - 30 * 60 * 1000
       );
@@ -70,9 +72,14 @@ export function StudentLiveClassesExperience() {
                       <span className="text-[10px] font-bold uppercase text-[#D4AF37]">{parts.month}</span>
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className={cn("text-lg font-bold", st.textPrimary)}>
-                        {lesson.subject_name || t("zoom.liveClass", { defaultValue: "Live class" })}
-                      </p>
+                      <div className="flex items-center gap-2">
+                        {lesson.meeting_provider && (
+                          <MeetingProviderIcon provider={lesson.meeting_provider} size="sm" />
+                        )}
+                        <p className={cn("text-lg font-bold", st.textPrimary)}>
+                          {lesson.subject_name || t("zoom.liveClass", { defaultValue: "Live class" })}
+                        </p>
+                      </div>
                       <p className={cn("text-sm", st.textMuted)}>{parts.weekday}</p>
                       <div className={cn("mt-2 flex flex-wrap gap-3 text-xs", st.textMuted)}>
                         {lesson.teacher_name && (
@@ -87,8 +94,13 @@ export function StudentLiveClassesExperience() {
                         </span>
                       </div>
                     </div>
-                    {(lesson.zoom_meeting_id || lesson.zoom_link) && (
-                      <ZoomMeetingButton lessonId={lesson.id} mode="join" className="shrink-0 px-6 py-3" />
+                    {lessonHasMeetingLink(lesson) && (
+                      <ZoomMeetingButton
+                        lessonId={lesson.id}
+                        mode="join"
+                        provider={lesson.meeting_provider}
+                        className="shrink-0 px-6 py-3"
+                      />
                     )}
                   </div>
                 </div>

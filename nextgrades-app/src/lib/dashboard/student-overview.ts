@@ -64,6 +64,9 @@ type LessonRow = {
   start_time: string;
   duration: number | null;
   zoom_link: string | null;
+  zoom_meeting_id: string | null;
+  meeting_url: string | null;
+  meeting_provider: string | null;
   status: string | null;
 };
 
@@ -72,7 +75,9 @@ async function fetchAllStudentLessons(studentId: string): Promise<DashboardLesso
 
   const { data, error } = await supabase
     .from("lessons")
-    .select("id, teacher_id, subject_id, start_time, duration, zoom_link, status")
+    .select(
+      "id, teacher_id, subject_id, start_time, duration, zoom_link, zoom_meeting_id, meeting_url, meeting_provider, status"
+    )
     .eq("student_id", studentId)
     .neq("status", "cancelled")
     .gte("start_time", lessonHistorySinceIso())
@@ -106,6 +111,9 @@ async function fetchAllStudentLessons(studentId: string): Promise<DashboardLesso
     start_time: r.start_time,
     duration: r.duration ?? 60,
     zoom_link: r.zoom_link,
+    zoom_meeting_id: r.zoom_meeting_id,
+    meeting_url: r.meeting_url,
+    meeting_provider: r.meeting_provider,
     status: r.status ?? "scheduled",
     teacher_name: r.teacher_id ? (teacherMap.get(r.teacher_id) as string | undefined) : undefined,
     subject_name: r.subject_id ? (subjectMap.get(r.subject_id) as string | undefined) : undefined,

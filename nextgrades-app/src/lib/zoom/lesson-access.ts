@@ -1,5 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { AppRole } from "@/lib/auth/roles";
+import { resolveLessonMeetingUrl } from "@/lib/meetings/link";
 
 export type LessonMeetingRow = {
   id: string;
@@ -13,6 +14,8 @@ export type LessonMeetingRow = {
   zoom_start_url: string | null;
   zoom_passcode: string | null;
   zoom_meeting_id: string | null;
+  meeting_url: string | null;
+  meeting_provider: string | null;
 };
 
 export async function fetchLessonForMeetingAccess(
@@ -22,7 +25,7 @@ export async function fetchLessonForMeetingAccess(
   const { data, error } = await db
     .from("lessons")
     .select(
-      "id, teacher_id, student_id, subject_id, status, start_time, duration, zoom_link, zoom_start_url, zoom_passcode, zoom_meeting_id"
+      "id, teacher_id, student_id, subject_id, status, start_time, duration, zoom_link, zoom_start_url, zoom_passcode, zoom_meeting_id, meeting_url, meeting_provider"
     )
     .eq("id", lessonId)
     .maybeSingle();
@@ -39,7 +42,7 @@ export async function canStudentAccessLessonMeeting(
 ): Promise<boolean> {
   if (lesson.student_id !== studentId) return false;
   if (lesson.status !== "scheduled") return false;
-  if (!lesson.zoom_link && !lesson.zoom_meeting_id) return false;
+  if (!resolveLessonMeetingUrl(lesson) && !lesson.zoom_meeting_id) return false;
 
   const { data: enrollment } = await db
     .from("enrollments")
@@ -59,24 +62,28 @@ export function resolveMeetingUrl(
   lesson: LessonMeetingRow,
   role: AppRole,
   userId: string
-): { url: string | null; passcode: string | null } {
+): { url: string | null; passcode: string | null; provider: string | null } {
+  const joinUrl = resolveLessonMeetingUrl(lesson);
+
   if (role === "teacher" && lesson.teacher_id === userId) {
     return {
-      url: lesson.zoom_start_url || lesson.zoom_link,
+      url: lesson.zoom_start_url || joinUrl,
       passcode: lesson.zoom_passcode,
+      provider: lesson.meeting_provider,
     };
   }
 
   if (role === "student" && lesson.student_id === userId) {
     return {
-      url: lesson.zoom_link,
+      url: joinUrl,
       passcode: lesson.zoom_passcode,
+      provider: lesson.meeting_provider,
     };
   }
 
   if (role === "admin") {
-    return { url: lesson.zoom_link, passcode: lesson.zoom_passcode };
+    return { url: joinUrl, passcode: lesson.zoom_passcode, provider: lesson.meeting_provider };
   }
 
-  return { url: null, passcode: null };
+  return { url: null, passcode: null, provider: null };
 }

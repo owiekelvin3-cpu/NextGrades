@@ -4,30 +4,10 @@ import { requireTeacherOrAdminApi } from "@/lib/auth/api-auth";
 import { isSupabaseServiceRoleConfigured } from "@/lib/supabase/env";
 import type { ZoomMeetingType } from "@/lib/zoom/config";
 import { ZOOM_MEETING_TYPES } from "@/lib/zoom/config";
-import { createZoomMeetingOAuth } from "@/lib/zoom/meetings";
-import { getZoomConnection, getZoomAccessToken } from "@/lib/zoom/tokens";
 import { resolveTargetStudentIds } from "@/lib/zoom/scheduling";
-import { formatZoomLocalStartTime, wallTimeToUtc } from "@/lib/zoom/datetime";
+import { wallTimeToUtc } from "@/lib/zoom/datetime";
 import { notifyLiveClassScheduled } from "@/lib/notifications/triggers";
-
-export async function GET() {
-  const gate = await requireTeacherOrAdminApi();
-  if (gate.error) return gate.error;
-
-  const teacherId = gate.auth!.profile!.id;
-  const { data, error } = await gate.auth!.supabase
-    .from("lessons")
-    .select("*")
-    .eq("teacher_id", teacherId)
-    .or("zoom_meeting_id.not.is.null,meeting_url.not.is.null,zoom_link.not.is.null")
-    .order("start_time", { ascending: true });
-
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  }
-
-  return NextResponse.json({ meetings: data ?? [] });
-}
+import { validateMeetingLink } from "@/lib/meetings/link";
 
 type CreateBody = {
   title: string;
@@ -40,28 +20,16 @@ type CreateBody = {
   studentId?: string;
   studentIds?: string[];
   subjectId?: string;
+  meetingLink: string;
+  passcode?: string;
 };
 
+/** Schedule a live class with a teacher-pasted meeting link (no Zoom OAuth required). */
 export async function POST(request: Request) {
   const gate = await requireTeacherOrAdminApi();
   if (gate.error) return gate.error;
 
   const teacherId = gate.auth!.profile!.id;
-  const connection = await getZoomConnection(teacherId);
-  if (!connection) {
-    return NextResponse.json(
-      { error: "Connect your Zoom account before creating live classes." },
-      { status: 400 }
-    );
-  }
-
-  const token = await getZoomAccessToken(teacherId);
-  if (!token) {
-    return NextResponse.json(
-      { error: "Zoom session expired. Reconnect your Zoom account in Settings." },
-      { status: 400 }
-    );
-  }
 
   try {
     const body = (await request.json()) as CreateBody;
@@ -72,14 +40,21 @@ export async function POST(request: Request) {
       startTime,
       duration = 60,
       timezone = "Europe/Berlin",
-      meetingType = "private_session",
+      meetingType = "live_class",
       studentId,
       studentIds,
       subjectId,
+      meetingLink,
+      passcode,
     } = body;
 
     if (!title?.trim() || !date || !startTime) {
       return NextResponse.json({ error: "Title, date, and start time are required" }, { status: 400 });
+    }
+
+    const linkCheck = validateMeetingLink(meetingLink);
+    if (!linkCheck.ok) {
+      return NextResponse.json({ error: linkCheck.error }, { status: 400 });
     }
 
     if (!ZOOM_MEETING_TYPES.includes(meetingType)) {
@@ -112,21 +87,11 @@ export async function POST(request: Request) {
       return NextResponse.json(
         {
           error:
-            "Select an enrolled student, or a subject with enrolled students. Students must be enrolled before receiving meeting links.",
+            "Select a student or a subject with enrolled students so they receive the meeting link.",
         },
         { status: 400 }
       );
     }
-
-    const zoomMeeting = await createZoomMeetingOAuth({
-      teacherId,
-      topic: title.trim(),
-      description,
-      startTimeLocal: formatZoomLocalStartTime(date, startTime),
-      duration,
-      timezone,
-      meetingType,
-    });
 
     const teacherName = gate.auth!.profile!.full_name ?? "Your teacher";
 
@@ -146,10 +111,11 @@ export async function POST(request: Request) {
           subject_id: subjectId || null,
           start_time: startDateTime.toISOString(),
           duration,
-          zoom_link: zoomMeeting.join_url,
-          zoom_start_url: zoomMeeting.start_url ?? null,
-          zoom_meeting_id: zoomMeeting.id,
-          zoom_passcode: zoomMeeting.password ?? null,
+          meeting_url: linkCheck.url,
+          meeting_provider: linkCheck.provider,
+          meeting_verified: true,
+          zoom_link: linkCheck.url,
+          zoom_passcode: passcode?.trim() || null,
           meeting_title: title.trim(),
           meeting_description: description ?? null,
           meeting_type: meetingType,
@@ -170,17 +136,18 @@ export async function POST(request: Request) {
         subjectName,
         title: title.trim(),
         startTime: startDateTime.toISOString(),
-        joinUrl: zoomMeeting.join_url,
+        joinUrl: linkCheck.url,
       });
     }
 
     return NextResponse.json({
-      meeting: zoomMeeting,
       lessons,
+      provider: linkCheck.provider,
+      meetingUrl: linkCheck.url,
     });
   } catch (e) {
-    console.error("[zoom/meetings POST]", e);
-    const message = e instanceof Error ? e.message : "Failed to create meeting";
+    console.error("[teacher/live-classes POST]", e);
+    const message = e instanceof Error ? e.message : "Failed to schedule live class";
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }

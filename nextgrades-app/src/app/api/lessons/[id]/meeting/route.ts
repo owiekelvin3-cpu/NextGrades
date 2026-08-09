@@ -36,7 +36,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  const { url, passcode } = resolveMeetingUrl(lesson, role, userId);
+  const { url, passcode, provider } = resolveMeetingUrl(lesson, role, userId);
   if (!url) {
     return NextResponse.json({ error: "Meeting link not available" }, { status: 404 });
   }
@@ -44,6 +44,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
   return NextResponse.json({
     url,
     passcode,
+    provider,
     role: role === "teacher" ? "host" : "participant",
     meetingId: lesson.zoom_meeting_id,
     startTime: lesson.start_time,
