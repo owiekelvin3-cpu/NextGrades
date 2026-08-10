@@ -35,6 +35,13 @@ import {
 import { hero, type, section } from "@/lib/premium/tokens";
 import { cn } from "@/lib/utils";
 import { consultationCheckoutHref } from "@/lib/checkout/catalog-context";
+import { supabase } from "@/lib/supabase/client";
+import { startPlanCheckout } from "@/lib/checkout/start-plan-checkout";
+import { useToast } from "@/context/ToastContext";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+
+const PROGRAM_PLAN_IDS = ["premium", "group", "matura", "library"] as const;
 
 const statIcons = [UserRound, GraduationCap, FileText, Star];
 const heroFeatureIcons = [Hexagon, BookOpen, Sparkles];
@@ -51,6 +58,9 @@ type ProgramItem = {
 export default function ProgramsPage() {
   const mt = useMarketingTheme();
   const { t } = useTranslation();
+  const toast = useToast();
+  const router = useRouter();
+  const [loadingProgram, setLoadingProgram] = useState<number | null>(null);
   const { getImage, marketingHeroImage: programsHeroImage } = useCmsImages();
   const programCardImages = PROGRAMS_PAGE_CARD_IMAGES.map((url, i) =>
     getImage(`cmsImages.programs.card.${i}`, url)
@@ -79,6 +89,31 @@ export default function ProgramsPage() {
   const ctaParentsItems = useLocalizedContent<string[]>("programsPage.ctaParentsItems");
   const safeCtaTags = Array.isArray(ctaTags) ? ctaTags : [];
   const safeCtaParentsItems = Array.isArray(ctaParentsItems) ? ctaParentsItems : [];
+
+  const handleProgramSelect = async (index: number) => {
+    const planId = PROGRAM_PLAN_IDS[index] ?? "group";
+    setLoadingProgram(index);
+    try {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      const result = await startPlanCheckout({
+        planId,
+        billing: "monthly",
+        isLoggedIn: Boolean(session?.user),
+      });
+      if (result.ok) {
+        globalThis.location.assign(result.url);
+        return;
+      }
+      toast.error(result.error);
+      router.push(result.fallbackHref);
+    } catch {
+      toast.error(t("misc.errorGeneric", { defaultValue: "Something went wrong. Please try again." }));
+    } finally {
+      setLoadingProgram(null);
+    }
+  };
 
   return (
     <div className={cn("marketing-page-root flex min-h-screen flex-col", mt.page)}>
@@ -202,8 +237,15 @@ export default function ProgramsPage() {
                           </li>
                         ))}
                       </ul>
-                      <Button variant={featured ? "gold" : "dark"} size="md" className="w-full rounded-lg" href={consultationCheckoutHref()}>
-                        {t("programsPage.ctaButton")} <ArrowRight className="ml-2 h-4 w-4" />
+                      <Button
+                        variant={featured ? "gold" : "dark"}
+                        size="md"
+                        className="w-full rounded-lg"
+                        disabled={loadingProgram === index}
+                        onClick={() => void handleProgramSelect(index)}
+                      >
+                        {loadingProgram === index ? t("pricingPage.loading", { defaultValue: "Loading..." }) : t("programsPage.ctaButton")}{" "}
+                        <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </div>
                   </Card>

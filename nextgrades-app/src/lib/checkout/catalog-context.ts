@@ -88,48 +88,19 @@ export async function resolveCheckoutCatalogContext(input: {
   };
 }
 
-/** Map pricing UI plan id to Stripe plan key. */
-export function toStripePlanId(planId: string): "resource" | "group" | "premium" {
-  if (planId === "library" || planId === "resource") return "resource";
-  if (planId === "premium") return "premium";
-  return "group";
-}
+export {
+  toStripePlanId,
+  isOneTimeCheckoutPlan,
+  buildCheckoutQuery,
+  CHECKOUT_PATH,
+  planCheckoutHref,
+  consultationCheckoutHref,
+  tutoringCheckoutHref,
+  startPlanCheckout,
+} from "@/lib/checkout/start-plan-checkout";
 
-export function buildCheckoutQuery(params: {
-  plan?: string;
-  billing?: string;
-  subject?: string;
-  grade?: string;
-  semester?: string;
-  from?: string;
-}): string {
-  const q = new URLSearchParams();
-  if (params.plan) q.set("plan", params.plan);
-  if (params.billing) q.set("billing", params.billing);
-  if (params.subject) q.set("subject", params.subject);
-  if (params.grade) q.set("grade", params.grade);
-  if (params.semester) q.set("semester", params.semester);
-  if (params.from) q.set("from", params.from);
-  return q.toString();
-}
-
-export const CHECKOUT_PATH = "/checkout";
-
-/** Book consultation / intro — group tutoring checkout. */
-export function consultationCheckoutHref(): string {
-  return `${CHECKOUT_PATH}?${buildCheckoutQuery({
-    plan: "group",
-    billing: "monthly",
-    from: "consultation",
-  })}`;
-}
-
-/** Book 1:1 tutoring for a subject. */
-export function tutoringCheckoutHref(subjectId: string): string {
-  return `${CHECKOUT_PATH}?${buildCheckoutQuery({
-    plan: "premium",
-    billing: "monthly",
-    subject: subjectId,
-    from: "subjects",
-  })}`;
-}
+export type {
+  CheckoutPlanId,
+  StartPlanCheckoutInput,
+  StartPlanCheckoutResult,
+} from "@/lib/checkout/start-plan-checkout";

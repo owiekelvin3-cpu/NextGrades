@@ -13,8 +13,7 @@ import { useTranslation } from "react-i18next";
 import { useLocalizedContent } from "@/hooks/useLocalizedContent";
 import { useToast } from "@/context/ToastContext";
 import { Loader2, CreditCard, ShieldCheck, ArrowLeft } from "lucide-react";
-import { toStripePlanId } from "@/lib/checkout/catalog-context";
-import type { PlanId as P } from "@/lib/plans/storage";
+import { toStripePlanId, isOneTimeCheckoutPlan } from "@/lib/checkout/start-plan-checkout";
 
 function CheckoutContent() {
   const { theme } = useTheme();
@@ -26,7 +25,7 @@ function CheckoutContent() {
   const [user, setUser] = useState<{ id: string } | null>(null);
   const [checking, setChecking] = useState(true);
 
-  const planId = (searchParams.get("plan") || "library") as P | "library";
+  const planId = searchParams.get("plan") || "library";
   const billing = searchParams.get("billing") === "yearly" ? "yearly" : "monthly";
   const subjectSlug = searchParams.get("subject")?.trim() ?? "";
   const grade = searchParams.get("grade")?.trim() ?? "";
@@ -49,11 +48,15 @@ function CheckoutContent() {
     if (planId === "library" || planId === "resource") {
       return plans.find((p) => p.id === "library" || p.id === "resource");
     }
+    if (planId === "matura") {
+      return plans.find((p) => p.id === "matura");
+    }
     return plans.find((p) => p.id === "group") ?? plans[0];
   }, [plans, planId]);
 
   const price = billing === "yearly" ? plan?.yearlyPrice : plan?.monthlyPrice;
   const stripePlan = toStripePlanId(planId);
+  const oneTime = isOneTimeCheckoutPlan(planId);
 
   const subjectLabel = subjectSlug
     ? t(`resources.upgrade.subjects.${subjectSlug}`, { defaultValue: subjectSlug })
@@ -74,7 +77,7 @@ function CheckoutContent() {
     setProcessing(true);
     try {
       const payload = {
-        productType: "subscription",
+        productType: oneTime ? "payment" : "subscription",
         planId: stripePlan,
         billing,
         subjectSlug: subjectSlug || undefined,
@@ -132,7 +135,12 @@ function CheckoutContent() {
               {t("checkout.title", { defaultValue: "Complete your subscription" })}
             </h1>
             <p className="mb-1 text-text-muted">
-              {plan?.name} · {billing === "yearly" ? t("pricing.yearly") : t("pricing.monthly")}
+              {plan?.name} ·{" "}
+              {oneTime
+                ? t("pricing.oneTime", { defaultValue: "One-time payment" })
+                : billing === "yearly"
+                  ? t("pricing.yearly")
+                  : t("pricing.monthly")}
             </p>
             {subjectSlug && (
               <p className="mb-4 text-sm text-[var(--brand-gold)]">

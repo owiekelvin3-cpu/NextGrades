@@ -27,12 +27,11 @@ import {
 import { cn } from "@/lib/utils";
 import { hero, section } from "@/lib/premium/tokens";
 import { useMarketingTheme } from "@/lib/marketing-theme";
-
-type PlanAction = "checkout" | "resources" | "consultation";
+import { supabase } from "@/lib/supabase/client";
+import { startPlanCheckout } from "@/lib/checkout/start-plan-checkout";
 
 type PricingStat = { value: string; label: string };
 
-const CHECKOUT_PLANS = new Set(["resource", "group", "premium"]);
 const STAT_ICONS = [UserRound, GraduationCap, FileText, Star];
 
 const PLAN_ORDER = ["premium", "group", "matura", "library"] as const;
@@ -53,18 +52,6 @@ const PLAN_TYPE_LABEL: Record<string, string> = {
   library: "Bibliothek",
   resource: "Bibliothek",
 };
-
-function planActionType(planId: string): PlanAction {
-  if (planId === "library" || planId === "resource") return "resources";
-  if (planId === "matura") return "consultation";
-  if (CHECKOUT_PLANS.has(planId)) return "checkout";
-  return "consultation";
-}
-
-function checkoutPlanId(planId: string): string {
-  if (planId === "library") return "resource";
-  return planId;
-}
 
 function PricingContent() {
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
@@ -109,20 +96,22 @@ function PricingContent() {
   const ctaTags = Array.isArray(ctaTagsRaw) ? ctaTagsRaw : [];
 
   const handlePlanSelect = async (plan: PricingPlanCardPlan) => {
-    const action = planActionType(plan.id);
-    if (action === "resources") {
-      router.push("/checkout?plan=library&billing=monthly");
-      return;
-    }
-    if (action === "consultation") {
-      router.push("/consultation");
-      return;
-    }
-
     setLoadingPlan(plan.id);
     try {
-      const stripePlan = checkoutPlanId(plan.id);
-      router.push(`/checkout?plan=${stripePlan}&billing=monthly`);
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      const result = await startPlanCheckout({
+        planId: plan.id,
+        billing: "monthly",
+        isLoggedIn: Boolean(session?.user),
+      });
+      if (result.ok) {
+        globalThis.location.assign(result.url);
+        return;
+      }
+      toast.error(result.error);
+      router.push(result.fallbackHref);
     } catch (error) {
       console.error("Error:", error);
       toast.error(t("misc.errorGeneric"));

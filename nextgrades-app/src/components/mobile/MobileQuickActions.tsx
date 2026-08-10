@@ -5,6 +5,7 @@ import { Plus, Video, Upload, BookOpen, ArrowRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { mobile } from "@/lib/mobile/tokens";
 import { cn } from "@/lib/utils";
+import { TEACHER_PUBLISHING_ENABLED } from "@/lib/resources/teacher-publishing";
 
 const actions = [
   {
@@ -19,12 +20,16 @@ const actions = [
     labelKey: "teacherDashboard.createLiveClass",
     fallback: "Create Live Class",
   },
-  {
-    href: "/dashboard/teacher/upload",
-    icon: Upload,
-    labelKey: "teacherDashboard.uploadResource",
-    fallback: "Upload Resource",
-  },
+  ...(TEACHER_PUBLISHING_ENABLED
+    ? [
+        {
+          href: "/dashboard/teacher/upload",
+          icon: Upload,
+          labelKey: "teacherDashboard.uploadResource",
+          fallback: "Upload Resource",
+        },
+      ]
+    : []),
 ] as const;
 
 /** Full-width stacked actions - less crowded than a 3-column grid */

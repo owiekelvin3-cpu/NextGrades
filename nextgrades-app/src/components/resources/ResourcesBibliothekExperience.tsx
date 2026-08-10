@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useMemo } from "react";
 import { ArrowRight, BookOpen, Crown, GraduationCap, RefreshCw, Search, ShieldCheck } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -53,9 +52,6 @@ export function ResourcesBibliothekExperience({ access }: Props) {
   const gridItems = useFeaturedRow ? catalog.resources.slice(4) : catalog.resources;
   const hasMaterials = catalog.resources.length > 0;
 
-  const visibleSubjects = bibliothekSubjects;
-  const hasMoreSubjects = false;
-
   const features = [
     { title: t("resources.features.feature1Title"), desc: t("resources.features.feature1Desc") },
     { title: t("resources.features.feature2Title"), desc: t("resources.features.feature2Desc") },
@@ -101,37 +97,6 @@ export function ResourcesBibliothekExperience({ access }: Props) {
                     placeholder={t("resources.searchPlaceholder")}
                     className="w-full rounded-xl border border-white/15 bg-white/10 py-3.5 pl-12 pr-4 text-sm text-white placeholder:text-white/40 outline-none transition focus:border-[#D4AF37]/50 focus:ring-2 focus:ring-[#D4AF37]/25"
                   />
-                </div>
-
-                <div className="mt-4 flex flex-wrap items-center gap-2">
-                  {visibleSubjects.map((s) => {
-                    const slug = s.slug || s.id;
-                    const active = catalog.subjectSlug === slug;
-                    return (
-                      <button
-                        key={s.id}
-                        type="button"
-                        onClick={() => catalog.setSubjectSlug(active ? "" : slug)}
-                        className={cn(
-                          "shrink-0 touch-manipulation rounded-full px-4 py-2 text-sm font-semibold transition",
-                          active
-                            ? "bg-[#D4AF37] text-[#0D1B2A]"
-                            : "border border-white/15 text-white/80 hover:border-[#D4AF37]/40 hover:text-[#D4AF37]"
-                        )}
-                      >
-                        {s.name}
-                      </button>
-                    );
-                  })}
-                  {hasMoreSubjects && (
-                    <Link
-                      href="/subjects"
-                      className="inline-flex shrink-0 items-center gap-1 rounded-full border border-white/15 px-4 py-2 text-sm font-semibold text-white/80 transition hover:border-[#D4AF37]/40 hover:text-[#D4AF37]"
-                    >
-                      {t("resources.moreSubjects")}
-                      <ArrowRight className="h-4 w-4" aria-hidden />
-                    </Link>
-                  )}
                 </div>
               </div>
 

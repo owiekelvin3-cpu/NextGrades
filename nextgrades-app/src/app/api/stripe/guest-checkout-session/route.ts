@@ -3,7 +3,8 @@ import { stripe } from "@/lib/stripe/client";
 import { resolveCheckoutStripePrice } from "@/lib/stripe/prices";
 import { getAppUrl } from "@/lib/app-url";
 import { enforceRateLimit } from "@/lib/security/rate-limit";
-import { resolveCheckoutCatalogContext, toStripePlanId } from "@/lib/checkout/catalog-context";
+import { resolveCheckoutCatalogContext } from "@/lib/checkout/catalog-context";
+import { isOneTimeCheckoutPlan, toStripePlanId } from "@/lib/checkout/start-plan-checkout";
 
 export async function POST(request: Request) {
   const limited = await enforceRateLimit(request, { bucket: "stripe:guest-checkout", limit: 10, windowSec: 3600 });
@@ -22,6 +23,7 @@ export async function POST(request: Request) {
       grade,
       semester,
       customerEmail,
+      productType: rawProductType,
     } = body as {
       planId?: string;
       billing?: string;
@@ -29,9 +31,13 @@ export async function POST(request: Request) {
       grade?: string;
       semester?: string;
       customerEmail?: string;
+      productType?: string;
     };
 
-    const planId = toStripePlanId(rawPlanId ?? "library");
+    const uiPlanId = rawPlanId ?? "library";
+    const planId = toStripePlanId(uiPlanId);
+    const oneTime = isOneTimeCheckoutPlan(uiPlanId);
+    const productType = rawProductType ?? (oneTime ? "payment" : "subscription");
     const resolution = resolveCheckoutStripePrice({ planId, billing });
 
     if (!resolution.ok) {
@@ -50,21 +56,25 @@ export async function POST(request: Request) {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: [{ price: priceId, quantity: 1 }],
-      mode: "subscription",
+      mode: oneTime ? "payment" : "subscription",
       customer_email: customerEmail?.trim() || undefined,
-      subscription_data: {
-        metadata: {
-          guestCheckout: "true",
-          planId: plan,
-          billing: resolvedBilling,
-          subjectId: catalog.subjectId ?? "",
-          classId: catalog.classId ?? "",
-          semester: semester ? String(semester) : "",
-        },
-      },
+      ...(oneTime
+        ? {}
+        : {
+            subscription_data: {
+              metadata: {
+                guestCheckout: "true",
+                planId: plan,
+                billing: resolvedBilling,
+                subjectId: catalog.subjectId ?? "",
+                classId: catalog.classId ?? "",
+                semester: semester ? String(semester) : "",
+              },
+            },
+          }),
       success_url: `${appUrl}/checkout/account-setup?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${appUrl}/checkout?${new URLSearchParams({
-        plan: rawPlanId === "library" ? "library" : plan,
+        plan: uiPlanId === "resource" ? "library" : uiPlanId,
         billing: resolvedBilling,
         ...(subjectSlug ? { subject: subjectSlug } : {}),
         ...(grade ? { grade } : {}),
@@ -72,7 +82,7 @@ export async function POST(request: Request) {
       }).toString()}`,
       metadata: {
         guestCheckout: "true",
-        productType: "subscription",
+        productType,
         planId: plan,
         billing: resolvedBilling,
         subjectSlug: catalog.subjectSlug ?? subjectSlug ?? "",
@@ -83,8 +93,13 @@ export async function POST(request: Request) {
         subjectName: catalog.subjectName ?? "",
         className: catalog.className ?? "",
         grade: grade ?? "",
-        planName: plan === "resource" ? "Lernbibliothek" : plan,
-        billingCycle: resolvedBilling === "yearly" ? "Yearly" : "Monthly",
+        planName:
+          plan === "resource"
+            ? "Lernbibliothek"
+            : plan === "matura"
+              ? "Mathematik Matura Komplettpaket"
+              : plan,
+        billingCycle: oneTime ? "One-time" : resolvedBilling === "yearly" ? "Yearly" : "Monthly",
         stripePriceId: priceId,
       },
     });

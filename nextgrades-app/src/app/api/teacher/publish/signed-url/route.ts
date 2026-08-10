@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createAdminClient, isSupabaseServiceRoleConfigured } from "@/lib/supabase/admin";
-import { requireTeacherOrAdminApi } from "@/lib/auth/api-auth";
+import { requireLibraryPublishApi } from "@/lib/auth/api-auth";
 import {
   RESOURCES_BUCKET,
   THUMBNAILS_BUCKET,
@@ -20,7 +20,7 @@ function sanitizeName(name: string) {
 /** Issue a signed upload URL so teachers can upload directly to Storage (bypasses RLS/size limits on API routes). */
 export async function POST(request: Request) {
   try {
-    const gate = await requireTeacherOrAdminApi();
+    const gate = await requireLibraryPublishApi();
     if (gate.error) return gate.error;
     const auth = gate.auth;
 

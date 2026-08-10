@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createAdminClient, isSupabaseServiceRoleConfigured } from "@/lib/supabase/admin";
-import { requireTeacherOrAdminApi } from "@/lib/auth/api-auth";
+import { requireLibraryPublishApi } from "@/lib/auth/api-auth";
 import type { ContentType } from "@/lib/resources/constants";
 import {
   checkDuplicateTitle,
@@ -13,7 +13,7 @@ export const runtime = "nodejs";
 /** Validate publish metadata before the client uploads files to storage. */
 export async function POST(request: Request) {
   try {
-    const gate = await requireTeacherOrAdminApi();
+    const gate = await requireLibraryPublishApi();
     if (gate.error) return gate.error;
     const auth = gate.auth;
 

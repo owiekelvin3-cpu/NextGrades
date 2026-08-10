@@ -1,6 +1,10 @@
 import type { SupabaseClient, User } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
 import { resolveUserRole, type AppRole } from "@/lib/auth/roles";
+import {
+  canPublishLibraryMaterials,
+  PUBLISH_FORBIDDEN_MESSAGE,
+} from "@/lib/resources/teacher-publishing";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { isSupabaseServiceRoleConfigured } from "@/lib/supabase/env";
 import { createClient } from "@/lib/supabase/server";
@@ -128,6 +132,16 @@ export async function requireTeacherOrAdminApi(): Promise<AuthGateResult> {
   if (secureError) return { error: secureError, auth: null };
 
   return { error: null, auth: auth as ApiAuthContext };
+}
+
+/** Teachers and admins who may create or publish library materials. */
+export async function requireLibraryPublishApi(): Promise<AuthGateResult> {
+  const gate = await requireTeacherOrAdminApi();
+  if (gate.error) return gate;
+  if (!canPublishLibraryMaterials(gate.auth.profile.role)) {
+    return { error: forbidden(PUBLISH_FORBIDDEN_MESSAGE), auth: null };
+  }
+  return gate;
 }
 
 export async function requireAuthenticatedApi(): Promise<AuthGateResult> {

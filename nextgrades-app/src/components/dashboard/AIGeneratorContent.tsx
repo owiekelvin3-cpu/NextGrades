@@ -12,6 +12,7 @@ import { useToast } from "@/context/ToastContext";
 import { LoadingBlock } from "@/components/dashboard/LoadingBlock";
 import { themeInputClass, themeSelectCompactClass } from "@/lib/theme/form-fields";
 import { cn } from "@/lib/utils";
+import { TEACHER_PUBLISHING_ENABLED } from "@/lib/resources/teacher-publishing";
 
 type UploadedMaterial = {
   id: string;
@@ -374,9 +375,11 @@ export function AIGeneratorContent() {
             <Button variant="secondary" className="w-full justify-start" size="md" type="button" href="/dashboard/teacher/content">
               <Sparkles className="mr-3 h-5 w-5" /> {t("aiGeneratorPage.summary", { defaultValue: "Content library" })}
             </Button>
-            <Button variant="secondary" className="w-full justify-start" size="md" type="button" href="/dashboard/teacher/upload">
-              <Sparkles className="mr-3 h-5 w-5" /> {t("aiGeneratorPage.exercises", { defaultValue: "Upload resources" })}
-            </Button>
+            {TEACHER_PUBLISHING_ENABLED && (
+              <Button variant="secondary" className="w-full justify-start" size="md" type="button" href="/dashboard/teacher/upload">
+                <Sparkles className="mr-3 h-5 w-5" /> {t("aiGeneratorPage.exercises", { defaultValue: "Upload resources" })}
+              </Button>
+            )}
           </div>
         </Card>
 

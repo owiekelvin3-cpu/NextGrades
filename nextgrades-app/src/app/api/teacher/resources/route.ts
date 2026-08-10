@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { requireTeacherOrAdmin } from "@/lib/auth/auth-utils";
+import {
+  canPublishLibraryMaterials,
+  PUBLISH_FORBIDDEN_MESSAGE,
+} from "@/lib/resources/teacher-publishing";
 import { LEGACY_TYPE_MAP, type ContentType } from "@/lib/resources/constants";
 
 export async function GET(request: Request) {
@@ -75,6 +79,10 @@ export async function POST(request: Request) {
     const auth = await requireTeacherOrAdmin(supabase);
     if (!auth.user) {
       return NextResponse.json({ error: auth.error || "Unauthorized" }, { status: auth.error === "Forbidden" ? 403 : 401 });
+    }
+
+    if (!canPublishLibraryMaterials(auth.profile?.role)) {
+      return NextResponse.json({ error: PUBLISH_FORBIDDEN_MESSAGE }, { status: 403 });
     }
 
     const body = await request.json();

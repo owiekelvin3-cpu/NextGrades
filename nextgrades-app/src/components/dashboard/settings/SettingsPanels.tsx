@@ -43,6 +43,7 @@ import {
 } from "@/lib/dashboard/profile-settings";
 import { useNotificationsOptional } from "@/context/NotificationContext";
 import { subscribeToPush, unsubscribeFromPush } from "@/lib/notifications/push-client";
+import { TEACHER_PUBLISHING_ENABLED } from "@/lib/resources/teacher-publishing";
 import {
   DEFAULT_NOTIFICATION_PREFERENCES,
   NOTIFICATION_CATEGORIES,
@@ -582,7 +583,9 @@ export function StudentSettingsPanel({ role = "student" }: StudentSettingsPanelP
                 { href: "/dashboard/teacher/schedule", label: t("settings.linkSchedule", { defaultValue: "Schedule & calendar" }) },
                 { href: "/dashboard/teacher/students", label: t("settings.linkStudents", { defaultValue: "My students" }) },
                 { href: "/dashboard/teacher/ai-generator", label: t("settings.linkAiGen", { defaultValue: "AI quiz generator" }) },
-                { href: "/dashboard/teacher/upload", label: t("settings.linkUpload", { defaultValue: "Upload materials" }) },
+                ...(TEACHER_PUBLISHING_ENABLED
+                  ? [{ href: "/dashboard/teacher/upload", label: t("settings.linkUpload", { defaultValue: "Upload materials" }) }]
+                  : []),
                 { href: "/dashboard/teacher/earnings", label: t("settings.linkEarnings", { defaultValue: "Earnings & payments" }) },
                 { href: "/dashboard/chat", label: t("settings.linkAiChat", { defaultValue: "NextGrades AI" }) },
               ].map((link) => (

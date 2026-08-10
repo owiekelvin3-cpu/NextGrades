@@ -1,24 +1,33 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
+import { TEACHER_PUBLISHING_ENABLED } from "@/lib/resources/teacher-publishing";
 import { TeacherDashboardLayout } from "@/components/dashboard/teacher/TeacherDashboardLayout";
 import { PublishContentForm } from "@/components/teacher/PublishContentForm";
 import { LoadingBlock } from "@/components/dashboard/LoadingBlock";
 import { Button } from "@/components/ui/Button";
-import { useTheme } from "@/context/ThemeContext";
 import { useToast } from "@/context/ToastContext";
-import { useParams } from "next/navigation";
+import { useState } from "react";
 
 export default function EditResourcePage() {
-  const { theme } = useTheme();
   const { error: toastError } = useToast();
+  const router = useRouter();
   const params = useParams();
   const id = params.id as string;
   const [loading, setLoading] = useState(true);
   const [initialData, setInitialData] = useState<Record<string, unknown> | null>(null);
 
   useEffect(() => {
+    if (!TEACHER_PUBLISHING_ENABLED) {
+      router.replace("/dashboard/teacher/content");
+    }
+  }, [router]);
+
+  useEffect(() => {
+    if (!TEACHER_PUBLISHING_ENABLED) return;
+
     void fetch(`/api/teacher/resources/${id}`)
       .then(async (r) => {
         const data = await r.json();
@@ -52,6 +61,10 @@ export default function EditResourcePage() {
       })
       .finally(() => setLoading(false));
   }, [id, toastError]);
+
+  if (!TEACHER_PUBLISHING_ENABLED) {
+    return null;
+  }
 
   return (
     <TeacherDashboardLayout

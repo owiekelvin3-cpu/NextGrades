@@ -1,9 +1,10 @@
-export type PlanKey = "group" | "premium" | "resource";
+export type PlanKey = "group" | "premium" | "resource" | "matura";
 export type BillingKey = "monthly" | "yearly";
 
-const APPROVED_PLANS: PlanKey[] = ["group", "premium", "resource"];
+const APPROVED_PLANS: PlanKey[] = ["group", "premium", "resource", "matura"];
 
 function readPriceEnvMap(): Record<PlanKey, Record<BillingKey, string | undefined>> {
+  const maturaPrice = process.env.STRIPE_PRICE_MATURA?.trim();
   return {
     group: {
       monthly: process.env.STRIPE_PRICE_GROUP_MONTHLY,
@@ -20,6 +21,10 @@ function readPriceEnvMap(): Record<PlanKey, Record<BillingKey, string | undefine
     resource: {
       monthly: process.env.STRIPE_PRICE_RESOURCE_MONTHLY,
       yearly: process.env.STRIPE_PRICE_RESOURCE_YEARLY,
+    },
+    matura: {
+      monthly: maturaPrice,
+      yearly: maturaPrice,
     },
   };
 }

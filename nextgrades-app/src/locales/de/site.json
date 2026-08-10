@@ -664,11 +664,11 @@
       { "label": "Gruppengröße max. 5", "library": false, "group": true, "premium": false, "matura": false }
     ],
     "planActions": {
-      "library": "Zur Lernbibliothek",
-      "group": "Lerngruppe starten",
+      "library": "Jetzt buchen",
+      "group": "Lerngruppe buchen",
       "premium": "Premium buchen",
-      "matura": "Matura-Paket anfragen",
-      "resource": "Mitgliedschaft starten"
+      "matura": "Matura-Paket buchen",
+      "resource": "Jetzt buchen"
     }
   },
   "dashboardNav": {

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createAdminClient, isSupabaseServiceRoleConfigured } from "@/lib/supabase/admin";
-import { requireTeacherOrAdminApi } from "@/lib/auth/api-auth";
+import { requireLibraryPublishApi } from "@/lib/auth/api-auth";
 import { LEGACY_TYPE_MAP, type ContentType } from "@/lib/resources/constants";
 import { buildAutoShortDescription } from "@/lib/resources/library-display";
 import {
@@ -166,7 +166,7 @@ async function parsePublishInput(request: Request): Promise<PublishInput> {
 
 export async function POST(request: Request) {
   try {
-    const gate = await requireTeacherOrAdminApi();
+    const gate = await requireLibraryPublishApi();
     if (gate.error) return gate.error;
     const auth = gate.auth;
     const supabase = auth.supabase;

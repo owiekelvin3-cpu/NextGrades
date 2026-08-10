@@ -45,6 +45,7 @@ import { StudentQuizHub } from "@/components/quiz/StudentQuizHub";
 import { AdminTable, AdminTableStatusBadge } from "@/components/admin/AdminTable";
 import { st } from "@/components/dashboard/student/student-ui";
 import { cn } from "@/lib/utils";
+import { TEACHER_PUBLISHING_ENABLED } from "@/lib/resources/teacher-publishing";
 
 function SectionGrid({ children }: { children: React.ReactNode }) {
   return <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">{children}</div>;
@@ -439,9 +440,11 @@ export function TeacherResourcesSection() {
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap justify-end gap-3">
-        <Button variant="gold" href="/dashboard/teacher/upload">
-          {t("teacherDashboard.uploadMaterial")}
-        </Button>
+        {TEACHER_PUBLISHING_ENABLED && (
+          <Button variant="gold" href="/dashboard/teacher/upload">
+            {t("teacherDashboard.uploadMaterial")}
+          </Button>
+        )}
         <Button variant="outline" href="/dashboard/teacher/content">
           {t("teacherDashboard.manageContent", { defaultValue: "Manage all content" })}
         </Button>
@@ -450,10 +453,18 @@ export function TeacherResourcesSection() {
       {resources.length === 0 ? (
         <Card className="border-2 border-dashed border-[#D4AF37]/40 p-8 text-center">
           <Upload className="mx-auto mb-4 h-12 w-12 text-[#D4AF37]" />
-          <p className="mb-4 font-medium">{t("teacherDashboard.uploadMaterial")}</p>
-          <Button variant="gold" href="/dashboard/teacher/upload">
-            {t("teacherDashboard.uploadFirst", { defaultValue: "Upload your first resource" })}
-          </Button>
+          <p className="mb-4 font-medium">
+            {TEACHER_PUBLISHING_ENABLED
+              ? t("teacherDashboard.uploadMaterial")
+              : t("teacherDashboard.noMaterialsAdmin", {
+                  defaultValue: "Library materials are published by administrators.",
+                })}
+          </p>
+          {TEACHER_PUBLISHING_ENABLED && (
+            <Button variant="gold" href="/dashboard/teacher/upload">
+              {t("teacherDashboard.uploadFirst", { defaultValue: "Upload your first resource" })}
+            </Button>
+          )}
         </Card>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -479,9 +490,11 @@ export function TeacherResourcesSection() {
                   variant="outline"
                   size="sm"
                   className="mt-3 w-full"
-                  href={`/dashboard/teacher/content/${resource.id}/edit`}
+                  href={TEACHER_PUBLISHING_ENABLED ? `/dashboard/teacher/content/${resource.id}/edit` : "/dashboard/teacher/content"}
                 >
-                  {t("teacherDashboard.editResource", { defaultValue: "Edit" })}
+                  {TEACHER_PUBLISHING_ENABLED
+                    ? t("teacherDashboard.editResource", { defaultValue: "Edit" })
+                    : t("teacherDashboard.viewResource", { defaultValue: "View" })}
                 </Button>
               </div>
             </Card>

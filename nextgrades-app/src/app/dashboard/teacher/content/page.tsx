@@ -25,6 +25,7 @@ import { useToast } from "@/context/ToastContext";
 import { useTranslation } from "react-i18next";
 import { themeSelectCompactClass } from "@/lib/theme/form-fields";
 import { cn } from "@/lib/utils";
+import { TEACHER_PUBLISHING_ENABLED } from "@/lib/resources/teacher-publishing";
 
 interface Category {
   id: string;
@@ -188,13 +189,17 @@ export default function TeacherContentPage() {
     <TeacherDashboardLayout
       title={t("teacherDashboard.nav.myMaterials", { defaultValue: "My materials" })}
       description={t("teacherDashboard.contentPageDesc", {
-        defaultValue: "View, edit, and manage your published learning content.",
+        defaultValue: TEACHER_PUBLISHING_ENABLED
+          ? "View, edit, and manage your published learning content."
+          : "Browse materials in the library. Publishing is managed by administrators.",
       })}
       headerAction={
-        <Button variant="gold" size="md" href="/dashboard/teacher/upload">
-          <Plus className="mr-2 h-5 w-5" />
-          {t("teacherDashboard.nav.publish", { defaultValue: "Publish" })}
-        </Button>
+        TEACHER_PUBLISHING_ENABLED ? (
+          <Button variant="gold" size="md" href="/dashboard/teacher/upload">
+            <Plus className="mr-2 h-5 w-5" />
+            {t("teacherDashboard.nav.publish", { defaultValue: "Publish" })}
+          </Button>
+        ) : undefined
       }
     >
       <div className="mx-auto max-w-7xl">
@@ -305,9 +310,13 @@ export default function TeacherContentPage() {
                 No resources found
               </h3>
               <p className={`mb-6 text-text-muted`}>
-                {searchQuery ? "Try adjusting your search or filters" : "Upload your first resource to get started"}
+                {searchQuery
+                  ? "Try adjusting your search or filters"
+                  : TEACHER_PUBLISHING_ENABLED
+                    ? "Upload your first resource to get started"
+                    : "No materials yet. Library content is published by administrators."}
               </p>
-              {!searchQuery && (
+              {!searchQuery && TEACHER_PUBLISHING_ENABLED && (
                 <Button variant="gold" size="md" href="/dashboard/teacher/upload">
                   <Plus className="w-5 h-5 mr-2" />
                   Upload Your First Resource
@@ -387,35 +396,37 @@ export default function TeacherContentPage() {
                       </div>
 
                       {/* Actions */}
-                      <div className="flex gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className={`flex-1 ${theme === "dark" ? "border-white/20 text-white hover:bg-white/10" : "border-gray-200 text-gray-700 hover:bg-gray-50"}`}
-                          href={`/dashboard/teacher/content/${resource.id}/edit`}
-                        >
-                          <Edit className="w-4 h-4 mr-1" />
-                          Edit
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className={`${theme === "dark" ? "border-white/20 text-white hover:bg-white/10" : "border-gray-200 text-gray-700 hover:bg-gray-50"}`}
-                          onClick={() => handleArchive(resource.id)}
-                          title="Archive"
-                        >
-                          <Archive className="w-4 h-4" />
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className={`${theme === "dark" ? "border-white/20 text-white hover:bg-white/10" : "border-gray-200 text-gray-700 hover:bg-gray-50"}`}
-                          onClick={() => handleDelete(resource.id)}
-                          title="Delete"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </div>
+                      {TEACHER_PUBLISHING_ENABLED && (
+                        <div className="flex gap-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className={`flex-1 ${theme === "dark" ? "border-white/20 text-white hover:bg-white/10" : "border-gray-200 text-gray-700 hover:bg-gray-50"}`}
+                            href={`/dashboard/teacher/content/${resource.id}/edit`}
+                          >
+                            <Edit className="w-4 h-4 mr-1" />
+                            Edit
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className={`${theme === "dark" ? "border-white/20 text-white hover:bg-white/10" : "border-gray-200 text-gray-700 hover:bg-gray-50"}`}
+                            onClick={() => handleArchive(resource.id)}
+                            title="Archive"
+                          >
+                            <Archive className="w-4 h-4" />
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className={`${theme === "dark" ? "border-white/20 text-white hover:bg-white/10" : "border-gray-200 text-gray-700 hover:bg-gray-50"}`}
+                            onClick={() => handleDelete(resource.id)}
+                            title="Delete"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      )}
                     </div>
                   </Card>
                 </motion.div>

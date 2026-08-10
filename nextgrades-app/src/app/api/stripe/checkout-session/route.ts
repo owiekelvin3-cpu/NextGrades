@@ -5,6 +5,7 @@ import { resolveCheckoutStripePrice } from "@/lib/stripe/prices";
 import { logSecurityEvent } from "@/lib/auth/audit-log";
 import { getAppUrl } from "@/lib/app-url";
 import { resolveCheckoutCatalogContext } from "@/lib/checkout/catalog-context";
+import { isOneTimeCheckoutPlan, toStripePlanId } from "@/lib/checkout/start-plan-checkout";
 
 export async function POST(request: Request) {
   const gate = await requireAuthenticatedApi();
@@ -30,7 +31,7 @@ export async function POST(request: Request) {
     } = body;
 
     const resolution = resolveCheckoutStripePrice({
-      planId,
+      planId: toStripePlanId(planId ?? "group"),
       billing,
       clientPriceId: rawPriceId,
     });
@@ -62,6 +63,10 @@ export async function POST(request: Request) {
     }
 
     const { priceId, plan, billing: resolvedBilling } = resolution;
+    const uiPlanId = String(planId ?? plan);
+    const oneTime = isOneTimeCheckoutPlan(uiPlanId) || productType === "payment";
+    const checkoutMode = oneTime ? "payment" : "subscription";
+    const resolvedProductType = oneTime ? "payment" : productType || "subscription";
     const userId = gate.auth!.profile!.id;
     const appUrl = getAppUrl();
 
@@ -78,10 +83,10 @@ export async function POST(request: Request) {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: [{ price: priceId, quantity: 1 }],
-      mode: productType === "subscription" ? "subscription" : "payment",
+      mode: checkoutMode,
       success_url: `${appUrl}/checkout/success?plan=${plan}&billing=${resolvedBilling}`,
       cancel_url: `${appUrl}/pricing`,
-      ...(productType === "subscription"
+      ...(checkoutMode === "subscription"
         ? {
             subscription_data: {
               metadata: {
@@ -97,7 +102,7 @@ export async function POST(request: Request) {
         : {}),
       metadata: {
         userId,
-        productType: productType || "",
+        productType: resolvedProductType,
         planId: plan,
         billing: resolvedBilling,
         subjectId: resolvedSubjectId,
@@ -107,8 +112,13 @@ export async function POST(request: Request) {
         subjectSlug: catalog.subjectSlug ?? subjectSlug ?? "",
         subjectName: catalog.subjectName ?? "",
         grade: grade ? String(grade) : "",
-        planName: plan === "resource" ? "Resource Membership" : plan,
-        billingCycle: resolvedBilling === "yearly" ? "Yearly" : "Monthly",
+        planName:
+          plan === "resource"
+            ? "Resource Membership"
+            : plan === "matura"
+              ? "Mathematik Matura Komplettpaket"
+              : plan,
+        billingCycle: oneTime ? "One-time" : resolvedBilling === "yearly" ? "Yearly" : "Monthly",
         stripePriceId: priceId,
       },
     });

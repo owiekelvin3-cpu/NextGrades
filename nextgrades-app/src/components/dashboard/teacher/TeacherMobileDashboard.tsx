@@ -26,6 +26,7 @@ import { lessonHasMeetingLink } from "@/lib/meetings/link";
 import { ZoomSetupStrip } from "@/components/zoom/ZoomSetupStrip";
 import { cn } from "@/lib/utils";
 import { Suspense } from "react";
+import { TEACHER_PUBLISHING_ENABLED } from "@/lib/resources/teacher-publishing";
 
 function CircularProgress({
   value,
@@ -164,12 +165,16 @@ export function TeacherMobileDashboard({ data }: Props) {
       label: t("teacherDashboard.createLiveClass", { defaultValue: "Live class" }),
       gradient: "from-[#1e3a5f] to-[#0D1B2A]",
     },
-    {
-      href: "/dashboard/teacher/upload",
-      icon: Upload,
-      label: t("teacherDashboard.uploadResource", { defaultValue: "Upload" }),
-      gradient: "from-[#047857] to-[#065f46]",
-    },
+    ...(TEACHER_PUBLISHING_ENABLED
+      ? [
+          {
+            href: "/dashboard/teacher/upload",
+            icon: Upload,
+            label: t("teacherDashboard.uploadResource", { defaultValue: "Upload" }),
+            gradient: "from-[#047857] to-[#065f46]",
+          },
+        ]
+      : []),
     {
       href: "/dashboard/teacher/students",
       icon: Users,
