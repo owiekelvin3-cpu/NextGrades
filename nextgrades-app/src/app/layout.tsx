@@ -87,13 +87,13 @@ export default async function RootLayout({
     <html
       lang={htmlLang}
       data-scroll-behavior="smooth"
-      className={`${poppins.variable} ${playfairDisplay.variable} ${initialTheme === "dark" ? "dark" : ""} h-full antialiased`}
+      className={`${poppins.variable} ${playfairDisplay.variable} dark h-full antialiased`}
       suppressHydrationWarning
     >
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem("theme");var theme=t==="light"?"light":"dark";document.documentElement.classList.toggle("dark",theme==="dark");document.documentElement.style.colorScheme=theme;document.cookie="theme="+theme+";path=/;max-age=31536000;SameSite=Lax";var l=localStorage.getItem("i18nextLng");if(l){var lang=l.toLowerCase().split("-")[0];document.documentElement.lang=lang==="en"?"en":"de";}}catch(e){document.documentElement.classList.add("dark");document.documentElement.style.colorScheme="dark";}})();`,
+            __html: `(function(){try{document.documentElement.classList.add("dark");document.documentElement.style.colorScheme="dark";document.cookie="theme=dark;path=/;max-age=31536000;SameSite=Lax";try{localStorage.setItem("theme","dark");}catch(e){}var l=localStorage.getItem("i18nextLng");if(l){var lang=l.toLowerCase().split("-")[0];document.documentElement.lang=lang==="en"?"en":"de";}}catch(e){document.documentElement.classList.add("dark");document.documentElement.style.colorScheme="dark";}})();`,
           }}
         />
         {supabaseHost && (

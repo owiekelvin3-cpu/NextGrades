@@ -5,7 +5,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Home } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useNotificationsOptional } from "@/context/NotificationContext";
 import { BrandLogo } from "@/components/BrandLogo";
@@ -47,7 +46,6 @@ export function MobileMenuSheet({ open, onClose, role }: Props) {
       footer={
         <div className="space-y-4">
           <LanguageSwitcher layout="drawer" />
-          {role !== "admin" ? <ThemeToggle variant="full" /> : null}
           <Link
             href="/"
             onClick={onClose}

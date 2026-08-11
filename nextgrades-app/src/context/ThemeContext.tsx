@@ -1,21 +1,12 @@
 "use client";
 
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  useCallback,
-  useRef,
-} from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 import {
   type UiTheme,
-  getStoredTheme,
+  APP_THEME,
   setAppTheme,
   THEME_CHANGED_EVENT,
-  THEME_STORAGE_KEY,
 } from "@/lib/preferences";
-import { getClickOrigin, runThemeTransition } from "@/lib/theme/animate-theme-change";
 
 interface ThemeContextType {
   theme: UiTheme;
@@ -29,89 +20,41 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({
   children,
-  initialTheme = "dark",
+  initialTheme = APP_THEME,
 }: {
   children: React.ReactNode;
   initialTheme?: UiTheme;
 }) {
-  const [theme, setThemeState] = useState<UiTheme>(initialTheme);
+  const [theme] = useState<UiTheme>(APP_THEME);
   const [isReady, setIsReady] = useState(false);
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  const transitioningRef = useRef(false);
 
   useEffect(() => {
-    const stored = getStoredTheme();
-    if (stored !== initialTheme) {
-      setThemeState(stored);
-      setAppTheme(stored, { skipRemote: true });
+    if (initialTheme !== APP_THEME) {
+      setAppTheme(APP_THEME, { skipRemote: true });
     }
     setIsReady(true);
 
-    const onThemeChanged = (event: Event) => {
-      const next = (event as CustomEvent<UiTheme>).detail;
-      if (next === "light" || next === "dark") setThemeState(next);
-    };
-
-    const onStorage = (event: StorageEvent) => {
-      if (event.key === THEME_STORAGE_KEY) {
-        setThemeState(getStoredTheme());
-      }
+    const onThemeChanged = () => {
+      /* dark-only — no state updates needed */
     };
 
     window.addEventListener(THEME_CHANGED_EVENT, onThemeChanged);
-    window.addEventListener("storage", onStorage);
     return () => {
       window.removeEventListener(THEME_CHANGED_EVENT, onThemeChanged);
-      window.removeEventListener("storage", onStorage);
     };
   }, [initialTheme]);
 
-  const applyTheme = useCallback((next: UiTheme) => {
-    setThemeState(next);
-    setAppTheme(next);
-  }, []);
-
-  const toggleTheme = useCallback(
-    (event?: React.MouseEvent<HTMLElement>) => {
-      if (transitioningRef.current) return;
-
-      const next: UiTheme = theme === "dark" ? "light" : "dark";
-      const origin = getClickOrigin(event);
-
-      transitioningRef.current = true;
-      setIsTransitioning(true);
-
-      void runThemeTransition(next, origin, () => applyTheme(next)).finally(() => {
-        transitioningRef.current = false;
-        setIsTransitioning(false);
-      });
-    },
-    [applyTheme, theme]
-  );
-
-  const setThemeExplicit = useCallback(
-    (next: UiTheme, event?: React.MouseEvent<HTMLElement>) => {
-      if (next === theme) return;
-      if (transitioningRef.current) {
-        applyTheme(next);
-        return;
-      }
-
-      const origin = getClickOrigin(event);
-      transitioningRef.current = true;
-      setIsTransitioning(true);
-
-      void runThemeTransition(next, origin, () => applyTheme(next)).finally(() => {
-        transitioningRef.current = false;
-        setIsTransitioning(false);
-      });
-    },
-    [applyTheme, theme]
-  );
+  const noop = () => {};
 
   return (
     <ThemeContext.Provider
-      value={{ theme, isReady, isTransitioning, toggleTheme, setTheme: setThemeExplicit }}
+      value={{
+        theme,
+        isReady,
+        isTransitioning: false,
+        toggleTheme: noop,
+        setTheme: noop,
+      }}
     >
       {children}
     </ThemeContext.Provider>

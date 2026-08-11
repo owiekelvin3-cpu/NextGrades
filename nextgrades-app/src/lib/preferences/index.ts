@@ -2,6 +2,9 @@ import { normalizeLanguage, type SupportedLanguage } from "@/lib/i18n/locales";
 
 export type UiTheme = "light" | "dark";
 
+/** Site is dark-only; light mode is no longer offered. */
+export const APP_THEME: UiTheme = "dark";
+
 export const THEME_STORAGE_KEY = "theme";
 export const LANGUAGE_STORAGE_KEY = "i18nextLng";
 /** Set when the user explicitly picks a language (navbar, settings, etc.). */
@@ -20,13 +23,12 @@ function parseTheme(value: string | null | undefined): UiTheme | null {
 }
 
 export function getStoredTheme(): UiTheme {
-  if (typeof window === "undefined") return "dark";
-  return parseTheme(localStorage.getItem(THEME_STORAGE_KEY)) ?? "dark";
+  return APP_THEME;
 }
 
 /** Theme for SSR - read from the `theme` cookie set by preferences-init / persistThemeLocally. */
-export function getThemeFromCookieValue(value: string | null | undefined): UiTheme {
-  return parseTheme(value) ?? "dark";
+export function getThemeFromCookieValue(_value: string | null | undefined): UiTheme {
+  return APP_THEME;
 }
 
 export function persistThemeCookie(theme: UiTheme): void {
@@ -65,10 +67,10 @@ export function migrateLegacyLanguagePreference(): void {
   }
 }
 
-export function applyThemeToDocument(theme: UiTheme): void {
+export function applyThemeToDocument(_theme?: UiTheme): void {
   if (typeof document === "undefined") return;
-  document.documentElement.classList.toggle("dark", theme === "dark");
-  document.documentElement.style.colorScheme = theme;
+  document.documentElement.classList.add("dark");
+  document.documentElement.style.colorScheme = APP_THEME;
 }
 
 /** Adds global transition class during theme switch (see design-tokens.css). */
@@ -89,11 +91,11 @@ export function applyLanguageToDocument(language: SupportedLanguage): void {
   document.documentElement.lang = language;
 }
 
-export function persistThemeLocally(theme: UiTheme): void {
-  localStorage.setItem(THEME_STORAGE_KEY, theme);
-  persistThemeCookie(theme);
-  applyThemeToDocument(theme);
-  window.dispatchEvent(new CustomEvent(THEME_CHANGED_EVENT, { detail: theme }));
+export function persistThemeLocally(_theme?: UiTheme): void {
+  localStorage.setItem(THEME_STORAGE_KEY, APP_THEME);
+  persistThemeCookie(APP_THEME);
+  applyThemeToDocument(APP_THEME);
+  window.dispatchEvent(new CustomEvent(THEME_CHANGED_EVENT, { detail: APP_THEME }));
 }
 
 export function persistLanguageCookie(language: SupportedLanguage): void {
@@ -177,9 +179,9 @@ export async function flushRemotePreferences(): Promise<void> {
   }
 }
 
-export function setAppTheme(theme: UiTheme, options?: { skipRemote?: boolean }): void {
-  persistThemeLocally(theme);
-  if (!options?.skipRemote) void saveRemotePreferences({ theme });
+export function setAppTheme(_theme?: UiTheme, options?: { skipRemote?: boolean }): void {
+  persistThemeLocally(APP_THEME);
+  if (!options?.skipRemote) void saveRemotePreferences({ theme: APP_THEME });
 }
 
 export async function setAppLanguage(
@@ -198,14 +200,11 @@ export async function syncPreferencesAfterAuth(
 ): Promise<void> {
   migrateLegacyLanguagePreference();
 
-  const localTheme = getStoredTheme();
   const localLanguage = getStoredLanguage();
   const userSetLanguage = hasUserSetLanguage();
   const remote = await fetchRemotePreferences();
 
   if (!remote) return;
-
-  const theme = remote.theme ?? localTheme;
 
   let language: SupportedLanguage;
   if (userSetLanguage) {
@@ -216,7 +215,7 @@ export async function syncPreferencesAfterAuth(
     language = localLanguage;
   }
 
-  setAppTheme(theme, { skipRemote: true });
+  setAppTheme(APP_THEME, { skipRemote: true });
   await setAppLanguage(language, changeI18n, { skipRemote: true, userInitiated: false });
 
   if (!userSetLanguage && remote.language) {
@@ -224,7 +223,7 @@ export async function syncPreferencesAfterAuth(
   }
 
   const toSave: Partial<{ theme: UiTheme; language: SupportedLanguage }> = {};
-  if (!remote.theme) toSave.theme = localTheme;
+  if (remote.theme !== APP_THEME) toSave.theme = APP_THEME;
   if (userSetLanguage && language !== remote.language) {
     toSave.language = language;
   } else if (!remote.language && !userSetLanguage) {

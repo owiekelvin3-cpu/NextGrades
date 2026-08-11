@@ -15,7 +15,6 @@ import {
   KeyRound,
   BookOpen,
 } from "lucide-react";
-import { useTheme } from "@/context/ThemeContext";
 import { useToast } from "@/context/ToastContext";
 import { LoadingBlock } from "@/components/dashboard/LoadingBlock";
 import { Button } from "@/components/ui/Button";
@@ -75,7 +74,6 @@ export function StudentSettingsPanel({ role = "student" }: StudentSettingsPanelP
   const { t, i18n } = useTranslation();
   const router = useRouter();
   const toast = useToast();
-  const { theme, setTheme } = useTheme();
   const isTeacher = role === "teacher";
 
   const [tab, setTab] = useState<SettingsTab>("profile");
@@ -397,28 +395,6 @@ export function StudentSettingsPanel({ role = "student" }: StudentSettingsPanelP
                     </option>
                   ))}
                 </SettingsSelect>
-              </SettingsField>
-
-              <SettingsField label={t("settings.theme", { defaultValue: "Appearance" })}>
-                <div className="grid grid-cols-2 gap-3">
-                  {(["light", "dark"] as const).map((mode) => (
-                    <button
-                      key={mode}
-                      type="button"
-                      onClick={() => setTheme(mode)}
-                      className={cn(
-                        "rounded-xl border-2 px-4 py-3 text-sm font-medium transition",
-                        theme === mode
-                          ? "border-[#D4AF37] bg-[#D4AF37]/10 text-[#D4AF37]"
-                          : theme === "dark"
-                            ? "border-white/15 bg-[#0D1B2A] text-gray-300 hover:border-white/25"
-                            : "border-border-default bg-surface-subtle text-text-muted hover:border-border-default"
-                      )}
-                    >
-                      {mode === "light" ? t("settings.lightMode", { defaultValue: "Light" }) : t("settings.darkMode", { defaultValue: "Dark" })}
-                    </button>
-                  ))}
-                </div>
               </SettingsField>
 
               <SettingsField label={t("settings.timezone", { defaultValue: "Timezone" })}>

@@ -938,3 +938,17 @@ html {
 .shadow-gray-300\/30 {
   --tw-shadow-color: rgba(13, 27, 42, 0.2);
 }
+
+@media print {
+  html {
+    color-scheme: dark !important;
+  }
+
+  html,
+  body {
+    background: var(--background) !important;
+    color: var(--foreground) !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}

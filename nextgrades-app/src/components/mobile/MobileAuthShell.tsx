@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { BrandLogo } from "@/components/BrandLogo";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import { mobile } from "@/lib/mobile/tokens";
 import { cn } from "@/lib/utils";
 
@@ -33,7 +32,6 @@ export function MobileAuthShell({
         )}
       >
         <BrandLogo href={backHref} size="lg" />
-        <ThemeToggle />
       </header>
 
       <main
