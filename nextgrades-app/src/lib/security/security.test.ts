@@ -4,6 +4,7 @@ import { canRoleAccessPath, getDashboardPathForRole } from "@/lib/auth/redirect"
 import { checkRateLimit } from "@/lib/security/rate-limit";
 import { isAdminBootstrapAllowed, isProduction, validateProductionEnv } from "@/lib/security/env";
 import { resolveCheckoutStripePrice, isApprovedStripePriceId } from "@/lib/stripe/prices";
+import { getPlanCheckoutSpec } from "@/lib/stripe/plan-catalog";
 import { validateStrongPassword } from "@/lib/auth/password-policy";
 import { hashOtpCode, verifyOtpHash } from "@/lib/auth/otp-crypto";
 import { detectMeetingProvider, validateMeetingLink, lessonHasMeetingLink } from "@/lib/meetings/link";
@@ -125,6 +126,15 @@ describe("stripe price resolution", () => {
   it("rejects unknown client price ids", () => {
     vi.stubEnv("STRIPE_PRICE_GROUP_MONTHLY", "price_server");
     expect(isApprovedStripePriceId("price_unknown")).toBe(false);
+  });
+});
+
+describe("stripe plan catalog", () => {
+  it("charges the same amounts as the public pricing page", () => {
+    expect(getPlanCheckoutSpec("premium").amountCents).toBe(3900);
+    expect(getPlanCheckoutSpec("group").amountCents).toBe(2900);
+    expect(getPlanCheckoutSpec("library").amountCents).toBe(4900);
+    expect(getPlanCheckoutSpec("matura").amountCents).toBe(14900);
   });
 });
 

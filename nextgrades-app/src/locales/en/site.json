@@ -616,49 +616,63 @@
     ],
     "plans": [
       {
-        "id": "resource",
-        "name": "Resource Membership",
-        "description": "Access to all premium learning materials",
-        "monthlyPrice": 29,
-        "yearlyPrice": 249,
+        "id": "library",
+        "name": "Learning Library",
+        "description": "Structured learning materials per subject & semester",
+        "monthlyPrice": 49,
+        "yearlyPrice": 49,
+        "priceLabel": "from €49 per subject & semester",
         "highlighted": false,
         "features": [
-          "All Premium Resources",
-          "Learning Videos",
-          "Worksheets",
-          "Summaries",
-          "Crash Courses"
+          "500+ learning materials",
+          "Curriculum-aligned",
+          "Worksheets & videos",
+          "Available instantly"
         ]
       },
       {
         "id": "group",
-        "name": "Group Tutoring",
-        "description": "Learn in small groups with other students",
-        "monthlyPrice": 99,
-        "yearlyPrice": 949,
-        "highlighted": true,
+        "name": "Small Group Learning",
+        "description": "Small learning groups with a maximum of 3-5 students",
+        "monthlyPrice": 29,
+        "yearlyPrice": 29,
+        "priceLabel": "€29 per hour & student",
+        "highlighted": false,
         "features": [
-          "Everything from Resource Membership",
-          "Weekly Group Classes",
-          "Max 5 Students per Group",
-          "Homework Support",
-          "Progress Tracking"
+          "Structured live sessions",
+          "Max. 3-5 students",
+          "Shared progress",
+          "Motivating atmosphere"
         ]
       },
       {
         "id": "premium",
-        "name": "1:1 Premium Tutoring",
-        "description": "Individual support for maximum success",
-        "monthlyPrice": 249,
-        "yearlyPrice": 2399,
+        "name": "1:1 Premium",
+        "description": "Individual tutoring with personal support",
+        "monthlyPrice": 39,
+        "yearlyPrice": 39,
+        "priceLabel": "€39 per hour",
+        "highlighted": true,
+        "features": [
+          "Personal 1:1 support",
+          "Targeted exam preparation",
+          "Flexible appointments",
+          "Tailored learning plan"
+        ]
+      },
+      {
+        "id": "matura",
+        "name": "Mathematics Graduation Package",
+        "description": "Complete Matura preparation in mathematics",
+        "monthlyPrice": 149,
+        "yearlyPrice": 149,
+        "priceLabel": "€149 one-time",
         "highlighted": false,
         "features": [
-          "Everything from Group Tutoring",
-          "Individual 1:1 Sessions",
-          "Personal Learning Plan",
-          "Flexible Scheduling",
-          "Priority Support",
-          "Parent Reports"
+          "Graduation exam preparation",
+          "Structured live sessions",
+          "Step-by-step explanations",
+          "Premium learning materials"
         ]
       }
     ],

@@ -1,17 +1,15 @@
 import type { PlanKey } from "@/lib/stripe/prices";
+import { getPlanCheckoutSpec, normalizeCheckoutPlanId } from "@/lib/stripe/plan-catalog";
 
 export type CheckoutPlanId = PlanKey | "library" | "matura";
 
 /** Map pricing UI plan id to Stripe plan key. */
 export function toStripePlanId(planId: string): PlanKey {
-  if (planId === "library" || planId === "resource") return "resource";
-  if (planId === "premium") return "premium";
-  if (planId === "matura") return "matura";
-  return "group";
+  return normalizeCheckoutPlanId(planId);
 }
 
 export function isOneTimeCheckoutPlan(planId: string): boolean {
-  return planId === "matura";
+  return getPlanCheckoutSpec(planId).mode === "payment";
 }
 
 export function buildCheckoutQuery(params: {
@@ -34,7 +32,7 @@ export function buildCheckoutQuery(params: {
 
 export const CHECKOUT_PATH = "/checkout";
 
-export function planCheckoutHref(planId: CheckoutPlanId, billing: "monthly" | "yearly" = "monthly"): string {
+export function planCheckoutHref(planId: CheckoutPlanId, billing: "monthly" | "yearly" | "semester" = "monthly"): string {
   const normalized = planId === "library" ? "library" : planId;
   return `${CHECKOUT_PATH}?${buildCheckoutQuery({ plan: normalized, billing })}`;
 }
@@ -56,7 +54,7 @@ export function tutoringCheckoutHref(subjectId: string): string {
 
 export type StartPlanCheckoutInput = {
   planId: string;
-  billing?: "monthly" | "yearly";
+  billing?: "monthly" | "yearly" | "semester";
   subjectSlug?: string;
   grade?: string;
   semester?: string;
@@ -69,7 +67,7 @@ export type StartPlanCheckoutResult =
 
 /** Create a Stripe Checkout session and return the hosted payment URL. */
 export async function startPlanCheckout(input: StartPlanCheckoutInput): Promise<StartPlanCheckoutResult> {
-  const billing = input.billing ?? "monthly";
+  const billing = input.billing ?? getPlanCheckoutSpec(input.planId).accessBilling;
   const uiPlan = input.planId === "resource" ? "library" : input.planId;
   const productType = isOneTimeCheckoutPlan(uiPlan) ? "payment" : "subscription";
 

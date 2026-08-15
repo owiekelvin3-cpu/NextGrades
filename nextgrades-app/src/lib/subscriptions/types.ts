@@ -1,5 +1,5 @@
 export type SubscriptionPlanId = "resource" | "group" | "premium";
-export type SubscriptionBilling = "monthly" | "yearly";
+export type SubscriptionBilling = "monthly" | "yearly" | "semester";
 
 export const SUBSCRIPTION_PLAN_LABELS: Record<SubscriptionPlanId, string> = {
   resource: "Lernbibliothek",
@@ -8,7 +8,9 @@ export const SUBSCRIPTION_PLAN_LABELS: Record<SubscriptionPlanId, string> = {
 };
 
 export function parseBilling(raw?: string | null): SubscriptionBilling {
-  return raw === "yearly" ? "yearly" : "monthly";
+  if (raw === "yearly") return "yearly";
+  if (raw === "semester") return "semester";
+  return "monthly";
 }
 
 export function parsePlanId(raw?: string | null): SubscriptionPlanId {
@@ -26,6 +28,8 @@ export function calculateSubscriptionEndDate(
   const end = new Date(from);
   if (billing === "yearly") {
     end.setUTCFullYear(end.getUTCFullYear() + 1);
+  } else if (billing === "semester") {
+    end.setUTCMonth(end.getUTCMonth() + 6);
   } else {
     end.setUTCMonth(end.getUTCMonth() + 1);
   }
@@ -46,5 +50,5 @@ export function formatPlanLabel(planId?: string | null, billing?: string | null)
   const plan = parsePlanId(planId);
   const bill = parseBilling(billing);
   const planName = SUBSCRIPTION_PLAN_LABELS[plan];
-  return `${planName} (${bill === "yearly" ? "Jährlich" : "Monatlich"})`;
+  return `${planName} (${bill === "yearly" ? "Jährlich" : bill === "semester" ? "Semester" : "Monatlich"})`;
 }

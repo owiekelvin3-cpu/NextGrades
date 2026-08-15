@@ -1,10 +1,9 @@
 import { NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe/client";
-import { resolveCheckoutStripePrice } from "@/lib/stripe/prices";
 import { getAppUrl } from "@/lib/app-url";
 import { enforceRateLimit } from "@/lib/security/rate-limit";
 import { resolveCheckoutCatalogContext } from "@/lib/checkout/catalog-context";
-import { isOneTimeCheckoutPlan, toStripePlanId } from "@/lib/checkout/start-plan-checkout";
+import { getPlanCheckoutSpec, stripeCheckoutLineItem } from "@/lib/stripe/plan-catalog";
 
 export async function POST(request: Request) {
   const limited = await enforceRateLimit(request, { bucket: "stripe:guest-checkout", limit: 10, windowSec: 3600 });
@@ -18,60 +17,29 @@ export async function POST(request: Request) {
     const body = await request.json();
     const {
       planId: rawPlanId,
-      billing,
       subjectSlug,
       grade,
       semester,
       customerEmail,
-      productType: rawProductType,
     } = body as {
       planId?: string;
-      billing?: string;
       subjectSlug?: string;
       grade?: string;
       semester?: string;
       customerEmail?: string;
-      productType?: string;
     };
 
     const uiPlanId = rawPlanId ?? "library";
-    const planId = toStripePlanId(uiPlanId);
-    const oneTime = isOneTimeCheckoutPlan(uiPlanId);
-    const productType = rawProductType ?? (oneTime ? "payment" : "subscription");
-    const resolution = resolveCheckoutStripePrice({ planId, billing });
-
-    if (!resolution.ok) {
-      const message =
-        resolution.reason === "unconfigured"
-          ? "Stripe price not configured for this plan."
-          : "Invalid checkout plan.";
-      const status = resolution.reason === "unconfigured" ? 503 : 400;
-      return NextResponse.json({ error: message }, { status });
-    }
-
+    const spec = getPlanCheckoutSpec(uiPlanId);
     const catalog = await resolveCheckoutCatalogContext({ subjectSlug, grade, semester });
-    const { priceId, plan, billing: resolvedBilling } = resolution;
     const appUrl = getAppUrl();
+    const resolvedBilling = spec.accessBilling;
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
-      line_items: [{ price: priceId, quantity: 1 }],
-      mode: oneTime ? "payment" : "subscription",
+      line_items: [stripeCheckoutLineItem(spec)],
+      mode: spec.mode,
       customer_email: customerEmail?.trim() || undefined,
-      ...(oneTime
-        ? {}
-        : {
-            subscription_data: {
-              metadata: {
-                guestCheckout: "true",
-                planId: plan,
-                billing: resolvedBilling,
-                subjectId: catalog.subjectId ?? "",
-                classId: catalog.classId ?? "",
-                semester: semester ? String(semester) : "",
-              },
-            },
-          }),
       success_url: `${appUrl}/checkout/account-setup?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${appUrl}/checkout?${new URLSearchParams({
         plan: uiPlanId === "resource" ? "library" : uiPlanId,
@@ -82,25 +50,20 @@ export async function POST(request: Request) {
       }).toString()}`,
       metadata: {
         guestCheckout: "true",
-        productType,
-        planId: plan,
+        productType: spec.mode === "payment" ? "payment" : "subscription",
+        planId: spec.plan,
         billing: resolvedBilling,
         subjectSlug: catalog.subjectSlug ?? subjectSlug ?? "",
         subjectId: catalog.subjectId ?? "",
         classId: catalog.classId ?? "",
         semester: semester ? String(semester) : "",
-        courseName: catalog.subjectName ?? subjectSlug ?? "Lernbibliothek",
+        courseName: catalog.subjectName ?? subjectSlug ?? spec.productName,
         subjectName: catalog.subjectName ?? "",
         className: catalog.className ?? "",
         grade: grade ?? "",
-        planName:
-          plan === "resource"
-            ? "Lernbibliothek"
-            : plan === "matura"
-              ? "Mathematik Matura Komplettpaket"
-              : plan,
-        billingCycle: oneTime ? "One-time" : resolvedBilling === "yearly" ? "Yearly" : "Monthly",
-        stripePriceId: priceId,
+        planName: spec.productName,
+        billingCycle: spec.productDescription,
+        stripeAmountCents: String(spec.amountCents),
       },
     });
 
