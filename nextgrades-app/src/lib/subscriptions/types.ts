@@ -1,10 +1,11 @@
-export type SubscriptionPlanId = "resource" | "group" | "premium";
+export type SubscriptionPlanId = "resource" | "group" | "premium" | "matura";
 export type SubscriptionBilling = "monthly" | "yearly" | "semester";
 
 export const SUBSCRIPTION_PLAN_LABELS: Record<SubscriptionPlanId, string> = {
   resource: "Lernbibliothek",
   group: "Lerngruppe",
   premium: "1:1 Premium",
+  matura: "Mathematik Matura Komplettpaket",
 };
 
 export function parseBilling(raw?: string | null): SubscriptionBilling {
@@ -16,7 +17,9 @@ export function parseBilling(raw?: string | null): SubscriptionBilling {
 export function parsePlanId(raw?: string | null): SubscriptionPlanId {
   if (raw === "premium") return "premium";
   if (raw === "group") return "group";
+  if (raw === "matura") return "matura";
   if (raw === "library") return "resource";
+  if (raw === "resource") return "resource";
   return "resource";
 }
 

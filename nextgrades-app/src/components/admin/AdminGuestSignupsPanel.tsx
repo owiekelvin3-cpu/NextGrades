@@ -186,7 +186,9 @@ export function AdminGuestSignupsPanel() {
                   <p className="text-xs text-text-muted">
                     {row.billing === "yearly"
                       ? t("adminGuestSignups.billingYearly")
-                      : t("adminGuestSignups.billingMonthly")}
+                      : row.billing === "semester"
+                        ? t("adminGuestSignups.billingSemester", { defaultValue: "Semester" })
+                        : t("adminGuestSignups.billingMonthly")}
                   </p>
                 </div>
               );

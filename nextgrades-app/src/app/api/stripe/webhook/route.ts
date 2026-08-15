@@ -78,14 +78,15 @@ export async function POST(request: Request) {
           semesterRaw === "1" || semesterRaw === "2" ? parseInt(semesterRaw, 10) : null;
         const amount = (session.amount_total ?? 0) / 100;
         const currency = (session.currency || "eur").toUpperCase();
-        const isSubscription =
-          productType === "subscription" ||
+        const grantsPlanAccess =
           planId === "resource" ||
           planId === "group" ||
-          planId === "premium";
+          planId === "premium" ||
+          planId === "matura" ||
+          productType === "subscription";
 
         if (userId && admin) {
-          if (isSubscription) {
+          if (grantsPlanAccess) {
             const customerId =
               typeof session.customer === "string" ? session.customer : session.customer?.id ?? null;
             const subscriptionId =
@@ -116,7 +117,7 @@ export async function POST(request: Request) {
             }
           }
 
-          if (!isSubscription && subjectId && classId) {
+          if (!grantsPlanAccess && subjectId && classId) {
             const { data: existingEnrollment } = await admin
               .from("enrollments")
               .select("id")
