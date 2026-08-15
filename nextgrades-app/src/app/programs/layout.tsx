@@ -3,8 +3,8 @@ import { generateCmsMetadata } from "@/lib/cms/create-page-metadata";
 
 export async function generateMetadata(): Promise<Metadata> {
   return generateCmsMetadata("programs", {
-    title: "Programs | NextGrades",
-    description: "Explore NextGrades tutoring programs and learning paths.",
+    title: "Programme | NextGrades",
+    description: "Entdecke die NextGrades-Programme: 1:1 Nachhilfe, Lerngruppen, Matura-Paket und Lernbibliothek.",
   });
 }
 

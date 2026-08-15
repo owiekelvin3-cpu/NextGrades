@@ -3,8 +3,8 @@ import { generateCmsMetadata } from "@/lib/cms/create-page-metadata";
 
 export async function generateMetadata(): Promise<Metadata> {
   return generateCmsMetadata("careers", {
-    title: "Careers | NextGrades",
-    description: "Join the NextGrades team - careers and open roles.",
+    title: "Karriere | NextGrades",
+    description: "Werde Teil von NextGrades – offene Stellen und Karriere als TutorIn.",
   });
 }
 

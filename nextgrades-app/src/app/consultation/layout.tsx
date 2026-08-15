@@ -3,8 +3,8 @@ import { generateCmsMetadata } from "@/lib/cms/create-page-metadata";
 
 export async function generateMetadata(): Promise<Metadata> {
   return generateCmsMetadata("consultation", {
-    title: "Free Consultation | NextGrades",
-    description: "Book a free consultation with NextGrades.",
+    title: "Kostenloses Erstgespräch | NextGrades",
+    description: "Buche ein kostenloses Erstgespräch mit NextGrades – unverbindlich und persönlich.",
   });
 }
 

@@ -3,8 +3,8 @@ import { generateCmsMetadata } from "@/lib/cms/create-page-metadata";
 
 export async function generateMetadata(): Promise<Metadata> {
   return generateCmsMetadata("help", {
-    title: "Help & FAQ | NextGrades",
-    description: "Help centre and frequently asked questions about NextGrades.",
+    title: "Hilfe & FAQ | NextGrades",
+    description: "Hilfe und häufige Fragen zu NextGrades – Buchung, Lernbibliothek, Konto und Support.",
   });
 }
 

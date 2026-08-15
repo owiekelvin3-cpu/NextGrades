@@ -3,8 +3,8 @@ import { generateCmsMetadata } from "@/lib/cms/create-page-metadata";
 
 export async function generateMetadata(): Promise<Metadata> {
   return generateCmsMetadata("about", {
-    title: "About | NextGrades",
-    description: "Learn about NextGrades - expert tutoring for students in Austria.",
+    title: "Über uns | NextGrades",
+    description: "Erfahre mehr über NextGrades – Premium-Nachhilfe und Lernbegleitung für SchülerInnen in Österreich.",
   });
 }
 
