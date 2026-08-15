@@ -131,48 +131,45 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Mission / Vision / Values — premium band overlapping hero */}
-        <section className="relative z-20 -mt-8 pb-2 md:-mt-12">
-          <div className={section.container}>
-            <div
-              className="overflow-hidden rounded-2xl border border-white/10 bg-[#0D1B2A]/95 shadow-[0_24px_64px_rgba(0,0,0,0.45)] backdrop-blur-md"
-              data-animate="fadeUp"
-            >
-              <div className="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(260px,320px)]">
-                <div className="grid grid-cols-1 sm:grid-cols-3 lg:contents">
-                  {safePillars.map((pillar, i) => {
-                    const Icon = PILLAR_ICONS[i] ?? Target;
-                    return (
-                      <div
-                        key={pillar.title}
-                        className={cn(
-                          "border-b border-white/10 p-6 sm:p-8 lg:border-b-0",
-                          i < safePillars.length - 1 && "sm:border-r sm:border-white/10 lg:border-r lg:border-white/10"
-                        )}
-                      >
-                        <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-[#D4AF37]/12 ring-1 ring-[#D4AF37]/25">
-                          <Icon className="h-5 w-5 text-[#D4AF37]" strokeWidth={1.75} />
-                        </div>
-                        <p className="text-base font-bold text-white md:text-lg">{pillar.title}</p>
-                        <p className="mt-2 text-sm leading-relaxed text-white/75">{pillar.desc}</p>
-                      </div>
-                    );
-                  })}
-                </div>
+        {featureStripItems.length > 0 && <MockupFeatureStrip items={featureStripItems} columns={4} />}
 
-                <div className="flex flex-col justify-center border-t border-white/10 bg-[#0a1520]/70 p-6 sm:p-8 lg:border-t-0 lg:border-l lg:border-white/10">
-                  <Quote className="mb-3 h-6 w-6 text-[#D4AF37]" aria-hidden />
-                  <p className="text-sm italic leading-relaxed text-white/90 md:text-base">
-                    &ldquo;{t("aboutPage.heroQuote")}&rdquo;
-                  </p>
-                  <p className="mt-3 text-xs font-medium text-[#D4AF37]/85">— {t("aboutPage.heroQuoteAuthor")}</p>
-                </div>
-              </div>
+        {/* Mission / Vision / Values — standalone section, never overlapping the hero */}
+        <section className={cn(section.py, mt.section)}>
+          <div className={section.container}>
+            <SectionHeader
+              eyebrow={t("aboutPage.pillarsEyebrow")}
+              title={t("aboutPage.pillarsTitle")}
+              align="center"
+            />
+            <div className="grid gap-5 md:grid-cols-3 md:gap-8" data-animate="staggerChildren" data-stagger="0.12">
+              {safePillars.map((pillar, i) => {
+                const Icon = PILLAR_ICONS[i] ?? Target;
+                return (
+                  <article key={pillar.title} className={cn(cardClass, "p-7 md:p-8")}>
+                    <p className="mb-5 text-xs font-bold tracking-[0.2em] text-[#D4AF37]">
+                      {String(i + 1).padStart(2, "0")}
+                    </p>
+                    <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-full border border-[#D4AF37]/30 bg-[#D4AF37]/10">
+                      <Icon className="h-6 w-6 text-[#D4AF37]" strokeWidth={1.75} />
+                    </div>
+                    <h3 className={cn("text-xl font-bold", mt.heading)}>{pillar.title}</h3>
+                    <p className={cn("mt-3 text-sm leading-relaxed md:text-base", mt.body)}>{pillar.desc}</p>
+                  </article>
+                );
+              })}
             </div>
+            <blockquote className="mx-auto mt-14 max-w-3xl text-center md:mt-20" data-animate="fadeUp">
+              <div className="mx-auto mb-6 h-px w-16 bg-[#D4AF37]/50" />
+              <Quote className="mx-auto mb-4 h-8 w-8 text-[#D4AF37]" aria-hidden />
+              <p className={cn("text-lg italic leading-relaxed md:text-2xl", mt.heading)}>
+                &ldquo;{t("aboutPage.heroQuote")}&rdquo;
+              </p>
+              <footer className="mt-4 text-sm font-medium text-[#D4AF37]">
+                — {t("aboutPage.heroQuoteAuthor")}
+              </footer>
+            </blockquote>
           </div>
         </section>
-
-        {featureStripItems.length > 0 && <MockupFeatureStrip items={featureStripItems} columns={4} />}
 
         {/* Story */}
         <section className={cn("py-14 lg:py-24", mt.sectionAlt)}>

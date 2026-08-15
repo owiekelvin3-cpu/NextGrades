@@ -30,7 +30,7 @@ export function SectionHeader({
       <h2
         className={cn(
           type.h2,
-          dark ? "text-white" : "text-[#0D1B2A]",
+          dark ? "text-white" : "text-foreground",
           centered && "mx-auto max-w-3xl"
         )}
       >

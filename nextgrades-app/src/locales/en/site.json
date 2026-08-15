@@ -11,6 +11,8 @@
   },
   "aboutPage": {
     "heroEyebrow": "ABOUT NEXTGRADES",
+    "pillarsEyebrow": "OUR FOUNDATION",
+    "pillarsTitle": "Mission, vision, and values",
     "heroQuote": "Education is not the filling of a bucket, but the lighting of a fire.",
     "heroQuoteAuthor": "William Butler Yeats",
     "heroPillars": [
