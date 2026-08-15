@@ -13,7 +13,6 @@ import {
   FileText,
   ChevronRight,
   ChevronDown,
-  Eye,
   Mail,
   CheckCircle2,
   Headphones,
@@ -251,16 +250,12 @@ export function HelpCenterPage() {
                             aria-expanded={isOpen}
                           >
                             <span className="font-medium text-[var(--foreground)]">{item.title}</span>
-                            <span className="flex shrink-0 items-center gap-1 text-xs text-[var(--text-muted)]">
-                              <Eye className="h-3.5 w-3.5" />
-                              {item.views}
-                              <ChevronDown
-                                className={cn(
-                                  "h-3.5 w-3.5 transition-transform",
-                                  isOpen && "rotate-180"
-                                )}
-                              />
-                            </span>
+                            <ChevronDown
+                              className={cn(
+                                "mt-0.5 h-4 w-4 shrink-0 text-[var(--text-muted)] transition-transform",
+                                isOpen && "rotate-180"
+                              )}
+                            />
                           </button>
                           {isOpen && (
                             <div className="border-t border-[var(--border-default)] px-3 pb-3 pt-2 text-xs leading-relaxed text-[var(--text-muted)]">
