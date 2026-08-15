@@ -37,11 +37,10 @@ import { cn } from "@/lib/utils";
 import { consultationCheckoutHref } from "@/lib/checkout/catalog-context";
 import { supabase } from "@/lib/supabase/client";
 import { startPlanCheckout } from "@/lib/checkout/start-plan-checkout";
+import { PROGRAM_PLAN_IDS, planActionI18nKey } from "@/lib/checkout/plan-cta";
 import { useToast } from "@/context/ToastContext";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-
-const PROGRAM_PLAN_IDS = ["premium", "group", "matura", "library"] as const;
 
 const statIcons = [UserRound, GraduationCap, FileText, Star];
 const heroFeatureIcons = [Hexagon, BookOpen, Sparkles];
@@ -238,13 +237,17 @@ export default function ProgramsPage() {
                         ))}
                       </ul>
                       <Button
-                        variant={featured ? "gold" : "dark"}
+                        variant="gold"
                         size="md"
                         className="w-full rounded-lg"
                         disabled={loadingProgram === index}
                         onClick={() => void handleProgramSelect(index)}
                       >
-                        {loadingProgram === index ? t("pricingPage.loading", { defaultValue: "Loading..." }) : t("programsPage.ctaButton")}{" "}
+                        {loadingProgram === index
+                          ? t("pricingPage.loading", { defaultValue: "Loading..." })
+                          : t(planActionI18nKey(PROGRAM_PLAN_IDS[index] ?? "premium"), {
+                              defaultValue: t("pricing.getStarted"),
+                            })}{" "}
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </div>

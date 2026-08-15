@@ -88,7 +88,7 @@ export function PricingPlanCard({
         </ul>
 
         <Button
-          variant={plan.highlighted ? "gold" : "dark"}
+          variant="gold"
           size="md"
           className="mt-auto w-full rounded-lg"
           disabled={isLoading}

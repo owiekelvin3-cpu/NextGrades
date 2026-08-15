@@ -200,7 +200,6 @@
     "sectionDesc": "Ob Einzelnachhilfe, Lernen in kleinen Gruppen oder unser Signature-Programm – wir haben die passende Lösung.",
     "mostPopular": "Beliebtestes Programm",
     "learnMore": "Mehr erfahren",
-    "ctaButton": "Premium buchen",
     "items": [
       {
         "type": "1:1",
@@ -611,7 +610,7 @@
         "monthlyPrice": 39,
         "yearlyPrice": 39,
         "priceLabel": "39 € pro Stunde",
-        "highlighted": true,
+        "highlighted": false,
         "features": [
           "Persönliche 1:1 Betreuung",
           "Gezielte Prüfungsvorbereitung",
@@ -626,7 +625,7 @@
         "monthlyPrice": 149,
         "yearlyPrice": 149,
         "priceLabel": "149 € einmalig",
-        "highlighted": false,
+        "highlighted": true,
         "features": [
           "Matura-Prüfungsvorbereitung",
           "Schritt-für-Schritt-Erklärungen",

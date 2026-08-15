@@ -71,7 +71,7 @@ export function ProgrammeOfferCard({
           ))}
         </ul>
         <Button
-          variant={featured ? "gold" : "dark"}
+          variant="gold"
           size="md"
           href={onSelect ? undefined : href}
           disabled={loading}

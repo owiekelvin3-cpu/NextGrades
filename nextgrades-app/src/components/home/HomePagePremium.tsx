@@ -31,11 +31,11 @@ import { CTABand } from "@/components/premium/CTABand";
 import { section } from "@/lib/premium/tokens";
 import { supabase } from "@/lib/supabase/client";
 import { startPlanCheckout } from "@/lib/checkout/start-plan-checkout";
+import { PROGRAM_PLAN_IDS, planActionI18nKey } from "@/lib/checkout/plan-cta";
 import { useToast } from "@/context/ToastContext";
 
 const STAT_ICONS = [UserRound, GraduationCap, FileText, Star];
 const FEATURE_ICONS = [Users, Users, Monitor, ListChecks, Clock];
-const HOME_PROGRAM_PLAN_IDS = ["premium", "group", "matura", "library"] as const;
 
 type ProgramItem = {
   title: string;
@@ -111,7 +111,7 @@ export function HomePagePremium() {
   }));
 
   const handleProgramSelect = async (index: number) => {
-    const planId = HOME_PROGRAM_PLAN_IDS[index] ?? "group";
+    const planId = PROGRAM_PLAN_IDS[index] ?? "group";
     setLoadingProgram(index);
     try {
       const {
@@ -170,7 +170,9 @@ export function HomePagePremium() {
                 ctaLabel={
                   loadingProgram === index
                     ? t("pricingPage.loading", { defaultValue: "Loading..." })
-                    : t("home.programsSection.cta")
+                    : t(planActionI18nKey(PROGRAM_PLAN_IDS[index] ?? "premium"), {
+                        defaultValue: t("home.programsSection.cta"),
+                      })
                 }
                 loading={loadingProgram === index}
                 onSelect={() => void handleProgramSelect(index)}

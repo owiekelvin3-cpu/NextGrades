@@ -238,7 +238,6 @@
     "sectionDesc": "Whether individual tutoring, learning together in small groups, or our signature program – we have the right solution for you.",
     "mostPopular": "Most popular program",
     "learnMore": "Learn more",
-    "ctaButton": "Book Premium",
     "items": [
       {
         "type": "1:1",
@@ -652,7 +651,7 @@
         "monthlyPrice": 39,
         "yearlyPrice": 39,
         "priceLabel": "€39 per hour",
-        "highlighted": true,
+        "highlighted": false,
         "features": [
           "Personal 1:1 support",
           "Targeted exam preparation",
@@ -667,7 +666,7 @@
         "monthlyPrice": 149,
         "yearlyPrice": 149,
         "priceLabel": "€149 one-time",
-        "highlighted": false,
+        "highlighted": true,
         "features": [
           "Graduation exam preparation",
           "Step-by-step explanations",
@@ -675,6 +674,13 @@
         ]
       }
     ],
+    "planActions": {
+      "library": "Book now",
+      "group": "Book group",
+      "premium": "Book Premium",
+      "matura": "Book Matura package",
+      "resource": "Book now"
+    },
     "faqs": [
       {
         "question": "Can I switch plans at any time?",
