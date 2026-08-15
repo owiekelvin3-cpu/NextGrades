@@ -24,7 +24,6 @@ import { useMarketingTheme } from "@/lib/marketing-theme";
 import { MarketingImage } from "@/components/marketing/MarketingImage";
 import { MarketingHeroBlend } from "@/components/marketing/MarketingHeroBlend";
 import { MarketingHeroMobileImage } from "@/components/marketing/MarketingHeroMobileImage";
-import { MockupFeatureStrip } from "@/components/mockup/MockupFeatureStrip";
 import { SectionHeader } from "@/components/premium/SectionHeader";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -69,11 +68,6 @@ export default function AboutPage() {
   const safePromise = Array.isArray(promiseItems) ? promiseItems : [];
   const safeStats = Array.isArray(stats) ? stats : [];
   const safeTags = Array.isArray(communityTags) ? communityTags : [];
-
-  const featureStripItems = safeFeatures.map((feat, i) => ({
-    ...feat,
-    icon: FEATURE_ICONS[i] ?? GraduationCap,
-  }));
 
   const titleHighlight = t("about.heroTitleHighlight");
   const titleTail = t("about.heroTitle2");
@@ -131,43 +125,56 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {featureStripItems.length > 0 && <MockupFeatureStrip items={featureStripItems} columns={4} />}
-
-        {/* Mission / Vision / Values — standalone section, never overlapping the hero */}
-        <section className={cn(section.py, mt.section)}>
-          <div className={section.container}>
-            <SectionHeader
-              eyebrow={t("aboutPage.pillarsEyebrow")}
-              title={t("aboutPage.pillarsTitle")}
-              align="center"
-            />
-            <div className="grid gap-5 md:grid-cols-3 md:gap-8" data-animate="staggerChildren" data-stagger="0.12">
-              {safePillars.map((pillar, i) => {
-                const Icon = PILLAR_ICONS[i] ?? Target;
+        {/* Compact first-section band: Mission / Vision / Werte + quote + four points */}
+        <section className="border-t border-white/10 bg-[#0a1520] text-white">
+          <div className={cn(section.container, "py-8 md:py-10")}>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2" data-animate="staggerChildren" data-stagger="0.08">
+              {([0, 2, 1] as const).map((pillarIndex) => {
+                const pillar = safePillars[pillarIndex];
+                if (!pillar) return null;
+                const Icon = PILLAR_ICONS[pillarIndex] ?? Target;
                 return (
-                  <article key={pillar.title} className={cn(cardClass, "p-7 md:p-8")}>
-                    <p className="mb-5 text-xs font-bold tracking-[0.2em] text-[#D4AF37]">
-                      {String(i + 1).padStart(2, "0")}
-                    </p>
-                    <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-full border border-[#D4AF37]/30 bg-[#D4AF37]/10">
-                      <Icon className="h-6 w-6 text-[#D4AF37]" strokeWidth={1.75} />
-                    </div>
-                    <h3 className={cn("text-xl font-bold", mt.heading)}>{pillar.title}</h3>
-                    <p className={cn("mt-3 text-sm leading-relaxed md:text-base", mt.body)}>{pillar.desc}</p>
-                  </article>
+                  <div
+                    key={pillar.title}
+                    className="rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm"
+                  >
+                    <Icon className="mb-2 h-5 w-5 text-[#D4AF37]" />
+                    <p className="text-sm font-bold">{pillar.title}</p>
+                    <p className="mt-1 text-xs leading-relaxed text-on-navy-subtle">{pillar.desc}</p>
+                  </div>
                 );
               })}
+              <blockquote className="rounded-xl border border-white/10 bg-[#0D1B2A]/90 p-4 shadow-xl backdrop-blur-md">
+                <Quote className="mb-2 h-5 w-5 text-[#D4AF37]" aria-hidden />
+                <p className="text-sm italic leading-relaxed text-on-navy-muted">
+                  &ldquo;{t("aboutPage.heroQuote")}&rdquo;
+                </p>
+                <footer className="mt-2 text-xs text-on-navy-faint">— {t("aboutPage.heroQuoteAuthor")}</footer>
+              </blockquote>
             </div>
-            <blockquote className="mx-auto mt-14 max-w-3xl text-center md:mt-20" data-animate="fadeUp">
-              <div className="mx-auto mb-6 h-px w-16 bg-[#D4AF37]/50" />
-              <Quote className="mx-auto mb-4 h-8 w-8 text-[#D4AF37]" aria-hidden />
-              <p className={cn("text-lg italic leading-relaxed md:text-2xl", mt.heading)}>
-                &ldquo;{t("aboutPage.heroQuote")}&rdquo;
-              </p>
-              <footer className="mt-4 text-sm font-medium text-[#D4AF37]">
-                — {t("aboutPage.heroQuoteAuthor")}
-              </footer>
-            </blockquote>
+
+            {safeFeatures.length > 0 && (
+              <div
+                className="mt-6 grid grid-cols-1 gap-3 border-t border-white/10 pt-6 sm:grid-cols-2 lg:grid-cols-4 md:gap-4"
+                data-animate="staggerChildren"
+                data-stagger="0.08"
+              >
+                {safeFeatures.map((feat, i) => {
+                  const Icon = FEATURE_ICONS[i] ?? GraduationCap;
+                  return (
+                    <div key={feat.title} className="flex items-start gap-3">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#D4AF37]/15">
+                        <Icon className="h-5 w-5 text-[#D4AF37]" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold">{feat.title}</p>
+                        <p className="mt-0.5 text-xs text-on-navy-subtle">{feat.desc}</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </section>
 
