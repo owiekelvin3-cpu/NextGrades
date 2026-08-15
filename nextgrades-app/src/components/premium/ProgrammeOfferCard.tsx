@@ -16,6 +16,8 @@ type ProgrammeOfferCardProps = {
   badge?: string;
   featured?: boolean;
   ctaLabel: string;
+  loading?: boolean;
+  onSelect?: () => void;
 };
 
 export function ProgrammeOfferCard({
@@ -23,11 +25,13 @@ export function ProgrammeOfferCard({
   features,
   image,
   fallbackImage,
-  href = "/programs",
+  href,
   price,
   badge,
   featured = false,
   ctaLabel,
+  loading = false,
+  onSelect,
 }: ProgrammeOfferCardProps) {
   return (
     <article
@@ -69,7 +73,9 @@ export function ProgrammeOfferCard({
         <Button
           variant={featured ? "gold" : "dark"}
           size="md"
-          href={href}
+          href={onSelect ? undefined : href}
+          disabled={loading}
+          onClick={onSelect}
           className="mt-6 w-full rounded-xl py-4 text-base font-semibold md:mt-8 md:py-3 md:text-sm"
         >
           {ctaLabel}

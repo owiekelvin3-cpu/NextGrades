@@ -1,7 +1,8 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import {
   GraduationCap,
@@ -28,9 +29,13 @@ import { PlatformShowcase } from "@/components/premium/PlatformShowcase";
 import { TestimonialPremium, type TestimonialData } from "@/components/premium/TestimonialPremium";
 import { CTABand } from "@/components/premium/CTABand";
 import { section } from "@/lib/premium/tokens";
+import { supabase } from "@/lib/supabase/client";
+import { startPlanCheckout } from "@/lib/checkout/start-plan-checkout";
+import { useToast } from "@/context/ToastContext";
 
 const STAT_ICONS = [UserRound, GraduationCap, FileText, Star];
 const FEATURE_ICONS = [Users, Users, Monitor, ListChecks, Clock];
+const HOME_PROGRAM_PLAN_IDS = ["premium", "group", "matura", "library"] as const;
 
 type ProgramItem = {
   title: string;
@@ -40,6 +45,9 @@ type ProgramItem = {
 
 export function HomePagePremium() {
   const { t, i18n } = useTranslation();
+  const toast = useToast();
+  const router = useRouter();
+  const [loadingProgram, setLoadingProgram] = useState<number | null>(null);
   const { getImage } = useCmsImages();
   const { testimonials: cmsTestimonials } = useHomeCms();
 
@@ -102,6 +110,31 @@ export function HomePagePremium() {
     icon: STAT_ICONS[i] ?? Star,
   }));
 
+  const handleProgramSelect = async (index: number) => {
+    const planId = HOME_PROGRAM_PLAN_IDS[index] ?? "group";
+    setLoadingProgram(index);
+    try {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      const result = await startPlanCheckout({
+        planId,
+        billing: "monthly",
+        isLoggedIn: Boolean(session?.user),
+      });
+      if (result.ok) {
+        globalThis.location.assign(result.url);
+        return;
+      }
+      toast.error(result.error);
+      router.push(result.fallbackHref);
+    } catch {
+      toast.error(t("misc.errorGeneric", { defaultValue: "Something went wrong. Please try again." }));
+    } finally {
+      setLoadingProgram(null);
+    }
+  };
+
   return (
     <main className="flex-1 overflow-x-hidden bg-background">
       <HomeHero
@@ -131,11 +164,16 @@ export function HomePagePremium() {
                 features={program.features}
                 image={programCardImages[index] ?? programCardImages[0]}
                 fallbackImage={PROGRAM_CARD_IMAGES[index] ?? PROGRAM_CARD_IMAGES[0]}
-                href="/pricing"
                 price={program.price}
                 badge={index === 2 ? t("home.mostPopular") : undefined}
                 featured={index === 2}
-                ctaLabel={t("home.programsSection.cta")}
+                ctaLabel={
+                  loadingProgram === index
+                    ? t("pricingPage.loading", { defaultValue: "Loading..." })
+                    : t("home.programsSection.cta")
+                }
+                loading={loadingProgram === index}
+                onSelect={() => void handleProgramSelect(index)}
               />
             ))}
           </div>
