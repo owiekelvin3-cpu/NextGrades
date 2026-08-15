@@ -33,25 +33,6 @@ export function isVideoResource(resource: {
   return false;
 }
 
-const VIDEO_COURSE_CONTENT_TYPES = new Set([
-  "video_course",
-  "full_course",
-  "mini_course",
-]);
-
-export function isVideoCourseResource(resource: {
-  content_type?: string | null;
-  type?: string | null;
-  file_name?: string | null;
-  mime_type?: string | null;
-}): boolean {
-  const ct = (resource.content_type || "").toLowerCase();
-  if (VIDEO_COURSE_CONTENT_TYPES.has(ct)) return true;
-  if (isVideoResource(resource) && ct.includes("course")) return true;
-  if (isVideoResource(resource)) return true;
-  return false;
-}
-
 export function resourceWatchPath(id: string): string {
   return `/resources/watch/${id}`;
 }

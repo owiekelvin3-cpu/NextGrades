@@ -15,8 +15,8 @@ import { SectionHeader } from "@/components/premium/SectionHeader";
 import { Button } from "@/components/ui/Button";
 import { BibliothekFilterSidebar } from "@/components/resources/BibliothekFilterSidebar";
 import { isPremiumResource } from "@/lib/resources/ui-config";
+import { isVideoResource } from "@/lib/resources/video";
 import { section } from "@/lib/premium/tokens";
-import { VideoCoursesSection } from "@/components/resources/VideoCoursesSection";
 import { cn } from "@/lib/utils";
 
 const FEATURE_ICONS = [BookOpen, RefreshCw, GraduationCap, ShieldCheck] as const;
@@ -47,10 +47,14 @@ export function ResourcesBibliothekExperience({ access }: Props) {
       catalog.materialTypes.length > 0
   );
   const showSubjectBrowse = !hasResourceFilters;
-  const useFeaturedRow = !hasResourceFilters && catalog.resources.length > 4;
-  const featured = useFeaturedRow ? catalog.resources.slice(0, 4) : [];
-  const gridItems = useFeaturedRow ? catalog.resources.slice(4) : catalog.resources;
-  const hasMaterials = catalog.resources.length > 0;
+  const listingResources = useMemo(() => {
+    if (hasResourceFilters) return catalog.resources;
+    return catalog.resources.filter((resource) => !isVideoResource(resource));
+  }, [catalog.resources, hasResourceFilters]);
+  const useFeaturedRow = !hasResourceFilters && listingResources.length > 4;
+  const featured = useFeaturedRow ? listingResources.slice(0, 4) : [];
+  const gridItems = useFeaturedRow ? listingResources.slice(4) : listingResources;
+  const hasMaterials = listingResources.length > 0;
 
   const features = [
     { title: t("resources.features.feature1Title"), desc: t("resources.features.feature1Desc") },
@@ -121,13 +125,6 @@ export function ResourcesBibliothekExperience({ access }: Props) {
             <LoadingBlock />
           ) : (
             <>
-              <VideoCoursesSection
-                resources={catalog.resources}
-                subjects={catalog.subjects}
-                libraryLocked={locked}
-                onOpen={(r) => void catalog.openResource(r)}
-              />
-
               {hasMaterials ? (
                 <>
               {!locked && featured.length > 0 && (
