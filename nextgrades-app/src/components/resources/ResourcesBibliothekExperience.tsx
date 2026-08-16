@@ -9,8 +9,6 @@ import { mergeMarketingSubjectsWithCatalog } from "@/lib/catalog/merge-marketing
 import { SubjectBrowseGrid } from "@/components/resources/SubjectBrowseGrid";
 import { ResourceHubCard } from "@/components/resources/shared/ResourceCards";
 import { LibraryEmptyState } from "@/components/resources/LibraryEmptyState";
-import { LoadingBlock } from "@/components/dashboard/LoadingBlock";
-import { MobileResourceCard } from "@/components/mobile/MobileResourceCard";
 import { Button } from "@/components/ui/Button";
 import { BibliothekFilterSidebar } from "@/components/resources/BibliothekFilterSidebar";
 import { isPremiumResource } from "@/lib/resources/ui-config";
@@ -68,7 +66,7 @@ export function ResourcesBibliothekExperience({ access }: Props) {
     <>
       <section className="bg-[#0D1B2A] py-10 text-white md:py-14">
         <div className={section.container}>
-          <div className="grid gap-8 lg:grid-cols-[minmax(0,280px)_minmax(0,1fr)] lg:gap-10 xl:gap-12">
+          <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,280px)_minmax(0,1fr)] lg:gap-10 xl:gap-12">
             <BibliothekFilterSidebar
               classes={catalog.classes}
               classLevel={catalog.classLevel}
@@ -80,15 +78,17 @@ export function ResourcesBibliothekExperience({ access }: Props) {
               onAccessChange={catalog.setAccessFilter}
               onMaterialTypesChange={catalog.setMaterialTypes}
               onReset={catalog.resetFilters}
-              className="lg:sticky lg:top-24 lg:self-start"
+              className="lg:sticky lg:top-24"
             />
 
-            <div id="faecher-entdecken" className="min-w-0 space-y-8">
-              <p className="max-w-3xl text-base leading-relaxed text-on-navy-muted sm:text-lg lg:text-xl">
-                {t("resources.gridIntro")}
-              </p>
+            <div id="faecher-entdecken" className="flex min-w-0 flex-col gap-5 self-start">
+              {!hasResourceFilters && (
+                <p className="max-w-3xl text-base leading-relaxed text-on-navy-muted sm:text-lg">
+                  {t("resources.gridIntro")}
+                </p>
+              )}
 
-              <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 shadow-sm backdrop-blur-sm md:p-6">
+              <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 shadow-sm backdrop-blur-sm md:p-5">
                 <label className="sr-only" htmlFor="bibliothek-search">
                   {t("resources.searchPlaceholder")}
                 </label>
@@ -103,54 +103,34 @@ export function ResourcesBibliothekExperience({ access }: Props) {
                     className="w-full rounded-xl border border-white/15 bg-white/10 py-3.5 pl-12 pr-4 text-sm text-white placeholder:text-white/40 outline-none transition focus:border-[#D4AF37]/50 focus:ring-2 focus:ring-[#D4AF37]/25"
                   />
                 </div>
-              </div>
 
-              {catalog.loading ? (
-                <LoadingBlock />
-              ) : hasMaterials ? (
-                <div>
-                  <h2 className="mb-2 text-xl font-bold tracking-tight text-white sm:text-2xl">
-                    {hasResourceFilters
-                      ? t("resources.gridTitle")
-                      : t("resources.allMaterialsTitle", { defaultValue: "Alle Materialien" })}
-                  </h2>
-                  {catalog.search ? (
-                    <p className="mb-5 text-sm text-on-navy-muted">
-                      {t("resources.searchResultsFor", { query: catalog.search })}
-                    </p>
-                  ) : (
-                    <p className="mb-5 text-sm text-on-navy-muted">
-                      {t("resources.allMaterialsSubtitle", {
-                        defaultValue: "Browse everything currently available in the Library.",
-                      })}
-                    </p>
-                  )}
-                  <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                    {listingResources.map((r) => (
-                      <div key={r.id} className="hidden h-full sm:block">
-                        <ResourceHubCard
-                          resource={r}
-                          variant={isPremiumResource(r) ? "premium" : "free"}
-                          subjectSlug={catalog.subjectSlug}
-                          onOpen={() => openResource(r)}
-                        />
+                <div id="bibliothek-results" className="mt-4">
+                  {catalog.loading ? (
+                    <p className="py-6 text-sm text-white/50">{t("resources.loading", { defaultValue: "Laden…" })}</p>
+                  ) : hasMaterials ? (
+                    <>
+                      <p className="mb-3 text-sm text-on-navy-muted">
+                        {catalog.search.trim()
+                          ? t("resources.searchResultsFor", { query: catalog.search })
+                          : t("resources.allMaterialsTitle", { defaultValue: "Alle Materialien" })}
+                      </p>
+                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                        {listingResources.map((r) => (
+                          <ResourceHubCard
+                            key={r.id}
+                            resource={r}
+                            variant={isPremiumResource(r) ? "premium" : "free"}
+                            subjectSlug={catalog.subjectSlug}
+                            onOpen={() => openResource(r)}
+                          />
+                        ))}
                       </div>
-                    ))}
-                    {listingResources.map((r) => (
-                      <div key={`m-${r.id}`} className="h-full sm:hidden">
-                        <MobileResourceCard
-                          resource={r}
-                          variant={isPremiumResource(r) ? "premium" : "free"}
-                          subjectSlug={catalog.subjectSlug}
-                          onOpen={() => openResource(r)}
-                        />
-                      </div>
-                    ))}
-                  </div>
+                    </>
+                  ) : hasResourceFilters ? (
+                    <LibraryEmptyState searching={Boolean(catalog.search.trim())} query={catalog.search} />
+                  ) : null}
                 </div>
-              ) : hasResourceFilters ? (
-                <LibraryEmptyState searching={Boolean(catalog.search.trim())} query={catalog.search} />
-              ) : null}
+              </div>
 
               {showSubjectBrowse && bibliothekSubjects.length > 0 && (
                 <SubjectBrowseGrid
