@@ -43,7 +43,6 @@ function ResourcesUpgradeExperienceInner() {
   const searchParams = useSearchParams();
   const subjectParam = searchParams.get("subject")?.trim() ?? "";
 
-  const [yearly, setYearly] = useState(false);
   const localizedPlans = useLocalizedContent<LocalizedPlan[]>("pricingPage.plans");
   const plans = Array.isArray(localizedPlans) ? localizedPlans : [];
   const marketingSubjectsRaw = useLocalizedContent<MarketingSubjectItem[]>("subjectsPage.items");
@@ -139,7 +138,7 @@ function ResourcesUpgradeExperienceInner() {
     const checkoutPlan = planId === "library" ? "library" : planId;
     const q = buildCheckoutQuery({
       plan: checkoutPlan,
-      billing: yearly ? "yearly" : "monthly",
+      billing: "monthly",
       subject,
       grade,
       semester,
@@ -285,31 +284,11 @@ function ResourcesUpgradeExperienceInner() {
 
           <div className="mb-8 text-center">
             <h2 className="mb-4 text-2xl font-bold text-[#0D1B2A]">{t("resources.upgrade.chooseAccess")}</h2>
-            <div className="inline-flex rounded-full border border-gray-200 bg-white p-1">
-              <button
-                type="button"
-                onClick={() => setYearly(false)}
-                className={`rounded-full px-5 py-2 text-sm font-semibold transition ${
-                  !yearly ? "bg-[#D4AF37] text-[#0D1B2A]" : "text-gray-500"
-                }`}
-              >
-                {t("pricing.monthly")}
-              </button>
-              <button
-                type="button"
-                onClick={() => setYearly(true)}
-                className={`rounded-full px-5 py-2 text-sm font-semibold transition ${
-                  yearly ? "bg-[#D4AF37] text-[#0D1B2A]" : "text-gray-500"
-                }`}
-              >
-                {t("pricing.yearly")} <span className="text-xs opacity-90">{t("pricing.yearlyDiscount")}</span>
-              </button>
-            </div>
           </div>
 
           <div className="mb-12 grid gap-6 md:grid-cols-3">
             {plans.map((plan) => {
-              const price = yearly ? plan.yearlyPrice : plan.monthlyPrice;
+              const price = plan.monthlyPrice;
               return (
                 <div
                   key={plan.id}
@@ -328,7 +307,7 @@ function ResourcesUpgradeExperienceInner() {
                     €{price}
                     <span className="text-sm font-normal text-gray-500">
                       {" "}
-                      / {yearly ? t("pricing.perYear") : t("pricing.perMonth")}
+                      / {t("pricing.perMonth")}
                     </span>
                   </p>
                   <p className="mt-1 text-xs text-gray-400">{t("resources.upgrade.cancelAnytime")}</p>
