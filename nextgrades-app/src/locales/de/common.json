@@ -808,18 +808,18 @@
       "accessSummary": "Du erhältst Zugriff auf alle Inhalte für <strong>{{subject}}</strong> – {{grade}}, Semester {{semester}}.",
       "accessSummaryAllSemesters": "Du erhältst Zugriff auf alle Inhalte für <strong>{{subject}}</strong> – {{grade}}, alle Semester.",
       "chooseAccess": "Wähle deinen Zugang",
-      "cancelAnytime": "Jederzeit kündbar",
+      "cancelAnytime": "Einmalzahlung",
       "trust1Title": "14 Tage Geld-zurück",
       "trust1Desc": "Risikofrei testen",
       "trust2Title": "Sicher & zuverlässig",
       "trust2Desc": "Verschlüsselte Zahlungen",
-      "trust3Title": "Jederzeit kündbar",
-      "trust3Desc": "Keine langfristige Bindung",
+      "trust3Title": "Einmalzahlung",
+      "trust3Desc": "Kein monatliches Abo",
       "faqTitle": "Häufig gestellte Fragen",
       "faqs": [
         {
-          "question": "Kann ich jederzeit kündigen?",
-          "answer": "Ja - alle Tarife sind monatlich kündbar."
+          "question": "Ist das ein monatliches Abo?",
+          "answer": "Nein. Du zahlst einmalig für den gewählten Zugang – ohne monatliche Verlängerung."
         },
         {
           "question": "Welche Zahlungsmethoden gibt es?",
@@ -934,6 +934,7 @@
     "mostPopular": "Am beliebtesten",
     "choosePlan": "Tarife im Überblick",
     "getStarted": "Loslegen",
+    "oneTime": "Einmalzahlung",
     "faqTitle": "Häufig gestellte Fragen",
     "faqHeading": "Häufig gestellte Fragen.",
     "saveYearly": "2 Monate sparen gegenüber monatlich",

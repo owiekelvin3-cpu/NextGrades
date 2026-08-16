@@ -1734,7 +1734,7 @@
     "saveFailed": "Could not save settings"
   },
   "checkout": {
-    "title": "Complete your subscription",
+    "title": "Complete your purchase",
     "backToPricing": "Back to pricing",
     "secure": "Secure checkout",
     "cards": "Secure card payment via Stripe",
@@ -1742,7 +1742,7 @@
     "secureNote": "Payments are processed securely via Stripe.",
     "failed": "Checkout failed",
     "successTitle": "Welcome to NextGrades!",
-    "successDesc": "Your subscription is active. You can start learning right away.",
+    "successDesc": "Your access is active. You can start learning right away.",
     "successHint": "Check your email for a receipt and next steps.",
     "goDashboard": "Go to dashboard",
     "browseResources": "Browse resources",

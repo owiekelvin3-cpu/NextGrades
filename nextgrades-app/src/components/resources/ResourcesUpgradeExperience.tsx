@@ -8,6 +8,7 @@ import { CheckCircle2, ChevronRight, Headphones, Shield, Clock, Lock, BarChart3,
 import { useTranslation } from "react-i18next";
 import { useLocalizedContent } from "@/hooks/useLocalizedContent";
 import { buildCheckoutQuery } from "@/lib/checkout/catalog-context";
+import { planActionI18nKey } from "@/lib/checkout/plan-cta";
 import { getResourcesSubjectImage } from "@/lib/resources/images";
 import {
   mergeMarketingSubjectsWithCatalog,
@@ -28,6 +29,7 @@ type LocalizedPlan = {
   description: string;
   monthlyPrice: number;
   yearlyPrice: number;
+  priceLabel?: string;
   highlighted: boolean;
   features: string[];
 };
@@ -286,9 +288,8 @@ function ResourcesUpgradeExperienceInner() {
             <h2 className="mb-4 text-2xl font-bold text-[#0D1B2A]">{t("resources.upgrade.chooseAccess")}</h2>
           </div>
 
-          <div className="mb-12 grid gap-6 md:grid-cols-3">
+          <div className="mb-12 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
             {plans.map((plan) => {
-              const price = plan.monthlyPrice;
               return (
                 <div
                   key={plan.id}
@@ -303,14 +304,9 @@ function ResourcesUpgradeExperienceInner() {
                   )}
                   <h3 className="text-lg font-bold text-[#0D1B2A]">{plan.name}</h3>
                   <p className="mt-1 text-sm text-gray-500">{plan.description}</p>
-                  <p className="mt-4 text-3xl font-bold text-[#0D1B2A]">
-                    €{price}
-                    <span className="text-sm font-normal text-gray-500">
-                      {" "}
-                      / {t("pricing.perMonth")}
-                    </span>
+                  <p className="mt-4 text-2xl font-bold text-[#0D1B2A]">
+                    {plan.priceLabel ?? `€${plan.monthlyPrice}`}
                   </p>
-                  <p className="mt-1 text-xs text-gray-400">{t("resources.upgrade.cancelAnytime")}</p>
                   <ul className="mt-6 flex-1 space-y-2">
                     {plan.features.map((feature) => (
                       <li key={feature} className="flex items-center gap-2 text-sm text-gray-600">
@@ -327,7 +323,7 @@ function ResourcesUpgradeExperienceInner() {
                       plan.highlighted ? th.btnGold : th.btnOutline
                     )}
                   >
-                    {t("pricing.getStarted")}
+                    {t(planActionI18nKey(plan.id), { defaultValue: t("pricing.getStarted") })}
                   </button>
                 </div>
               );

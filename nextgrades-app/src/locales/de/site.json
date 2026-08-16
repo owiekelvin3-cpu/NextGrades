@@ -1700,7 +1700,7 @@
     "home": "Startseite"
   },
   "checkout": {
-    "title": "Abonnement abschließen",
+    "title": "Zahlung abschließen",
     "backToPricing": "Zurück zu Preise",
     "secure": "Sicherer Checkout",
     "cards": "Sichere Kartenzahlung über Stripe",
@@ -1708,7 +1708,7 @@
     "secureNote": "Zahlungen werden sicher über Stripe abgewickelt.",
     "failed": "Checkout fehlgeschlagen",
     "successTitle": "Willkommen bei NextGrades!",
-    "successDesc": "Dein Abonnement ist aktiv. Du kannst sofort loslegen.",
+    "successDesc": "Dein Zugang ist aktiv. Du kannst sofort loslegen.",
     "successHint": "Prüfe deine E-Mails für die Quittung und die nächsten Schritte.",
     "goDashboard": "Zum Dashboard",
     "browseResources": "Ressourcen durchsuchen",

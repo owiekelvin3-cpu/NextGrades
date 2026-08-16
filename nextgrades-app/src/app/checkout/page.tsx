@@ -132,15 +132,10 @@ function CheckoutContent() {
           </Link>
           <Card className="p-8">
             <h1 className="mb-2 text-2xl font-bold text-foreground">
-              {t("checkout.title", { defaultValue: "Complete your subscription" })}
+              {t("checkout.title", { defaultValue: "Zahlung abschließen" })}
             </h1>
             <p className="mb-1 text-text-muted">
-              {plan?.name} ·{" "}
-              {oneTime
-                ? t("pricing.oneTime", { defaultValue: "One-time payment" })
-                : billing === "yearly"
-                  ? t("pricing.yearly")
-                  : t("pricing.monthly")}
+              {plan?.name} · {t("pricing.oneTime")}
             </p>
             {subjectSlug && (
               <p className="mb-4 text-sm text-[var(--brand-gold)]">
@@ -151,11 +146,6 @@ function CheckoutContent() {
             )}
             <div className="mb-6 text-4xl font-bold text-foreground">
               {plan?.priceLabel ?? `€${price ?? "-"}`}
-              {!plan?.priceLabel && (
-                <span className="ml-2 text-lg font-normal text-gray-500">
-                  /{billing === "yearly" ? t("pricing.perYear") : t("pricing.perMonth")}
-                </span>
-              )}
             </div>
             <ul className={`mb-8 space-y-2 text-sm ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>
               <li className="flex items-center gap-2">

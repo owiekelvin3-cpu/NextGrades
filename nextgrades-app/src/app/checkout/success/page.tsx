@@ -55,7 +55,7 @@ function SuccessContent() {
           </p>
           <p className={`text-sm mb-8 ${theme === "dark" ? "text-gray-500" : "text-gray-500"}`}>
             {t("checkout.successHint", {
-              defaultValue: "You can manage your subscription anytime in settings.",
+              defaultValue: "Prüfe deine E-Mails für die Quittung und die nächsten Schritte.",
             })}
           </p>
           <div className="flex flex-col gap-3">
