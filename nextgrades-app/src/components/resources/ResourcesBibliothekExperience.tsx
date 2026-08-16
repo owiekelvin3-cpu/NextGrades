@@ -11,13 +11,13 @@ import { ResourceHubCard } from "@/components/resources/shared/ResourceCards";
 import { LibraryEmptyState } from "@/components/resources/LibraryEmptyState";
 import { LoadingBlock } from "@/components/dashboard/LoadingBlock";
 import { MobileResourceCard } from "@/components/mobile/MobileResourceCard";
-import { SectionHeader } from "@/components/premium/SectionHeader";
 import { Button } from "@/components/ui/Button";
 import { BibliothekFilterSidebar } from "@/components/resources/BibliothekFilterSidebar";
 import { isPremiumResource } from "@/lib/resources/ui-config";
 import { isVideoResource } from "@/lib/resources/video";
 import { section } from "@/lib/premium/tokens";
 import { cn } from "@/lib/utils";
+import type { LearningResource } from "@/components/resources/ResourceLearningCard";
 
 const FEATURE_ICONS = [BookOpen, RefreshCw, GraduationCap, ShieldCheck] as const;
 
@@ -51,9 +51,6 @@ export function ResourcesBibliothekExperience({ access }: Props) {
     if (hasResourceFilters) return catalog.resources;
     return catalog.resources.filter((resource) => !isVideoResource(resource));
   }, [catalog.resources, hasResourceFilters]);
-  const useFeaturedRow = !hasResourceFilters && listingResources.length > 4;
-  const featured = useFeaturedRow ? listingResources.slice(0, 4) : [];
-  const gridItems = useFeaturedRow ? listingResources.slice(4) : listingResources;
   const hasMaterials = listingResources.length > 0;
 
   const features = [
@@ -62,6 +59,10 @@ export function ResourcesBibliothekExperience({ access }: Props) {
     { title: t("resources.features.feature3Title"), desc: t("resources.features.feature3Desc") },
     { title: t("resources.features.feature4Title"), desc: t("resources.features.feature4Desc") },
   ];
+
+  const openResource = (resource: LearningResource) => {
+    void catalog.openResource(resource);
+  };
 
   return (
     <>
@@ -104,6 +105,53 @@ export function ResourcesBibliothekExperience({ access }: Props) {
                 </div>
               </div>
 
+              {catalog.loading ? (
+                <LoadingBlock />
+              ) : hasMaterials ? (
+                <div>
+                  <h2 className="mb-2 text-xl font-bold tracking-tight text-white sm:text-2xl">
+                    {hasResourceFilters
+                      ? t("resources.gridTitle")
+                      : t("resources.allMaterialsTitle", { defaultValue: "Alle Materialien" })}
+                  </h2>
+                  {catalog.search ? (
+                    <p className="mb-5 text-sm text-on-navy-muted">
+                      {t("resources.searchResultsFor", { query: catalog.search })}
+                    </p>
+                  ) : (
+                    <p className="mb-5 text-sm text-on-navy-muted">
+                      {t("resources.allMaterialsSubtitle", {
+                        defaultValue: "Browse everything currently available in the Library.",
+                      })}
+                    </p>
+                  )}
+                  <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                    {listingResources.map((r) => (
+                      <div key={r.id} className="hidden h-full sm:block">
+                        <ResourceHubCard
+                          resource={r}
+                          variant={isPremiumResource(r) ? "premium" : "free"}
+                          subjectSlug={catalog.subjectSlug}
+                          onOpen={() => openResource(r)}
+                        />
+                      </div>
+                    ))}
+                    {listingResources.map((r) => (
+                      <div key={`m-${r.id}`} className="h-full sm:hidden">
+                        <MobileResourceCard
+                          resource={r}
+                          variant={isPremiumResource(r) ? "premium" : "free"}
+                          subjectSlug={catalog.subjectSlug}
+                          onOpen={() => openResource(r)}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : hasResourceFilters ? (
+                <LibraryEmptyState searching={Boolean(catalog.search.trim())} query={catalog.search} />
+              ) : null}
+
               {showSubjectBrowse && bibliothekSubjects.length > 0 && (
                 <SubjectBrowseGrid
                   subjects={bibliothekSubjects}
@@ -120,90 +168,7 @@ export function ResourcesBibliothekExperience({ access }: Props) {
       </section>
 
       <section className="bg-[var(--surface-muted)] py-10 md:py-14">
-        <div className={cn(section.container, "space-y-12 md:space-y-14")}>
-          {catalog.loading ? (
-            <LoadingBlock />
-          ) : (
-            <>
-              {hasMaterials ? (
-                <>
-              {!locked && featured.length > 0 && (
-                <div>
-                  <SectionHeader
-                    eyebrow={t("resources.featuredEyebrow")}
-                    title={t("resources.featuredTitle")}
-                    subtitle={t("resources.featuredSubtitle")}
-                    align="left"
-                    className="!mb-6"
-                  />
-                  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                    {featured.map((r) => (
-                      <ResourceHubCard
-                        key={r.id}
-                        resource={r}
-                        variant={isPremiumResource(r) ? "premium" : "free"}
-                        subjectSlug={catalog.subjectSlug}
-                        onOpen={() => void catalog.openResource(r)}
-                      />
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {gridItems.length > 0 && (
-                <div>
-                  <SectionHeader
-                    title={
-                      hasResourceFilters
-                        ? t("resources.gridTitle")
-                        : useFeaturedRow
-                          ? t("resources.moreMaterialsTitle", { defaultValue: "More materials" })
-                          : t("resources.allMaterialsTitle", { defaultValue: "All materials" })
-                    }
-                    subtitle={
-                      catalog.search
-                        ? t("resources.searchResultsFor", { query: catalog.search })
-                        : hasResourceFilters
-                          ? undefined
-                          : t("resources.allMaterialsSubtitle", {
-                              defaultValue: "Browse everything currently available in the Library.",
-                            })
-                    }
-                    align="left"
-                    className="!mb-6"
-                  />
-                  <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                    {gridItems.map((r) => (
-                      <div key={r.id} className="hidden h-full sm:block">
-                        <ResourceHubCard
-                          resource={r}
-                          variant={isPremiumResource(r) ? "premium" : "free"}
-                          subjectSlug={catalog.subjectSlug}
-                          onOpen={() => void catalog.openResource(r)}
-                        />
-                      </div>
-                    ))}
-                    {gridItems.map((r) => (
-                      <div key={`m-${r.id}`} className="h-full sm:hidden">
-                        <MobileResourceCard
-                          resource={r}
-                          variant={isPremiumResource(r) ? "premium" : "free"}
-                          subjectSlug={catalog.subjectSlug}
-                          onOpen={() => void catalog.openResource(r)}
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-                </>
-              ) : hasResourceFilters ? (
-                <LibraryEmptyState searching={Boolean(catalog.search.trim())} query={catalog.search} />
-              ) : null}
-            </>
-          )}
-
-          {/* Unlock CTA + feature row */}
+        <div className={cn(section.container)}>
           <div className="overflow-hidden rounded-2xl bg-gradient-to-br from-[#0D1B2A] via-[#132942] to-[#1a3555] shadow-2xl">
             <div className="border-b border-white/10 px-6 py-8 md:px-10 md:py-10">
               <div className="flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-center">
