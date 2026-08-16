@@ -138,7 +138,7 @@ export class NextGradesAPI {
       let query = supabase.from("materials").select("*").order("sort_order", { ascending: true });
 
       if (subjectId) query = query.eq("subject_id", subjectId);
-      if (classId) query = query.eq("class_id", classId);
+      if (classId) query = query.or(`class_id.eq.${classId},class_ids.cs.{${classId}}`);
       if (semester !== undefined) query = query.eq("semester", semester);
       if (isPremium !== undefined) query = query.eq("is_premium", isPremium);
 

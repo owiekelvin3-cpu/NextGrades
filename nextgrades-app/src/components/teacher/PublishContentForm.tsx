@@ -74,6 +74,7 @@ type FormState = {
   category_id: string;
   subject_id: string;
   class_id: string;
+  class_ids: string[];
   semester: string;
   tag_ids: string[];
   difficulty_level: string;
@@ -94,6 +95,7 @@ const defaultForm: FormState = {
   category_id: "",
   subject_id: "",
   class_id: "",
+  class_ids: [],
   semester: "",
   tag_ids: [],
   difficulty_level: "beginner",
@@ -125,7 +127,16 @@ export function PublishContentForm({
   const [tags, setTags] = useState<Tag[]>([]);
   const [catalogSubjects, setCatalogSubjects] = useState<Array<{ id: string; name: string }>>([]);
   const [catalogClasses, setCatalogClasses] = useState<Array<{ id: string; name: string }>>([]);
-  const [form, setForm] = useState<FormState>({ ...defaultForm, ...initialData });
+  const [form, setForm] = useState<FormState>(() => {
+    const merged = { ...defaultForm, ...initialData };
+    const classIds =
+      Array.isArray(merged.class_ids) && merged.class_ids.length > 0
+        ? merged.class_ids
+        : merged.class_id
+          ? [merged.class_id]
+          : [];
+    return { ...merged, class_ids: classIds, class_id: classIds[0] ?? "" };
+  });
   const fileRef = useRef<HTMLInputElement>(null);
   const thumbRef = useRef<HTMLInputElement>(null);
 
@@ -169,6 +180,15 @@ export function PublishContentForm({
     }));
   };
 
+  const toggleClass = (id: string) => {
+    setForm((prev) => {
+      const class_ids = prev.class_ids.includes(id)
+        ? prev.class_ids.filter((c) => c !== id)
+        : [...prev.class_ids, id];
+      return { ...prev, class_ids, class_id: class_ids[0] ?? "" };
+    });
+  };
+
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
     if (!f) return;
@@ -187,7 +207,7 @@ export function PublishContentForm({
       return;
     }
 
-    if (form.status === "published" && (!form.subject_id || !form.class_id)) {
+    if (form.status === "published" && (!form.subject_id || form.class_ids.length === 0)) {
       toastError("Select a subject and grade so this resource appears in the Library filters and search.");
       setStep(2);
       return;
@@ -248,7 +268,8 @@ export function PublishContentForm({
           content_type: form.content_type,
           status: form.status,
           subject_id: form.subject_id || null,
-          class_id: form.class_id || null,
+          class_id: form.class_ids[0] || null,
+          class_ids: form.class_ids,
           external_url: form.external_url || "",
           resource_id: resourceId || null,
           file_size: file?.size ?? null,
@@ -320,7 +341,8 @@ export function PublishContentForm({
         content_type: form.content_type,
         category_id: form.category_id || null,
         subject_id: form.subject_id || null,
-        class_id: form.class_id || null,
+        class_id: form.class_ids[0] || null,
+        class_ids: form.class_ids,
         semester: form.semester || null,
         tag_ids: form.tag_ids,
         difficulty_level: form.difficulty_level,
@@ -537,19 +559,12 @@ export function PublishContentForm({
                 {categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
               </select>
             </div>
-            <div className="grid sm:grid-cols-3 gap-4">
+            <div className="grid sm:grid-cols-2 gap-4">
               <div>
                 <label className={labelCls}>Subject *</label>
                 <select value={form.subject_id} onChange={(e) => setForm({ ...form, subject_id: e.target.value })} className={selectCls(form.subject_id)} required>
                   <option value="">Select subject</option>
                   {catalogSubjects.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
-                </select>
-              </div>
-              <div>
-                <label className={labelCls}>Grade *</label>
-                <select value={form.class_id} onChange={(e) => setForm({ ...form, class_id: e.target.value })} className={selectCls(form.class_id)} required>
-                  <option value="">Select grade</option>
-                  {catalogClasses.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
                 </select>
               </div>
               <div>
@@ -559,6 +574,34 @@ export function PublishContentForm({
                   <option value="1">Semester 1</option>
                   <option value="2">Semester 2</option>
                 </select>
+              </div>
+            </div>
+            <div>
+              <label className={labelCls}>Grade *</label>
+              <p className={`mb-2 text-xs ${muted(theme)}`}>Select every class this material should appear in.</p>
+              <div className="flex flex-wrap gap-2">
+                {catalogClasses.map((cls) => {
+                  const selected = form.class_ids.includes(cls.id);
+                  return (
+                    <button
+                      key={cls.id}
+                      type="button"
+                      onClick={() => toggleClass(cls.id)}
+                      className={`rounded-full px-3 py-1.5 text-sm ${
+                        selected
+                          ? "bg-[#D4AF37] font-semibold text-[#0D1B2A]"
+                          : muted(theme)
+                      }`}
+                      style={
+                        selected
+                          ? undefined
+                          : { backgroundColor: theme === "dark" ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.06)" }
+                      }
+                    >
+                      {cls.name}
+                    </button>
+                  );
+                })}
               </div>
             </div>
             <div>
@@ -609,7 +652,7 @@ export function PublishContentForm({
                 variant="gold"
                 className="flex-1"
                 onClick={() => {
-                  if (form.status === "published" && (!form.subject_id || !form.class_id)) {
+                  if (form.status === "published" && (!form.subject_id || form.class_ids.length === 0)) {
                     toastError("Select a subject and grade so this resource appears in the Library filters and search.");
                     return;
                   }

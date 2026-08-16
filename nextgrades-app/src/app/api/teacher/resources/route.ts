@@ -6,6 +6,7 @@ import {
   PUBLISH_FORBIDDEN_MESSAGE,
 } from "@/lib/resources/teacher-publishing";
 import { LEGACY_TYPE_MAP, type ContentType } from "@/lib/resources/constants";
+import { resolveClassIds } from "@/lib/resources/publish-validation";
 
 export async function GET(request: Request) {
   try {
@@ -113,10 +114,10 @@ export async function POST(request: Request) {
     }
 
     const wantsPublish = status === "published";
+    const classIds = resolveClassIds(body.class_ids, body.class_id);
     if (wantsPublish) {
       const subjectId = body.subject_id ? String(body.subject_id).trim() : "";
-      const classId = body.class_id ? String(body.class_id).trim() : "";
-      if (!subjectId || !classId) {
+      if (!subjectId || classIds.length === 0) {
         return NextResponse.json(
           { error: "Subject and grade are required to publish to the Library." },
           { status: 400 }
@@ -151,6 +152,9 @@ export async function POST(request: Request) {
         estimated_minutes,
         language,
         created_by: auth.user.id,
+        subject_id: body.subject_id || null,
+        class_id: classIds[0] ?? null,
+        class_ids: classIds,
         moderation_status: isPublished ? "approved" : wantsPublish ? "pending" : null,
         publish_date: isPublished ? new Date().toISOString() : null,
       })

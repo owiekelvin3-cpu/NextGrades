@@ -44,6 +44,13 @@ export default function EditResourcePage() {
             full_description: data.full_description || "",
             content_type: data.content_type || "learning_material",
             category_id: data.category_id || "",
+            subject_id: data.subject_id || "",
+            class_id: data.class_id || "",
+            class_ids: Array.isArray(data.class_ids) && data.class_ids.length
+              ? data.class_ids
+              : data.class_id
+                ? [data.class_id]
+                : [],
             tag_ids: tagIds,
             difficulty_level: data.difficulty_level || "beginner",
             age_range: data.age_range || "all_ages",

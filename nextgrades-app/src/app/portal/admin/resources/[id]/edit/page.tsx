@@ -37,6 +37,11 @@ export default function AdminEditResourcePage() {
             category_id: data.category_id || "",
             subject_id: data.subject_id || "",
             class_id: data.class_id || "",
+            class_ids: Array.isArray(data.class_ids) && data.class_ids.length
+              ? data.class_ids
+              : data.class_id
+                ? [data.class_id]
+                : [],
             semester: data.semester || "",
             tag_ids: tagIds,
             difficulty_level: data.difficulty_level || "beginner",

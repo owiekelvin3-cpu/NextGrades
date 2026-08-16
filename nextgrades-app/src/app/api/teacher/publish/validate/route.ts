@@ -5,6 +5,7 @@ import type { ContentType } from "@/lib/resources/constants";
 import {
   checkDuplicateTitle,
   optionalUuid,
+  resolveClassIds,
   validatePublishInput,
 } from "@/lib/resources/publish-validation";
 
@@ -22,7 +23,8 @@ export async function POST(request: Request) {
     const status = String(body.status || "draft");
     const contentType = String(body.content_type || "learning_material") as ContentType;
     const subjectId = optionalUuid(body.subject_id);
-    const classId = optionalUuid(body.class_id);
+    const classIds = resolveClassIds(body.class_ids, body.class_id);
+    const classId = classIds[0] ?? null;
     const resourceId = optionalUuid(body.resource_id);
     const externalUrl = String(body.external_url || "").trim();
     const fileSize = body.file_size != null ? Number(body.file_size) : null;
@@ -35,6 +37,7 @@ export async function POST(request: Request) {
       status,
       subjectId,
       classId,
+      classIds,
       externalUrl,
       resourceId,
       storagePath: null,

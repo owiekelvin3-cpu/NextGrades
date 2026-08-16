@@ -6,6 +6,7 @@ import {
   PUBLISH_FORBIDDEN_MESSAGE,
 } from "@/lib/resources/teacher-publishing";
 import { LEGACY_TYPE_MAP, type ContentType } from "@/lib/resources/constants";
+import { resolveClassIds } from "@/lib/resources/publish-validation";
 
 type RouteParams = { params: Promise<{ id: string }> };
 
@@ -78,10 +79,17 @@ export async function PUT(request: Request, { params }: RouteParams) {
       "type", "url", "thumbnail_url", "file_size", "category_id", "tags",
       "status", "access_type", "price", "publish_date", "expiry_date", "folder_id",
       "difficulty_level", "age_range", "estimated_minutes", "language",
+      "subject_id", "class_id", "class_ids", "semester",
     ] as const;
 
     for (const field of fields) {
       if (body[field] !== undefined) updateData[field] = body[field];
+    }
+
+    if (body.class_ids !== undefined || body.class_id !== undefined) {
+      const classIds = resolveClassIds(body.class_ids, body.class_id);
+      updateData.class_ids = classIds;
+      updateData.class_id = classIds[0] ?? null;
     }
 
     if (body.content_type) {

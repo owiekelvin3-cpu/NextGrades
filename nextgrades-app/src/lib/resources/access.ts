@@ -11,6 +11,7 @@ export type MaterialAccessRow = {
   is_premium?: boolean | null;
   subject_id?: string | null;
   class_id?: string | null;
+  class_ids?: string[] | null;
   semester?: number | null;
   created_by?: string | null;
 };
@@ -36,11 +37,15 @@ export function isPremiumMaterial(material: Pick<MaterialAccessRow, "access_type
 
 export function enrollmentMatchesMaterial(
   enrollment: EnrollmentRow,
-  material: Pick<MaterialAccessRow, "subject_id" | "class_id" | "semester">
+  material: Pick<MaterialAccessRow, "subject_id" | "class_id" | "class_ids" | "semester">
 ): boolean {
   if (enrollment.status !== "active") return false;
   if (!material.subject_id || enrollment.subject_id !== material.subject_id) return false;
-  if (material.class_id && enrollment.class_id !== material.class_id) return false;
+  const classIds = [
+    ...(Array.isArray(material.class_ids) ? material.class_ids : []),
+    material.class_id,
+  ].filter((id): id is string => Boolean(id));
+  if (classIds.length > 0 && !classIds.includes(enrollment.class_id)) return false;
   if (material.semester != null && enrollment.semester != null && enrollment.semester !== material.semester) {
     return false;
   }

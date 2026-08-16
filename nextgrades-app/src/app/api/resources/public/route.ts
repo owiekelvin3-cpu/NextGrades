@@ -89,6 +89,7 @@ export async function GET(request: Request) {
       created_by,
       subject_id,
       class_id,
+      class_ids,
       semester,
       category:resource_categories(id, name, icon),
       subject:subjects(id, name, sort_order),
@@ -111,7 +112,9 @@ export async function GET(request: Request) {
     if (teacherId) query = query.eq("created_by", teacherId);
     if (language) query = query.eq("language", language);
     if (subjectId) query = query.eq("subject_id", subjectId);
-    if (classId) query = query.eq("class_id", classId);
+    if (classId) {
+      query = query.or(`class_id.eq.${classId},class_ids.cs.{${classId}}`);
+    }
     if (semester === "1" || semester === "2") {
       const sem = parseInt(semester, 10);
       query = query.or(`semester.eq.${sem},semester.is.null`);
@@ -143,7 +146,7 @@ export async function GET(request: Request) {
           id, title, description, short_description, full_description, type, content_type,
           url, storage_path, thumbnail_url, file_size, is_premium, access_type,
           download_count, view_count, difficulty_level, age_range, estimated_minutes,
-          language, created_at, created_by, subject_id, class_id, semester,
+          language, created_at, created_by, subject_id, class_id, class_ids, semester,
           category:resource_categories(id, name, icon),
           subject:subjects(id, name, sort_order),
           class:classes(id, name, level),

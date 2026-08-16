@@ -20,6 +20,7 @@ export type PublishValidationInput = {
   status: string;
   subjectId: string | null;
   classId: string | null;
+  classIds?: string[];
   externalUrl: string;
   resourceId: string | null;
   storagePath: string | null;
@@ -41,6 +42,34 @@ export function optionalUuid(value: unknown): string | null {
   return UUID_RE.test(s) ? s : null;
 }
 
+/** Unique valid class UUIDs from `class_ids` and/or a single `class_id`. */
+export function resolveClassIds(classIdsRaw: unknown, classIdRaw?: unknown): string[] {
+  const rawList = Array.isArray(classIdsRaw)
+    ? classIdsRaw
+    : typeof classIdsRaw === "string" && classIdsRaw.trim().startsWith("[")
+      ? (() => {
+          try {
+            const parsed = JSON.parse(classIdsRaw);
+            return Array.isArray(parsed) ? parsed : [];
+          } catch {
+            return [];
+          }
+        })()
+      : [];
+  const seen = new Set<string>();
+  const ids: string[] = [];
+  for (const value of rawList) {
+    const id = optionalUuid(value);
+    if (id && !seen.has(id)) {
+      seen.add(id);
+      ids.push(id);
+    }
+  }
+  const fallback = optionalUuid(classIdRaw);
+  if (fallback && !seen.has(fallback)) ids.push(fallback);
+  return ids;
+}
+
 export function validatePublishInput(
   userId: string,
   input: PublishValidationInput
@@ -50,7 +79,8 @@ export function validatePublishInput(
   }
 
   const wantsPublish = input.status === "published";
-  if (wantsPublish && (!input.subjectId || !input.classId)) {
+  const classIds = resolveClassIds(input.classIds, input.classId);
+  if (wantsPublish && (!input.subjectId || classIds.length === 0)) {
     return {
       ok: false,
       error:

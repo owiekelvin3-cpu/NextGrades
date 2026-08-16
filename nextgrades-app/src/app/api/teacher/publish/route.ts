@@ -6,6 +6,7 @@ import { buildAutoShortDescription } from "@/lib/resources/library-display";
 import {
   checkDuplicateTitle,
   optionalUuid,
+  resolveClassIds,
   validatePublishInput,
   MAX_FILE_BYTES,
   MAX_THUMB_BYTES,
@@ -45,6 +46,7 @@ type PublishInput = {
   externalUrl: string;
   subjectId: string | null;
   classId: string | null;
+  classIds: string[];
   semester: number | null;
   resourceId: string | null;
   storagePath: string | null;
@@ -98,6 +100,7 @@ async function parsePublishInput(request: Request): Promise<PublishInput> {
   if (contentType.includes("application/json")) {
     const body = await request.json();
     const semesterRaw = body.semester;
+    const classIds = resolveClassIds(body.class_ids, body.class_id);
     return {
       title: String(body.title || "").trim(),
       shortDescription: String(body.short_description || "").trim(),
@@ -114,7 +117,8 @@ async function parsePublishInput(request: Request): Promise<PublishInput> {
       price: parsePrice(body.price, String(body.access_type || "free")),
       externalUrl: String(body.external_url || "").trim(),
       subjectId: optionalUuid(body.subject_id),
-      classId: optionalUuid(body.class_id),
+      classIds,
+      classId: classIds[0] ?? null,
       semester: semesterRaw === 1 || semesterRaw === "1" || semesterRaw === 2 || semesterRaw === "2"
         ? parseInt(String(semesterRaw), 10)
         : null,
@@ -132,6 +136,7 @@ async function parsePublishInput(request: Request): Promise<PublishInput> {
 
   const formData = await request.formData();
   const semesterRaw = formData.get("semester");
+  const classIds = resolveClassIds(formData.get("class_ids"), formData.get("class_id"));
   return {
     title: String(formData.get("title") || "").trim(),
     shortDescription: String(formData.get("short_description") || "").trim(),
@@ -148,7 +153,8 @@ async function parsePublishInput(request: Request): Promise<PublishInput> {
     price: parsePrice(formData.get("price"), String(formData.get("access_type") || "free")),
     externalUrl: String(formData.get("external_url") || "").trim(),
     subjectId: optionalUuid(formData.get("subject_id")),
-    classId: optionalUuid(formData.get("class_id")),
+    classIds,
+    classId: classIds[0] ?? null,
     semester: semesterRaw === "1" || semesterRaw === "2" ? parseInt(String(semesterRaw), 10) : null,
     resourceId: optionalUuid(formData.get("resource_id")),
     storagePath: formData.get("storage_path") ? String(formData.get("storage_path")).trim() : null,
@@ -197,6 +203,7 @@ export async function POST(request: Request) {
       externalUrl,
       subjectId,
       classId,
+      classIds,
       semester,
       resourceId,
       file,
@@ -221,6 +228,7 @@ export async function POST(request: Request) {
       status,
       subjectId,
       classId,
+      classIds,
       externalUrl,
       resourceId,
       storagePath,
@@ -341,9 +349,9 @@ export async function POST(request: Request) {
       const { data: subjectRow } = await db.from("subjects").select("name").eq("id", subjectId).maybeSingle();
       subjectName = subjectRow?.name ?? null;
     }
-    if (classId) {
-      const { data: classRow } = await db.from("classes").select("name").eq("id", classId).maybeSingle();
-      className = classRow?.name ?? null;
+    if (classIds.length > 0) {
+      const { data: classRows } = await db.from("classes").select("name").in("id", classIds);
+      className = (classRows ?? []).map((row: { name: string }) => row.name).filter(Boolean).join(", ") || null;
     }
 
     const resolvedShort =
@@ -366,6 +374,7 @@ export async function POST(request: Request) {
       storage_path: storagePath,
       subject_id: subjectId,
       class_id: classId,
+      class_ids: classIds,
       semester,
       category_id: categoryId,
       difficulty_level: difficultyLevel,
