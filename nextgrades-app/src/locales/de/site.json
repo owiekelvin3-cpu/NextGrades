@@ -248,7 +248,7 @@
           "Sofort verfügbar",
           "Für Schule & Matura"
         ],
-        "price": "49 € ab pro Fach & Semester"
+        "price": "49 € pro Fach & Semester"
       }
     ],
     "compareTitle": "Programmvergleich",
@@ -580,7 +580,7 @@
         "description": "Strukturierte Lernmaterialien pro Fach & Semester",
         "monthlyPrice": 49,
         "yearlyPrice": 49,
-        "priceLabel": "49 € ab pro Fach & Semester",
+        "priceLabel": "49 € pro Fach & Semester",
         "highlighted": false,
         "features": [
           "500+ Lernmaterialien",

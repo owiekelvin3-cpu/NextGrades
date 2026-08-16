@@ -40,7 +40,7 @@ const CATALOG: Record<PlanKey, Omit<PlanCheckoutSpec, "plan">> = {
     currency: "eur",
     mode: "payment",
     productName: "Lernbibliothek",
-    productDescription: "49 € ab pro Fach & Semester",
+    productDescription: "49 € pro Fach & Semester",
     accessBilling: "semester",
   },
   matura: {

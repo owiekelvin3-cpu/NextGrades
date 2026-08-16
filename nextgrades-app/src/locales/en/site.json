@@ -288,7 +288,7 @@
           "Instant access",
           "For school & graduation exams"
         ],
-        "price": "from €49 per subject & semester"
+        "price": "€49 per subject & semester"
       }
     ],
     "compareTitle": "Program comparison",
@@ -620,7 +620,7 @@
         "description": "Structured learning materials per subject & semester",
         "monthlyPrice": 49,
         "yearlyPrice": 49,
-        "priceLabel": "from €49 per subject & semester",
+        "priceLabel": "€49 per subject & semester",
         "highlighted": false,
         "features": [
           "500+ learning materials",
