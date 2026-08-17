@@ -1516,6 +1516,8 @@
     "studentOptional": "SchülerIn (optional)",
     "selectSubject": "Fach wählen",
     "selectStudent": "SchülerIn wählen",
+    "loadingStudents": "SchülerInnen werden geladen…",
+    "studentsLoadError": "SchülerInnen konnten nicht geladen werden. Bitte neu laden.",
     "selectStudentRequired": "Bitte eine Schülerin oder einen Schüler wählen, damit die Stunde im Portal erscheint.",
     "selectSubjectRequired": "Bitte ein Fach für diese Stunde wählen.",
     "newLesson": "Neue Stunde",

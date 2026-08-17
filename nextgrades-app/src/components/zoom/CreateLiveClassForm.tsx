@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { useToast } from "@/context/ToastContext";
 import { Button } from "@/components/ui/Button";
-import { fetchSubjects, getSessionUserId } from "@/lib/dashboard/data";
+import { fetchSubjects } from "@/lib/dashboard/data";
 import { type ZoomMeetingType } from "@/lib/zoom/config";
 import { teacherPanel } from "@/components/dashboard/teacher/teacher-ui";
 import { themeInputClass, themeSelectClass } from "@/lib/theme/form-fields";
@@ -53,6 +53,9 @@ export function CreateLiveClassForm({
   const toast = useToast();
   const defaults = defaultScheduleValues();
   const [students, setStudents] = useState<{ id: string; name: string }[]>([]);
+  const [studentsLoading, setStudentsLoading] = useState(true);
+  const [studentsError, setStudentsError] = useState<string | null>(null);
+  const [studentMenuOpen, setStudentMenuOpen] = useState(false);
   const [subjects, setSubjects] = useState<{ id: string; name: string }[]>([]);
   const [loading, setLoading] = useState(false);
   const [showMore, setShowMore] = useState(false);
@@ -79,24 +82,44 @@ export function CreateLiveClassForm({
   }, [form.meetingLink]);
 
   useEffect(() => {
+    let cancelled = false;
     void (async () => {
-      const uid = await getSessionUserId();
-      if (!uid) return;
-      const [studentsRes, subjectRows] = await Promise.all([
-        fetch("/api/teacher/scheduling-students"),
-        fetchSubjects(),
-      ]);
-      const studentsData = studentsRes.ok
-        ? ((await studentsRes.json()) as { students?: { id: string; name: string }[] })
-        : { students: [] };
-      const list = studentsData.students ?? [];
-      setStudents(list);
-      setSubjects(subjectRows.map((s) => ({ id: s.id, name: s.name })));
-      if (initialStudentId && list.some((s) => s.id === initialStudentId)) {
-        setForm((f) => ({ ...f, studentId: initialStudentId }));
+      setStudentsLoading(true);
+      setStudentsError(null);
+      try {
+        const [studentsRes, subjectRows] = await Promise.all([
+          fetch("/api/teacher/scheduling-students"),
+          fetchSubjects(),
+        ]);
+        const studentsData = studentsRes.ok
+          ? ((await studentsRes.json()) as { students?: { id: string; name: string }[] })
+          : { students: [] };
+        if (cancelled) return;
+        if (!studentsRes.ok) {
+          setStudentsError(
+            t("zoom.studentsLoadError", { defaultValue: "Could not load students. Refresh and try again." })
+          );
+        }
+        const list = studentsData.students ?? [];
+        setStudents(list);
+        setSubjects(subjectRows.map((s) => ({ id: s.id, name: s.name })));
+        if (initialStudentId && list.some((s) => s.id === initialStudentId)) {
+          setForm((f) => ({ ...f, studentId: initialStudentId }));
+        }
+      } catch {
+        if (!cancelled) {
+          setStudentsError(
+            t("zoom.studentsLoadError", { defaultValue: "Could not load students. Refresh and try again." })
+          );
+        }
+      } finally {
+        if (!cancelled) setStudentsLoading(false);
       }
     })();
-  }, [initialStudentId]);
+    return () => {
+      cancelled = true;
+    };
+  }, [initialStudentId, t]);
 
   const buildPayload = () => {
     const body: Record<string, unknown> = {
@@ -252,24 +275,51 @@ export function CreateLiveClassForm({
 
       <form onSubmit={(e) => void handlePasteLinkSubmit(e)} className="space-y-6 p-5 sm:p-6">
         <div className="grid gap-4 sm:grid-cols-2">
-          <div>
+          <div className="relative">
             <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-gray-500">
               {t("zoom.student", { defaultValue: "Student" })}
             </label>
-            <select
-              required
-              value={form.studentId}
-              onChange={(e) => setForm({ ...form, studentId: e.target.value })}
-              className={selectCls(form.studentId)}
+            <button
+              type="button"
+              disabled={studentsLoading || students.length === 0}
+              onClick={() => setStudentMenuOpen((open) => !open)}
+              className={cn(
+                inputCls,
+                "flex items-center justify-between text-left",
+                !form.studentId && "text-gray-400"
+              )}
             >
-              <option value="">{t("zoom.selectStudent", { defaultValue: "Select student" })}</option>
-              {students.map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.name}
-                </option>
-              ))}
-            </select>
-            {students.length === 0 && (
+              <span className="truncate">
+                {studentsLoading
+                  ? t("zoom.loadingStudents", { defaultValue: "Loading students…" })
+                  : students.find((s) => s.id === form.studentId)?.name ||
+                    t("zoom.selectStudent", { defaultValue: "Select student" })}
+              </span>
+              <ChevronDown className={cn("h-4 w-4 shrink-0 text-gray-400", studentMenuOpen && "rotate-180")} />
+            </button>
+            {studentMenuOpen && students.length > 0 && (
+              <ul className="absolute z-30 mt-1 max-h-56 w-full overflow-auto rounded-xl border border-gray-200 bg-white py-1 shadow-lg">
+                {students.map((s) => (
+                  <li key={s.id}>
+                    <button
+                      type="button"
+                      className={cn(
+                        "w-full px-4 py-2.5 text-left text-sm text-gray-800 hover:bg-[#D4AF37]/15",
+                        form.studentId === s.id && "bg-[#D4AF37]/20 font-semibold"
+                      )}
+                      onClick={() => {
+                        setForm({ ...form, studentId: s.id });
+                        setStudentMenuOpen(false);
+                      }}
+                    >
+                      {s.name}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {studentsError && <p className="mt-1.5 text-xs text-red-600">{studentsError}</p>}
+            {!studentsLoading && students.length === 0 && !studentsError && (
               <p className="mt-1.5 text-xs text-amber-700">
                 {t("zoom.noStudentsYet", {
                   defaultValue: "No students found yet. Add a student account first.",

@@ -4,7 +4,7 @@ import { requireTeacherOrAdminApi } from "@/lib/auth/api-auth";
 import { isSupabaseServiceRoleConfigured } from "@/lib/supabase/env";
 import { listEligibleStudentsForTeacher } from "@/lib/zoom/scheduling";
 
-/** Enrolled / assigned students available when scheduling Zoom classes. */
+/** Students a teacher may invite to a lesson. */
 export async function GET() {
   const gate = await requireTeacherOrAdminApi();
   if (gate.error) return gate.error;

@@ -1553,6 +1553,8 @@
     "studentOptional": "Student (optional)",
     "selectSubject": "Select subject",
     "selectStudent": "Select student",
+    "loadingStudents": "Loading students…",
+    "studentsLoadError": "Could not load students. Refresh and try again.",
     "selectStudentRequired": "Pick a student so the lesson appears in their portal.",
     "selectSubjectRequired": "Pick a subject for this lesson.",
     "newLesson": "New lesson",
