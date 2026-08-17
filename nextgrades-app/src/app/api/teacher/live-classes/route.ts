@@ -8,6 +8,7 @@ import { resolveTargetStudentIds } from "@/lib/zoom/scheduling";
 import { wallTimeToUtc } from "@/lib/zoom/datetime";
 import { notifyLiveClassScheduled } from "@/lib/notifications/triggers";
 import { validateMeetingLink } from "@/lib/meetings/link";
+import { settleHeldLessonUnits } from "@/lib/lessons/consume-units";
 
 type CreateBody = {
   title: string;
@@ -140,6 +141,8 @@ export async function POST(request: Request) {
         joinUrl: linkCheck?.url,
       });
     }
+
+    await settleHeldLessonUnits(admin);
 
     return NextResponse.json({
       lessons,

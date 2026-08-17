@@ -29,7 +29,7 @@ export async function PATCH(request: Request, { params }: RouteParams) {
     if (selfBlock) return selfBlock;
 
     const body = await request.json();
-    const { is_active, role, teacher_status, rejection_reason } = body;
+    const { is_active, role, teacher_status, rejection_reason, add_units } = body;
 
     if (is_active !== undefined) {
       if (!isSupabaseServiceRoleConfigured()) {
@@ -52,6 +52,45 @@ export async function PATCH(request: Request, { params }: RouteParams) {
     }
 
     const admin = isSupabaseServiceRoleConfigured() ? createAdminClient() : gate.auth!.supabase;
+
+    const addUnits = Number(add_units);
+    if (Number.isFinite(addUnits) && addUnits > 0 && addUnits <= 200) {
+      const { data: target } = await admin.from("profiles").select("id, role").eq("id", id).maybeSingle();
+      if (!target || target.role !== "student") {
+        return NextResponse.json({ error: "Lesson packages can only be added to students" }, { status: 400 });
+      }
+
+      const { data: units } = await admin
+        .from("user_units")
+        .select("remaining_units, total_units")
+        .eq("student_id", id)
+        .maybeSingle();
+
+      const remaining = (units?.remaining_units ?? 0) + addUnits;
+      const total = (units?.total_units ?? 0) + addUnits;
+
+      if (units) {
+        await admin
+          .from("user_units")
+          .update({ remaining_units: remaining, total_units: total, updated_at: new Date().toISOString() })
+          .eq("student_id", id);
+      } else {
+        await admin.from("user_units").insert({
+          student_id: id,
+          remaining_units: remaining,
+          total_units: total,
+        });
+      }
+
+      await admin.from("user_activity_log").insert({
+        user_id: gate.auth!.user.id,
+        action: "add_lesson_units",
+        metadata: { target_user_id: id, add_units: addUnits, remaining, total },
+      });
+
+      const { data: profile } = await admin.from("profiles").select("*").eq("id", id).maybeSingle();
+      return NextResponse.json({ ...profile, remaining_units: remaining, total_units: total });
+    }
 
     const { data: before } = await admin
       .from("profiles")

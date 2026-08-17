@@ -52,7 +52,9 @@ export function CreateLiveClassForm({
   const { t } = useTranslation();
   const toast = useToast();
   const defaults = defaultScheduleValues();
-  const [students, setStudents] = useState<{ id: string; name: string }[]>([]);
+  const [students, setStudents] = useState<
+    { id: string; name: string; remainingUnits?: number; totalUnits?: number }[]
+  >([]);
   const [studentsLoading, setStudentsLoading] = useState(true);
   const [studentsError, setStudentsError] = useState<string | null>(null);
   const [studentMenuOpen, setStudentMenuOpen] = useState(false);
@@ -292,8 +294,14 @@ export function CreateLiveClassForm({
               <span className="truncate">
                 {studentsLoading
                   ? t("zoom.loadingStudents", { defaultValue: "Loading students…" })
-                  : students.find((s) => s.id === form.studentId)?.name ||
-                    t("zoom.selectStudent", { defaultValue: "Select student" })}
+                  : (() => {
+                      const selected = students.find((s) => s.id === form.studentId);
+                      if (!selected) return t("zoom.selectStudent", { defaultValue: "Select student" });
+                      const hasPackage = (selected.totalUnits ?? 0) > 0 || (selected.remainingUnits ?? 0) > 0;
+                      return hasPackage
+                        ? `${selected.name} · ${selected.remainingUnits ?? 0}/${selected.totalUnits ?? 0}`
+                        : selected.name;
+                    })()}
               </span>
               <ChevronDown className={cn("h-4 w-4 shrink-0 text-gray-400", studentMenuOpen && "rotate-180")} />
             </button>
@@ -313,6 +321,9 @@ export function CreateLiveClassForm({
                       }}
                     >
                       {s.name}
+                      {(s.totalUnits ?? 0) > 0 || (s.remainingUnits ?? 0) > 0
+                        ? ` · ${s.remainingUnits ?? 0}/${s.totalUnits ?? 0} Stunden`
+                        : ""}
                     </button>
                   </li>
                 ))}

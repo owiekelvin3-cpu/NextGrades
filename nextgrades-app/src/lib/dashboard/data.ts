@@ -157,6 +157,18 @@ export async function fetchTeacherLessons(teacherId: string): Promise<DashboardL
 }
 
 export async function fetchStudentUnits(studentId: string): Promise<{ total: number; remaining: number } | null> {
+  if (typeof window !== "undefined") {
+    try {
+      const res = await fetch("/api/student/units");
+      if (res.ok) {
+        const json = (await res.json()) as { total?: number; remaining?: number };
+        return { total: json.total ?? 0, remaining: json.remaining ?? 0 };
+      }
+    } catch {
+      /* fall through to direct read */
+    }
+  }
+
   if (!isSupabaseEnvConfigured()) return null;
 
   const { data, error } = await supabase

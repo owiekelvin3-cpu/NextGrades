@@ -7,6 +7,7 @@ import {
   fetchLessonForMeetingAccess,
   resolveMeetingUrl,
 } from "@/lib/zoom/lesson-access";
+import { settleHeldLessonUnits } from "@/lib/lessons/consume-units";
 
 /** Authenticated access to Zoom join (student) or start (teacher) URLs. */
 export async function GET(_request: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -16,6 +17,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
   const auth = gate.auth!;
 
   const db = isSupabaseServiceRoleConfigured() ? createAdminClient() : auth.supabase;
+  await settleHeldLessonUnits(db);
   const lesson = await fetchLessonForMeetingAccess(db, lessonId);
 
   if (!lesson) {

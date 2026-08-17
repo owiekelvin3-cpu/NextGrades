@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
+import { useTranslation } from "react-i18next";
 import { useTheme } from "@/context/ThemeContext";
 import { useToast } from "@/context/ToastContext";
 import { CheckCircle2, Clock, XCircle, ChevronLeft, ChevronRight } from "lucide-react";
@@ -30,6 +31,7 @@ export function QuizPlayer({
   questions: QuizQuestion[];
   onExit: () => void;
 }) {
+  const { t } = useTranslation();
   const { theme } = useTheme();
   const toast = useToast();
   const [attemptId, setAttemptId] = useState<string | null>(null);
@@ -129,9 +131,9 @@ export function QuizPlayer({
       <div className="space-y-6">
         <Card className={`p-8 text-center`}>
           <p className={`text-5xl font-bold text-[#D4AF37] mb-2`}>{result.scorePercent}%</p>
-          <p className={textPrimary}>Quiz complete</p>
+          <p className={textPrimary}>{t("studentDashboard.quizComplete", { defaultValue: "Quiz fertig" })}</p>
           <Button variant="gold" className="mt-6" onClick={onExit}>
-            Back to quizzes
+            {t("studentDashboard.backToQuizzes", { defaultValue: "Zurück zu den Aufgaben" })}
           </Button>
         </Card>
 
@@ -150,10 +152,12 @@ export function QuizPlayer({
                   <div>
                     <p className={`font-medium ${textPrimary}`}>{q.question_text}</p>
                     <p className="text-sm text-gray-500 mt-2">
-                      Your answer: {g?.answer || "-"}
+                      {t("studentDashboard.yourAnswer", { defaultValue: "Deine Antwort" })}: {g?.answer || "-"}
                     </p>
                     {!ok && (
-                      <p className="text-sm text-[#D4AF37] mt-1">Correct: {q.correct_answer}</p>
+                      <p className="text-sm text-[#D4AF37] mt-1">
+                        {t("studentDashboard.correctAnswer", { defaultValue: "Richtig" })}: {q.correct_answer}
+                      </p>
                     )}
                     {q.explanation && (
                       <p className="text-sm text-gray-400 mt-2">{q.explanation}</p>
@@ -174,7 +178,11 @@ export function QuizPlayer({
         <div>
           <h2 className={`text-xl font-bold ${textPrimary}`}>{quiz.title}</h2>
           <p className="text-sm text-gray-500">
-            Question {index + 1} of {questions.length}
+            {t("studentDashboard.quizQuestionProgress", {
+              defaultValue: "Frage {{current}} von {{total}}",
+              current: index + 1,
+              total: questions.length,
+            })}
           </p>
         </div>
         {secondsLeft !== null && (
@@ -238,7 +246,7 @@ export function QuizPlayer({
             }`}
             value={answers[current.id] || ""}
             onChange={(e) => setAnswers({ ...answers, [current.id]: e.target.value })}
-            placeholder="Your answer"
+            placeholder={t("studentDashboard.quizAnswerPlaceholder", { defaultValue: "Deine Antwort" })}
           />
         )}
       </Card>
@@ -249,15 +257,17 @@ export function QuizPlayer({
           disabled={index === 0}
           onClick={() => setIndex((i) => i - 1)}
         >
-          <ChevronLeft className="w-4 h-4 mr-1" /> Previous
+          <ChevronLeft className="w-4 h-4 mr-1" /> {t("studentDashboard.quizPrevious", { defaultValue: "Zurück" })}
         </Button>
         {index < questions.length - 1 ? (
           <Button variant="gold" onClick={() => setIndex((i) => i + 1)}>
-            Next <ChevronRight className="w-4 h-4 ml-1" />
+            {t("studentDashboard.quizNext", { defaultValue: "Weiter" })} <ChevronRight className="w-4 h-4 ml-1" />
           </Button>
         ) : (
           <Button variant="gold" onClick={handleSubmit} disabled={submitting || !attemptId}>
-            {submitting ? "Submitting…" : "Submit quiz"}
+            {submitting
+              ? t("studentDashboard.quizSubmitting", { defaultValue: "Wird geprüft…" })
+              : t("studentDashboard.quizSubmit", { defaultValue: "Quiz abgeben" })}
           </Button>
         )}
       </div>

@@ -18,19 +18,39 @@ async function isActiveStudent(
 export async function listEligibleStudentsForTeacher(
   db: SupabaseClient,
   _teacherId: string
-): Promise<{ id: string; name: string }[]> {
+): Promise<{ id: string; name: string; remainingUnits: number; totalUnits: number }[]> {
   const { data: profiles } = await db
     .from("profiles")
     .select("id, full_name, is_active")
     .eq("role", "student")
     .order("full_name");
 
-  return (profiles ?? [])
-    .filter((p) => p.is_active !== false)
-    .map((p) => ({
+  const active = (profiles ?? []).filter((p) => p.is_active !== false);
+  const ids = active.map((p) => p.id as string);
+  const unitByStudent = new Map<string, { remaining: number; total: number }>();
+
+  if (ids.length) {
+    const { data: units } = await db
+      .from("user_units")
+      .select("student_id, remaining_units, total_units")
+      .in("student_id", ids);
+    for (const row of units ?? []) {
+      unitByStudent.set(row.student_id as string, {
+        remaining: (row.remaining_units as number | null) ?? 0,
+        total: (row.total_units as number | null) ?? 0,
+      });
+    }
+  }
+
+  return active.map((p) => {
+    const units = unitByStudent.get(p.id as string);
+    return {
       id: p.id as string,
       name: (p.full_name as string | null)?.trim() || "Student",
-    }));
+      remainingUnits: units?.remaining ?? 0,
+      totalUnits: units?.total ?? 0,
+    };
+  });
 }
 
 export async function isStudentEligibleForTeacher(

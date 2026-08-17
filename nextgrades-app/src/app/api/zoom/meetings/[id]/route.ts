@@ -3,6 +3,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { requireTeacherOrAdminApi } from "@/lib/auth/api-auth";
 import { isSupabaseServiceRoleConfigured } from "@/lib/supabase/env";
 import { deleteZoomMeetingOAuth } from "@/lib/zoom/meetings";
+import { restoreLessonUnitOnCancel } from "@/lib/lessons/consume-units";
 
 export async function DELETE(
   _request: Request,
@@ -18,7 +19,7 @@ export async function DELETE(
 
   const { data: lesson, error: fetchError } = await db
     .from("lessons")
-    .select("id, zoom_meeting_id, status")
+    .select("id, zoom_meeting_id, status, student_id, units_consumed")
     .eq("id", lessonId)
     .eq("teacher_id", teacherId)
     .maybeSingle();
@@ -49,6 +50,12 @@ export async function DELETE(
       }
     }
   }
+
+  await restoreLessonUnitOnCancel(db, {
+    id: lesson.id as string,
+    student_id: lesson.student_id as string,
+    units_consumed: Boolean(lesson.units_consumed),
+  });
 
   await db
     .from("lessons")

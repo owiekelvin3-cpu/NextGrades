@@ -9,6 +9,7 @@ import { getZoomConnection, getZoomAccessToken } from "@/lib/zoom/tokens";
 import { resolveTargetStudentIds } from "@/lib/zoom/scheduling";
 import { formatZoomLocalStartTime, wallTimeToUtc } from "@/lib/zoom/datetime";
 import { notifyLiveClassScheduled } from "@/lib/notifications/triggers";
+import { settleHeldLessonUnits } from "@/lib/lessons/consume-units";
 
 export async function GET() {
   const gate = await requireTeacherOrAdminApi();
@@ -16,6 +17,7 @@ export async function GET() {
 
   const teacherId = gate.auth!.profile!.id;
   const db = isSupabaseServiceRoleConfigured() ? createAdminClient() : gate.auth!.supabase;
+  await settleHeldLessonUnits(db);
   const { data, error } = await db
     .from("lessons")
     .select("*")
@@ -189,6 +191,8 @@ export async function POST(request: Request) {
         joinUrl: zoomMeeting.join_url,
       });
     }
+
+    await settleHeldLessonUnits(admin);
 
     return NextResponse.json({
       meeting: zoomMeeting,

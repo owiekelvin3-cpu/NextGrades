@@ -184,6 +184,41 @@ function AdminUsersPageContent() {
     }
   };
 
+  const handleAddUnits = async (userId: string, userName: string | null) => {
+    const raw = window.prompt(
+      t("adminUsers.addUnitsPrompt", {
+        defaultValue: "Wie viele Unterrichtsstunden gutschreiben? (z. B. 10)",
+        name: userName || "",
+      }),
+      "10"
+    );
+    if (raw == null) return;
+    const addUnits = Number.parseInt(raw, 10);
+    if (!Number.isFinite(addUnits) || addUnits <= 0) {
+      toastError(t("adminUsers.addUnitsInvalid", { defaultValue: "Bitte eine Zahl größer als 0 eingeben." }));
+      return;
+    }
+    try {
+      const response = await fetch(`/api/admin/users/${userId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ add_units: addUnits }),
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data.error || t("adminUsers.addUnitsFailed", { defaultValue: "Stunden konnten nicht gutgeschrieben werden." }));
+      success(
+        t("adminUsers.addUnitsSuccess", {
+          defaultValue: "{{count}} Stunden gutgeschrieben. Noch {{remaining}} übrig.",
+          count: addUnits,
+          remaining: data.remaining_units ?? addUnits,
+        })
+      );
+      void fetchUsers();
+    } catch (error) {
+      toastError(error instanceof Error ? error.message : t("adminUsers.addUnitsFailed", { defaultValue: "Stunden konnten nicht gutgeschrieben werden." }));
+    }
+  };
+
   const handleRoleChange = async (userId: string, newRole: string) => {
     try {
       const response = await fetch(`/api/admin/users/${userId}`, {
@@ -404,6 +439,16 @@ function AdminUsersPageContent() {
                 </select>
                 <AdminTableActionsMenu
                   actions={[
+                    ...(user.role === "student"
+                      ? [
+                          {
+                            id: "units",
+                            label: t("adminUsers.addUnits", { defaultValue: "Stunden gutschreiben" }),
+                            icon: Plus,
+                            onClick: () => void handleAddUnits(user.id, user.full_name),
+                          },
+                        ]
+                      : []),
                     {
                       id: "suspend",
                       label: user.is_active ? t("adminUsers.suspendTitle") : t("adminUsers.reactivateTitle"),
@@ -414,7 +459,7 @@ function AdminUsersPageContent() {
                       id: "delete",
                       label: t("adminUsers.deleteTitle"),
                       icon: Trash2,
-                      variant: "danger",
+                      variant: "danger" as const,
                       onClick: () => void handleDelete(user.id, user.full_name),
                     },
                   ]}

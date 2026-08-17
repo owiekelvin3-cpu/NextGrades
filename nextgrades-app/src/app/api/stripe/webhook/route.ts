@@ -112,7 +112,11 @@ export async function POST(request: Request) {
             if (userUnits) {
               await admin
                 .from("user_units")
-                .update({ remaining_units: userUnits.remaining_units + 10 })
+                .update({
+                  remaining_units: userUnits.remaining_units + 10,
+                  total_units: (userUnits.total_units ?? 0) + 10,
+                  updated_at: new Date().toISOString(),
+                })
                 .eq("student_id", userId);
             }
           }
