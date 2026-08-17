@@ -7,10 +7,7 @@ import {
   Clock,
   Video,
   User,
-  Plus,
   MoreHorizontal,
-  Send,
-  X,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { getDateLocale } from "@/lib/i18n/locales";
@@ -26,8 +23,6 @@ import { StudentTabBar } from "./StudentTabBar";
 import { StudentCalendarConnectModal } from "./StudentCalendarConnectModal";
 import { ZoomMeetingButton } from "@/components/zoom/ZoomMeetingButton";
 import { lessonHasMeetingLink } from "@/lib/meetings/link";
-import { useToast } from "@/context/ToastContext";
-import { mobile } from "@/lib/mobile/tokens";
 import { cn } from "@/lib/utils";
 
 type Tab = "upcoming" | "past" | "calendar";
@@ -88,11 +83,7 @@ export function StudentAppointmentsExperience() {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<StudentAppointmentsData | null>(null);
   const [tab, setTab] = useState<Tab>("upcoming");
-  const [showRequestModal, setShowRequestModal] = useState(false);
   const [showCalendarModal, setShowCalendarModal] = useState(false);
-  const [requesting, setRequesting] = useState(false);
-  const [requestForm, setRequestForm] = useState({ date: "", time: "", message: "" });
-  const toast = useToast();
 
   useEffect(() => {
     fetchStudentAppointmentsData()
@@ -102,7 +93,7 @@ export function StudentAppointmentsExperience() {
 
   const title = t("studentDashboard.nav.appointments");
   const description = t("studentDashboard.appointmentsDesc", {
-    defaultValue: "Here you can see all your upcoming and past appointments.",
+    defaultValue: "See upcoming and past lessons.",
   });
 
   const list = useMemo(() => {
@@ -134,133 +125,21 @@ export function StudentAppointmentsExperience() {
   }
 
   const headerActions = (
-    <div className="flex w-full flex-col gap-2 sm:flex-row sm:flex-wrap">
-      <Button
-        variant="outline"
-        size="sm"
-        className="w-full gap-2 sm:w-auto"
-        onClick={() => setShowCalendarModal(true)}
-      >
-        <Calendar className="h-4 w-4" />
-        {t("studentDashboard.connectCalendar", { defaultValue: "Connect calendar" })}
-      </Button>
-      <Button variant="gold" size="sm" onClick={() => setShowRequestModal(true)} className="w-full gap-2 sm:w-auto">
-        <Plus className="h-4 w-4" />
-        {t("studentDashboard.requestAppointment", { defaultValue: "Request new appointment" })}
-      </Button>
-    </div>
+    <Button
+      variant="outline"
+      size="sm"
+      className="w-full gap-2 sm:w-auto"
+      onClick={() => setShowCalendarModal(true)}
+    >
+      <Calendar className="h-4 w-4" />
+      {t("studentDashboard.connectCalendar", { defaultValue: "Connect calendar" })}
+    </Button>
   );
-
-  const handleRequestSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setRequesting(true);
-    try {
-      const res = await fetch("/api/appointments/request", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          preferredDate: requestForm.date || undefined,
-          preferredTime: requestForm.time || undefined,
-          message: requestForm.message || undefined,
-        }),
-      });
-      const json = await res.json().catch(() => ({}));
-      if (res.ok) {
-        toast.success(t("studentDashboard.requestSent", { defaultValue: "Request sent! Your teacher will be in touch." }));
-        setShowRequestModal(false);
-        setRequestForm({ date: "", time: "", message: "" });
-      } else {
-        toast.error(json.error || t("misc.errorGeneric", { defaultValue: "Something went wrong." }));
-      }
-    } catch {
-      toast.error(t("misc.errorGeneric", { defaultValue: "Something went wrong." }));
-    } finally {
-      setRequesting(false);
-    }
-  };
 
   return (
     <StudentDashboardLayout title={title} description={description} headerAction={headerActions}>
       <StudentCalendarConnectModal open={showCalendarModal} onClose={() => setShowCalendarModal(false)} />
-      {/* Request Appointment Modal */}
-      {showRequestModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className={cn("w-full max-w-md rounded-2xl p-6 shadow-xl", st.panel)}>
-            <div className="mb-5 flex items-center justify-between">
-              <h2 className={cn("text-lg font-bold", st.textPrimary)}>
-                {t("studentDashboard.requestAppointment", { defaultValue: "Request new appointment" })}
-              </h2>
-              <button
-                type="button"
-                onClick={() => setShowRequestModal(false)}
-                className={cn("rounded-lg p-1.5", st.iconBtn)}
-              >
-                <X className="h-5 w-5" />
-              </button>
-            </div>
-            <form onSubmit={handleRequestSubmit} className="space-y-4">
-              <div>
-                <label className={cn("mb-1.5 block text-sm font-medium", st.textPrimary)}>
-                  {t("studentDashboard.preferredDate", { defaultValue: "Preferred date" })}
-                </label>
-                <input
-                  type="date"
-                  className={cn("w-full rounded-xl border px-4 py-2.5 text-sm outline-none focus:border-[#D4AF37]", st.input)}
-                  value={requestForm.date}
-                  min={new Date().toISOString().slice(0, 10)}
-                  onChange={(e) => setRequestForm((f) => ({ ...f, date: e.target.value }))}
-                />
-              </div>
-              <div>
-                <label className={cn("mb-1.5 block text-sm font-medium", st.textPrimary)}>
-                  {t("studentDashboard.preferredTime", { defaultValue: "Preferred time" })}
-                </label>
-                <input
-                  type="time"
-                  className={cn("w-full rounded-xl border px-4 py-2.5 text-sm outline-none focus:border-[#D4AF37]", st.input)}
-                  value={requestForm.time}
-                  onChange={(e) => setRequestForm((f) => ({ ...f, time: e.target.value }))}
-                />
-              </div>
-              <div>
-                <label className={cn("mb-1.5 block text-sm font-medium", st.textPrimary)}>
-                  {t("studentDashboard.message", { defaultValue: "Message (optional)" })}
-                </label>
-                <textarea
-                  rows={3}
-                  className={cn("w-full resize-none rounded-xl border px-4 py-2.5 text-sm outline-none focus:border-[#D4AF37]", st.input)}
-                  placeholder={t("studentDashboard.messagePlaceholder", { defaultValue: "Any specific topic or notes for your teacher..." })}
-                  value={requestForm.message}
-                  onChange={(e) => setRequestForm((f) => ({ ...f, message: e.target.value }))}
-                />
-              </div>
-              <div className="flex gap-3 pt-1">
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="flex-1"
-                  onClick={() => setShowRequestModal(false)}
-                  disabled={requesting}
-                >
-                  {t("misc.cancel", { defaultValue: "Cancel" })}
-                </Button>
-                <Button
-                  type="submit"
-                  variant="gold"
-                  className="flex-1 gap-2"
-                  disabled={requesting}
-                >
-                  <Send className="h-4 w-4" />
-                  {requesting
-                    ? t("misc.sending", { defaultValue: "Sending..." })
-                    : t("misc.send", { defaultValue: "Send request" })}
-                </Button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-      <div className={cn(st.pageGrid, "pb-24 md:pb-0")}>
+      <div className={st.pageGrid}>
         <div className={cn(st.mainColumn, "space-y-6")}>
           <StudentTabBar
             tabs={[
@@ -461,13 +340,6 @@ export function StudentAppointmentsExperience() {
             </div>
           )}
         </aside>
-      </div>
-
-      <div className={cn(mobile.stickyAction, "md:hidden")}>
-        <Button variant="gold" onClick={() => setShowRequestModal(true)} className="w-full gap-2">
-          <Plus className="h-5 w-5" />
-          {t("studentDashboard.requestAppointment", { defaultValue: "Request new appointment" })}
-        </Button>
       </div>
     </StudentDashboardLayout>
   );
