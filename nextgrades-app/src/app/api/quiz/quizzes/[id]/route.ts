@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { getAuthProfile, requireRole } from "@/lib/quiz/auth";
+import { quizDataClient } from "@/lib/quiz/db";
 
 export async function GET(
   _request: Request,
@@ -11,8 +12,9 @@ export async function GET(
     const supabase = await createClient();
     const { profile, error } = await getAuthProfile(supabase);
     if (!profile) return NextResponse.json({ error }, { status: 401 });
+    const db = quizDataClient(supabase);
 
-    const { data: quiz, error: quizError } = await supabase
+    const { data: quiz, error: quizError } = await db
       .from("generated_quizzes")
       .select("*, quiz_questions(*)")
       .eq("id", id)
@@ -61,6 +63,7 @@ export async function PUT(
     if (!requireRole(profile, ["teacher", "admin"])) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
+    const db = quizDataClient(supabase);
 
     const body = await request.json();
     const { questions, publish, ...quizFields } = body as {
@@ -80,7 +83,7 @@ export async function PUT(
       time_limit_minutes?: number | null;
     };
 
-    const { data: existing } = await supabase
+    const { data: existing } = await db
       .from("generated_quizzes")
       .select("created_by")
       .eq("id", id)
@@ -105,13 +108,13 @@ export async function PUT(
       updatePayload.status = "draft";
     }
 
-    const { error: updateError } = await supabase.from("generated_quizzes").update(updatePayload).eq("id", id);
+    const { error: updateError } = await db.from("generated_quizzes").update(updatePayload).eq("id", id);
     if (updateError) throw updateError;
 
     if (questions?.length) {
       for (const q of questions) {
         if (q.id) {
-          await supabase
+          await db
             .from("quiz_questions")
             .update({
               question_type: q.question_type,
@@ -128,7 +131,7 @@ export async function PUT(
       }
     }
 
-    const { data: full } = await supabase
+    const { data: full } = await db
       .from("generated_quizzes")
       .select("*, quiz_questions(*)")
       .eq("id", id)
@@ -153,8 +156,9 @@ export async function DELETE(
     if (!requireRole(profile, ["teacher", "admin"])) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
+    const db = quizDataClient(supabase);
 
-    const { data: existing } = await supabase
+    const { data: existing } = await db
       .from("generated_quizzes")
       .select("created_by")
       .eq("id", id)
@@ -165,7 +169,7 @@ export async function DELETE(
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
-    const { error: deleteError } = await supabase.from("generated_quizzes").delete().eq("id", id);
+    const { error: deleteError } = await db.from("generated_quizzes").delete().eq("id", id);
     if (deleteError) throw deleteError;
 
     return NextResponse.json({ success: true });

@@ -77,7 +77,9 @@ export function StudentLiveClassesExperience() {
                           <MeetingProviderIcon provider={lesson.meeting_provider} size="sm" />
                         )}
                         <p className={cn("text-lg font-bold", st.textPrimary)}>
-                          {lesson.subject_name || t("zoom.liveClass", { defaultValue: "Live class" })}
+                          {lesson.meeting_title ||
+                            lesson.subject_name ||
+                            t("zoom.liveClass", { defaultValue: "Live class" })}
                         </p>
                       </div>
                       <p className={cn("text-sm", st.textMuted)}>{parts.weekday}</p>

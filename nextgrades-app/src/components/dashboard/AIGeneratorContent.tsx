@@ -136,7 +136,7 @@ export function AIGeneratorContent() {
 
       if (data.quiz) {
         setGeneratedQuiz(data.quiz);
-        toast.success(t("aiGeneratorPage.generatedTitle", { defaultValue: "Quiz generated successfully!" }));
+        toast.success(t("aiGeneratorPage.generatedPublished", { defaultValue: "Quiz generated and published for students." }));
       } else if (data.jobId) {
         const jobRes = await fetch(`/api/quiz/jobs/${data.jobId}`);
         const jobData = await jobRes.json();
@@ -349,8 +349,8 @@ export function AIGeneratorContent() {
                 </li>
               ))}
             </ul>
-            <Button variant="outline" className="mt-4" href={`/dashboard/teacher/content`}>
-              {t("aiGeneratorPage.viewAll", { defaultValue: "View in content library" })}
+            <Button variant="outline" className="mt-4" href="/dashboard/student/quizzes">
+              {t("aiGeneratorPage.viewAsStudent", { defaultValue: "Open student quiz page" })}
             </Button>
           </Card>
         )}

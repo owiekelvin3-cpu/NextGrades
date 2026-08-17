@@ -5,7 +5,6 @@ import {
   fetchStudentEnrollments,
   fetchStudentLessons,
   fetchStudentUnits,
-  fetchMaterials,
   fetchNotifications,
   fetchCurrentProfile,
   getSessionUserId,
@@ -67,6 +66,7 @@ type LessonRow = {
   zoom_meeting_id: string | null;
   meeting_url: string | null;
   meeting_provider: string | null;
+  meeting_title: string | null;
   status: string | null;
 };
 
@@ -76,7 +76,7 @@ async function fetchAllStudentLessons(studentId: string): Promise<DashboardLesso
   const { data, error } = await supabase
     .from("lessons")
     .select(
-      "id, teacher_id, subject_id, start_time, duration, zoom_link, zoom_meeting_id, meeting_url, meeting_provider, status"
+      "id, teacher_id, subject_id, start_time, duration, zoom_link, zoom_meeting_id, meeting_url, meeting_provider, meeting_title, status"
     )
     .eq("student_id", studentId)
     .neq("status", "cancelled")
@@ -114,6 +114,7 @@ async function fetchAllStudentLessons(studentId: string): Promise<DashboardLesso
     zoom_meeting_id: r.zoom_meeting_id,
     meeting_url: r.meeting_url,
     meeting_provider: r.meeting_provider,
+    meeting_title: r.meeting_title,
     status: r.status ?? "scheduled",
     teacher_name: r.teacher_id ? (teacherMap.get(r.teacher_id) as string | undefined) : undefined,
     subject_name: r.subject_id ? (subjectMap.get(r.subject_id) as string | undefined) : undefined,
@@ -262,7 +263,7 @@ export async function fetchStudentOverviewData(): Promise<StudentOverviewData | 
     fetchStudentUnits(userId),
     fetchStudentLessons(userId),
     fetchAllStudentLessons(userId),
-    fetchMaterials({ limit: 5 }),
+    fetchAssignedStudentMaterials(8),
     fetchStudentEnrollments(userId),
     fetchStudentQuizTasks(userId),
     fetchNotifications(userId, 5),
@@ -438,11 +439,23 @@ export async function fetchStudentResourcesPageData(): Promise<{
   if (!userId) return null;
 
   const [materials, enrollments] = await Promise.all([
-    fetchMaterials({ limit: 100 }),
+    fetchAssignedStudentMaterials(),
     fetchStudentEnrollments(userId),
   ]);
 
   return { materials, enrollments };
+}
+
+async function fetchAssignedStudentMaterials(limit?: number): Promise<Material[]> {
+  try {
+    const params = limit ? `?limit=${limit}` : "";
+    const res = await fetch(`/api/student/materials${params}`);
+    if (!res.ok) return [];
+    const json = (await res.json()) as { materials?: Material[] };
+    return Array.isArray(json.materials) ? json.materials : [];
+  } catch {
+    return [];
+  }
 }
 
 export function getFirstName(fullName: string): string {

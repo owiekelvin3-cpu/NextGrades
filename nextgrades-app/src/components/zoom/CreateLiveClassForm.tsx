@@ -151,6 +151,14 @@ export function CreateLiveClassForm({
 
   const handlePasteLinkSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!form.studentId && !form.subjectId) {
+      toast.error(
+        t("zoom.selectStudentOrSubject", {
+          defaultValue: "Select a student or a subject so the class appears in their portal.",
+        })
+      );
+      return;
+    }
     const check = validateMeetingLink(form.meetingLink);
     if (!check.ok) {
       toast.error(check.error);
@@ -197,6 +205,14 @@ export function CreateLiveClassForm({
 
   const handleAutoZoomSubmit = async () => {
     if (!zoomReady) return;
+    if (!form.studentId && !form.subjectId) {
+      toast.error(
+        t("zoom.selectStudentOrSubject", {
+          defaultValue: "Select a student or a subject so the class appears in their portal.",
+        })
+      );
+      return;
+    }
     setLoading(true);
     try {
       const res = await fetch("/api/zoom/meetings", {
@@ -418,6 +434,13 @@ export function CreateLiveClassForm({
                 </option>
               ))}
             </select>
+            {students.length === 0 && (
+              <p className="mt-1.5 text-xs text-amber-700">
+                {t("zoom.noStudentsYet", {
+                  defaultValue: "No students found yet. Add a student account first.",
+                })}
+              </p>
+            )}
           </div>
         </div>
 

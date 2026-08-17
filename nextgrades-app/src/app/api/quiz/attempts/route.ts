@@ -1,14 +1,16 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { getAuthProfile, requireRole } from "@/lib/quiz/auth";
+import { quizDataClient } from "@/lib/quiz/db";
 
 export async function GET() {
   try {
     const supabase = await createClient();
     const { profile, error } = await getAuthProfile(supabase);
     if (!profile) return NextResponse.json({ error }, { status: 401 });
+    const db = quizDataClient(supabase);
 
-    let query = supabase
+    let query = db
       .from("quiz_attempts")
       .select("*, generated_quizzes(id, title, difficulty)")
       .order("created_at", { ascending: false });
@@ -35,13 +37,14 @@ export async function POST(request: Request) {
     if (!requireRole(profile, ["student"])) {
       return NextResponse.json({ error: "Only students can start quiz attempts" }, { status: 403 });
     }
+    const db = quizDataClient(supabase);
 
     const { quizId } = await request.json();
     if (!quizId) {
       return NextResponse.json({ error: "quizId is required" }, { status: 400 });
     }
 
-    const { data: quiz, error: quizError } = await supabase
+    const { data: quiz, error: quizError } = await db
       .from("generated_quizzes")
       .select("id, is_published, time_limit_minutes")
       .eq("id", quizId)
@@ -51,7 +54,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Quiz not available" }, { status: 404 });
     }
 
-    const { data: attempt, error: attemptError } = await supabase
+    const { data: attempt, error: attemptError } = await db
       .from("quiz_attempts")
       .insert({
         quiz_id: quizId,

@@ -1,7 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { storagePathFromLegacyUrl } from "@/lib/catalog/subjects";
 import type { AppRole } from "@/lib/auth/roles";
-import { isSubscriptionCurrentlyActive } from "@/lib/subscriptions/types";
 
 export type MaterialAccessRow = {
   id: string;
@@ -29,7 +28,14 @@ export type AccessContext = {
   subscriptionStatus: string | null;
   subscriptionEndsAt: string | null;
   enrollments: EnrollmentRow[];
+  grantedMaterialIds: string[];
 };
+
+export function isMaterialGrantActive(expiresAt?: string | null): boolean {
+  if (!expiresAt) return true;
+  const ends = Date.parse(expiresAt);
+  return Number.isFinite(ends) && ends > Date.now();
+}
 
 export function isPremiumMaterial(material: Pick<MaterialAccessRow, "access_type" | "is_premium">): boolean {
   return material.access_type === "premium" || material.is_premium === true;
@@ -52,6 +58,14 @@ export function enrollmentMatchesMaterial(
   return true;
 }
 
+export function isAssignedStudentMaterial(material: MaterialAccessRow, ctx: AccessContext): boolean {
+  if (ctx.role === "admin") return true;
+  if (!ctx.userId) return false;
+  if (material.created_by && ctx.userId === material.created_by) return true;
+  if (ctx.grantedMaterialIds?.includes(material.id)) return true;
+  return ctx.enrollments.some((e) => enrollmentMatchesMaterial(e, material));
+}
+
 export function canAccessMaterial(material: MaterialAccessRow, ctx: AccessContext): boolean {
   if (ctx.role === "admin") return true;
   if (ctx.userId && material.created_by && ctx.userId === material.created_by) return true;
@@ -59,14 +73,7 @@ export function canAccessMaterial(material: MaterialAccessRow, ctx: AccessContex
   if (!isPremiumMaterial(material)) return true;
 
   if (!ctx.userId) return false;
-  if (
-    isSubscriptionCurrentlyActive({
-      subscription_status: ctx.subscriptionStatus,
-      subscription_ends_at: ctx.subscriptionEndsAt,
-    })
-  ) {
-    return true;
-  }
+  if (ctx.grantedMaterialIds?.includes(material.id)) return true;
 
   return ctx.enrollments.some((e) => enrollmentMatchesMaterial(e, material));
 }
@@ -77,10 +84,10 @@ export async function loadAccessContext(
   role: AppRole | null
 ): Promise<AccessContext> {
   if (!userId) {
-    return { userId: null, role, subscriptionStatus: null, subscriptionEndsAt: null, enrollments: [] };
+    return { userId: null, role, subscriptionStatus: null, subscriptionEndsAt: null, enrollments: [], grantedMaterialIds: [] };
   }
 
-  const [{ data: profile }, { data: enrollments }] = await Promise.all([
+  const [{ data: profile }, { data: enrollments }, { data: grants }] = await Promise.all([
     db
       .from("profiles")
       .select("subscription_status, subscription_ends_at")
@@ -93,7 +100,16 @@ export async function loadAccessContext(
           .eq("student_id", userId)
           .eq("status", "active")
       : Promise.resolve({ data: [] as EnrollmentRow[] }),
+    db
+      .from("material_grants")
+      .select("material_id, expires_at, status")
+      .eq("student_id", userId)
+      .eq("status", "active"),
   ]);
+
+  const grantedMaterialIds = ((grants ?? []) as { material_id: string; expires_at: string | null; status: string }[])
+    .filter((g) => isMaterialGrantActive(g.expires_at))
+    .map((g) => g.material_id);
 
   return {
     userId,
@@ -101,6 +117,7 @@ export async function loadAccessContext(
     subscriptionStatus: (profile as { subscription_status?: string } | null)?.subscription_status ?? null,
     subscriptionEndsAt: (profile as { subscription_ends_at?: string } | null)?.subscription_ends_at ?? null,
     enrollments: (enrollments ?? []) as EnrollmentRow[],
+    grantedMaterialIds,
   };
 }
 

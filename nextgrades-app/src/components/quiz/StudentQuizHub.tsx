@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/Badge";
 import { EmptyState } from "@/components/dashboard/EmptyState";
 import { LoadingBlock } from "@/components/dashboard/LoadingBlock";
 import { QuizPlayer } from "@/components/quiz/QuizPlayer";
-import { useTheme } from "@/context/ThemeContext";
+import { useToast } from "@/context/ToastContext";
 import { useTranslation } from "react-i18next";
 import { Brain, History, Play, RotateCcw } from "lucide-react";
 import type { QuizQuestion } from "@/lib/quiz/types";
@@ -30,9 +30,19 @@ type AttemptRow = {
   generated_quizzes?: { title: string };
 };
 
+function questionCount(quiz: PublishedQuiz): number | null {
+  const embed = quiz.quiz_questions;
+  if (!Array.isArray(embed) || embed.length === 0) return null;
+  const first = embed[0] as { count?: number };
+  if (first && typeof first === "object" && "count" in first) {
+    return Number(first.count ?? 0);
+  }
+  return embed.length;
+}
+
 export function StudentQuizHub() {
-  const { theme } = useTheme();
   const { t } = useTranslation();
+  const toast = useToast();
   const [tab, setTab] = useState<"available" | "history">("available");
   const [quizzes, setQuizzes] = useState<PublishedQuiz[]>([]);
   const [attempts, setAttempts] = useState<AttemptRow[]>([]);
@@ -42,7 +52,6 @@ export function StudentQuizHub() {
     questions: QuizQuestion[];
   } | null>(null);
 
-  const isDark = theme === "dark";
   const textPrimary = "text-foreground";
 
   const load = useCallback(async () => {
@@ -72,10 +81,17 @@ export function StudentQuizHub() {
   const startQuiz = async (quizId: string) => {
     const res = await fetch(`/api/quiz/quizzes/${quizId}`);
     const data = await res.json();
-    if (!res.ok) return;
+    if (!res.ok) {
+      toast.error(data.error || t("studentDashboard.quizStartError", { defaultValue: "Could not open this quiz." }));
+      return;
+    }
     const questions = (data.quiz_questions || []).sort(
       (a: QuizQuestion, b: QuizQuestion) => a.sort_order - b.sort_order
     ) as QuizQuestion[];
+    if (!questions.length) {
+      toast.error(t("studentDashboard.quizEmpty", { defaultValue: "This quiz has no questions yet." }));
+      return;
+    }
     setActiveQuiz({
       meta: {
         id: data.id,
@@ -125,8 +141,10 @@ export function StudentQuizHub() {
       {tab === "available" ? (
         quizzes.length === 0 ? (
           <EmptyState
-            title={t("dashboardPages.student.quizzes.title")}
-            description={t("studentDashboard.bookWithTeacher")}
+            title={t("studentDashboard.noQuizzes", { defaultValue: "No quizzes yet" })}
+            description={t("studentDashboard.noQuizzesDesc", {
+              defaultValue: "When your teacher publishes a quiz, it will show up here.",
+            })}
           />
         ) : (
           <div className="grid md:grid-cols-2 gap-4">
@@ -138,15 +156,13 @@ export function StudentQuizHub() {
                 </div>
                 {q.topic && <p className="text-sm text-text-muted mb-2">{q.topic}</p>}
                 <p className="text-sm text-text-muted mb-4">
-                  {Array.isArray(q.quiz_questions)
-                    ? q.quiz_questions.length
-                    : (q.quiz_questions as unknown as { count?: number })?.count ?? "-"}{" "}
-                  questions
+                  {questionCount(q) ?? "-"}{" "}
+                  {t("studentDashboard.quizQuestions", { defaultValue: "questions" })}
                   {q.time_limit_minutes ? ` · ${q.time_limit_minutes} min` : ""}
                 </p>
                 <Button variant="gold" size="sm" onClick={() => void startQuiz(q.id)}>
                   <Play className="w-4 h-4 mr-2" />
-                  Start quiz
+                  {t("studentDashboard.quizStart", { defaultValue: "Start quiz" })}
                 </Button>
               </Card>
             ))}

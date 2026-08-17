@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { getAuthProfile, requireRole } from "@/lib/quiz/auth";
 import type { Difficulty, QuestionType } from "@/lib/quiz/types";
+import { quizDataClient } from "@/lib/quiz/db";
 import {
   buildGenerationCacheKey,
   generateFlashcardSet,
@@ -38,6 +39,7 @@ async function updateJob(
 export async function POST(request: Request) {
   let jobId: string | null = null;
   const supabase = await createClient();
+  const db = quizDataClient(supabase);
 
   try {
     const { user, profile, error } = await getAuthProfile(supabase);
@@ -63,7 +65,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "materialId is required" }, { status: 400 });
     }
 
-    const { data: material, error: matError } = await supabase
+    const { data: material, error: matError } = await db
       .from("uploaded_materials")
       .select("*")
       .eq("id", materialId)
@@ -95,7 +97,7 @@ export async function POST(request: Request) {
       seed: forceRefresh ? seed : undefined,
     });
 
-    const { data: job, error: jobError } = await supabase
+    const { data: job, error: jobError } = await db
       .from("quiz_generation_jobs")
       .insert({
         user_id: user.id,
@@ -113,14 +115,14 @@ export async function POST(request: Request) {
     jobId = activeJobId;
 
     if (mode === "flashcards") {
-      const { data: cachedSet } = await supabase
+      const { data: cachedSet } = await db
         .from("flashcard_sets")
         .select("*, flashcards(*)")
         .eq("generation_cache_key", cacheKey)
         .maybeSingle();
 
       if (cachedSet && !forceRefresh) {
-        await updateJob(supabase, activeJobId, {
+        await updateJob(db, activeJobId, {
           status: "completed",
           result_flashcard_set_id: cachedSet.id,
           completed_at: new Date().toISOString(),
@@ -137,7 +139,7 @@ export async function POST(request: Request) {
         throw new Error("Could not generate flashcards from this material. Add more content.");
       }
 
-      const setId = await persistFlashcardSet(supabase, {
+      const setId = await persistFlashcardSet(db, {
         materialId,
         userId: user.id,
         title: title || `Flashcards: ${material.title}`,
@@ -148,20 +150,20 @@ export async function POST(request: Request) {
         cards,
       });
 
-      await logGeneration(supabase, {
+      await logGeneration(db, {
         userId: user.id,
         materialId,
         action: "generate_flashcards",
         metadata: { count: cards.length, jobId: activeJobId },
       });
 
-      const { data: full } = await supabase
+      const { data: full } = await db
         .from("flashcard_sets")
         .select("*, flashcards(*)")
         .eq("id", setId)
         .single();
 
-      await updateJob(supabase, activeJobId, {
+      await updateJob(db, activeJobId, {
         status: "completed",
         result_flashcard_set_id: setId,
         completed_at: new Date().toISOString(),
@@ -170,14 +172,14 @@ export async function POST(request: Request) {
       return NextResponse.json({ cached: false, jobId: activeJobId, flashcardSet: full });
     }
 
-    const { data: cachedQuiz } = await supabase
+    const { data: cachedQuiz } = await db
       .from("generated_quizzes")
       .select("*, quiz_questions(*)")
       .eq("generation_cache_key", cacheKey)
       .maybeSingle();
 
     if (cachedQuiz && !forceRefresh) {
-      await updateJob(supabase, activeJobId, {
+      await updateJob(db, activeJobId, {
         status: "completed",
         result_quiz_id: cachedQuiz.id,
         completed_at: new Date().toISOString(),
@@ -200,7 +202,7 @@ export async function POST(request: Request) {
       throw new Error("Generated quiz quality too low. Upload richer lesson content and try again.");
     }
 
-    const quizId = await persistGeneratedQuiz(supabase, {
+    const quizId = await persistGeneratedQuiz(db, {
       materialId,
       userId: user.id,
       title: title || `Quiz: ${material.title}`,
@@ -214,7 +216,7 @@ export async function POST(request: Request) {
       questions,
     });
 
-    await logGeneration(supabase, {
+    await logGeneration(db, {
       userId: user.id,
       materialId,
       quizId,
@@ -222,13 +224,13 @@ export async function POST(request: Request) {
       metadata: { quality, count: questions.length, jobId: activeJobId },
     });
 
-    const { data: fullQuiz } = await supabase
+    const { data: fullQuiz } = await db
       .from("generated_quizzes")
       .select("*, quiz_questions(*)")
       .eq("id", quizId)
       .single();
 
-    await updateJob(supabase, activeJobId, {
+    await updateJob(db, activeJobId, {
       status: "completed",
       result_quiz_id: quizId,
       completed_at: new Date().toISOString(),
@@ -238,7 +240,7 @@ export async function POST(request: Request) {
   } catch (e) {
     const message = e instanceof Error ? e.message : "Generation failed";
     if (jobId) {
-      await updateJob(supabase, jobId, {
+      await updateJob(db, jobId, {
         status: "failed",
         error_message: message,
         completed_at: new Date().toISOString(),

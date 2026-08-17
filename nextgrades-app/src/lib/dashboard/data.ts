@@ -11,6 +11,7 @@ export type DashboardLesson = {
   zoom_meeting_id?: string | null;
   meeting_url?: string | null;
   meeting_provider?: string | null;
+  meeting_title?: string | null;
   status: string;
   notes?: string | null;
   student_id?: string | null;
@@ -111,6 +112,9 @@ async function mapLessons(rows: Record<string, unknown>[]): Promise<DashboardLes
     duration: (r.duration as number) ?? 60,
     zoom_link: r.zoom_link as string | null,
     zoom_meeting_id: r.zoom_meeting_id as string | null,
+    meeting_url: (r.meeting_url as string | null) ?? null,
+    meeting_provider: (r.meeting_provider as string | null) ?? null,
+    meeting_title: (r.meeting_title as string | null) ?? null,
     status: (r.status as string) ?? "scheduled",
     teacher_name: teacherMap.get(r.teacher_id as string),
     student_name: studentMap.get(r.student_id as string),

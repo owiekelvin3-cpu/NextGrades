@@ -36,13 +36,15 @@ function MaterialIcon({ type }: { type: string }) {
   return <FileText className="h-4 w-4" />;
 }
 
+type StudentMaterial = Material & { subject_name?: string | null };
+
 export function StudentResourcesExperience() {
   const { t, i18n } = useTranslation();
   const locale = getDateLocale(i18n.language);
   const { toggle, isBookmarked } = useBookmarks();
   const [loading, setLoading] = useState(true);
   const [pageData, setPageData] = useState<Awaited<ReturnType<typeof fetchStudentResourcesPageData>>>(null);
-  const [materials, setMaterials] = useState<Material[]>([]);
+  const [materials, setMaterials] = useState<StudentMaterial[]>([]);
   const [enrollments, setEnrollments] = useState<{ subject_name?: string }[]>([]);
   const [tab, setTab] = useState<Tab>("all");
   const [search, setSearch] = useState("");
@@ -56,7 +58,7 @@ export function StudentResourcesExperience() {
       .then((d) => {
         setPageData(d);
         if (!d) return;
-        setMaterials(d.materials);
+        setMaterials(d.materials as StudentMaterial[]);
         setEnrollments(d.enrollments);
       })
       .finally(() => setLoading(false));
@@ -79,7 +81,7 @@ export function StudentResourcesExperience() {
       const q = search.toLowerCase();
       list = list.filter((m) => m.title.toLowerCase().includes(q));
     }
-    if (courseFilter) list = list.filter((m) => m.title.includes(courseFilter));
+    if (courseFilter) list = list.filter((m) => (m.subject_name || "").includes(courseFilter) || m.title.includes(courseFilter));
     if (typeFilter) list = list.filter((m) => m.type === typeFilter);
     return list;
   }, [materials, tab, search, courseFilter, typeFilter, isBookmarked]);
@@ -240,7 +242,8 @@ export function StudentResourcesExperience() {
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="font-semibold text-foreground line-clamp-2">{m.title}</p>
-                    <p className="mt-1 text-xs text-text-muted">
+                      <p className="mt-1 text-xs text-text-muted">
+                      {m.subject_name ? `${m.subject_name} · ` : ""}
                       {materialTypeLabel(m.type, t)} · {m.file_size ? formatBytes(m.file_size) : m.type}
                     </p>
                     {m.created_at && (
@@ -315,7 +318,7 @@ export function StudentResourcesExperience() {
                             </div>
                           </div>
                         </td>
-                        <td className="px-5 py-4 text-text-muted">-</td>
+                        <td className="px-5 py-4 text-text-muted">{m.subject_name || "-"}</td>
                         <td className="px-5 py-4">
                           <span className={cn("rounded-full px-2.5 py-0.5 text-xs font-medium", materialTypeColor(m.type))}>
                             {materialTypeLabel(m.type, t)}

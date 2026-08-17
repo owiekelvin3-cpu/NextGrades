@@ -10,6 +10,7 @@ import {
   CreditCard,
   DollarSign,
   FileText,
+  KeyRound,
   Bot,
   BarChart3,
   Video,
@@ -69,6 +70,12 @@ const adminMenuItems: DashboardMenuItem[] = [
     href: `${ADMIN_PORTAL_PREFIX}/memberships`,
     icon: CreditCard,
     labelKey: "adminNav.memberships",
+    matchPrefix: true,
+  },
+  {
+    href: `${ADMIN_PORTAL_PREFIX}/resource-access`,
+    icon: KeyRound,
+    labelKey: "adminNav.resourceAccess",
     matchPrefix: true,
   },
   {

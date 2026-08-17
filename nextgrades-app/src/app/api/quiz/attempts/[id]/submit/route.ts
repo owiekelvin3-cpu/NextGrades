@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { getAuthProfile, requireRole } from "@/lib/quiz/auth";
+import { quizDataClient } from "@/lib/quiz/db";
 import type { AttemptAnswer } from "@/lib/quiz/types";
 
 function normalizeAnswer(value: string): string {
@@ -19,13 +20,14 @@ export async function POST(
     if (!requireRole(profile, ["student"])) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
+    const db = quizDataClient(supabase);
 
     const { answers, timeSpentSeconds } = await request.json() as {
       answers: { question_id: string; answer: string }[];
       timeSpentSeconds?: number;
     };
 
-    const { data: attempt, error: attemptError } = await supabase
+    const { data: attempt, error: attemptError } = await db
       .from("quiz_attempts")
       .select("*, generated_quizzes(id)")
       .eq("id", attemptId)
@@ -40,7 +42,7 @@ export async function POST(
       return NextResponse.json({ error: "Attempt already submitted" }, { status: 400 });
     }
 
-    const { data: questions, error: qError } = await supabase
+    const { data: questions, error: qError } = await db
       .from("quiz_questions")
       .select("id, correct_answer, points")
       .eq("quiz_id", attempt.quiz_id);
@@ -71,7 +73,7 @@ export async function POST(
 
     const scorePercent = totalPoints ? Math.round((earnedPoints / totalPoints) * 100) : 0;
 
-    const { data: updated, error: updateError } = await supabase
+    const { data: updated, error: updateError } = await db
       .from("quiz_attempts")
       .update({
         completed_at: new Date().toISOString(),
@@ -101,7 +103,7 @@ export async function POST(
       score: `${scorePercent}%`,
     });
 
-    const { data: fullQuestions } = await supabase
+    const { data: fullQuestions } = await db
       .from("quiz_questions")
       .select("*")
       .eq("quiz_id", attempt.quiz_id)

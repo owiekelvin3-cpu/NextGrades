@@ -1,18 +1,20 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { getAuthProfile } from "@/lib/quiz/auth";
+import { quizDataClient } from "@/lib/quiz/db";
 
 export async function GET(request: Request) {
   try {
     const supabase = await createClient();
     const { profile, error } = await getAuthProfile(supabase);
     if (!profile) return NextResponse.json({ error }, { status: 401 });
+    const db = quizDataClient(supabase);
 
     const { searchParams } = new URL(request.url);
     const publishedOnly = searchParams.get("published") === "true";
 
     if (profile.role === "student") {
-      const { data, error: dbError } = await supabase
+      const { data, error: dbError } = await db
         .from("generated_quizzes")
         .select("id, title, description, difficulty, time_limit_minutes, topic, created_at, quiz_questions(count)")
         .eq("is_published", true)
@@ -22,7 +24,7 @@ export async function GET(request: Request) {
       return NextResponse.json(data || []);
     }
 
-    let query = supabase
+    let query = db
       .from("generated_quizzes")
       .select("*, quiz_questions(count), uploaded_materials(title)")
       .order("created_at", { ascending: false });
