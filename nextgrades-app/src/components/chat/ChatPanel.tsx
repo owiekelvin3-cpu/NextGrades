@@ -21,6 +21,7 @@ import {
   Brain,
   ListChecks,
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { useChatContext } from "./ChatProvider";
 import { ChatMessageBubble, ChatScrollArea } from "./ChatMessageBubble";
 import { ChatInput } from "./ChatInput";
@@ -41,6 +42,7 @@ type MaterialOption = { id: string; title: string };
 const CAPABILITY_ICONS = [FileUp, Brain, ListChecks, Languages];
 
 export function ChatPanel({ open, onClose, fullPage }: ChatPanelProps) {
+  const { t } = useTranslation();
   const chat = useChatContext();
   const [sidebarOpen, setSidebarOpen] = useState(fullPage ?? false);
   const [renamingId, setRenamingId] = useState<string | null>(null);
@@ -228,7 +230,9 @@ export function ChatPanel({ open, onClose, fullPage }: ChatPanelProps) {
                 <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[var(--brand-gold)] to-[var(--color-gold-light)] shadow-sm">
                   <Sparkles className="h-4 w-4 text-[var(--brand-navy)]" />
                 </div>
-                <span className="text-sm font-bold text-foreground">NextGrades AI</span>
+                <span className="text-sm font-bold text-foreground">
+                  {t("studentDashboard.aiTitle", { defaultValue: "NextGrades KI" })}
+                </span>
               </div>
               {sidebarContent}
             </aside>
