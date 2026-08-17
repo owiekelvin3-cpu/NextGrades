@@ -27,7 +27,7 @@ export function ChatLanguageSwitcher({
         className
       )}
       role="group"
-      aria-label="AI response language"
+      aria-label={value === "de" ? "Antwortsprache" : "AI response language"}
     >
       <Languages className="ml-1.5 h-3.5 w-3.5 text-gray-400" aria-hidden />
       {CHAT_RESPONSE_LANGUAGE_OPTIONS.map((option) => (

@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { cookies } from "next/headers";
 import { Poppins, Playfair_Display } from "next/font/google";
 import { normalizeLanguage } from "@/lib/i18n/locales";
-import { getThemeFromCookieValue, THEME_STORAGE_KEY } from "@/lib/preferences";
+import { getThemeFromCookieValue, LANGUAGE_USER_SET_COOKIE, THEME_STORAGE_KEY } from "@/lib/preferences";
 import "./globals.css";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { I18nProvider } from "@/components/I18nProvider";
@@ -80,7 +80,10 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const cookieStore = await cookies();
-  const htmlLang = normalizeLanguage(cookieStore.get("i18nextLng")?.value ?? "de");
+  const userSetLanguage = cookieStore.get(LANGUAGE_USER_SET_COOKIE)?.value === "1";
+  const htmlLang = userSetLanguage
+    ? normalizeLanguage(cookieStore.get("i18nextLng")?.value ?? "de")
+    : "de";
   const initialTheme = getThemeFromCookieValue(cookieStore.get(THEME_STORAGE_KEY)?.value);
 
   return (
@@ -93,7 +96,7 @@ export default async function RootLayout({
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{document.documentElement.classList.add("dark");document.documentElement.style.colorScheme="dark";document.cookie="theme=dark;path=/;max-age=31536000;SameSite=Lax";try{localStorage.setItem("theme","dark");}catch(e){}var l=localStorage.getItem("i18nextLng");if(l){var lang=l.toLowerCase().split("-")[0];document.documentElement.lang=lang==="en"?"en":"de";}}catch(e){document.documentElement.classList.add("dark");document.documentElement.style.colorScheme="dark";}})();`,
+            __html: `(function(){try{document.documentElement.classList.add("dark");document.documentElement.style.colorScheme="dark";document.cookie="theme=dark;path=/;max-age=31536000;SameSite=Lax";try{localStorage.setItem("theme","dark");}catch(e){}var userSet=false;try{userSet=localStorage.getItem("nextgrades:language-user-set")==="1"&&localStorage.getItem("nextgrades:lang-default-de-v2")==="1";}catch(e){}var l="de";if(userSet){try{l=localStorage.getItem("i18nextLng")||"de";}catch(e){}}var lang=String(l).toLowerCase().split("-")[0];document.documentElement.lang=lang==="en"?"en":"de";if(!userSet){document.cookie="i18nextLng=de;path=/;max-age=31536000;SameSite=Lax";try{localStorage.setItem("i18nextLng","de");}catch(e){}}}catch(e){document.documentElement.classList.add("dark");document.documentElement.style.colorScheme="dark";}})();`,
           }}
         />
         {supabaseHost && (

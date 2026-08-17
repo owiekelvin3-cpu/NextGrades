@@ -33,7 +33,7 @@ function getOpenRouterClient() {
     baseURL: "https://openrouter.ai/api/v1",
     defaultHeaders: {
       "HTTP-Referer": getAppUrl(),
-      "X-Title": "NextGrades AI",
+      "X-Title": "NextGrades KI",
     },
   });
 }
@@ -69,10 +69,22 @@ async function createOpenAiStream(
   return { stream: iterate(), model, provider, modelId };
 }
 
+function pollinationsHeaders(): Record<string, string> {
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+    "User-Agent": "Mozilla/5.0 (compatible; NextGrades/1.0; +https://nextgrades.at)",
+    Referer: getAppUrl(),
+  };
+  const key = process.env.POLLINATIONS_API_KEY?.trim();
+  if (key) headers.Authorization = `Bearer ${key}`;
+  return headers;
+}
+
 async function pollinationsCompletion(model: string, messages: ChatCompletionMessageParam[]): Promise<string> {
   const res = await fetch("https://gen.pollinations.ai/v1/chat/completions", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: pollinationsHeaders(),
     body: JSON.stringify({ model, messages, max_tokens: 2048, temperature: 0.7 }),
   });
 
@@ -90,12 +102,21 @@ async function pollinationsCompletion(model: string, messages: ChatCompletionMes
 }
 
 async function textPollinationsCompletion(prompt: string): Promise<string> {
-  const encoded = encodeURIComponent(prompt.slice(0, 4000));
-  const res = await fetch(`https://text.pollinations.ai/${encoded}`, {
-    headers: { Accept: "text/plain" },
+  const res = await fetch("https://gen.pollinations.ai/v1/chat/completions", {
+    method: "POST",
+    headers: pollinationsHeaders(),
+    body: JSON.stringify({
+      model: "openai",
+      messages: [{ role: "user", content: prompt }],
+      max_tokens: 2048,
+      temperature: 0.7,
+    }),
   });
   if (!res.ok) throw new Error(`Text API error (${res.status})`);
-  const text = (await res.text()).trim();
+  const data = (await res.json()) as {
+    choices?: { message?: { content?: string } }[];
+  };
+  const text = data.choices?.[0]?.message?.content?.trim();
   if (!text) throw new Error("Text API returned empty response");
   return text;
 }
@@ -200,8 +221,10 @@ export async function streamChatCompletion(
     }
   }
 
-  throw lastError ?? new Error("No AI models available. Configure GROQ_API_KEY or use free models.");
+  throw lastError ?? new Error("No AI models available. Configure GROQ_API_KEY.");
 }
+
+export { publicChatErrorMessage } from "./errors";
 
 export async function translateText(
   text: string,

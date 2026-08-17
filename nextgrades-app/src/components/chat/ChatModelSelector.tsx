@@ -11,6 +11,7 @@ interface ChatModelSelectorProps {
   onChange: (modelId: string) => void;
   disabled?: boolean;
   className?: string;
+  language?: "de" | "en";
 }
 
 const BADGE_STYLES: Record<string, string> = {
@@ -19,10 +20,18 @@ const BADGE_STYLES: Record<string, string> = {
   free: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400",
 };
 
-const BADGE_LABELS: Record<string, string> = {
-  pro: "Pro",
-  quick: "Quick",
-  free: "Free",
+const BADGE_LABELS: Record<"de" | "en", Record<string, string>> = {
+  de: { pro: "Pro", quick: "Schnell", free: "Gratis" },
+  en: { pro: "Pro", quick: "Quick", free: "Free" },
+};
+
+const MODEL_DESCRIPTIONS_DE: Record<string, string> = {
+  "groq:llama-3.3-70b-versatile": "Unser klügster Tutor – ausführliche Erklärungen für Prüfungen und Hausaufgaben",
+  "groq:llama-3.1-8b-instant": "Schnelle Antworten, wenn du sofort Hilfe brauchst",
+  "pollinations:openai": "Lernassistent für Alltag, Übung und Wiederholung",
+  "pollinations:openai-fast": "Kurzer Tutor für Übungen, Wiederholung und Alltagsfragen",
+  "openrouter:meta-llama/llama-3.1-8b-instruct:free": "Cloud-Assistent für zuverlässige Lernhilfe",
+  "together:meta-llama/Meta-Llama-3-8B-Instruct-Lite": "Ersatz-Assistent, wenn du eine Extra-Hilfe brauchst",
 };
 
 export function ChatModelSelector({
@@ -31,6 +40,7 @@ export function ChatModelSelector({
   onChange,
   disabled,
   className,
+  language = "de",
 }: ChatModelSelectorProps) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -61,7 +71,7 @@ export function ChatModelSelector({
         aria-expanded={open}
       >
         <Sparkles className="h-3.5 w-3.5 text-[#D4AF37]" />
-        <span className="max-w-[140px] truncate">{selected?.label ?? "NextGrades AI"}</span>
+        <span className="max-w-[140px] truncate">{selected?.label ?? "NextGrades KI"}</span>
         <ChevronDown className={cn("h-3 w-3 transition-transform", open && "rotate-180")} />
       </button>
 
@@ -72,7 +82,7 @@ export function ChatModelSelector({
         >
           <div className="border-b border-gray-100 px-3 py-2 dark:border-white/10">
             <p className="text-[10px] font-semibold uppercase tracking-wider text-gray-400">
-              Choose assistant
+              {language === "de" ? "Assistent wählen" : "Choose assistant"}
             </p>
           </div>
           <ul className="max-h-64 overflow-y-auto py-1">
@@ -106,11 +116,17 @@ export function ChatModelSelector({
                             BADGE_STYLES[model.badge] ?? "bg-gray-100 text-gray-500"
                           )}
                         >
-                          {model.badge ? (BADGE_LABELS[model.badge] ?? model.badge) : null}
+                          {model.badge
+                            ? (BADGE_LABELS[language][model.badge] ?? model.badge)
+                            : null}
                         </span>
                       )}
                     </div>
-                    <p className="mt-0.5 text-[11px] text-gray-500">{model.description}</p>
+                    <p className="mt-0.5 text-[11px] text-gray-500">
+                      {language === "de"
+                        ? (MODEL_DESCRIPTIONS_DE[model.id] ?? model.description)
+                        : model.description}
+                    </p>
                   </div>
                 </button>
               </li>

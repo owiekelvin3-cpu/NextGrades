@@ -9,6 +9,9 @@ export const THEME_STORAGE_KEY = "theme";
 export const LANGUAGE_STORAGE_KEY = "i18nextLng";
 /** Set when the user explicitly picks a language (navbar, settings, etc.). */
 export const LANGUAGE_USER_SET_KEY = "nextgrades:language-user-set";
+export const LANGUAGE_USER_SET_COOKIE = "nextgrades_lang_user_set";
+/** One-time reset: leftover i18nextLng=en was previously treated as a user choice. */
+export const LANGUAGE_DEFAULT_MIGRATION_KEY = "nextgrades:lang-default-de-v2";
 
 export const THEME_CHANGED_EVENT = "nextgrades:theme-changed";
 export const LANGUAGE_CHANGED_EVENT = "nextgrades:language-changed";
@@ -39,6 +42,7 @@ export function persistThemeCookie(theme: UiTheme): void {
 
 export function getStoredLanguage(): SupportedLanguage {
   if (typeof window === "undefined") return "de";
+  if (!hasUserSetLanguage()) return "de";
   const stored = localStorage.getItem(LANGUAGE_STORAGE_KEY);
   if (!stored) return "de";
   return normalizeLanguage(stored);
@@ -49,22 +53,43 @@ export function hasUserSetLanguage(): boolean {
   return localStorage.getItem(LANGUAGE_USER_SET_KEY) === "1";
 }
 
+export function persistLanguageUserSetCookie(userSet: boolean): void {
+  if (typeof document === "undefined") return;
+  const maxAge = userSet ? 60 * 60 * 24 * 365 : 0;
+  document.cookie = `${LANGUAGE_USER_SET_COOKIE}=${userSet ? "1" : ""};path=/;max-age=${maxAge};SameSite=Lax`;
+}
+
 export function markLanguageAsUserSet(): void {
   if (typeof window === "undefined") return;
   localStorage.setItem(LANGUAGE_USER_SET_KEY, "1");
+  persistLanguageUserSetCookie(true);
 }
 
-/** One-time: treat existing English localStorage as an explicit user choice. */
+/** One-time: leftover English storage is not a real choice. Default the site to German. */
 export function migrateLegacyLanguagePreference(): void {
   if (typeof window === "undefined") return;
-  const stored = localStorage.getItem(LANGUAGE_STORAGE_KEY);
-  if (stored) {
-    persistLanguageCookie(normalizeLanguage(stored));
+
+  const migrated = localStorage.getItem(LANGUAGE_DEFAULT_MIGRATION_KEY) === "1";
+  if (!migrated) {
+    localStorage.setItem(LANGUAGE_DEFAULT_MIGRATION_KEY, "1");
+    localStorage.removeItem(LANGUAGE_USER_SET_KEY);
+    persistLanguageUserSetCookie(false);
+    localStorage.setItem(LANGUAGE_STORAGE_KEY, "de");
+    persistLanguageCookie("de");
+    applyLanguageToDocument("de");
+    return;
   }
-  if (hasUserSetLanguage()) return;
-  if (stored && normalizeLanguage(stored) === "en") {
-    markLanguageAsUserSet();
+
+  if (hasUserSetLanguage()) {
+    const stored = localStorage.getItem(LANGUAGE_STORAGE_KEY);
+    if (stored) persistLanguageCookie(normalizeLanguage(stored));
+    persistLanguageUserSetCookie(true);
+    return;
   }
+
+  localStorage.setItem(LANGUAGE_STORAGE_KEY, "de");
+  persistLanguageCookie("de");
+  persistLanguageUserSetCookie(false);
 }
 
 export function applyThemeToDocument(_theme?: UiTheme): void {
@@ -209,17 +234,15 @@ export async function syncPreferencesAfterAuth(
   let language: SupportedLanguage;
   if (userSetLanguage) {
     language = localLanguage;
-  } else if (remote.language) {
-    language = remote.language;
   } else {
-    language = localLanguage;
+    language = "de";
   }
 
   setAppTheme(APP_THEME, { skipRemote: true });
   await setAppLanguage(language, changeI18n, { skipRemote: true, userInitiated: false });
 
-  if (!userSetLanguage && remote.language) {
-    persistLanguageLocally(remote.language, { userInitiated: false });
+  if (!userSetLanguage) {
+    persistLanguageLocally("de", { userInitiated: false });
   }
 
   const toSave: Partial<{ theme: UiTheme; language: SupportedLanguage }> = {};

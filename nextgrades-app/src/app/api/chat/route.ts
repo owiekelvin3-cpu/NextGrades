@@ -5,6 +5,7 @@ import { buildSystemPrompt } from "@/lib/chat/prompts";
 import { loadChatContext, titleFromMessage } from "@/lib/chat/context";
 import { checkUserRateLimit, sanitizeInput, validateMessage } from "@/lib/chat/rate-limit";
 import { streamChatCompletion, getAvailableModels, isAiConfigured } from "@/lib/chat/ai-client";
+import { publicChatErrorMessage } from "@/lib/chat/errors";
 import { resolveModelId } from "@/lib/chat/models";
 import { parseChatResponseLanguage } from "@/lib/chat/languages";
 import { buildUserMessageWithAttachments, type ChatAttachment } from "@/lib/chat/attachments";
@@ -225,7 +226,7 @@ export async function POST(request: Request) {
 
           send({ type: "done", messageId: assistantMsg?.id, content: fullContent });
         } catch (err) {
-          const errMsg = err instanceof Error ? err.message : "Generation failed";
+          const errMsg = publicChatErrorMessage(err, responseLanguage);
           await supabase.from("chat_usage_logs").insert({
             user_id: user.id,
             session_id: sessionId,
@@ -249,7 +250,7 @@ export async function POST(request: Request) {
       },
     });
   } catch (err) {
-    const errMsg = err instanceof Error ? err.message : "Chat failed";
+    const errMsg = publicChatErrorMessage(err, responseLanguage);
     return NextResponse.json({ error: errMsg }, { status: 500 });
   }
 }

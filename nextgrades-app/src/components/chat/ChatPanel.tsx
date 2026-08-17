@@ -30,6 +30,7 @@ import { ChatModelSelector } from "./ChatModelSelector";
 import { QUICK_PROMPTS } from "@/lib/chat/prompts";
 import type { ChatRole } from "@/lib/chat/types";
 import { cn } from "@/lib/utils";
+import { normalizeLanguage } from "@/lib/i18n/locales";
 
 interface ChatPanelProps {
   open: boolean;
@@ -42,7 +43,7 @@ type MaterialOption = { id: string; title: string };
 const CAPABILITY_ICONS = [FileUp, Brain, ListChecks, Languages];
 
 export function ChatPanel({ open, onClose, fullPage }: ChatPanelProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const chat = useChatContext();
   const [sidebarOpen, setSidebarOpen] = useState(fullPage ?? false);
   const [renamingId, setRenamingId] = useState<string | null>(null);
@@ -51,9 +52,9 @@ export function ChatPanel({ open, onClose, fullPage }: ChatPanelProps) {
 
   const role = (chat.status?.role ?? "student") as ChatRole;
   const models = chat.status?.models ?? [];
-  const prompts = QUICK_PROMPTS[role]?.[chat.responseLanguage] ?? QUICK_PROMPTS.student.de;
+  const isDe = normalizeLanguage(i18n.language) === "de";
+  const prompts = QUICK_PROMPTS[role]?.[isDe ? "de" : "en"] ?? QUICK_PROMPTS.student.de;
   const disabled = !chat.status?.enabled || !chat.status?.configured;
-  const isDe = chat.responseLanguage === "de";
 
   const emptyCopy = isDe
     ? {
@@ -131,7 +132,7 @@ export function ChatPanel({ open, onClose, fullPage }: ChatPanelProps) {
             type="button"
             onClick={() => setSidebarOpen(false)}
             className="rounded-xl p-2.5 text-text-muted hover:bg-surface-subtle lg:hidden"
-            aria-label="Close sidebar"
+            aria-label={isDe ? "Sidebar schließen" : "Close sidebar"}
           >
             <PanelLeftClose className="h-4 w-4" />
           </button>
@@ -213,7 +214,7 @@ export function ChatPanel({ open, onClose, fullPage }: ChatPanelProps) {
             <button
               type="button"
               className="absolute inset-0 z-[5] bg-black/40 sm:hidden"
-              aria-label="Close sidebar"
+              aria-label={isDe ? "Sidebar schließen" : "Close sidebar"}
               onClick={() => setSidebarOpen(false)}
             />
           )}
@@ -246,7 +247,7 @@ export function ChatPanel({ open, onClose, fullPage }: ChatPanelProps) {
                     type="button"
                     onClick={() => setSidebarOpen(true)}
                     className="rounded-xl p-2 text-text-muted hover:bg-surface-subtle"
-                    aria-label="Open sidebar"
+                    aria-label={isDe ? "Sidebar öffnen" : "Open sidebar"}
                   >
                     <PanelLeft className="h-4 w-4" />
                   </button>
@@ -257,6 +258,7 @@ export function ChatPanel({ open, onClose, fullPage }: ChatPanelProps) {
                     value={chat.selectedModelId}
                     onChange={(id) => void chat.setSelectedModelId(id)}
                     disabled={disabled || chat.streaming}
+                    language={isDe ? "de" : "en"}
                   />
                 </div>
               </div>
@@ -271,7 +273,7 @@ export function ChatPanel({ open, onClose, fullPage }: ChatPanelProps) {
                   type="button"
                   onClick={() => chat.newChat()}
                   className="hidden rounded-xl p-2 text-text-muted hover:bg-surface-subtle sm:flex"
-                  aria-label="New chat"
+                  aria-label={isDe ? "Neuer Chat" : "New chat"}
                 >
                   <Plus className="h-4 w-4" />
                 </button>
@@ -280,7 +282,7 @@ export function ChatPanel({ open, onClose, fullPage }: ChatPanelProps) {
                     <Link
                       href="/dashboard/chat"
                       className="rounded-xl p-2 text-text-muted hover:bg-surface-subtle"
-                      aria-label="Full page"
+                      aria-label={isDe ? "Vollbild" : "Full page"}
                     >
                       <Maximize2 className="h-4 w-4" />
                     </Link>
@@ -288,7 +290,7 @@ export function ChatPanel({ open, onClose, fullPage }: ChatPanelProps) {
                       type="button"
                       onClick={onClose}
                       className="rounded-xl p-2 text-text-muted hover:bg-surface-subtle"
-                      aria-label="Close"
+                      aria-label={isDe ? "Schließen" : "Close"}
                     >
                       <X className="h-4 w-4" />
                     </button>
@@ -302,8 +304,8 @@ export function ChatPanel({ open, onClose, fullPage }: ChatPanelProps) {
                 <AlertCircle className="h-4 w-4 shrink-0" />
                 {!chat.status?.configured
                   ? isDe
-                    ? "Kein KI-Anbieter verfügbar. GROQ_API_KEY hinzufügen oder kostenloses Modell wählen."
-                    : "No AI provider available. Add GROQ_API_KEY or select a free model."
+                    ? "Die KI ist gerade nicht verfügbar. Bitte versuche es in einer Minute erneut."
+                    : "The AI is temporarily unavailable. Please try again in a minute."
                   : isDe
                     ? "Chatbot ist derzeit deaktiviert."
                     : "Chatbot is currently disabled by admin."}
@@ -419,6 +421,9 @@ export function ChatPanel({ open, onClose, fullPage }: ChatPanelProps) {
 }
 
 export function FloatingChatButton({ onClick, unread }: { onClick: () => void; unread?: boolean }) {
+  const { i18n } = useTranslation();
+  const isDe = normalizeLanguage(i18n.language) === "de";
+
   return (
     <motion.button
       type="button"
@@ -426,7 +431,7 @@ export function FloatingChatButton({ onClick, unread }: { onClick: () => void; u
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       className="fixed bottom-[calc(5.5rem+env(safe-area-inset-bottom,0px))] right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[#D4AF37] to-[#F5A623] text-[#0D1B2A] shadow-lg shadow-[#D4AF37]/30 md:bottom-6 md:right-6"
-      aria-label="Open AI chatbot"
+      aria-label={isDe ? "NextGrades KI öffnen" : "Open AI chatbot"}
     >
       <Bot className="h-6 w-6" strokeWidth={2} />
       {unread ? (

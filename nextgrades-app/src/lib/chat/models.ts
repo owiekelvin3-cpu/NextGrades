@@ -35,22 +35,22 @@ export const AI_MODELS: AiModelDefinition[] = [
     badge: "quick",
   },
   {
-    id: "pollinations:openai-large",
+    id: "pollinations:openai",
     label: "NextGrades Lite",
     provider: "pollinations",
-    model: "openai-large",
-    description: "Free learning assistant - available to every student",
-    requiresKey: false,
+    model: "openai",
+    description: "Free learning assistant - available when a Pollinations key is set",
+    requiresKey: true,
     supportsStreaming: false,
     badge: "free",
   },
   {
-    id: "pollinations:deepseek",
+    id: "pollinations:openai-fast",
     label: "NextGrades Spark",
     provider: "pollinations",
-    model: "deepseek",
+    model: "openai-fast",
     description: "Free tutor for practice, revision & everyday questions",
-    requiresKey: false,
+    requiresKey: true,
     supportsStreaming: false,
     badge: "free",
   },
@@ -92,27 +92,27 @@ export function parseModelId(modelId: string): { provider: AiProvider; model: st
 }
 
 export function resolveModelId(preferred?: string | null): string {
-  if (preferred && AI_MODELS.some((m) => m.id === preferred)) return preferred;
+  const available = getAvailableModels();
+  if (preferred && available.some((m) => m.id === preferred)) return preferred;
   if (preferred) {
-    const legacy = AI_MODELS.find((m) => m.model === preferred);
+    const legacy = available.find((m) => m.model === preferred);
     if (legacy) return legacy.id;
   }
-  return DEFAULT_MODEL_ID;
+  return available[0]?.id ?? DEFAULT_MODEL_ID;
 }
 
 export function getAvailableModels(): AiModelDefinition[] {
   const hasGroq = !!process.env.GROQ_API_KEY?.trim();
   const hasOpenRouter = !!process.env.OPENROUTER_API_KEY?.trim();
   const hasTogether = !!process.env.TOGETHER_API_KEY?.trim();
+  const hasPollinations = !!process.env.POLLINATIONS_API_KEY?.trim();
 
   return AI_MODELS.filter((m) => {
-    if (m.requiresKey) {
-      if (m.provider === "groq") return hasGroq;
-      if (m.provider === "openrouter") return hasOpenRouter;
-      if (m.provider === "together") return hasTogether;
-      return false;
-    }
-    return true;
+    if (m.provider === "groq") return hasGroq;
+    if (m.provider === "openrouter") return hasOpenRouter;
+    if (m.provider === "together") return hasTogether;
+    if (m.provider === "pollinations") return hasPollinations;
+    return !m.requiresKey;
   });
 }
 

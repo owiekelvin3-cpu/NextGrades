@@ -6,6 +6,8 @@ import {
   parseChatResponseLanguage,
   type ChatResponseLanguage,
 } from "@/lib/chat/languages";
+import { publicChatErrorMessage } from "@/lib/chat/errors";
+import { getStoredLanguage } from "@/lib/preferences";
 import { DEFAULT_MODEL_ID } from "@/lib/chat/models";
 import type { AiModelInfo, ChatMessage, ChatSession, ChatRole } from "@/lib/chat/types";
 import type { ChatAttachment } from "@/lib/chat/attachments";
@@ -58,7 +60,9 @@ export function useChat() {
       const res = await fetch("/api/chat/preferences");
       if (!res.ok) return;
       const data = await res.json();
-      setResponseLanguageState(parseChatResponseLanguage(data.preferences?.response_language));
+      const stored = parseChatResponseLanguage(data.preferences?.response_language);
+      const siteLang = getStoredLanguage();
+      setResponseLanguageState(siteLang === "de" ? "de" : stored);
       if (data.preferences?.preferred_model) {
         setSelectedModelIdState(data.preferences.preferred_model);
       }
@@ -386,7 +390,9 @@ export function useChat() {
             )
           );
         } else {
-          setError(e instanceof Error ? e.message : "Failed to send");
+          setError(
+            publicChatErrorMessage(e instanceof Error ? e.message : "Failed to send", responseLanguage)
+          );
           setMessages((prev) => prev.filter((m) => !m.streaming || m.content));
         }
       } finally {

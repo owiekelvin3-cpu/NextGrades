@@ -11,6 +11,7 @@ import {
   migrateLegacyLanguagePreference,
   LANGUAGE_CHANGED_EVENT,
   LANGUAGE_STORAGE_KEY,
+  LANGUAGE_USER_SET_KEY,
 } from "@/lib/preferences";
 
 interface I18nProviderProps {
@@ -48,8 +49,15 @@ export function I18nProvider({ children }: I18nProviderProps) {
     const onI18nLanguageChanged = (lang: string) => {
       const normalized = normalizeLanguage(lang);
       document.documentElement.lang = normalized;
-      if (localStorage.getItem(LANGUAGE_STORAGE_KEY) !== normalized) {
-        localStorage.setItem(LANGUAGE_STORAGE_KEY, normalized);
+      const userSet = localStorage.getItem(LANGUAGE_USER_SET_KEY) === "1";
+      if (userSet) {
+        if (localStorage.getItem(LANGUAGE_STORAGE_KEY) !== normalized) {
+          localStorage.setItem(LANGUAGE_STORAGE_KEY, normalized);
+        }
+        return;
+      }
+      if (normalized === "de" && localStorage.getItem(LANGUAGE_STORAGE_KEY) !== "de") {
+        localStorage.setItem(LANGUAGE_STORAGE_KEY, "de");
       }
     };
 
