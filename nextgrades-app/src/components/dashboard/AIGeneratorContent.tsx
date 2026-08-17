@@ -34,12 +34,14 @@ export function AIGeneratorContent() {
   const [selectedMaterialId, setSelectedMaterialId] = useState<string>("");
   const [title, setTitle] = useState("");
   const [topic, setTopic] = useState("");
+  const [pasteText, setPasteText] = useState("");
   const [difficulty, setDifficulty] = useState<"easy" | "medium" | "hard">("medium");
   const [questionCount, setQuestionCount] = useState(10);
   const [isUploading, setIsUploading] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [loadingMaterials, setLoadingMaterials] = useState(true);
   const [generatedQuiz, setGeneratedQuiz] = useState<GeneratedQuiz | null>(null);
+  const [publishedQuizzes, setPublishedQuizzes] = useState<{ id: string; title: string; is_published?: boolean }[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const { theme } = useTheme();
@@ -66,9 +68,17 @@ export function AIGeneratorContent() {
     }
   }, [selectedMaterialId, toast]);
 
+  const loadQuizzes = useCallback(async () => {
+    const res = await fetch("/api/quiz/quizzes");
+    if (!res.ok) return;
+    const data = (await res.json()) as { id: string; title: string; is_published?: boolean }[];
+    if (Array.isArray(data)) setPublishedQuizzes(data.filter((q) => q.is_published !== false));
+  }, []);
+
   useEffect(() => {
     loadMaterials();
-  }, [loadMaterials]);
+    void loadQuizzes();
+  }, [loadMaterials, loadQuizzes]);
 
   const handleFileUpload = async (file: File) => {
     if (!file) return;
@@ -105,13 +115,18 @@ export function AIGeneratorContent() {
   };
 
   const handleGenerate = async (mode: "quiz" | "flashcards" = "quiz") => {
-    if (!selectedMaterialId) {
-      toast.error(t("aiGeneratorPage.selectMaterial", { defaultValue: "Select or upload a material first" }));
+    const notes = pasteText.trim();
+    if (!selectedMaterialId && notes.length < 80) {
+      toast.error(
+        t("aiGeneratorPage.pasteRequired", {
+          defaultValue: "Paste at least a short lesson text, or upload a file.",
+        })
+      );
       return;
     }
 
     const material = materials.find((m) => m.id === selectedMaterialId);
-    if (material?.extraction_status !== "ready") {
+    if (selectedMaterialId && material?.extraction_status !== "ready") {
       toast.error(t("aiGeneratorPage.materialProcessing", { defaultValue: "Material is still being processed" }));
       return;
     }
@@ -123,7 +138,8 @@ export function AIGeneratorContent() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          materialId: selectedMaterialId,
+          materialId: selectedMaterialId || undefined,
+          sourceText: selectedMaterialId ? undefined : notes,
           mode,
           topic: topic || undefined,
           difficulty,
@@ -136,13 +152,19 @@ export function AIGeneratorContent() {
 
       if (data.quiz) {
         setGeneratedQuiz(data.quiz);
-        toast.success(t("aiGeneratorPage.generatedPublished", { defaultValue: "Quiz generated and published for students." }));
+        toast.success(
+          t("aiGeneratorPage.generatedPublished", {
+            defaultValue: "Quiz generated and published for students.",
+          })
+        );
+        void loadQuizzes();
       } else if (data.jobId) {
         const jobRes = await fetch(`/api/quiz/jobs/${data.jobId}`);
         const jobData = await jobRes.json();
         if (jobData.quiz) {
           setGeneratedQuiz(jobData.quiz);
           toast.success(t("aiGeneratorPage.generatedTitle", { defaultValue: "Quiz generated successfully!" }));
+          void loadQuizzes();
         }
       }
     } catch (e) {
@@ -156,6 +178,7 @@ export function AIGeneratorContent() {
   const fieldClass = themeInputClass;
 
   const readyMaterials = materials.filter((m) => m.extraction_status === "ready");
+  const canGenerate = Boolean(selectedMaterialId && readyMaterials.some((m) => m.id === selectedMaterialId)) || pasteText.trim().length >= 80;
 
   return (
     <div className="grid gap-8 lg:grid-cols-3">
@@ -163,8 +186,25 @@ export function AIGeneratorContent() {
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
           <Card className={`p-8`}>
             <h2 className={`mb-6 text-xl font-bold text-foreground`}>
-              {t("aiGeneratorPage.step1")}
+              {t("aiGeneratorPage.step1Paste", { defaultValue: "1. Lesson notes or file" })}
             </h2>
+            <p className="mb-4 text-sm text-text-muted">
+              {t("aiGeneratorPage.step1PasteHint", {
+                defaultValue: "Paste the lesson text. The quiz is published for students under Tasks.",
+              })}
+            </p>
+            <textarea
+              rows={6}
+              value={pasteText}
+              onChange={(e) => {
+                setPasteText(e.target.value);
+                if (e.target.value.trim()) setSelectedMaterialId("");
+              }}
+              placeholder={t("aiGeneratorPage.pastePlaceholder", {
+                defaultValue: "e.g. Quadratic equations: ax² + bx + c = 0. The discriminant is b² − 4ac…",
+              })}
+              className={cn(fieldClass, "mb-6 resize-y")}
+            />
             <input
               ref={fileInputRef}
               type="file"
@@ -320,7 +360,7 @@ export function AIGeneratorContent() {
               size="xl"
               className="mt-8 w-full"
               onClick={() => handleGenerate("quiz")}
-              disabled={isGenerating || !readyMaterials.length}
+              disabled={isGenerating || !canGenerate}
             >
               {isGenerating ? (
                 <>
@@ -329,7 +369,7 @@ export function AIGeneratorContent() {
                 </>
               ) : (
                 <>
-                  <Sparkles className="mr-2 h-5 w-5" /> {t("aiGeneratorPage.generateQuiz")}
+                  <Sparkles className="mr-2 h-5 w-5" /> {t("aiGeneratorPage.publishQuiz", { defaultValue: "Create & publish quiz" })}
                 </>
               )}
             </Button>
@@ -350,7 +390,7 @@ export function AIGeneratorContent() {
               ))}
             </ul>
             <Button variant="outline" className="mt-4" href="/dashboard/student/quizzes">
-              {t("aiGeneratorPage.viewAsStudent", { defaultValue: "Open student quiz page" })}
+              {t("aiGeneratorPage.viewAsStudent", { defaultValue: "Students see this under Tasks" })}
             </Button>
           </Card>
         )}
@@ -367,7 +407,7 @@ export function AIGeneratorContent() {
               className="w-full justify-start"
               size="md"
               type="button"
-              disabled={isGenerating || !readyMaterials.length}
+              disabled={isGenerating || !canGenerate}
               onClick={() => handleGenerate("flashcards")}
             >
               <FileText className="mr-3 h-5 w-5" /> {t("aiGeneratorPage.flashcards")}
@@ -382,6 +422,26 @@ export function AIGeneratorContent() {
             )}
           </div>
         </Card>
+
+        {publishedQuizzes.length > 0 && (
+          <Card className="p-6">
+            <h3 className="mb-3 font-semibold text-foreground">
+              {t("aiGeneratorPage.publishedForStudents", { defaultValue: "Published for students" })}
+            </h3>
+            <ul className="space-y-2 text-sm">
+              {publishedQuizzes.slice(0, 8).map((q) => (
+                <li key={q.id} className="rounded-lg border border-border-default px-3 py-2 text-foreground">
+                  {q.title}
+                </li>
+              ))}
+            </ul>
+            <p className="mt-3 text-xs text-text-muted">
+              {t("aiGeneratorPage.studentsFindQuizzes", {
+                defaultValue: "Students open these under Tasks.",
+              })}
+            </p>
+          </Card>
+        )}
 
         <Card className={`p-6 ${theme === "dark" ? "bg-[#112240] border border-[#D4AF37]/30" : "border border-blue-200 bg-blue-50"}`}>
           <h3 className={`mb-3 font-semibold text-foreground`}>

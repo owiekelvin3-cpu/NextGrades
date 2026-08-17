@@ -17,7 +17,8 @@ export const runtime = "nodejs";
 export const maxDuration = 30;
 
 type GenerateBody = {
-  materialId: string;
+  materialId?: string;
+  sourceText?: string;
   mode?: "quiz" | "flashcards";
   topic?: string;
   difficulty?: Difficulty;
@@ -50,7 +51,8 @@ export async function POST(request: Request) {
 
     const body = (await request.json()) as GenerateBody;
     const {
-      materialId,
+      materialId: bodyMaterialId,
+      sourceText,
       mode = "quiz",
       topic,
       difficulty = "medium",
@@ -61,29 +63,68 @@ export async function POST(request: Request) {
       forceRefresh = false,
     } = body;
 
-    if (!materialId) {
-      return NextResponse.json({ error: "materialId is required" }, { status: 400 });
+    let materialId = bodyMaterialId;
+    let material: {
+      id: string;
+      title: string;
+      uploaded_by: string;
+      extraction_status: string;
+      extracted_text: string | null;
+      subject_id?: string | null;
+      class_id?: string | null;
+      semester?: number | null;
+      topic?: string | null;
+    } | null = null;
+
+    if (materialId) {
+      const { data, error: matError } = await db
+        .from("uploaded_materials")
+        .select("*")
+        .eq("id", materialId)
+        .single();
+      if (matError || !data) {
+        return NextResponse.json({ error: "Material not found" }, { status: 404 });
+      }
+      material = data;
+    } else if (sourceText?.trim()) {
+      const pasteTitle = title?.trim() || topic?.trim() || "Quiz";
+      const { data: created, error: createError } = await db
+        .from("uploaded_materials")
+        .insert({
+          uploaded_by: user.id,
+          title: pasteTitle,
+          file_type: "txt",
+          topic: topic || null,
+          difficulty_default: difficulty,
+          extraction_status: "ready",
+          extracted_text: sourceText.trim(),
+        })
+        .select("*")
+        .single();
+      if (createError || !created) throw createError ?? new Error("Could not save lesson notes");
+      material = created;
+      materialId = created.id as string;
+    } else {
+      return NextResponse.json(
+        { error: "Paste lesson notes or upload a file first." },
+        { status: 400 }
+      );
     }
 
-    const { data: material, error: matError } = await db
-      .from("uploaded_materials")
-      .select("*")
-      .eq("id", materialId)
-      .single();
-
-    if (matError || !material) {
-      return NextResponse.json({ error: "Material not found" }, { status: 404 });
+    if (!material || !materialId) {
+      return NextResponse.json({ error: "Material not found" }, { status: 400 });
     }
 
     if (profile.role === "teacher" && material.uploaded_by !== user.id) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
-    if (material.extraction_status !== "ready" || !material.extracted_text?.trim()) {
+    const extractedText = material.extracted_text?.trim() || "";
+    if (material.extraction_status !== "ready" || !extractedText) {
       return NextResponse.json({ error: "Material text is not ready for generation" }, { status: 400 });
     }
 
-    const textHash = hashSourceText(material.extracted_text);
+    const textHash = hashSourceText(extractedText);
     const seed = forceRefresh ? Date.now() % 100000 : 0;
     const cacheKey = buildGenerationCacheKey({
       engine: "rule-based-v1",
@@ -131,7 +172,7 @@ export async function POST(request: Request) {
       }
 
       const cards = generateFlashcardSet({
-        sourceText: material.extracted_text,
+        sourceText: extractedText,
         count: Math.min(Math.max(flashcardCount, 5), 30),
       });
 
@@ -188,7 +229,7 @@ export async function POST(request: Request) {
     }
 
     const { questions, quality } = generateQuizQuestions({
-      sourceText: material.extracted_text,
+      sourceText: extractedText,
       questionTypes,
       questionCount: Math.min(Math.max(questionCount, 3), 25),
       seed,
@@ -196,10 +237,6 @@ export async function POST(request: Request) {
 
     if (!questions.length) {
       throw new Error("Could not generate questions from this material. Try different types or add more text.");
-    }
-
-    if (quality < 40) {
-      throw new Error("Generated quiz quality too low. Upload richer lesson content and try again.");
     }
 
     const quizId = await persistGeneratedQuiz(db, {

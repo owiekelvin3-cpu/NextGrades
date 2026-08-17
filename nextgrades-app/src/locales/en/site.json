@@ -840,6 +840,14 @@
     "title": "AI Quiz Generator",
     "subtitle": "Generate smart quizzes, MCQs and flashcards with AI",
     "step1": "1. Upload your material",
+    "step1Paste": "1. Lesson notes or file",
+    "step1PasteHint": "Paste the lesson text. Students will see the quiz under Tasks.",
+    "pastePlaceholder": "e.g. Quadratic equations: ax² + bx + c = 0. The discriminant is b² − 4ac…",
+    "pasteRequired": "Paste at least a short lesson text, or upload a file.",
+    "publishQuiz": "Create & publish quiz",
+    "publishedForStudents": "Published for students",
+    "studentsFindQuizzes": "Students find these under Tasks.",
+    "generatedPublished": "Quiz created and published for students.",
     "uploadTitle": "Upload PDFs, notes or summaries",
     "uploadHint": "Drag & drop or click to select",
     "selectFile": "Select file",
@@ -926,7 +934,7 @@
       },
       "quizzes": {
         "title": "AI quizzes",
-        "description": "Practice with AI-generated quizzes"
+        "description": "Practice quizzes from your teacher."
       },
       "progress": {
         "title": "Progress",
@@ -951,8 +959,8 @@
         "description": "Upload and manage learning materials"
       },
       "aiGenerator": {
-        "title": "AI generator",
-        "description": "Create quizzes and learning content with AI"
+        "title": "AI quiz",
+        "description": "Create a quiz — students see it under Tasks."
       },
       "earnings": {
         "title": "Earnings",
@@ -1095,6 +1103,10 @@
     "newMaterials": "New materials",
     "quizStart": "Start quiz",
     "quizQuestions": "questions",
+    "availableQuizzes": "Available quizzes",
+    "quizHistory": "History",
+    "publishedQuiz": "Published quiz",
+    "quizLoadError": "Could not load quizzes.",
     "quizStartError": "Could not open this quiz.",
     "quizEmpty": "This quiz has no questions yet.",
     "noQuizzes": "No quizzes yet",
@@ -1222,7 +1234,7 @@
       "schedule": "Schedule",
       "myMaterials": "My materials",
       "publish": "Publish new",
-      "aiGenerator": "AI quiz generator",
+      "aiGenerator": "AI quiz",
       "aiChat": "NextGrades AI chat",
       "analytics": "Analytics",
       "earnings": "Earnings",

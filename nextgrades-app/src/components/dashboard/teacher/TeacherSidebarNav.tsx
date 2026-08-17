@@ -13,6 +13,7 @@ import {
   FolderOpen,
   Settings,
   Bell,
+  ListChecks,
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -47,6 +48,12 @@ export const teacherNavItems: TeacherNavItem[] = [
     href: "/dashboard/teacher/content",
     icon: FolderOpen,
     labelKey: "teacherDashboard.nav.materials",
+    matchPrefix: true,
+  },
+  {
+    href: "/dashboard/teacher/ai-generator",
+    icon: ListChecks,
+    labelKey: "teacherDashboard.nav.aiGenerator",
     matchPrefix: true,
   },
   { href: "/dashboard/teacher/settings", icon: Settings, labelKey: "teacherDashboard.nav.settings" },

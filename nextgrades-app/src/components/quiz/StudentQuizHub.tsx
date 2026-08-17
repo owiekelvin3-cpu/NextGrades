@@ -47,6 +47,7 @@ export function StudentQuizHub() {
   const [quizzes, setQuizzes] = useState<PublishedQuiz[]>([]);
   const [attempts, setAttempts] = useState<AttemptRow[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [activeQuiz, setActiveQuiz] = useState<{
     meta: { id: string; title: string; time_limit_minutes: number | null };
     questions: QuizQuestion[];
@@ -56,6 +57,7 @@ export function StudentQuizHub() {
 
   const load = useCallback(async () => {
     setLoading(true);
+    setLoadError(null);
     try {
       const [qRes, aRes] = await Promise.all([
         fetch("/api/quiz/quizzes?published=true"),
@@ -64,6 +66,10 @@ export function StudentQuizHub() {
       if (qRes.ok) {
         const json = await qRes.json();
         setQuizzes(Array.isArray(json) ? json : []);
+      } else {
+        const json = await qRes.json().catch(() => ({}));
+        setLoadError(json.error || t("studentDashboard.quizLoadError", { defaultValue: "Could not load quizzes." }));
+        setQuizzes([]);
       }
       if (aRes.ok) {
         const json = await aRes.json();
@@ -72,7 +78,7 @@ export function StudentQuizHub() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     void load();
@@ -126,7 +132,7 @@ export function StudentQuizHub() {
           onClick={() => setTab("available")}
         >
           <Brain className="w-4 h-4 mr-2" />
-          {t("studentDashboard.startQuiz", { defaultValue: "Available quizzes" })}
+          {t("studentDashboard.availableQuizzes", { defaultValue: "Available quizzes" })}
         </Button>
         <Button
           variant={tab === "history" ? "gold" : "outline"}
@@ -134,12 +140,17 @@ export function StudentQuizHub() {
           onClick={() => setTab("history")}
         >
           <History className="w-4 h-4 mr-2" />
-          {t("dashboardPages.student.quizzes.title", { defaultValue: "History" })}
+          {t("studentDashboard.quizHistory", { defaultValue: "History" })}
         </Button>
       </div>
 
       {tab === "available" ? (
-        quizzes.length === 0 ? (
+        loadError ? (
+          <EmptyState
+            title={t("studentDashboard.quizLoadError", { defaultValue: "Could not load quizzes." })}
+            description={loadError}
+          />
+        ) : quizzes.length === 0 ? (
           <EmptyState
             title={t("studentDashboard.noQuizzes", { defaultValue: "No quizzes yet" })}
             description={t("studentDashboard.noQuizzesDesc", {
@@ -156,8 +167,9 @@ export function StudentQuizHub() {
                 </div>
                 {q.topic && <p className="text-sm text-text-muted mb-2">{q.topic}</p>}
                 <p className="text-sm text-text-muted mb-4">
-                  {questionCount(q) ?? "-"}{" "}
-                  {t("studentDashboard.quizQuestions", { defaultValue: "questions" })}
+                  {questionCount(q) != null
+                    ? `${questionCount(q)} ${t("studentDashboard.quizQuestions", { defaultValue: "questions" })}`
+                    : t("studentDashboard.publishedQuiz", { defaultValue: "Published quiz" })}
                   {q.time_limit_minutes ? ` · ${q.time_limit_minutes} min` : ""}
                 </p>
                 <Button variant="gold" size="sm" onClick={() => void startQuiz(q.id)}>

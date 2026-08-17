@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { getAuthProfile, requireRole } from "@/lib/quiz/auth";
+import { quizDataClient } from "@/lib/quiz/db";
 import {
   ALLOWED_MIME_TYPES,
   extractTextFromBuffer,
@@ -17,8 +18,9 @@ export async function GET() {
     if (!requireRole(profile, ["teacher", "admin"])) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
+    const db = quizDataClient(supabase);
 
-    let query = supabase
+    let query = db
       .from("uploaded_materials")
       .select("*")
       .order("created_at", { ascending: false });
@@ -45,6 +47,7 @@ export async function POST(request: Request) {
     if (!requireRole(profile, ["teacher", "admin"])) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
+    const db = quizDataClient(supabase);
 
     const formData = await request.formData();
     const title = String(formData.get("title") || "").trim();
@@ -89,7 +92,7 @@ export async function POST(request: Request) {
       buffer = Buffer.from(arrayBuffer);
       storagePath = `${user.id}/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, "_")}`;
 
-      const { error: uploadError } = await supabase.storage
+      const { error: uploadError } = await db.storage
         .from("learning-materials")
         .upload(storagePath, buffer, { contentType: mime || "application/octet-stream", upsert: false });
 
@@ -102,7 +105,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Upload a file or paste lesson content" }, { status: 400 });
     }
 
-    const { data: row, error: insertError } = await supabase
+    const { data: row, error: insertError } = await db
       .from("uploaded_materials")
       .insert({
         uploaded_by: user.id,
@@ -133,7 +136,7 @@ export async function POST(request: Request) {
         throw new Error("No readable text could be extracted");
       }
 
-      const { data: updated, error: updateError } = await supabase
+      const { data: updated, error: updateError } = await db
         .from("uploaded_materials")
         .update({
           extracted_text: extractedText,
@@ -149,7 +152,7 @@ export async function POST(request: Request) {
       return NextResponse.json(updated);
     } catch (extractErr) {
       const msg = extractErr instanceof Error ? extractErr.message : "Extraction failed";
-      await supabase
+      await db
         .from("uploaded_materials")
         .update({ extraction_status: "failed", extraction_error: msg })
         .eq("id", row.id);

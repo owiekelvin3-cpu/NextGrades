@@ -16,9 +16,9 @@ export async function GET(request: Request) {
     if (profile.role === "student") {
       const { data, error: dbError } = await db
         .from("generated_quizzes")
-        .select("id, title, description, difficulty, time_limit_minutes, topic, created_at, quiz_questions(count)")
+        .select("id, title, description, difficulty, time_limit_minutes, topic, created_at")
         .eq("is_published", true)
-        .order("published_at", { ascending: false });
+        .order("created_at", { ascending: false });
 
       if (dbError) throw dbError;
       return NextResponse.json(data || []);

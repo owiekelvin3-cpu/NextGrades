@@ -803,6 +803,14 @@
     "title": "KI-Quiz-Generator",
     "subtitle": "Erstelle smarte Quizze, MCQs und Karteikarten mit KI",
     "step1": "1. Material hochladen",
+    "step1Paste": "1. Unterrichtstext oder Datei",
+    "step1PasteHint": "Schreibe den Stoff hier hinein. Das Quiz erscheint bei den SchülerInnen unter Aufgaben.",
+    "pastePlaceholder": "z. B. Quadratische Gleichungen: ax² + bx + c = 0. Die Diskriminante ist b² − 4ac…",
+    "pasteRequired": "Bitte mindestens einen kurzen Unterrichtstext einfügen oder eine Datei hochladen.",
+    "publishQuiz": "Quiz erstellen & veröffentlichen",
+    "publishedForStudents": "Veröffentlicht für SchülerInnen",
+    "studentsFindQuizzes": "SchülerInnen finden diese unter Aufgaben.",
+    "generatedPublished": "Quiz erstellt und für SchülerInnen veröffentlicht.",
     "uploadTitle": "PDFs, Notizen oder Zusammenfassungen hochladen",
     "uploadHint": "Drag & Drop oder klicken zum Auswählen",
     "selectFile": "Datei auswählen",
@@ -889,7 +897,7 @@
       },
       "quizzes": {
         "title": "KI-Quizze",
-        "description": "Übe mit KI-generierten Quizzen"
+        "description": "Übe mit den Quizzen deiner Lehrkraft."
       },
       "progress": {
         "title": "Fortschritt",
@@ -914,8 +922,8 @@
         "description": "Lernmaterialien hochladen und verwalten"
       },
       "aiGenerator": {
-        "title": "KI-Generator",
-        "description": "Erstelle Quizze und Lerninhalte mit KI"
+        "title": "KI-Quiz",
+        "description": "Quiz erstellen – SchülerInnen sehen es unter Aufgaben."
       },
       "earnings": {
         "title": "Einnahmen",
@@ -1058,6 +1066,10 @@
     "newMaterials": "Neue Materialien",
     "quizStart": "Quiz starten",
     "quizQuestions": "Fragen",
+    "availableQuizzes": "Verfügbare Quizze",
+    "quizHistory": "Verlauf",
+    "publishedQuiz": "Veröffentlichtes Quiz",
+    "quizLoadError": "Quizze konnten nicht geladen werden.",
     "quizStartError": "Dieses Quiz konnte nicht geöffnet werden.",
     "quizEmpty": "Dieses Quiz hat noch keine Fragen.",
     "noQuizzes": "Noch keine Quizze",
@@ -1185,7 +1197,7 @@
       "schedule": "Stundenplan",
       "myMaterials": "Meine Materialien",
       "publish": "Neu veröffentlichen",
-      "aiGenerator": "KI-Quiz-Generator",
+      "aiGenerator": "KI-Quiz",
       "aiChat": "NextGrades KI-Chat",
       "analytics": "Analysen",
       "earnings": "Einnahmen",
