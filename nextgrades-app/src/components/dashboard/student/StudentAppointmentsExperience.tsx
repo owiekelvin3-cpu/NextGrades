@@ -21,7 +21,7 @@ import {
   type StudentAppointmentsData,
 } from "@/lib/dashboard/student-overview";
 import { StudentDashboardLayout } from "./StudentDashboardLayout";
-import { studentPanel, formatTimeRange, lessonDateParts, st } from "./student-ui";
+import { studentPanel, formatTimeRange, lessonDateParts, lessonDisplayTitle, st } from "./student-ui";
 import { StudentTabBar } from "./StudentTabBar";
 import { StudentCalendarConnectModal } from "./StudentCalendarConnectModal";
 import { ZoomMeetingButton } from "@/components/zoom/ZoomMeetingButton";
@@ -320,7 +320,12 @@ export function StudentAppointmentsExperience() {
                             )}
                           </div>
                           <div className="min-w-0">
-                            <p className={cn("font-semibold", st.textPrimary)}>{lesson.subject_name}</p>
+                            <p className={cn("font-semibold", st.textPrimary)}>
+                              {lessonDisplayTitle(
+                                lesson,
+                                t("studentDashboard.lessonFallback", { defaultValue: "Lesson" })
+                              )}
+                            </p>
                             <p className={cn("text-sm", st.textMuted)}>{parts.weekday}</p>
                             <div className={cn("mt-1 flex flex-wrap gap-x-3 text-xs", st.textSubtle)}>
                               {lesson.teacher_name && (

@@ -152,6 +152,13 @@ export function materialTypeLabel(type: string, tFn: (key: string, options?: Rec
   return map[type] ?? type.toUpperCase();
 }
 
+export function lessonDisplayTitle(
+  lesson: { meeting_title?: string | null; subject_name?: string | null },
+  fallback = "Lesson"
+) {
+  return lesson.meeting_title?.trim() || lesson.subject_name?.trim() || fallback;
+}
+
 export function materialTypeColor(type: string) {
   const map: Record<string, string> = {
     pdf: "bg-red-50 text-red-600 dark:bg-red-500/12 dark:text-red-300",

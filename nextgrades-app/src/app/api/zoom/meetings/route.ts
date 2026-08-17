@@ -15,18 +15,34 @@ export async function GET() {
   if (gate.error) return gate.error;
 
   const teacherId = gate.auth!.profile!.id;
-  const { data, error } = await gate.auth!.supabase
+  const db = isSupabaseServiceRoleConfigured() ? createAdminClient() : gate.auth!.supabase;
+  const { data, error } = await db
     .from("lessons")
     .select("*")
     .eq("teacher_id", teacherId)
-    .or("zoom_meeting_id.not.is.null,meeting_url.not.is.null,zoom_link.not.is.null")
+    .neq("status", "cancelled")
     .order("start_time", { ascending: true });
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  return NextResponse.json({ meetings: data ?? [] });
+  const rows = data ?? [];
+  const studentIds = [...new Set(rows.map((r) => r.student_id as string).filter(Boolean))];
+  let nameById = new Map<string, string>();
+  if (studentIds.length) {
+    const { data: profiles } = await db.from("profiles").select("id, full_name").in("id", studentIds);
+    nameById = new Map(
+      (profiles ?? []).map((p) => [p.id as string, ((p.full_name as string | null)?.trim() || "Student")])
+    );
+  }
+
+  return NextResponse.json({
+    meetings: rows.map((row) => ({
+      ...row,
+      student_name: nameById.get(row.student_id as string) ?? null,
+    })),
+  });
 }
 
 type CreateBody = {

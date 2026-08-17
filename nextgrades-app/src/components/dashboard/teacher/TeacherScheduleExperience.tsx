@@ -1,14 +1,13 @@
 "use client";
 
 import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import {
   Video,
   Trash2,
   Clock,
   CalendarDays,
-  Sparkles,
-  ExternalLink,
   Users,
 } from "lucide-react";
 import { getDateLocale } from "@/lib/i18n/locales";
@@ -16,7 +15,7 @@ import { LoadingBlock } from "@/components/dashboard/LoadingBlock";
 import { useToast } from "@/context/ToastContext";
 import { TeacherDashboardLayout } from "./TeacherDashboardLayout";
 import { CreateLiveClassForm } from "@/components/zoom/CreateLiveClassForm";
-import { ZoomSetupStrip, useZoomStatus } from "@/components/zoom/ZoomSetupStrip";
+import { useZoomStatus } from "@/components/zoom/ZoomSetupStrip";
 import { teacherPanel, teacherStatCard } from "./teacher-ui";
 import { formatTimeRange, lessonDateParts } from "@/components/dashboard/student/student-ui";
 import { ZoomMeetingButton } from "@/components/zoom/ZoomMeetingButton";
@@ -39,12 +38,15 @@ type LessonRow = {
   meeting_type: string | null;
   status: string;
   student_id: string;
+  student_name?: string | null;
 };
 
 function ScheduleContent() {
   const { t, i18n } = useTranslation();
   const locale = getDateLocale(i18n.language);
   const toast = useToast();
+  const searchParams = useSearchParams();
+  const initialStudentId = searchParams.get("student") || "";
   const todayLabel = t("dashboardCommon.today", { defaultValue: "Today" });
   const { ready: zoomReady } = useZoomStatus(SCHEDULE_PATH);
   const [meetings, setMeetings] = useState<LessonRow[]>([]);
@@ -94,29 +96,11 @@ function ScheduleContent() {
   const nextMeeting = upcoming[0] ?? null;
   const nextParts = nextMeeting ? lessonDateParts(nextMeeting.start_time, locale, todayLabel) : null;
 
-  const setupSteps = [
-    {
-      step: 1,
-      title: t("zoom.stepPasteLink", { defaultValue: "Paste your meeting link" }),
-      done: upcoming.length > 0,
-    },
-    {
-      step: 2,
-      title: t("zoom.stepSchedule", { defaultValue: "Schedule your class" }),
-      done: upcoming.length > 0,
-    },
-    {
-      step: 3,
-      title: t("zoom.stepGoLive", { defaultValue: "Students join with one tap" }),
-      done: upcoming.length > 0,
-    },
-  ];
-
   return (
     <TeacherDashboardLayout
-      title={t("teacherDashboard.nav.appointments")}
+      title={t("teacherDashboard.nav.schedule")}
       description={t("zoom.scheduleDesc", {
-        defaultValue: "Plan live classes, send invites automatically, and join from one place.",
+        defaultValue: "Add a lesson with a student. They will see it under My appointments.",
       })}
     >
       <div className="mx-auto max-w-[1400px] space-y-6">
@@ -131,7 +115,7 @@ function ScheduleContent() {
             </div>
             <p className="mt-3 text-3xl font-bold text-foreground">{upcoming.length}</p>
             <p className="mt-1 text-xs text-text-muted">
-              {t("zoom.statUpcomingDesc", { defaultValue: "Scheduled live sessions" })}
+              {t("zoom.statUpcomingDesc", { defaultValue: "Lessons with your students" })}
             </p>
           </div>
 
@@ -170,65 +154,29 @@ function ScheduleContent() {
             </p>
             <p className="mt-1 text-xs text-text-muted">
               {zoomReady
-                ? t("zoom.readyToSchedule", { defaultValue: "Paste a link or auto-create" })
-                : t("zoom.pasteLinkReady", { defaultValue: "Paste a Zoom link to schedule" })}
+                ? t("zoom.readyToSchedule", { defaultValue: "Optional — auto-create Zoom links" })
+                : t("zoom.pasteLinkReady", { defaultValue: "Optional — add a video link if you have one" })}
             </p>
           </div>
         </div>
-
-        {/* Setup progress - only when not fully set up */}
-        {upcoming.length === 0 && (
-          <div className={teacherPanel("p-5 sm:p-6")}>
-            <div className="mb-4 flex items-center gap-2">
-              <Sparkles className="h-4 w-4 text-[#D4AF37]" />
-              <h2 className="text-sm font-semibold text-foreground">
-                {t("zoom.getStarted", { defaultValue: "Get started in 3 steps" })}
-              </h2>
-            </div>
-            <div className="grid gap-3 sm:grid-cols-3">
-              {setupSteps.map((item) => (
-                <div
-                  key={item.step}
-                  className={cn(
-                    "flex items-center gap-3 rounded-xl border px-4 py-3",
-                    item.done
-                      ? "border-green-200 bg-green-50 dark:border-green-500/30 dark:bg-green-500/10"
-                      : "border-border-default bg-surface-subtle"
-                  )}
-                >
-                  <span
-                    className={cn(
-                      "flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold",
-                      item.done ? "bg-green-600 text-white" : "bg-[#0D1B2A] text-white"
-                    )}
-                  >
-                    {item.done ? "✓" : item.step}
-                  </span>
-                  <p className="text-sm font-medium text-foreground">{item.title}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        <ZoomSetupStrip returnPath={SCHEDULE_PATH} />
 
         <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">
           <CreateLiveClassForm
             onCreated={() => void load()}
             zoomReady={zoomReady}
             connectHref={CONNECT_HREF}
+            initialStudentId={initialStudentId}
           />
 
           <div className={teacherPanel()}>
             <div className="flex items-center justify-between gap-3 border-b border-border-default px-5 py-4">
               <div>
                 <h2 className="text-sm font-semibold text-foreground">
-                  {t("zoom.scheduledMeetings", { defaultValue: "Scheduled meetings" })}
+                  {t("zoom.scheduledMeetings", { defaultValue: "Upcoming lessons" })}
                 </h2>
                 <p className="mt-0.5 text-xs text-text-muted">
                   {t("zoom.scheduledMeetingsDesc", {
-                    defaultValue: "Your upcoming live sessions - join or cancel anytime.",
+                    defaultValue: "Students see these under My appointments.",
                   })}
                 </p>
               </div>
@@ -247,16 +195,12 @@ function ScheduleContent() {
                   <Users className="h-7 w-7 text-text-muted" />
                 </div>
                 <p className="text-sm font-medium text-foreground">
-                  {t("zoom.emptyTitle", { defaultValue: "No classes scheduled yet" })}
+                  {t("zoom.emptyTitle", { defaultValue: "No lessons yet" })}
                 </p>
                 <p className="mx-auto mt-1 max-w-xs text-xs text-text-muted">
-                  {zoomReady
-                    ? t("zoom.emptyDescReady", {
-                        defaultValue: "Use the form on the left to paste a meeting link and schedule your first class.",
-                      })
-                    : t("zoom.emptyDescPaste", {
-                        defaultValue: "Create a meeting in Zoom, paste the link in the form, and schedule your first session.",
-                      })}
+                  {t("zoom.emptyDescPaste", {
+                    defaultValue: "Use the form to add a lesson with a student. They will see it immediately.",
+                  })}
                 </p>
               </div>
             ) : (
@@ -285,9 +229,13 @@ function ScheduleContent() {
                         </div>
                         <div className="min-w-0">
                           <p className="truncate font-semibold text-foreground">
-                            {m.meeting_title || t("zoom.liveClass", { defaultValue: "Live class" })}
+                            {m.meeting_title || t("zoom.liveClass", { defaultValue: "Lesson" })}
                           </p>
-                          <p className="text-sm text-text-muted">{parts.weekday}</p>
+                          {m.student_name ? (
+                            <p className="text-sm text-text-muted">{m.student_name}</p>
+                          ) : (
+                            <p className="text-sm text-text-muted">{parts.weekday}</p>
+                          )}
                           <div className="mt-1.5 flex flex-wrap items-center gap-2 text-xs text-text-muted">
                             <span className="inline-flex items-center gap-1">
                               <Clock className="h-3 w-3" />

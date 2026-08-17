@@ -7,10 +7,6 @@ import {
   Loader2,
   Calendar,
   Clock,
-  User,
-  Users,
-  Radio,
-  Presentation,
   ChevronDown,
   Sparkles,
   Link2,
@@ -18,7 +14,7 @@ import {
 import { useToast } from "@/context/ToastContext";
 import { Button } from "@/components/ui/Button";
 import { fetchSubjects, getSessionUserId } from "@/lib/dashboard/data";
-import { ZOOM_MEETING_TYPES, type ZoomMeetingType } from "@/lib/zoom/config";
+import { type ZoomMeetingType } from "@/lib/zoom/config";
 import { teacherPanel } from "@/components/dashboard/teacher/teacher-ui";
 import { themeInputClass, themeSelectClass } from "@/lib/theme/form-fields";
 import { cn } from "@/lib/utils";
@@ -27,36 +23,6 @@ import { MeetingProviderIcon } from "@/components/meetings/MeetingProviderIcon";
 
 const TIMEZONES = ["Europe/Berlin", "Europe/Vienna", "Europe/Zurich", "Europe/London", "UTC"];
 const DURATION_PRESETS = [30, 45, 60, 90] as const;
-
-const MEETING_TYPE_META: Record<
-  ZoomMeetingType,
-  { icon: typeof Video; accent: string; descKey: string; descDefault: string }
-> = {
-  live_class: {
-    icon: Video,
-    accent: "border-[#2D8CFF] bg-blue-50 text-[#2D8CFF]",
-    descKey: "zoom.typesDesc.live_class",
-    descDefault: "Open session for enrolled students",
-  },
-  private_session: {
-    icon: User,
-    accent: "border-[#D4AF37] bg-[#FFF9E6] text-[#B8941F]",
-    descKey: "zoom.typesDesc.private_session",
-    descDefault: "1:1 with one student",
-  },
-  group_session: {
-    icon: Users,
-    accent: "border-violet-300 bg-violet-50 text-violet-600",
-    descKey: "zoom.typesDesc.group_session",
-    descDefault: "Small group lesson",
-  },
-  webinar: {
-    icon: Presentation,
-    accent: "border-emerald-300 bg-emerald-50 text-emerald-600",
-    descKey: "zoom.typesDesc.webinar",
-    descDefault: "Large audience presentation",
-  },
-};
 
 function defaultScheduleValues() {
   const now = new Date();
@@ -74,12 +40,14 @@ type Props = {
   onCreated?: () => void;
   zoomReady?: boolean;
   connectHref?: string;
+  initialStudentId?: string;
 };
 
 export function CreateLiveClassForm({
   onCreated,
   zoomReady = false,
   connectHref = "/api/zoom/authorize?return=%2Fdashboard%2Fteacher%2Fschedule",
+  initialStudentId = "",
 }: Props) {
   const { t } = useTranslation();
   const toast = useToast();
@@ -96,7 +64,7 @@ export function CreateLiveClassForm({
     startTime: defaults.startTime,
     duration: "60",
     timezone: "Europe/Berlin",
-    meetingType: "live_class" as ZoomMeetingType,
+    meetingType: "private_session" as ZoomMeetingType,
     studentId: "",
     subjectId: "",
     meetingLink: "",
@@ -121,10 +89,14 @@ export function CreateLiveClassForm({
       const studentsData = studentsRes.ok
         ? ((await studentsRes.json()) as { students?: { id: string; name: string }[] })
         : { students: [] };
-      setStudents(studentsData.students ?? []);
+      const list = studentsData.students ?? [];
+      setStudents(list);
       setSubjects(subjectRows.map((s) => ({ id: s.id, name: s.name })));
+      if (initialStudentId && list.some((s) => s.id === initialStudentId)) {
+        setForm((f) => ({ ...f, studentId: initialStudentId }));
+      }
     })();
-  }, []);
+  }, [initialStudentId]);
 
   const buildPayload = () => {
     const body: Record<string, unknown> = {
@@ -151,19 +123,36 @@ export function CreateLiveClassForm({
 
   const handlePasteLinkSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.studentId && !form.subjectId) {
+    if (!form.studentId) {
       toast.error(
-        t("zoom.selectStudentOrSubject", {
-          defaultValue: "Select a student or a subject so the class appears in their portal.",
+        t("zoom.selectStudentRequired", {
+          defaultValue: "Pick a student so the lesson appears in their portal.",
         })
       );
       return;
     }
-    const check = validateMeetingLink(form.meetingLink);
-    if (!check.ok) {
-      toast.error(check.error);
+    if (!form.subjectId) {
+      toast.error(
+        t("zoom.selectSubjectRequired", {
+          defaultValue: "Pick a subject for this lesson.",
+        })
+      );
       return;
     }
+    if (form.meetingLink.trim()) {
+      const check = validateMeetingLink(form.meetingLink);
+      if (!check.ok) {
+        toast.error(check.error);
+        return;
+      }
+    }
+
+    const studentName = students.find((s) => s.id === form.studentId)?.name;
+    const subjectName = subjects.find((s) => s.id === form.subjectId)?.name;
+    const title =
+      form.title.trim() ||
+      [subjectName, studentName].filter(Boolean).join(" · ") ||
+      t("zoom.lessonFallbackTitle", { defaultValue: "Tutoring lesson" });
 
     setLoading(true);
     try {
@@ -172,7 +161,10 @@ export function CreateLiveClassForm({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...buildPayload(),
-          meetingLink: form.meetingLink,
+          title,
+          meetingType: "private_session",
+          studentId: form.studentId,
+          meetingLink: form.meetingLink.trim() || undefined,
           passcode: form.passcode || undefined,
         }),
       });
@@ -181,7 +173,9 @@ export function CreateLiveClassForm({
       if (!res.ok) throw new Error(data.error || "Failed to schedule class");
 
       toast.success(
-        t("zoom.classCreated", { defaultValue: "Live class scheduled and students notified!" })
+        t("zoom.lessonCreated", {
+          defaultValue: "Lesson saved. The student can see it under My appointments.",
+        })
       );
       const nextDefaults = defaultScheduleValues();
       setForm((f) => ({
@@ -235,7 +229,6 @@ export function CreateLiveClassForm({
 
   const inputCls = themeInputClass;
   const selectCls = (value: string) => themeSelectClass(value, "rounded-lg py-2.5");
-  const selectedMeta = MEETING_TYPE_META[form.meetingType];
 
   return (
     <div className={teacherPanel()}>
@@ -246,11 +239,11 @@ export function CreateLiveClassForm({
           </div>
           <div>
             <h2 className="text-base font-bold">
-              {t("zoom.scheduleNew", { defaultValue: "Schedule a live class" })}
+              {t("zoom.newLesson", { defaultValue: "New lesson" })}
             </h2>
             <p className="mt-1 text-sm text-gray-300">
-              {t("zoom.schedulePasteDesc", {
-                defaultValue: "Create a meeting in Zoom, paste the join link, and students can join with one tap.",
+              {t("zoom.newLessonDesc", {
+                defaultValue: "Pick a student, date, and time. The lesson then appears in their appointments.",
               })}
             </p>
           </div>
@@ -258,95 +251,50 @@ export function CreateLiveClassForm({
       </div>
 
       <form onSubmit={(e) => void handlePasteLinkSubmit(e)} className="space-y-6 p-5 sm:p-6">
-        {/* Meeting link */}
-        <div>
-          <label htmlFor="meeting-link" className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-gray-500">
-            {t("zoom.meetingLink", { defaultValue: "Meeting link" })}
-          </label>
-          <div className="flex gap-3">
-            {linkPreview?.ok ? (
-              <MeetingProviderIcon provider={linkPreview.provider} size="lg" />
-            ) : (
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gray-100 text-gray-400">
-                <Link2 className="h-5 w-5" />
-              </div>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div>
+            <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-gray-500">
+              {t("zoom.student", { defaultValue: "Student" })}
+            </label>
+            <select
+              required
+              value={form.studentId}
+              onChange={(e) => setForm({ ...form, studentId: e.target.value })}
+              className={selectCls(form.studentId)}
+            >
+              <option value="">{t("zoom.selectStudent", { defaultValue: "Select student" })}</option>
+              {students.map((s) => (
+                <option key={s.id} value={s.id}>
+                  {s.name}
+                </option>
+              ))}
+            </select>
+            {students.length === 0 && (
+              <p className="mt-1.5 text-xs text-amber-700">
+                {t("zoom.noStudentsYet", {
+                  defaultValue: "No students found yet. Add a student account first.",
+                })}
+              </p>
             )}
-            <div className="min-w-0 flex-1">
-              <input
-                id="meeting-link"
-                required
-                type="url"
-                inputMode="url"
-                value={form.meetingLink}
-                onChange={(e) => setForm({ ...form, meetingLink: e.target.value })}
-                placeholder="https://zoom.us/j/123456789"
-                className={inputCls}
-              />
-              {linkPreview && !linkPreview.ok ? (
-                <p className="mt-1.5 text-xs text-red-600">{linkPreview.error}</p>
-              ) : linkPreview?.ok ? (
-                <p className="mt-1.5 text-xs text-emerald-600">
-                  {t("zoom.linkDetected", {
-                    defaultValue: "{{provider}} link detected",
-                    provider: detectMeetingProvider(form.meetingLink) === "zoom" ? "Zoom" : "Video",
-                  })}
-                </p>
-              ) : (
-                <p className="mt-1.5 text-xs text-gray-500">
-                  {t("zoom.meetingLinkHint", {
-                    defaultValue: "Paste the join link from Zoom, Google Meet, or Teams.",
-                  })}
-                </p>
-              )}
-            </div>
           </div>
-        </div>
-
-        {/* Meeting type pills */}
-        <div>
-          <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-gray-500">
-            {t("zoom.meetingType", { defaultValue: "Meeting type" })}
-          </p>
-          <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-            {ZOOM_MEETING_TYPES.map((type) => {
-              const meta = MEETING_TYPE_META[type];
-              const Icon = meta.icon;
-              const active = form.meetingType === type;
-              return (
-                <button
-                  key={type}
-                  type="button"
-                  onClick={() => setForm({ ...form, meetingType: type })}
-                  className={cn(
-                    "flex flex-col items-start rounded-xl border-2 px-3 py-3 text-left transition",
-                    active ? meta.accent : "border-gray-100 bg-[#FAFBFC] text-gray-600 hover:border-gray-200"
-                  )}
-                >
-                  <Icon className="mb-2 h-4 w-4" />
-                  <span className="text-xs font-semibold leading-tight">
-                    {t(`zoom.types.${type}`, { defaultValue: type.replace(/_/g, " ") })}
-                  </span>
-                </button>
-              );
-            })}
+          <div>
+            <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-gray-500">
+              {t("zoom.subject", { defaultValue: "Subject" })}
+            </label>
+            <select
+              required
+              value={form.subjectId}
+              onChange={(e) => setForm({ ...form, subjectId: e.target.value })}
+              className={selectCls(form.subjectId)}
+            >
+              <option value="">{t("zoom.selectSubject", { defaultValue: "Select subject" })}</option>
+              {subjects.map((s) => (
+                <option key={s.id} value={s.id}>
+                  {s.name}
+                </option>
+              ))}
+            </select>
           </div>
-          <p className="mt-2 text-xs text-gray-500">
-            {t(selectedMeta.descKey, { defaultValue: selectedMeta.descDefault })}
-          </p>
-        </div>
-
-        <div>
-          <label htmlFor="meeting-title" className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-gray-500">
-            {t("zoom.meetingTitle", { defaultValue: "Meeting title" })}
-          </label>
-          <input
-            id="meeting-title"
-            required
-            value={form.title}
-            onChange={(e) => setForm({ ...form, title: e.target.value })}
-            placeholder={t("zoom.titlePlaceholder", { defaultValue: "e.g. Algebra - Quadratic equations" })}
-            className={inputCls}
-          />
         </div>
 
         <div>
@@ -397,50 +345,60 @@ export function CreateLiveClassForm({
           </div>
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div>
-            <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-gray-500">
-              {t("zoom.subject", { defaultValue: "Subject" })}
-            </label>
-            <select
-              value={form.subjectId}
-              onChange={(e) => setForm({ ...form, subjectId: e.target.value })}
-              className={selectCls(form.subjectId)}
-            >
-              <option value="">{t("zoom.selectSubject", { defaultValue: "Select subject" })}</option>
-              {subjects.map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-gray-500">
-              {form.meetingType === "private_session"
-                ? t("zoom.student", { defaultValue: "Student" })
-                : t("zoom.studentOptional", { defaultValue: "Student (optional)" })}
-            </label>
-            <select
-              required={form.meetingType === "private_session"}
-              value={form.studentId}
-              onChange={(e) => setForm({ ...form, studentId: e.target.value })}
-              className={selectCls(form.studentId)}
-            >
-              <option value="">{t("zoom.selectStudent", { defaultValue: "Select student" })}</option>
-              {students.map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.name}
-                </option>
-              ))}
-            </select>
-            {students.length === 0 && (
-              <p className="mt-1.5 text-xs text-amber-700">
-                {t("zoom.noStudentsYet", {
-                  defaultValue: "No students found yet. Add a student account first.",
-                })}
-              </p>
+        <div>
+          <label htmlFor="meeting-title" className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-gray-500">
+            {t("zoom.meetingTitle", { defaultValue: "Lesson title" })}
+          </label>
+          <input
+            id="meeting-title"
+            value={form.title}
+            onChange={(e) => setForm({ ...form, title: e.target.value })}
+            placeholder={t("zoom.titleOptionalPlaceholder", {
+              defaultValue: "Optional — e.g. Algebra, quadratic equations",
+            })}
+            className={inputCls}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="meeting-link" className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-gray-500">
+            {t("zoom.meetingLinkOptional", { defaultValue: "Video link (optional)" })}
+          </label>
+          <div className="flex gap-3">
+            {linkPreview?.ok ? (
+              <MeetingProviderIcon provider={linkPreview.provider} size="lg" />
+            ) : (
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gray-100 text-gray-400">
+                <Link2 className="h-5 w-5" />
+              </div>
             )}
+            <div className="min-w-0 flex-1">
+              <input
+                id="meeting-link"
+                type="url"
+                inputMode="url"
+                value={form.meetingLink}
+                onChange={(e) => setForm({ ...form, meetingLink: e.target.value })}
+                placeholder="https://zoom.us/j/123456789"
+                className={inputCls}
+              />
+              {linkPreview && !linkPreview.ok ? (
+                <p className="mt-1.5 text-xs text-red-600">{linkPreview.error}</p>
+              ) : linkPreview?.ok ? (
+                <p className="mt-1.5 text-xs text-emerald-600">
+                  {t("zoom.linkDetected", {
+                    defaultValue: "{{provider}} link detected",
+                    provider: detectMeetingProvider(form.meetingLink) === "zoom" ? "Zoom" : "Video",
+                  })}
+                </p>
+              ) : (
+                <p className="mt-1.5 text-xs text-gray-500">
+                  {t("zoom.meetingLinkOptionalHint", {
+                    defaultValue: "Optional. Paste Zoom, Meet, or Teams if you already have a link.",
+                  })}
+                </p>
+              )}
+            </div>
           </div>
         </div>
 
@@ -499,8 +457,8 @@ export function CreateLiveClassForm({
         </div>
 
         <Button type="submit" variant="gold" disabled={loading} className="w-full gap-2 sm:w-auto">
-          {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Radio className="h-4 w-4" />}
-          {t("zoom.scheduleAndNotify", { defaultValue: "Schedule & notify students" })}
+          {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Calendar className="h-4 w-4" />}
+          {t("zoom.saveLesson", { defaultValue: "Save lesson" })}
         </Button>
 
         {zoomReady && (
@@ -534,7 +492,7 @@ export function CreateLiveClassForm({
         {!zoomReady && (
           <p className="text-xs text-gray-500">
             {t("zoom.pastePreferred", {
-              defaultValue: "Tip: create the meeting in the Zoom app, then paste the join link above.",
+              defaultValue: "A video link is optional. The student still sees the lesson under My appointments.",
             })}{" "}
             <a href={connectHref} className="font-medium text-[#2D8CFF] hover:underline">
               {t("zoom.connectOptional", { defaultValue: "Connect Zoom (optional)" })}

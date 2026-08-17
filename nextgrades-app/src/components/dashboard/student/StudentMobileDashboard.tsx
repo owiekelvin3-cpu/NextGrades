@@ -16,6 +16,7 @@ import type { StudentOverviewData } from "@/lib/dashboard/student-overview";
 import {
   formatTimeRange,
   lessonDateParts,
+  lessonDisplayTitle,
   st,
   subjectColor,
   subjectIcon,
@@ -326,7 +327,12 @@ export function StudentMobileDashboard({ data, firstName, dateLocale }: Props) {
                         <span className="text-lg font-bold leading-none text-foreground">{parts.day}</span>
                       </div>
                       <div className="min-w-0 flex-1">
-                        <p className="font-semibold text-foreground">{lesson.subject_name}</p>
+                        <p className="font-semibold text-foreground">
+                          {lessonDisplayTitle(
+                            lesson,
+                            t("studentDashboard.lessonFallback", { defaultValue: "Lesson" })
+                          )}
+                        </p>
                         <p className="text-xs text-text-muted">{parts.weekday}</p>
                         <div className="mt-1 flex flex-wrap gap-2 text-xs text-text-muted">
                           <span className="inline-flex items-center gap-1">

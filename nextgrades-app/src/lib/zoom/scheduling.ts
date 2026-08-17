@@ -21,11 +21,12 @@ export async function listEligibleStudentsForTeacher(
 ): Promise<{ id: string; name: string }[]> {
   const { data: profiles } = await db
     .from("profiles")
-    .select("id, full_name")
+    .select("id, full_name, is_active")
     .eq("role", "student")
     .order("full_name");
 
   return (profiles ?? [])
+    .filter((p) => p.is_active !== false)
     .map((p) => ({
       id: p.id as string,
       name: (p.full_name as string | null)?.trim() || "Student",

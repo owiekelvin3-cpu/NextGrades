@@ -33,7 +33,7 @@ import { StudentQuickNav } from "./StudentQuickNav";
 import { StudentMobileDashboard } from "./StudentMobileDashboard";
 import { StudentKpiCard, StudentKpiStrip } from "./StudentKpiCard";
 import { StudentPanel } from "./StudentPanel";
-import { formatTimeRange, lessonDateParts, st } from "./student-ui";
+import { formatTimeRange, lessonDateParts, lessonDisplayTitle, st } from "./student-ui";
 import { studentStaggerContainer, studentStaggerItem } from "./student-motion";
 import { OverviewEmptyState } from "@/components/dashboard/overview/OverviewPrimitives";
 import { cn } from "@/lib/utils";
@@ -262,7 +262,12 @@ export function StudentOverviewDashboard() {
                           </span>
                         </div>
                         <div className="min-w-0">
-                          <p className={cn("font-semibold", st.textPrimary)}>{lesson.subject_name}</p>
+                          <p className={cn("font-semibold", st.textPrimary)}>
+                            {lessonDisplayTitle(
+                              lesson,
+                              t("studentDashboard.lessonFallback", { defaultValue: "Lesson" })
+                            )}
+                          </p>
                           <p className={cn("text-sm", st.textMuted)}>{parts.weekday}</p>
                           <div className={cn("mt-1 flex flex-wrap items-center gap-x-3 text-xs", st.textSubtle)}>
                             {lesson.teacher_name && (

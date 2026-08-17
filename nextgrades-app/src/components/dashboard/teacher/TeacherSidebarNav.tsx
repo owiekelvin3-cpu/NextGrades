@@ -7,7 +7,6 @@ import {
   LayoutDashboard,
   Users,
   CalendarDays,
-  Calendar,
   CreditCard,
   Rocket,
   Sparkles,
@@ -30,8 +29,7 @@ export type TeacherNavItem = {
 export const teacherNavItems: TeacherNavItem[] = [
   { href: "/dashboard/teacher", icon: LayoutDashboard, labelKey: "teacherDashboard.nav.dashboard" },
   { href: "/dashboard/teacher/students", icon: Users, labelKey: "teacherDashboard.nav.students", matchPrefix: true },
-  { href: "/dashboard/teacher/schedule", icon: CalendarDays, labelKey: "teacherDashboard.nav.appointments" },
-  { href: "/dashboard/teacher/schedule", icon: Calendar, labelKey: "teacherDashboard.nav.calendar" },
+  { href: "/dashboard/teacher/schedule", icon: CalendarDays, labelKey: "teacherDashboard.nav.schedule", matchPrefix: true },
   { href: "/dashboard/teacher/payments", icon: CreditCard, labelKey: "teacherDashboard.nav.payments" },
   { href: "/dashboard/teacher/earnings", icon: Rocket, labelKey: "teacherDashboard.nav.nextJumpBonus" },
   {
