@@ -9,29 +9,31 @@ import { Button } from "@/components/ui/Button";
 import { StudentDashboardLayout } from "./StudentDashboardLayout";
 import { StudentKpiCard, StudentKpiStrip } from "./StudentKpiCard";
 import { StudentPanel } from "./StudentPanel";
-import { StudentHeroBand } from "./StudentHeroBand";
 import { studentStaggerContainer, studentStaggerItem } from "./student-motion";
 import {
   fetchStudentOverviewData,
-  getFirstName,
   type StudentOverviewData,
 } from "@/lib/dashboard/student-overview";
-import {
-  fetchCompletedLessonsCount,
-  fetchMaterials,
-  fetchStudentEnrollments,
-  getSessionUserId,
-  computeEnrollmentProgress,
-} from "@/lib/dashboard/data";
-import { getDateLocale } from "@/lib/i18n/locales";
+import { fetchCompletedLessonsCount, getSessionUserId } from "@/lib/dashboard/data";
 import { st, subjectColor, subjectInitials } from "./student-ui";
 import { cn } from "@/lib/utils";
 
-function ProgressRing({ percent, size = 72 }: { percent: number; size?: number }) {
-  const stroke = 6;
+function ProgressRing({
+  percent,
+  size = 72,
+  stroke = 6,
+  trackClassName = "text-surface-subtle",
+  barClassName = "text-[var(--brand-gold)]",
+}: {
+  percent: number;
+  size?: number;
+  stroke?: number;
+  trackClassName?: string;
+  barClassName?: string;
+}) {
   const radius = (size - stroke) / 2;
   const circumference = 2 * Math.PI * radius;
-  const offset = circumference - (percent / 100) * circumference;
+  const offset = circumference - (Math.min(100, Math.max(0, percent)) / 100) * circumference;
 
   return (
     <svg width={size} height={size} className="-rotate-90" aria-hidden>
@@ -42,7 +44,7 @@ function ProgressRing({ percent, size = 72 }: { percent: number; size?: number }
         fill="none"
         stroke="currentColor"
         strokeWidth={stroke}
-        className="text-surface-subtle"
+        className={trackClassName}
       />
       <circle
         cx={size / 2}
@@ -54,20 +56,17 @@ function ProgressRing({ percent, size = 72 }: { percent: number; size?: number }
         strokeDasharray={circumference}
         strokeDashoffset={offset}
         strokeLinecap="round"
-        className="text-[var(--brand-gold)] transition-all duration-700"
+        className={cn("transition-all duration-700", barClassName)}
       />
     </svg>
   );
 }
 
 export function StudentProgressExperience() {
-  const { t, i18n } = useTranslation();
-  const dateLocale = getDateLocale(i18n.language);
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<StudentOverviewData | null>(null);
   const [completedLessons, setCompletedLessons] = useState(0);
-  const [materialCount, setMaterialCount] = useState(0);
-  const [enrollmentProgress, setEnrollmentProgress] = useState(0);
 
   useEffect(() => {
     (async () => {
@@ -76,14 +75,7 @@ export function StudentProgressExperience() {
 
       const uid = await getSessionUserId();
       if (uid) {
-        const [enrollments, done, materials] = await Promise.all([
-          fetchStudentEnrollments(uid),
-          fetchCompletedLessonsCount(uid),
-          fetchMaterials({ limit: 100 }),
-        ]);
-        setEnrollmentProgress(computeEnrollmentProgress(enrollments));
-        setCompletedLessons(done);
-        setMaterialCount(materials.length);
+        setCompletedLessons(await fetchCompletedLessonsCount(uid));
       }
       setLoading(false);
     })();
@@ -115,26 +107,76 @@ export function StudentProgressExperience() {
     );
   }
 
-  const firstName = getFirstName(data.profile.fullName);
-  const progress = data.overallProgress || enrollmentProgress;
+  const progress = data.overallProgress;
+  const materialCount = data.materials.length;
 
   return (
     <StudentDashboardLayout title={title} description={description}>
       <motion.div
-        className="mx-auto flex max-w-6xl flex-col gap-6 md:gap-8"
+        className="mx-auto flex w-full max-w-6xl flex-col gap-6 md:gap-8"
         variants={studentStaggerContainer}
         initial="hidden"
         animate="show"
       >
-        <motion.div variants={studentStaggerItem}>
-          <StudentHeroBand
-            firstName={firstName}
-            learningGoal={data.learningGoal}
-            dateLocale={dateLocale}
-            overallProgress={progress}
-            compact
-          />
-        </motion.div>
+        <motion.section variants={studentStaggerItem} className="student-hero p-6 sm:p-8">
+          <div className="relative grid items-center gap-8 lg:grid-cols-[minmax(0,1fr)_auto]">
+            <div className="min-w-0">
+              <p className="student-eyebrow">{t("studentDashboard.nav.progress")}</p>
+              <h2 className="mt-3 text-2xl font-bold leading-tight text-white sm:text-3xl">
+                {t("studentDashboard.progressHeroTitle", { defaultValue: "Your learning progress" })}
+              </h2>
+              <p className="mt-2 max-w-xl text-sm leading-relaxed text-white/75 sm:text-base">
+                {t("studentDashboard.progressHeroDesc", {
+                  defaultValue: "See how far you have come in your courses, lessons, and quizzes.",
+                })}
+              </p>
+              <div className="mt-6 flex flex-wrap gap-2.5">
+                <Button variant="gold" size="md" href="/dashboard/student/courses" className="justify-center">
+                  <BookOpen className="mr-1.5 h-4 w-4" />
+                  {t("studentDashboard.continueLearning", { subject: "", defaultValue: "Continue learning" })}
+                </Button>
+                <Button
+                  variant="secondary"
+                  size="md"
+                  href="/dashboard/student/quizzes"
+                  className="justify-center border-white/20 bg-white/10 text-white hover:bg-white/15"
+                >
+                  {t("studentDashboard.goToTasks")}
+                </Button>
+              </div>
+            </div>
+
+            <div className="flex justify-center lg:justify-end">
+              <div className="flex items-center gap-5 rounded-2xl border border-white/12 bg-white/8 px-6 py-5 backdrop-blur-sm">
+                <div className="relative flex h-[8.5rem] w-[8.5rem] items-center justify-center">
+                  <ProgressRing
+                    percent={progress}
+                    size={136}
+                    stroke={10}
+                    trackClassName="text-white/15"
+                    barClassName="text-[var(--brand-gold)]"
+                  />
+                  <div className="absolute text-center">
+                    <p className="text-3xl font-bold text-white">{progress}%</p>
+                    <p className="text-[10px] font-semibold uppercase tracking-wider text-white/60">
+                      {t("studentDashboard.totalProgress")}
+                    </p>
+                  </div>
+                </div>
+                <div className="hidden min-w-[9rem] space-y-3 sm:block">
+                  <div>
+                    <p className="text-2xl font-bold text-white">{completedLessons}</p>
+                    <p className="text-xs text-white/65">{t("studentDashboard.progressLessonsDone")}</p>
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold text-white">{data.courses.length}</p>
+                    <p className="text-xs text-white/65">{t("studentDashboard.myCourses")}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.section>
 
         <motion.div variants={studentStaggerItem}>
           <StudentKpiStrip>
@@ -150,7 +192,7 @@ export function StudentProgressExperience() {
               }
             />
             <StudentKpiCard
-              label={t("dashboardPages.student.appointments.title", { defaultValue: "Lessons completed" })}
+              label={t("studentDashboard.progressLessonsDone")}
               value={completedLessons}
               icon={CalendarDays}
               accent="emerald"
