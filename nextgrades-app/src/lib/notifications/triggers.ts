@@ -26,8 +26,8 @@ export async function notifyResourcePublished(params: {
   await createNotificationsForUsers(studentIds, {
     type: "success",
     category: "resource",
-    title: "New learning material available",
-    message: `"${params.title}" has been published.`,
+    title: "Neues Lernmaterial verfügbar",
+    message: `"${params.title}" wurde veröffentlicht.`,
     actionUrl: `/resources?id=${params.materialId}`,
     entityType: "material",
     entityId: params.materialId,
@@ -36,8 +36,8 @@ export async function notifyResourcePublished(params: {
   await createNotificationsForRole("admin", {
     type: "info",
     category: "resource",
-    title: "Teacher published new material",
-    message: `"${params.title}" was published.`,
+    title: "Lehrkraft hat neues Material veröffentlicht",
+    message: `"${params.title}" wurde veröffentlicht.`,
     actionUrl: `/portal/admin/resources`,
     entityType: "material",
     entityId: params.materialId,
@@ -63,20 +63,20 @@ export async function notifyTeacherResourceUploaded(params: {
     category: "resource",
     title: published
       ? isUpdate
-        ? "Resource updated & published"
-        : "Resource published successfully"
+        ? "Material aktualisiert und veröffentlicht"
+        : "Material erfolgreich veröffentlicht"
       : submittedForReview
         ? isUpdate
-          ? "Update submitted for review"
-          : "Submitted for review"
+          ? "Aktualisierung zur Prüfung eingereicht"
+          : "Zur Prüfung eingereicht"
         : isUpdate
-          ? "Draft updated"
-          : "Draft saved",
+          ? "Entwurf aktualisiert"
+          : "Entwurf gespeichert",
     message: published
-      ? `"${params.title}" is now live on the Resources page.`
+      ? `"${params.title}" ist jetzt in der Lernbibliothek sichtbar.`
       : submittedForReview
-        ? `"${params.title}" is in the admin review queue. You will be notified when it is approved.`
-        : `"${params.title}" was saved as a draft. Submit it for review when you are ready.`,
+        ? `"${params.title}" liegt in der Admin-Prüfung. Du wirst benachrichtigt, sobald es freigegeben ist.`
+        : `"${params.title}" wurde als Entwurf gespeichert. Reiche es zur Prüfung ein, wenn du soweit bist.`,
     actionUrl: submittedForReview
       ? "/dashboard/teacher/content"
       : published
@@ -93,12 +93,12 @@ export async function notifyAdminModerationPending(params: {
   accessType?: string;
   teacherName?: string;
 }) {
-  const accessLabel = params.accessType === "premium" ? "Premium" : "Free";
+  const accessLabel = params.accessType === "premium" ? "Premium" : "Kostenlos";
   await createNotificationsForRole("admin", {
     type: "info",
     category: "resource",
-    title: "Resource awaiting review",
-    message: `${params.teacherName ?? "A teacher"} submitted "${params.title}" (${accessLabel}) for moderation.`,
+    title: "Material wartet auf Prüfung",
+    message: `${params.teacherName ?? "Eine Lehrkraft"} hat „${params.title}“ (${accessLabel}) zur Freigabe eingereicht.`,
     actionUrl: "/portal/admin/moderation",
     entityType: "material",
     entityId: params.materialId,
@@ -119,8 +119,8 @@ export async function notifyLiveClassScheduled(params: {
     dateStyle: "medium",
     timeStyle: "short",
   });
-  const className = params.title || params.subjectName || "Live class";
-  const teacher = params.teacherName ?? "Your teacher";
+  const className = params.title || params.subjectName || "Live-Stunde";
+  const teacher = params.teacherName ?? "deine Lehrkraft";
 
   await createNotification({
     userId: params.studentId,
@@ -154,10 +154,10 @@ export async function notifyEnrollment(params: {
     userId: params.studentId,
     type: "success",
     category: "enrollment",
-    title: "Enrollment confirmed",
+    title: "Anmeldung bestätigt",
     message: params.subjectName
-      ? `You are enrolled in ${params.subjectName}.`
-      : "Your enrollment is active.",
+      ? `Du bist für ${params.subjectName} angemeldet.`
+      : "Deine Anmeldung ist aktiv.",
     actionUrl: "/dashboard/student/courses",
   });
 
@@ -166,8 +166,8 @@ export async function notifyEnrollment(params: {
       userId: params.teacherId,
       type: "info",
       category: "enrollment",
-      title: "New student enrollment",
-      message: "A student enrolled in your course.",
+      title: "Neue Schüleranmeldung",
+      message: "Eine Schülerin oder ein Schüler hat sich für deinen Kurs angemeldet.",
       actionUrl: "/dashboard/teacher/students",
     });
   }
@@ -182,8 +182,8 @@ export async function notifyPaymentReceived(params: {
     userId: params.userId,
     type: "success",
     category: "account",
-    title: "Payment received",
-    message: params.description ?? `Payment of ${params.amount} confirmed.`,
+    title: "Zahlung eingegangen",
+    message: params.description ?? `Zahlung über ${params.amount} bestätigt.`,
     actionUrl: "/dashboard/student/settings",
   });
 }
@@ -193,10 +193,10 @@ export async function notifyTeacherApproved(userId: string, approved: boolean) {
     userId,
     type: approved ? "success" : "warning",
     category: "account",
-    title: approved ? "Teacher account approved" : "Teacher application update",
+    title: approved ? "Lehrkonto freigeschaltet" : "Update zu deiner Lehrkraft-Bewerbung",
     message: approved
-      ? "Your teacher account has been approved. You can now publish materials."
-      : "Your teacher application requires attention.",
+      ? "Dein Lehrkonto wurde freigeschaltet. Du kannst jetzt Materialien veröffentlichen."
+      : "Deine Lehrkraft-Bewerbung braucht noch Aufmerksamkeit.",
     actionUrl: "/dashboard/teacher",
   });
 }
@@ -206,8 +206,8 @@ export async function notifyAccountVerification(userId: string) {
     userId,
     type: "success",
     category: "account",
-    title: "Email verified",
-    message: "Your email address has been verified successfully.",
+    title: "E-Mail bestätigt",
+    message: "Deine E-Mail-Adresse wurde erfolgreich bestätigt.",
     actionUrl: "/dashboard/student/settings",
   });
 }
@@ -217,8 +217,8 @@ export async function notifyPasswordReset(userId: string) {
     userId,
     type: "warning",
     category: "account",
-    title: "Password changed",
-    message: "Your password was reset. If you did not request this, contact support.",
+    title: "Passwort geändert",
+    message: "Dein Passwort wurde zurückgesetzt. Wenn du das nicht warst, kontaktiere den Support.",
     actionUrl: "/dashboard/student/settings",
   });
 }
@@ -233,8 +233,8 @@ export async function notifyQuizSubmitted(params: {
     userId: params.studentId,
     type: "success",
     category: "submission",
-    title: "Quiz submitted",
-    message: `"${params.quizTitle}" was submitted successfully.`,
+    title: "Quiz abgegeben",
+    message: `"${params.quizTitle}" wurde erfolgreich abgegeben.`,
     actionUrl: "/dashboard/student/quizzes",
     entityType: "quiz_attempt",
     entityId: params.attemptId,
@@ -245,8 +245,8 @@ export async function notifyQuizSubmitted(params: {
       userId: params.teacherId,
       type: "info",
       category: "submission",
-      title: "New quiz submission",
-      message: `A student submitted "${params.quizTitle}".`,
+      title: "Neue Quiz-Abgabe",
+      message: `Eine Schülerin oder ein Schüler hat „${params.quizTitle}“ abgegeben.`,
       actionUrl: "/dashboard/teacher/analytics",
       entityType: "quiz_attempt",
       entityId: params.attemptId,
@@ -263,10 +263,10 @@ export async function notifyGradeReleased(params: {
     userId: params.studentId,
     type: "success",
     category: "grade",
-    title: "Grade released",
+    title: "Note veröffentlicht",
     message: params.score
       ? `${params.title}: ${params.score}`
-      : `Your grade for "${params.title}" is available.`,
+      : `Deine Note für „${params.title}“ ist verfügbar.`,
     actionUrl: "/dashboard/student/progress",
   });
 }
@@ -279,8 +279,8 @@ export async function notifyAssignmentAssigned(params: {
   await createNotificationsForUsers(params.studentIds, {
     type: "info",
     category: "assignment",
-    title: "New assignment",
-    message: `"${params.title}" has been assigned to you.`,
+    title: "Neue Aufgabe",
+    message: `"${params.title}" wurde dir zugewiesen.`,
     actionUrl: params.materialId ? `/resources?id=${params.materialId}` : "/dashboard/student/resources",
     entityType: "material",
     entityId: params.materialId,
@@ -295,8 +295,10 @@ export async function notifyAdminNewRegistration(params: {
   await createNotificationsForRole("admin", {
     type: "info",
     category: "system",
-    title: "New user registration",
-    message: `${params.name || "A user"} registered as ${params.role}.`,
+    title: "Neue Registrierung",
+    message: `${params.name || "Jemand"} hat sich als ${
+      params.role === "teacher" ? "Lehrkraft" : params.role === "admin" ? "Administrator" : "SchülerIn"
+    } registriert.`,
     actionUrl: `/portal/admin/users`,
     entityType: "profile",
     entityId: params.userId,
@@ -313,8 +315,8 @@ export async function notifyModerationResult(params: {
     userId: params.teacherId,
     type: params.approved ? "success" : "warning",
     category: "resource",
-    title: params.approved ? "Material approved" : "Material needs revision",
-    message: `"${params.title}" was ${params.approved ? "approved" : "rejected"} by moderation.`,
+    title: params.approved ? "Material freigegeben" : "Material braucht Überarbeitung",
+    message: `"${params.title}" wurde von der Prüfung ${params.approved ? "freigegeben" : "abgelehnt"}.`,
     actionUrl: `/dashboard/teacher/content/${params.materialId}/edit`,
     entityType: "material",
     entityId: params.materialId,
@@ -364,8 +366,8 @@ export async function notifyExamPublished(params: {
   await createNotificationsForUsers(params.studentIds, {
     type: "info",
     category: "exam",
-    title: "New exam available",
-    message: `"${params.title}" has been published.`,
+    title: "Neue Prüfung verfügbar",
+    message: `"${params.title}" wurde veröffentlicht.`,
     actionUrl: params.materialId ? `/resources?id=${params.materialId}` : "/dashboard/student/quizzes",
     entityType: "material",
     entityId: params.materialId,

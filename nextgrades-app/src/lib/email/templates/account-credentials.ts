@@ -9,7 +9,7 @@ export function accountCredentialsEmail(params: {
   role: "student" | "teacher" | "admin";
   loginUrl: string;
 }): string {
-  const name = displayName(params.userName, "there");
+  const name = displayName(params.userName, "du");
   const roleLabel =
     params.role === "teacher" ? "Lehrkraft" : params.role === "admin" ? "Administrator" : "SchülerIn";
 
@@ -43,7 +43,7 @@ export function accountCredentialsEmailPlain(params: {
   role: "student" | "teacher" | "admin";
   loginUrl: string;
 }): string {
-  const name = displayName(params.userName, "there");
+  const name = displayName(params.userName, "du");
   return [
     `Hallo ${name},`,
     "",

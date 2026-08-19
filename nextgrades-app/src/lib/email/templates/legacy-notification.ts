@@ -6,8 +6,7 @@ import {
   emailButton,
   emailSignature,
 } from "../layout";
-import { displayName } from "../utils";
-import { getAppUrl } from "../config";
+import { halloLine } from "../utils";
 
 export function notificationEmail(
   title: string,
@@ -16,10 +15,9 @@ export function notificationEmail(
   ctaUrl?: string,
   userName?: string
 ): string {
-  const name = displayName(userName);
   const content = [
     emailHeading(title),
-    emailParagraph(`Hi ${name},`),
+    emailParagraph(halloLine(userName)),
     emailParagraph(message),
     ctaText && ctaUrl ? emailButton(ctaUrl, ctaText) : "",
     emailSignature(),

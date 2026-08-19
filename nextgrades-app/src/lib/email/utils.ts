@@ -7,9 +7,14 @@ export function escapeHtml(value: string): string {
     .replace(/'/g, "&#39;");
 }
 
-export function displayName(name?: string | null, fallback = "there"): string {
+export function displayName(name?: string | null, fallback = ""): string {
   const trimmed = name?.trim();
   return trimmed ? escapeHtml(trimmed) : fallback;
+}
+
+export function halloLine(userName?: string | null): string {
+  const name = displayName(userName);
+  return name ? `Hallo ${name},` : "Hallo,";
 }
 
 export function formatCurrency(amount: number, currency = "EUR"): string {

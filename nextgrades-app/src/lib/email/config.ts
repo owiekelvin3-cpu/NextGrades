@@ -8,7 +8,7 @@ export { getAppUrl };
 
 export const EMAIL_BRAND = {
   name: "NextGrades",
-  tagline: "Learn • Grow • Succeed",
+  tagline: "Lernen • Wachsen • Erfolg",
   colors: {
     navy: "#0D1B2A",
     navyLight: "#112240",

@@ -242,8 +242,8 @@ export async function POST(request: Request) {
               userId: profile.id,
               type: "warning",
               category: "account",
-              title: "Payment failed",
-              message: "Your subscription payment could not be processed. Update your payment method to keep access.",
+              title: "Zahlung fehlgeschlagen",
+              message: "Deine Abo-Zahlung konnte nicht verarbeitet werden. Aktualisiere deine Zahlungsmethode, um den Zugang zu behalten.",
               actionUrl: "/pricing",
             });
           }
@@ -258,7 +258,7 @@ export async function POST(request: Request) {
           void sendSubscriptionRenewalReminderEmail(customerEmail, undefined, {
             planName: "Premium",
             amount: formatCurrency((invoice.amount_due ?? 0) / 100, (invoice.currency || "eur").toUpperCase()),
-            billingCycle: "Monthly",
+            billingCycle: "Monatlich",
             renewalDate: invoice.next_payment_attempt
               ? new Date(invoice.next_payment_attempt * 1000).toLocaleDateString("de-DE")
               : undefined,
@@ -282,8 +282,8 @@ export async function POST(request: Request) {
               userId: profile.id,
               type: "warning",
               category: "account",
-              title: "Subscription cancelled",
-              message: "Your subscription has ended. Renew to regain access to premium content.",
+              title: "Abo beendet",
+              message: "Dein Abo ist ausgelaufen. Verlängere es, um wieder Zugang zu Premium-Inhalten zu erhalten.",
               actionUrl: "/pricing",
             });
           }

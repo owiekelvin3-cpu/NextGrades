@@ -25,7 +25,7 @@ import { ADMIN_CMS_PREFIX, ADMIN_PORTAL_PREFIX } from "@/lib/admin/portal-paths"
 
 const SECTIONS = [
   {
-    title: "People",
+    title: "Menschen",
     items: [
       { href: `${ADMIN_PORTAL_PREFIX}/students`, icon: Users, labelKey: "adminNav.students", descKey: "adminHub.studentsDesc" },
       { href: `${ADMIN_PORTAL_PREFIX}/teachers`, icon: GraduationCap, labelKey: "adminNav.teachers", descKey: "adminHub.teachersDesc" },
@@ -33,13 +33,13 @@ const SECTIONS = [
     ],
   },
   {
-    title: "Content",
+    title: "Inhalte",
     items: [
       { href: ADMIN_CMS_PREFIX, icon: Globe, labelKey: "adminNav.websiteContent", descKey: "adminHub.websiteDesc" },
     ],
   },
   {
-    title: "Platform",
+    title: "Plattform",
     items: [
       { href: `${ADMIN_PORTAL_PREFIX}/notifications`, icon: Bell, labelKey: "adminNav.notifications", descKey: "adminHub.notificationsDesc" },
       { href: `${ADMIN_PORTAL_PREFIX}/quiz-monitor`, icon: ListChecks, labelKey: "adminNav.quizMonitor", descKey: "adminHub.quizDesc" },

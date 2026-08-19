@@ -49,7 +49,7 @@ export { EMAIL_BRAND, getSenderFrom, getAdminEmail } from "./config";
 export async function sendWelcomeEmail(email: string, userName?: string, role: "student" | "teacher" = "student") {
   return sendEmail({
     to: email,
-    subject: "Welcome to NextGrades!",
+    subject: "Willkommen bei NextGrades!",
     html: welcomeEmail(userName, role),
     tags: [{ name: "category", value: "welcome" }],
   });
@@ -80,12 +80,12 @@ export async function sendVerificationCodeEmail(email: string, code: string, use
 }
 
 export async function sendLoginVerificationCodeEmail(email: string, code: string, userName?: string) {
-  const name = userName?.trim() || "there";
+  const name = userName?.trim() || "";
   return sendEmail({
     to: email,
-    subject: `${code} is your NextGrades login code`,
+    subject: `${code} ist dein NextGrades-Anmeldecode`,
     html: loginVerificationCodeEmail(code, userName),
-    text: `Hi ${name},\n\nYour NextGrades login code is: ${code}\n\nThis code expires in 10 minutes. If you did not try to sign in, you can ignore this email.\n\nNextGrades`,
+    text: `${name ? `Hallo ${name},` : "Hallo,"}\n\nDein NextGrades-Anmeldecode lautet: ${code}\n\nDieser Code ist 10 Minuten gültig. Wenn du dich nicht anmelden wolltest, kannst du diese E-Mail ignorieren.\n\nNextGrades`,
     tags: [{ name: "category", value: "2fa" }],
   });
 }
@@ -93,7 +93,7 @@ export async function sendLoginVerificationCodeEmail(email: string, code: string
 export async function sendPasswordResetEmail(email: string, resetUrl: string, userName?: string) {
   return sendEmail({
     to: email,
-    subject: "Reset your NextGrades password",
+    subject: "Setze dein NextGrades-Passwort zurück",
     html: passwordResetEmail(resetUrl, userName),
     tags: [{ name: "category", value: "password-reset" }],
   });
@@ -102,7 +102,7 @@ export async function sendPasswordResetEmail(email: string, resetUrl: string, us
 export async function sendPasswordChangedEmail(email: string, userName?: string) {
   return sendEmail({
     to: email,
-    subject: "Your NextGrades password was changed",
+    subject: "Dein NextGrades-Passwort wurde geändert",
     html: passwordChangedEmail(userName, new Date().toLocaleString("de-DE")),
     tags: [{ name: "category", value: "password-changed" }],
   });
@@ -113,7 +113,7 @@ export async function sendPasswordChangedEmail(email: string, userName?: string)
 export async function sendTeacherApprovedEmail(email: string, userName?: string) {
   return sendEmail({
     to: email,
-    subject: "Your NextGrades teacher account is approved!",
+    subject: "Dein NextGrades-Lehrkonto ist freigeschaltet!",
     html: teacherApprovedEmail(userName),
     tags: [{ name: "category", value: "teacher-approved" }],
   });
@@ -122,7 +122,7 @@ export async function sendTeacherApprovedEmail(email: string, userName?: string)
 export async function sendTeacherRejectedEmail(email: string, userName?: string, reason?: string) {
   return sendEmail({
     to: email,
-    subject: "Update on your NextGrades teacher application",
+    subject: "Update zu deiner NextGrades-Lehrkraft-Bewerbung",
     html: teacherRejectedEmail(userName, reason),
     tags: [{ name: "category", value: "teacher-rejected" }],
   });
@@ -138,7 +138,7 @@ export async function sendEnrollmentConfirmationEmail(
 ) {
   return sendEmail({
     to: email,
-    subject: `Enrolled: ${courseName}`,
+    subject: `Angemeldet: ${courseName}`,
     html: enrollmentConfirmationEmail(userName, courseName, teacherName),
     tags: [{ name: "category", value: "enrollment" }],
   });
@@ -154,7 +154,7 @@ export async function sendCoursePurchaseEmail(
 ) {
   return sendEmail({
     to: email,
-    subject: `Purchase confirmed: ${courseName}`,
+    subject: `Kauf bestätigt: ${courseName}`,
     html: coursePurchaseEmail(userName, courseName, amount, currency, receiptId),
     tags: [{ name: "category", value: "course-purchase" }],
   });
@@ -167,7 +167,7 @@ export async function sendSubscriptionConfirmationEmail(
 ) {
   return sendEmail({
     to: email,
-    subject: "Your NextGrades subscription is active",
+    subject: "Dein NextGrades-Abo ist aktiv",
     html: subscriptionConfirmationEmail(userName, details),
     tags: [{ name: "category", value: "subscription" }],
   });
@@ -180,7 +180,7 @@ export async function sendSubscriptionRenewalReminderEmail(
 ) {
   return sendEmail({
     to: email,
-    subject: "Your NextGrades subscription renews soon",
+    subject: "Dein NextGrades-Abo wird bald verlängert",
     html: subscriptionRenewalReminderEmail(userName, details),
     tags: [{ name: "category", value: "subscription-renewal" }],
   });
@@ -193,7 +193,7 @@ export async function sendSubscriptionExpiryEmail(
 ) {
   return sendEmail({
     to: email,
-    subject: "Your NextGrades subscription is expiring",
+    subject: "Dein NextGrades-Abo läuft bald ab",
     html: subscriptionExpiryEmail(userName, details),
     tags: [{ name: "category", value: "subscription-expiry" }],
   });
@@ -209,7 +209,7 @@ export async function sendPaymentReceiptEmail(
 ) {
   return sendEmail({
     to: email,
-    subject: "Your NextGrades payment receipt",
+    subject: "Dein NextGrades-Zahlungsbeleg",
     html: paymentReceiptEmail(userName, items, total, receiptId, invoiceUrl),
     tags: [{ name: "category", value: "payment-receipt" }],
   });
@@ -225,10 +225,10 @@ export async function sendContactFormEmails(
   phone?: string
 ) {
   const [adminResult, userResult] = await Promise.all([
-    sendToAdmin(`[NextGrades Contact] ${subject}`, contactAdminEmail(name, email, message, subject, phone)),
+    sendToAdmin(`[NextGrades Kontakt] ${subject}`, contactAdminEmail(name, email, message, subject, phone)),
     sendEmail({
       to: email,
-      subject: "We received your message - NextGrades",
+      subject: "Wir haben deine Nachricht erhalten – NextGrades",
       html: contactConfirmationEmail(name, subject),
       replyTo: undefined,
     }),
@@ -261,12 +261,12 @@ export async function sendGuestAccountSetupEmails(details: {
 }) {
   const [adminResult, userResult] = await Promise.all([
     sendToAdmin(
-      "[NextGrades] Paid signup - create account",
+      "[NextGrades] Bezahlte Anmeldung – Konto anlegen",
       guestAccountSetupAdminEmail(details)
     ),
     sendEmail({
       to: details.email,
-      subject: "NextGrades - we're creating your account",
+      subject: "NextGrades – wir richten dein Konto ein",
       html: guestAccountSetupConfirmationEmail(details.firstName, details.subjectName),
     }),
   ]);
@@ -280,7 +280,7 @@ export async function sendSecurityAlertEmail(
 ) {
   return sendEmail({
     to: email,
-    subject: "Security alert - NextGrades account activity",
+    subject: "Sicherheitshinweis – Aktivität in deinem NextGrades-Konto",
     html: securityAlertEmail(userName, details),
     tags: [{ name: "category", value: "security" }],
   });
@@ -305,7 +305,7 @@ export async function sendNotificationEmail(
 export async function sendMagicLinkEmail(email: string, loginUrl: string, userName?: string) {
   return sendEmail({
     to: email,
-    subject: "Your NextGrades magic login link",
+    subject: "Dein NextGrades-Anmeldelink",
     html: magicLinkEmail(loginUrl, userName),
     tags: [{ name: "category", value: "magic-link" }],
   });
@@ -320,7 +320,7 @@ export async function sendInviteEmail(
 ) {
   return sendEmail({
     to: email,
-    subject: `${inviterName} invited you to NextGrades`,
+    subject: `${inviterName} hat dich zu NextGrades eingeladen`,
     html: inviteEmail(acceptUrl, inviterName, inviteMessage, role),
     tags: [{ name: "category", value: "invite" }],
   });
@@ -360,7 +360,7 @@ export async function sendAccountInvitationEmail(params: {
 export async function sendChangeEmailEmail(email: string, confirmUrl: string, newEmail: string, userName?: string) {
   return sendEmail({
     to: email,
-    subject: "Confirm your new NextGrades email",
+    subject: "Bestätige deine neue NextGrades-E-Mail",
     html: changeEmailEmail(confirmUrl, newEmail, userName),
     tags: [{ name: "category", value: "change-email" }],
   });
@@ -373,7 +373,7 @@ export async function sendSignupConfirmationEmail(
 ) {
   return sendEmail({
     to: email,
-    subject: "Your NextGrades account is ready!",
+    subject: "Dein NextGrades-Konto ist bereit!",
     html: signupConfirmationEmail(userName, role),
     tags: [{ name: "category", value: "signup-confirmation" }],
   });

@@ -58,16 +58,16 @@ export async function POST(request: Request) {
     subjectName = subject?.name as string | undefined;
   }
 
-  const studentName = profile.full_name || "A student";
+  const studentName = profile.full_name || "Eine Schülerin / ein Schüler";
   const dateDisplay = preferredDate
-    ? `${preferredDate}${preferredTime ? ` at ${preferredTime}` : ""}`
-    : "flexible";
+    ? `${preferredDate}${preferredTime ? ` um ${preferredTime}` : ""}`
+    : "flexibel";
 
   const notifMessage = [
-    `${studentName} requested a new appointment.`,
-    subjectName ? `Subject: ${subjectName}` : null,
-    `Preferred time: ${dateDisplay}`,
-    message?.trim() ? `Note: ${message.trim()}` : null,
+    `${studentName} hat einen neuen Terminwunsch geschickt.`,
+    subjectName ? `Fach: ${subjectName}` : null,
+    `Wunschtermin: ${dateDisplay}`,
+    message?.trim() ? `Hinweis: ${message.trim()}` : null,
   ]
     .filter(Boolean)
     .join(" · ");
@@ -78,7 +78,7 @@ export async function POST(request: Request) {
       userId: teacherId,
       type: "info",
       category: "message",
-      title: "New appointment request",
+      title: "Neuer Terminwunsch",
       message: notifMessage,
       actionUrl: `/dashboard/teacher/schedule`,
       entityType: "profile",
@@ -88,7 +88,7 @@ export async function POST(request: Request) {
     await createNotificationsForRole("teacher", {
       type: "info",
       category: "message",
-      title: "New appointment request",
+      title: "Neuer Terminwunsch",
       message: notifMessage,
       actionUrl: `/dashboard/teacher/schedule`,
       entityType: "profile",
@@ -100,7 +100,7 @@ export async function POST(request: Request) {
   await createNotificationsForRole("admin", {
     type: "info",
     category: "system",
-    title: "Student appointment request",
+    title: "Terminwunsch von SchülerIn",
     message: notifMessage,
     actionUrl: `/portal/admin/users`,
     entityType: "profile",
@@ -112,15 +112,15 @@ export async function POST(request: Request) {
     studentName,
     profile.email || "",
     [
-      `Student appointment request`,
-      `Subject: ${subjectName || "Not specified"}`,
-      `Preferred time: ${dateDisplay}`,
-      message?.trim() ? `Message: ${message.trim()}` : "",
+      `Terminwunsch von SchülerIn`,
+      `Fach: ${subjectName || "nicht angegeben"}`,
+      `Wunschtermin: ${dateDisplay}`,
+      message?.trim() ? `Nachricht: ${message.trim()}` : "",
     ]
       .filter(Boolean)
       .join("\n"),
-    "Appointment Request"
+    "Terminwunsch"
   );
 
-  return NextResponse.json({ success: true, message: "Appointment request sent." });
+  return NextResponse.json({ success: true, message: "Terminwunsch gesendet." });
 }

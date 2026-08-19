@@ -8,16 +8,14 @@ import {
   emailNumberedSteps,
   emailCodeBlock,
 } from "../layout";
-import { displayName, escapeHtml } from "../utils";
+import { halloLine, escapeHtml } from "../utils";
 
 const C = EMAIL_BRAND.colors;
 
 export function accountVerificationCodeEmail(code: string, userName?: string) {
-  const name = displayName(userName);
-
   const content = [
     emailHeading("Dein Bestätigungscode"),
-    emailParagraph(`Hallo ${name},`),
+    emailParagraph(halloLine(userName)),
     emailParagraph(
       `vielen Dank für deine Registrierung bei <strong style="color:${C.navy};">NextGrades</strong>. ` +
         "Gib den folgenden Code auf der Website ein, um dein Konto zu aktivieren:"
@@ -43,9 +41,8 @@ export function accountVerificationCodeEmail(code: string, userName?: string) {
 }
 
 export function accountVerificationCodeEmailPlain(code: string, userName?: string): string {
-  const name = displayName(userName);
   return [
-    `Hallo ${name},`,
+    halloLine(userName),
     "",
     "Willkommen bei NextGrades! Dein Bestätigungscode:",
     "",

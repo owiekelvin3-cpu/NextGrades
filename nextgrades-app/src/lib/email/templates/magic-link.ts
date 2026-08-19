@@ -1,17 +1,15 @@
 import { wrapEmail, emailHeading, emailParagraph, emailButton, emailSignature } from "../layout";
-import { displayName } from "../utils";
-import { getAppUrl } from "../config";
+import { halloLine } from "../utils";
 
 export function magicLinkEmail(loginUrl: string, userName?: string): string {
-  const name = displayName(userName);
   const content = [
-    emailHeading("Your Magic Login Link"),
-    emailParagraph(`Hi ${name},`),
-    emailParagraph("Click below to sign in to NextGrades instantly:"),
-    emailButton(loginUrl, "Sign In to NextGrades"),
+    emailHeading("Dein Anmeldelink"),
+    emailParagraph(halloLine(userName)),
+    emailParagraph("Klicke unten, um dich sofort bei NextGrades anzumelden:"),
+    emailButton(loginUrl, "Bei NextGrades anmelden"),
     emailSignature(),
   ].join("");
-  return wrapEmail(content, "Your NextGrades magic login link");
+  return wrapEmail(content, "Dein NextGrades-Anmeldelink");
 }
 
 export default magicLinkEmail;

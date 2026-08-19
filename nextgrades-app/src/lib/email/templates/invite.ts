@@ -1,5 +1,5 @@
 import { wrapEmail, emailHeading, emailParagraph, emailButton, emailSignature } from "../layout";
-import { displayName, escapeHtml } from "../utils";
+import { escapeHtml } from "../utils";
 import { getAppUrl } from "../config";
 
 export function inviteEmail(
@@ -8,15 +8,16 @@ export function inviteEmail(
   inviteMessage?: string,
   role: "student" | "teacher" = "student"
 ): string {
+  const roleLabel = role === "teacher" ? "Lehrkraft" : "SchülerIn";
   const content = [
-    emailHeading("You're Invited to NextGrades"),
-    emailParagraph(`<strong>${escapeHtml(inviterName)}</strong> invited you to join NextGrades as a ${role}.`),
+    emailHeading("Du bist zu NextGrades eingeladen"),
+    emailParagraph(`<strong>${escapeHtml(inviterName)}</strong> hat dich eingeladen, NextGrades als ${roleLabel} zu nutzen.`),
     inviteMessage ? emailParagraph(escapeHtml(inviteMessage)) : "",
-    emailButton(acceptUrl, "Accept Invitation"),
-    emailParagraph(`Or visit <a href="${getAppUrl()}" style="color:#D4AF37;">${getAppUrl()}</a> to learn more.`),
+    emailButton(acceptUrl, "Einladung annehmen"),
+    emailParagraph(`Oder besuche <a href="${getAppUrl()}" style="color:#D4AF37;">${getAppUrl()}</a>, um mehr zu erfahren.`),
     emailSignature(),
   ].join("");
-  return wrapEmail(content, `${inviterName} invited you to NextGrades`);
+  return wrapEmail(content, `${inviterName} hat dich zu NextGrades eingeladen`);
 }
 
 export default inviteEmail;

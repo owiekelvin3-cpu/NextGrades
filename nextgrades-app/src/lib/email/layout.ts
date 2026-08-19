@@ -115,7 +115,7 @@ export function emailFeatureList(items: string[]): string {
 
 export function emailSignature(): string {
   return emailParagraph(
-    `Best regards,<br><strong style="color:${C.navy};">The NextGrades Team</strong><br><em style="color:${C.textMuted};">${EMAIL_BRAND.tagline}</em>`
+    `Liebe Grüße,<br><strong style="color:${C.navy};">Dein NextGrades-Team</strong><br><em style="color:${C.textMuted};">${EMAIL_BRAND.tagline}</em>`
   );
 }
 
@@ -143,19 +143,19 @@ export function emailFooter(): string {
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
       <tr>
         <td style="padding:32px 24px;background:linear-gradient(135deg,${C.navy} 0%,#1a2e4a 100%);text-align:center;">
-          <p style="margin:0 0 8px;font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:600;color:#FFFFFF;">${EMAIL_BRAND.name} - The Future of Learning</p>
-          <p style="margin:0 0 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.6;color:#A0AEC0;">Premium education platform for students and teachers worldwide</p>
+          <p style="margin:0 0 8px;font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:600;color:#FFFFFF;">${EMAIL_BRAND.name} – Die Zukunft des Lernens</p>
+          <p style="margin:0 0 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.6;color:#A0AEC0;">Premium-Lernplattform für SchülerInnen und Lehrkräfte</p>
           <p style="margin:0 0 12px;font-family:Arial,Helvetica,sans-serif;font-size:13px;">
-            <a href="${appUrl}/help" style="color:${C.gold};text-decoration:none;margin:0 8px;">Help Center</a>
-            <a href="${appUrl}/contact" style="color:${C.gold};text-decoration:none;margin:0 8px;">Contact</a>
-            <a href="${appUrl}/privacy" style="color:${C.gold};text-decoration:none;margin:0 8px;">Privacy</a>
-            <a href="${appUrl}/terms" style="color:${C.gold};text-decoration:none;margin:0 8px;">Terms</a>
+            <a href="${appUrl}/help" style="color:${C.gold};text-decoration:none;margin:0 8px;">Hilfe</a>
+            <a href="${appUrl}/contact" style="color:${C.gold};text-decoration:none;margin:0 8px;">Kontakt</a>
+            <a href="${appUrl}/privacy" style="color:${C.gold};text-decoration:none;margin:0 8px;">Datenschutz</a>
+            <a href="${appUrl}/terms" style="color:${C.gold};text-decoration:none;margin:0 8px;">AGB</a>
           </p>
           <p style="margin:0 0 8px;font-family:Arial,Helvetica,sans-serif;font-size:13px;">
             <a href="mailto:${EMAIL_BRAND.supportEmail}" style="color:${C.gold};text-decoration:none;">${EMAIL_BRAND.supportEmail}</a>
           </p>
           <p style="margin:16px 0 0;padding-top:16px;border-top:1px solid rgba(212,175,55,0.15);font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#7a8fa3;">
-            © ${new Date().getFullYear()} ${EMAIL_BRAND.name}. All rights reserved.<br>${escapeHtml(EMAIL_BRAND.companyAddress)}
+            © ${new Date().getFullYear()} ${EMAIL_BRAND.name}. Alle Rechte vorbehalten.<br>${escapeHtml(EMAIL_BRAND.companyAddress)}
           </p>
         </td>
       </tr>
@@ -165,7 +165,7 @@ export function emailFooter(): string {
 export function wrapEmail(content: string, previewText: string): string {
   const preview = escapeHtml(previewText);
   return `<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<html lang="de" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />

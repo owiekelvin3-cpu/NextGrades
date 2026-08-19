@@ -16,7 +16,7 @@ import {
   emailSignature,
   emailDivider,
 } from "./layout";
-import { displayName, escapeHtml, formatCurrency, formatDate } from "./utils";
+import { displayName, escapeHtml, formatCurrency, formatDate, halloLine } from "./utils";
 import type { PaymentLineItem, SecurityAlertDetails, SubscriptionDetails } from "./types";
 
 const appUrl = () => getAppUrl();
@@ -24,11 +24,10 @@ const appUrl = () => getAppUrl();
 // ─── Account ────────────────────────────────────────────────────────────────
 
 export function welcomeEmail(userName?: string, role: "student" | "teacher" = "student") {
-  const name = displayName(userName);
   const dashboard = role === "teacher" ? `${appUrl()}/dashboard/teacher` : `${appUrl()}/dashboard/student`;
   const content = [
     emailHeading("Willkommen bei NextGrades!"),
-    emailParagraph(`Hallo ${name},`),
+    emailParagraph(halloLine(userName)),
     emailParagraph(
       "Schön, dass du dabei bist! Du bist Teil einer Community aus Lernenden und PädagogInnen, die Wachstum und Erfolg ernst nehmen."
     ),
@@ -49,54 +48,51 @@ export function welcomeEmail(userName?: string, role: "student" | "teacher" = "s
 export { accountVerificationEmail as emailVerificationEmail } from "./templates/account-verification";
 
 export function verificationCodeEmail(code: string, userName?: string, purpose = "deine Identität zu bestätigen") {
-  const name = displayName(userName);
   const content = [
     emailHeading("Dein Bestätigungscode"),
-    emailParagraph(`Hallo ${name},`),
+    emailParagraph(halloLine(userName)),
     emailParagraph(`Nutze den folgenden Code, um ${escapeHtml(purpose)}:`),
     emailCodeBlock(code),
     emailNotice("security", "<strong>Teile diesen Code niemals.</strong> NextGrades-Mitarbeitende fragen nie danach. Der Code läuft in <strong>10 Minuten</strong> ab."),
     emailSignature(),
   ].join("");
-  return wrapEmail(content, `Your NextGrades verification code: ${code}`);
+  return wrapEmail(content, `Dein NextGrades-Bestätigungscode: ${code}`);
 }
 
 export function loginVerificationCodeEmail(code: string, userName?: string) {
-  return verificationCodeEmail(code, userName, "complete your login");
+  return verificationCodeEmail(code, userName, "deine Anmeldung abzuschließen");
 }
 
 export function passwordResetEmail(resetUrl: string, userName?: string) {
-  const name = displayName(userName);
   const content = [
-    emailHeading("Reset Your Password"),
-    emailParagraph(`Hi ${name},`),
-    emailParagraph("We received a request to reset your password. Click the button below to choose a new one:"),
-    emailButton(resetUrl, "Reset Password"),
-    emailNotice("security", "<strong>Security:</strong> This link expires in <strong>1 hour</strong>. If you didn't request this, ignore this email - your account remains secure."),
-    emailSubheading("Or copy this link"),
+    emailHeading("Passwort zurücksetzen"),
+    emailParagraph(halloLine(userName)),
+    emailParagraph("Wir haben eine Anfrage zum Zurücksetzen deines Passworts erhalten. Klicke auf den Button, um ein neues Passwort zu wählen:"),
+    emailButton(resetUrl, "Neues Passwort festlegen"),
+    emailNotice("security", "<strong>Sicherheit:</strong> Dieser Link ist <strong>1 Stunde</strong> gültig. Wenn du das nicht angefordert hast, ignoriere diese E-Mail – dein Konto bleibt sicher."),
+    emailSubheading("Oder kopiere diesen Link"),
     emailLinkBlock(resetUrl),
-    emailButton(`${appUrl()}/contact`, "Contact Support", "secondary"),
+    emailButton(`${appUrl()}/contact`, "Support kontaktieren", "secondary"),
     emailSignature(),
   ].join("");
-  return wrapEmail(content, "Reset your NextGrades password");
+  return wrapEmail(content, "Setze dein NextGrades-Passwort zurück");
 }
 
 export function passwordChangedEmail(userName?: string, timestamp?: string) {
-  const name = displayName(userName);
   const when = timestamp || new Date().toLocaleString("de-DE");
   const content = [
-    emailHeading("Password Successfully Changed"),
-    emailParagraph(`Hi ${name},`),
-    emailParagraph("Your NextGrades account password was changed successfully."),
+    emailHeading("Passwort erfolgreich geändert"),
+    emailParagraph(halloLine(userName)),
+    emailParagraph("Das Passwort deines NextGrades-Kontos wurde erfolgreich geändert."),
     emailDetailTable([
-      { label: "Date & Time", value: escapeHtml(when) },
-      { label: "Status", value: "✓ Confirmed" },
+      { label: "Datum & Uhrzeit", value: escapeHtml(when) },
+      { label: "Status", value: "✓ Bestätigt" },
     ]),
-    emailNotice("warning", "<strong>Didn't make this change?</strong> Reset your password immediately and contact our support team."),
-    emailButton(`${appUrl()}/forgot-password`, "Secure My Account"),
+    emailNotice("warning", "<strong>Warst du das nicht?</strong> Setze dein Passwort sofort zurück und kontaktiere unseren Support."),
+    emailButton(`${appUrl()}/forgot-password`, "Konto absichern"),
     emailSignature(),
   ].join("");
-  return wrapEmail(content, "Your NextGrades password was changed");
+  return wrapEmail(content, "Dein NextGrades-Passwort wurde geändert");
 }
 
 // ─── Teacher ────────────────────────────────────────────────────────────────
@@ -104,33 +100,32 @@ export function passwordChangedEmail(userName?: string, timestamp?: string) {
 export function teacherApprovedEmail(userName?: string) {
   const name = displayName(userName);
   const content = [
-    emailHeading("Your Teacher Account Is Approved!"),
-    emailParagraph(`Congratulations ${name}!`),
-    emailParagraph("Your teacher application has been approved. You can now create courses, upload resources, and connect with students."),
+    emailHeading("Dein Lehrkonto ist freigeschaltet!"),
+    emailParagraph(name ? `Herzlichen Glückwunsch, ${name}!` : "Herzlichen Glückwunsch!"),
+    emailParagraph("Deine Bewerbung als Lehrkraft wurde angenommen. Du kannst jetzt Kurse anlegen, Materialien hochladen und mit SchülerInnen arbeiten."),
     emailFeatureList([
-      "Upload learning materials and resources",
-      "Schedule lessons with students",
-      "Use the AI quiz generator",
-      "Track student progress and earnings",
+      "Lernmaterialien und Ressourcen hochladen",
+      "Stunden mit SchülerInnen planen",
+      "Den KI-Quizgenerator nutzen",
+      "Fortschritt und Honorare im Blick behalten",
     ]),
-    emailButton(`${appUrl()}/dashboard/teacher`, "Open Teacher Dashboard"),
+    emailButton(`${appUrl()}/dashboard/teacher`, "Zum Lehrer-Dashboard"),
     emailSignature(),
   ].join("");
-  return wrapEmail(content, "Your NextGrades teacher account has been approved");
+  return wrapEmail(content, "Dein NextGrades-Lehrkonto wurde freigeschaltet");
 }
 
 export function teacherRejectedEmail(userName?: string, reason?: string) {
-  const name = displayName(userName);
   const content = [
-    emailHeading("Teacher Application Update"),
-    emailParagraph(`Hi ${name},`),
-    emailParagraph("Thank you for your interest in teaching on NextGrades. After reviewing your application, we're unable to approve it at this time."),
-    reason ? emailNotice("info", `<strong>Reason:</strong> ${escapeHtml(reason)}`) : "",
-    emailParagraph("You're welcome to reapply in the future. If you have questions, our team is here to help."),
-    emailButton(`${appUrl()}/contact`, "Contact Support"),
+    emailHeading("Update zu deiner Lehrkraft-Bewerbung"),
+    emailParagraph(halloLine(userName)),
+    emailParagraph("Danke für dein Interesse, bei NextGrades zu unterrichten. Nach Prüfung deiner Bewerbung können wir sie derzeit nicht annehmen."),
+    reason ? emailNotice("info", `<strong>Begründung:</strong> ${escapeHtml(reason)}`) : "",
+    emailParagraph("Du kannst dich später erneut bewerben. Bei Fragen hilft dir unser Team gerne weiter."),
+    emailButton(`${appUrl()}/contact`, "Support kontaktieren"),
     emailSignature(),
   ].join("");
-  return wrapEmail(content, "Update on your NextGrades teacher application");
+  return wrapEmail(content, "Update zu deiner NextGrades-Lehrkraft-Bewerbung");
 }
 
 // ─── Enrollment & Commerce ──────────────────────────────────────────────────
@@ -140,20 +135,19 @@ export function enrollmentConfirmationEmail(
   courseName: string,
   teacherName?: string
 ) {
-  const name = displayName(userName);
   const content = [
-    emailHeading("Enrollment Confirmed!"),
-    emailParagraph(`Hi ${name},`),
-    emailParagraph(`You are now enrolled in <strong>${escapeHtml(courseName)}</strong>.`),
+    emailHeading("Anmeldung bestätigt!"),
+    emailParagraph(halloLine(userName)),
+    emailParagraph(`Du bist jetzt für <strong>${escapeHtml(courseName)}</strong> angemeldet.`),
     emailDetailTable([
-      { label: "Course", value: escapeHtml(courseName) },
-      ...(teacherName ? [{ label: "Teacher", value: escapeHtml(teacherName) }] : []),
-      { label: "Status", value: "Active" },
+      { label: "Kurs", value: escapeHtml(courseName) },
+      ...(teacherName ? [{ label: "Lehrkraft", value: escapeHtml(teacherName) }] : []),
+      { label: "Status", value: "Aktiv" },
     ]),
-    emailButton(`${appUrl()}/dashboard/student/courses`, "View My Courses"),
+    emailButton(`${appUrl()}/dashboard/student/courses`, "Zu meinen Kursen"),
     emailSignature(),
   ].join("");
-  return wrapEmail(content, `You're enrolled in ${courseName}`);
+  return wrapEmail(content, `Du bist angemeldet: ${courseName}`);
 }
 
 export function coursePurchaseEmail(
@@ -163,70 +157,66 @@ export function coursePurchaseEmail(
   currency = "EUR",
   receiptId?: string
 ) {
-  const name = displayName(userName);
   const content = [
-    emailHeading("Course Purchase Confirmed"),
-    emailParagraph(`Hi ${name},`),
-    emailParagraph("Thank you for your purchase! Your course is ready to access."),
+    emailHeading("Kauf bestätigt"),
+    emailParagraph(halloLine(userName)),
+    emailParagraph("Danke für deinen Kauf! Der Kurs steht dir jetzt zur Verfügung."),
     emailDetailTable([
-      { label: "Course", value: escapeHtml(courseName) },
-      { label: "Amount", value: formatCurrency(amount, currency) },
-      ...(receiptId ? [{ label: "Receipt #", value: escapeHtml(receiptId) }] : []),
-      { label: "Date", value: formatDate(new Date()) },
+      { label: "Kurs", value: escapeHtml(courseName) },
+      { label: "Betrag", value: formatCurrency(amount, currency) },
+      ...(receiptId ? [{ label: "Beleg-Nr.", value: escapeHtml(receiptId) }] : []),
+      { label: "Datum", value: formatDate(new Date()) },
     ]),
-    emailButton(`${appUrl()}/dashboard/student/courses`, "Start Learning"),
+    emailButton(`${appUrl()}/dashboard/student/courses`, "Jetzt lernen"),
     emailSignature(),
   ].join("");
-  return wrapEmail(content, `Purchase confirmed: ${courseName}`);
+  return wrapEmail(content, `Kauf bestätigt: ${courseName}`);
 }
 
 export function subscriptionConfirmationEmail(userName: string | undefined, details: SubscriptionDetails) {
-  const name = displayName(userName);
   const content = [
-    emailHeading("Subscription Activated"),
-    emailParagraph(`Hi ${name},`),
-    emailParagraph("Your NextGrades subscription is now active. Enjoy full access to premium features!"),
+    emailHeading("Abo aktiviert"),
+    emailParagraph(halloLine(userName)),
+    emailParagraph("Dein NextGrades-Abo ist jetzt aktiv. Du hast vollen Zugang zu den Premium-Funktionen."),
     emailDetailTable([
-      { label: "Plan", value: escapeHtml(details.planName) },
-      { label: "Amount", value: escapeHtml(details.amount) },
-      { label: "Billing", value: escapeHtml(details.billingCycle) },
-      ...(details.renewalDate ? [{ label: "Next renewal", value: escapeHtml(details.renewalDate) }] : []),
+      { label: "Tarif", value: escapeHtml(details.planName) },
+      { label: "Betrag", value: escapeHtml(details.amount) },
+      { label: "Abrechnung", value: escapeHtml(details.billingCycle) },
+      ...(details.renewalDate ? [{ label: "Nächste Verlängerung", value: escapeHtml(details.renewalDate) }] : []),
     ]),
-    emailButton(`${appUrl()}/dashboard/student`, "View Dashboard"),
+    emailButton(`${appUrl()}/dashboard/student`, "Zum Dashboard"),
     emailSignature(),
   ].join("");
-  return wrapEmail(content, "Your NextGrades subscription is active");
+  return wrapEmail(content, "Dein NextGrades-Abo ist aktiv");
 }
 
 export function subscriptionRenewalReminderEmail(userName: string | undefined, details: SubscriptionDetails) {
-  const name = displayName(userName);
   const content = [
-    emailHeading("Subscription Renewal Reminder"),
-    emailParagraph(`Hi ${name},`),
-    emailParagraph(`Your <strong>${escapeHtml(details.planName)}</strong> subscription will renew soon.`),
+    emailHeading("Erinnerung: Abo-Verlängerung"),
+    emailParagraph(halloLine(userName)),
+    emailParagraph(`Dein Abo <strong>${escapeHtml(details.planName)}</strong> wird in Kürze verlängert.`),
     emailDetailTable([
-      { label: "Plan", value: escapeHtml(details.planName) },
-      { label: "Amount", value: escapeHtml(details.amount) },
-      { label: "Renewal date", value: escapeHtml(details.renewalDate || "-") },
+      { label: "Tarif", value: escapeHtml(details.planName) },
+      { label: "Betrag", value: escapeHtml(details.amount) },
+      { label: "Verlängerung am", value: escapeHtml(details.renewalDate || "-") },
     ]),
-    emailNotice("info", "No action needed - your payment method on file will be charged automatically."),
-    emailButton(`${appUrl()}/dashboard/student/settings`, "Manage Subscription"),
+    emailNotice("info", "Du musst nichts tun – die hinterlegte Zahlungsmethode wird automatisch belastet."),
+    emailButton(`${appUrl()}/dashboard/student/settings`, "Abo verwalten"),
     emailSignature(),
   ].join("");
-  return wrapEmail(content, "Your NextGrades subscription renews soon");
+  return wrapEmail(content, "Dein NextGrades-Abo wird bald verlängert");
 }
 
 export function subscriptionExpiryEmail(userName: string | undefined, details: SubscriptionDetails) {
-  const name = displayName(userName);
   const content = [
-    emailHeading("Subscription Expiring Soon"),
-    emailParagraph(`Hi ${name},`),
-    emailParagraph(`Your <strong>${escapeHtml(details.planName)}</strong> subscription expires on <strong>${escapeHtml(details.expiryDate || "-")}</strong>.`),
-    emailNotice("warning", "Renew now to keep access to premium courses, AI tools, and resources."),
-    emailButton(`${appUrl()}/pricing`, "Renew Subscription"),
+    emailHeading("Abo läuft bald ab"),
+    emailParagraph(halloLine(userName)),
+    emailParagraph(`Dein Abo <strong>${escapeHtml(details.planName)}</strong> endet am <strong>${escapeHtml(details.expiryDate || "-")}</strong>.`),
+    emailNotice("warning", "Verlängere jetzt, um Zugang zu Premium-Kursen, KI-Tools und Materialien zu behalten."),
+    emailButton(`${appUrl()}/pricing`, "Abo verlängern"),
     emailSignature(),
   ].join("");
-  return wrapEmail(content, "Your NextGrades subscription is expiring");
+  return wrapEmail(content, "Dein NextGrades-Abo läuft bald ab");
 }
 
 export function paymentReceiptEmail(
@@ -236,38 +226,36 @@ export function paymentReceiptEmail(
   receiptId?: string,
   invoiceUrl?: string
 ) {
-  const name = displayName(userName);
   const content = [
-    emailHeading("Payment Receipt"),
-    emailParagraph(`Hi ${name},`),
-    emailParagraph("Thank you for your payment. Here are your receipt details:"),
+    emailHeading("Zahlungsbeleg"),
+    emailParagraph(halloLine(userName)),
+    emailParagraph("Danke für deine Zahlung. Hier sind die Belegdetails:"),
     emailDetailTable([
       ...items.map((i) => ({ label: i.label, value: i.value })),
-      { label: "Total", value: `<strong>${escapeHtml(total)}</strong>` },
-      ...(receiptId ? [{ label: "Receipt #", value: escapeHtml(receiptId) }] : []),
-      { label: "Date", value: formatDate(new Date()) },
+      { label: "Gesamt", value: `<strong>${escapeHtml(total)}</strong>` },
+      ...(receiptId ? [{ label: "Beleg-Nr.", value: escapeHtml(receiptId) }] : []),
+      { label: "Datum", value: formatDate(new Date()) },
     ]),
-    invoiceUrl ? emailButton(invoiceUrl, "Download Invoice") : "",
-    emailNotice("info", "Keep this email for your records."),
+    invoiceUrl ? emailButton(invoiceUrl, "Rechnung herunterladen") : "",
+    emailNotice("info", "Bitte bewahre diese E-Mail für deine Unterlagen auf."),
     emailSignature(),
   ].join("");
-  return wrapEmail(content, "Your NextGrades payment receipt");
+  return wrapEmail(content, "Dein NextGrades-Zahlungsbeleg");
 }
 
 // ─── Contact & Admin ────────────────────────────────────────────────────────
 
 export function contactConfirmationEmail(userName: string, subject: string) {
-  const name = displayName(userName);
   const content = [
-    emailHeading("We Received Your Message"),
-    emailParagraph(`Hi ${name},`),
-    emailParagraph(`Thank you for contacting NextGrades regarding <strong>${escapeHtml(subject)}</strong>.`),
-    emailParagraph("Our team will review your message and respond within <strong>1–2 business days</strong>."),
-    emailNotice("info", "If your inquiry is urgent, reply to this email or visit our Help Center."),
-    emailButton(`${appUrl()}/help`, "Visit Help Center"),
+    emailHeading("Wir haben deine Nachricht erhalten"),
+    emailParagraph(halloLine(userName)),
+    emailParagraph(`Danke, dass du NextGrades zum Thema <strong>${escapeHtml(subject)}</strong> kontaktiert hast.`),
+    emailParagraph("Unser Team prüft deine Nachricht und antwortet innerhalb von <strong>1–2 Werktagen</strong>."),
+    emailNotice("info", "Bei dringenden Anliegen antworte auf diese E-Mail oder besuche unser Hilfe-Center."),
+    emailButton(`${appUrl()}/help`, "Zum Hilfe-Center"),
     emailSignature(),
   ].join("");
-  return wrapEmail(content, "We received your message - NextGrades");
+  return wrapEmail(content, "Wir haben deine Nachricht erhalten – NextGrades");
 }
 
 export function contactAdminEmail(
@@ -278,18 +266,18 @@ export function contactAdminEmail(
   phone?: string
 ) {
   const content = [
-    emailHeading("New Contact Form Submission"),
+    emailHeading("Neue Kontaktanfrage"),
     emailDetailTable([
       { label: "Name", value: escapeHtml(name) },
-      { label: "Email", value: `<a href="mailto:${escapeHtml(email)}" style="color:#D4AF37;">${escapeHtml(email)}</a>` },
-      ...(phone ? [{ label: "Phone", value: escapeHtml(phone) }] : []),
-      { label: "Subject", value: escapeHtml(subject) },
+      { label: "E-Mail", value: `<a href="mailto:${escapeHtml(email)}" style="color:#D4AF37;">${escapeHtml(email)}</a>` },
+      ...(phone ? [{ label: "Telefon", value: escapeHtml(phone) }] : []),
+      { label: "Betreff", value: escapeHtml(subject) },
     ]),
-    emailSubheading("Message"),
+    emailSubheading("Nachricht"),
     emailParagraph(escapeHtml(message).replace(/\n/g, "<br />")),
-    emailButton(`mailto:${email}`, "Reply to Sender", "secondary"),
+    emailButton(`mailto:${email}`, "Absender antworten", "secondary"),
   ].join("");
-  return wrapEmail(content, `[Contact] ${subject}`);
+  return wrapEmail(content, `[Kontakt] ${subject}`);
 }
 
 export function guestAccountSetupAdminEmail(details: {
@@ -308,84 +296,82 @@ export function guestAccountSetupAdminEmail(details: {
 }) {
   const fullName = `${details.firstName} ${details.lastName}`.trim();
   const content = [
-    emailHeading("New paid signup - create account"),
+    emailHeading("Neue bezahlte Anmeldung – Konto anlegen"),
     emailParagraph(
-      "A new customer completed payment and submitted their details. Please create their NextGrades account and grant access."
+      "Eine Kundin oder ein Kunde hat bezahlt und die Daten übermittelt. Bitte das NextGrades-Konto anlegen und den Zugang freischalten."
     ),
     emailDetailTable([
-      { label: "Student name", value: escapeHtml(fullName) },
-      { label: "Contact email", value: `<a href="mailto:${escapeHtml(details.email)}" style="color:#D4AF37;">${escapeHtml(details.email)}</a>` },
+      { label: "SchülerIn", value: escapeHtml(fullName) },
+      { label: "Kontakt-E-Mail", value: `<a href="mailto:${escapeHtml(details.email)}" style="color:#D4AF37;">${escapeHtml(details.email)}</a>` },
       ...(details.paymentEmail && details.paymentEmail !== details.email
-        ? [{ label: "Stripe payment email", value: escapeHtml(details.paymentEmail) }]
+        ? [{ label: "Stripe-Zahlungs-E-Mail", value: escapeHtml(details.paymentEmail) }]
         : []),
-      ...(details.phone ? [{ label: "Phone", value: escapeHtml(details.phone) }] : []),
-      ...(details.parentName ? [{ label: "Parent / guardian", value: escapeHtml(details.parentName) }] : []),
-      ...(details.planName ? [{ label: "Plan", value: escapeHtml(details.planName) }] : []),
-      ...(details.subjectName ? [{ label: "Subject", value: escapeHtml(details.subjectName) }] : []),
-      ...(details.grade ? [{ label: "Grade", value: escapeHtml(details.grade) }] : []),
+      ...(details.phone ? [{ label: "Telefon", value: escapeHtml(details.phone) }] : []),
+      ...(details.parentName ? [{ label: "Eltern / Erziehungsberechtigte", value: escapeHtml(details.parentName) }] : []),
+      ...(details.planName ? [{ label: "Tarif", value: escapeHtml(details.planName) }] : []),
+      ...(details.subjectName ? [{ label: "Fach", value: escapeHtml(details.subjectName) }] : []),
+      ...(details.grade ? [{ label: "Schulstufe", value: escapeHtml(details.grade) }] : []),
       ...(details.semester ? [{ label: "Semester", value: escapeHtml(details.semester) }] : []),
-      { label: "Stripe session", value: escapeHtml(details.stripeSessionId) },
+      { label: "Stripe-Sitzung", value: escapeHtml(details.stripeSessionId) },
     ]),
     ...(details.notes
-      ? [emailSubheading("Additional notes"), emailParagraph(escapeHtml(details.notes).replace(/\n/g, "<br />"))]
+      ? [emailSubheading("Zusätzliche Hinweise"), emailParagraph(escapeHtml(details.notes).replace(/\n/g, "<br />"))]
       : []),
-    emailButton(`mailto:${details.email}`, "Reply to customer", "secondary"),
+    emailButton(`mailto:${details.email}`, "KundIn antworten", "secondary"),
   ].join("");
-  return wrapEmail(content, "[NextGrades] Paid signup - create account");
+  return wrapEmail(content, "[NextGrades] Bezahlte Anmeldung – Konto anlegen");
 }
 
 export function guestAccountSetupConfirmationEmail(firstName: string, subjectName?: string) {
-  const name = displayName(firstName);
   const content = [
-    emailHeading("Payment received - we're setting up your account"),
-    emailParagraph(`Hello ${name},`),
+    emailHeading("Zahlung erhalten – wir richten dein Konto ein"),
+    emailParagraph(halloLine(firstName)),
     emailParagraph(
-      "Thank you for your payment. We received your details and the NextGrades team will create your account shortly."
+      "Danke für deine Zahlung. Wir haben deine Angaben erhalten und das NextGrades-Team legt dein Konto in Kürze an."
     ),
     ...(subjectName
-      ? [emailParagraph(`<strong>Subject:</strong> ${escapeHtml(subjectName)}`)]
+      ? [emailParagraph(`<strong>Fach:</strong> ${escapeHtml(subjectName)}`)]
       : []),
     emailNotice(
       "info",
-      "You will receive another email once your login is ready. If you have questions, reply to this email or contact support."
+      "Du erhältst eine weitere E-Mail, sobald deine Zugangsdaten bereitstehen. Bei Fragen antworte auf diese Nachricht oder kontaktiere den Support."
     ),
-    emailButton(`${appUrl()}/contact`, "Contact support", "secondary"),
+    emailButton(`${appUrl()}/contact`, "Support kontaktieren", "secondary"),
     emailSignature(),
   ].join("");
-  return wrapEmail(content, "NextGrades - we're creating your account");
+  return wrapEmail(content, "NextGrades – wir richten dein Konto ein");
 }
 
-export function adminNotificationEmail(title: string, message: string, actionUrl?: string, actionLabel = "View Details") {
+export function adminNotificationEmail(title: string, message: string, actionUrl?: string, actionLabel = "Details ansehen") {
   const content = [
     emailHeading(title),
     emailParagraph(message),
     actionUrl ? emailButton(actionUrl, actionLabel) : "",
     emailDivider(),
-    emailParagraph(`<span style="font-size:13px;color:#718096;">This is an automated admin notification from NextGrades.</span>`),
+    emailParagraph(`<span style="font-size:13px;color:#718096;">Automatische Admin-Benachrichtigung von NextGrades.</span>`),
   ].join("");
   return wrapEmail(content, title);
 }
 
 export function securityAlertEmail(userName: string | undefined, details: SecurityAlertDetails) {
-  const name = displayName(userName);
   const rows = [
-    { label: "Activity", value: escapeHtml(details.action) },
-    ...(details.timestamp ? [{ label: "Time", value: escapeHtml(details.timestamp) }] : []),
-    ...(details.ipAddress ? [{ label: "IP Address", value: escapeHtml(details.ipAddress) }] : []),
-    ...(details.device ? [{ label: "Device", value: escapeHtml(details.device) }] : []),
-    ...(details.location ? [{ label: "Location", value: escapeHtml(details.location) }] : []),
+    { label: "Aktivität", value: escapeHtml(details.action) },
+    ...(details.timestamp ? [{ label: "Uhrzeit", value: escapeHtml(details.timestamp) }] : []),
+    ...(details.ipAddress ? [{ label: "IP-Adresse", value: escapeHtml(details.ipAddress) }] : []),
+    ...(details.device ? [{ label: "Gerät", value: escapeHtml(details.device) }] : []),
+    ...(details.location ? [{ label: "Ort", value: escapeHtml(details.location) }] : []),
   ];
   const content = [
-    emailHeading("Security Alert"),
-    emailParagraph(`Hi ${name},`),
-    emailParagraph("We detected activity on your NextGrades account:"),
+    emailHeading("Sicherheitshinweis"),
+    emailParagraph(halloLine(userName)),
+    emailParagraph("Wir haben folgende Aktivität in deinem NextGrades-Konto festgestellt:"),
     emailDetailTable(rows),
-    emailNotice("warning", "<strong>Wasn't you?</strong> Secure your account immediately by changing your password."),
-    emailButton(`${appUrl()}/forgot-password`, "Secure My Account"),
-    emailButton(`${appUrl()}/contact`, "Report Suspicious Activity", "secondary"),
+    emailNotice("warning", "<strong>Warst du das nicht?</strong> Sichere dein Konto sofort, indem du dein Passwort änderst."),
+    emailButton(`${appUrl()}/forgot-password`, "Konto absichern"),
+    emailButton(`${appUrl()}/contact`, "Verdächtige Aktivität melden", "secondary"),
     emailSignature(),
   ].join("");
-  return wrapEmail(content, "Security alert for your NextGrades account");
+  return wrapEmail(content, "Sicherheitshinweis zu deinem NextGrades-Konto");
 }
 
 // Legacy aliases

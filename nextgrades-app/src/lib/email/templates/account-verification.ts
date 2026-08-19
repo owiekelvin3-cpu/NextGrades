@@ -10,7 +10,7 @@ import {
   emailDivider,
   emailNumberedSteps,
 } from "../layout";
-import { displayName, escapeHtml } from "../utils";
+import { halloLine, escapeHtml } from "../utils";
 
 const C = EMAIL_BRAND.colors;
 
@@ -19,12 +19,11 @@ const C = EMAIL_BRAND.colors;
  * Content order: greet → why → steps → CTA → fallback link → security.
  */
 export function accountVerificationEmail(verifyUrl: string, userName?: string) {
-  const name = displayName(userName);
   const appUrl = getAppUrl();
 
   const content = [
     emailHeading("Bestätige deine E-Mail bei NextGrades"),
-    emailParagraph(`Hallo ${name},`),
+    emailParagraph(halloLine(userName)),
     emailParagraph(
       `vielen Dank für deine Registrierung bei <strong style="color:${C.navy};">NextGrades</strong>. ` +
         "Um dein Konto zu aktivieren und loszulegen, bestätige bitte deine E-Mail-Adresse - das dauert nur einen Klick."
@@ -58,9 +57,8 @@ export function accountVerificationEmail(verifyUrl: string, userName?: string) {
 }
 
 export function accountVerificationEmailPlain(verifyUrl: string, userName?: string): string {
-  const name = displayName(userName);
   return [
-    `Hallo ${name},`,
+    halloLine(userName),
     "",
     "Willkommen bei NextGrades! Bitte bestätige deine E-Mail-Adresse:",
     "",
