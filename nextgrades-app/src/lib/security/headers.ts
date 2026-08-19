@@ -31,8 +31,8 @@ export function securityHeaders(): NonNullable<NextConfig["headers"]> {
       "img-src 'self' data: blob: https: *.supabase.co",
       "font-src 'self' data:",
       "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.stripe.com https://challenges.cloudflare.com",
-      "frame-src 'self' https://js.stripe.com https://hooks.stripe.com https://challenges.cloudflare.com",
-      "object-src 'none'",
+      "frame-src 'self' blob: https://js.stripe.com https://hooks.stripe.com https://challenges.cloudflare.com",
+      "object-src 'self'",
       "base-uri 'self'",
       "form-action 'self'",
       "frame-ancestors 'self'",
@@ -49,6 +49,18 @@ export function securityHeaders(): NonNullable<NextConfig["headers"]> {
     {
       source: "/(.*)",
       headers,
+    },
+    /**
+     * PDFs served through the library stream must not inherit the page CSP
+     * (object-src / default-src). Chrome then shows "This content is blocked".
+     */
+    {
+      source: "/api/resources/:id/stream",
+      headers: [
+        { key: "Content-Security-Policy", value: "frame-ancestors 'self'" },
+        { key: "X-Frame-Options", value: "SAMEORIGIN" },
+        { key: "Cross-Origin-Resource-Policy", value: "same-origin" },
+      ],
     },
     /** Long-cache public images (img-*, team, logos, etc.) - extension match avoids invalid :param patterns */
     {

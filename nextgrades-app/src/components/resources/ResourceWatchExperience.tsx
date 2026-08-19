@@ -92,17 +92,18 @@ export function ResourceWatchExperience({ resourceId }: { resourceId: string }) 
             mime_type: detailData?.mime_type,
           });
 
-        if (mediaKind === "video") {
+        if (accessRes.status === 403) {
+          setError("locked");
+          return;
+        }
+
+        if (mediaKind === "video" || mediaKind === "pdf") {
           setStreamUrl(resourceStreamPath(resourceId));
         } else if (!accessRes.ok || !accessData.url) {
-          if (accessRes.status === 403) {
-            setError("locked");
-          } else {
-            setError(
-              accessData.error ||
-                t("resources.viewer.loadFailed", { defaultValue: "Could not load this resource." })
-            );
-          }
+          setError(
+            accessData.error ||
+              t("resources.viewer.loadFailed", { defaultValue: "Could not load this resource." })
+          );
           return;
         } else {
           setStreamUrl(accessData.url);

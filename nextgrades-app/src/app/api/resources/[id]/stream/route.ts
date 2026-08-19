@@ -78,10 +78,16 @@ export async function GET(request: Request, { params }: RouteParams) {
       return NextResponse.json({ error: "Failed to load media" }, { status: 502 });
     }
 
+    const fileName = (material.file_name as string | null) || "resource";
+    const mime = resolveStreamMime(fileName, primaryFile?.mime_type as string | null);
+    const inlineName = fileName.replace(/[\r\n"]/g, "_");
+
     const headers = new Headers();
-    headers.set("Content-Type", resolveStreamMime(material.file_name, primaryFile?.mime_type as string | null));
+    headers.set("Content-Type", mime);
+    headers.set("Content-Disposition", `inline; filename="${inlineName}"`);
     headers.set("Accept-Ranges", "bytes");
     headers.set("Cache-Control", "private, max-age=300");
+    headers.set("X-Content-Type-Options", "nosniff");
 
     const contentLength = upstream.headers.get("content-length");
     const contentRange = upstream.headers.get("content-range");

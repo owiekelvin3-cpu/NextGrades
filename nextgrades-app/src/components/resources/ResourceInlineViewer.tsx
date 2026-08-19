@@ -42,7 +42,7 @@ function DocumentPreview({
       <h2 className="text-lg font-bold text-[#0D1B2A]">{title}</h2>
       {fileName && <p className="mt-2 text-sm text-gray-500">{fileName}</p>}
       <p className="mt-4 max-w-md text-sm text-gray-600">
-        Preview is not available for this file type in the browser. You can download it to open locally.
+        Diese Datei kann im Browser nicht direkt angezeigt werden. Lade sie herunter, um sie zu öffnen.
       </p>
       {onDownload && (
         <button
@@ -50,7 +50,7 @@ function DocumentPreview({
           onClick={onDownload}
           className="mt-6 inline-flex min-h-10 items-center justify-center rounded-xl bg-[#D4AF37] px-5 text-sm font-semibold text-[#0D1B2A] transition hover:bg-[#e0bc4a]"
         >
-          Download file
+          Datei herunterladen
         </button>
       )}
     </div>
@@ -96,6 +96,10 @@ export function ResourceInlineViewer({
     };
   }, [kind, url]);
 
+  useEffect(() => {
+    if (kind === "pdf") onView?.();
+  }, [kind, url, onView]);
+
   if (kind === "video") {
     return (
       <NextGradesVideoPlayer
@@ -111,12 +115,38 @@ export function ResourceInlineViewer({
   if (kind === "pdf") {
     return (
       <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-        <iframe
-          src={`${url}#toolbar=1&navpanes=0`}
-          title={title}
-          className="h-[min(80vh,900px)] w-full bg-white"
-          onLoad={onView}
-        />
+        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-gray-100 bg-gray-50 px-4 py-2.5">
+          <p className="text-xs text-gray-500">
+            Wenn das PDF hier nicht erscheint, öffne es in einem neuen Tab.
+          </p>
+          <div className="flex flex-wrap gap-2">
+            <a
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex min-h-9 items-center rounded-lg border border-gray-200 bg-white px-3 text-xs font-semibold text-gray-700 transition hover:border-[#D4AF37]/40 hover:text-[#D4AF37]"
+            >
+              Im neuen Tab öffnen
+            </a>
+            {onDownload && (
+              <button
+                type="button"
+                onClick={onDownload}
+                className="inline-flex min-h-9 items-center rounded-lg bg-[#D4AF37] px-3 text-xs font-semibold text-[#0D1B2A] transition hover:bg-[#e0bc4a]"
+              >
+                Herunterladen
+              </button>
+            )}
+          </div>
+        </div>
+        <object data={`${url}#toolbar=1&navpanes=0`} type="application/pdf" className="h-[min(80vh,900px)] w-full bg-white">
+          <iframe
+            src={`${url}#toolbar=1&navpanes=0`}
+            title={title}
+            className="h-[min(80vh,900px)] w-full bg-white"
+            onLoad={onView}
+          />
+        </object>
       </div>
     );
   }
