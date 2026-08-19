@@ -43,3 +43,11 @@ export function wallTimeToUtc(date: string, time: string, timeZone: string): Dat
 export function formatZoomLocalStartTime(date: string, time: string): string {
   return `${date}T${time}:00`;
 }
+
+/** Calendar date in the user's local timezone (never UTC via toISOString). */
+export function formatLocalYmd(date = new Date()): string {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}

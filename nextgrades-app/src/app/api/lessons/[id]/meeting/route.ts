@@ -40,7 +40,10 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
 
   const { url, passcode, provider } = resolveMeetingUrl(lesson, role, userId);
   if (!url) {
-    return NextResponse.json({ error: "Meeting link not available" }, { status: 404 });
+    return NextResponse.json(
+      { error: "Kein Video-Link hinterlegt. Die Lehrkraft muss ihn vor der Stunde einfügen." },
+      { status: 404 }
+    );
   }
 
   return NextResponse.json({

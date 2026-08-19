@@ -19,6 +19,7 @@ import { useZoomStatus } from "@/components/zoom/ZoomSetupStrip";
 import { teacherPanel, teacherStatCard } from "./teacher-ui";
 import { formatTimeRange, lessonDateParts } from "@/components/dashboard/student/student-ui";
 import { ZoomMeetingButton } from "@/components/zoom/ZoomMeetingButton";
+import { AddLessonMeetingLink } from "@/components/zoom/AddLessonMeetingLink";
 import { MeetingProviderBadge } from "@/components/meetings/MeetingProviderIcon";
 import { lessonHasMeetingLink } from "@/lib/meetings/link";
 import { cn } from "@/lib/utils";
@@ -88,7 +89,11 @@ function ScheduleContent() {
   const upcoming = useMemo(
     () =>
       meetings
-        .filter((m) => m.status === "scheduled" && new Date(m.start_time).getTime() >= now)
+        .filter((m) => {
+          if (m.status !== "scheduled") return false;
+          if (!lessonHasMeetingLink(m)) return true;
+          return new Date(m.start_time).getTime() >= now;
+        })
         .sort((a, b) => new Date(a.start_time).getTime() - new Date(b.start_time).getTime()),
     [meetings, now]
   );
@@ -155,7 +160,7 @@ function ScheduleContent() {
             <p className="mt-1 text-xs text-text-muted">
               {zoomReady
                 ? t("zoom.readyToSchedule", { defaultValue: "Optional — auto-create Zoom links" })
-                : t("zoom.pasteLinkReady", { defaultValue: "Optional — add a video link if you have one" })}
+                : t("zoom.pasteLinkReady", { defaultValue: "Video-Link vor der Stunde einfügen" })}
             </p>
           </div>
         </div>
@@ -252,14 +257,16 @@ function ScheduleContent() {
                           </div>
                         </div>
                       </div>
-                      <div className="flex shrink-0 gap-2">
-                        {lessonHasMeetingLink(m) && (
+                      <div className="flex w-full shrink-0 flex-col gap-2 sm:w-auto">
+                        {lessonHasMeetingLink(m) ? (
                           <ZoomMeetingButton
                             lessonId={m.id}
                             mode="start"
                             provider={m.meeting_provider}
                             size="md"
                           />
+                        ) : (
+                          <AddLessonMeetingLink lessonId={m.id} onSaved={() => void load()} />
                         )}
                         <button
                           type="button"

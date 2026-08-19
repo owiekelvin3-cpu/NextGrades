@@ -55,7 +55,12 @@ export function ZoomMeetingButton({ lessonId, mode, provider, className, size = 
         error?: string;
       };
       if (!res.ok || !data.url) {
-        throw new Error(data.error || "Could not open meeting");
+        throw new Error(
+          data.error ||
+            t("zoom.meetingLinkMissing", {
+              defaultValue: "Kein Video-Link hinterlegt. Die Lehrkraft muss ihn vor der Stunde einfügen.",
+            })
+        );
       }
       window.open(data.url, "_blank", "noopener,noreferrer");
       if (data.passcode) {

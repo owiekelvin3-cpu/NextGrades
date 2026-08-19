@@ -40,7 +40,7 @@ export async function POST(request: Request) {
       date,
       startTime,
       duration = 60,
-      timezone = "Europe/Berlin",
+      timezone = "Europe/Vienna",
       meetingType = "live_class",
       studentId,
       studentIds,
@@ -54,8 +54,17 @@ export async function POST(request: Request) {
     }
 
     const rawLink = meetingLink?.trim() || "";
-    const linkCheck = rawLink ? validateMeetingLink(rawLink) : null;
-    if (linkCheck && !linkCheck.ok) {
+    if (!rawLink) {
+      return NextResponse.json(
+        {
+          error:
+            "Füge vor der Stunde einen Video-Link ein (Zoom, Google Meet oder Teams), sonst können SchülerInnen nicht beitreten.",
+        },
+        { status: 400 }
+      );
+    }
+    const linkCheck = validateMeetingLink(rawLink);
+    if (!linkCheck.ok) {
       return NextResponse.json({ error: linkCheck.error }, { status: 400 });
     }
 
@@ -113,10 +122,10 @@ export async function POST(request: Request) {
           subject_id: subjectId || null,
           start_time: startDateTime.toISOString(),
           duration,
-          meeting_url: linkCheck?.url ?? null,
-          meeting_provider: linkCheck?.provider ?? null,
-          meeting_verified: Boolean(linkCheck?.url),
-          zoom_link: linkCheck?.url ?? null,
+          meeting_url: linkCheck.url,
+          meeting_provider: linkCheck.provider,
+          meeting_verified: true,
+          zoom_link: linkCheck.url,
           zoom_passcode: passcode?.trim() || null,
           meeting_title: title.trim(),
           meeting_description: description ?? null,
@@ -138,7 +147,7 @@ export async function POST(request: Request) {
         subjectName,
         title: title.trim(),
         startTime: startDateTime.toISOString(),
-        joinUrl: linkCheck?.url,
+        joinUrl: linkCheck.url,
       });
     }
 
@@ -146,8 +155,8 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       lessons,
-      provider: linkCheck?.provider ?? null,
-      meetingUrl: linkCheck?.url ?? null,
+      provider: linkCheck.provider,
+      meetingUrl: linkCheck.url,
     });
   } catch (e) {
     console.error("[teacher/live-classes POST]", e);

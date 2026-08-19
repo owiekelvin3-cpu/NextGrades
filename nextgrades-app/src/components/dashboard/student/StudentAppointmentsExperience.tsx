@@ -229,6 +229,12 @@ export function StudentAppointmentsExperience() {
                               provider={lesson.meeting_provider}
                               className="w-full justify-center sm:w-auto"
                             />
+                          ) : tab === "upcoming" ? (
+                            <p className="text-xs text-amber-700">
+                              {t("studentDashboard.waitingForMeetingLink", {
+                                defaultValue: "Video-Link folgt – die Lehrkraft fügt ihn vor der Stunde ein.",
+                              })}
+                            </p>
                           ) : null}
                           <button type="button" className={st.iconBtn} aria-label="More">
                             <MoreHorizontal className="h-4 w-4" />

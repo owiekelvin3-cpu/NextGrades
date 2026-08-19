@@ -20,18 +20,18 @@ import { themeInputClass, themeSelectClass } from "@/lib/theme/form-fields";
 import { cn } from "@/lib/utils";
 import { detectMeetingProvider, validateMeetingLink } from "@/lib/meetings/link";
 import { MeetingProviderIcon } from "@/components/meetings/MeetingProviderIcon";
+import { formatLocalYmd } from "@/lib/zoom/datetime";
 
-const TIMEZONES = ["Europe/Berlin", "Europe/Vienna", "Europe/Zurich", "Europe/London", "UTC"];
+const TIMEZONES = ["Europe/Vienna", "Europe/Berlin", "Europe/Zurich", "Europe/London", "UTC"];
 const DURATION_PRESETS = [30, 45, 60, 90] as const;
 
 function defaultScheduleValues() {
-  const now = new Date();
-  const next = new Date(now);
+  const next = new Date();
   next.setDate(next.getDate() + 1);
   next.setMinutes(0, 0, 0);
   next.setHours(10);
   return {
-    date: next.toISOString().slice(0, 10),
+    date: formatLocalYmd(next),
     startTime: "10:00",
   };
 }
@@ -68,7 +68,7 @@ export function CreateLiveClassForm({
     date: defaults.date,
     startTime: defaults.startTime,
     duration: "60",
-    timezone: "Europe/Berlin",
+    timezone: "Europe/Vienna",
     meetingType: "private_session" as ZoomMeetingType,
     studentId: "",
     subjectId: "",
@@ -164,12 +164,18 @@ export function CreateLiveClassForm({
       );
       return;
     }
-    if (form.meetingLink.trim()) {
-      const check = validateMeetingLink(form.meetingLink);
-      if (!check.ok) {
-        toast.error(check.error);
-        return;
-      }
+    if (!form.meetingLink.trim()) {
+      toast.error(
+        t("zoom.meetingLinkRequired", {
+          defaultValue: "Füge vor der Stunde einen Video-Link ein, sonst können SchülerInnen nicht beitreten.",
+        })
+      );
+      return;
+    }
+    const check = validateMeetingLink(form.meetingLink);
+    if (!check.ok) {
+      toast.error(check.error);
+      return;
     }
 
     const studentName = students.find((s) => s.id === form.studentId)?.name;
@@ -268,7 +274,7 @@ export function CreateLiveClassForm({
             </h2>
             <p className="mt-1 text-sm text-gray-300">
               {t("zoom.newLessonDesc", {
-                defaultValue: "Pick a student, date, and time. The lesson then appears in their appointments.",
+                defaultValue: "SchülerIn, Fach, Termin – und vor der Stunde den Video-Link einfügen.",
               })}
             </p>
           </div>
@@ -368,6 +374,7 @@ export function CreateLiveClassForm({
               <input
                 required
                 type="date"
+                min={formatLocalYmd()}
                 value={form.date}
                 onChange={(e) => setForm({ ...form, date: e.target.value })}
                 className={cn(inputCls, "pl-10")}
@@ -423,7 +430,7 @@ export function CreateLiveClassForm({
 
         <div>
           <label htmlFor="meeting-link" className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-gray-500">
-            {t("zoom.meetingLinkOptional", { defaultValue: "Video link (optional)" })}
+            {t("zoom.meetingLinkRequiredLabel", { defaultValue: "Video-Link (vor der Stunde)" })}
           </label>
           <div className="flex gap-3">
             {linkPreview?.ok ? (
@@ -435,6 +442,7 @@ export function CreateLiveClassForm({
             )}
             <div className="min-w-0 flex-1">
               <input
+                required
                 id="meeting-link"
                 type="url"
                 inputMode="url"
@@ -454,8 +462,8 @@ export function CreateLiveClassForm({
                 </p>
               ) : (
                 <p className="mt-1.5 text-xs text-gray-500">
-                  {t("zoom.meetingLinkOptionalHint", {
-                    defaultValue: "Optional. Paste Zoom, Meet, or Teams if you already have a link.",
+                  {t("zoom.meetingLinkRequiredHint", {
+                    defaultValue: "Pflicht. Zoom, Google Meet oder Teams – sonst kann niemand beitreten.",
                   })}
                 </p>
               )}
@@ -553,7 +561,7 @@ export function CreateLiveClassForm({
         {!zoomReady && (
           <p className="text-xs text-gray-500">
             {t("zoom.pastePreferred", {
-              defaultValue: "A video link is optional. The student still sees the lesson under My appointments.",
+              defaultValue: "Ohne Video-Link können SchülerInnen der Stunde nicht beitreten.",
             })}{" "}
             <a href={connectHref} className="font-medium text-[#2D8CFF] hover:underline">
               {t("zoom.connectOptional", { defaultValue: "Connect Zoom (optional)" })}

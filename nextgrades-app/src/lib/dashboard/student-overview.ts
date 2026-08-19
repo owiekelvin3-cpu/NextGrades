@@ -368,10 +368,18 @@ export async function fetchStudentAppointmentsData(): Promise<StudentAppointment
 
   const now = Date.now();
   const upcoming = allLessons
-    .filter((l) => l.status === "scheduled" && new Date(l.start_time).getTime() >= now)
+    .filter((l) => {
+      if (l.status !== "scheduled") return false;
+      if (!l.meeting_url && !l.zoom_link && !l.zoom_meeting_id) return true;
+      return new Date(l.start_time).getTime() >= now;
+    })
     .sort((a, b) => new Date(a.start_time).getTime() - new Date(b.start_time).getTime());
   const past = allLessons
-    .filter((l) => l.status === "completed" || new Date(l.start_time).getTime() < now)
+    .filter((l) => {
+      const hasLink = Boolean(l.meeting_url || l.zoom_link || l.zoom_meeting_id);
+      if (l.status === "scheduled" && !hasLink) return false;
+      return l.status === "completed" || new Date(l.start_time).getTime() < now;
+    })
     .sort((a, b) => new Date(b.start_time).getTime() - new Date(a.start_time).getTime());
 
   const next = upcoming[0] ?? null;
