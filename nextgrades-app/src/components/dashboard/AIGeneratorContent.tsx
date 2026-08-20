@@ -48,26 +48,31 @@ export function AIGeneratorContent() {
   const { theme } = useTheme();
   const { t } = useTranslation();
   const toast = useToast();
-  const subjects = useLocalizedContent<string[]>("aiGeneratorPage.subjects");
-  const grades = useLocalizedContent<string[]>("aiGeneratorPage.grades");
+  const subjectsRaw = useLocalizedContent<string[]>("aiGeneratorPage.subjects");
+  const gradesRaw = useLocalizedContent<string[]>("aiGeneratorPage.grades");
+  const subjects = Array.isArray(subjectsRaw) ? subjectsRaw : ["Mathematik", "Englisch", "Deutsch", "Physik"];
+  const grades = Array.isArray(gradesRaw)
+    ? gradesRaw
+    : ["Klasse 1", "Klasse 2", "Klasse 3", "Klasse 4", "Klasse 5", "Klasse 6", "Klasse 7", "Klasse 8"];
 
   const loadMaterials = useCallback(async () => {
     setLoadingMaterials(true);
     try {
       const res = await fetch("/api/quiz/materials");
-      if (!res.ok) throw new Error((await res.json()).error || "Failed to load materials");
-      const data = (await res.json()) as UploadedMaterial[];
+      const payload = await res.json();
+      if (!res.ok) throw new Error(payload.error || "Materialien konnten nicht geladen werden.");
+      const data = (Array.isArray(payload) ? payload : []) as UploadedMaterial[];
       setMaterials(data);
-      if (data.length && !selectedMaterialId) {
-        const ready = data.find((m) => m.extraction_status === "ready");
-        setSelectedMaterialId(ready?.id ?? data[0].id);
-      }
+      setSelectedMaterialId((current) => {
+        if (current && data.some((m) => m.id === current && m.extraction_status === "ready")) return current;
+        return "";
+      });
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Failed to load materials");
     } finally {
       setLoadingMaterials(false);
     }
-  }, [selectedMaterialId, toast]);
+  }, [toast]);
 
   const loadQuizzes = useCallback(async () => {
     const res = await fetch("/api/quiz/quizzes");
@@ -127,9 +132,15 @@ export function AIGeneratorContent() {
       return;
     }
 
-    const material = materials.find((m) => m.id === selectedMaterialId);
-    if (selectedMaterialId && material?.extraction_status !== "ready") {
-      toast.error(t("aiGeneratorPage.materialProcessing", { defaultValue: "Material is still being processed" }));
+    const readySelected =
+      selectedMaterialId &&
+      materials.some((m) => m.id === selectedMaterialId && m.extraction_status === "ready");
+    if (selectedMaterialId && !readySelected && !hasBrief) {
+      toast.error(
+        t("aiGeneratorPage.materialNotReady", {
+          defaultValue: "Dieses Material hat keinen lesbaren Text. Bitte Stoff einfügen oder eine andere Datei wählen.",
+        })
+      );
       return;
     }
 
@@ -140,7 +151,7 @@ export function AIGeneratorContent() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          materialId: selectedMaterialId || undefined,
+          materialId: readySelected ? selectedMaterialId : undefined,
           sourceText: notes || undefined,
           mode,
           topic: topic || undefined,
@@ -285,7 +296,9 @@ export function AIGeneratorContent() {
                         <p className="text-xs text-gray-500">
                           {m.extraction_status === "ready"
                             ? t("aiGeneratorPage.ready", { defaultValue: "Ready" })
-                            : m.extraction_status}
+                            : m.extraction_status === "failed"
+                              ? t("aiGeneratorPage.failed", { defaultValue: "Kein Text erkannt – nicht verwendbar" })
+                              : m.extraction_status}
                         </p>
                       </div>
                     </button>

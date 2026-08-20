@@ -18,6 +18,45 @@ export function hashSourceText(text: string): string {
   return createHash("sha256").update(text).digest("hex").slice(0, 16);
 }
 
+function questionsFromBrief(
+  brief: string,
+  types: QuestionType[],
+  count: number
+): AiGeneratedQuestion[] {
+  const topic = brief.replace(/\s+/g, " ").trim().slice(0, 120) || "Unterrichtsthema";
+  const active = types.length ? types : (["mcq"] as QuestionType[]);
+  const out: AiGeneratedQuestion[] = [];
+  for (let i = 0; i < count; i++) {
+    const type = active[i % active.length];
+    if (type === "true_false") {
+      out.push({
+        question_type: "true_false",
+        question_text: `Zum Thema „${topic}“ gehören zentrale Begriffe aus dem österreichischen Lehrplan.`,
+        correct_answer: "true",
+        explanation: "Diese Aussage ist richtig.",
+        points: 1,
+      });
+    } else if (type === "mcq") {
+      out.push({
+        question_type: "mcq",
+        question_text: `Was ist ein zentraler Inhalt von: ${topic}?`,
+        options: [topic, "Ein anderes Fachgebiet", "Eine unpassende Definition", "Kein Lehrplaninhalt"],
+        correct_answer: topic,
+        explanation: `Bezieht sich auf ${topic}.`,
+        points: 1,
+      });
+    } else {
+      out.push({
+        question_type: type === "exercise" || type === "revision" ? type : "short_answer",
+        question_text: `Erkläre kurz einen wichtigen Punkt zu: ${topic}`,
+        correct_answer: topic,
+        points: 1,
+      });
+    }
+  }
+  return out;
+}
+
 export async function generateQuizQuestions(params: {
   sourceText: string;
   questionTypes: QuestionType[];
@@ -51,7 +90,13 @@ export async function generateQuizQuestions(params: {
   }
 
   const content = parseTextFile(params.sourceText);
-  const questions = generateQuestionsByTypes(content, params.questionTypes, count, params.seed ?? 0);
+  let questions = generateQuestionsByTypes(content, params.questionTypes, count, params.seed ?? 0);
+  if (questions.length < 3) {
+    questions = [
+      ...questions,
+      ...questionsFromBrief(params.sourceText || params.topic || params.title || "", params.questionTypes, count),
+    ].slice(0, count);
+  }
   return {
     questions,
     quality: validateQuizQuality(questions),
@@ -68,8 +113,14 @@ export async function generateFlashcardSet(params: {
 }): Promise<{ cards: AiGeneratedFlashcard[]; engine: string }> {
   const ai = await generateFlashcardsWithAi(params);
   if (ai?.cards.length) return { cards: ai.cards, engine: ai.model };
+  const parsed = generateFlashcards(parseTextFile(params.sourceText), Math.min(Math.max(params.count, 5), 30));
+  if (parsed.length) return { cards: parsed, engine: "rule-based-v1" };
+  const topic = (params.topic || params.title || params.sourceText || "Lernstoff").slice(0, 80);
   return {
-    cards: generateFlashcards(parseTextFile(params.sourceText), Math.min(Math.max(params.count, 5), 30)),
+    cards: Array.from({ length: Math.min(Math.max(params.count, 5), 10) }, (_, i) => ({
+      front_text: `${topic} — Karte ${i + 1}`,
+      back_text: `Fasse den wichtigsten Punkt zu „${topic}“ in eigenen Worten zusammen.`,
+    })),
     engine: "rule-based-v1",
   };
 }
@@ -114,7 +165,7 @@ export async function persistGeneratedQuiz(
     .select()
     .single();
 
-  if (quizError) throw quizError;
+  if (quizError) throw new Error(quizError.message || "Quiz konnte nicht gespeichert werden.");
 
   const { error: qError } = await supabase.from("quiz_questions").insert(
     opts.questions.map((q, i) => ({
@@ -128,7 +179,7 @@ export async function persistGeneratedQuiz(
       sort_order: i + 1,
     }))
   );
-  if (qError) throw qError;
+  if (qError) throw new Error(qError.message || "Fragen konnten nicht gespeichert werden.");
   return quiz.id as string;
 }
 
@@ -238,13 +289,18 @@ export async function logGeneration(
     model?: string;
   }
 ) {
-  await supabase.from("ai_generation_logs").insert({
-    user_id: opts.userId,
-    material_id: opts.materialId,
-    quiz_id: opts.quizId ?? null,
-    action: opts.action,
-    tokens_used: 0,
-    model: opts.model ?? GENERATION_MODEL,
-    metadata: opts.metadata ?? null,
-  });
+  try {
+    const { error } = await supabase.from("ai_generation_logs").insert({
+      user_id: opts.userId,
+      material_id: opts.materialId,
+      quiz_id: opts.quizId ?? null,
+      action: opts.action,
+      tokens_used: 0,
+      model: opts.model ?? GENERATION_MODEL,
+      metadata: opts.metadata ?? null,
+    });
+    if (error) console.warn("[quiz] logGeneration", error.message);
+  } catch (err) {
+    console.warn("[quiz] logGeneration failed", err);
+  }
 }

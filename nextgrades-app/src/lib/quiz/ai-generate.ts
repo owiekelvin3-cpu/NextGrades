@@ -17,6 +17,41 @@ function groqClient() {
   return new OpenAI({ apiKey: key, baseURL: "https://api.groq.com/openai/v1" });
 }
 
+function messageText(completion: OpenAI.Chat.Completions.ChatCompletion): string {
+  const msg = completion.choices[0]?.message as
+    | { content?: string | null; reasoning?: string | null }
+    | undefined;
+  const content = msg?.content?.trim() || "";
+  if (content) return content;
+  return String(msg?.reasoning || "").trim();
+}
+
+async function groqJsonChat(prompt: string, preferredModel: string): Promise<{ text: string; model: string } | null> {
+  const client = groqClient();
+  if (!client) return null;
+  const models = [...new Set([preferredModel, groqRuntimeModel("openai/gpt-oss-20b"), "openai/gpt-oss-20b"])];
+
+  for (const model of models) {
+    try {
+      const completion = await client.chat.completions.create({
+        model,
+        temperature: 0.3,
+        max_completion_tokens: 4096,
+        response_format: { type: "json_object" },
+        messages: [
+          { role: "system", content: "Du lieferst nur gültiges JSON ohne Markdown." },
+          { role: "user", content: prompt },
+        ],
+      });
+      const text = messageText(completion);
+      if (text) return { text, model };
+    } catch (err) {
+      console.warn("[quiz-ai] groq call failed", model, err instanceof Error ? err.message : err);
+    }
+  }
+  return null;
+}
+
 function extractJson(raw: string): unknown {
   const trimmed = raw.trim();
   const fenced = trimmed.match(/```(?:json)?\s*([\s\S]*?)```/i);
@@ -90,13 +125,10 @@ export async function generateQuizQuestionsWithAi(params: {
   topic?: string;
   title?: string;
 }): Promise<{ questions: AiGeneratedQuestion[]; model: string } | null> {
-  const client = groqClient();
-  if (!client) return null;
-
   const types = params.questionTypes.length ? params.questionTypes : ["mcq"];
   const count = Math.min(Math.max(params.questionCount, 3), 25);
   const excerpt = params.sourceText.slice(0, 12000);
-  const model = groqRuntimeModel("openai/gpt-oss-120b");
+  const preferred = groqRuntimeModel("openai/gpt-oss-20b");
 
   const prompt = `Du bist NextGrades KI, ein Generator für österreichische Schule (Sekundarstufe).
 Erzeuge GENAU ${count} Aufgaben auf Deutsch.
@@ -115,31 +147,19 @@ Regeln:
 - exercise: Übungsaufgabe mit Musterlösung als correct_answer
 - Erklärungen kurz und hilfreich
 
-Antworte NUR mit JSON:
+JSON-Form:
 {"questions":[{"question_type":"mcq","question_text":"...","options":["A","B","C","D"],"correct_answer":"A","explanation":"...","points":1}]}`;
 
   try {
-    const completion = await client.chat.completions.create({
-      model,
-      temperature: 0.4,
-      max_completion_tokens: 4096,
-      messages: [
-        {
-          role: "system",
-          content: "Du lieferst nur gültiges JSON ohne Markdown.",
-        },
-        { role: "user", content: prompt },
-      ],
-    });
-    const content = completion.choices[0]?.message?.content?.trim();
-    if (!content) return null;
-    const parsed = extractJson(content) as { questions?: unknown };
+    const raw = await groqJsonChat(prompt, preferred);
+    if (!raw) return null;
+    const parsed = extractJson(raw.text) as { questions?: unknown };
     const questions = (Array.isArray(parsed.questions) ? parsed.questions : [])
       .map(normalizeQuestion)
       .filter((q): q is AiGeneratedQuestion => Boolean(q))
       .slice(0, count);
-    if (questions.length < 3) return null;
-    return { questions, model };
+    if (!questions.length) return null;
+    return { questions, model: raw.model };
   } catch (err) {
     console.warn("[quiz-ai] generation failed", err instanceof Error ? err.message : err);
     return null;
@@ -152,32 +172,18 @@ export async function generateFlashcardsWithAi(params: {
   topic?: string;
   title?: string;
 }): Promise<{ cards: AiGeneratedFlashcard[]; model: string } | null> {
-  const client = groqClient();
-  if (!client) return null;
   const count = Math.min(Math.max(params.count, 5), 30);
-  const model = groqRuntimeModel("openai/gpt-oss-20b");
   const excerpt = params.sourceText.slice(0, 8000);
+  const prompt = `Erzeuge ${count} Karteikarten auf Deutsch für SchülerInnen.
+${params.topic ? `Thema: ${params.topic}\n` : ""}Stoff:\n${excerpt || params.title || "Schulstoff"}
+JSON: {"flashcards":[{"front_text":"Frage","back_text":"Antwort"}]}`;
 
   try {
-    const completion = await client.chat.completions.create({
-      model,
-      temperature: 0.4,
-      max_completion_tokens: 2500,
-      messages: [
-        { role: "system", content: "Du lieferst nur gültiges JSON ohne Markdown." },
-        {
-          role: "user",
-          content: `Erzeuge ${count} Karteikarten auf Deutsch für SchülerInnen.
-${params.topic ? `Thema: ${params.topic}\n` : ""}Stoff:\n${excerpt || params.title || "Schulstoff"}
-JSON: {"flashcards":[{"front_text":"Frage","back_text":"Antwort"}]}`,
-        },
-      ],
-    });
-    const content = completion.choices[0]?.message?.content?.trim();
-    if (!content) return null;
-    const cards = normalizeCards(extractJson(content)).slice(0, count);
-    if (cards.length < 3) return null;
-    return { cards, model };
+    const raw = await groqJsonChat(prompt, groqRuntimeModel("openai/gpt-oss-20b"));
+    if (!raw) return null;
+    const cards = normalizeCards(extractJson(raw.text)).slice(0, count);
+    if (!cards.length) return null;
+    return { cards, model: raw.model };
   } catch (err) {
     console.warn("[quiz-ai] flashcards failed", err instanceof Error ? err.message : err);
     return null;

@@ -40,11 +40,21 @@ function jobMode(mode: GenerateBody["mode"]): "quiz" | "flashcards" {
   return mode === "flashcards" ? "flashcards" : "quiz";
 }
 
+function errorMessage(e: unknown, fallback = "Generierung fehlgeschlagen"): string {
+  if (e instanceof Error && e.message) return e.message;
+  if (e && typeof e === "object" && "message" in e) {
+    const msg = String((e as { message?: unknown }).message || "").trim();
+    if (msg) return msg;
+  }
+  return fallback;
+}
+
 async function updateJob(
   supabase: Awaited<ReturnType<typeof createClient>>,
-  jobId: string,
+  jobId: string | null,
   patch: Record<string, unknown>
 ) {
+  if (!jobId) return;
   await supabase.from("quiz_generation_jobs").update(patch).eq("id", jobId);
 }
 
@@ -104,10 +114,18 @@ export async function POST(request: Request) {
         .eq("id", materialId)
         .single();
       if (matError || !data) {
-        return NextResponse.json({ error: "Material not found" }, { status: 404 });
+        materialId = undefined;
+      } else {
+        material = data;
+        const readyText = String(data.extracted_text || "").trim();
+        if (data.extraction_status !== "ready" || !readyText) {
+          material = null;
+          materialId = undefined;
+        }
       }
-      material = data;
-    } else if (brief.length >= 12) {
+    }
+
+    if ((!material || !materialId) && brief.length >= 12) {
       const pasteTitle = title?.trim() || topic?.trim() || (mode === "exercises" ? "KI-Übungen" : "KI-Quiz");
       const { data: created, error: createError } = await db
         .from("uploaded_materials")
@@ -122,28 +140,27 @@ export async function POST(request: Request) {
         })
         .select("*")
         .single();
-      if (createError || !created) throw createError ?? new Error("Could not save lesson notes");
+      if (createError || !created) throw createError ?? new Error("Unterrichtstext konnte nicht gespeichert werden.");
       material = created;
       materialId = created.id as string;
-    } else {
+    }
+
+    if (!material || !materialId) {
       return NextResponse.json(
-        { error: "Thema, Auftrag oder Unterrichtstext angeben." },
+        { error: "Thema, Auftrag oder Unterrichtstext angeben. Fehlgeschlagene Uploads bitte nicht verwenden." },
         { status: 400 }
       );
     }
 
-    if (!material || !materialId) {
-      return NextResponse.json({ error: "Material not found" }, { status: 400 });
-    }
-
     const extractedText = material.extracted_text?.trim() || "";
-    if (material.extraction_status !== "ready" || !extractedText) {
-      return NextResponse.json({ error: "Material text is not ready for generation" }, { status: 400 });
+    if (!extractedText) {
+      return NextResponse.json(
+        { error: "Material text is not ready for generation" },
+        { status: 400 }
+      );
     }
 
-    const generationSource = bodyMaterialId
-      ? [brief, extractedText].filter(Boolean).join("\n\n")
-      : extractedText;
+    const generationSource = [brief, extractedText].filter(Boolean).join("\n\n") || extractedText;
     const textHash = hashSourceText(generationSource);
     const seed = forceRefresh ? Date.now() % 100000 : 0;
     const cacheKey = buildGenerationCacheKey({
@@ -172,9 +189,12 @@ export async function POST(request: Request) {
       .select()
       .single();
 
-    if (jobError || !job?.id) throw jobError ?? new Error("Failed to create generation job");
-    const activeJobId = job.id;
-    jobId = activeJobId;
+    if (jobError || !job?.id) {
+      console.warn("[quiz] generation job insert failed", jobError?.message);
+    } else {
+      jobId = job.id;
+    }
+    const activeJobId = job?.id ?? null;
 
     if (persistedMode === "flashcards") {
       const { data: cachedSet } = await db
@@ -304,7 +324,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ cached: false, jobId: activeJobId, quiz: fullQuiz, quality });
   } catch (e) {
-    const message = e instanceof Error ? e.message : "Generation failed";
+    const message = errorMessage(e);
     if (jobId) {
       await updateJob(db, jobId, {
         status: "failed",
