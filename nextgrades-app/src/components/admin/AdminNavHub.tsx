@@ -14,6 +14,7 @@ import {
   KeyRound,
   Bot,
   BarChart3,
+  Sparkles,
   Video,
   ChevronRight,
   Cookie,
@@ -43,6 +44,7 @@ const SECTIONS = [
     items: [
       { href: `${ADMIN_PORTAL_PREFIX}/notifications`, icon: Bell, labelKey: "adminNav.notifications", descKey: "adminHub.notificationsDesc" },
       { href: `${ADMIN_PORTAL_PREFIX}/quiz-monitor`, icon: ListChecks, labelKey: "adminNav.quizMonitor", descKey: "adminHub.quizDesc" },
+      { href: `${ADMIN_PORTAL_PREFIX}/ai-generator`, icon: Sparkles, labelKey: "adminNav.aiGenerator", descKey: "adminHub.aiGeneratorDesc" },
       { href: `${ADMIN_PORTAL_PREFIX}/moderation`, icon: Shield, labelKey: "adminNav.moderation", descKey: "adminHub.moderationDesc" },
       { href: `${ADMIN_PORTAL_PREFIX}/memberships`, icon: CreditCard, labelKey: "adminNav.memberships", descKey: "adminHub.membershipsDesc" },
       { href: `${ADMIN_PORTAL_PREFIX}/resource-access`, icon: KeyRound, labelKey: "adminNav.resourceAccess", descKey: "adminHub.resourceAccessDesc" },

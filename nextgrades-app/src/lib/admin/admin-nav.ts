@@ -15,6 +15,7 @@ import {
   UserCog,
   Users,
   Video,
+  Sparkles,
   type LucideIcon,
 } from "lucide-react";
 import { ADMIN_CMS_PREFIX, ADMIN_PORTAL_HOME, ADMIN_PORTAL_PREFIX } from "@/lib/admin/portal-paths";
@@ -64,6 +65,7 @@ export const ADMIN_NAV_SECTIONS: AdminNavSection[] = [
     items: [
       { href: `${P}/analytics`, icon: BarChart3, labelKey: "adminNav.analytics" },
       { href: `${P}/quiz-monitor`, icon: ListChecks, labelKey: "adminNav.quizMonitor" },
+      { href: `${P}/ai-generator`, icon: Sparkles, labelKey: "adminNav.aiGenerator" },
       { href: `${P}/chatbot`, icon: Bot, labelKey: "adminNav.chatbot" },
       { href: `${P}/zoom`, icon: Video, labelKey: "adminNav.zoom" },
     ],

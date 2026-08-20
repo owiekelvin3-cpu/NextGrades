@@ -14,13 +14,14 @@ import {
 } from "@/lib/quiz/generation-service";
 
 export const runtime = "nodejs";
-export const maxDuration = 30;
+export const maxDuration = 60;
 
 type GenerateBody = {
   materialId?: string;
   sourceText?: string;
-  mode?: "quiz" | "flashcards";
+  mode?: "quiz" | "flashcards" | "exercises";
   topic?: string;
+  grade?: string;
   difficulty?: Difficulty;
   questionTypes?: QuestionType[];
   questionCount?: number;
@@ -28,6 +29,16 @@ type GenerateBody = {
   title?: string;
   forceRefresh?: boolean;
 };
+
+function defaultQuestionTypes(mode: GenerateBody["mode"], requested?: QuestionType[]): QuestionType[] {
+  if (requested?.length) return requested;
+  if (mode === "exercises") return ["fill_blank", "short_answer", "exercise"];
+  return ["mcq", "true_false"];
+}
+
+function jobMode(mode: GenerateBody["mode"]): "quiz" | "flashcards" {
+  return mode === "flashcards" ? "flashcards" : "quiz";
+}
 
 async function updateJob(
   supabase: Awaited<ReturnType<typeof createClient>>,
@@ -55,13 +66,23 @@ export async function POST(request: Request) {
       sourceText,
       mode = "quiz",
       topic,
+      grade,
       difficulty = "medium",
-      questionTypes = ["mcq"],
       questionCount = 10,
       flashcardCount = 15,
       title,
       forceRefresh = false,
     } = body;
+    const questionTypes = defaultQuestionTypes(mode, body.questionTypes);
+    const persistedMode = jobMode(mode);
+    const brief = [
+      title?.trim(),
+      topic?.trim(),
+      grade?.trim() ? `Klasse: ${grade.trim()}` : "",
+      sourceText?.trim(),
+    ]
+      .filter(Boolean)
+      .join("\n\n");
 
     let materialId = bodyMaterialId;
     let material: {
@@ -86,8 +107,8 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: "Material not found" }, { status: 404 });
       }
       material = data;
-    } else if (sourceText?.trim()) {
-      const pasteTitle = title?.trim() || topic?.trim() || "Quiz";
+    } else if (brief.length >= 12) {
+      const pasteTitle = title?.trim() || topic?.trim() || (mode === "exercises" ? "KI-Übungen" : "KI-Quiz");
       const { data: created, error: createError } = await db
         .from("uploaded_materials")
         .insert({
@@ -97,7 +118,7 @@ export async function POST(request: Request) {
           topic: topic || null,
           difficulty_default: difficulty,
           extraction_status: "ready",
-          extracted_text: sourceText.trim(),
+          extracted_text: brief,
         })
         .select("*")
         .single();
@@ -106,7 +127,7 @@ export async function POST(request: Request) {
       materialId = created.id as string;
     } else {
       return NextResponse.json(
-        { error: "Paste lesson notes or upload a file first." },
+        { error: "Thema, Auftrag oder Unterrichtstext angeben." },
         { status: 400 }
       );
     }
@@ -124,11 +145,15 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Material text is not ready for generation" }, { status: 400 });
     }
 
-    const textHash = hashSourceText(extractedText);
+    const generationSource = bodyMaterialId
+      ? [brief, extractedText].filter(Boolean).join("\n\n")
+      : extractedText;
+    const textHash = hashSourceText(generationSource);
     const seed = forceRefresh ? Date.now() % 100000 : 0;
     const cacheKey = buildGenerationCacheKey({
-      engine: "rule-based-v1",
-      mode,
+      engine: "groq-ai",
+      mode: persistedMode,
+      kinds: mode,
       materialId,
       textHash,
       difficulty,
@@ -143,9 +168,9 @@ export async function POST(request: Request) {
       .insert({
         user_id: user.id,
         material_id: materialId,
-        mode,
+        mode: persistedMode,
         status: "processing",
-        params: { difficulty, questionTypes, questionCount, flashcardCount, forceRefresh },
+        params: { difficulty, questionTypes, questionCount, flashcardCount, forceRefresh, kind: mode },
         started_at: new Date().toISOString(),
       })
       .select()
@@ -155,7 +180,7 @@ export async function POST(request: Request) {
     const activeJobId = job.id;
     jobId = activeJobId;
 
-    if (mode === "flashcards") {
+    if (persistedMode === "flashcards") {
       const { data: cachedSet } = await db
         .from("flashcard_sets")
         .select("*, flashcards(*)")
@@ -171,19 +196,21 @@ export async function POST(request: Request) {
         return NextResponse.json({ cached: true, jobId: activeJobId, flashcardSet: cachedSet });
       }
 
-      const cards = generateFlashcardSet({
-        sourceText: extractedText,
+      const { cards, engine } = await generateFlashcardSet({
+        sourceText: generationSource,
         count: Math.min(Math.max(flashcardCount, 5), 30),
+        topic,
+        title,
       });
 
       if (!cards.length) {
-        throw new Error("Could not generate flashcards from this material. Add more content.");
+        throw new Error("Karteikarten konnten nicht erzeugt werden. Mehr Stoff oder ein klareres Thema angeben.");
       }
 
       const setId = await persistFlashcardSet(db, {
         materialId,
         userId: user.id,
-        title: title || `Flashcards: ${material.title}`,
+        title: title || `Karteikarten: ${material.title}`,
         subjectId: material.subject_id,
         classId: material.class_id,
         difficulty,
@@ -195,7 +222,8 @@ export async function POST(request: Request) {
         userId: user.id,
         materialId,
         action: "generate_flashcards",
-        metadata: { count: cards.length, jobId: activeJobId },
+        model: engine,
+        metadata: { count: cards.length, jobId: activeJobId, engine },
       });
 
       const { data: full } = await db
@@ -228,21 +256,24 @@ export async function POST(request: Request) {
       return NextResponse.json({ cached: true, jobId: activeJobId, quiz: cachedQuiz });
     }
 
-    const { questions, quality } = generateQuizQuestions({
-      sourceText: extractedText,
+    const { questions, quality, engine } = await generateQuizQuestions({
+      sourceText: generationSource,
       questionTypes,
       questionCount: Math.min(Math.max(questionCount, 3), 25),
+      difficulty,
+      topic,
+      title,
       seed,
     });
 
     if (!questions.length) {
-      throw new Error("Could not generate questions from this material. Try different types or add more text.");
+      throw new Error("Fragen konnten nicht erzeugt werden. Thema oder Unterrichtstext genauer beschreiben.");
     }
 
     const quizId = await persistGeneratedQuiz(db, {
       materialId,
       userId: user.id,
-      title: title || `Quiz: ${material.title}`,
+      title: title || (mode === "exercises" ? `Übungen: ${material.title}` : `Quiz: ${material.title}`),
       topic: topic || material.topic,
       subjectId: material.subject_id,
       classId: material.class_id,
@@ -251,14 +282,16 @@ export async function POST(request: Request) {
       questionTypes,
       cacheKey,
       questions,
+      aiModel: engine,
     });
 
     await logGeneration(db, {
       userId: user.id,
       materialId,
       quizId,
-      action: "generate_quiz",
-      metadata: { quality, count: questions.length, jobId: activeJobId },
+      action: mode === "exercises" ? "generate_exercises" : "generate_quiz",
+      model: engine,
+      metadata: { quality, count: questions.length, jobId: activeJobId, engine, kind: mode },
     });
 
     const { data: fullQuiz } = await db

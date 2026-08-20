@@ -49,7 +49,7 @@ export async function GET() {
         recentJobs: jobs.data || [],
         completedJobs,
         failedJobs,
-        engine: "rule-based-v1",
+        engine: "groq-ai",
       },
       recentMaterials: recentMaterials || [],
       recentQuizzes: recentQuizzes || [],

@@ -800,14 +800,17 @@
     "studentAvatar": "SchülerInnen-Profil"
   },
   "aiGeneratorPage": {
-    "title": "KI-Quiz-Generator",
-    "subtitle": "Erstelle smarte Quizze, MCQs und Karteikarten mit KI",
+    "title": "KI-Quiz & Übungen",
+    "subtitle": "Erstelle smarte Quizze und Übungen mit KI",
     "step1": "1. Material hochladen",
     "step1Paste": "1. Unterrichtstext oder Datei",
-    "step1PasteHint": "Schreibe den Stoff hier hinein. Das Quiz erscheint bei den SchülerInnen unter Aufgaben.",
-    "pastePlaceholder": "z. B. Quadratische Gleichungen: ax² + bx + c = 0. Die Diskriminante ist b² − 4ac…",
-    "pasteRequired": "Bitte mindestens einen kurzen Unterrichtstext einfügen oder eine Datei hochladen.",
-    "publishQuiz": "Quiz erstellen & veröffentlichen",
+    "step1PasteHint": "Beschreibe das Thema oder füge Stoff ein. Das Ergebnis erscheint bei den SchülerInnen unter Aufgaben.",
+    "pastePlaceholder": "z. B. 10 Übungen zu quadratischen Gleichungen für Klasse 9, inkl. Diskriminante…",
+    "pasteRequired": "Bitte Thema, Auftrag oder einen kurzen Unterrichtstext angeben.",
+    "publishQuiz": "KI-Quiz erstellen & veröffentlichen",
+    "publishExercises": "KI-Übungen erstellen & veröffentlichen",
+    "exercisesPublished": "Übungen erstellt und für SchülerInnen veröffentlicht.",
+    "flashcardsReady": "Karteikarten erstellt.",
     "publishedForStudents": "Veröffentlicht für SchülerInnen",
     "studentsFindQuizzes": "SchülerInnen finden diese unter Aufgaben.",
     "generatedPublished": "Quiz erstellt und für SchülerInnen veröffentlicht.",
@@ -922,8 +925,8 @@
         "description": "Lernmaterialien hochladen und verwalten"
       },
       "aiGenerator": {
-        "title": "KI-Quiz",
-        "description": "Quiz erstellen – SchülerInnen sehen es unter Aufgaben."
+        "title": "KI-Quiz & Übungen",
+        "description": "Mit KI Quizze und Übungen erzeugen – SchülerInnen sehen sie unter Aufgaben."
       },
       "earnings": {
         "title": "Einnahmen",
@@ -975,6 +978,10 @@
       "quizMonitor": {
         "title": "Quiz-Monitor",
         "description": "Quizzes anlegen, veröffentlichen und Schüleraktivität verfolgen"
+      },
+      "aiGenerator": {
+        "title": "KI-Quiz & Übungen",
+        "description": "Quizze und Übungen mit KI erzeugen und für SchülerInnen veröffentlichen"
       },
       "cookies": {
         "title": "Cookie-Verwaltung",
@@ -1197,7 +1204,7 @@
       "schedule": "Stundenplan",
       "myMaterials": "Meine Materialien",
       "publish": "Neu veröffentlichen",
-      "aiGenerator": "KI-Quiz",
+      "aiGenerator": "KI-Quiz & Übungen",
       "aiChat": "NextGrades KI-Chat",
       "analytics": "Analysen",
       "earnings": "Einnahmen",
@@ -1349,6 +1356,7 @@
     "users": "Benutzer",
     "notifications": "Benachrichtigungen",
     "quizMonitor": "Quiz-Monitor",
+    "aiGenerator": "KI-Quiz & Übungen",
     "moderation": "Moderation",
     "memberships": "Mitgliedschaften",
     "resourceAccess": "Ressourcen freischalten",
@@ -1380,6 +1388,7 @@
     "usersDesc": "Alle Benutzer und Rollen",
     "notificationsDesc": "Benachrichtigungen senden",
     "quizDesc": "Quiz-Aktivität überwachen",
+    "aiGeneratorDesc": "Quizze und Übungen mit KI erzeugen",
     "moderationDesc": "Gemeldete Inhalte prüfen",
     "membershipsDesc": "Tarife und Abos",
     "resourceAccessDesc": "Einzelne Materialien für SchülerInnen freischalten – PDF, Video und alle anderen Typen.",

@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
-import { UploadCloud, FileText, Sparkles, CheckCircle2, FileUp, Trash2 } from "lucide-react";
+import { UploadCloud, FileText, Sparkles, CheckCircle2, FileUp, Trash2, Pencil } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useLocalizedContent } from "@/hooks/useLocalizedContent";
 import { useTheme } from "@/context/ThemeContext";
@@ -36,6 +36,7 @@ export function AIGeneratorContent() {
   const [topic, setTopic] = useState("");
   const [pasteText, setPasteText] = useState("");
   const [difficulty, setDifficulty] = useState<"easy" | "medium" | "hard">("medium");
+  const [grade, setGrade] = useState("");
   const [questionCount, setQuestionCount] = useState(10);
   const [isUploading, setIsUploading] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -114,12 +115,13 @@ export function AIGeneratorContent() {
     await loadMaterials();
   };
 
-  const handleGenerate = async (mode: "quiz" | "flashcards" = "quiz") => {
+  const handleGenerate = async (mode: "quiz" | "flashcards" | "exercises" = "quiz") => {
     const notes = pasteText.trim();
-    if (!selectedMaterialId && notes.length < 80) {
+    const hasBrief = notes.length >= 12 || topic.trim().length >= 3 || title.trim().length >= 3;
+    if (!selectedMaterialId && !hasBrief) {
       toast.error(
         t("aiGeneratorPage.pasteRequired", {
-          defaultValue: "Paste at least a short lesson text, or upload a file.",
+          defaultValue: "Thema, Auftrag oder Unterrichtstext angeben.",
         })
       );
       return;
@@ -139,12 +141,14 @@ export function AIGeneratorContent() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           materialId: selectedMaterialId || undefined,
-          sourceText: selectedMaterialId ? undefined : notes,
+          sourceText: notes || undefined,
           mode,
           topic: topic || undefined,
+          grade: grade || undefined,
           difficulty,
           questionCount,
           title: title || undefined,
+          forceRefresh: true,
         }),
       });
       const data = await res.json();
@@ -153,11 +157,17 @@ export function AIGeneratorContent() {
       if (data.quiz) {
         setGeneratedQuiz(data.quiz);
         toast.success(
-          t("aiGeneratorPage.generatedPublished", {
-            defaultValue: "Quiz generated and published for students.",
-          })
+          mode === "exercises"
+            ? t("aiGeneratorPage.exercisesPublished", {
+                defaultValue: "Übungen erstellt und für SchülerInnen veröffentlicht.",
+              })
+            : t("aiGeneratorPage.generatedPublished", {
+                defaultValue: "Quiz generated and published for students.",
+              })
         );
         void loadQuizzes();
+      } else if (data.flashcardSet) {
+        toast.success(t("aiGeneratorPage.flashcardsReady", { defaultValue: "Karteikarten erstellt." }));
       } else if (data.jobId) {
         const jobRes = await fetch(`/api/quiz/jobs/${data.jobId}`);
         const jobData = await jobRes.json();
@@ -178,7 +188,11 @@ export function AIGeneratorContent() {
   const fieldClass = themeInputClass;
 
   const readyMaterials = materials.filter((m) => m.extraction_status === "ready");
-  const canGenerate = Boolean(selectedMaterialId && readyMaterials.some((m) => m.id === selectedMaterialId)) || pasteText.trim().length >= 80;
+  const canGenerate =
+    Boolean(selectedMaterialId && readyMaterials.some((m) => m.id === selectedMaterialId)) ||
+    pasteText.trim().length >= 12 ||
+    topic.trim().length >= 3 ||
+    title.trim().length >= 3;
 
   return (
     <div className="grid gap-8 lg:grid-cols-3">
@@ -196,10 +210,7 @@ export function AIGeneratorContent() {
             <textarea
               rows={6}
               value={pasteText}
-              onChange={(e) => {
-                setPasteText(e.target.value);
-                if (e.target.value.trim()) setSelectedMaterialId("");
-              }}
+              onChange={(e) => setPasteText(e.target.value)}
               placeholder={t("aiGeneratorPage.pastePlaceholder", {
                 defaultValue: "e.g. Quadratic equations: ax² + bx + c = 0. The discriminant is b² − 4ac…",
               })}
@@ -316,9 +327,12 @@ export function AIGeneratorContent() {
                 <label className={`mb-2 block text-sm font-medium ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>
                   {t("aiGeneratorPage.grade")}
                 </label>
-                <select className={selectClass("")} defaultValue="">
+                <select className={selectClass(grade)} value={grade} onChange={(e) => setGrade(e.target.value)}>
+                  <option value="">{t("aiGeneratorPage.selectGrade", { defaultValue: "Klasse wählen" })}</option>
                   {grades.map((g) => (
-                    <option key={g}>{g}</option>
+                    <option key={g} value={g}>
+                      {g}
+                    </option>
                   ))}
                 </select>
               </div>
@@ -355,24 +369,37 @@ export function AIGeneratorContent() {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
-            <Button
-              variant="gold"
-              size="xl"
-              className="mt-8 w-full"
-              onClick={() => handleGenerate("quiz")}
-              disabled={isGenerating || !canGenerate}
-            >
-              {isGenerating ? (
-                <>
-                  <div className="mr-2 h-5 w-5 animate-spin rounded-full border-2 border-[#0D1B2A] border-t-transparent" />
-                  {t("aiGeneratorPage.generating")}
-                </>
-              ) : (
-                <>
-                  <Sparkles className="mr-2 h-5 w-5" /> {t("aiGeneratorPage.publishQuiz", { defaultValue: "Create & publish quiz" })}
-                </>
-              )}
-            </Button>
+            <div className="mt-8 grid gap-3 sm:grid-cols-2">
+              <Button
+                variant="gold"
+                size="xl"
+                className="w-full"
+                onClick={() => handleGenerate("quiz")}
+                disabled={isGenerating || !canGenerate}
+              >
+                {isGenerating ? (
+                  <>
+                    <div className="mr-2 h-5 w-5 animate-spin rounded-full border-2 border-[#0D1B2A] border-t-transparent" />
+                    {t("aiGeneratorPage.generating")}
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="mr-2 h-5 w-5" />{" "}
+                    {t("aiGeneratorPage.publishQuiz", { defaultValue: "KI-Quiz erstellen" })}
+                  </>
+                )}
+              </Button>
+              <Button
+                variant="outline"
+                size="xl"
+                className="w-full"
+                onClick={() => handleGenerate("exercises")}
+                disabled={isGenerating || !canGenerate}
+              >
+                <Pencil className="mr-2 h-5 w-5" />
+                {t("aiGeneratorPage.publishExercises", { defaultValue: "KI-Übungen erstellen" })}
+              </Button>
+            </div>
           </Card>
         </motion.div>
 

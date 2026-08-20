@@ -837,14 +837,17 @@
     "studentAvatar": "Student profile"
   },
   "aiGeneratorPage": {
-    "title": "AI Quiz Generator",
-    "subtitle": "Generate smart quizzes, MCQs and flashcards with AI",
+    "title": "AI quiz & exercises",
+    "subtitle": "Generate smart quizzes and exercises with AI",
     "step1": "1. Upload your material",
     "step1Paste": "1. Lesson notes or file",
-    "step1PasteHint": "Paste the lesson text. Students will see the quiz under Tasks.",
-    "pastePlaceholder": "e.g. Quadratic equations: ax² + bx + c = 0. The discriminant is b² − 4ac…",
-    "pasteRequired": "Paste at least a short lesson text, or upload a file.",
-    "publishQuiz": "Create & publish quiz",
+    "step1PasteHint": "Describe the topic or paste lesson notes. Students will see the result under Tasks.",
+    "pastePlaceholder": "e.g. 10 exercises on quadratic equations for grade 9, including the discriminant…",
+    "pasteRequired": "Enter a topic, a short brief, or lesson notes.",
+    "publishQuiz": "Create & publish AI quiz",
+    "publishExercises": "Create & publish AI exercises",
+    "exercisesPublished": "Exercises created and published for students.",
+    "flashcardsReady": "Flashcards created.",
     "publishedForStudents": "Published for students",
     "studentsFindQuizzes": "Students find these under Tasks.",
     "generatedPublished": "Quiz created and published for students.",
@@ -959,8 +962,8 @@
         "description": "Upload and manage learning materials"
       },
       "aiGenerator": {
-        "title": "AI quiz",
-        "description": "Create a quiz — students see it under Tasks."
+        "title": "AI quiz & exercises",
+        "description": "Generate quizzes and exercises with AI — students see them under Tasks."
       },
       "earnings": {
         "title": "Earnings",
@@ -1012,6 +1015,10 @@
       "quizMonitor": {
         "title": "Quiz monitor",
         "description": "Create quizzes, publish them for students, and track activity"
+      },
+      "aiGenerator": {
+        "title": "AI quiz & exercises",
+        "description": "Generate quizzes and exercises with AI and publish them for students"
       },
       "cookies": {
         "title": "Cookie management",
@@ -1234,7 +1241,7 @@
       "schedule": "Schedule",
       "myMaterials": "My materials",
       "publish": "Publish new",
-      "aiGenerator": "AI quiz",
+      "aiGenerator": "AI quiz & exercises",
       "aiChat": "NextGrades AI chat",
       "analytics": "Analytics",
       "earnings": "Earnings",
@@ -1386,6 +1393,7 @@
     "users": "Users",
     "notifications": "Notifications",
     "quizMonitor": "Quiz monitor",
+    "aiGenerator": "AI quiz & exercises",
     "moderation": "Moderation",
     "memberships": "Memberships",
     "resourceAccess": "Unlock resources",
@@ -1417,6 +1425,7 @@
     "usersDesc": "All users, roles, and access",
     "notificationsDesc": "Send and manage notifications",
     "quizDesc": "Monitor quiz activity",
+    "aiGeneratorDesc": "Generate quizzes and exercises with AI",
     "moderationDesc": "Review flagged content",
     "membershipsDesc": "Plans and subscriptions",
     "resourceAccessDesc": "Unlock any library material for a student — PDF, video, and every other type.",

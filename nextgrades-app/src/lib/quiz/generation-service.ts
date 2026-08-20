@@ -3,8 +3,9 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import type { AiGeneratedFlashcard, AiGeneratedQuestion, Difficulty, QuestionType } from "./types";
 import { parseTextFile, calculateDifficulty, validateQuizQuality } from "./generation-utils";
 import { generateFlashcards, generateQuestionsByTypes } from "./quizGenerator";
+import { generateFlashcardsWithAi, generateQuizQuestionsWithAi } from "./ai-generate";
 
-export const GENERATION_MODEL = "rule-based-v1";
+export const GENERATION_MODEL = "groq-ai";
 
 export function buildGenerationCacheKey(parts: Record<string, string | number | undefined>): string {
   return Object.entries(parts)
@@ -17,25 +18,60 @@ export function hashSourceText(text: string): string {
   return createHash("sha256").update(text).digest("hex").slice(0, 16);
 }
 
-export function generateQuizQuestions(params: {
+export async function generateQuizQuestions(params: {
   sourceText: string;
   questionTypes: QuestionType[];
   questionCount: number;
+  difficulty?: Difficulty;
+  topic?: string;
+  title?: string;
   seed?: number;
-}): { questions: AiGeneratedQuestion[]; quality: number; detectedDifficulty: Difficulty } {
-  const content = parseTextFile(params.sourceText);
+}): Promise<{
+  questions: AiGeneratedQuestion[];
+  quality: number;
+  detectedDifficulty: Difficulty;
+  engine: string;
+}> {
   const count = Math.min(Math.max(params.questionCount, 3), 25);
-  const questions = generateQuestionsByTypes(content, params.questionTypes, count, params.seed ?? 0);
+  const ai = await generateQuizQuestionsWithAi({
+    sourceText: params.sourceText,
+    questionTypes: params.questionTypes,
+    questionCount: count,
+    difficulty: params.difficulty ?? "medium",
+    topic: params.topic,
+    title: params.title,
+  });
+  if (ai?.questions.length) {
+    return {
+      questions: ai.questions,
+      quality: validateQuizQuality(ai.questions),
+      detectedDifficulty: params.difficulty ?? "medium",
+      engine: ai.model,
+    };
+  }
 
+  const content = parseTextFile(params.sourceText);
+  const questions = generateQuestionsByTypes(content, params.questionTypes, count, params.seed ?? 0);
   return {
     questions,
     quality: validateQuizQuality(questions),
     detectedDifficulty: calculateDifficulty(content),
+    engine: "rule-based-v1",
   };
 }
 
-export function generateFlashcardSet(params: { sourceText: string; count: number }): AiGeneratedFlashcard[] {
-  return generateFlashcards(parseTextFile(params.sourceText), Math.min(Math.max(params.count, 5), 30));
+export async function generateFlashcardSet(params: {
+  sourceText: string;
+  count: number;
+  topic?: string;
+  title?: string;
+}): Promise<{ cards: AiGeneratedFlashcard[]; engine: string }> {
+  const ai = await generateFlashcardsWithAi(params);
+  if (ai?.cards.length) return { cards: ai.cards, engine: ai.model };
+  return {
+    cards: generateFlashcards(parseTextFile(params.sourceText), Math.min(Math.max(params.count, 5), 30)),
+    engine: "rule-based-v1",
+  };
 }
 
 export async function persistGeneratedQuiz(
@@ -52,8 +88,10 @@ export async function persistGeneratedQuiz(
     questionTypes: QuestionType[];
     cacheKey: string;
     questions: AiGeneratedQuestion[];
+    aiModel?: string;
   }
 ) {
+  const engine = opts.aiModel || GENERATION_MODEL;
   const { data: quiz, error: quizError } = await supabase
     .from("generated_quizzes")
     .insert({
@@ -70,8 +108,8 @@ export async function persistGeneratedQuiz(
       is_published: true,
       published_at: new Date().toISOString(),
       generation_cache_key: opts.cacheKey,
-      ai_model: GENERATION_MODEL,
-      raw_generation: { engine: GENERATION_MODEL, count: opts.questions.length },
+      ai_model: engine,
+      raw_generation: { engine, count: opts.questions.length },
     })
     .select()
     .single();
@@ -191,7 +229,14 @@ export async function persistFlashcardSet(
 
 export async function logGeneration(
   supabase: SupabaseClient,
-  opts: { userId: string; materialId: string; action: string; quizId?: string; metadata?: Record<string, unknown> }
+  opts: {
+    userId: string;
+    materialId: string;
+    action: string;
+    quizId?: string;
+    metadata?: Record<string, unknown>;
+    model?: string;
+  }
 ) {
   await supabase.from("ai_generation_logs").insert({
     user_id: opts.userId,
@@ -199,7 +244,7 @@ export async function logGeneration(
     quiz_id: opts.quizId ?? null,
     action: opts.action,
     tokens_used: 0,
-    model: GENERATION_MODEL,
+    model: opts.model ?? GENERATION_MODEL,
     metadata: opts.metadata ?? null,
   });
 }

@@ -235,7 +235,9 @@ export function QuizPlayer({
                 variant={answers[current.id] === v ? "gold" : "outline"}
                 onClick={() => setAnswers({ ...answers, [current.id]: v })}
               >
-                {v === "true" ? "True" : "False"}
+                {v === "true"
+                  ? t("studentDashboard.trueLabel", { defaultValue: "Wahr" })
+                  : t("studentDashboard.falseLabel", { defaultValue: "Falsch" })}
               </Button>
             ))}
           </div>

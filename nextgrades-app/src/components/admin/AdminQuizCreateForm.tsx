@@ -49,11 +49,12 @@ export function AdminQuizCreateForm({ onCreated }: Props) {
     setQuestions((prev) => prev.map((q, i) => (i === index ? { ...q, ...patch } : q)));
   };
 
-  const generateFromText = async () => {
-    if (!sourceText.trim()) {
+  const generateFromText = async (mode: "quiz" | "exercises" = "quiz") => {
+    const notes = sourceText.trim();
+    if (!notes && !title.trim() && !topic.trim()) {
       toast.error(
         t("adminQuiz.pasteNotesFirst", {
-          defaultValue: "Füge zuerst den Lehrtext ein, aus dem Fragen erzeugt werden sollen.",
+          defaultValue: "Thema, Titel oder Lehrtext angeben, damit die KI Fragen erzeugen kann.",
         })
       );
       return;
@@ -64,12 +65,12 @@ export function AdminQuizCreateForm({ onCreated }: Props) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          sourceText: sourceText.trim(),
+          sourceText: notes || undefined,
           title: title.trim() || undefined,
           topic: topic.trim() || undefined,
           difficulty,
           questionCount: 10,
-          questionTypes: ["mcq"],
+          mode,
           forceRefresh: true,
         }),
       });
@@ -301,12 +302,22 @@ export function AdminQuizCreateForm({ onCreated }: Props) {
           <Button
             type="button"
             variant="outline"
-            disabled={generating || !sourceText.trim()}
+            disabled={generating || (!sourceText.trim() && !title.trim() && !topic.trim())}
             className="gap-2"
-            onClick={() => void generateFromText()}
+            onClick={() => void generateFromText("quiz")}
           >
             {generating ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
-            {t("adminQuiz.generateFromText", { defaultValue: "Aus Text erzeugen" })}
+            {t("adminQuiz.generateFromText", { defaultValue: "KI-Quiz erzeugen" })}
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            disabled={generating || (!sourceText.trim() && !title.trim() && !topic.trim())}
+            className="gap-2"
+            onClick={() => void generateFromText("exercises")}
+          >
+            {generating ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
+            {t("adminQuiz.generateExercises", { defaultValue: "KI-Übungen erzeugen" })}
           </Button>
         </div>
       </div>

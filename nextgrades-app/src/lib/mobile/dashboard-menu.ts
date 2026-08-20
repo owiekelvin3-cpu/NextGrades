@@ -13,6 +13,7 @@ import {
   KeyRound,
   Bot,
   BarChart3,
+  Sparkles,
   Video,
 } from "lucide-react";
 import { studentNavItems } from "@/components/dashboard/student/StudentSidebarNav";
@@ -58,6 +59,12 @@ const adminMenuItems: DashboardMenuItem[] = [
     href: `${ADMIN_PORTAL_PREFIX}/quiz-monitor`,
     icon: ListChecks,
     labelKey: "adminNav.quizMonitor",
+    matchPrefix: true,
+  },
+  {
+    href: `${ADMIN_PORTAL_PREFIX}/ai-generator`,
+    icon: Sparkles,
+    labelKey: "adminNav.aiGenerator",
     matchPrefix: true,
   },
   {
