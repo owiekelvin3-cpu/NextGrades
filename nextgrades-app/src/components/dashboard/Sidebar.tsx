@@ -68,7 +68,6 @@ const teacherConfig = [
   { href: "/dashboard/teacher/students", icon: Users },
   { href: "/dashboard/teacher/schedule", icon: Calendar },
   { href: "/dashboard/teacher/resources", icon: FileText },
-  { href: "/dashboard/teacher/ai-generator", icon: Sparkles },
   { href: "/dashboard/teacher/content", icon: Layout },
   { href: "/dashboard/teacher/analytics", icon: TrendingUp },
   { href: "/dashboard/teacher/earnings", icon: DollarSign },

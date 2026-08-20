@@ -8,7 +8,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
     const supabase = await createClient();
     const { profile, error } = await getAuthProfile(supabase);
     if (!profile) return NextResponse.json({ error }, { status: 401 });
-    if (!requireRole(profile, ["teacher", "admin"])) {
+    if (!requireRole(profile, ["admin"])) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
@@ -20,9 +20,6 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
 
     if (jobError) throw jobError;
     if (!job) return NextResponse.json({ error: "Job not found" }, { status: 404 });
-    if (profile.role === "teacher" && job.user_id !== profile.id) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-    }
 
     let result = null;
     if (job.status === "completed") {

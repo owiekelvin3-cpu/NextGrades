@@ -11,7 +11,6 @@ import {
   ChevronRight,
   BookOpen,
   Upload,
-  ListChecks,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { getDateLocale } from "@/lib/i18n/locales";
@@ -176,12 +175,6 @@ export function TeacherMobileDashboard({ data }: Props) {
           },
         ]
       : []),
-    {
-      href: "/dashboard/teacher/ai-generator",
-      icon: ListChecks,
-      label: t("teacherDashboard.nav.aiGenerator", { defaultValue: "AI quiz" }),
-      gradient: "from-[#7c3aed] to-[#5b21b6]",
-    },
     {
       href: "/dashboard/teacher/students",
       icon: Users,

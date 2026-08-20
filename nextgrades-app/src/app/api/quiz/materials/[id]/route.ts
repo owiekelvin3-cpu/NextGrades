@@ -11,7 +11,7 @@ export async function DELETE(
     const supabase = await createClient();
     const { profile, error } = await getAuthProfile(supabase);
     if (!profile) return NextResponse.json({ error }, { status: 401 });
-    if (!requireRole(profile, ["teacher", "admin"])) {
+    if (!requireRole(profile, ["admin"])) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 

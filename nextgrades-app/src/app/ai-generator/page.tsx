@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
+import { ADMIN_PORTAL_PREFIX } from "@/lib/admin/portal-paths";
 
 export default function LegacyAIGeneratorPage() {
-  redirect("/dashboard/teacher/ai-generator");
+  redirect(`${ADMIN_PORTAL_PREFIX}/ai-generator`);
 }

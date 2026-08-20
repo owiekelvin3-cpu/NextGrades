@@ -44,7 +44,7 @@ export async function POST(request: Request) {
     const supabase = await createClient();
     const { user, profile, error } = await getAuthProfile(supabase);
     if (!user || !profile) return NextResponse.json({ error }, { status: 401 });
-    if (!requireRole(profile, ["teacher", "admin"])) {
+    if (!requireRole(profile, ["admin"])) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
     const db = quizDataClient(supabase);

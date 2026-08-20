@@ -56,7 +56,7 @@ export async function POST(request: Request) {
   try {
     const { user, profile, error } = await getAuthProfile(supabase);
     if (!user || !profile) return NextResponse.json({ error }, { status: 401 });
-    if (!requireRole(profile, ["teacher", "admin"])) {
+    if (!requireRole(profile, ["admin"])) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
@@ -134,10 +134,6 @@ export async function POST(request: Request) {
 
     if (!material || !materialId) {
       return NextResponse.json({ error: "Material not found" }, { status: 400 });
-    }
-
-    if (profile.role === "teacher" && material.uploaded_by !== user.id) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
     const extractedText = material.extracted_text?.trim() || "";
