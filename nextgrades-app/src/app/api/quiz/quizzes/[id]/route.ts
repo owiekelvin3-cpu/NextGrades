@@ -112,21 +112,21 @@ export async function PUT(
     if (updateError) throw updateError;
 
     if (questions?.length) {
-      for (const q of questions) {
+      for (const [i, q] of questions.entries()) {
+        const payload = {
+          question_type: q.question_type,
+          question_text: q.question_text,
+          options: q.options,
+          correct_answer: q.correct_answer,
+          explanation: q.explanation,
+          points: q.points ?? 1,
+          sort_order: q.sort_order ?? i + 1,
+          updated_at: new Date().toISOString(),
+        };
         if (q.id) {
-          await db
-            .from("quiz_questions")
-            .update({
-              question_type: q.question_type,
-              question_text: q.question_text,
-              options: q.options,
-              correct_answer: q.correct_answer,
-              explanation: q.explanation,
-              points: q.points ?? 1,
-              sort_order: q.sort_order,
-              updated_at: new Date().toISOString(),
-            })
-            .eq("id", q.id);
+          await db.from("quiz_questions").update(payload).eq("id", q.id);
+        } else {
+          await db.from("quiz_questions").insert({ ...payload, quiz_id: id });
         }
       }
     }

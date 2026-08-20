@@ -1011,7 +1011,7 @@
       },
       "quizMonitor": {
         "title": "Quiz monitor",
-        "description": "Track AI quiz generation, uploads, and student activity"
+        "description": "Create quizzes, publish them for students, and track activity"
       },
       "cookies": {
         "title": "Cookie management",

@@ -974,7 +974,7 @@
       },
       "quizMonitor": {
         "title": "Quiz-Monitor",
-        "description": "KI-Quiz-Generierung, Uploads und Schüleraktivität verfolgen"
+        "description": "Quizzes anlegen, veröffentlichen und Schüleraktivität verfolgen"
       },
       "cookies": {
         "title": "Cookie-Verwaltung",

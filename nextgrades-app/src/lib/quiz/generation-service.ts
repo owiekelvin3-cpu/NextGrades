@@ -94,6 +94,60 @@ export async function persistGeneratedQuiz(
   return quiz.id as string;
 }
 
+export async function persistManualQuiz(
+  supabase: SupabaseClient,
+  opts: {
+    userId: string;
+    title: string;
+    description?: string | null;
+    topic?: string | null;
+    subjectId?: string | null;
+    difficulty: Difficulty;
+    timeLimitMinutes?: number | null;
+    publish: boolean;
+    questions: AiGeneratedQuestion[];
+  }
+) {
+  const published = opts.publish;
+  const { data: quiz, error: quizError } = await supabase
+    .from("generated_quizzes")
+    .insert({
+      material_id: null,
+      created_by: opts.userId,
+      title: opts.title,
+      description: opts.description || null,
+      subject_id: opts.subjectId || null,
+      topic: opts.topic || null,
+      difficulty: opts.difficulty,
+      question_types: [...new Set(opts.questions.map((q) => q.question_type))],
+      status: published ? "published" : "draft",
+      is_published: published,
+      published_at: published ? new Date().toISOString() : null,
+      time_limit_minutes: opts.timeLimitMinutes ?? null,
+      ai_model: "manual",
+      raw_generation: { engine: "manual", count: opts.questions.length },
+    })
+    .select()
+    .single();
+
+  if (quizError) throw quizError;
+
+  const { error: qError } = await supabase.from("quiz_questions").insert(
+    opts.questions.map((q, i) => ({
+      quiz_id: quiz.id,
+      question_type: q.question_type,
+      question_text: q.question_text,
+      options: q.options || null,
+      correct_answer: q.correct_answer,
+      explanation: q.explanation || null,
+      points: q.points ?? 1,
+      sort_order: i + 1,
+    }))
+  );
+  if (qError) throw qError;
+  return quiz.id as string;
+}
+
 export async function persistFlashcardSet(
   supabase: SupabaseClient,
   opts: {
