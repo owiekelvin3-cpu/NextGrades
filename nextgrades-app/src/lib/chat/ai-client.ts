@@ -5,6 +5,7 @@ import {
   isAnyModelAvailable,
   parseModelId,
   resolveModelId,
+  groqRuntimeModel,
   type AiProvider,
 } from "./models";
 import { getAppUrl } from "@/lib/app-url";
@@ -56,7 +57,7 @@ async function createOpenAiStream(
     messages,
     stream: true,
     temperature: 0.7,
-    max_tokens: 2048,
+    ...(provider === "groq" ? { max_completion_tokens: 2048 } : { max_tokens: 2048 }),
   });
 
   async function* iterate() {
@@ -101,26 +102,6 @@ async function pollinationsCompletion(model: string, messages: ChatCompletionMes
   return content;
 }
 
-async function textPollinationsCompletion(prompt: string): Promise<string> {
-  const res = await fetch("https://gen.pollinations.ai/v1/chat/completions", {
-    method: "POST",
-    headers: pollinationsHeaders(),
-    body: JSON.stringify({
-      model: "openai",
-      messages: [{ role: "user", content: prompt }],
-      max_tokens: 2048,
-      temperature: 0.7,
-    }),
-  });
-  if (!res.ok) throw new Error(`Text API error (${res.status})`);
-  const data = (await res.json()) as {
-    choices?: { message?: { content?: string } }[];
-  };
-  const text = data.choices?.[0]?.message?.content?.trim();
-  if (!text) throw new Error("Text API returned empty response");
-  return text;
-}
-
 function simulateStream(text: string): AsyncIterable<{ content: string }> {
   const words = text.split(/(\s+)/);
 
@@ -138,31 +119,13 @@ async function createPollinationsStream(
   messages: ChatCompletionMessageParam[],
   modelId: string
 ): Promise<StreamResult> {
-  try {
-    const content = await pollinationsCompletion(model, messages);
-    return {
-      stream: simulateStream(content),
-      model,
-      provider: "pollinations",
-      modelId,
-    };
-  } catch {
-    const system = messages.find((m) => m.role === "system");
-    const convo = messages
-      .filter((m) => m.role !== "system")
-      .map((m) => `${m.role === "user" ? "User" : "Assistant"}: ${String(m.content)}`)
-      .join("\n");
-    const prompt = system
-      ? `${String(system.content)}\n\n${convo}\n\nAssistant:`
-      : `${convo}\n\nAssistant:`;
-    const content = await textPollinationsCompletion(prompt);
-    return {
-      stream: simulateStream(content),
-      model: "text-fallback",
-      provider: "pollinations",
-      modelId,
-    };
-  }
+  const content = await pollinationsCompletion(model, messages);
+  return {
+    stream: simulateStream(content),
+    model,
+    provider: "pollinations",
+    modelId,
+  };
 }
 
 async function streamWithProvider(
@@ -237,10 +200,10 @@ export async function translateText(
   if (groq) {
     try {
       const completion = await groq.chat.completions.create({
-        model: process.env.GROQ_MODEL || "llama-3.1-8b-instant",
+        model: groqRuntimeModel(),
         messages: [{ role: "user", content: prompt }],
         temperature: 0.2,
-        max_tokens: 2048,
+        max_completion_tokens: 2048,
       });
       const content = completion.choices[0]?.message?.content?.trim();
       if (content) return content;
@@ -249,13 +212,15 @@ export async function translateText(
     }
   }
 
-  for (const model of ["openai-large", "deepseek"]) {
-    try {
-      return await pollinationsCompletion(model, [{ role: "user", content: prompt }]);
-    } catch {
-      /* try next */
+  if (process.env.POLLINATIONS_API_KEY?.trim()) {
+    for (const model of ["openai-large", "deepseek"]) {
+      try {
+        return await pollinationsCompletion(model, [{ role: "user", content: prompt }]);
+      } catch {
+        /* try next */
+      }
     }
   }
 
-  return textPollinationsCompletion(prompt);
+  throw new Error("Translation unavailable");
 }

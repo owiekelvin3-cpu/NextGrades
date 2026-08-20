@@ -26,8 +26,8 @@ const BADGE_LABELS: Record<"de" | "en", Record<string, string>> = {
 };
 
 const MODEL_DESCRIPTIONS_DE: Record<string, string> = {
-  "groq:llama-3.3-70b-versatile": "Unser klügster Tutor – ausführliche Erklärungen für Prüfungen und Hausaufgaben",
-  "groq:llama-3.1-8b-instant": "Schnelle Antworten, wenn du sofort Hilfe brauchst",
+  "groq:openai/gpt-oss-120b": "Unser klügster Tutor – ausführliche Erklärungen für Prüfungen und Hausaufgaben",
+  "groq:openai/gpt-oss-20b": "Schnelle Antworten, wenn du sofort Hilfe brauchst",
   "pollinations:openai": "Lernassistent für Alltag, Übung und Wiederholung",
   "pollinations:openai-fast": "Kurzer Tutor für Übungen, Wiederholung und Alltagsfragen",
   "openrouter:meta-llama/llama-3.1-8b-instruct:free": "Cloud-Assistent für zuverlässige Lernhilfe",

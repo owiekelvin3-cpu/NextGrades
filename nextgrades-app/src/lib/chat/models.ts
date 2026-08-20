@@ -15,20 +15,20 @@ export type AiModelDefinition = {
 
 export const AI_MODELS: AiModelDefinition[] = [
   {
-    id: "groq:llama-3.3-70b-versatile",
+    id: "groq:openai/gpt-oss-120b",
     label: "NextGrades Pro",
     provider: "groq",
-    model: "llama-3.3-70b-versatile",
+    model: "openai/gpt-oss-120b",
     description: "Our smartest tutor - detailed explanations for exams & homework",
     requiresKey: true,
     supportsStreaming: true,
     badge: "pro",
   },
   {
-    id: "groq:llama-3.1-8b-instant",
+    id: "groq:openai/gpt-oss-20b",
     label: "NextGrades Quick",
     provider: "groq",
-    model: "llama-3.1-8b-instant",
+    model: "openai/gpt-oss-20b",
     description: "Instant answers when you need help right away",
     requiresKey: true,
     supportsStreaming: true,
@@ -76,7 +76,23 @@ export const AI_MODELS: AiModelDefinition[] = [
   },
 ];
 
-export const DEFAULT_MODEL_ID = "groq:llama-3.3-70b-versatile";
+export const DEFAULT_MODEL_ID = "groq:openai/gpt-oss-120b";
+
+/** Groq retired Llama 3.1/3.3 on 16 Aug 2026 — map stored prefs to current IDs. */
+const MODEL_ALIASES: Record<string, string> = {
+  "groq:llama-3.3-70b-versatile": "groq:openai/gpt-oss-120b",
+  "llama-3.3-70b-versatile": "groq:openai/gpt-oss-120b",
+  "groq:llama-3.1-8b-instant": "groq:openai/gpt-oss-20b",
+  "llama-3.1-8b-instant": "groq:openai/gpt-oss-20b",
+};
+
+export function groqRuntimeModel(fallback = "openai/gpt-oss-20b"): string {
+  const env = process.env.GROQ_MODEL?.trim();
+  if (!env) return fallback;
+  const aliased = MODEL_ALIASES[env] ?? MODEL_ALIASES[`groq:${env}`];
+  if (aliased) return aliased.replace(/^groq:/, "");
+  return env;
+}
 
 export function parseModelId(modelId: string): { provider: AiProvider; model: string } {
   const def = AI_MODELS.find((m) => m.id === modelId);
@@ -93,9 +109,10 @@ export function parseModelId(modelId: string): { provider: AiProvider; model: st
 
 export function resolveModelId(preferred?: string | null): string {
   const available = getAvailableModels();
-  if (preferred && available.some((m) => m.id === preferred)) return preferred;
-  if (preferred) {
-    const legacy = available.find((m) => m.model === preferred);
+  const mapped = preferred ? (MODEL_ALIASES[preferred] ?? preferred) : preferred;
+  if (mapped && available.some((m) => m.id === mapped)) return mapped;
+  if (mapped) {
+    const legacy = available.find((m) => m.model === mapped || m.id === mapped);
     if (legacy) return legacy.id;
   }
   return available[0]?.id ?? DEFAULT_MODEL_ID;

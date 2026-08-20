@@ -349,12 +349,17 @@ export function useChat() {
 
           for (const line of lines) {
             if (!line.startsWith("data: ")) continue;
-            const payload = JSON.parse(line.slice(6)) as {
+            let payload: {
               type: string;
               sessionId?: string;
               content?: string;
               error?: string;
             };
+            try {
+              payload = JSON.parse(line.slice(6)) as typeof payload;
+            } catch {
+              continue;
+            }
 
             if (payload.type === "meta" && payload.sessionId) {
               sessionId = payload.sessionId;

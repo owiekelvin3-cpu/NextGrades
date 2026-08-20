@@ -22,7 +22,7 @@ async function getSettings(supabase: Awaited<ReturnType<typeof createClient>>) {
     streaming_enabled: true,
     rag_enabled: true,
     max_messages_per_minute: 20,
-    default_model: "llama-3.3-70b-versatile",
+    default_model: "openai/gpt-oss-120b",
     system_prompt_override: null,
   };
 }

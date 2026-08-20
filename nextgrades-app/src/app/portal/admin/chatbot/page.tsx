@@ -144,7 +144,7 @@ export default function AdminChatbotPage() {
               <span className="text-sm font-medium text-foreground">Default model</span>
               <input
                 type="text"
-                defaultValue={s?.default_model ?? "llama-3.3-70b-versatile"}
+                defaultValue={s?.default_model ?? "openai/gpt-oss-120b"}
                 disabled={saving}
                 onBlur={(e) => void updateSetting({ default_model: e.target.value })}
                 className={cn(themeInputClass, "mt-2 py-2.5")}
