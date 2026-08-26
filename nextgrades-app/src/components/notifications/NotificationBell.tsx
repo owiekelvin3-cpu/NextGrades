@@ -6,7 +6,12 @@ import { useRouter } from "next/navigation";
 import { Bell, CheckCheck, X, ArrowRight, BellRing } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useNotificationsOptional } from "@/context/NotificationContext";
-import { formatRelativeTime, categoryLabel } from "@/lib/notifications/format";
+import {
+  formatRelativeTime,
+  categoryLabel,
+  localizeNotificationMessage,
+  localizeNotificationTitle,
+} from "@/lib/notifications/format";
 import type { NotificationCategory } from "@/lib/notifications/types";
 import { NotificationCategoryIcon } from "@/components/notifications/NotificationCategoryIcon";
 import { Button } from "@/components/ui/Button";
@@ -168,12 +173,14 @@ export function NotificationBell({ className, variant = "dark" }: Props) {
                         <div className="min-w-0 flex-1">
                           <div className="flex items-start justify-between gap-2">
                             <p className={cn("truncate text-sm text-foreground", !n.is_read && "font-semibold")}>
-                              {n.title}
+                              {localizeNotificationTitle(n.title, i18n.language)}
                             </p>
                             {!n.is_read && <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-[#D4AF37]" />}
                           </div>
                           {n.message && (
-                            <p className="mt-0.5 line-clamp-2 text-xs text-gray-500">{n.message}</p>
+                            <p className="mt-0.5 line-clamp-2 text-xs text-gray-500">
+                              {localizeNotificationMessage(n.message, i18n.language)}
+                            </p>
                           )}
                           <div className="mt-1.5 flex items-center gap-2 text-[11px] text-gray-400">
                             <span>{formatRelativeTime(n.created_at, i18n.language)}</span>

@@ -103,3 +103,57 @@ export function dateGroupLabel(group: NotificationDateGroup, locale = "en"): str
   };
   return isDe ? labels[group].de : labels[group].en;
 }
+
+/** Map legacy English notification copy (stored before German-first) to DE for display. */
+const TITLE_EN_TO_DE: Record<string, string> = {
+  "Quiz submitted": "Quiz abgegeben",
+  "Grade released": "Note veröffentlicht",
+  "Resource published successfully": "Material erfolgreich veröffentlicht",
+  "Resource updated & published": "Material aktualisiert und veröffentlicht",
+  "Material approved": "Material freigegeben",
+  "Submitted for review": "Zur Prüfung eingereicht",
+  "Resource awaiting review": "Material wartet auf Prüfung",
+  "Teacher published new material": "Lehrkraft hat neues Material veröffentlicht",
+  "New appointment request": "Neuer Terminwunsch",
+  "Student appointment request": "Terminwunsch von SchülerIn",
+  "New user registration": "Neue Registrierung",
+};
+
+export function localizeNotificationTitle(title: string, locale = "de"): string {
+  if (!locale.startsWith("de")) return title;
+  return TITLE_EN_TO_DE[title] ?? title;
+}
+
+export function localizeNotificationMessage(message: string | null | undefined, locale = "de"): string {
+  if (!message) return "";
+  if (!locale.startsWith("de")) return message;
+
+  let out = message;
+  out = out.replace(/^"(.+?)" was submitted successfully\.?$/i, "„$1“ wurde erfolgreich abgegeben.");
+  out = out.replace(/^"(.+?)" is now live on the Resources page\.?$/i, "„$1“ ist jetzt in der Lernbibliothek sichtbar.");
+  out = out.replace(/^"(.+?)" was published\.?$/i, "„$1“ wurde veröffentlicht.");
+  out = out.replace(/^"(.+?)" was approved by moderation\.?$/i, "„$1“ wurde von der Prüfung freigegeben.");
+  out = out.replace(
+    /^"(.+?)" is in the admin review queue\. You will be notified when it is approved\.?$/i,
+    "„$1“ liegt in der Admin-Prüfung. Du wirst benachrichtigt, sobald es freigegeben ist."
+  );
+  out = out.replace(
+    /^(.+?) submitted "(.+?)" \((Free|Premium)\) for moderation\.?$/i,
+    (_, who: string, title: string, access: string) =>
+      `${who} hat „${title}“ (${access === "Premium" ? "Premium" : "Kostenlos"}) zur Freigabe eingereicht.`
+  );
+  out = out.replace(
+    /^(.+?) requested a new appointment\.\s*·\s*Preferred time:\s*(.+)$/i,
+    "$1 hat einen neuen Terminwunsch gesendet. · Wunschzeit: $2"
+  );
+  out = out.replace(
+    /^(.+?) registered as (student|teacher|admin)\.?$/i,
+    (_, name: string, role: string) =>
+      `${name} hat sich als ${
+        role === "teacher" ? "Lehrkraft" : role === "admin" ? "Administrator" : "SchülerIn"
+      } registriert.`
+  );
+  out = out.replace(/\bPreferred time:\b/gi, "Wunschzeit:");
+  out = out.replace(/\bat\b/gi, "um");
+  return out;
+}

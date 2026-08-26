@@ -37,6 +37,7 @@ import { formatTimeRange, lessonDateParts, lessonDisplayTitle, st } from "./stud
 import { studentStaggerContainer, studentStaggerItem } from "./student-motion";
 import { OverviewEmptyState } from "@/components/dashboard/overview/OverviewPrimitives";
 import { cn } from "@/lib/utils";
+import { localizeNotificationMessage, localizeNotificationTitle } from "@/lib/notifications/format";
 import { ZoomMeetingButton } from "@/components/zoom/ZoomMeetingButton";
 
 function ProgressSparkline({ values }: { values: number[] }) {
@@ -325,9 +326,13 @@ export function StudentOverviewDashboard() {
                         <Bell className="h-4 w-4 text-[var(--brand-gold)]" />
                       </div>
                       <div className="min-w-0 flex-1">
-                        <p className={cn("text-sm", !n.is_read && "font-semibold", st.textPrimary)}>{n.title}</p>
+                        <p className={cn("text-sm", !n.is_read && "font-semibold", st.textPrimary)}>
+                          {localizeNotificationTitle(n.title, i18n.language)}
+                        </p>
                         {n.message && (
-                          <p className={cn("mt-0.5 line-clamp-2 text-xs", st.textMuted)}>{n.message}</p>
+                          <p className={cn("mt-0.5 line-clamp-2 text-xs", st.textMuted)}>
+                            {localizeNotificationMessage(n.message, i18n.language)}
+                          </p>
                         )}
                       </div>
                     </Link>

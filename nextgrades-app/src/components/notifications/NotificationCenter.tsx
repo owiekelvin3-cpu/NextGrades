@@ -22,6 +22,8 @@ import {
   categoryLabel,
   getNotificationDateGroup,
   dateGroupLabel,
+  localizeNotificationMessage,
+  localizeNotificationTitle,
   type NotificationDateGroup,
 } from "@/lib/notifications/format";
 import { NotificationSoundSettings } from "@/components/notifications/NotificationSoundSettings";
@@ -275,11 +277,15 @@ function NotificationRow({
       <div className="min-w-0 flex-1">
         <button type="button" onClick={onOpen} className="w-full text-left">
           <div className="flex items-start justify-between gap-3">
-            <p className={cn("text-sm leading-snug text-foreground", !n.is_read && "font-semibold")}>{n.title}</p>
+            <p className={cn("text-sm leading-snug text-foreground", !n.is_read && "font-semibold")}>
+              {localizeNotificationTitle(n.title, locale)}
+            </p>
             {!n.is_read && <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-[#D4AF37]" />}
           </div>
           {n.message && (
-            <p className="mt-1.5 text-sm leading-relaxed text-text-muted line-clamp-2">{n.message}</p>
+            <p className="mt-1.5 text-sm leading-relaxed text-text-muted line-clamp-2">
+              {localizeNotificationMessage(n.message, locale)}
+            </p>
           )}
           <div className="mt-3 flex flex-wrap items-center gap-2">
             <span className="text-xs text-text-muted">{formatRelativeTime(n.created_at, locale)}</span>
