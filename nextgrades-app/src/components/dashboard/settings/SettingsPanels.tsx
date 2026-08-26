@@ -86,6 +86,8 @@ export function StudentSettingsPanel({ role = "student" }: StudentSettingsPanelP
   const [phone, setPhone] = useState("");
   const [bio, setBio] = useState("");
   const [learningGoal, setLearningGoal] = useState("");
+  const [schoolName, setSchoolName] = useState("");
+  const [currentGrade, setCurrentGrade] = useState("");
   const [timezone, setTimezone] = useState("Europe/Berlin");
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [aiLanguage, setAiLanguage] = useState<ChatResponseLanguage>("de");
@@ -105,6 +107,8 @@ export function StudentSettingsPanel({ role = "student" }: StudentSettingsPanelP
       setPhone(data.phone ?? "");
       setBio(data.bio ?? "");
       setLearningGoal(data.learning_goal ?? "");
+      setSchoolName(data.school_name ?? "");
+      setCurrentGrade(data.current_grade ?? "");
       setTimezone(data.timezone ?? "Europe/Berlin");
       setAvatarUrl(data.avatar_url);
     }
@@ -144,6 +148,8 @@ export function StudentSettingsPanel({ role = "student" }: StudentSettingsPanelP
       phone: phone || null,
       bio: isTeacher ? bio || null : undefined,
       learning_goal: isTeacher ? undefined : learningGoal || null,
+      school_name: isTeacher ? undefined : schoolName || null,
+      current_grade: isTeacher ? undefined : currentGrade || null,
     });
     setSaving(false);
     if (error) toast.error(error);
@@ -322,6 +328,24 @@ export function StudentSettingsPanel({ role = "student" }: StudentSettingsPanelP
                 <SettingsField label={t("settings.phone", { defaultValue: "Phone number" })} hint={t("settings.phoneHint", { defaultValue: "Optional - for appointment reminders" })}>
                   <SettingsInput type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+43 670 …" />
                 </SettingsField>
+                {!isTeacher && (
+                  <>
+                    <SettingsField label={t("settings.school", { defaultValue: "Schule" })}>
+                      <SettingsInput
+                        value={schoolName}
+                        onChange={(e) => setSchoolName(e.target.value)}
+                        placeholder={t("settings.schoolPlaceholder", { defaultValue: "z. B. Gymnasium Klagenfurt" })}
+                      />
+                    </SettingsField>
+                    <SettingsField label={t("settings.grade", { defaultValue: "Klasse / Schulstufe" })}>
+                      <SettingsInput
+                        value={currentGrade}
+                        onChange={(e) => setCurrentGrade(e.target.value)}
+                        placeholder={t("settings.gradePlaceholder", { defaultValue: "z. B. 7. Klasse" })}
+                      />
+                    </SettingsField>
+                  </>
+                )}
                 {isTeacher ? (
                   <SettingsField label={t("settings.bio", { defaultValue: "About you" })} hint={t("settings.bioHint", { defaultValue: "Shown to students - experience, subjects, teaching style" })}>
                     <SettingsTextarea rows={4} value={bio} onChange={(e) => setBio(e.target.value)} placeholder={t("settings.bioPlaceholder", { defaultValue: "Tell students about your teaching experience…" })} />

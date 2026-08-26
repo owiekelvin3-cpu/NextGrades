@@ -40,10 +40,18 @@ export async function GET() {
     return NextResponse.json({ error: "Profile not found" }, { status: 404 });
   }
 
+  const { data: registration } = await supabase
+    .from("student_registration_details")
+    .select("school_name, current_grade")
+    .eq("user_id", user.id)
+    .maybeSingle();
+
   return NextResponse.json({
     profile: {
       ...row,
       email: (row as { email?: string | null }).email ?? authData.user?.email ?? null,
+      school_name: registration?.school_name ?? null,
+      current_grade: registration?.current_grade ?? null,
     },
   });
 }
@@ -61,6 +69,8 @@ export async function PATCH(request: Request) {
     bio?: string | null;
     learning_goal?: string | null;
     timezone?: string | null;
+    school_name?: string | null;
+    current_grade?: string | null;
   };
 
   try {
@@ -76,31 +86,62 @@ export async function PATCH(request: Request) {
   if (body.learning_goal !== undefined) update.learning_goal = body.learning_goal?.trim() || null;
   if (body.timezone !== undefined) update.timezone = body.timezone || "Europe/Berlin";
 
-  if (Object.keys(update).length <= 1) {
+  const hasProfileUpdate = Object.keys(update).length > 1;
+  const hasRegistrationUpdate =
+    body.school_name !== undefined || body.current_grade !== undefined;
+
+  if (!hasProfileUpdate && !hasRegistrationUpdate) {
     return NextResponse.json({ error: "No fields to update" }, { status: 400 });
   }
 
-  const { error: updateError } = await supabase.from("profiles").update(update).eq("id", user.id);
+  if (hasProfileUpdate) {
+    const { error: updateError } = await supabase.from("profiles").update(update).eq("id", user.id);
 
-  if (updateError) {
-    const msg = updateError.message ?? "";
-    if (msg.includes("bio") || msg.includes("timezone") || msg.includes("phone")) {
-      const fallback: Record<string, unknown> = { updated_at: update.updated_at };
-      if (body.full_name !== undefined) fallback.full_name = update.full_name;
-      if (body.learning_goal !== undefined) fallback.learning_goal = update.learning_goal;
-      const { error: err2 } = await supabase.from("profiles").update(fallback).eq("id", user.id);
-      if (err2) return NextResponse.json({ error: err2.message }, { status: 500 });
-    } else {
-      return NextResponse.json({ error: msg }, { status: 500 });
+    if (updateError) {
+      const msg = updateError.message ?? "";
+      if (msg.includes("bio") || msg.includes("timezone") || msg.includes("phone")) {
+        const fallback: Record<string, unknown> = { updated_at: update.updated_at };
+        if (body.full_name !== undefined) fallback.full_name = update.full_name;
+        if (body.learning_goal !== undefined) fallback.learning_goal = update.learning_goal;
+        const { error: err2 } = await supabase.from("profiles").update(fallback).eq("id", user.id);
+        if (err2) return NextResponse.json({ error: err2.message }, { status: 500 });
+      } else {
+        return NextResponse.json({ error: msg }, { status: 500 });
+      }
     }
+  }
+
+  if (hasRegistrationUpdate && profile.role === "student") {
+    const registrationUpdate: Record<string, unknown> = {
+      user_id: user.id,
+      updated_at: new Date().toISOString(),
+    };
+    if (body.school_name !== undefined) registrationUpdate.school_name = body.school_name?.trim() || null;
+    if (body.current_grade !== undefined) {
+      registrationUpdate.current_grade = body.current_grade?.trim() || null;
+    }
+    const { error: regError } = await supabase
+      .from("student_registration_details")
+      .upsert(registrationUpdate, { onConflict: "user_id" });
+    if (regError) return NextResponse.json({ error: regError.message }, { status: 500 });
   }
 
   const row = await fetchProfileRow(supabase, user.id);
   const { data: authData } = await supabase.auth.getUser();
+  const { data: registration } = await supabase
+    .from("student_registration_details")
+    .select("school_name, current_grade")
+    .eq("user_id", user.id)
+    .maybeSingle();
 
   return NextResponse.json({
     profile: row
-      ? { ...row, email: (row as { email?: string | null }).email ?? authData.user?.email ?? null }
+      ? {
+          ...row,
+          email: (row as { email?: string | null }).email ?? authData.user?.email ?? null,
+          school_name: registration?.school_name ?? null,
+          current_grade: registration?.current_grade ?? null,
+        }
       : null,
   });
 }

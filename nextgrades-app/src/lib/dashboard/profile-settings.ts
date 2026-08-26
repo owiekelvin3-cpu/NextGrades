@@ -5,6 +5,8 @@ export type UserProfileSettings = {
   phone: string | null;
   bio: string | null;
   learning_goal: string | null;
+  school_name?: string | null;
+  current_grade?: string | null;
   avatar_url: string | null;
   timezone: string | null;
   role: string;
@@ -17,6 +19,8 @@ export type ProfileUpdatePayload = {
   phone?: string | null;
   bio?: string | null;
   learning_goal?: string | null;
+  school_name?: string | null;
+  current_grade?: string | null;
   timezone?: string | null;
 };
 

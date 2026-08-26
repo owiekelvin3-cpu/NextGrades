@@ -53,11 +53,12 @@ export const RESOURCE_TABS: { id: ResourceTabId; labelKey: string; contentTypes?
 ];
 
 export const MATERIAL_TYPE_FILTERS = [
-  { value: "summary", labelKey: "resourcesPage.materialTypes.0", types: ["learning_material", "document"] },
-  { value: "worksheets", labelKey: "resourcesPage.materialTypes.1", types: ["practice_questions", "assignment"] },
-  { value: "guides", labelKey: "resourcesPage.materialTypes.2", types: ["guidebook"] },
-  { value: "videos", labelKey: "resourcesPage.materialTypes.3", types: ["video_course", "mini_course"] },
-  { value: "formulas", labelKey: "resourcesPage.materialTypes.4", types: ["formula_sheet"] },
+  { value: "pdf", labelKey: "resourcesPage.materialTypePdf", types: ["pdf_resource", "presentation", "document"] },
+  { value: "worksheets", labelKey: "resourcesPage.materialTypeWorksheets", types: ["practice_questions", "assignment", "workspace"] },
+  { value: "videos", labelKey: "resourcesPage.materialTypeVideos", types: ["video_course", "mini_course", "live_class", "webinar"] },
+  { value: "summary", labelKey: "resourcesPage.materialTypeSummaries", types: ["learning_material", "article"] },
+  { value: "formulas", labelKey: "resourcesPage.materialTypeFormulas", types: ["formula_sheet"] },
+  { value: "exam_prep", labelKey: "resourcesPage.materialTypeExamPrep", types: ["exam_preparation"] },
 ];
 
 export type SubjectUiConfig = {

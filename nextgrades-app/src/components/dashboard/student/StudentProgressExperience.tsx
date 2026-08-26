@@ -109,6 +109,12 @@ export function StudentProgressExperience() {
 
   const progress = data.overallProgress;
   const materialCount = data.materials.length;
+  const quizScoreAvg =
+    data.progressSparkline.length > 0
+      ? Math.round(
+          data.progressSparkline.reduce((sum, score) => sum + score, 0) / data.progressSparkline.length
+        )
+      : null;
 
   return (
     <StudentDashboardLayout title={title} description={description}>
@@ -226,15 +232,22 @@ export function StudentProgressExperience() {
           >
             {data.courses.length === 0 ? (
               <div className="px-5 py-14 text-center">
-                <p className={st.empty}>{t("studentDashboard.noCourses")}</p>
+                <p className={st.empty}>
+                  {t("studentDashboard.noCoursesUnlocked", {
+                    defaultValue: "Noch keine Kurse freigeschaltet.",
+                  })}
+                </p>
                 <Button variant="gold" size="sm" href="/programs" className="mt-4">
-                  {t("home.explorePrograms", { defaultValue: "Explore programs" })}
+                  {t("studentDashboard.explorePrograms", { defaultValue: "Programme entdecken" })}
                 </Button>
               </div>
             ) : (
               <ul className="divide-y divide-border-default">
                 {data.courses.map((course) => {
                   const color = subjectColor(course.subjectName);
+                  const title = [course.subjectName, (course as { className?: string }).className]
+                    .filter(Boolean)
+                    .join(" · ");
                   return (
                     <li key={course.enrollmentId} className="flex items-center gap-4 px-5 py-4">
                       <div className="relative flex h-[4.5rem] w-[4.5rem] shrink-0 items-center justify-center">
@@ -244,7 +257,7 @@ export function StudentProgressExperience() {
                       <div className="min-w-0 flex-1">
                         <div className="flex items-start justify-between gap-2">
                           <div>
-                            <p className="font-semibold text-foreground">{course.subjectName}</p>
+                            <p className="font-semibold text-foreground">{title}</p>
                             {course.teacherName ? (
                               <p className={cn("text-xs", st.textMuted)}>{course.teacherName}</p>
                             ) : null}
@@ -261,6 +274,7 @@ export function StudentProgressExperience() {
                         </div>
                         <p className={cn("mt-1.5 text-xs", st.textSubtle)}>
                           {t("studentDashboard.lessonUnits", { count: course.lessonCount })}
+                          {` · ${course.progressPercent}% ${t("studentDashboard.progressLabel", { defaultValue: "abgeschlossen" })}`}
                         </p>
                       </div>
                     </li>
@@ -272,6 +286,38 @@ export function StudentProgressExperience() {
 
           <StudentPanel
             className="lg:col-span-2"
+            title={t("studentDashboard.progressBreakdown", { defaultValue: "Lernstatistik" })}
+            icon={Target}
+            href="/dashboard/student/quizzes"
+            linkLabel={t("studentDashboard.goToTasks")}
+          >
+            <div className="space-y-4 p-5">
+              <div className="rounded-xl border border-border-default bg-surface-subtle/40 p-4">
+                <p className="text-xs font-semibold uppercase tracking-wide text-text-muted">
+                  {t("studentDashboard.progressMaterialsDone", { defaultValue: "Materialien" })}
+                </p>
+                <p className="mt-1 text-2xl font-bold text-foreground">{materialCount}</p>
+              </div>
+              <div className="rounded-xl border border-border-default bg-surface-subtle/40 p-4">
+                <p className="text-xs font-semibold uppercase tracking-wide text-text-muted">
+                  {t("studentDashboard.progressQuizScores", { defaultValue: "Quiz-Ergebnisse" })}
+                </p>
+                <p className="mt-1 text-2xl font-bold text-foreground">
+                  {quizScoreAvg != null ? `${quizScoreAvg}%` : "—"}
+                </p>
+              </div>
+              <div className="rounded-xl border border-border-default bg-surface-subtle/40 p-4">
+                <p className="text-xs font-semibold uppercase tracking-wide text-text-muted">
+                  {t("studentDashboard.progressLessonsDone")}
+                </p>
+                <p className="mt-1 text-2xl font-bold text-foreground">{completedLessons}</p>
+              </div>
+            </div>
+          </StudentPanel>
+        </motion.div>
+
+        <motion.div variants={studentStaggerItem}>
+          <StudentPanel
             title={t("studentDashboard.yourGoal")}
             icon={Target}
             href="/dashboard/student/settings"
@@ -285,7 +331,7 @@ export function StudentProgressExperience() {
                 <p className="text-sm font-medium text-foreground">{t("studentDashboard.progressKeepGoing")}</p>
                 <p className={cn("mt-1 text-xs", st.textMuted)}>{t("studentDashboard.progressHint")}</p>
               </div>
-              <div className="mt-4 flex flex-col gap-2">
+              <div className="mt-4 flex flex-col gap-2 sm:flex-row">
                 <Button variant="gold" size="sm" href="/dashboard/student/quizzes">
                   {t("studentDashboard.goToTasks")}
                 </Button>

@@ -39,6 +39,7 @@ import { OverviewEmptyState } from "@/components/dashboard/overview/OverviewPrim
 import { cn } from "@/lib/utils";
 import { localizeNotificationMessage, localizeNotificationTitle } from "@/lib/notifications/format";
 import { ZoomMeetingButton } from "@/components/zoom/ZoomMeetingButton";
+import { lessonHasMeetingLink } from "@/lib/meetings/link";
 
 function ProgressSparkline({ values }: { values: number[] }) {
   if (!values.length) return null;
@@ -160,17 +161,31 @@ export function StudentOverviewDashboard() {
               label={t("studentDashboard.remainingUnits")}
               value={
                 data.units
-                  ? t("studentDashboard.unitsOf", { remaining: unitsRemaining, total: unitsTotal })
-                  : "-"
+                  ? String(unitsRemaining)
+                  : t("studentDashboard.noUnitsShort", { defaultValue: "—" })
               }
-              href="/pricing"
+              href={data.units ? "/dashboard/student/live-classes" : "/pricing"}
               icon={Target}
               footer={
                 data.units ? (
-                  <div className={st.progressTrack}>
-                    <div className={st.progressBar} style={{ width: `${unitsPercent}%` }} />
+                  <div className="space-y-1.5">
+                    <p className={cn("text-xs", st.textMuted)}>
+                      {t("studentDashboard.unitsBreakdown", {
+                        defaultValue: "Gekauft {{purchased}} · Absolviert {{completed}} · Übrig {{remaining}}",
+                        purchased: data.units.purchased ?? unitsTotal,
+                        completed: data.units.completed ?? unitsUsed,
+                        remaining: unitsRemaining,
+                      })}
+                    </p>
+                    <div className={st.progressTrack}>
+                      <div className={st.progressBar} style={{ width: `${unitsPercent}%` }} />
+                    </div>
                   </div>
-                ) : undefined
+                ) : (
+                  <p className={cn("text-xs", st.textMuted)}>
+                    {t("studentDashboard.bookTutoringCta", { defaultValue: "Nachhilfe buchen" })}
+                  </p>
+                )
               }
             />
             <StudentKpiCard
@@ -181,19 +196,32 @@ export function StudentOverviewDashboard() {
                       day: "numeric",
                       month: "short",
                     })
-                  : "-"
+                  : t("studentDashboard.noUnitsShort", { defaultValue: "—" })
               }
-              href="/dashboard/student/appointments"
+              href={data.nextLesson ? "/dashboard/student/appointments" : "/consultation"}
               icon={Calendar}
               accent="navy"
               footer={
                 data.nextLesson ? (
-                  <p className={cn("text-xs", st.textMuted)}>
-                    {formatTimeRange(data.nextLesson.start_time, data.nextLesson.duration, dateLocale)} ·{" "}
-                    {data.nextLesson.subject_name}
-                  </p>
+                  <div className="space-y-2">
+                    <p className={cn("text-xs", st.textMuted)}>
+                      {formatTimeRange(data.nextLesson.start_time, data.nextLesson.duration, dateLocale)}
+                      {data.nextLesson.subject_name ? ` · ${data.nextLesson.subject_name}` : ""}
+                      {data.nextLesson.teacher_name ? ` · ${data.nextLesson.teacher_name}` : ""}
+                    </p>
+                    {lessonHasMeetingLink(data.nextLesson) ? (
+                      <ZoomMeetingButton
+                        lessonId={data.nextLesson.id}
+                        mode="join"
+                        provider={data.nextLesson.meeting_provider}
+                        className="w-full justify-center"
+                      />
+                    ) : null}
+                  </div>
                 ) : (
-                  <p className={cn("text-xs", st.textMuted)}>{t("studentDashboard.noAppointments")}</p>
+                  <p className={cn("text-xs", st.textMuted)}>
+                    {t("studentDashboard.bookLessonCta", { defaultValue: "Stunde buchen" })}
+                  </p>
                 )
               }
             />
@@ -352,7 +380,16 @@ export function StudentOverviewDashboard() {
             noPadding
           >
             {data.courses.length === 0 ? (
-              <p className={cn("px-5 py-10 text-center", st.empty)}>{t("studentDashboard.noCourses")}</p>
+              <OverviewEmptyState
+                icon={GraduationCap}
+                title={t("studentDashboard.noCoursesUnlocked", {
+                  defaultValue: "Noch keine Kurse freigeschaltet.",
+                })}
+                actionHref="/programs"
+                actionLabel={t("studentDashboard.explorePrograms", {
+                  defaultValue: "Programme entdecken",
+                })}
+              />
             ) : (
               <ul className="divide-y divide-border-default">
                 {data.courses.slice(0, 3).map((course) => (
@@ -381,7 +418,16 @@ export function StudentOverviewDashboard() {
             noPadding
           >
             {data.materials.length === 0 ? (
-              <p className={cn("px-5 py-10 text-center", st.empty)}>{t("studentDashboard.noMaterials")}</p>
+              <OverviewEmptyState
+                icon={FileText}
+                title={t("studentDashboard.noMaterialsAvailable", {
+                  defaultValue: "Noch keine Materialien verfügbar.",
+                })}
+                actionHref="/resources"
+                actionLabel={t("studentDashboard.exploreLibrary", {
+                  defaultValue: "Lernbibliothek entdecken",
+                })}
+              />
             ) : (
               <ul className="divide-y divide-border-default">
                 {data.materials.slice(0, 4).map((m) => (

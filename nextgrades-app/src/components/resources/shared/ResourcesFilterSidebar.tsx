@@ -179,7 +179,14 @@ export function ResourcesFilterSidebar({
                   />
                   <span className="text-foreground/80">
                     {t(m.labelKey, {
-                      defaultValue: ["Summaries", "Worksheets", "Guides", "Videos", "Formula sheets"][i],
+                      defaultValue: [
+                        "PDFs",
+                        "Worksheets",
+                        "Videos",
+                        "Summaries",
+                        "Formula sheets",
+                        "Exam preparation",
+                      ][i],
                     })}
                   </span>
                 </label>

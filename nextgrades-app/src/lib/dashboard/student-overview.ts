@@ -33,7 +33,7 @@ export type StudentTaskRow = {
 export type StudentOverviewData = {
   profile: { fullName: string; avatarUrl?: string | null };
   learningGoal: string | null;
-  units: { total: number; remaining: number } | null;
+  units: { total: number; remaining: number; purchased: number; completed: number } | null;
   lessons: DashboardLesson[];
   nextLesson: DashboardLesson | null;
   materials: Material[];
@@ -304,7 +304,7 @@ export type StudentCourseDetail = StudentCourseRow & {
 
 export type StudentAppointmentsData = {
   profile: { fullName: string; avatarUrl?: string | null };
-  units: { total: number; remaining: number } | null;
+  units: { total: number; remaining: number; purchased: number; completed: number } | null;
   upcoming: DashboardLesson[];
   past: DashboardLesson[];
   nextLesson: DashboardLesson | null;
@@ -329,7 +329,9 @@ function buildCourseDetails(
   lessons: DashboardLesson[]
 ): StudentCourseDetail[] {
   const now = Date.now();
-  return enrollments.map((e) => {
+  return enrollments
+    .filter((e) => e.status === "active" || e.status === "completed")
+    .map((e) => {
     const subjectLessons = lessons.filter((l) => l.subject_name === e.subject_name);
     const completed = subjectLessons.filter((l) => l.status === "completed").length;
     const total = subjectLessons.length;

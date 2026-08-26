@@ -196,7 +196,7 @@ export function OverviewEmptyState({
   actionHref,
   actionLabel,
 }: {
-  icon: LucideIcon;
+  icon?: LucideIcon;
   title: string;
   description?: string;
   actionHref?: string;
@@ -204,9 +204,11 @@ export function OverviewEmptyState({
 }) {
   return (
     <div className="flex flex-col items-center px-6 py-14 text-center">
-      <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-surface-subtle ring-1 ring-border-default">
-        <Icon className="h-7 w-7 text-text-muted/50" />
-      </div>
+      {Icon ? (
+        <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-surface-subtle ring-1 ring-border-default">
+          <Icon className="h-7 w-7 text-text-muted/50" />
+        </div>
+      ) : null}
       <p className="text-sm font-semibold text-foreground">{title}</p>
       {description && <p className="mt-1 max-w-sm text-xs text-text-muted">{description}</p>}
       {actionHref && actionLabel && (

@@ -26,6 +26,8 @@ import { StudentTabBar } from "./StudentTabBar";
 import { StudentPagination } from "./StudentPagination";
 import { mobile } from "@/lib/mobile/tokens";
 import { themeSelectCompactClass } from "@/lib/theme/form-fields";
+import { MATERIAL_TYPE_FILTERS } from "@/lib/resources/ui-config";
+import { OverviewEmptyState } from "@/components/dashboard/overview/OverviewPrimitives";
 import { cn } from "@/lib/utils";
 
 type Tab = "all" | "course" | "type" | "favorites";
@@ -36,7 +38,24 @@ function MaterialIcon({ type }: { type: string }) {
   return <FileText className="h-4 w-4" />;
 }
 
-type StudentMaterial = Material & { subject_name?: string | null };
+type StudentMaterial = Material & {
+  subject_name?: string | null;
+  content_type?: string | null;
+  class_name?: string | null;
+  semester?: number | null;
+};
+
+function matchesMaterialTypeFilter(m: StudentMaterial, typeFilter: string): boolean {
+  if (!typeFilter) return true;
+  const group = MATERIAL_TYPE_FILTERS.find((f) => f.value === typeFilter);
+  if (!group) return true;
+  const contentType = m.content_type || "";
+  if (contentType && group.types.includes(contentType)) return true;
+  // Legacy file-type fallback
+  if (typeFilter === "pdf" && m.type === "pdf") return true;
+  if (typeFilter === "videos" && m.type === "video") return true;
+  return false;
+}
 
 export function StudentResourcesExperience() {
   const { t, i18n } = useTranslation();
@@ -49,6 +68,8 @@ export function StudentResourcesExperience() {
   const [tab, setTab] = useState<Tab>("all");
   const [search, setSearch] = useState("");
   const [courseFilter, setCourseFilter] = useState("");
+  const [gradeFilter, setGradeFilter] = useState("");
+  const [semesterFilter, setSemesterFilter] = useState("");
   const [typeFilter, setTypeFilter] = useState("");
   const [page, setPage] = useState(1);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
@@ -74,6 +95,20 @@ export function StudentResourcesExperience() {
     [enrollments]
   );
 
+  const gradeOptions = useMemo(
+    () =>
+      [...new Set(materials.map((m) => m.class_name).filter(Boolean))] as string[],
+    [materials]
+  );
+
+  const semesterOptions = useMemo(
+    () =>
+      [...new Set(materials.map((m) => m.semester).filter((s): s is number => s != null))].sort(
+        (a, b) => a - b
+      ),
+    [materials]
+  );
+
   const filtered = useMemo(() => {
     let list = materials;
     if (tab === "favorites") list = list.filter((m) => isBookmarked(m.id));
@@ -81,10 +116,18 @@ export function StudentResourcesExperience() {
       const q = search.toLowerCase();
       list = list.filter((m) => m.title.toLowerCase().includes(q));
     }
-    if (courseFilter) list = list.filter((m) => (m.subject_name || "").includes(courseFilter) || m.title.includes(courseFilter));
-    if (typeFilter) list = list.filter((m) => m.type === typeFilter);
+    if (courseFilter) {
+      list = list.filter(
+        (m) => (m.subject_name || "").includes(courseFilter) || m.title.includes(courseFilter)
+      );
+    }
+    if (gradeFilter) list = list.filter((m) => (m.class_name || "") === gradeFilter);
+    if (semesterFilter) {
+      list = list.filter((m) => String(m.semester ?? "") === semesterFilter);
+    }
+    if (typeFilter) list = list.filter((m) => matchesMaterialTypeFilter(m, typeFilter));
     return list;
-  }, [materials, tab, search, courseFilter, typeFilter, isBookmarked]);
+  }, [materials, tab, search, courseFilter, gradeFilter, semesterFilter, typeFilter, isBookmarked]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const pageItems = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
@@ -92,7 +135,87 @@ export function StudentResourcesExperience() {
   const totalBytes = materials.reduce((s, m) => s + (m.file_size ?? 0), 0);
   const storagePercent = totalBytes > 0 ? Math.min(100, Math.round((totalBytes / (5 * 1024 * 1024 * 1024)) * 100)) : 0;
 
-  useEffect(() => setPage(1), [tab, search, courseFilter, typeFilter]);
+  useEffect(() => setPage(1), [tab, search, courseFilter, gradeFilter, semesterFilter, typeFilter]);
+
+  const resetFilters = () => {
+    setCourseFilter("");
+    setGradeFilter("");
+    setSemesterFilter("");
+    setTypeFilter("");
+    setSearch("");
+  };
+
+  const typeFilterOptions = (
+    <>
+      <option value="">{t("studentDashboard.selectType", { defaultValue: "Typ wählen" })}</option>
+      {MATERIAL_TYPE_FILTERS.map((tp) => (
+        <option key={tp.value} value={tp.value}>
+          {t(tp.labelKey, {
+            defaultValue:
+              tp.value === "pdf"
+                ? "PDFs"
+                : tp.value === "worksheets"
+                  ? "Arbeitsblätter"
+                  : tp.value === "videos"
+                    ? "Videos"
+                    : tp.value === "summary"
+                      ? "Zusammenfassungen"
+                      : tp.value === "formulas"
+                        ? "Formelsammlungen"
+                        : "Prüfungsvorbereitung",
+          })}
+        </option>
+      ))}
+    </>
+  );
+
+  const filterControls = (
+    <>
+      <select
+        value={courseFilter}
+        onChange={(e) => setCourseFilter(e.target.value)}
+        className={themeSelectCompactClass(courseFilter, "w-full py-2.5 md:w-auto md:py-2")}
+      >
+        <option value="">{t("studentDashboard.selectSubject", { defaultValue: "Fach wählen" })}</option>
+        {subjectNames.map((s) => (
+          <option key={s} value={s}>
+            {s}
+          </option>
+        ))}
+      </select>
+      <select
+        value={gradeFilter}
+        onChange={(e) => setGradeFilter(e.target.value)}
+        className={themeSelectCompactClass(gradeFilter, "w-full py-2.5 md:w-auto md:py-2")}
+      >
+        <option value="">{t("studentDashboard.selectGrade", { defaultValue: "Klasse wählen" })}</option>
+        {gradeOptions.map((g) => (
+          <option key={g} value={g}>
+            {g}
+          </option>
+        ))}
+      </select>
+      <select
+        value={semesterFilter}
+        onChange={(e) => setSemesterFilter(e.target.value)}
+        className={themeSelectCompactClass(semesterFilter, "w-full py-2.5 md:w-auto md:py-2")}
+      >
+        <option value="">{t("studentDashboard.selectSemester", { defaultValue: "Semester wählen" })}</option>
+        {semesterOptions.map((s) => (
+          <option key={s} value={String(s)}>
+            {s}. Semester
+          </option>
+        ))}
+      </select>
+      <select
+        value={typeFilter}
+        onChange={(e) => setTypeFilter(e.target.value)}
+        className={themeSelectCompactClass(typeFilter, "w-full py-2.5 md:w-auto md:py-2")}
+      >
+        {typeFilterOptions}
+      </select>
+    </>
+  );
 
   if (loading) {
     return (
@@ -151,79 +274,25 @@ export function StudentResourcesExperience() {
 
           {showMobileFilters && (
             <div className="grid grid-cols-1 gap-2 rounded-2xl border border-border-default bg-surface-elevated p-3 sm:grid-cols-2 md:hidden">
-              <select
-                value={courseFilter}
-                onChange={(e) => setCourseFilter(e.target.value)}
-                className={themeSelectCompactClass(courseFilter, "w-full py-2.5")}
-              >
-                <option value="">{t("studentDashboard.selectCourse", { defaultValue: "Select course" })}</option>
-                {subjectNames.map((s) => (
-                  <option key={s} value={s}>
-                    {s}
-                  </option>
-                ))}
-              </select>
-              <select
-                value={typeFilter}
-                onChange={(e) => setTypeFilter(e.target.value)}
-                className={themeSelectCompactClass(typeFilter, "w-full py-2.5")}
-              >
-                <option value="">{t("studentDashboard.selectType", { defaultValue: "Select type" })}</option>
-                {["pdf", "video", "excel", "image", "other"].map((tp) => (
-                  <option key={tp} value={tp}>
-                    {materialTypeLabel(tp, t)}
-                  </option>
-                ))}
-              </select>
+              {filterControls}
               <button
                 type="button"
-                onClick={() => {
-                  setCourseFilter("");
-                  setTypeFilter("");
-                  setSearch("");
-                }}
+                onClick={resetFilters}
                 className="col-span-full text-center text-sm text-text-muted hover:text-foreground"
               >
-                {t("studentDashboard.resetFilters", { defaultValue: "Reset filters" })}
+                {t("studentDashboard.resetFilters", { defaultValue: "Filter zurücksetzen" })}
               </button>
             </div>
           )}
 
           <div className="hidden flex-wrap gap-3 md:flex">
-            <select
-              value={courseFilter}
-              onChange={(e) => setCourseFilter(e.target.value)}
-              className={themeSelectCompactClass(courseFilter, "py-2")}
-            >
-              <option value="">{t("studentDashboard.selectCourse", { defaultValue: "Select course" })}</option>
-              {subjectNames.map((s) => (
-                <option key={s} value={s}>
-                  {s}
-                </option>
-              ))}
-            </select>
-            <select
-              value={typeFilter}
-              onChange={(e) => setTypeFilter(e.target.value)}
-              className={themeSelectCompactClass(typeFilter, "py-2")}
-            >
-              <option value="">{t("studentDashboard.selectType", { defaultValue: "Select type" })}</option>
-              {["pdf", "video", "excel", "image", "other"].map((tp) => (
-                <option key={tp} value={tp}>
-                  {materialTypeLabel(tp, t)}
-                </option>
-              ))}
-            </select>
+            {filterControls}
             <button
               type="button"
-              onClick={() => {
-                setCourseFilter("");
-                setTypeFilter("");
-                setSearch("");
-              }}
+              onClick={resetFilters}
               className="text-sm text-text-muted hover:text-foreground"
             >
-              {t("studentDashboard.resetFilters", { defaultValue: "Reset filters" })}
+              {t("studentDashboard.resetFilters", { defaultValue: "Filter zurücksetzen" })}
             </button>
           </div>
 
@@ -231,9 +300,19 @@ export function StudentResourcesExperience() {
           <div className={cn(studentPanel("overflow-hidden md:hidden"), "space-y-0")}>
             <div className="space-y-3 p-3">
             {pageItems.length === 0 ? (
-              <div className={studentPanel("p-8 text-center text-text-muted")}>
-                {t("studentDashboard.noMaterials")}
-              </div>
+              <OverviewEmptyState
+                icon={FileText}
+                title={t("studentDashboard.noMaterialsAvailable", {
+                  defaultValue: "Noch keine Materialien verfügbar.",
+                })}
+                description={t("studentDashboard.noMaterialsAvailableDesc", {
+                  defaultValue: "Freigeschaltete Materialien aus deinen Programmen erscheinen hier.",
+                })}
+                actionHref="/resources"
+                actionLabel={t("studentDashboard.exploreLibrary", {
+                  defaultValue: "Lernbibliothek entdecken",
+                })}
+              />
             ) : (
               pageItems.map((m) => (
                 <article key={m.id} className={cn(mobile.cardInteractive, mobile.cardPad, "flex gap-4")}>
@@ -298,8 +377,20 @@ export function StudentResourcesExperience() {
                 <tbody className="divide-y divide-border-default">
                   {pageItems.length === 0 ? (
                     <tr>
-                      <td colSpan={5} className="px-5 py-12 text-center text-text-muted">
-                        {t("studentDashboard.noMaterials")}
+                      <td colSpan={5} className="px-5 py-6">
+                        <OverviewEmptyState
+                          icon={FileText}
+                          title={t("studentDashboard.noMaterialsAvailable", {
+                            defaultValue: "Noch keine Materialien verfügbar.",
+                          })}
+                          description={t("studentDashboard.noMaterialsAvailableDesc", {
+                            defaultValue: "Freigeschaltete Materialien aus deinen Programmen erscheinen hier.",
+                          })}
+                          actionHref="/resources"
+                          actionLabel={t("studentDashboard.exploreLibrary", {
+                            defaultValue: "Lernbibliothek entdecken",
+                          })}
+                        />
                       </td>
                     </tr>
                   ) : (

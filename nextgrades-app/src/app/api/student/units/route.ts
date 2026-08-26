@@ -19,8 +19,25 @@ export async function GET() {
     .eq("student_id", userId)
     .maybeSingle();
 
+  const total = data?.total_units ?? 0;
+  const remaining = data?.remaining_units ?? 0;
+  const hasPackage = total > 0 || remaining > 0;
+
+  if (!hasPackage) {
+    return NextResponse.json({
+      hasPackage: false,
+      purchased: 0,
+      completed: 0,
+      remaining: 0,
+      total: 0,
+    });
+  }
+
   return NextResponse.json({
-    total: data?.total_units ?? 0,
-    remaining: data?.remaining_units ?? 0,
+    hasPackage: true,
+    purchased: total,
+    completed: Math.max(0, total - remaining),
+    remaining,
+    total,
   });
 }

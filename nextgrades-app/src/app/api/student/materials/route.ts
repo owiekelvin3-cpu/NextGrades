@@ -73,6 +73,13 @@ export async function GET(request: Request) {
         return {
           ...sanitized,
           subject_name: subjectName(row as { subject?: { name?: string } | { name?: string }[] | null }),
+          class_name: (() => {
+            const cls = (row as { class?: { name?: string } | { name?: string }[] | null }).class;
+            if (!cls) return null;
+            return Array.isArray(cls) ? cls[0]?.name ?? null : cls.name ?? null;
+          })(),
+          content_type: (row as { content_type?: string | null }).content_type ?? null,
+          semester: (row as { semester?: number | null }).semester ?? null,
         };
       });
 

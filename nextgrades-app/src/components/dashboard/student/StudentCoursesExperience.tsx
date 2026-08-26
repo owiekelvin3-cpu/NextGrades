@@ -25,6 +25,7 @@ import { StudentDashboardLayout } from "./StudentDashboardLayout";
 import { studentPanel, subjectInitials, subjectColor, formatTimeRange, st } from "./student-ui";
 import { StudentTabBar } from "./StudentTabBar";
 import { mobile } from "@/lib/mobile/tokens";
+import { OverviewEmptyState } from "@/components/dashboard/overview/OverviewPrimitives";
 import { cn } from "@/lib/utils";
 
 type Tab = "all" | "active" | "completed";
@@ -76,12 +77,16 @@ function CourseCard({ course, locale }: { course: StudentCourseDetail; locale: s
             {initials}
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-lg font-bold text-foreground">{course.subjectName}</p>
+            <p className="text-lg font-bold text-foreground">
+              {[course.subjectName, course.className, course.semester != null ? `${course.semester}. Semester` : null]
+                .filter(Boolean)
+                .join(" · ")}
+            </p>
             {course.teacherName && <p className="text-sm text-text-muted">{course.teacherName}</p>}
             <div className="mt-4 grid gap-4 sm:grid-cols-2">
               <div>
                 <p className="text-xs font-medium uppercase tracking-wide text-text-muted/80">
-                  {t("studentDashboard.progressLabel", { defaultValue: "Progress" })}
+                  {t("studentDashboard.progressLabel", { defaultValue: "Fortschritt" })}
                 </p>
                 <div className="mt-1 flex items-center gap-2">
                   <span className="text-sm font-bold text-[#D4AF37]">{course.progressPercent}%</span>
@@ -91,10 +96,10 @@ function CourseCard({ course, locale }: { course: StudentCourseDetail; locale: s
                 </div>
                 {course.lessonCount > 0 && (
                   <p className="mt-1 text-xs text-text-muted/80">
-                    {t("studentDashboard.unitsCompleted", {
+                    {t("studentDashboard.modulesCompleted", {
                       completed: course.completedLessons,
                       total: course.lessonCount,
-                      defaultValue: `${course.completedLessons} of ${course.lessonCount} units`,
+                      defaultValue: `${course.completedLessons} von ${course.lessonCount} Modulen`,
                     })}
                   </p>
                 )}
@@ -217,9 +222,18 @@ export function StudentCoursesExperience() {
           </div>
 
           {filtered.length === 0 ? (
-            <div className={studentPanel("p-12 text-center")}>
-              <BookOpen className="mx-auto mb-3 h-10 w-10 text-text-muted/60" />
-              <p className="text-sm text-text-muted">{t("studentDashboard.noCourses")}</p>
+            <div className={studentPanel("p-4")}>
+              <OverviewEmptyState
+                icon={BookOpen}
+                title={t("studentDashboard.noCoursesUnlocked", {
+                  defaultValue: "Noch keine Kurse freigeschaltet.",
+                })}
+                description={t("studentDashboard.noCoursesUnlockedDesc", {
+                  defaultValue: "Entdecke unsere Programme und schalte passende Kurse frei.",
+                })}
+                actionHref="/programs"
+                actionLabel={t("studentDashboard.explorePrograms", { defaultValue: "Programme entdecken" })}
+              />
             </div>
           ) : (
             <div className="space-y-4">

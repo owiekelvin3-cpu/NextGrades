@@ -7,7 +7,6 @@ import {
   Clock,
   Video,
   User,
-  MoreHorizontal,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { getDateLocale } from "@/lib/i18n/locales";
@@ -23,7 +22,36 @@ import { StudentTabBar } from "./StudentTabBar";
 import { StudentCalendarConnectModal } from "./StudentCalendarConnectModal";
 import { ZoomMeetingButton } from "@/components/zoom/ZoomMeetingButton";
 import { lessonHasMeetingLink } from "@/lib/meetings/link";
+import { OverviewEmptyState } from "@/components/dashboard/overview/OverviewPrimitives";
 import { cn } from "@/lib/utils";
+
+function lessonStatusLabel(
+  status: string,
+  t: (key: string, opts?: Record<string, string>) => string
+): { label: string; className: string } {
+  if (status === "completed") {
+    return {
+      label: t("studentDashboard.statusCompleted", { defaultValue: "Abgeschlossen" }),
+      className: "bg-emerald-500/15 text-emerald-700",
+    };
+  }
+  if (status === "cancelled" || status === "canceled") {
+    return {
+      label: t("studentDashboard.statusCancelled", { defaultValue: "Abgesagt" }),
+      className: "bg-rose-500/15 text-rose-700",
+    };
+  }
+  if (status === "no_show") {
+    return {
+      label: t("studentDashboard.statusMissed", { defaultValue: "Verpasst" }),
+      className: "bg-amber-500/15 text-amber-800",
+    };
+  }
+  return {
+    label: t("studentDashboard.statusUpcoming", { defaultValue: "Bevorstehend" }),
+    className: "bg-[#D4AF37]/20 text-[#8a6d1a]",
+  };
+}
 
 type Tab = "upcoming" | "past" | "calendar";
 
@@ -103,10 +131,11 @@ export function StudentAppointmentsExperience() {
     return data.upcoming;
   }, [data, tab]);
 
-  const unitsTotal = data?.units?.total ?? 0;
+  const unitsPurchased = data?.units?.purchased ?? data?.units?.total ?? 0;
   const unitsRemaining = data?.units?.remaining ?? 0;
-  const unitsUsed = Math.max(0, unitsTotal - unitsRemaining);
-  const unitsPercent = unitsTotal > 0 ? Math.round((unitsUsed / unitsTotal) * 100) : 0;
+  const unitsCompleted = data?.units?.completed ?? Math.max(0, unitsPurchased - unitsRemaining);
+  const unitsPercent =
+    unitsPurchased > 0 ? Math.round((unitsCompleted / unitsPurchased) * 100) : 0;
 
   if (loading) {
     return (
@@ -177,7 +206,34 @@ export function StudentAppointmentsExperience() {
                 </h2>
               </div>
               {list.length === 0 ? (
-                <p className={cn("px-5 py-12 text-center", st.empty)}>{t("studentDashboard.noAppointments")}</p>
+                <div className="px-5 py-10">
+                  <OverviewEmptyState
+                    title={
+                      tab === "upcoming"
+                        ? t("studentDashboard.noAppointmentsEmptyTitle", {
+                            defaultValue: "Noch keine Termine geplant.",
+                          })
+                        : t("studentDashboard.noPastLessonsTitle", {
+                            defaultValue: "Noch keine vergangenen Stunden.",
+                          })
+                    }
+                    description={
+                      tab === "upcoming"
+                        ? t("studentDashboard.noAppointmentsEmptyDesc", {
+                            defaultValue: "Buche deine erste Stunde oder warte auf die Einladung deiner Lehrkraft.",
+                          })
+                        : t("studentDashboard.noPastLessonsDesc", {
+                            defaultValue: "Abgeschlossene Stunden erscheinen hier nach dem Unterricht.",
+                          })
+                    }
+                    actionHref={tab === "upcoming" ? "/consultation" : undefined}
+                    actionLabel={
+                      tab === "upcoming"
+                        ? t("studentDashboard.bookLessonCta", { defaultValue: "Stunde buchen" })
+                        : undefined
+                    }
+                  />
+                </div>
               ) : (
                 <div className={st.divider}>
                   {list.map((lesson) => {
@@ -199,14 +255,32 @@ export function StudentAppointmentsExperience() {
                             )}
                           </div>
                           <div className="min-w-0">
-                            <p className={cn("font-semibold", st.textPrimary)}>
-                              {lessonDisplayTitle(
-                                lesson,
-                                t("studentDashboard.lessonFallback", { defaultValue: "Lesson" })
-                              )}
-                            </p>
+                            <div className="flex flex-wrap items-center gap-2">
+                              <p className={cn("font-semibold", st.textPrimary)}>
+                                {lessonDisplayTitle(
+                                  lesson,
+                                  t("studentDashboard.lessonFallback", { defaultValue: "Stunde" })
+                                )}
+                              </p>
+                              {(() => {
+                                const badge = lessonStatusLabel(lesson.status, t);
+                                return (
+                                  <span
+                                    className={cn(
+                                      "rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide",
+                                      badge.className
+                                    )}
+                                  >
+                                    {badge.label}
+                                  </span>
+                                );
+                              })()}
+                            </div>
                             <p className={cn("text-sm", st.textMuted)}>{parts.weekday}</p>
                             <div className={cn("mt-1 flex flex-wrap gap-x-3 text-xs", st.textSubtle)}>
+                              {lesson.subject_name && (
+                                <span className="inline-flex items-center gap-1">{lesson.subject_name}</span>
+                              )}
                               {lesson.teacher_name && (
                                 <span className="inline-flex items-center gap-1">
                                   <User className="h-3 w-3" />
@@ -216,7 +290,7 @@ export function StudentAppointmentsExperience() {
                               <span className="inline-flex items-center gap-1">
                                 <Clock className="h-3 w-3" />
                                 {formatTimeRange(lesson.start_time, lesson.duration, locale)} · {lesson.duration}{" "}
-                                {t("studentDashboard.minShort", { defaultValue: "min" })}
+                                {t("studentDashboard.minShort", { defaultValue: "Min." })}
                               </span>
                             </div>
                           </div>
@@ -236,9 +310,6 @@ export function StudentAppointmentsExperience() {
                               })}
                             </p>
                           ) : null}
-                          <button type="button" className={st.iconBtn} aria-label="More">
-                            <MoreHorizontal className="h-4 w-4" />
-                          </button>
                         </div>
                       </div>
                     );
@@ -301,23 +372,35 @@ export function StudentAppointmentsExperience() {
             <h3 className={cn("text-sm font-semibold", st.textPrimary)}>
               {t("studentDashboard.remainingUnits")}
             </h3>
-            <p className={cn("mt-2 text-sm", st.textMuted)}>
-              {data.units
-                ? t("studentDashboard.unitsLeftDesc", {
+            {data.units ? (
+              <>
+                <p className="mt-2 text-3xl font-bold text-[#D4AF37]">{unitsRemaining}</p>
+                <p className={cn("mt-1 text-sm", st.textMuted)}>
+                  {t("studentDashboard.unitsBreakdown", {
+                    defaultValue: "Gekauft {{purchased}} · Absolviert {{completed}} · Übrig {{remaining}}",
+                    purchased: unitsPurchased,
+                    completed: unitsCompleted,
                     remaining: unitsRemaining,
-                    total: unitsTotal,
-                    defaultValue: `${unitsRemaining} of ${unitsTotal} units left`,
-                  })
-                : t("studentDashboard.noUnits")}
-            </p>
-            {data.units && (
-              <div className={cn("mt-3", st.progressTrackMd)}>
-                <div className={st.progressBar} style={{ width: `${unitsPercent}%` }} />
+                  })}
+                </p>
+                <div className={cn("mt-3", st.progressTrackMd)}>
+                  <div className={st.progressBar} style={{ width: `${unitsPercent}%` }} />
+                </div>
+              </>
+            ) : (
+              <div className="mt-3">
+                <OverviewEmptyState
+                  icon={Calendar}
+                  title={t("studentDashboard.noUnitsEmptyTitle", {
+                    defaultValue: "Noch kein Unterrichtspaket aktiv.",
+                  })}
+                  actionHref="/pricing"
+                  actionLabel={t("studentDashboard.bookTutoringCta", {
+                    defaultValue: "Nachhilfe buchen",
+                  })}
+                />
               </div>
             )}
-            <Link href="/pricing" className="mt-3 inline-flex text-xs font-medium text-[#D4AF37] hover:underline">
-              {t("studentDashboard.viewDetails", { defaultValue: "View details" })}
-            </Link>
           </div>
 
           <div className={cn(studentPanel("p-5"), "hidden lg:block")}>

@@ -156,13 +156,30 @@ export async function fetchTeacherLessons(teacherId: string): Promise<DashboardL
   return mapLessons(data);
 }
 
-export async function fetchStudentUnits(studentId: string): Promise<{ total: number; remaining: number } | null> {
+export async function fetchStudentUnits(
+  studentId: string
+): Promise<{ total: number; remaining: number; purchased: number; completed: number } | null> {
   if (typeof window !== "undefined") {
     try {
       const res = await fetch("/api/student/units");
       if (res.ok) {
-        const json = (await res.json()) as { total?: number; remaining?: number };
-        return { total: json.total ?? 0, remaining: json.remaining ?? 0 };
+        const json = (await res.json()) as {
+          hasPackage?: boolean;
+          total?: number;
+          remaining?: number;
+          purchased?: number;
+          completed?: number;
+        };
+        if (json.hasPackage === false) return null;
+        const total = json.purchased ?? json.total ?? 0;
+        const remaining = json.remaining ?? 0;
+        if (total <= 0 && remaining <= 0) return null;
+        return {
+          total,
+          remaining,
+          purchased: total,
+          completed: json.completed ?? Math.max(0, total - remaining),
+        };
       }
     } catch {
       /* fall through to direct read */
@@ -178,7 +195,15 @@ export async function fetchStudentUnits(studentId: string): Promise<{ total: num
     .maybeSingle();
 
   if (error || !data) return null;
-  return { total: data.total_units ?? 0, remaining: data.remaining_units ?? 0 };
+  const total = data.total_units ?? 0;
+  const remaining = data.remaining_units ?? 0;
+  if (total <= 0 && remaining <= 0) return null;
+  return {
+    total,
+    remaining,
+    purchased: total,
+    completed: Math.max(0, total - remaining),
+  };
 }
 
 export async function fetchStudentEnrollments(studentId: string): Promise<StudentEnrollment[]> {

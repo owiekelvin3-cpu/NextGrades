@@ -79,11 +79,12 @@ export function BibliothekFilterSidebar({
   };
 
   const materialDefaults = [
-    "Arbeitsblätter & Übungen",
+    "PDFs",
+    "Arbeitsblätter",
+    "Videos",
     "Zusammenfassungen",
-    "Guides & Lernpläne",
-    "Erklärvideos",
     "Formelsammlungen",
+    "Prüfungsvorbereitung",
   ];
 
   return (
