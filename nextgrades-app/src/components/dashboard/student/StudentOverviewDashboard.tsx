@@ -216,11 +216,9 @@ export function StudentOverviewDashboard() {
               icon={ListChecks}
               accent="violet"
               footer={
-                <p className={cn("text-xs", st.textMuted)}>
-                  {data.openTaskCount === 0
-                    ? t("studentDashboard.noOpenTasks")
-                    : t("studentDashboard.tasksWaitingDesc", { defaultValue: "Tasks waiting for you" })}
-                </p>
+                data.openTaskCount === 0 ? (
+                  <p className={cn("text-xs", st.textMuted)}>{t("studentDashboard.noOpenTasks")}</p>
+                ) : null
               }
             />
           </StudentKpiStrip>
