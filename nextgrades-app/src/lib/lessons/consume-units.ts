@@ -40,7 +40,7 @@ export function lessonShouldConsumeUnit(
   return Number.isFinite(end) && end <= now;
 }
 
-async function decrementStudentUnit(db: SupabaseClient, studentId: string): Promise<void> {
+export async function decrementStudentUnit(db: SupabaseClient, studentId: string): Promise<void> {
   const { data: units } = await db
     .from("user_units")
     .select("remaining_units, total_units")

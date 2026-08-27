@@ -6,9 +6,11 @@ import { useTranslation } from "react-i18next";
 import {
   LayoutDashboard,
   Users,
+  Layers,
   CalendarDays,
-  CreditCard,
+  DollarSign,
   Rocket,
+  ClipboardList,
   Sparkles,
   FolderOpen,
   Settings,
@@ -29,8 +31,10 @@ export type TeacherNavItem = {
 export const teacherNavItems: TeacherNavItem[] = [
   { href: "/dashboard/teacher", icon: LayoutDashboard, labelKey: "teacherDashboard.nav.dashboard" },
   { href: "/dashboard/teacher/students", icon: Users, labelKey: "teacherDashboard.nav.students", matchPrefix: true },
+  { href: "/dashboard/teacher/groups", icon: Layers, labelKey: "teacherDashboard.nav.groups", matchPrefix: true },
   { href: "/dashboard/teacher/schedule", icon: CalendarDays, labelKey: "teacherDashboard.nav.schedule", matchPrefix: true },
-  { href: "/dashboard/teacher/payments", icon: CreditCard, labelKey: "teacherDashboard.nav.payments" },
+  { href: "/dashboard/teacher/assignments", icon: ClipboardList, labelKey: "teacherDashboard.nav.assignments", matchPrefix: true },
+  { href: "/dashboard/teacher/payments", icon: DollarSign, labelKey: "teacherDashboard.nav.earnings" },
   { href: "/dashboard/teacher/earnings", icon: Rocket, labelKey: "teacherDashboard.nav.nextJumpBonus" },
   {
     href: "/dashboard/chat",

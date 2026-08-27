@@ -36,6 +36,11 @@ function defaultScheduleValues() {
   };
 }
 
+function isScheduleInPast(date: string, startTime: string): boolean {
+  const combined = new Date(`${date}T${startTime}`);
+  return !Number.isNaN(combined.getTime()) && combined.getTime() <= Date.now();
+}
+
 type Props = {
   onCreated?: () => void;
   zoomReady?: boolean;
@@ -62,6 +67,7 @@ export function CreateLiveClassForm({
   const [loading, setLoading] = useState(false);
   const [showMore, setShowMore] = useState(false);
   const [showAutoZoom, setShowAutoZoom] = useState(false);
+  const [schedulePastError, setSchedulePastError] = useState<string | null>(null);
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -146,8 +152,44 @@ export function CreateLiveClassForm({
     return body;
   };
 
+  const assertScheduleNotInPast = (): boolean => {
+    if (!form.date || !form.startTime) {
+      toast.error(
+        t("zoom.scheduleRequired", {
+          defaultValue: "Bitte Datum und Uhrzeit wählen.",
+        })
+      );
+      return false;
+    }
+    const start = new Date(`${form.date}T${form.startTime}`);
+    if (Number.isNaN(start.getTime()) || start.getTime() <= Date.now()) {
+      toast.error(
+        t("zoom.scheduleMustBeFuture", {
+          defaultValue: "Der Termin darf nicht in der Vergangenheit liegen.",
+        })
+      );
+      return false;
+    }
+    return true;
+  };
+
+  const validateScheduleTime = (): boolean => {
+    if (isScheduleInPast(form.date, form.startTime)) {
+      const message = t("zoom.scheduleInPast", {
+        defaultValue: "Termin liegt in der Vergangenheit. Bitte wähle ein zukünftiges Datum und eine Uhrzeit.",
+      });
+      setSchedulePastError(message);
+      toast.error(message);
+      return false;
+    }
+    setSchedulePastError(null);
+    return true;
+  };
+
   const handlePasteLinkSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validateScheduleTime()) return;
+    if (!assertScheduleNotInPast()) return;
     if (!form.studentId) {
       toast.error(
         t("zoom.selectStudentRequired", {
@@ -230,6 +272,8 @@ export function CreateLiveClassForm({
 
   const handleAutoZoomSubmit = async () => {
     if (!zoomReady) return;
+    if (!validateScheduleTime()) return;
+    if (!assertScheduleNotInPast()) return;
     if (!form.studentId && !form.subjectId) {
       toast.error(
         t("zoom.selectStudentOrSubject", {
@@ -338,8 +382,9 @@ export function CreateLiveClassForm({
             {studentsError && <p className="mt-1.5 text-xs text-red-600">{studentsError}</p>}
             {!studentsLoading && students.length === 0 && !studentsError && (
               <p className="mt-1.5 text-xs text-amber-700">
-                {t("zoom.noStudentsYet", {
-                  defaultValue: "No students found yet. Add a student account first.",
+                {t("zoom.noAssignedStudents", {
+                  defaultValue:
+                    "Noch keine SchülerInnen zugewiesen. Die Verwaltung weist dir SchülerInnen zu.",
                 })}
               </p>
             )}
@@ -376,7 +421,10 @@ export function CreateLiveClassForm({
                 type="date"
                 min={formatLocalYmd()}
                 value={form.date}
-                onChange={(e) => setForm({ ...form, date: e.target.value })}
+                onChange={(e) => {
+                  setForm({ ...form, date: e.target.value });
+                  setSchedulePastError(null);
+                }}
                 className={cn(inputCls, "pl-10")}
               />
             </div>
@@ -386,11 +434,15 @@ export function CreateLiveClassForm({
                 required
                 type="time"
                 value={form.startTime}
-                onChange={(e) => setForm({ ...form, startTime: e.target.value })}
+                onChange={(e) => {
+                  setForm({ ...form, startTime: e.target.value });
+                  setSchedulePastError(null);
+                }}
                 className={cn(inputCls, "pl-10")}
               />
             </div>
           </div>
+          {schedulePastError && <p className="mt-2 text-xs text-red-600">{schedulePastError}</p>}
           <div className="mt-3">
             <p className="mb-2 text-xs text-gray-500">{t("zoom.duration", { defaultValue: "Duration (minutes)" })}</p>
             <div className="flex flex-wrap gap-2">

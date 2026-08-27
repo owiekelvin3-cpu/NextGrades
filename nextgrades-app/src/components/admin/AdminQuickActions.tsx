@@ -14,6 +14,7 @@ type Props = {
 
 const PRIMARY_HREFS = [
   "/portal/admin/users",
+  "/portal/admin/teacher-assignments",
   "/portal/admin/resource-access",
   "/portal/admin/cms",
   "/portal/admin/moderation",

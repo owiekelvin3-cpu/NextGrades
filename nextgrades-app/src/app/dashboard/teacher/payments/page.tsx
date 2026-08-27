@@ -1,7 +1,8 @@
 "use client";
 
-import { TeacherPaymentsExperience } from "@/components/dashboard/teacher/TeacherPaymentsExperience";
+import { TeacherEarningsExperience } from "@/components/dashboard/teacher/TeacherEarningsExperience";
 
+/** Earnings overview — replaces legacy TeacherPaymentsExperience (Stripe/customer data). */
 export default function TeacherPaymentsPage() {
-  return <TeacherPaymentsExperience />;
+  return <TeacherEarningsExperience />;
 }

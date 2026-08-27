@@ -1,84 +1,158 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import Link from "next/link";
-import {
-  Search,
-  SlidersHorizontal,
-  Plus,
-  Video,
-  Mail,
-  Phone,
-  FileText,
-  Download,
-  Pin,
-  MoreHorizontal,
-  ChevronLeft,
-} from "lucide-react";
+import { Search, ChevronLeft, Calendar, BookOpen, Target } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { getDateLocale } from "@/lib/i18n/locales";
 import { Button } from "@/components/ui/Button";
-import { Badge } from "@/components/ui/Badge";
 import { LoadingBlock } from "@/components/dashboard/LoadingBlock";
+import { OverviewEmptyState } from "@/components/dashboard/overview/OverviewPrimitives";
 import { TeacherDashboardLayout } from "./TeacherDashboardLayout";
-import { ZoomMeetingButton } from "@/components/zoom/ZoomMeetingButton";
 import {
   TEACHER_AVATAR_COLORS,
-  formatTeacherEuro,
   studentInitials,
   teacherPanel,
   tt,
 } from "./teacher-ui";
 import { cn } from "@/lib/utils";
-import {
-  fetchTeacherOverviewData,
-  type TeacherOverviewData,
-  type TeacherStudentOverview,
-} from "@/lib/dashboard/teacher-overview";
 
-type TabId = "overview" | "appointments" | "progress" | "payments" | "materials" | "notes";
+type TeacherStudentRow = {
+  assignmentId: string;
+  studentId: string;
+  name: string;
+  subject: { id: string; name: string } | null;
+  class: { id: string; name: string; level: number | null } | null;
+  learningGoal: string | null;
+  nextLesson: {
+    id: string;
+    startTime: string;
+    title: string | null;
+    status: string;
+  } | null;
+  completedLessons: number;
+  remainingCredits: number;
+  openAssignments: number;
+  progressPercent: number;
+  notesPreview: string | null;
+};
 
-const TABS: { id: TabId; labelKey: string }[] = [
-  { id: "overview", labelKey: "teacherDashboard.tabs.overview" },
-  { id: "appointments", labelKey: "teacherDashboard.tabs.appointments" },
-  { id: "progress", labelKey: "teacherDashboard.tabs.progress" },
-  { id: "payments", labelKey: "teacherDashboard.tabs.payments" },
-  { id: "materials", labelKey: "teacherDashboard.tabs.materials" },
-  { id: "notes", labelKey: "teacherDashboard.tabs.notes" },
-];
+async function fetchAssignedStudents(): Promise<TeacherStudentRow[]> {
+  const res = await fetch("/api/teacher/students", { credentials: "include" });
+  if (res.status === 401 || res.status === 403) return [];
+  if (!res.ok) throw new Error("Failed to load students");
+  const json = (await res.json()) as { students?: TeacherStudentRow[] };
+  return json.students ?? [];
+}
 
-function formatTimeRange(start: string, durationMin: number, locale: string) {
-  const s = new Date(start);
-  const e = new Date(s.getTime() + durationMin * 60 * 1000);
-  const fmt = (d: Date) => d.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit" });
-  return `${fmt(s)} – ${fmt(e)}`;
+function truncate(text: string | null | undefined, max = 48) {
+  if (!text) return "—";
+  const trimmed = text.trim();
+  if (trimmed.length <= max) return trimmed;
+  return `${trimmed.slice(0, max - 1)}…`;
+}
+
+function formatClassLabel(
+  cls: TeacherStudentRow["class"],
+  t: (key: string, opts?: { defaultValue?: string }) => string
+) {
+  if (!cls) return "—";
+  if (cls.level != null) {
+    return `${cls.name} (${t("teacherDashboard.gradeLevelShort", { defaultValue: "Stufe" })} ${cls.level})`;
+  }
+  return cls.name;
+}
+
+function formatNextLesson(
+  lesson: TeacherStudentRow["nextLesson"],
+  locale: string,
+  t: (key: string, opts?: { defaultValue?: string }) => string
+) {
+  if (!lesson) return "—";
+  const start = new Date(lesson.startTime);
+  const date = start.toLocaleDateString(locale, { weekday: "short", day: "numeric", month: "short" });
+  const time = start.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit" });
+  const title = lesson.title?.trim();
+  return title ? `${date}, ${time} · ${title}` : `${date}, ${time}`;
+}
+
+function DetailField({ label, value }: { label: string; value: ReactNode }) {
+  return (
+    <div className="rounded-xl bg-surface-subtle px-4 py-3">
+      <p className="text-xs font-medium text-text-muted">{label}</p>
+      <p className="mt-1 text-sm font-medium text-foreground">{value}</p>
+    </div>
+  );
 }
 
 function StudentDetailPanel({
   student,
-  data,
   locale,
   onBack,
+  onNotesSaved,
 }: {
-  student: TeacherStudentOverview;
-  data: TeacherOverviewData;
+  student: TeacherStudentRow;
   locale: string;
   onBack?: () => void;
+  onNotesSaved: (studentId: string, preview: string) => void;
 }) {
   const { t } = useTranslation();
-  const [activeTab, setActiveTab] = useState<TabId>("overview");
+  const [notesBody, setNotesBody] = useState(student.notesPreview ?? "");
+  const [notesLoading, setNotesLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [saveMessage, setSaveMessage] = useState<string | null>(null);
 
-  const studentLessons = data.upcomingLessons.filter((l) => l.student_id === student.id);
-  const bookedHours = student.totalHours;
-  const targetHours = Math.max(20, Math.ceil(bookedHours / 5) * 5);
-  const remainingHours = Math.max(0, targetHours - bookedHours);
-  const progressPct = Math.min(100, Math.round((bookedHours / targetHours) * 100));
+  useEffect(() => {
+    let cancelled = false;
+    setNotesLoading(true);
+    setSaveMessage(null);
+    setNotesBody(student.notesPreview ?? "");
 
-  const lastPayment = data.recentPayments.find((p) => p.studentName === student.name);
+    fetch(`/api/teacher/students/${student.studentId}/notes`, { credentials: "include" })
+      .then(async (res) => {
+        if (!res.ok) return null;
+        return (await res.json()) as { body?: string | null };
+      })
+      .then((data) => {
+        if (cancelled) return;
+        if (data?.body != null) setNotesBody(data.body);
+      })
+      .finally(() => {
+        if (!cancelled) setNotesLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [student.studentId, student.notesPreview]);
+
+  const handleSaveNotes = useCallback(async () => {
+    setSaving(true);
+    setSaveMessage(null);
+    try {
+      const res = await fetch(`/api/teacher/students/${student.studentId}/notes`, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ body: notesBody }),
+      });
+      if (!res.ok) {
+        const err = (await res.json().catch(() => ({}))) as { error?: string };
+        throw new Error(err.error || "Save failed");
+      }
+      const preview =
+        notesBody.trim().length > 160 ? `${notesBody.trim().slice(0, 157)}…` : notesBody.trim();
+      onNotesSaved(student.studentId, preview);
+      setSaveMessage(t("teacherDashboard.notesSaved", { defaultValue: "Notizen gespeichert." }));
+    } catch {
+      setSaveMessage(t("teacherDashboard.notesSaveFailed", { defaultValue: "Speichern fehlgeschlagen." }));
+    } finally {
+      setSaving(false);
+    }
+  }, [notesBody, onNotesSaved, student.studentId, t]);
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      {/* Profile header */}
       <div className="border-b border-border-default px-4 py-4 sm:px-6 sm:py-5">
         {onBack && (
           <button
@@ -87,7 +161,7 @@ function StudentDetailPanel({
             className="mb-3 inline-flex items-center gap-1.5 text-sm font-medium text-[#D4AF37] md:hidden"
           >
             <ChevronLeft className="h-4 w-4" />
-            {t("common.back", { defaultValue: "Back" })}
+            {t("common.back", { defaultValue: "Zurück" })}
           </button>
         )}
         <div className="flex flex-wrap items-start justify-between gap-4">
@@ -99,323 +173,149 @@ function StudentDetailPanel({
               {studentInitials(student.name)}
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <h2 className="text-lg font-bold text-foreground">{student.name}</h2>
-                <Badge variant="success">{t("teacherDashboard.statusActive")}</Badge>
-              </div>
-              <p className="text-sm text-text-muted">{student.subject}</p>
-              <div className="mt-2 flex flex-wrap gap-4 text-xs text-text-muted">
-                <span className="inline-flex items-center gap-1">
-                  <Mail className="h-3.5 w-3.5" />
-                  {student.name.toLowerCase().replace(/\s+/g, ".")}@example.com
-                </span>
-                <span className="inline-flex items-center gap-1">
-                  <Phone className="h-3.5 w-3.5" />
-                  +49 ··· ···
-                </span>
-              </div>
+              <h2 className="text-lg font-bold text-foreground">{student.name}</h2>
+              <p className="text-sm text-text-muted">{student.subject?.name ?? "—"}</p>
             </div>
           </div>
-          <Button variant="outline" size="sm" href={`/dashboard/teacher/schedule?student=${student.id}`}>
-            {t("teacherDashboard.createForStudent")}
+          <Button variant="gold" size="sm" href={`/dashboard/teacher/schedule?student=${student.studentId}`}>
+            {t("teacherDashboard.scheduleLesson", { defaultValue: "Stunde planen" })}
           </Button>
         </div>
 
-        {/* Quick stats */}
-        <div className="mt-5 grid gap-3 sm:grid-cols-3">
-          <div className="rounded-xl bg-surface-subtle px-4 py-3">
-            <p className="text-xs text-text-muted">{t("teacherDashboard.hoursBooked")}</p>
-            <p className="text-lg font-bold text-foreground">
-              {bookedHours} / {targetHours}h
-            </p>
+        <div className="mt-5">
+          <div className="mb-2 flex items-center justify-between text-xs text-text-muted">
+            <span>{t("teacherDashboard.progressPercent", { defaultValue: "Fortschritt" })}</span>
+            <span className="font-semibold text-foreground">{student.progressPercent}%</span>
           </div>
-          <div className="rounded-xl bg-surface-subtle px-4 py-3">
-            <p className="text-xs text-text-muted">{t("teacherDashboard.hoursRemaining")}</p>
-            <p className="text-lg font-bold text-foreground">{remainingHours}h</p>
+          <div className={tt.progressTrack}>
+            <div
+              className="h-full rounded-full bg-gradient-to-r from-[#D4AF37] to-[#22C55E] transition-all"
+              style={{ width: `${Math.min(100, student.progressPercent)}%` }}
+            />
           </div>
-          <div className="rounded-xl bg-surface-subtle px-4 py-3">
-            <p className="text-xs text-text-muted">{t("teacherDashboard.progressLabel")}</p>
-            <div className="mt-1 flex items-center gap-2">
-              <div className="h-2 flex-1 overflow-hidden rounded-full bg-surface-subtle">
-                <div className="h-full rounded-full bg-green-500" style={{ width: `${progressPct}%` }} />
-              </div>
-              <span className="text-sm font-bold text-foreground">{progressPct}%</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Tabs */}
-        <div className="mt-5 flex gap-1 overflow-x-auto border-b border-border-default pb-px">
-          {TABS.map((tab) => (
-            <button
-              key={tab.id}
-              type="button"
-              onClick={() => setActiveTab(tab.id)}
-              className={`whitespace-nowrap rounded-t-lg px-4 py-2 text-sm font-medium transition ${
-                activeTab === tab.id
-                  ? "border-b-2 border-[#D4AF37] text-[#D4AF37]"
-                  : "text-text-muted hover:text-foreground"
-              }`}
-            >
-              {t(tab.labelKey)}
-            </button>
-          ))}
         </div>
       </div>
 
-      {/* Tab content + sidebar widgets */}
-      <div className="flex flex-1 flex-col gap-6 p-4 sm:p-6 lg:flex-row">
-        <div className="min-w-0 flex-1 space-y-6">
-          {activeTab === "overview" && (
-            <>
-              <div className={teacherPanel()}>
-                <div className="flex items-center justify-between border-b border-border-default px-5 py-4">
-                  <h3 className="text-sm font-semibold text-foreground">
-                    {t("teacherDashboard.upcomingAppointments")}
-                  </h3>
-                  <Link
-                    href={`/dashboard/teacher/schedule?student=${student.id}`}
-                    className="text-xs font-medium text-[#D4AF37] hover:underline"
-                  >
-                    + {t("teacherDashboard.createNewAppointment")}
-                  </Link>
-                </div>
-                {studentLessons.length === 0 ? (
-                  <p className="px-5 py-8 text-sm text-text-muted">{t("teacherDashboard.noAppointments")}</p>
-                ) : (
-                  <ul className="divide-y divide-border-default">
-                    {studentLessons.map((lesson) => (
-                      <li key={lesson.id} className="flex items-center justify-between gap-3 px-5 py-3.5">
-                        <div>
-                          <p className="text-sm font-medium text-foreground">
-                            {new Date(lesson.start_time).toLocaleDateString(locale, {
-                              weekday: "short",
-                              day: "numeric",
-                              month: "short",
-                            })}
-                            {" · "}
-                            {lesson.subject_name || "-"}
-                          </p>
-                          <p className="text-xs text-text-muted">
-                            {formatTimeRange(lesson.start_time, lesson.duration, locale)} · {lesson.duration} min
-                          </p>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          {(lesson.zoom_meeting_id || lesson.zoom_link) && (
-                            <ZoomMeetingButton lessonId={lesson.id} mode="start" size="sm" />
-                          )}
-                          <button type="button" className={tt.iconBtn}>
-                            <MoreHorizontal className="h-4 w-4" />
-                          </button>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
+      <div className="flex-1 space-y-6 overflow-y-auto p-4 sm:p-6">
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <DetailField
+            label={t("teacherDashboard.colSubject", { defaultValue: "Fach" })}
+            value={student.subject?.name ?? "—"}
+          />
+          <DetailField
+            label={t("teacherDashboard.gradeLevel", { defaultValue: "Klasse / Stufe" })}
+            value={formatClassLabel(student.class, t)}
+          />
+          <DetailField
+            label={t("teacherDashboard.completedLessons", { defaultValue: "Abgeschlossene Stunden" })}
+            value={student.completedLessons}
+          />
+          <DetailField
+            label={t("teacherDashboard.remainingCredits", { defaultValue: "Verbleibende Credits" })}
+            value={student.remainingCredits}
+          />
+          <DetailField
+            label={t("teacherDashboard.openAssignments", { defaultValue: "Offene Aufgaben" })}
+            value={student.openAssignments}
+          />
+          <DetailField
+            label={t("teacherDashboard.nextLesson", { defaultValue: "Nächste Stunde" })}
+            value={formatNextLesson(student.nextLesson, locale, t)}
+          />
+        </div>
 
-              <div className={teacherPanel()}>
-                <div className="border-b border-border-default px-5 py-4">
-                  <h3 className="text-sm font-semibold text-foreground">{t("teacherDashboard.availableMaterials")}</h3>
-                </div>
-                <div className="grid grid-cols-2 gap-3 p-5 sm:grid-cols-3">
-                  {["PDF", "Excel", "Video"].map((type) => (
-                    <div
-                      key={type}
-                      className="flex flex-col items-center rounded-xl border border-border-default bg-surface-subtle p-4 text-center"
-                    >
-                      <FileText className="h-8 w-8 text-text-muted" />
-                      <p className="mt-2 text-xs font-medium text-foreground">
-                        {student.subject} - {type}
-                      </p>
-                      <button type="button" className="mt-2 text-[11px] text-[#D4AF37]">
-                        <Download className="mx-auto h-3.5 w-3.5" />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-                <div className="border-t border-border-default px-5 py-3">
-                  <Link href="/dashboard/teacher/content" className="text-xs font-medium text-[#D4AF37] hover:underline">
-                    {t("teacherDashboard.manageContent")}
-                  </Link>
-                </div>
+        {student.learningGoal && (
+          <div className={teacherPanel("p-5")}>
+            <div className="mb-2 flex items-center gap-2">
+              <Target className="h-4 w-4 text-[#D4AF37]" />
+              <h3 className="text-sm font-semibold text-foreground">
+                {t("teacherDashboard.learningGoal", { defaultValue: "Lernziel" })}
+              </h3>
+            </div>
+            <p className="text-sm leading-relaxed text-foreground">{student.learningGoal}</p>
+          </div>
+        )}
+
+        <div className={teacherPanel("p-5")}>
+          <div className="mb-3 flex items-center gap-2">
+            <BookOpen className="h-4 w-4 text-[#D4AF37]" />
+            <h3 className="text-sm font-semibold text-foreground">
+              {t("teacherDashboard.internalNotes", { defaultValue: "Interne Notizen" })}
+            </h3>
+          </div>
+          {notesLoading ? (
+            <p className="text-sm text-text-muted">{t("common.loading", { defaultValue: "Laden…" })}</p>
+          ) : (
+            <>
+              <textarea
+                value={notesBody}
+                onChange={(e) => setNotesBody(e.target.value)}
+                rows={6}
+                placeholder={t("teacherDashboard.internalNotesPlaceholder", {
+                  defaultValue: "Private Notizen zu dieser SchülerIn…",
+                })}
+                className={cn(tt.input, "min-h-[140px] resize-y")}
+              />
+              <div className="mt-3 flex flex-wrap items-center gap-3">
+                <Button variant="gold" size="sm" onClick={handleSaveNotes} disabled={saving || !notesBody.trim()}>
+                  {saving
+                    ? t("common.saving", { defaultValue: "Speichern…" })
+                    : t("teacherDashboard.saveNotes", { defaultValue: "Notizen speichern" })}
+                </Button>
+                {saveMessage && <span className="text-xs text-text-muted">{saveMessage}</span>}
               </div>
             </>
           )}
-
-          {activeTab === "appointments" && (
-            <div className={teacherPanel()}>
-              <div className="flex items-center justify-between border-b border-border-default px-5 py-4">
-                <h3 className="text-sm font-semibold text-foreground">{t("teacherDashboard.allAppointments", { defaultValue: "All appointments" })}</h3>
-                <Link href={`/dashboard/teacher/schedule?student=${student.id}`} className="text-xs font-medium text-[#D4AF37] hover:underline">
-                  + {t("teacherDashboard.createNewAppointment")}
-                </Link>
-              </div>
-              {data.upcomingLessons.filter((l) => l.student_id === student.id).length === 0 ? (
-                <p className="px-5 py-8 text-sm text-text-muted">{t("teacherDashboard.noAppointments")}</p>
-              ) : (
-                <ul className="divide-y divide-gray-50">
-                  {data.upcomingLessons.filter((l) => l.student_id === student.id).map((lesson) => (
-                    <li key={lesson.id} className="flex items-center justify-between gap-3 px-5 py-3.5">
-                      <div>
-                        <p className="text-sm font-medium text-foreground">
-                          {new Date(lesson.start_time).toLocaleDateString(locale, { weekday: "short", day: "numeric", month: "short" })}
-                          {" · "}{lesson.subject_name || "-"}
-                        </p>
-                        <p className="text-xs text-text-muted">
-                          {formatTimeRange(lesson.start_time, lesson.duration, locale)} · {lesson.duration} min
-                          {" · "}
-                          <span className={`capitalize font-medium ${lesson.status === "completed" ? "text-green-600" : "text-blue-500"}`}>
-                            {lesson.status}
-                          </span>
-                        </p>
-                      </div>
-                      {(lesson.zoom_meeting_id || lesson.zoom_link) && (
-                        <ZoomMeetingButton lessonId={lesson.id} mode="start" size="sm" />
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          )}
-
-          {activeTab === "progress" && (
-            <div className={teacherPanel()}>
-              <div className="border-b border-border-default px-5 py-4">
-                <h3 className="text-sm font-semibold text-foreground">{t("teacherDashboard.progressLabel")}</h3>
-              </div>
-              <div className="space-y-5 p-5">
-                <div className="grid gap-3 sm:grid-cols-3">
-                  <div className="rounded-xl bg-surface-subtle px-4 py-3">
-                    <p className="text-xs text-text-muted">{t("teacherDashboard.hoursBooked")}</p>
-                    <p className="text-xl font-bold text-foreground">{bookedHours}h</p>
-                  </div>
-                  <div className="rounded-xl bg-surface-subtle px-4 py-3">
-                    <p className="text-xs text-text-muted">{t("teacherDashboard.completedLessons", { defaultValue: "Completed lessons" })}</p>
-                    <p className="text-xl font-bold text-foreground">{student.lessonCount}</p>
-                  </div>
-                  <div className="rounded-xl bg-surface-subtle px-4 py-3">
-                    <p className="text-xs text-text-muted">{t("teacherDashboard.progressLabel")}</p>
-                    <p className="text-xl font-bold text-green-600">{progressPct}%</p>
-                  </div>
-                </div>
-                <div>
-                  <p className="mb-2 text-xs font-medium text-text-muted">{t("teacherDashboard.overallProgress", { defaultValue: "Overall progress" })}</p>
-                  <div className="h-3 overflow-hidden rounded-full bg-gray-200">
-                    <div className="h-full rounded-full bg-green-500 transition-all" style={{ width: `${progressPct}%` }} />
-                  </div>
-                  <p className="mt-1 text-right text-xs text-text-muted">{progressPct}%</p>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {activeTab === "payments" && (
-            <div className={teacherPanel()}>
-              <div className="border-b border-border-default px-5 py-4">
-                <h3 className="text-sm font-semibold text-foreground">{t("teacherDashboard.tabs.payments")}</h3>
-              </div>
-              {data.recentPayments.filter((p) => p.studentName === student.name).length === 0 ? (
-                <p className="px-5 py-8 text-sm text-text-muted">{t("teacherDashboard.noPayments", { defaultValue: "No payment records yet." })}</p>
-              ) : (
-                <ul className="divide-y divide-gray-50">
-                  {data.recentPayments.filter((p) => p.studentName === student.name).map((p) => (
-                    <li key={p.id} className="flex items-center justify-between gap-3 px-5 py-3.5">
-                      <div>
-                        <p className="text-sm font-medium text-foreground">{formatTeacherEuro(p.amount)}</p>
-                        <p className="text-xs text-text-muted">{new Date(p.date).toLocaleDateString(locale)} · {p.method}</p>
-                      </div>
-                      <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${
-                        p.status === "paid" ? "bg-green-50 text-green-700" : "bg-yellow-50 text-yellow-700"
-                      }`}>
-                        {p.status === "paid" ? t("teacherDashboard.paid") : t("teacherDashboard.pending", { defaultValue: "Pending" })}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          )}
-
-          {activeTab === "materials" && (
-            <div className={teacherPanel()}>
-              <div className="flex items-center justify-between border-b border-border-default px-5 py-4">
-                <h3 className="text-sm font-semibold text-foreground">{t("teacherDashboard.availableMaterials")}</h3>
-                <Link href="/dashboard/teacher/content" className="text-xs font-medium text-[#D4AF37] hover:underline">
-                  {t("teacherDashboard.manageContent")}
-                </Link>
-              </div>
-              <div className="grid grid-cols-2 gap-3 p-5 sm:grid-cols-3">
-                {["PDF", "Excel", "Video"].map((type) => (
-                  <div key={type} className="flex flex-col items-center rounded-xl border border-border-default bg-surface-subtle p-4 text-center">
-                    <FileText className="h-8 w-8 text-text-muted" />
-                    <p className="mt-2 text-xs font-medium text-foreground">{student.subject} - {type}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {activeTab === "notes" && (
-            <div className={teacherPanel()}>
-              <div className="border-b border-border-default px-5 py-4">
-                <h3 className="text-sm font-semibold text-foreground">{t("teacherDashboard.tabs.notes")}</h3>
-              </div>
-              <div className="p-5">
-                <p className="text-sm text-text-muted">{t("teacherDashboard.sampleNote")}</p>
-                <button type="button" className="mt-4 text-xs font-medium text-[#D4AF37] hover:underline">
-                  + {t("teacherDashboard.addNote")}
-                </button>
-              </div>
-            </div>
-          )}
         </div>
+      </div>
+    </div>
+  );
+}
 
-        {/* Right widgets */}
-        <div className="w-full shrink-0 space-y-4 lg:w-64">
-          <div className={teacherPanel("p-5 text-center")}>
-            <p className="text-xs font-medium text-text-muted">{t("teacherDashboard.progressLabel")}</p>
-            <div className="relative mx-auto my-4 flex h-24 w-24 items-center justify-center">
-              <svg className="h-24 w-24 -rotate-90" viewBox="0 0 36 36">
-                <circle cx="18" cy="18" r="15.5" fill="none" stroke="#E5E7EB" strokeWidth="3" />
-                <circle
-                  cx="18"
-                  cy="18"
-                  r="15.5"
-                  fill="none"
-                  stroke="#22C55E"
-                  strokeWidth="3"
-                  strokeDasharray={`${progressPct} 100`}
-                  strokeLinecap="round"
-                />
-              </svg>
-              <span className="absolute text-lg font-bold text-foreground">{progressPct}%</span>
-            </div>
-          </div>
+function StudentMobileCard({
+  student,
+  locale,
+  index,
+  onSelect,
+}: {
+  student: TeacherStudentRow;
+  locale: string;
+  index: number;
+  onSelect: () => void;
+}) {
+  const { t } = useTranslation();
 
-          {lastPayment && (
-            <div className={teacherPanel("p-5")}>
-              <p className="text-xs font-medium text-text-muted">{t("teacherDashboard.lastPayment")}</p>
-              <p className="mt-2 text-xl font-bold text-foreground">{formatTeacherEuro(lastPayment.amount)}</p>
-              <p className="text-xs text-text-muted">{new Date(lastPayment.date).toLocaleDateString(locale)}</p>
-              <Badge variant="success" className="mt-2">
-                {t("teacherDashboard.paid")}
-              </Badge>
-            </div>
-          )}
-
-          <div className={teacherPanel("p-5")}>
-            <div className="flex items-center gap-2">
-              <Pin className="h-4 w-4 text-[#D4AF37]" />
-              <p className="text-xs font-medium text-text-muted">{t("teacherDashboard.tabs.notes")}</p>
-            </div>
-            <p className="mt-3 text-sm text-text-muted">{t("teacherDashboard.sampleNote")}</p>
-            <button type="button" className="mt-3 text-xs font-medium text-[#D4AF37] hover:underline">
-              + {t("teacherDashboard.addNote")}
-            </button>
-          </div>
+  return (
+    <div className={cn(tt.card, "p-4")}>
+      <div className="flex items-start gap-3">
+        <div
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white"
+          style={{ backgroundColor: TEACHER_AVATAR_COLORS[index % TEACHER_AVATAR_COLORS.length] }}
+        >
+          {studentInitials(student.name)}
         </div>
+        <div className="min-w-0 flex-1">
+          <p className="font-semibold text-foreground">{student.name}</p>
+          <p className="text-xs text-text-muted">
+            {student.subject?.name ?? "—"} · {formatClassLabel(student.class, t)}
+          </p>
+          <p className="mt-1 text-xs text-text-muted">
+            {t("teacherDashboard.nextLesson", { defaultValue: "Nächste Stunde" })}:{" "}
+            {formatNextLesson(student.nextLesson, locale, t)}
+          </p>
+          <p className="mt-1 text-xs text-text-muted">
+            {student.progressPercent}% · {student.completedLessons}{" "}
+            {t("teacherDashboard.completedLessonsShort", { defaultValue: "abgeschlossen" })}
+          </p>
+        </div>
+      </div>
+      <div className="mt-4 flex flex-wrap gap-2">
+        <Button variant="outline" size="sm" onClick={onSelect}>
+          {t("teacherDashboard.viewStudent", { defaultValue: "SchülerIn ansehen" })}
+        </Button>
+        <Button variant="gold" size="sm" href={`/dashboard/teacher/schedule?student=${student.studentId}`}>
+          {t("teacherDashboard.scheduleLesson", { defaultValue: "Stunde planen" })}
+        </Button>
       </div>
     </div>
   );
@@ -425,45 +325,43 @@ export function TeacherStudentsExperience() {
   const { t, i18n } = useTranslation();
   const locale = getDateLocale(i18n.language);
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState<TeacherOverviewData | null>(null);
+  const [error, setError] = useState(false);
+  const [students, setStudents] = useState<TeacherStudentRow[]>([]);
   const [search, setSearch] = useState("");
   const [selectedId, setSelectedId] = useState<string | null>(null);
-
   const [mobileShowDetail, setMobileShowDetail] = useState(false);
 
   useEffect(() => {
-    fetchTeacherOverviewData()
-      .then((d) => {
-        setData(d);
-        if (d?.students.length && typeof window !== "undefined" && window.matchMedia("(min-width: 768px)").matches) {
-          setSelectedId(d.students[0].id);
+    fetchAssignedStudents()
+      .then((rows) => {
+        setStudents(rows);
+        if (rows.length && typeof window !== "undefined" && window.matchMedia("(min-width: 1024px)").matches) {
+          setSelectedId(rows[0].studentId);
         }
       })
+      .catch(() => setError(true))
       .finally(() => setLoading(false));
   }, []);
 
   const filtered = useMemo(() => {
-    if (!data) return [];
     const q = search.trim().toLowerCase();
-    if (!q) return data.students;
-    return data.students.filter(
-      (s) => s.name.toLowerCase().includes(q) || s.subject.toLowerCase().includes(q)
+    if (!q) return students;
+    return students.filter(
+      (s) =>
+        s.name.toLowerCase().includes(q) ||
+        (s.subject?.name ?? "").toLowerCase().includes(q) ||
+        (s.class?.name ?? "").toLowerCase().includes(q) ||
+        (s.learningGoal ?? "").toLowerCase().includes(q)
     );
-  }, [data, search]);
+  }, [students, search]);
 
-  const selected = filtered.find((s) => s.id === selectedId) ?? filtered[0] ?? null;
+  const selected = filtered.find((s) => s.studentId === selectedId) ?? filtered[0] ?? null;
 
-  const headerActions = (
-    <div className="flex flex-wrap gap-2">
-      <Button variant="outline" size="md">
-        {t("teacherDashboard.export")}
-      </Button>
-      <Button variant="gold" size="md" href="/consultation">
-        <Plus className="mr-2 h-4 w-4" />
-        {t("teacherDashboard.addNewStudent")}
-      </Button>
-    </div>
-  );
+  const handleNotesSaved = useCallback((studentId: string, preview: string) => {
+    setStudents((prev) =>
+      prev.map((s) => (s.studentId === studentId ? { ...s, notesPreview: preview || null } : s))
+    );
+  }, []);
 
   if (loading) {
     return (
@@ -473,26 +371,32 @@ export function TeacherStudentsExperience() {
     );
   }
 
-  if (!data) {
+  if (error) {
     return (
       <TeacherDashboardLayout title={t("teacherDashboard.nav.students")}>
         <div className={`${teacherPanel()} p-10 text-center text-text-muted`}>
-          {t("teacherDashboard.signInRequired")}
+          {t("teacherDashboard.loadFailed", { defaultValue: "SchülerInnen konnten nicht geladen werden." })}
         </div>
       </TeacherDashboardLayout>
     );
   }
 
-  if (data.students.length === 0) {
+  if (students.length === 0) {
     return (
       <TeacherDashboardLayout
         title={t("teacherDashboard.nav.students")}
         description={t("teacherDashboard.studentsSubtitle")}
-        topRightAction={headerActions}
       >
-        <div className={`${teacherPanel()} p-12 text-center`}>
-          <p className="text-text-muted">{t("teacherDashboard.noStudents")}</p>
-          <p className="mt-2 text-sm text-text-muted">{t("teacherDashboard.planWithStudents")}</p>
+        <div className={teacherPanel()}>
+          <OverviewEmptyState
+            icon={Calendar}
+            title={t("teacherDashboard.noAssignedStudents", {
+              defaultValue: "Noch keine SchülerInnen zugewiesen.",
+            })}
+            description={t("teacherDashboard.assignedByAdminHint", {
+              defaultValue: "Die Verwaltung weist dir SchülerInnen zu.",
+            })}
+          />
         </div>
       </TeacherDashboardLayout>
     );
@@ -502,85 +406,140 @@ export function TeacherStudentsExperience() {
     <TeacherDashboardLayout
       title={t("teacherDashboard.nav.students")}
       description={t("teacherDashboard.studentsSubtitle")}
-      topRightAction={headerActions}
-      headerAction={<div className="sm:hidden">{headerActions}</div>}
     >
-      <div className={cn(teacherPanel(), "flex min-h-0 flex-col overflow-hidden md:min-h-[600px] md:flex-row")}>
+      <div className={cn(teacherPanel(), "flex min-h-0 flex-col overflow-hidden lg:min-h-[640px] lg:flex-row")}>
         <div
           className={cn(
-            "w-full shrink-0 border-border-default md:w-72 md:border-r lg:w-80",
-            mobileShowDetail && "hidden md:block"
+            "flex min-h-0 w-full shrink-0 flex-col border-border-default lg:w-[58%] lg:border-r xl:w-[62%]",
+            mobileShowDetail && "hidden lg:flex"
           )}
         >
           <div className="border-b border-border-default p-4">
-            <div className="flex gap-2">
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted" />
-                <input
-                  type="search"
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  placeholder={t("teacherDashboard.searchStudents")}
-                  className={cn(tt.input, "py-2 pl-9 pr-3")}
-                />
-              </div>
-              <button type="button" className={cn(tt.iconBtn, "border border-input-border px-2.5")}>
-                <SlidersHorizontal className="h-4 w-4" />
-              </button>
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted" />
+              <input
+                type="search"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder={t("teacherDashboard.searchStudents")}
+                className={cn(tt.input, "py-2 pl-9 pr-3")}
+              />
             </div>
           </div>
-          <ul className="max-h-none divide-y divide-border-default overflow-y-auto md:max-h-[520px]">
+
+          {/* Desktop table */}
+          <div className="hidden flex-1 overflow-auto lg:block">
+            <table className="w-full min-w-[960px] text-left text-sm">
+              <thead className={tt.tableHead}>
+                <tr>
+                  <th className="px-4 py-3">{t("teacherDashboard.colStudent")}</th>
+                  <th className="px-3 py-3">{t("teacherDashboard.colSubject")}</th>
+                  <th className="px-3 py-3">{t("teacherDashboard.gradeLevel", { defaultValue: "Klasse / Stufe" })}</th>
+                  <th className="px-3 py-3">{t("teacherDashboard.learningGoal", { defaultValue: "Lernziel" })}</th>
+                  <th className="px-3 py-3">{t("teacherDashboard.nextLesson")}</th>
+                  <th className="px-3 py-3">{t("teacherDashboard.completedLessons", { defaultValue: "Abgeschlossen" })}</th>
+                  <th className="px-3 py-3">{t("teacherDashboard.remainingCredits", { defaultValue: "Credits" })}</th>
+                  <th className="px-3 py-3">{t("teacherDashboard.openAssignments", { defaultValue: "Offen" })}</th>
+                  <th className="px-3 py-3">{t("teacherDashboard.progressPercent", { defaultValue: "Fortschritt" })}</th>
+                  <th className="px-3 py-3">{t("teacherDashboard.notesPreview", { defaultValue: "Notizen" })}</th>
+                  <th className="px-4 py-3">{t("teacherDashboard.colAction")}</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border-default">
+                {filtered.map((student, i) => {
+                  const isSelected = selected?.studentId === student.studentId;
+                  return (
+                    <tr
+                      key={student.assignmentId}
+                      className={cn(tt.tableRow, isSelected && "bg-[var(--brand-gold-muted)]")}
+                    >
+                      <td className="px-4 py-3">
+                        <div className="flex items-center gap-2">
+                          <div
+                            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[10px] font-bold text-white"
+                            style={{
+                              backgroundColor: TEACHER_AVATAR_COLORS[i % TEACHER_AVATAR_COLORS.length],
+                            }}
+                          >
+                            {studentInitials(student.name)}
+                          </div>
+                          <span className="font-medium text-foreground">{student.name}</span>
+                        </div>
+                      </td>
+                      <td className="px-3 py-3 text-text-muted">{student.subject?.name ?? "—"}</td>
+                      <td className="px-3 py-3 text-text-muted">{formatClassLabel(student.class, t)}</td>
+                      <td className="max-w-[140px] px-3 py-3 text-text-muted">{truncate(student.learningGoal, 40)}</td>
+                      <td className="max-w-[160px] px-3 py-3 text-text-muted">
+                        {formatNextLesson(student.nextLesson, locale, t)}
+                      </td>
+                      <td className="px-3 py-3 text-text-muted">{student.completedLessons}</td>
+                      <td className="px-3 py-3 text-text-muted">{student.remainingCredits}</td>
+                      <td className="px-3 py-3 text-text-muted">{student.openAssignments}</td>
+                      <td className="px-3 py-3 font-medium text-foreground">{student.progressPercent}%</td>
+                      <td className="max-w-[140px] px-3 py-3 text-text-muted">{truncate(student.notesPreview, 36)}</td>
+                      <td className="px-4 py-3">
+                        <div className="flex flex-col gap-1.5">
+                          <button
+                            type="button"
+                            onClick={() => setSelectedId(student.studentId)}
+                            className="text-left text-xs font-semibold text-[#D4AF37] hover:underline"
+                          >
+                            {t("teacherDashboard.viewStudent", { defaultValue: "SchülerIn ansehen" })}
+                          </button>
+                          <Link
+                            href={`/dashboard/teacher/schedule?student=${student.studentId}`}
+                            className="text-xs font-semibold text-[#D4AF37] hover:underline"
+                          >
+                            {t("teacherDashboard.scheduleLesson", { defaultValue: "Stunde planen" })}
+                          </Link>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+            {filtered.length === 0 && (
+              <p className="px-4 py-10 text-center text-sm text-text-muted">
+                {t("teacherDashboard.noSearchResults", { defaultValue: "Keine Treffer." })}
+              </p>
+            )}
+          </div>
+
+          {/* Mobile list */}
+          <div className="space-y-3 p-4 lg:hidden">
             {filtered.map((student, i) => (
-              <li key={student.id}>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setSelectedId(student.id);
-                    setMobileShowDetail(true);
-                  }}
-                  className={cn(
-                    "flex w-full items-center gap-3 px-4 py-3.5 text-left transition active:bg-[var(--table-row-hover)]",
-                    selected?.id === student.id
-                      ? "border-l-2 border-[#D4AF37] bg-[var(--brand-gold-muted)]"
-                      : "hover:bg-[var(--table-row-hover)]"
-                  )}
-                >
-                  <div
-                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white"
-                    style={{ backgroundColor: TEACHER_AVATAR_COLORS[i % TEACHER_AVATAR_COLORS.length] }}
-                  >
-                    {studentInitials(student.name)}
-                  </div>
-                  <div className="min-w-0">
-                    <p className="truncate text-sm font-medium text-foreground">{student.name}</p>
-                    <p className="truncate text-xs text-text-muted">
-                      {student.subject} · {student.totalHours}h
-                    </p>
-                  </div>
-                </button>
-              </li>
+              <StudentMobileCard
+                key={student.assignmentId}
+                student={student}
+                locale={locale}
+                index={i}
+                onSelect={() => {
+                  setSelectedId(student.studentId);
+                  setMobileShowDetail(true);
+                }}
+              />
             ))}
-          </ul>
-          <div className="border-t border-border-default p-4">
-            <Link href="/consultation" className="inline-flex items-center gap-1 text-xs font-medium text-[#D4AF37] hover:underline">
-              <Plus className="h-3.5 w-3.5" />
-              {t("teacherDashboard.addNewStudent")}
-            </Link>
+            {filtered.length === 0 && (
+              <p className="py-8 text-center text-sm text-text-muted">
+                {t("teacherDashboard.noSearchResults", { defaultValue: "Keine Treffer." })}
+              </p>
+            )}
           </div>
         </div>
 
         {selected ? (
-          <div className={cn("flex min-h-0 min-w-0 flex-1 flex-col", !mobileShowDetail && "hidden md:flex")}>
+          <div className={cn("flex min-h-0 min-w-0 flex-1 flex-col", !mobileShowDetail && "hidden lg:flex")}>
             <StudentDetailPanel
               student={selected}
-              data={data}
               locale={locale}
               onBack={() => setMobileShowDetail(false)}
+              onNotesSaved={handleNotesSaved}
             />
           </div>
         ) : (
-          <div className="flex flex-1 items-center justify-center p-8 text-center text-sm text-text-muted md:hidden">
-            {t("teacherDashboard.selectStudent", { defaultValue: "Select a student to view details" })}
+          <div className="hidden flex-1 items-center justify-center p-8 text-center text-sm text-text-muted lg:flex">
+            {t("teacherDashboard.selectStudent", { defaultValue: "SchülerIn auswählen, um Details zu sehen" })}
           </div>
         )}
       </div>

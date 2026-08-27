@@ -1,4 +1,8 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import {
+  isStudentAssignedToTeacher,
+  listAssignedStudentIds,
+} from "@/lib/teachers/assignments";
 
 async function isActiveStudent(
   db: SupabaseClient,
@@ -14,14 +18,18 @@ async function isActiveStudent(
   return data.is_active !== false;
 }
 
-/** Students a teacher may invite to a live class or webinar. */
+/** Students a teacher may invite — only admin-assigned active students. */
 export async function listEligibleStudentsForTeacher(
   db: SupabaseClient,
-  _teacherId: string
+  teacherId: string
 ): Promise<{ id: string; name: string; remainingUnits: number; totalUnits: number }[]> {
+  const assignedIds = await listAssignedStudentIds(db, teacherId);
+  if (!assignedIds.length) return [];
+
   const { data: profiles } = await db
     .from("profiles")
     .select("id, full_name, is_active")
+    .in("id", assignedIds)
     .eq("role", "student")
     .order("full_name");
 
@@ -55,10 +63,11 @@ export async function listEligibleStudentsForTeacher(
 
 export async function isStudentEligibleForTeacher(
   db: SupabaseClient,
-  _teacherId: string,
+  teacherId: string,
   studentId: string
 ): Promise<boolean> {
-  return isActiveStudent(db, studentId);
+  if (!(await isActiveStudent(db, studentId))) return false;
+  return isStudentAssignedToTeacher(db, teacherId, studentId);
 }
 
 export async function resolveTargetStudentIds(

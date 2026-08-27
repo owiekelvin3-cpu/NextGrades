@@ -4,14 +4,12 @@ import { useEffect, useState, Suspense } from "react";
 import Link from "next/link";
 import {
   Calendar,
-  Clock,
   Video,
   Users,
   Euro,
   Rocket,
   Plus,
   Sparkles,
-  TrendingUp,
   Bell,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -38,6 +36,10 @@ import {
   OverviewEmptyState,
 } from "@/components/dashboard/overview/OverviewPrimitives";
 import { cn } from "@/lib/utils";
+import {
+  localizeNotificationMessage,
+  localizeNotificationTitle,
+} from "@/lib/notifications/format";
 
 function formatTimeRange(start: string, durationMin: number, locale: string) {
   const s = new Date(start);
@@ -101,6 +103,9 @@ export function TeacherOverviewDashboard() {
   }
 
   const firstName = getTeacherFirstName(data.profile.fullName);
+  const nextLesson = data.upcomingLessons[0] ?? null;
+  const nextLessonStart = nextLesson ? new Date(nextLesson.start_time) : null;
+  const lessonsThisWeek = data.stats.weekCompleted + data.stats.weekPending;
 
   return (
     <TeacherDashboardLayout
@@ -128,24 +133,38 @@ export function TeacherOverviewDashboard() {
         <SwipeableCardRow desktopCols={4}>
           <SwipeableCard>
             <OverviewStatCard
-              label={t("teacherDashboard.todayLabel")}
-              value={t("teacherDashboard.hoursToday", { count: data.stats.hoursToday })}
+              label={t("teacherDashboard.nextLesson")}
+              value={nextLesson?.student_name || t("teacherDashboard.noAppointments")}
               href="/dashboard/teacher/schedule"
-              icon={Clock}
+              icon={Video}
               iconClassName="text-blue-600 bg-blue-50 ring-blue-100"
               footer={
-                <div className="flex gap-3">
-                  <StatMetric label={t("teacherDashboard.upcomingShort")} value={data.stats.todayUpcoming} />
-                  <StatMetric label={t("teacherDashboard.completedShort")} value={data.stats.todayCompleted} />
-                </div>
+                nextLessonStart ? (
+                  <div className="space-y-0.5 text-xs text-text-muted">
+                    <p>
+                      {nextLessonStart.toLocaleDateString(locale, {
+                        weekday: "short",
+                        day: "numeric",
+                        month: "short",
+                      })}
+                      {" · "}
+                      {formatTimeRange(nextLesson.start_time, nextLesson.duration, locale)}
+                    </p>
+                    {nextLesson.subject_name && (
+                      <p className="truncate">{nextLesson.subject_name}</p>
+                    )}
+                  </div>
+                ) : (
+                  <p className="text-xs text-text-muted">{t("teacherDashboard.planWithStudents")}</p>
+                )
               }
             />
           </SwipeableCard>
 
           <SwipeableCard>
             <OverviewStatCard
-              label={t("teacherDashboard.thisWeek")}
-              value={t("teacherDashboard.plannedHours", { count: data.stats.weekHours })}
+              label={t("teacherDashboard.lessonsThisWeek")}
+              value={lessonsThisWeek}
               href="/dashboard/teacher/schedule"
               icon={Calendar}
               iconClassName="text-violet-600 bg-violet-50 ring-violet-100"
@@ -294,7 +313,15 @@ export function TeacherOverviewDashboard() {
             noPadding
           >
             {data.students.length === 0 ? (
-              <OverviewEmptyState icon={Users} title={t("teacherDashboard.noStudents")} />
+              <OverviewEmptyState
+                icon={Users}
+                title={t("teacherDashboard.noAssignedStudents", {
+                  defaultValue: "Noch keine SchülerInnen zugewiesen.",
+                })}
+                description={t("teacherDashboard.assignedByAdminHint", {
+                  defaultValue: "Die Verwaltung weist dir SchülerInnen zu.",
+                })}
+              />
             ) : (
               <>
                 <ul className="space-y-1 p-3">
@@ -314,29 +341,59 @@ export function TeacherOverviewDashboard() {
                           </p>
                         </div>
                         <Link
-                          href={`/dashboard/teacher/schedule?student=${student.id}`}
-                          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-border-default text-text-muted transition hover:border-[var(--brand-gold)]/40 hover:bg-[var(--brand-gold-muted)] hover:text-[#D4AF37]"
-                          title={t("teacherDashboard.createForStudent")}
+                          href={`/dashboard/teacher/students?student=${student.id}`}
+                          className="shrink-0 text-xs font-semibold text-[#D4AF37] hover:underline"
                         >
-                          <Plus className="h-4 w-4" />
+                          {t("teacherDashboard.viewStudent", { defaultValue: "Ansehen" })}
                         </Link>
                       </div>
                     </li>
                   ))}
                 </ul>
-                <div className="border-t border-border-default px-4 py-3">
-                  <Link
-                    href="/dashboard/teacher/students"
-                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#D4AF37] hover:underline"
-                  >
-                    <TrendingUp className="h-3.5 w-3.5" />
-                    {t("teacherDashboard.addNewStudent")}
-                  </Link>
-                </div>
               </>
             )}
           </OverviewPanel>
         </div>
+
+        <OverviewPanel
+          title={t("teacherDashboard.notifications")}
+          icon={Bell}
+          href="/dashboard/notifications"
+          linkLabel={t("teacherDashboard.viewAll")}
+          noPadding
+        >
+          {data.notifications.length === 0 ? (
+            <OverviewEmptyState icon={Bell} title={t("teacherDashboard.noMessages")} />
+          ) : (
+            <ul className="divide-y divide-border-default">
+              {data.notifications.slice(0, 4).map((n) => (
+                <li key={n.id}>
+                  <Link
+                    href="/dashboard/notifications"
+                    className={cn(
+                      "flex gap-3 px-5 py-4 transition hover:bg-[var(--table-row-hover)]",
+                      !n.is_read && "bg-[var(--brand-gold-muted)]/40"
+                    )}
+                  >
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[var(--brand-gold-muted)]">
+                      <Bell className="h-4 w-4 text-[var(--brand-gold)]" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className={cn("text-sm", !n.is_read && "font-semibold", "text-foreground")}>
+                        {localizeNotificationTitle(n.title, i18n.language)}
+                      </p>
+                      {n.message && (
+                        <p className="mt-0.5 line-clamp-2 text-xs text-text-muted">
+                          {localizeNotificationMessage(n.message, i18n.language)}
+                        </p>
+                      )}
+                    </div>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+        </OverviewPanel>
       </div>
     </TeacherDashboardLayout>
   );

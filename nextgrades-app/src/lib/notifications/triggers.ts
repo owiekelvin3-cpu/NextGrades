@@ -145,6 +145,47 @@ export async function notifyLiveClassScheduled(params: {
   });
 }
 
+export async function notifyLessonCompleted(params: {
+  lessonId: string;
+  studentId: string;
+  teacherId: string;
+  title: string;
+  attendance: "attended" | "excused" | "no_show";
+  deducted: boolean;
+}) {
+  const attendanceLabel =
+    params.attendance === "attended"
+      ? "teilgenommen"
+      : params.attendance === "excused"
+        ? "entschuldigt gefehlt"
+        : "nicht erschienen";
+
+  await createNotification({
+    userId: params.studentId,
+    type: params.attendance === "attended" ? "success" : "info",
+    category: "live_class",
+    title: "Stunde abgeschlossen",
+    message: `"${params.title}" wurde als ${attendanceLabel} markiert.${
+      params.deducted ? " Eine Unterrichtseinheit wurde abgezogen." : ""
+    }`,
+    actionUrl: `/dashboard/student/appointments`,
+    entityType: "lesson",
+    entityId: params.lessonId,
+  });
+
+  await createNotificationsForRole("admin", {
+    type: "info",
+    category: "live_class",
+    title: "Stunde abgeschlossen",
+    message: `"${params.title}" – Status: ${attendanceLabel}${
+      params.deducted ? " · Einheit abgezogen" : ""
+    }.`,
+    actionUrl: `/portal/admin`,
+    entityType: "lesson",
+    entityId: params.lessonId,
+  });
+}
+
 export async function notifyEnrollment(params: {
   studentId: string;
   subjectName?: string;

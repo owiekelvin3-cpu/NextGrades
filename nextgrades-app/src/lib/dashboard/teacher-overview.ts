@@ -205,11 +205,29 @@ export async function fetchTeacherOverviewData(): Promise<TeacherOverviewData | 
   if (!userId) return null;
 
   const profile = await fetchCurrentProfile();
-  const [baseStats, upcomingLessons, allLessons, notifications] = await Promise.all([
+  const [baseStats, upcomingLessons, allLessons, notifications, assignedStudentsRes] = await Promise.all([
     fetchTeacherStats(userId),
     fetchTeacherLessons(userId),
     fetchTeacherAllLessons(userId),
     fetchNotifications(userId, 5),
+    fetch("/api/teacher/students").then(async (res) => {
+      if (!res.ok) return [] as TeacherStudentOverview[];
+      const json = (await res.json()) as {
+        students?: Array<{
+          studentId: string;
+          name: string;
+          subject: { name: string } | null;
+          completedLessons: number;
+        }>;
+      };
+      return (json.students ?? []).map((s) => ({
+        id: s.studentId,
+        name: s.name,
+        subject: s.subject?.name || "-",
+        lessonCount: s.completedLessons,
+        totalHours: 0,
+      }));
+    }).catch(() => [] as TeacherStudentOverview[]),
   ]);
 
   const now = new Date();
@@ -283,7 +301,7 @@ export async function fetchTeacherOverviewData(): Promise<TeacherOverviewData | 
       bonusNextGoal,
     },
     upcomingLessons: upcomingLessons.slice(0, 6),
-    students: buildStudentList(allLessons),
+    students: assignedStudentsRes.length ? assignedStudentsRes : [],
     notifications,
     unreadNotifications: notifications.filter((n) => !n.is_read).length,
     recentPayments: buildRecentPayments(allLessons, earningsMonth),

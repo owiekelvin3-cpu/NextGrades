@@ -51,6 +51,7 @@ export const ADMIN_NAV_SECTIONS: AdminNavSection[] = [
       { href: `${P}/users`, icon: UserCog, labelKey: "adminNav.users" },
       { href: `${P}/students`, icon: Users, labelKey: "adminNav.students" },
       { href: `${P}/teachers`, icon: GraduationCap, labelKey: "adminNav.teachers" },
+      { href: `${P}/teacher-assignments`, icon: UserCog, labelKey: "adminNav.teacherAssignments" },
       { href: `${P}/payments`, icon: DollarSign, labelKey: "adminNav.payments" },
       { href: `${P}/guest-signups`, icon: UserCog, labelKey: "adminNav.guestSignups" },
       { href: `${P}/memberships`, icon: CreditCard, labelKey: "adminNav.memberships" },
