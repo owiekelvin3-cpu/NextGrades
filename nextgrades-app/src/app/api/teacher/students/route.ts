@@ -40,7 +40,7 @@ export async function GET() {
     const studentIds = [...new Set(assignments.map((a) => a.student_id))];
     const nowIso = new Date().toISOString();
 
-    const [lessonsRes, unitsRes, notesRes, quizzesRes, attemptsRes] = await Promise.all([
+    const [lessonsRes, unitsRes, notesRes, grantsRes, attemptsRes] = await Promise.all([
       db
         .from("lessons")
         .select("id, student_id, start_time, status, meeting_title")
@@ -59,7 +59,11 @@ export async function GET() {
         .in("student_id", studentIds)
         .order("pinned", { ascending: false })
         .order("created_at", { ascending: false }),
-      db.from("generated_quizzes").select("id").eq("is_published", true).limit(200),
+      db
+        .from("quiz_grants")
+        .select("student_id, quiz_id, expires_at, status")
+        .in("student_id", studentIds)
+        .eq("status", "active"),
       db
         .from("quiz_attempts")
         .select("student_id, quiz_id, completed_at")
@@ -81,7 +85,16 @@ export async function GET() {
       notePreviewByStudent.set(sid, body.length > 160 ? `${body.slice(0, 157)}…` : body);
     }
 
-    const publishedQuizIds = (quizzesRes.data ?? []).map((q) => q.id as string);
+    const grantedQuizByStudent = new Map<string, Set<string>>();
+    for (const row of grantsRes.data ?? []) {
+      const expires = (row as { expires_at?: string | null }).expires_at;
+      if (expires && new Date(expires).getTime() <= Date.now()) continue;
+      const sid = row.student_id as string;
+      const set = grantedQuizByStudent.get(sid) ?? new Set<string>();
+      set.add(row.quiz_id as string);
+      grantedQuizByStudent.set(sid, set);
+    }
+
     const completedQuizByStudent = new Map<string, Set<string>>();
     for (const row of attemptsRes.data ?? []) {
       if (!row.completed_at) continue;
@@ -122,8 +135,11 @@ export async function GET() {
       const completed = completedByStudent.get(sid) ?? 0;
       const total = totalLessonByStudent.get(sid) ?? 0;
       const openLessons = openLessonByStudent.get(sid) ?? 0;
-      const completedQuizzes = completedQuizByStudent.get(sid)?.size ?? 0;
-      const openQuizzes = Math.max(0, publishedQuizIds.length - completedQuizzes);
+      const grantedQuizzes = grantedQuizByStudent.get(sid)?.size ?? 0;
+      const completedQuizzes = [...(grantedQuizByStudent.get(sid) ?? [])].filter((qid) =>
+        completedQuizByStudent.get(sid)?.has(qid)
+      ).length;
+      const openQuizzes = Math.max(0, grantedQuizzes - completedQuizzes);
       const progressPercent =
         total > 0 ? Math.round((completed / total) * 100) : 0;
 

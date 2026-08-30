@@ -19,6 +19,7 @@ import {
   ChevronRight,
   Cookie,
   Globe,
+  Layers,
 } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { useTranslation } from "react-i18next";
@@ -31,6 +32,8 @@ const SECTIONS = [
       { href: `${ADMIN_PORTAL_PREFIX}/students`, icon: Users, labelKey: "adminNav.students", descKey: "adminHub.studentsDesc" },
       { href: `${ADMIN_PORTAL_PREFIX}/teachers`, icon: GraduationCap, labelKey: "adminNav.teachers", descKey: "adminHub.teachersDesc" },
       { href: `${ADMIN_PORTAL_PREFIX}/users`, icon: UserCog, labelKey: "adminNav.users", descKey: "adminHub.usersDesc" },
+      { href: `${ADMIN_PORTAL_PREFIX}/teacher-assignments`, icon: UserCog, labelKey: "adminNav.teacherAssignments", descKey: "adminHub.teacherAssignmentsDesc" },
+      { href: `${ADMIN_PORTAL_PREFIX}/groups`, icon: Layers, labelKey: "adminNav.groups", descKey: "adminHub.groupsDesc" },
     ],
   },
   {
@@ -48,6 +51,7 @@ const SECTIONS = [
       { href: `${ADMIN_PORTAL_PREFIX}/moderation`, icon: Shield, labelKey: "adminNav.moderation", descKey: "adminHub.moderationDesc" },
       { href: `${ADMIN_PORTAL_PREFIX}/memberships`, icon: CreditCard, labelKey: "adminNav.memberships", descKey: "adminHub.membershipsDesc" },
       { href: `${ADMIN_PORTAL_PREFIX}/resource-access`, icon: KeyRound, labelKey: "adminNav.resourceAccess", descKey: "adminHub.resourceAccessDesc" },
+      { href: `${ADMIN_PORTAL_PREFIX}/quiz-access`, icon: ListChecks, labelKey: "adminNav.quizAccess", descKey: "adminHub.quizAccessDesc" },
       { href: `${ADMIN_PORTAL_PREFIX}/payments`, icon: DollarSign, labelKey: "adminNav.payments", descKey: "adminHub.paymentsDesc" },
       { href: `${ADMIN_PORTAL_PREFIX}/resources`, icon: FileText, labelKey: "adminNav.resources", descKey: "adminHub.resourcesDesc" },
       { href: `${ADMIN_PORTAL_PREFIX}/chatbot`, icon: Bot, labelKey: "adminNav.chatbot", descKey: "adminHub.chatbotDesc" },

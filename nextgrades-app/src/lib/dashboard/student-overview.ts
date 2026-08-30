@@ -147,20 +147,33 @@ export function buildCourseRows(
 async function fetchStudentQuizTasks(studentId: string): Promise<StudentTaskRow[]> {
   if (!isSupabaseConfigured()) return [];
 
-  const [quizzesRes, attemptsRes] = await Promise.all([
+  const [grantsRes, attemptsRes] = await Promise.all([
     supabase
-      .from("generated_quizzes")
-      .select("id, title, topic, created_at")
-      .eq("is_published", true)
-      .order("created_at", { ascending: false })
-      .limit(20),
+      .from("quiz_grants")
+      .select("quiz_id, expires_at")
+      .eq("student_id", studentId)
+      .eq("status", "active"),
     supabase
       .from("quiz_attempts")
       .select("quiz_id, completed_at")
       .eq("student_id", studentId),
   ]);
 
-  if (quizzesRes.error || !quizzesRes.data) return [];
+  const grantedIds = (grantsRes.data ?? [])
+    .filter((g: { expires_at: string | null }) => !g.expires_at || new Date(g.expires_at).getTime() > Date.now())
+    .map((g: { quiz_id: string }) => g.quiz_id);
+
+  if (!grantedIds.length) return [];
+
+  const { data: quizzes, error } = await supabase
+    .from("generated_quizzes")
+    .select("id, title, topic, created_at")
+    .eq("is_published", true)
+    .in("id", grantedIds)
+    .order("created_at", { ascending: false })
+    .limit(20);
+
+  if (error || !quizzes) return [];
 
   const attempts = attemptsRes.data || [];
   const completedIds = new Set(
@@ -172,7 +185,7 @@ async function fetchStudentQuizTasks(studentId: string): Promise<StudentTaskRow[
       .map((a: { quiz_id: string }) => a.quiz_id)
   );
 
-  return quizzesRes.data
+  return quizzes
     .filter((q: { id: string }) => !completedIds.has(q.id))
     .slice(0, 5)
     .map((q: { id: string; title: string; topic: string | null; created_at: string }) => ({

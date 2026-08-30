@@ -42,7 +42,7 @@ import {
 } from "lucide-react";
 import { useToast } from "@/context/ToastContext";
 import { StudentQuizHub } from "@/components/quiz/StudentQuizHub";
-import { AdminTable, AdminTableStatusBadge } from "@/components/admin/AdminTable";
+import { AdminTable, AdminTableStatusBadge, type AdminTableColumn } from "@/components/admin/AdminTable";
 import { st } from "@/components/dashboard/student/student-ui";
 import { cn } from "@/lib/utils";
 import { TEACHER_PUBLISHING_ENABLED } from "@/lib/resources/teacher-publishing";
@@ -548,11 +548,26 @@ export function TeacherSettingsSection() {
 
 export function AdminProfilesTable({ role }: { role: "student" | "teacher" }) {
   const { t } = useTranslation();
-  const [profiles, setProfiles] = useState<DashboardProfile[]>([]);
+  const [profiles, setProfiles] = useState<
+    (DashboardProfile & { remaining_units?: number | null; total_units?: number | null; email?: string | null })[]
+  >([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
+      if (role === "student") {
+        try {
+          const res = await fetch("/api/admin/users?role=student&limit=100&sort=full_name");
+          const json = await res.json();
+          if (res.ok) {
+            setProfiles((json.users ?? []) as typeof profiles);
+            setLoading(false);
+            return;
+          }
+        } catch {
+          /* fall through */
+        }
+      }
       setProfiles(await fetchProfilesByRole(role));
       setLoading(false);
     })();
@@ -561,34 +576,63 @@ export function AdminProfilesTable({ role }: { role: "student" | "teacher" }) {
   const title =
     role === "student" ? t("dashboardPages.admin.students.title") : t("dashboardPages.admin.teachers.title");
 
+  type ProfileRow = DashboardProfile & {
+    remaining_units?: number | null;
+    total_units?: number | null;
+    email?: string | null;
+  };
+
+  const hoursColumn: AdminTableColumn<ProfileRow> = {
+    id: "hours",
+    header: t("adminUsers.hoursLeft", { defaultValue: "Stunden übrig" }),
+    sortable: true,
+    sortValue: (u) => Number(u.remaining_units ?? 0),
+    cell: (u) => (
+      <span className="text-sm font-semibold tabular-nums text-foreground">
+        {Number(u.remaining_units ?? 0)}
+        {Number(u.total_units ?? 0) > 0 ? (
+          <span className="font-normal text-text-muted"> / {u.total_units}</span>
+        ) : null}
+      </span>
+    ),
+  };
+
+  const columns: AdminTableColumn<ProfileRow>[] = [
+    {
+      id: "name",
+      header: t("login.fullName"),
+      sortable: true,
+      sortValue: (u) => u.full_name ?? "",
+      cell: (u) => (
+        <div>
+          <p className="font-medium text-foreground">{u.full_name ?? "-"}</p>
+          {u.email ? <p className="text-xs text-text-muted">{u.email}</p> : null}
+        </div>
+      ),
+    },
+    {
+      id: "role",
+      header: t("login.iAmA"),
+      cell: (u) => <AdminTableStatusBadge label={u.role} variant="gold" />,
+    },
+    ...(role === "student" ? [hoursColumn] : []),
+    {
+      id: "joined",
+      header: t("dashboardCommon.joined", { defaultValue: "Joined" }),
+      sortable: true,
+      sortValue: (u) => u.created_at ?? "",
+      cell: (u) => (
+        <span className="text-sm text-text-muted">
+          {u.created_at ? new Date(u.created_at).toLocaleDateString() : "-"}
+        </span>
+      ),
+    },
+  ];
+
   return (
     <AdminTable
       title={title}
-      columns={[
-        {
-          id: "name",
-          header: t("login.fullName"),
-          sortable: true,
-          sortValue: (u) => u.full_name ?? "",
-          cell: (u) => u.full_name ?? "-",
-        },
-        {
-          id: "role",
-          header: t("login.iAmA"),
-          cell: (u) => <AdminTableStatusBadge label={u.role} variant="gold" />,
-        },
-        {
-          id: "joined",
-          header: t("dashboardCommon.joined", { defaultValue: "Joined" }),
-          sortable: true,
-          sortValue: (u) => u.created_at ?? "",
-          cell: (u) => (
-            <span className="text-sm text-text-muted">
-              {u.created_at ? new Date(u.created_at).toLocaleDateString() : "-"}
-            </span>
-          ),
-        },
-      ]}
+      columns={columns}
       data={profiles}
       getRowId={(u) => u.id}
       loading={loading}

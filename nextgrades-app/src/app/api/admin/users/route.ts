@@ -62,8 +62,37 @@ export async function GET(request: Request) {
 
     if (error) throw error;
 
+    const rows = data ?? [];
+    const studentIds = rows.filter((u) => u.role === "student").map((u) => u.id as string);
+    const unitsByStudent = new Map<string, { remaining_units: number; total_units: number }>();
+
+    if (studentIds.length) {
+      const db = isSupabaseServiceRoleConfigured()
+        ? createAdminClient()
+        : gate.auth!.supabase;
+      const { data: units } = await db
+        .from("user_units")
+        .select("student_id, remaining_units, total_units")
+        .in("student_id", studentIds);
+      for (const row of units ?? []) {
+        unitsByStudent.set(row.student_id as string, {
+          remaining_units: Number(row.remaining_units ?? 0),
+          total_units: Number(row.total_units ?? 0),
+        });
+      }
+    }
+
+    const users = rows.map((u) => {
+      const units = u.role === "student" ? unitsByStudent.get(u.id as string) : undefined;
+      return {
+        ...u,
+        remaining_units: units?.remaining_units ?? (u.role === "student" ? 0 : null),
+        total_units: units?.total_units ?? (u.role === "student" ? 0 : null),
+      };
+    });
+
     return NextResponse.json({
-      users: data,
+      users,
       pagination: {
         page,
         limit,

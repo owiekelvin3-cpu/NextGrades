@@ -37,6 +37,8 @@ interface UserProfile {
   email_verified: boolean;
   created_at: string;
   last_login_at: string | null;
+  remaining_units?: number | null;
+  total_units?: number | null;
   auth_user: {
     email: string;
     created_at: string;
@@ -404,6 +406,21 @@ function AdminUsersPageContent() {
                 variant={user.email_verified ? "info" : "outline"}
               />
             ),
+          },
+          {
+            id: "hours",
+            header: t("adminUsers.hoursLeft", { defaultValue: "Stunden übrig" }),
+            cell: (user) =>
+              user.role === "student" ? (
+                <span className="text-sm font-semibold tabular-nums text-foreground">
+                  {Number(user.remaining_units ?? 0)}
+                  {Number(user.total_units ?? 0) > 0 ? (
+                    <span className="font-normal text-text-muted"> / {user.total_units}</span>
+                  ) : null}
+                </span>
+              ) : (
+                <span className="text-sm text-text-muted">—</span>
+              ),
           },
           {
             id: "joined",

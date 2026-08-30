@@ -67,7 +67,7 @@ export default function AdminQuizMonitorPage() {
       toast.error("Status konnte nicht geändert werden.");
       return;
     }
-    toast.success(quiz.is_published ? "Als Entwurf gespeichert." : "Für SchülerInnen veröffentlicht.");
+    toast.success(quiz.is_published ? "Als Entwurf gespeichert." : "Freigabebereit. Jetzt unter „Quizze freischalten“ einzelnen SchülerInnen zuweisen.");
     void load();
   };
 

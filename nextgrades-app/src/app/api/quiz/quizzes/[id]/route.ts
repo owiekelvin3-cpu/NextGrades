@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { getAuthProfile, requireRole } from "@/lib/quiz/auth";
 import { quizDataClient } from "@/lib/quiz/db";
+import { studentCanAccessQuiz } from "@/lib/quiz/access";
 
 export async function GET(
   _request: Request,
@@ -24,8 +25,14 @@ export async function GET(
       return NextResponse.json({ error: "Not found" }, { status: 404 });
     }
 
-    if (profile.role === "student" && !quiz.is_published) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    if (profile.role === "student") {
+      if (!quiz.is_published) {
+        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      }
+      const allowed = await studentCanAccessQuiz(db, profile.id, id);
+      if (!allowed) {
+        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      }
     }
 
     if (profile.role === "teacher" && quiz.created_by !== profile.id) {

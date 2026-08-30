@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { getAuthProfile, requireRole } from "@/lib/quiz/auth";
 import { quizDataClient } from "@/lib/quiz/db";
+import { studentCanAccessQuiz } from "@/lib/quiz/access";
 
 export async function GET() {
   try {
@@ -51,6 +52,11 @@ export async function POST(request: Request) {
       .single();
 
     if (quizError || !quiz?.is_published) {
+      return NextResponse.json({ error: "Quiz not available" }, { status: 404 });
+    }
+
+    const allowed = await studentCanAccessQuiz(db, user.id, quizId);
+    if (!allowed) {
       return NextResponse.json({ error: "Quiz not available" }, { status: 404 });
     }
 

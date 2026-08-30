@@ -4,6 +4,7 @@ import { getAuthProfile, requireRole } from "@/lib/quiz/auth";
 import { quizDataClient } from "@/lib/quiz/db";
 import { persistManualQuiz } from "@/lib/quiz/generation-service";
 import type { AiGeneratedQuestion, Difficulty, QuestionType } from "@/lib/quiz/types";
+import { listGrantedQuizIds } from "@/lib/quiz/access";
 
 export async function GET(request: Request) {
   try {
@@ -16,10 +17,14 @@ export async function GET(request: Request) {
     const publishedOnly = searchParams.get("published") === "true";
 
     if (profile.role === "student") {
+      const grantedIds = await listGrantedQuizIds(db, profile.id);
+      if (!grantedIds.length) return NextResponse.json([]);
+
       const { data, error: dbError } = await db
         .from("generated_quizzes")
         .select("id, title, description, difficulty, time_limit_minutes, topic, created_at")
         .eq("is_published", true)
+        .in("id", grantedIds)
         .order("created_at", { ascending: false });
 
       if (dbError) throw dbError;
