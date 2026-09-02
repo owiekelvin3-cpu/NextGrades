@@ -1,16 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 
-type LessonUnitRow = {
-  id: string;
-  student_id: string;
-  status: string;
-  start_time: string;
-  duration: number | null;
-  meeting_url: string | null;
-  zoom_link: string | null;
-  zoom_meeting_id: string | null;
-  units_consumed: boolean | null;
-};
 
 export function lessonHasMeetingLink(lesson: {
   meeting_url?: string | null;
@@ -59,43 +48,9 @@ export async function decrementStudentUnit(db: SupabaseClient, studentId: string
     .eq("student_id", studentId);
 }
 
-/** Mark ended linked lessons as held and subtract one Unterrichtseinheit each. */
-export async function settleHeldLessonUnits(db: SupabaseClient): Promise<number> {
-  const { data, error } = await db
-    .from("lessons")
-    .select(
-      "id, student_id, status, start_time, duration, meeting_url, zoom_link, zoom_meeting_id, units_consumed"
-    )
-    .eq("status", "scheduled")
-    .eq("units_consumed", false);
-
-  if (error || !data?.length) return 0;
-
-  let settled = 0;
-  const now = Date.now();
-
-  for (const row of data as LessonUnitRow[]) {
-    if (!lessonShouldConsumeUnit(row, now)) continue;
-
-    const { data: updated } = await db
-      .from("lessons")
-      .update({
-        status: "completed",
-        units_consumed: true,
-        updated_at: new Date().toISOString(),
-      })
-      .eq("id", row.id)
-      .eq("units_consumed", false)
-      .eq("status", "scheduled")
-      .select("id")
-      .maybeSingle();
-
-    if (!updated) continue;
-    await decrementStudentUnit(db, row.student_id);
-    settled += 1;
-  }
-
-  return settled;
+/** Credits are deducted only when a teacher clicks Complete Lesson — not automatically. */
+export async function settleHeldLessonUnits(_db: SupabaseClient): Promise<number> {
+  return 0;
 }
 
 export async function restoreLessonUnitOnCancel(

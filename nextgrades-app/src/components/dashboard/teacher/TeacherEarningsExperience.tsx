@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getDateLocale } from "@/lib/i18n/locales";
 import { LoadingBlock } from "@/components/dashboard/LoadingBlock";
@@ -13,6 +13,7 @@ type EarningsSummary = {
   pendingEarnings: number;
   paidOutEarnings: number;
   earningsMtd: number;
+  completedLessonsThisMonth: number;
   totalHours: number;
   nextPayoutAt: string | null;
   bonusLevel: number;
@@ -84,10 +85,7 @@ export function TeacherEarningsExperience() {
     };
   }, [t]);
 
-  const completedLessonsCount = useMemo(() => {
-    if (!data) return 0;
-    return data.ledger.filter((e) => e.entryType === "lesson_completed").length;
-  }, [data]);
+  const completedLessonsCount = data?.summary.completedLessonsThisMonth ?? 0;
 
   if (loading) {
     return (

@@ -180,7 +180,7 @@ export async function notifyLessonCompleted(params: {
     message: `"${params.title}" – Status: ${attendanceLabel}${
       params.deducted ? " · Einheit abgezogen" : ""
     }.`,
-    actionUrl: `/portal/admin`,
+    actionUrl: `/portal/admin/teacher-payroll`,
     entityType: "lesson",
     entityId: params.lessonId,
   });
