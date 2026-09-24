@@ -18,6 +18,16 @@ import { fetchCompletedLessonsCount, getSessionUserId } from "@/lib/dashboard/da
 import { st, subjectColor, subjectInitials } from "./student-ui";
 import { cn } from "@/lib/utils";
 
+type SubjectProgressRow = {
+  subjectName: string;
+  progressPercent: number;
+  completedLessons: number;
+  totalLessons: number;
+  materialsCount: number;
+  quizAverage: number | null;
+  quizCount: number;
+};
+
 function ProgressRing({
   percent,
   size = 72,
@@ -67,11 +77,18 @@ export function StudentProgressExperience() {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<StudentOverviewData | null>(null);
   const [completedLessons, setCompletedLessons] = useState(0);
+  const [subjectProgress, setSubjectProgress] = useState<SubjectProgressRow[]>([]);
 
   useEffect(() => {
     (async () => {
-      const overview = await fetchStudentOverviewData();
+      const [overview, progressRes] = await Promise.all([
+        fetchStudentOverviewData(),
+        fetch("/api/student/progress").then((r) => (r.ok ? r.json() : { subjects: [] })),
+      ]);
       setData(overview);
+      setSubjectProgress(
+        Array.isArray(progressRes.subjects) ? progressRes.subjects : []
+      );
 
       const uid = await getSessionUserId();
       if (uid) {
@@ -81,10 +98,8 @@ export function StudentProgressExperience() {
     })();
   }, []);
 
-  const title = t("dashboardPages.student.progress.title", { defaultValue: "Progress" });
-  const description = t("dashboardPages.student.progress.description", {
-    defaultValue: "Track your learning journey across courses and lessons.",
-  });
+  const title = t("dashboardPages.student.progress.title");
+  const description = t("dashboardPages.student.progress.description");
 
   if (loading) {
     return (
@@ -129,17 +144,15 @@ export function StudentProgressExperience() {
             <div className="min-w-0">
               <p className="student-eyebrow">{t("studentDashboard.nav.progress")}</p>
               <h2 className="mt-3 text-2xl font-bold leading-tight text-white sm:text-3xl">
-                {t("studentDashboard.progressHeroTitle", { defaultValue: "Your learning progress" })}
+                {t("studentDashboard.progressHeroTitle")}
               </h2>
               <p className="mt-2 max-w-xl text-sm leading-relaxed text-white/75 sm:text-base">
-                {t("studentDashboard.progressHeroDesc", {
-                  defaultValue: "See how far you have come in your courses, lessons, and quizzes.",
-                })}
+                {t("studentDashboard.progressHeroDesc")}
               </p>
               <div className="mt-6 flex flex-wrap gap-2.5">
                 <Button variant="gold" size="md" href="/dashboard/student/courses" className="justify-center">
                   <BookOpen className="mr-1.5 h-4 w-4" />
-                  {t("studentDashboard.continueLearning", { subject: "", defaultValue: "Continue learning" })}
+                  {t("studentDashboard.continueLearning", { subject: "" })}
                 </Button>
                 <Button
                   variant="secondary"
@@ -224,6 +237,107 @@ export function StudentProgressExperience() {
         <motion.div variants={studentStaggerItem} className="grid gap-5 lg:grid-cols-5">
           <StudentPanel
             className="lg:col-span-3"
+            title={t("studentDashboard.progressBySubject")}
+            icon={BookOpen}
+            href="/dashboard/student/courses"
+            linkLabel={t("studentDashboard.toMyCourses")}
+            noPadding
+          >
+            {subjectProgress.length === 0 ? (
+              <div className="px-5 py-14 text-center">
+                <p className={st.empty}>{t("studentDashboard.noCoursesUnlocked")}</p>
+                <Button variant="gold" size="sm" href="/programs" className="mt-4">
+                  {t("studentDashboard.explorePrograms")}
+                </Button>
+              </div>
+            ) : (
+              <ul className="divide-y divide-border-default">
+                {subjectProgress.map((subject) => {
+                  const color = subjectColor(subject.subjectName);
+                  return (
+                    <li key={subject.subjectName} className="px-5 py-4">
+                      <div className="flex items-start gap-4">
+                        <div className="relative flex h-[4.5rem] w-[4.5rem] shrink-0 items-center justify-center">
+                          <ProgressRing percent={subject.progressPercent} size={72} />
+                          <span className="absolute text-sm font-bold text-foreground">
+                            {subject.progressPercent}%
+                          </span>
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-start justify-between gap-2">
+                            <p className="font-semibold text-foreground">{subject.subjectName}</p>
+                            <span
+                              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-xs font-bold text-white"
+                              style={{ backgroundColor: color }}
+                            >
+                              {subjectInitials(subject.subjectName)}
+                            </span>
+                          </div>
+                          <div className={cn("mt-2", st.progressTrackMd)}>
+                            <div
+                              className={st.progressBar}
+                              style={{ width: `${subject.progressPercent}%` }}
+                            />
+                          </div>
+                          <div className="mt-2 grid gap-1 text-xs text-text-muted sm:grid-cols-3">
+                            <span>
+                              {t("studentDashboard.progressLessonsDone")}: {subject.completedLessons}/
+                              {subject.totalLessons}
+                            </span>
+                            <span>
+                              {t("studentDashboard.progressMaterialsDone")}: {subject.materialsCount}
+                            </span>
+                            <span>
+                              {t("studentDashboard.progressQuizScores")}:{" "}
+                              {subject.quizAverage != null
+                                ? `${subject.quizAverage}% (${subject.quizCount})`
+                                : "—"}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </StudentPanel>
+
+          <StudentPanel
+            className="lg:col-span-2"
+            title={t("studentDashboard.progressBreakdown")}
+            icon={Target}
+            href="/dashboard/student/quizzes"
+            linkLabel={t("studentDashboard.goToTasks")}
+          >
+            <div className="space-y-4 p-5">
+              <div className="rounded-xl border border-border-default bg-surface-subtle/40 p-4">
+                <p className="text-xs font-semibold uppercase tracking-wide text-text-muted">
+                  {t("studentDashboard.progressMaterialsDone")}
+                </p>
+                <p className="mt-1 text-2xl font-bold text-foreground">{materialCount}</p>
+              </div>
+              <div className="rounded-xl border border-border-default bg-surface-subtle/40 p-4">
+                <p className="text-xs font-semibold uppercase tracking-wide text-text-muted">
+                  {t("studentDashboard.progressQuizScores")}
+                </p>
+                <p className="mt-1 text-2xl font-bold text-foreground">
+                  {quizScoreAvg != null ? `${quizScoreAvg}%` : "—"}
+                </p>
+              </div>
+              <div className="rounded-xl border border-border-default bg-surface-subtle/40 p-4">
+                <p className="text-xs font-semibold uppercase tracking-wide text-text-muted">
+                  {t("studentDashboard.progressLessonsDone")}
+                </p>
+                <p className="mt-1 text-2xl font-bold text-foreground">{completedLessons}</p>
+              </div>
+            </div>
+          </StudentPanel>
+        </motion.div>
+
+        <motion.div variants={studentStaggerItem}>
+          <StudentPanel
+            className="lg:col-span-3"
             title={t("studentDashboard.myCourses")}
             icon={BookOpen}
             href="/dashboard/student/courses"
@@ -232,20 +346,16 @@ export function StudentProgressExperience() {
           >
             {data.courses.length === 0 ? (
               <div className="px-5 py-14 text-center">
-                <p className={st.empty}>
-                  {t("studentDashboard.noCoursesUnlocked", {
-                    defaultValue: "Noch keine Kurse freigeschaltet.",
-                  })}
-                </p>
+                <p className={st.empty}>{t("studentDashboard.noCoursesUnlocked")}</p>
                 <Button variant="gold" size="sm" href="/programs" className="mt-4">
-                  {t("studentDashboard.explorePrograms", { defaultValue: "Programme entdecken" })}
+                  {t("studentDashboard.explorePrograms")}
                 </Button>
               </div>
             ) : (
               <ul className="divide-y divide-border-default">
                 {data.courses.map((course) => {
                   const color = subjectColor(course.subjectName);
-                  const title = [course.subjectName, (course as { className?: string }).className]
+                  const courseTitle = [course.subjectName, (course as { className?: string }).className]
                     .filter(Boolean)
                     .join(" · ");
                   return (
@@ -257,7 +367,7 @@ export function StudentProgressExperience() {
                       <div className="min-w-0 flex-1">
                         <div className="flex items-start justify-between gap-2">
                           <div>
-                            <p className="font-semibold text-foreground">{title}</p>
+                            <p className="font-semibold text-foreground">{courseTitle}</p>
                             {course.teacherName ? (
                               <p className={cn("text-xs", st.textMuted)}>{course.teacherName}</p>
                             ) : null}
@@ -274,7 +384,7 @@ export function StudentProgressExperience() {
                         </div>
                         <p className={cn("mt-1.5 text-xs", st.textSubtle)}>
                           {t("studentDashboard.lessonUnits", { count: course.lessonCount })}
-                          {` · ${course.progressPercent}% ${t("studentDashboard.progressLabel", { defaultValue: "abgeschlossen" })}`}
+                          {` · ${course.progressPercent}% ${t("studentDashboard.progressLabel")}`}
                         </p>
                       </div>
                     </li>
@@ -282,37 +392,6 @@ export function StudentProgressExperience() {
                 })}
               </ul>
             )}
-          </StudentPanel>
-
-          <StudentPanel
-            className="lg:col-span-2"
-            title={t("studentDashboard.progressBreakdown", { defaultValue: "Lernstatistik" })}
-            icon={Target}
-            href="/dashboard/student/quizzes"
-            linkLabel={t("studentDashboard.goToTasks")}
-          >
-            <div className="space-y-4 p-5">
-              <div className="rounded-xl border border-border-default bg-surface-subtle/40 p-4">
-                <p className="text-xs font-semibold uppercase tracking-wide text-text-muted">
-                  {t("studentDashboard.progressMaterialsDone", { defaultValue: "Materialien" })}
-                </p>
-                <p className="mt-1 text-2xl font-bold text-foreground">{materialCount}</p>
-              </div>
-              <div className="rounded-xl border border-border-default bg-surface-subtle/40 p-4">
-                <p className="text-xs font-semibold uppercase tracking-wide text-text-muted">
-                  {t("studentDashboard.progressQuizScores", { defaultValue: "Quiz-Ergebnisse" })}
-                </p>
-                <p className="mt-1 text-2xl font-bold text-foreground">
-                  {quizScoreAvg != null ? `${quizScoreAvg}%` : "—"}
-                </p>
-              </div>
-              <div className="rounded-xl border border-border-default bg-surface-subtle/40 p-4">
-                <p className="text-xs font-semibold uppercase tracking-wide text-text-muted">
-                  {t("studentDashboard.progressLessonsDone")}
-                </p>
-                <p className="mt-1 text-2xl font-bold text-foreground">{completedLessons}</p>
-              </div>
-            </div>
           </StudentPanel>
         </motion.div>
 

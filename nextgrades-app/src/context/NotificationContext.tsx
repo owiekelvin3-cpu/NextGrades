@@ -170,13 +170,15 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
       });
 
       const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
-        userIdRef.current = session?.user?.id ?? null;
-        if (session?.user) void refresh();
-        else {
+        const nextUserId = session?.user?.id ?? null;
+        if (nextUserId !== userIdRef.current) {
           setNotifications([]);
           setUnreadCount(0);
-          setLoading(false);
+          offsetRef.current = 0;
         }
+        userIdRef.current = nextUserId;
+        if (session?.user) void refresh();
+        else setLoading(false);
       });
       authSubscription = authListener.subscription;
 
@@ -187,7 +189,8 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
           { event: "INSERT", schema: "public", table: "notifications" },
           (payload) => {
             const row = payload.new as NotificationRecord;
-            if (userIdRef.current && row.user_id !== userIdRef.current) return;
+            const uid = userIdRef.current;
+            if (!uid || row.user_id !== uid) return;
 
             setNotifications((prev) => {
               if (prev.some((n) => n.id === row.id)) return prev;
@@ -206,6 +209,8 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
           { event: "UPDATE", schema: "public", table: "notifications" },
           (payload) => {
             const row = payload.new as NotificationRecord;
+            const uid = userIdRef.current;
+            if (!uid || row.user_id !== uid) return;
             setNotifications((prev) => prev.map((n) => (n.id === row.id ? row : n)));
             void fetchUnreadCount();
           }

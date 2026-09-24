@@ -78,9 +78,32 @@ export async function resolveTargetStudentIds(
     studentId?: string;
     studentIds?: string[];
     subjectId?: string;
+    groupId?: string;
   }
 ): Promise<string[]> {
-  const { meetingType, studentId, studentIds, subjectId } = opts;
+  const { meetingType, studentId, studentIds, subjectId, groupId } = opts;
+
+  if (groupId?.trim()) {
+    const { data: group } = await db
+      .from("tutoring_groups")
+      .select("id, teacher_id, is_active")
+      .eq("id", groupId.trim())
+      .maybeSingle();
+    if (!group || group.teacher_id !== teacherId || group.is_active === false) {
+      throw new Error("Group not found");
+    }
+    const { data: members } = await db
+      .from("tutoring_group_members")
+      .select("student_id")
+      .eq("group_id", groupId.trim());
+    const eligible: string[] = [];
+    for (const m of members ?? []) {
+      const sid = m.student_id as string;
+      if (await isStudentEligibleForTeacher(db, teacherId, sid)) eligible.push(sid);
+    }
+    if (!eligible.length) throw new Error("No eligible students in this group");
+    return eligible;
+  }
 
   if (studentId) {
     const ok = await isStudentEligibleForTeacher(db, teacherId, studentId);

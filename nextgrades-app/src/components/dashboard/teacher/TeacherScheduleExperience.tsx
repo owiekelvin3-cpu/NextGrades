@@ -18,6 +18,7 @@ import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { useToast } from "@/context/ToastContext";
 import { TeacherDashboardLayout } from "./TeacherDashboardLayout";
+import { TeacherTeachingTabs } from "./TeacherTeachingTabs";
 import { CreateLiveClassForm } from "@/components/zoom/CreateLiveClassForm";
 import { useZoomStatus } from "@/components/zoom/ZoomSetupStrip";
 import { teacherPanel, teacherStatCard } from "./teacher-ui";
@@ -290,7 +291,9 @@ function ScheduleContent() {
         defaultValue: "Add a lesson with a student. They will see it under My appointments.",
       })}
     >
-      <div className="mx-auto max-w-[1400px] space-y-6">
+      <div className="mx-auto max-w-[1400px] space-y-0">
+        <TeacherTeachingTabs />
+        <div className="space-y-6 pt-6">
         {/* Quick stats */}
         <div className="grid gap-3 sm:grid-cols-3">
           <div className={teacherStatCard()}>
@@ -573,6 +576,7 @@ function ScheduleContent() {
               </div>
             )}
           </div>
+        </div>
         </div>
       </div>
     </TeacherDashboardLayout>

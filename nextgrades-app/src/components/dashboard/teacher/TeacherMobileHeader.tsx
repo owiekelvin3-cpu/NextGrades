@@ -58,7 +58,7 @@ export function TeacherMobileHeader({ displayName }: Props) {
                   isDark ? "text-white/70" : "text-text-muted"
                 )}
               >
-                {t("teacherDashboard.welcome", { defaultValue: "Welcome back! 👋" })}
+                {t("teacherDashboard.welcome")}
               </p>
               <h1
                 className={cn(
@@ -73,7 +73,7 @@ export function TeacherMobileHeader({ displayName }: Props) {
               <NotificationBell variant={isDark ? "light" : "dark"} />
               <button
                 type="button"
-                aria-label={t("mobileNav.menu", { defaultValue: "Menu" })}
+                aria-label={t("mobileNav.menu")}
                 aria-expanded={menuOpen}
                 onClick={() => setMenuOpen(true)}
                 className={cn(
@@ -99,7 +99,7 @@ export function TeacherMobileHeader({ displayName }: Props) {
           >
             <Search className="h-5 w-5 shrink-0 text-[var(--brand-gold)]" />
             <span className="text-sm text-text-muted">
-              {t("teacherDashboard.searchStudents", { defaultValue: "Search students…" })}
+              {t("teacherDashboard.searchStudents")}
             </span>
           </Link>
         </div>

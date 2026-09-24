@@ -78,3 +78,64 @@ export function countLessonEntriesInRange(entries: LedgerRow[], start: string, e
       e.created_at < end
   ).length;
 }
+
+export function previousMonth(year: number, month: number): { year: number; month: number } {
+  if (month === 1) return { year: year - 1, month: 12 };
+  return { year, month: month - 1 };
+}
+
+export type PeriodStats = {
+  units: number;
+  earnings: number;
+  bonus: number;
+};
+
+export function aggregateLedgerPeriod(
+  entries: LedgerRow[],
+  start: string,
+  end: string
+): PeriodStats {
+  let units = 0;
+  let earnings = 0;
+  let bonus = 0;
+
+  for (const e of entries) {
+    if (e.status === "void") continue;
+    if (e.created_at < start || e.created_at >= end) continue;
+
+    if (e.entry_type === "lesson_completed") {
+      units += 1;
+      earnings += Number(e.amount ?? 0);
+    } else if (e.entry_type === "bonus") {
+      bonus += Number(e.amount ?? 0);
+    }
+  }
+
+  return {
+    units,
+    earnings: roundMoney(earnings),
+    bonus: roundMoney(bonus),
+  };
+}
+
+export function aggregateLedgerAll(entries: LedgerRow[]): PeriodStats {
+  let units = 0;
+  let earnings = 0;
+  let bonus = 0;
+
+  for (const e of entries) {
+    if (e.status === "void") continue;
+    if (e.entry_type === "lesson_completed") {
+      units += 1;
+      earnings += Number(e.amount ?? 0);
+    } else if (e.entry_type === "bonus") {
+      bonus += Number(e.amount ?? 0);
+    }
+  }
+
+  return {
+    units,
+    earnings: roundMoney(earnings),
+    bonus: roundMoney(bonus),
+  };
+}

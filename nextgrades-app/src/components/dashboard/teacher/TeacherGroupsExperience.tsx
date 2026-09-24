@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Users, Video, CalendarDays } from "lucide-react";
+import Link from "next/link";
+import { Users, Video, CalendarDays, ChevronRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { LoadingBlock } from "@/components/dashboard/LoadingBlock";
 import { TeacherDashboardLayout } from "./TeacherDashboardLayout";
@@ -71,7 +72,11 @@ export function TeacherGroupsExperience() {
           </div>
         ) : (
           groups.map((group) => (
-            <div key={group.id} className={teacherPanel("p-5 sm:p-6")}>
+            <Link
+              key={group.id}
+              href={`/dashboard/teacher/groups/${group.id}`}
+              className={`${teacherPanel("block p-5 sm:p-6 transition hover:border-[var(--brand-gold)]/30 hover:shadow-sm")}`}
+            >
               <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                 <div className="min-w-0">
                   <h2 className="text-base font-semibold text-foreground">{group.name}</h2>
@@ -89,16 +94,15 @@ export function TeacherGroupsExperience() {
                   </div>
                 </div>
                 {group.meetingUrl && (
-                  <a
-                    href={group.meetingUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex shrink-0 items-center gap-2 rounded-xl border border-border-default px-3 py-2 text-sm font-medium text-foreground transition hover:border-[var(--brand-gold)]/40"
+                  <span
+                    onClick={(e) => e.preventDefault()}
+                    className="inline-flex shrink-0 items-center gap-2 rounded-xl border border-border-default px-3 py-2 text-sm font-medium text-foreground"
                   >
                     <Video className="h-4 w-4 text-[#2D8CFF]" />
                     Zoom
-                  </a>
+                  </span>
                 )}
+                <ChevronRight className="hidden h-5 w-5 shrink-0 text-text-muted sm:block" />
               </div>
 
               {group.scheduleNotes && (
@@ -118,7 +122,7 @@ export function TeacherGroupsExperience() {
                   ))}
                 </ul>
               )}
-            </div>
+            </Link>
           ))
         )}
       </div>

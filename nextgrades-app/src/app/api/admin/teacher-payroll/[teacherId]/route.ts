@@ -25,6 +25,8 @@ export async function PATCH(request: Request, { params }: RouteParams) {
 
   const body = (await request.json().catch(() => ({}))) as {
     hourlyRate?: number;
+    rateLowerLevel?: number;
+    rateUpperLevel?: number;
     action?: string;
     month?: string;
   };
@@ -43,10 +45,28 @@ export async function PATCH(request: Request, { params }: RouteParams) {
       return NextResponse.json({ error: "Teacher not found." }, { status: 404 });
     }
 
-    if (body.hourlyRate !== undefined) {
-      const rate = Number(body.hourlyRate);
-      if (!Number.isFinite(rate) || rate < 0 || rate > 500) {
-        return NextResponse.json({ error: "Invalid hourly rate." }, { status: 400 });
+    if (body.hourlyRate !== undefined || body.rateLowerLevel !== undefined || body.rateUpperLevel !== undefined) {
+      const updates: Record<string, unknown> = { updated_at: now };
+      if (body.hourlyRate !== undefined) {
+        const rate = Number(body.hourlyRate);
+        if (!Number.isFinite(rate) || rate < 0 || rate > 500) {
+          return NextResponse.json({ error: "Invalid hourly rate." }, { status: 400 });
+        }
+        updates.hourly_rate = roundMoney(rate);
+      }
+      if (body.rateLowerLevel !== undefined) {
+        const rate = Number(body.rateLowerLevel);
+        if (!Number.isFinite(rate) || rate < 0 || rate > 500) {
+          return NextResponse.json({ error: "Invalid lower level rate." }, { status: 400 });
+        }
+        updates.rate_lower_level = roundMoney(rate);
+      }
+      if (body.rateUpperLevel !== undefined) {
+        const rate = Number(body.rateUpperLevel);
+        if (!Number.isFinite(rate) || rate < 0 || rate > 500) {
+          return NextResponse.json({ error: "Invalid upper level rate." }, { status: 400 });
+        }
+        updates.rate_upper_level = roundMoney(rate);
       }
 
       const { data: existing } = await admin
@@ -56,15 +76,14 @@ export async function PATCH(request: Request, { params }: RouteParams) {
         .maybeSingle();
 
       if (existing) {
-        const { error } = await admin
-          .from("teacher_stats")
-          .update({ hourly_rate: roundMoney(rate), updated_at: now })
-          .eq("teacher_id", teacherId);
+        const { error } = await admin.from("teacher_stats").update(updates).eq("teacher_id", teacherId);
         if (error) throw error;
       } else {
         const { error } = await admin.from("teacher_stats").insert({
           teacher_id: teacherId,
-          hourly_rate: roundMoney(rate),
+          hourly_rate: updates.hourly_rate ?? 35,
+          rate_lower_level: updates.rate_lower_level ?? null,
+          rate_upper_level: updates.rate_upper_level ?? null,
           pending_earnings: 0,
           paid_out_earnings: 0,
           earnings_mtd: 0,
@@ -73,7 +92,7 @@ export async function PATCH(request: Request, { params }: RouteParams) {
         if (error) throw error;
       }
 
-      return NextResponse.json({ ok: true, hourlyRate: roundMoney(rate) });
+      return NextResponse.json({ ok: true, ...updates });
     }
 
     if (body.action === "markPaid") {

@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { Camera, Loader2, Trash2, User } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 
 interface ProfileAvatarUploadProps {
@@ -21,6 +22,7 @@ export function ProfileAvatarUpload({
   disabled,
   size = "lg",
 }: ProfileAvatarUploadProps) {
+  const { t } = useTranslation();
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
   const initials = name.trim().split(/\s+/).map((w) => w[0]).join("").slice(0, 2).toUpperCase() || "?";
@@ -68,7 +70,7 @@ export function ProfileAvatarUpload({
           disabled={disabled || uploading}
           onClick={() => inputRef.current?.click()}
           className="absolute -bottom-2 -right-2 flex h-9 w-9 items-center justify-center rounded-xl border-2 border-surface-elevated bg-[#D4AF37] text-[#0D1B2A] shadow-md transition hover:bg-[#F5A623] disabled:opacity-50"
-          aria-label="Upload photo"
+          aria-label={t("settings.uploadPhoto")}
         >
           <Camera className="h-4 w-4" />
         </button>
@@ -86,7 +88,7 @@ export function ProfileAvatarUpload({
       </div>
       <div className="text-center sm:text-left">
         <p className="text-sm font-semibold text-foreground">{name || "-"}</p>
-        <p className="mt-1 text-xs text-text-muted">JPG, PNG or WebP · Max 5 MB</p>
+        <p className="mt-1 text-xs text-text-muted">{t("settings.uploadPhotoHint")}</p>
         <div className="mt-3 flex flex-wrap justify-center gap-2 sm:justify-start">
           <button
             type="button"
@@ -94,7 +96,7 @@ export function ProfileAvatarUpload({
             onClick={() => inputRef.current?.click()}
             className="rounded-lg border border-input-border bg-surface-elevated px-3 py-1.5 text-xs font-medium text-foreground transition hover:border-[var(--brand-gold)] disabled:opacity-50"
           >
-            Upload photo
+            {t("settings.uploadPhoto")}
           </button>
           {avatarUrl && onRemove && (
             <button
@@ -104,7 +106,7 @@ export function ProfileAvatarUpload({
               className="inline-flex items-center gap-1 rounded-lg border border-red-200 px-3 py-1.5 text-xs font-medium text-red-600 transition hover:bg-red-50 disabled:opacity-50 dark:border-red-500/30 dark:text-red-400 dark:hover:bg-red-500/10"
             >
               <Trash2 className="h-3 w-3" />
-              Remove
+              {t("settings.removePhoto")}
             </button>
           )}
         </div>

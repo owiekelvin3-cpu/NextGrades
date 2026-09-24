@@ -9,7 +9,7 @@ export default function TeacherSettingsPage() {
   const { t } = useTranslation();
 
   return (
-    <TeacherDashboardLayout title={t("settings.title", { defaultValue: "Settings" })}>
+    <TeacherDashboardLayout title={t("settings.title")}>
       <Suspense fallback={null}>
         <TeacherSettingsPanel />
       </Suspense>

@@ -186,6 +186,49 @@ function AdminUsersPageContent() {
     }
   };
 
+  const handleSubtractUnits = async (userId: string, userName: string | null) => {
+    const raw = window.prompt(
+      t("adminUsers.subtractUnitsPrompt", {
+        defaultValue: "Wie viele Unterrichtsstunden abziehen? (z. B. 1)",
+        name: userName || "",
+      }),
+      "1"
+    );
+    if (raw == null) return;
+    const subtractUnits = Number.parseInt(raw, 10);
+    if (!Number.isFinite(subtractUnits) || subtractUnits <= 0) {
+      toastError(
+        t("adminUsers.subtractUnitsInvalid", { defaultValue: "Bitte eine Zahl größer als 0 eingeben." })
+      );
+      return;
+    }
+    try {
+      const response = await fetch(`/api/admin/users/${userId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ subtract_units: subtractUnits }),
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        throw new Error(data.error || t("adminUsers.subtractUnitsFailed", { defaultValue: "Stunden konnten nicht abgezogen werden." }));
+      }
+      success(
+        t("adminUsers.subtractUnitsSuccess", {
+          defaultValue: "{{count}} Stunden abgezogen. Noch {{remaining}} übrig.",
+          count: subtractUnits,
+          remaining: data.remaining_units ?? 0,
+        })
+      );
+      void fetchUsers();
+    } catch (error) {
+      toastError(
+        error instanceof Error
+          ? error.message
+          : t("adminUsers.subtractUnitsFailed", { defaultValue: "Stunden konnten nicht abgezogen werden." })
+      );
+    }
+  };
+
   const handleAddUnits = async (userId: string, userName: string | null) => {
     const raw = window.prompt(
       t("adminUsers.addUnitsPrompt", {
@@ -408,15 +451,34 @@ function AdminUsersPageContent() {
             ),
           },
           {
-            id: "hours",
-            header: t("adminUsers.hoursLeft", { defaultValue: "Stunden übrig" }),
+            id: "purchased",
+            header: t("adminUsers.unitsPurchased", { defaultValue: "Gekauft" }),
+            cell: (user) =>
+              user.role === "student" ? (
+                <span className="text-sm tabular-nums text-foreground">{Number(user.total_units ?? 0)}</span>
+              ) : (
+                <span className="text-sm text-text-muted">—</span>
+              ),
+          },
+          {
+            id: "used",
+            header: t("adminUsers.unitsUsed", { defaultValue: "Verbraucht" }),
+            cell: (user) =>
+              user.role === "student" ? (
+                <span className="text-sm tabular-nums text-foreground">
+                  {Math.max(0, Number(user.total_units ?? 0) - Number(user.remaining_units ?? 0))}
+                </span>
+              ) : (
+                <span className="text-sm text-text-muted">—</span>
+              ),
+          },
+          {
+            id: "remaining",
+            header: t("adminUsers.unitsRemaining", { defaultValue: "Übrig" }),
             cell: (user) =>
               user.role === "student" ? (
                 <span className="text-sm font-semibold tabular-nums text-foreground">
                   {Number(user.remaining_units ?? 0)}
-                  {Number(user.total_units ?? 0) > 0 ? (
-                    <span className="font-normal text-text-muted"> / {user.total_units}</span>
-                  ) : null}
                 </span>
               ) : (
                 <span className="text-sm text-text-muted">—</span>
@@ -463,6 +525,11 @@ function AdminUsersPageContent() {
                             label: t("adminUsers.addUnits", { defaultValue: "Stunden gutschreiben" }),
                             icon: Plus,
                             onClick: () => void handleAddUnits(user.id, user.full_name),
+                          },
+                          {
+                            id: "subtract-units",
+                            label: t("adminUsers.subtractUnits", { defaultValue: "Stunden abziehen" }),
+                            onClick: () => void handleSubtractUnits(user.id, user.full_name),
                           },
                         ]
                       : []),

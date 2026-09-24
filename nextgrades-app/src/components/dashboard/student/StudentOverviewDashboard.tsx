@@ -460,23 +460,51 @@ export function StudentOverviewDashboard() {
             ) : (
               <ul className="divide-y divide-border-default">
                 {data.tasks.slice(0, 4).map((task) => (
-                  <li key={task.id} className="flex items-center justify-between gap-3 px-5 py-3.5">
-                    <div className="min-w-0">
-                      <p className={cn("truncate text-sm font-medium", st.textPrimary)}>{task.title}</p>
-                      {task.dueLabel && (
-                        <p className={cn("text-xs", st.textSubtle)}>
-                          {new Date(task.dueLabel).toLocaleDateString(dateLocale, {
-                            day: "numeric",
-                            month: "short",
-                          })}
-                        </p>
-                      )}
+                  <li key={task.id} className="px-5 py-3.5">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0 flex-1">
+                        <p className={cn("truncate text-sm font-medium", st.textPrimary)}>{task.title}</p>
+                        {task.subjectName ? (
+                          <p className={cn("text-xs", st.textSubtle)}>{task.subjectName}</p>
+                        ) : null}
+                        {task.dueLabel && (
+                          <p className={cn("text-xs", st.textSubtle)}>
+                            {t("studentDashboard.assignmentDueDate")}:{" "}
+                            {new Date(task.dueLabel).toLocaleDateString(dateLocale, {
+                              day: "numeric",
+                              month: "short",
+                            })}
+                          </p>
+                        )}
+                        {task.score != null ? (
+                          <p className={cn("text-xs font-semibold text-[var(--brand-gold)]")}>
+                            {task.score}%
+                          </p>
+                        ) : null}
+                      </div>
+                      <Badge
+                        variant={
+                          task.status === "open" || task.status === "in_progress" ? "warning" : "success"
+                        }
+                      >
+                        {task.status === "in_progress"
+                          ? t("studentDashboard.taskInProgress")
+                          : task.status === "open"
+                            ? t("studentDashboard.taskOpen")
+                            : task.status === "submitted"
+                              ? t("studentDashboard.quizStatusSubmitted")
+                              : task.status === "graded"
+                                ? t("studentDashboard.quizStatusGraded")
+                                : task.status === "completed"
+                                  ? t("studentDashboard.quizStatusCompleted")
+                                  : t("studentDashboard.taskOpen")}
+                      </Badge>
                     </div>
-                    <Badge variant={task.status === "in_progress" ? "success" : "warning"}>
-                      {task.status === "in_progress"
-                        ? t("studentDashboard.taskInProgress")
-                        : t("studentDashboard.taskOpen")}
-                    </Badge>
+                    {task.feedback ? (
+                      <p className={cn("mt-1 line-clamp-2 text-xs", st.textMuted)}>
+                        {t("studentDashboard.quizFeedback")}: {task.feedback}
+                      </p>
+                    ) : null}
                   </li>
                 ))}
               </ul>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
@@ -11,64 +11,44 @@ import { useToast } from "@/context/ToastContext";
 import { useTranslation } from "react-i18next";
 import { Brain, History, Play, RotateCcw } from "lucide-react";
 import type { QuizQuestion } from "@/lib/quiz/types";
+import type { StudentAssignmentStatus } from "@/app/api/student/assignments/route";
 
-type PublishedQuiz = {
+type AssignmentRow = {
   id: string;
+  quizId: string;
   title: string;
-  description?: string | null;
+  subjectName: string | null;
+  dueDate: string | null;
+  status: StudentAssignmentStatus;
+  score: number | null;
+  feedback: string | null;
+  allowRetry: boolean;
   difficulty: string;
-  time_limit_minutes: number | null;
-  topic?: string | null;
-  subject_name?: string | null;
-  quiz_questions?: { count: number }[];
+  timeLimitMinutes: number | null;
 };
-
-type AttemptRow = {
-  id: string;
-  quiz_id: string;
-  score_percent: number | null;
-  completed_at: string | null;
-  created_at: string;
-  feedback?: string | null;
-  teacher_feedback?: string | null;
-  generated_quizzes?: { title: string; topic?: string | null };
-};
-
-type QuizDisplayStatus = "open" | "in_progress" | "submitted" | "graded" | "completed";
-
-function questionCount(quiz: PublishedQuiz): number | null {
-  const embed = quiz.quiz_questions;
-  if (!Array.isArray(embed) || embed.length === 0) return null;
-  const first = embed[0] as { count?: number };
-  if (first && typeof first === "object" && "count" in first) {
-    return Number(first.count ?? 0);
-  }
-  return embed.length;
-}
-
-function resolveQuizStatus(attempt: AttemptRow | undefined): QuizDisplayStatus {
-  if (!attempt) return "open";
-  if (!attempt.completed_at) return "in_progress";
-  if (attempt.score_percent != null) return "graded";
-  return "submitted";
-}
 
 function statusLabel(
-  status: QuizDisplayStatus,
-  t: (key: string, opts?: Record<string, string>) => string
+  status: StudentAssignmentStatus,
+  t: (key: string, opts?: Record<string, string | number>) => string
 ): string {
   switch (status) {
     case "in_progress":
-      return t("studentDashboard.quizStatusInProgress", { defaultValue: "In Bearbeitung" });
+      return t("studentDashboard.quizStatusInProgress");
     case "submitted":
-      return t("studentDashboard.quizStatusSubmitted", { defaultValue: "Abgegeben" });
+      return t("studentDashboard.quizStatusSubmitted");
     case "graded":
-      return t("studentDashboard.quizStatusGraded", { defaultValue: "Bewertet" });
+      return t("studentDashboard.quizStatusGraded");
     case "completed":
-      return t("studentDashboard.quizStatusCompleted", { defaultValue: "Abgeschlossen" });
+      return t("studentDashboard.quizStatusCompleted");
     default:
-      return t("studentDashboard.quizStatusOpen", { defaultValue: "Offen" });
+      return t("studentDashboard.quizStatusOpen");
   }
+}
+
+function statusVariant(status: StudentAssignmentStatus): "warning" | "success" | "gold" {
+  if (status === "open" || status === "in_progress") return "warning";
+  if (status === "submitted") return "gold";
+  return "success";
 }
 
 function difficultyLabel(
@@ -76,17 +56,16 @@ function difficultyLabel(
   t: (key: string, opts?: Record<string, string>) => string
 ): string {
   const key = difficulty.toLowerCase();
-  if (key === "easy") return t("studentDashboard.quizDifficultyEasy", { defaultValue: "Leicht" });
-  if (key === "hard") return t("studentDashboard.quizDifficultyHard", { defaultValue: "Schwer" });
-  return t("studentDashboard.quizDifficultyMedium", { defaultValue: "Mittel" });
+  if (key === "easy") return t("studentDashboard.quizDifficultyEasy");
+  if (key === "hard") return t("studentDashboard.quizDifficultyHard");
+  return t("studentDashboard.quizDifficultyMedium");
 }
 
 export function StudentQuizHub() {
   const { t, i18n } = useTranslation();
   const toast = useToast();
   const [tab, setTab] = useState<"available" | "history">("available");
-  const [quizzes, setQuizzes] = useState<PublishedQuiz[]>([]);
-  const [attempts, setAttempts] = useState<AttemptRow[]>([]);
+  const [assignments, setAssignments] = useState<AssignmentRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [activeQuiz, setActiveQuiz] = useState<{
@@ -94,30 +73,22 @@ export function StudentQuizHub() {
     questions: QuizQuestion[];
   } | null>(null);
 
+  const dateLocale = i18n.language?.startsWith("de") ? "de-AT" : undefined;
   const textPrimary = "text-foreground";
 
   const load = useCallback(async () => {
     setLoading(true);
     setLoadError(null);
     try {
-      const [qRes, aRes] = await Promise.all([
-        fetch("/api/quiz/quizzes?published=true"),
-        fetch("/api/quiz/attempts"),
-      ]);
-      if (qRes.ok) {
-        const json = await qRes.json();
-        setQuizzes(Array.isArray(json) ? json : []);
-      } else {
-        const json = await qRes.json().catch(() => ({}));
-        setLoadError(
-          json.error || t("studentDashboard.quizLoadError", { defaultValue: "Quizze konnten nicht geladen werden." })
-        );
-        setQuizzes([]);
+      const res = await fetch("/api/student/assignments");
+      if (!res.ok) {
+        const json = await res.json().catch(() => ({}));
+        setLoadError(json.error || t("studentDashboard.quizLoadError"));
+        setAssignments([]);
+        return;
       }
-      if (aRes.ok) {
-        const json = await aRes.json();
-        setAttempts(Array.isArray(json) ? json : []);
-      }
+      const json = (await res.json()) as { assignments?: AssignmentRow[] };
+      setAssignments(Array.isArray(json.assignments) ? json.assignments : []);
     } finally {
       setLoading(false);
     }
@@ -127,32 +98,18 @@ export function StudentQuizHub() {
     void load();
   }, [load]);
 
-  const latestAttemptByQuiz = useMemo(() => {
-    const map = new Map<string, AttemptRow>();
-    for (const attempt of attempts) {
-      if (!attempt.quiz_id) continue;
-      const existing = map.get(attempt.quiz_id);
-      if (!existing || new Date(attempt.created_at).getTime() > new Date(existing.created_at).getTime()) {
-        map.set(attempt.quiz_id, attempt);
-      }
-    }
-    return map;
-  }, [attempts]);
-
   const startQuiz = async (quizId: string) => {
     const res = await fetch(`/api/quiz/quizzes/${quizId}`);
     const data = await res.json();
     if (!res.ok) {
-      toast.error(
-        data.error || t("studentDashboard.quizStartError", { defaultValue: "Dieses Quiz konnte nicht geöffnet werden." })
-      );
+      toast.error(data.error || t("studentDashboard.quizStartError"));
       return;
     }
     const questions = (data.quiz_questions || []).sort(
       (a: QuizQuestion, b: QuizQuestion) => a.sort_order - b.sort_order
     ) as QuizQuestion[];
     if (!questions.length) {
-      toast.error(t("studentDashboard.quizEmpty", { defaultValue: "Dieses Quiz hat noch keine Fragen." }));
+      toast.error(t("studentDashboard.quizEmpty"));
       return;
     }
     setActiveQuiz({
@@ -164,6 +121,13 @@ export function StudentQuizHub() {
       questions,
     });
   };
+
+  const openAssignments = assignments.filter(
+    (a) => a.status === "open" || a.status === "in_progress"
+  );
+  const historyAssignments = assignments.filter(
+    (a) => a.status === "submitted" || a.status === "graded" || a.status === "completed"
+  );
 
   if (activeQuiz) {
     return (
@@ -180,6 +144,87 @@ export function StudentQuizHub() {
 
   if (loading) return <LoadingBlock />;
 
+  const renderAssignmentCard = (a: AssignmentRow, showRetry: boolean) => (
+    <Card key={a.id} className="p-5">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <div className="min-w-0 flex-1 space-y-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <h3 className={`font-bold ${textPrimary}`}>{a.title}</h3>
+            <Badge variant={statusVariant(a.status)}>{statusLabel(a.status, t)}</Badge>
+            <Badge variant="gold">{difficultyLabel(a.difficulty, t)}</Badge>
+          </div>
+
+          <dl className="grid gap-1.5 text-sm sm:grid-cols-2">
+            <div>
+              <dt className="text-xs font-semibold uppercase tracking-wide text-text-muted">
+                {t("studentDashboard.assignmentSubject")}
+              </dt>
+              <dd className="text-foreground">{a.subjectName ?? "—"}</dd>
+            </div>
+            <div>
+              <dt className="text-xs font-semibold uppercase tracking-wide text-text-muted">
+                {t("studentDashboard.assignmentDueDate")}
+              </dt>
+              <dd className="text-foreground">
+                {a.dueDate
+                  ? new Date(a.dueDate).toLocaleDateString(dateLocale, {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    })
+                  : t("studentDashboard.assignmentNoDueDate")}
+              </dd>
+            </div>
+            <div>
+              <dt className="text-xs font-semibold uppercase tracking-wide text-text-muted">
+                {t("studentDashboard.assignmentScore")}
+              </dt>
+              <dd className="font-semibold text-[#D4AF37]">
+                {a.score != null ? `${a.score}%` : "—"}
+              </dd>
+            </div>
+            {a.timeLimitMinutes ? (
+              <div>
+                <dt className="text-xs font-semibold uppercase tracking-wide text-text-muted">
+                  {t("studentDashboard.assignmentTimeLimit")}
+                </dt>
+                <dd className="text-foreground">
+                  {a.timeLimitMinutes} {t("studentDashboard.minShort")}
+                </dd>
+              </div>
+            ) : null}
+          </dl>
+
+          {a.feedback ? (
+            <div className="rounded-lg border border-border-default bg-surface-subtle/50 px-3 py-2">
+              <p className="text-xs font-semibold uppercase tracking-wide text-text-muted">
+                {t("studentDashboard.quizFeedback")}
+              </p>
+              <p className="mt-1 text-sm text-foreground">{a.feedback}</p>
+            </div>
+          ) : null}
+        </div>
+
+        <div className="flex shrink-0 flex-wrap gap-2">
+          {(a.status === "open" || a.status === "in_progress") && (
+            <Button variant="gold" size="sm" onClick={() => void startQuiz(a.quizId)}>
+              <Play className="mr-2 h-4 w-4" />
+              {a.status === "open"
+                ? t("studentDashboard.quizStart")
+                : t("studentDashboard.quizContinue")}
+            </Button>
+          )}
+          {showRetry && a.allowRetry && (
+            <Button variant="outline" size="sm" onClick={() => void startQuiz(a.quizId)}>
+              <RotateCcw className="mr-2 h-4 w-4" />
+              {t("studentDashboard.quizRetry")}
+            </Button>
+          )}
+        </div>
+      </div>
+    </Card>
+  );
+
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap gap-2">
@@ -189,7 +234,7 @@ export function StudentQuizHub() {
           onClick={() => setTab("available")}
         >
           <Brain className="mr-2 h-4 w-4" />
-          {t("studentDashboard.availableQuizzes", { defaultValue: "Verfügbare Quizze" })}
+          {t("studentDashboard.availableQuizzes")} ({openAssignments.length})
         </Button>
         <Button
           variant={tab === "history" ? "gold" : "outline"}
@@ -197,114 +242,29 @@ export function StudentQuizHub() {
           onClick={() => setTab("history")}
         >
           <History className="mr-2 h-4 w-4" />
-          {t("studentDashboard.quizHistory", { defaultValue: "Verlauf" })}
+          {t("studentDashboard.quizHistory")} ({historyAssignments.length})
         </Button>
       </div>
 
       {tab === "available" ? (
         loadError ? (
+          <EmptyState title={t("studentDashboard.quizLoadError")} description={loadError} />
+        ) : openAssignments.length === 0 ? (
           <EmptyState
-            title={t("studentDashboard.quizLoadError", { defaultValue: "Quizze konnten nicht geladen werden." })}
-            description={loadError}
-          />
-        ) : quizzes.length === 0 ? (
-          <EmptyState
-            title={t("studentDashboard.noQuizzes", { defaultValue: "Noch keine Quizze" })}
-            description={t("studentDashboard.noQuizzesDesc", {
-              defaultValue: "Sobald deine Lehrkraft ein Quiz veröffentlicht, erscheint es hier.",
-            })}
+            title={t("studentDashboard.noOpenAssignments")}
+            description={t("studentDashboard.noOpenAssignmentsDesc")}
           />
         ) : (
-          <div className="grid gap-4 md:grid-cols-2">
-            {quizzes.map((q) => {
-              const attempt = latestAttemptByQuiz.get(q.id);
-              const status = resolveQuizStatus(attempt);
-              return (
-                <Card key={q.id} className="p-6">
-                  <div className="mb-3 flex items-start justify-between gap-2">
-                    <h3 className={`font-bold ${textPrimary}`}>{q.title}</h3>
-                    <div className="flex flex-col items-end gap-1">
-                      <Badge variant="gold">{difficultyLabel(q.difficulty, t)}</Badge>
-                      <Badge variant={status === "open" ? "warning" : "success"}>
-                        {statusLabel(status, t)}
-                      </Badge>
-                    </div>
-                  </div>
-                  {(q.topic || q.subject_name) && (
-                    <p className="mb-2 text-sm text-text-muted">{q.subject_name || q.topic}</p>
-                  )}
-                  <p className="mb-4 text-sm text-text-muted">
-                    {questionCount(q) != null
-                      ? `${questionCount(q)} ${t("studentDashboard.quizQuestions", { defaultValue: "Fragen" })}`
-                      : t("studentDashboard.publishedQuiz", { defaultValue: "Veröffentlichtes Quiz" })}
-                    {q.time_limit_minutes ? ` · ${q.time_limit_minutes} Min.` : ""}
-                    {attempt?.score_percent != null ? ` · ${attempt.score_percent}%` : ""}
-                  </p>
-                  <Button variant="gold" size="sm" onClick={() => void startQuiz(q.id)}>
-                    <Play className="mr-2 h-4 w-4" />
-                    {status === "open"
-                      ? t("studentDashboard.quizStart", { defaultValue: "Quiz starten" })
-                      : t("studentDashboard.quizRetry", { defaultValue: "Erneut versuchen" })}
-                  </Button>
-                </Card>
-              );
-            })}
-          </div>
+          <div className="space-y-4">{openAssignments.map((a) => renderAssignmentCard(a, false))}</div>
         )
-      ) : attempts.length === 0 ? (
+      ) : historyAssignments.length === 0 ? (
         <EmptyState
-          title={t("studentDashboard.quizNoAttempts", { defaultValue: "Noch keine Versuche" })}
-          description={t("studentDashboard.quizNoAttemptsDesc", {
-            defaultValue: "Schließe ein Quiz ab, um deinen Verlauf zu sehen.",
-          })}
+          title={t("studentDashboard.quizNoAttempts")}
+          description={t("studentDashboard.quizNoAttemptsDesc")}
         />
       ) : (
-        <div className="space-y-3">
-          {attempts.map((a) => {
-            const status = resolveQuizStatus(a);
-            const feedback = a.teacher_feedback || a.feedback;
-            return (
-              <Card key={a.id} className="flex flex-wrap items-center justify-between gap-3 p-4">
-                <div className="min-w-0">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <p className={`font-semibold ${textPrimary}`}>
-                      {a.generated_quizzes?.title ??
-                        t("studentDashboard.publishedQuiz", { defaultValue: "Quiz" })}
-                    </p>
-                    <Badge variant={status === "in_progress" ? "warning" : "success"}>
-                      {statusLabel(status, t)}
-                    </Badge>
-                  </div>
-                  <p className="text-sm text-text-muted">
-                    {a.completed_at
-                      ? new Date(a.completed_at).toLocaleString(i18n.language?.startsWith("de") ? "de-AT" : undefined)
-                      : t("studentDashboard.quizStatusInProgress", { defaultValue: "In Bearbeitung" })}
-                  </p>
-                  {feedback ? (
-                    <p className="mt-1 text-xs text-text-muted">
-                      {t("studentDashboard.quizFeedback", { defaultValue: "Feedback" })}: {feedback}
-                    </p>
-                  ) : null}
-                </div>
-                <div className="flex items-center gap-3">
-                  {a.score_percent !== null && (
-                    <span className="text-2xl font-bold text-[#D4AF37]">{a.score_percent}%</span>
-                  )}
-                  {a.quiz_id ? (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => void startQuiz(a.quiz_id)}
-                      aria-label={t("studentDashboard.quizRetry", { defaultValue: "Erneut versuchen" })}
-                    >
-                      <RotateCcw className="mr-1.5 h-4 w-4" />
-                      {t("studentDashboard.quizRetry", { defaultValue: "Erneut versuchen" })}
-                    </Button>
-                  ) : null}
-                </div>
-              </Card>
-            );
-          })}
+        <div className="space-y-4">
+          {historyAssignments.map((a) => renderAssignmentCard(a, true))}
         </div>
       )}
     </div>

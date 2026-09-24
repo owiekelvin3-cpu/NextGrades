@@ -35,6 +35,7 @@ export function AdminNotificationCenter() {
   const [sending, setSending] = useState(false);
   const [history, setHistory] = useState<Announcement[]>([]);
   const [loading, setLoading] = useState(true);
+  const [cleaning, setCleaning] = useState(false);
 
   const loadHistory = async () => {
     setLoading(true);
@@ -91,6 +92,40 @@ export function AdminNotificationCenter() {
     }
   };
 
+  const handleCleanupDemo = async () => {
+    if (
+      !window.confirm(
+        t("notifications.admin.cleanupConfirm", {
+          defaultValue:
+            "Alte Test- und Demo-Benachrichtigungen (z. B. personalisierte Willkommensnachrichten) für alle Nutzer löschen?",
+        })
+      )
+    ) {
+      return;
+    }
+    setCleaning(true);
+    try {
+      const res = await fetch("/api/admin/notifications/cleanup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({}),
+      });
+      const json = (await res.json()) as { error?: string; deleted?: number };
+      if (!res.ok) {
+        toast.error(json.error ?? "Cleanup failed");
+        return;
+      }
+      toast.success(
+        t("notifications.admin.cleanupDone", {
+          count: json.deleted ?? 0,
+          defaultValue: `${json.deleted ?? 0} Benachrichtigungen entfernt.`,
+        })
+      );
+    } finally {
+      setCleaning(false);
+    }
+  };
+
   const inputCls = cn(themeInputClass, "py-2.5");
 
   return (
@@ -137,6 +172,9 @@ export function AdminNotificationCenter() {
               placeholder={t("notifications.admin.titlePlaceholder", { defaultValue: "Announcement title" })}
               className={inputCls}
             />
+            <p className="text-xs text-text-muted">
+              {t("notifications.admin.namePlaceholderHint")}
+            </p>
 
             <textarea
               value={message}
@@ -185,11 +223,19 @@ export function AdminNotificationCenter() {
       </div>
 
       <Card hoverable={false} className="p-6">
-        <div className="mb-5 flex items-center gap-2">
-          <History className="h-5 w-5 text-[var(--brand-gold)]" />
-          <h2 className="font-semibold text-foreground">
-            {t("notifications.admin.history", { defaultValue: "Delivery history" })}
-          </h2>
+        <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-2">
+            <History className="h-5 w-5 text-[var(--brand-gold)]" />
+            <h2 className="font-semibold text-foreground">
+              {t("notifications.admin.history", { defaultValue: "Delivery history" })}
+            </h2>
+          </div>
+          <Button variant="outline" size="sm" disabled={cleaning} onClick={() => void handleCleanupDemo()}>
+            {cleaning ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : null}
+            {t("notifications.admin.cleanupDemo", { defaultValue: "Demo-Benachrichtigungen löschen" })}
+          </Button>
         </div>
 
         {loading ? (

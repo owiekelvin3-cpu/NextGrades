@@ -57,22 +57,44 @@ interface Resource {
   } | null;
 }
 
-function getResourceStatusLabel(resource: Resource): { label: string; className: string } {
+function getResourceStatusLabel(
+  resource: Resource,
+  t: (key: string) => string
+): { label: string; className: string } {
   if (resource.moderation_status === "pending" && resource.status === "draft") {
-    return { label: "Pending review", className: "bg-yellow-500/10 text-yellow-600 dark:text-yellow-400" };
+    return { label: t("teacherContent.statusPending"), className: "bg-yellow-500/10 text-yellow-600 dark:text-yellow-400" };
   }
   if (resource.moderation_status === "rejected") {
-    return { label: "Needs revision", className: "bg-red-500/10 text-red-500" };
+    return { label: t("teacherContent.statusNeedsRevision"), className: "bg-red-500/10 text-red-500" };
   }
   switch (resource.status) {
     case "published":
-      return { label: "Published", className: "bg-green-500/10 text-green-500" };
+      return { label: t("teacherContent.statusPublished"), className: "bg-green-500/10 text-green-500" };
     case "draft":
-      return { label: "Draft", className: "bg-gray-500/10 text-gray-500" };
+      return { label: t("teacherContent.statusDraft"), className: "bg-gray-500/10 text-gray-500" };
     case "archived":
-      return { label: "Archived", className: "bg-red-500/10 text-red-500" };
+      return { label: t("teacherContent.statusArchived"), className: "bg-red-500/10 text-red-500" };
+    case "private":
+      return { label: t("teacherContent.statusPrivate"), className: "bg-gray-500/10 text-gray-500" };
+    case "scheduled":
+      return { label: t("teacherContent.statusScheduled"), className: "bg-blue-500/10 text-blue-500" };
     default:
       return { label: resource.status.replace("_", " "), className: "bg-gray-500/10 text-gray-500" };
+  }
+}
+
+function getAccessLabel(access: string, t: (key: string) => string): string {
+  switch (access) {
+    case "free":
+      return t("teacherContent.accessFree");
+    case "premium":
+      return t("teacherContent.accessPremium");
+    case "locked":
+      return t("teacherContent.accessLocked");
+    case "members_only":
+      return t("teacherContent.accessMembersOnly");
+    default:
+      return access.replace("_", " ");
   }
 }
 
@@ -163,8 +185,8 @@ export default function TeacherContentPage() {
     (resource.description && resource.description.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
-  const getStatusColor = (resource: Resource) => getResourceStatusLabel(resource).className;
-  const getStatusLabel = (resource: Resource) => getResourceStatusLabel(resource).label;
+  const getStatusColor = (resource: Resource) => getResourceStatusLabel(resource, t).className;
+  const getStatusLabel = (resource: Resource) => getResourceStatusLabel(resource, t).label;
 
   const getAccessColor = (access: string) => {
     switch (access) {
@@ -187,17 +209,17 @@ export default function TeacherContentPage() {
 
   return (
     <TeacherDashboardLayout
-      title={t("teacherDashboard.nav.myMaterials", { defaultValue: "My materials" })}
-      description={t("teacherDashboard.contentPageDesc", {
-        defaultValue: TEACHER_PUBLISHING_ENABLED
-          ? "View, edit, and manage your published learning content."
-          : "Browse materials in the library. Publishing is managed by administrators.",
-      })}
+      title={t("teacherDashboard.nav.myMaterials")}
+      description={
+        TEACHER_PUBLISHING_ENABLED
+          ? t("teacherDashboard.contentPageDesc")
+          : t("teacherContent.contentPageDescAdmin")
+      }
       headerAction={
         TEACHER_PUBLISHING_ENABLED ? (
           <Button variant="gold" size="md" href="/dashboard/teacher/upload">
             <Plus className="mr-2 h-5 w-5" />
-            {t("teacherDashboard.nav.publish", { defaultValue: "Publish" })}
+            {t("teacherDashboard.nav.publish")}
           </Button>
         ) : undefined
       }
@@ -235,13 +257,13 @@ export default function TeacherContentPage() {
                   onChange={(e) => setStatusFilter(e.target.value)}
                   className={filterSelect(statusFilter)}
                 >
-                  <option value="all">All Status</option>
-                  <option value="published">Published</option>
-                  <option value="draft">Draft</option>
-                  <option value="pending_review">Pending Review</option>
-                  <option value="private">Private</option>
-                  <option value="scheduled">Scheduled</option>
-                  <option value="archived">Archived</option>
+                  <option value="all">{t("teacherContent.statusAll")}</option>
+                  <option value="published">{t("teacherContent.statusPublished")}</option>
+                  <option value="draft">{t("teacherContent.statusDraft")}</option>
+                  <option value="pending_review">{t("teacherContent.statusPending")}</option>
+                  <option value="private">{t("teacherContent.statusPrivate")}</option>
+                  <option value="scheduled">{t("teacherContent.statusScheduled")}</option>
+                  <option value="archived">{t("teacherContent.statusArchived")}</option>
                 </select>
                 <ChevronDown className={`absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none text-text-muted`} />
               </div>
@@ -253,7 +275,7 @@ export default function TeacherContentPage() {
                   onChange={(e) => setCategoryFilter(e.target.value)}
                   className={filterSelect(categoryFilter)}
                 >
-                  <option value="all">All Categories</option>
+                  <option value="all">{t("teacherContent.categoryAll")}</option>
                   {categories.map((cat) => (
                     <option key={cat.id} value={cat.id}>
                       {cat.name}
@@ -274,12 +296,12 @@ export default function TeacherContentPage() {
                   }}
                   className={filterSelect(`${sortBy}-${sortOrder}`)}
                 >
-                  <option value="created_at-desc">Newest First</option>
-                  <option value="created_at-asc">Oldest First</option>
-                  <option value="view_count-desc">Most Viewed</option>
-                  <option value="download_count-desc">Most Downloaded</option>
-                  <option value="title-asc">Title A-Z</option>
-                  <option value="title-desc">Title Z-A</option>
+                  <option value="created_at-desc">{t("teacherContent.sortNewestFirst")}</option>
+                  <option value="created_at-asc">{t("teacherContent.sortOldestFirst")}</option>
+                  <option value="view_count-desc">{t("teacherContent.sortMostViewed")}</option>
+                  <option value="download_count-desc">{t("teacherContent.sortMostDownloaded")}</option>
+                  <option value="title-asc">{t("teacherContent.sortTitleAsc")}</option>
+                  <option value="title-desc">{t("teacherContent.sortTitleDesc")}</option>
                 </select>
                 <ChevronDown className={`absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none text-text-muted`} />
               </div>
@@ -307,19 +329,19 @@ export default function TeacherContentPage() {
             <Card className={`p-12 text-center`}>
               <Folder className="w-16 h-16 mx-auto mb-4 text-gray-400" />
               <h3 className={`text-xl font-semibold mb-2 text-foreground`}>
-                No resources found
+                {t("teacherContent.emptyTitle")}
               </h3>
               <p className={`mb-6 text-text-muted`}>
                 {searchQuery
-                  ? "Try adjusting your search or filters"
+                  ? t("teacherContent.emptySearch")
                   : TEACHER_PUBLISHING_ENABLED
-                    ? "Upload your first resource to get started"
-                    : "No materials yet. Library content is published by administrators."}
+                    ? t("teacherContent.emptyDefault")
+                    : t("teacherContent.emptyAdminManaged")}
               </p>
               {!searchQuery && TEACHER_PUBLISHING_ENABLED && (
                 <Button variant="gold" size="md" href="/dashboard/teacher/upload">
                   <Plus className="w-5 h-5 mr-2" />
-                  Upload Your First Resource
+                  {t("teacherContent.uploadFirstCta")}
                 </Button>
               )}
             </Card>
@@ -374,7 +396,7 @@ export default function TeacherContentPage() {
                           </Badge>
                         )}
                         <Badge className={getAccessColor(resource.access_type)}>
-                          {resource.access_type.replace("_", " ")}
+                          {getAccessLabel(resource.access_type, t)}
                         </Badge>
                       </div>
 
@@ -405,14 +427,14 @@ export default function TeacherContentPage() {
                             href={`/dashboard/teacher/content/${resource.id}/edit`}
                           >
                             <Edit className="w-4 h-4 mr-1" />
-                            Edit
+                            {t("teacherContent.edit")}
                           </Button>
                           <Button
                             variant="outline"
                             size="sm"
                             className={`${theme === "dark" ? "border-white/20 text-white hover:bg-white/10" : "border-gray-200 text-gray-700 hover:bg-gray-50"}`}
                             onClick={() => handleArchive(resource.id)}
-                            title="Archive"
+                            title={t("teacherContent.archive")}
                           >
                             <Archive className="w-4 h-4" />
                           </Button>
@@ -421,7 +443,7 @@ export default function TeacherContentPage() {
                             size="sm"
                             className={`${theme === "dark" ? "border-white/20 text-white hover:bg-white/10" : "border-gray-200 text-gray-700 hover:bg-gray-50"}`}
                             onClick={() => handleDelete(resource.id)}
-                            title="Delete"
+                            title={t("teacherContent.delete")}
                           >
                             <Trash2 className="w-4 h-4" />
                           </Button>

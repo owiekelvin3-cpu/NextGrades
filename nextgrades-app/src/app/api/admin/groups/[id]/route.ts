@@ -23,8 +23,19 @@ export async function PATCH(request: Request, { params }: RouteParams) {
     classId?: string | null;
     scheduleNotes?: string | null;
     meetingUrl?: string | null;
+    maxStudents?: number | null;
+    dayOfWeek?: number | null;
+    startTime?: string | null;
+    durationMinutes?: number | null;
+    startDate?: string | null;
     isActive?: boolean;
     studentIds?: string[];
+  };
+
+  const parseOptionalInt = (value: unknown): number | null => {
+    if (value === null || value === undefined || value === "") return null;
+    const n = Number(value);
+    return Number.isFinite(n) ? Math.trunc(n) : null;
   };
 
   const admin = createAdminClient();
@@ -36,6 +47,14 @@ export async function PATCH(request: Request, { params }: RouteParams) {
   if (body.scheduleNotes !== undefined) updates.schedule_notes = body.scheduleNotes?.trim() || null;
   if (body.meetingUrl !== undefined) updates.meeting_url = body.meetingUrl?.trim() || null;
   if (body.isActive !== undefined) updates.is_active = body.isActive;
+  if (body.maxStudents !== undefined) updates.max_students = parseOptionalInt(body.maxStudents);
+  if (body.dayOfWeek !== undefined) updates.day_of_week = parseOptionalInt(body.dayOfWeek);
+  if (body.startTime !== undefined) updates.start_time = body.startTime?.trim() || null;
+  if (body.durationMinutes !== undefined) {
+    const dur = parseOptionalInt(body.durationMinutes);
+    updates.duration_minutes = dur === null ? 60 : dur;
+  }
+  if (body.startDate !== undefined) updates.start_date = body.startDate?.trim() || null;
 
   try {
     const { error } = await admin.from("tutoring_groups").update(updates).eq("id", id);

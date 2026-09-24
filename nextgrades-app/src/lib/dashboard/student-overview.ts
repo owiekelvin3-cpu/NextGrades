@@ -22,12 +22,23 @@ export type StudentCourseRow = {
   progressPercent: number;
 };
 
+export type StudentTaskStatus =
+  | "open"
+  | "in_progress"
+  | "submitted"
+  | "graded"
+  | "completed";
+
 export type StudentTaskRow = {
   id: string;
   title: string;
+  subjectName?: string | null;
   topic?: string | null;
-  status: "open" | "in_progress";
+  status: StudentTaskStatus;
   dueLabel?: string;
+  score?: number | null;
+  feedback?: string | null;
+  allowRetry?: boolean;
 };
 
 export type StudentOverviewData = {
@@ -144,57 +155,44 @@ export function buildCourseRows(
   });
 }
 
+
 async function fetchStudentQuizTasks(studentId: string): Promise<StudentTaskRow[]> {
   if (!isSupabaseConfigured()) return [];
 
-  const [grantsRes, attemptsRes] = await Promise.all([
-    supabase
-      .from("quiz_grants")
-      .select("quiz_id, expires_at")
-      .eq("student_id", studentId)
-      .eq("status", "active"),
-    supabase
-      .from("quiz_attempts")
-      .select("quiz_id, completed_at")
-      .eq("student_id", studentId),
-  ]);
-
-  const grantedIds = (grantsRes.data ?? [])
-    .filter((g: { expires_at: string | null }) => !g.expires_at || new Date(g.expires_at).getTime() > Date.now())
-    .map((g: { quiz_id: string }) => g.quiz_id);
-
-  if (!grantedIds.length) return [];
-
-  const { data: quizzes, error } = await supabase
-    .from("generated_quizzes")
-    .select("id, title, topic, created_at")
-    .eq("is_published", true)
-    .in("id", grantedIds)
-    .order("created_at", { ascending: false })
-    .limit(20);
-
-  if (error || !quizzes) return [];
-
-  const attempts = attemptsRes.data || [];
-  const completedIds = new Set(
-    attempts.filter((a: { completed_at: string | null }) => a.completed_at).map((a: { quiz_id: string }) => a.quiz_id)
-  );
-  const inProgressIds = new Set(
-    attempts
-      .filter((a: { completed_at: string | null }) => !a.completed_at)
-      .map((a: { quiz_id: string }) => a.quiz_id)
-  );
-
-  return quizzes
-    .filter((q: { id: string }) => !completedIds.has(q.id))
-    .slice(0, 5)
-    .map((q: { id: string; title: string; topic: string | null; created_at: string }) => ({
-      id: q.id,
-      title: q.title,
-      topic: q.topic,
-      status: inProgressIds.has(q.id) ? ("in_progress" as const) : ("open" as const),
-      dueLabel: q.created_at,
+  try {
+    const res = await fetch("/api/student/assignments");
+    if (!res.ok) return [];
+    const json = (await res.json()) as {
+      assignments?: Array<{
+        id: string;
+        title: string;
+        subjectName: string | null;
+        dueDate: string | null;
+        status: StudentTaskStatus;
+        score: number | null;
+        feedback: string | null;
+        allowRetry: boolean;
+      }>;
+    };
+    const assignments = json.assignments ?? [];
+    const openFirst = [...assignments].sort((a, b) => {
+      const openOrder = (s: StudentTaskStatus) =>
+        s === "open" || s === "in_progress" ? 0 : 1;
+      return openOrder(a.status) - openOrder(b.status);
+    });
+    return openFirst.slice(0, 8).map((a) => ({
+      id: a.id,
+      title: a.title,
+      subjectName: a.subjectName,
+      status: a.status,
+      dueLabel: a.dueDate ?? undefined,
+      score: a.score,
+      feedback: a.feedback,
+      allowRetry: a.allowRetry,
     }));
+  } catch {
+    return [];
+  }
 }
 
 async function computeOverallProgress(studentId: string, lessons: DashboardLesson[]): Promise<{
@@ -299,7 +297,7 @@ export async function fetchStudentOverviewData(): Promise<StudentOverviewData | 
     enrollments,
     courses,
     tasks,
-    openTaskCount: tasks.length,
+    openTaskCount: tasks.filter((t) => t.status === "open" || t.status === "in_progress").length,
     overallProgress: percent,
     progressSparkline: sparkline,
     notifications,

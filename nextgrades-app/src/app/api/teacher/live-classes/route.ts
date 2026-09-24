@@ -20,9 +20,12 @@ type CreateBody = {
   meetingType?: ZoomMeetingType;
   studentId?: string;
   studentIds?: string[];
+  groupId?: string;
   subjectId?: string;
   meetingLink?: string;
   passcode?: string;
+  isRecurring?: boolean;
+  recurrenceWeeks?: number;
 };
 
 /** Schedule a live class with a teacher-pasted meeting link (no Zoom OAuth required). */
@@ -44,9 +47,12 @@ export async function POST(request: Request) {
       meetingType = "live_class",
       studentId,
       studentIds,
+      groupId,
       subjectId,
       meetingLink,
       passcode,
+      isRecurring = false,
+      recurrenceWeeks = 1,
     } = body;
 
     if (!title?.trim() || !date || !startTime) {
@@ -86,6 +92,7 @@ export async function POST(request: Request) {
         studentId,
         studentIds,
         subjectId,
+        groupId,
       });
     } catch (e) {
       return NextResponse.json(
@@ -112,43 +119,61 @@ export async function POST(request: Request) {
       subjectName = sub?.name as string | undefined;
     }
 
+    const weekCount = isRecurring
+      ? Math.min(12, Math.max(1, Math.trunc(Number(recurrenceWeeks) || 1)))
+      : 1;
+    const occurrenceStarts: Date[] = [];
+    for (let w = 0; w < weekCount; w++) {
+      const occ = new Date(startDateTime.getTime());
+      occ.setUTCDate(occ.getUTCDate() + w * 7);
+      occurrenceStarts.push(occ);
+    }
+    const recurrenceRule =
+      isRecurring && weekCount > 1 ? `FREQ=WEEKLY;COUNT=${weekCount}` : isRecurring ? "FREQ=WEEKLY;COUNT=1" : null;
+    const resolvedGroupId = groupId?.trim() || null;
+
     const lessons = [];
-    for (const sid of targetStudentIds) {
-      const { data: lesson, error: insertError } = await admin
-        .from("lessons")
-        .insert({
-          teacher_id: teacherId,
-          student_id: sid,
-          subject_id: subjectId || null,
-          start_time: startDateTime.toISOString(),
-          duration,
-          meeting_url: linkCheck.url,
-          meeting_provider: linkCheck.provider,
-          meeting_verified: true,
-          zoom_link: linkCheck.url,
-          zoom_passcode: passcode?.trim() || null,
-          meeting_title: title.trim(),
-          meeting_description: description ?? null,
-          meeting_type: meetingType,
-          timezone,
-          status: "scheduled",
-        })
-        .select()
-        .single();
+    for (const occurrenceStart of occurrenceStarts) {
+      for (const sid of targetStudentIds) {
+        const { data: lesson, error: insertError } = await admin
+          .from("lessons")
+          .insert({
+            teacher_id: teacherId,
+            student_id: sid,
+            subject_id: subjectId || null,
+            group_id: resolvedGroupId,
+            start_time: occurrenceStart.toISOString(),
+            duration,
+            meeting_url: linkCheck.url,
+            meeting_provider: linkCheck.provider,
+            meeting_verified: true,
+            zoom_link: linkCheck.url,
+            zoom_passcode: passcode?.trim() || null,
+            meeting_title: title.trim(),
+            meeting_description: description ?? null,
+            meeting_type: meetingType,
+            timezone,
+            status: "scheduled",
+            is_recurring: Boolean(isRecurring),
+            recurrence_rule: recurrenceRule,
+          })
+          .select()
+          .single();
 
-      if (insertError) throw insertError;
-      lessons.push(lesson);
+        if (insertError) throw insertError;
+        lessons.push(lesson);
 
-      void notifyLiveClassScheduled({
-        lessonId: lesson.id as string,
-        studentId: sid,
-        teacherId,
-        teacherName,
-        subjectName,
-        title: title.trim(),
-        startTime: startDateTime.toISOString(),
-        joinUrl: linkCheck.url,
-      });
+        void notifyLiveClassScheduled({
+          lessonId: lesson.id as string,
+          studentId: sid,
+          teacherId,
+          teacherName,
+          subjectName,
+          title: title.trim(),
+          startTime: occurrenceStart.toISOString(),
+          joinUrl: linkCheck.url,
+        });
+      }
     }
 
     await settleHeldLessonUnits(admin);

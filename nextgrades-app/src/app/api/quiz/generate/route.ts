@@ -66,7 +66,7 @@ export async function POST(request: Request) {
   try {
     const { user, profile, error } = await getAuthProfile(supabase);
     if (!user || !profile) return NextResponse.json({ error }, { status: 401 });
-    if (!requireRole(profile, ["admin"])) {
+    if (!requireRole(profile, ["admin", "teacher"])) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
@@ -322,7 +322,18 @@ export async function POST(request: Request) {
       completed_at: new Date().toISOString(),
     });
 
-    return NextResponse.json({ cached: false, jobId: activeJobId, quiz: fullQuiz, quality });
+    const usedAi = engine !== "rule-based-v1";
+    return NextResponse.json({
+      cached: false,
+      jobId: activeJobId,
+      quiz: fullQuiz,
+      quality,
+      engine,
+      usedAi,
+      warning: usedAi
+        ? undefined
+        : "KI war nicht erreichbar (GROQ_API_KEY / Modell). Es wurde eine einfache Vorlagen-Generierung verwendet.",
+    });
   } catch (e) {
     const message = errorMessage(e);
     if (jobId) {

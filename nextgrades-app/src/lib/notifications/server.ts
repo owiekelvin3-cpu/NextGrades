@@ -76,8 +76,34 @@ export async function createNotificationsForUsers(
 ): Promise<number> {
   let count = 0;
   const unique = [...new Set(userIds.filter(Boolean))];
+  if (!unique.length) return 0;
+
+  const needsPersonalization =
+    input.title.includes("{{name}}") ||
+    (input.message?.includes("{{name}}") ?? false);
+
+  let nameByUser = new Map<string, string>();
+  if (needsPersonalization && isSupabaseServiceRoleConfigured()) {
+    const admin = createAdminClient();
+    const { data } = await admin.from("profiles").select("id, full_name").in("id", unique);
+    nameByUser = new Map(
+      (data ?? []).map((p: { id: string; full_name: string | null }) => [
+        p.id,
+        p.full_name?.trim().split(/\s+/)[0] ?? "",
+      ])
+    );
+  }
+
   for (const userId of unique) {
-    const id = await createNotification({ ...input, userId });
+    const firstName = nameByUser.get(userId) ?? "";
+    const personalized = needsPersonalization
+      ? {
+          ...input,
+          title: input.title.replace(/\{\{name\}\}/g, firstName),
+          message: input.message?.replace(/\{\{name\}\}/g, firstName) ?? input.message,
+        }
+      : input;
+    const id = await createNotification({ ...personalized, userId });
     if (id) count += 1;
   }
   return count;

@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
 import { TEACHER_PUBLISHING_ENABLED } from "@/lib/resources/teacher-publishing";
 import { TeacherDashboardLayout } from "@/components/dashboard/teacher/TeacherDashboardLayout";
 import { PublishContentForm } from "@/components/teacher/PublishContentForm";
@@ -12,6 +13,7 @@ import { useToast } from "@/context/ToastContext";
 import { useState } from "react";
 
 export default function EditResourcePage() {
+  const { t } = useTranslation();
   const { error: toastError } = useToast();
   const router = useRouter();
   const params = useParams();
@@ -31,7 +33,7 @@ export default function EditResourcePage() {
     void fetch(`/api/teacher/resources/${id}`)
       .then(async (r) => {
         const data = await r.json();
-        if (!r.ok) throw new Error(data.error || "Resource not found");
+        if (!r.ok) throw new Error(data.error || t("teacherContent.notFound"));
         return data;
       })
       .then((data) => {
@@ -64,10 +66,10 @@ export default function EditResourcePage() {
         }
       })
       .catch((err) => {
-        toastError(err instanceof Error ? err.message : "Failed to load resource");
+        toastError(err instanceof Error ? err.message : t("teacherContent.loadResourceFailed"));
       })
       .finally(() => setLoading(false));
-  }, [id, toastError]);
+  }, [id, toastError, t]);
 
   if (!TEACHER_PUBLISHING_ENABLED) {
     return null;
@@ -75,16 +77,16 @@ export default function EditResourcePage() {
 
   return (
     <TeacherDashboardLayout
-      title="Edit Resource"
+      title={t("teacherContent.editTitle")}
       headerAction={
         <Button variant="outline" size="sm" href="/dashboard/teacher/content">
-          Back to library
+          {t("teacherContent.backToLibrary")}
         </Button>
       }
     >
       <div className="mx-auto max-w-4xl">
         <p className={`mb-6 text-sm text-text-muted`}>
-          Update details, thumbnail, or pricing
+          {t("teacherContent.editSubtitle")}
         </p>
         {loading ? (
           <LoadingBlock />
@@ -92,9 +94,9 @@ export default function EditResourcePage() {
           <PublishContentForm resourceId={id} initialData={initialData as never} />
         ) : (
           <p className="text-text-muted">
-            Resource not found.{" "}
+            {t("teacherContent.notFound")}{" "}
             <Link href="/dashboard/teacher/content" className="text-[#D4AF37] hover:underline">
-              Return to My Resources
+              {t("teacherContent.returnToLibrary")}
             </Link>
           </p>
         )}

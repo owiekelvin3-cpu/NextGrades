@@ -156,13 +156,13 @@ export function TeacherMobileDashboard({ data }: Props) {
     {
       href: "/dashboard/teacher/content",
       icon: BookOpen,
-      label: t("teacherDashboard.nav.myMaterials", { defaultValue: "My materials" }),
+      label: t("teacherDashboard.nav.myMaterials"),
       gradient: "from-[#D4AF37] to-[#B8960C]",
     },
     {
       href: "/dashboard/teacher/schedule",
       icon: Video,
-      label: t("teacherDashboard.createLiveClass", { defaultValue: "Live class" }),
+      label: t("zoom.createLiveClass"),
       gradient: "from-[#1e3a5f] to-[#0D1B2A]",
     },
     ...(TEACHER_PUBLISHING_ENABLED
@@ -170,7 +170,7 @@ export function TeacherMobileDashboard({ data }: Props) {
           {
             href: "/dashboard/teacher/upload",
             icon: Upload,
-            label: t("teacherDashboard.uploadResource", { defaultValue: "Upload" }),
+            label: t("teacherDashboard.uploadResource"),
             gradient: "from-[#047857] to-[#065f46]",
           },
         ]
@@ -178,7 +178,7 @@ export function TeacherMobileDashboard({ data }: Props) {
     {
       href: "/dashboard/teacher/students",
       icon: Users,
-      label: t("teacherDashboard.nav.students", { defaultValue: "Students" }),
+      label: t("teacherDashboard.nav.students"),
       gradient: "from-[#2563eb] to-[#1d4ed8]",
     },
   ];
@@ -187,9 +187,9 @@ export function TeacherMobileDashboard({ data }: Props) {
     <div className="bg-surface-dashboard md:hidden">
       <div className={tt.mobileFeaturedOverlap}>
         <SectionHeader
-          title={t("teacherDashboard.mobileTodayOverview", { defaultValue: "Today's teaching" })}
+          title={t("teacherDashboard.mobileTodayOverview")}
           href="/dashboard/teacher/schedule"
-          linkLabel={t("teacherDashboard.viewDetails", { defaultValue: "View details" })}
+          linkLabel={t("teacherDashboard.viewDetails")}
         />
         <Link
           href="/dashboard/teacher/schedule"
@@ -240,9 +240,9 @@ export function TeacherMobileDashboard({ data }: Props) {
       <div className={tt.mobileSection}>
         <section>
           <SectionHeader
-            title={t("teacherDashboard.mobileQuickStats", { defaultValue: "Teaching status" })}
+            title={t("teacherDashboard.mobileQuickStats")}
             href="/dashboard/teacher/analytics"
-            linkLabel={t("teacherDashboard.viewAll", { defaultValue: "See all" })}
+            linkLabel={t("teacherDashboard.viewAll")}
           />
           <div className="grid grid-cols-2 gap-3">
             <StatTile
@@ -278,7 +278,7 @@ export function TeacherMobileDashboard({ data }: Props) {
 
         <section>
           <SectionHeader
-            title={t("teacherDashboard.quickLinksTitle", { defaultValue: "Quick access" })}
+            title={t("teacherDashboard.quickLinksTitle")}
           />
           <div className="grid grid-cols-2 gap-3">
             {quickLinks.map(({ href, icon: Icon, label, gradient }) => (

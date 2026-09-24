@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { getAuthProfile, requireRole } from "@/lib/quiz/auth";
 import { quizDataClient } from "@/lib/quiz/db";
+import { listAssignedStudentIds } from "@/lib/teachers/assignments";
 import { studentCanAccessQuiz } from "@/lib/quiz/access";
 
 export async function GET() {
@@ -11,18 +12,51 @@ export async function GET() {
     if (!profile) return NextResponse.json({ error }, { status: 401 });
     const db = quizDataClient(supabase);
 
-    let query = db
+    if (profile.role === "student") {
+      const { data, error: dbError } = await db
+        .from("quiz_attempts")
+        .select("*, generated_quizzes(id, title, difficulty)")
+        .eq("student_id", profile.id)
+        .order("created_at", { ascending: false });
+      if (dbError) throw dbError;
+      return NextResponse.json(data || []);
+    }
+
+    if (profile.role === "teacher") {
+      const studentIds = await listAssignedStudentIds(db, profile.id);
+      if (!studentIds.length) return NextResponse.json([]);
+
+      const { data: ownQuizzes } = await db
+        .from("generated_quizzes")
+        .select("id")
+        .eq("created_by", profile.id);
+      const quizIds = (ownQuizzes ?? []).map((q) => q.id as string);
+
+      let query = db
+        .from("quiz_attempts")
+        .select("*, generated_quizzes(id, title, difficulty), student:profiles!quiz_attempts_student_id_fkey(id, full_name, email)")
+        .in("student_id", studentIds)
+        .order("created_at", { ascending: false });
+
+      if (quizIds.length) {
+        query = query.in("quiz_id", quizIds);
+      }
+
+      const { data, error: dbError } = await query;
+      if (dbError) throw dbError;
+
+      const filtered = quizIds.length
+        ? data ?? []
+        : (data ?? []).filter(() => false);
+
+      return NextResponse.json(filtered);
+    }
+
+    const { data, error: dbError } = await db
       .from("quiz_attempts")
       .select("*, generated_quizzes(id, title, difficulty)")
       .order("created_at", { ascending: false });
-
-    if (profile.role === "student") {
-      query = query.eq("student_id", profile.id);
-    }
-
-    const { data, error: dbError } = await query;
     if (dbError) throw dbError;
-
     return NextResponse.json(data || []);
   } catch (e) {
     const message = e instanceof Error ? e.message : "Failed to load attempts";

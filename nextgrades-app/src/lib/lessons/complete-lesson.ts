@@ -1,6 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { decrementStudentUnit } from "@/lib/lessons/consume-units";
 import { notifyLessonCompleted } from "@/lib/notifications/triggers";
+import { applyLessonBonusUpdates, resolveLessonPayRate } from "@/lib/teachers/nextjump-bonus";
 
 export type LessonAttendanceStatus = "attended" | "excused" | "no_show";
 
@@ -170,7 +171,12 @@ export async function completeLessonByTeacher(
 
   if (shouldEarn) {
     const stats = await ensureTeacherStats(db, opts.teacherId);
-    earningsAmount = roundMoney(stats.hourly_rate * hours);
+    const { hourlyRate } = await resolveLessonPayRate(
+      db,
+      opts.teacherId,
+      lesson.student_id as string
+    );
+    earningsAmount = roundMoney(hourlyRate * hours);
 
     const { data: existingLedger } = await db
       .from("teacher_earnings_ledger")
@@ -210,6 +216,14 @@ export async function completeLessonByTeacher(
           updated_at: now,
         })
         .eq("teacher_id", opts.teacherId);
+
+      void applyLessonBonusUpdates(db, {
+        teacherId: opts.teacherId,
+        studentId: lesson.student_id as string,
+        lessonId: opts.lessonId,
+      }).catch(() => {
+        /* bonus tables may not exist yet on older deployments */
+      });
     } else {
       ledgerId = existingLedger.id as string;
       earningsAmount = Number(existingLedger.amount ?? earningsAmount);

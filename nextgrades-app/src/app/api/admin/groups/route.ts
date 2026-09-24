@@ -13,6 +13,7 @@ function normalizeRelation<T>(value: T | T[] | null | undefined): T | null {
 
 const GROUP_SELECT = `
   id, name, subject_id, class_id, teacher_id, schedule_notes, meeting_url, is_active, created_at, updated_at,
+  max_students, day_of_week, start_time, duration_minutes, start_date,
   teacher:profiles!tutoring_groups_teacher_id_fkey(id, full_name, email),
   subject:subjects(id, name),
   class:classes(id, name, level),
@@ -32,6 +33,11 @@ function mapGroup(row: Record<string, unknown>) {
     teacherId: row.teacher_id as string,
     scheduleNotes: (row.schedule_notes as string | null) ?? null,
     meetingUrl: (row.meeting_url as string | null) ?? null,
+    maxStudents: (row.max_students as number | null) ?? null,
+    dayOfWeek: (row.day_of_week as number | null) ?? null,
+    startTime: (row.start_time as string | null) ?? null,
+    durationMinutes: (row.duration_minutes as number | null) ?? 60,
+    startDate: (row.start_date as string | null) ?? null,
     isActive: Boolean(row.is_active),
     createdAt: row.created_at as string,
     teacher: normalizeRelation(
@@ -82,8 +88,42 @@ type CreateBody = {
   classId?: string | null;
   scheduleNotes?: string | null;
   meetingUrl?: string | null;
+  maxStudents?: number | null;
+  dayOfWeek?: number | null;
+  startTime?: string | null;
+  durationMinutes?: number | null;
+  startDate?: string | null;
+  isActive?: boolean;
   studentIds?: string[];
 };
+
+function parseOptionalInt(value: unknown): number | null {
+  if (value === null || value === undefined || value === "") return null;
+  const n = Number(value);
+  return Number.isFinite(n) ? Math.trunc(n) : null;
+}
+
+function scheduleFieldsFromBody(body: CreateBody): Record<string, unknown> {
+  const fields: Record<string, unknown> = {};
+  if (body.maxStudents !== undefined) fields.max_students = parseOptionalInt(body.maxStudents);
+  if (body.dayOfWeek !== undefined) {
+    const dow = parseOptionalInt(body.dayOfWeek);
+    fields.day_of_week = dow === null ? null : dow;
+  }
+  if (body.startTime !== undefined) {
+    const t = body.startTime?.trim();
+    fields.start_time = t || null;
+  }
+  if (body.durationMinutes !== undefined) {
+    const dur = parseOptionalInt(body.durationMinutes);
+    fields.duration_minutes = dur === null ? 60 : dur;
+  }
+  if (body.startDate !== undefined) {
+    const d = body.startDate?.trim();
+    fields.start_date = d || null;
+  }
+  return fields;
+}
 
 export async function POST(request: Request) {
   const gate = await requireAdminApi();
@@ -120,7 +160,8 @@ export async function POST(request: Request) {
         schedule_notes: body.scheduleNotes?.trim() || null,
         meeting_url: body.meetingUrl?.trim() || null,
         created_by: gate.auth!.user.id,
-        is_active: true,
+        is_active: body.isActive !== undefined ? Boolean(body.isActive) : true,
+        ...scheduleFieldsFromBody(body),
       })
       .select("id")
       .single();

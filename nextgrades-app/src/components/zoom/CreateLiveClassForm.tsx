@@ -41,6 +41,11 @@ function isScheduleInPast(date: string, startTime: string): boolean {
   return !Number.isNaN(combined.getTime()) && combined.getTime() <= Date.now();
 }
 
+function currentLocalTimeHm(): string {
+  const now = new Date();
+  return `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+}
+
 type Props = {
   onCreated?: () => void;
   zoomReady?: boolean;
@@ -63,6 +68,12 @@ export function CreateLiveClassForm({
   const [studentsLoading, setStudentsLoading] = useState(true);
   const [studentsError, setStudentsError] = useState<string | null>(null);
   const [studentMenuOpen, setStudentMenuOpen] = useState(false);
+  const [groups, setGroups] = useState<{ id: string; name: string; memberCount: number }[]>([]);
+  const [groupsLoading, setGroupsLoading] = useState(true);
+  const [lessonKind, setLessonKind] = useState<"one_on_one" | "group">("one_on_one");
+  const [groupId, setGroupId] = useState("");
+  const [scheduleKind, setScheduleKind] = useState<"once" | "recurring">("once");
+  const [recurrenceWeeks, setRecurrenceWeeks] = useState("4");
   const [subjects, setSubjects] = useState<{ id: string; name: string }[]>([]);
   const [loading, setLoading] = useState(false);
   const [showMore, setShowMore] = useState(false);
@@ -95,8 +106,9 @@ export function CreateLiveClassForm({
       setStudentsLoading(true);
       setStudentsError(null);
       try {
-        const [studentsRes, subjectRows] = await Promise.all([
+        const [studentsRes, groupsRes, subjectRows] = await Promise.all([
           fetch("/api/teacher/scheduling-students"),
+          fetch("/api/teacher/groups"),
           fetchSubjects(),
         ]);
         const studentsData = studentsRes.ok
@@ -111,6 +123,20 @@ export function CreateLiveClassForm({
         const list = studentsData.students ?? [];
         setStudents(list);
         setSubjects(subjectRows.map((s) => ({ id: s.id, name: s.name })));
+        if (groupsRes.ok) {
+          const groupsData = (await groupsRes.json()) as {
+            groups?: Array<{ id: string; name: string; members?: unknown[] }>;
+          };
+          setGroups(
+            (groupsData.groups ?? []).map((g) => ({
+              id: g.id,
+              name: g.name,
+              memberCount: Array.isArray(g.members) ? g.members.length : 0,
+            }))
+          );
+        } else {
+          setGroups([]);
+        }
         if (initialStudentId && list.some((s) => s.id === initialStudentId)) {
           setForm((f) => ({ ...f, studentId: initialStudentId }));
         }
@@ -119,15 +145,22 @@ export function CreateLiveClassForm({
           setStudentsError(
             t("zoom.studentsLoadError", { defaultValue: "Could not load students. Refresh and try again." })
           );
+          setGroups([]);
         }
       } finally {
-        if (!cancelled) setStudentsLoading(false);
+        if (!cancelled) {
+          setStudentsLoading(false);
+          setGroupsLoading(false);
+        }
       }
     })();
     return () => {
       cancelled = true;
     };
   }, [initialStudentId, t]);
+
+  const todayYmd = formatLocalYmd();
+  const timeInputMin = form.date === todayYmd ? currentLocalTimeHm() : undefined;
 
   const buildPayload = () => {
     const body: Record<string, unknown> = {
@@ -137,16 +170,19 @@ export function CreateLiveClassForm({
       startTime: form.startTime,
       duration: Number(form.duration),
       timezone: form.timezone,
-      meetingType: form.meetingType,
+      meetingType: "private_session",
       subjectId: form.subjectId || undefined,
+      isRecurring: scheduleKind === "recurring",
+      recurrenceWeeks:
+        scheduleKind === "recurring"
+          ? Math.min(12, Math.max(1, Number.parseInt(recurrenceWeeks, 10) || 1))
+          : 1,
     };
 
-    if (form.meetingType === "private_session") {
+    if (lessonKind === "group" && groupId) {
+      body.groupId = groupId;
+    } else {
       body.studentId = form.studentId;
-    } else if (form.studentId) {
-      body.studentId = form.studentId;
-    } else if (form.subjectId) {
-      body.subjectId = form.subjectId;
     }
 
     return body;
@@ -190,10 +226,19 @@ export function CreateLiveClassForm({
     e.preventDefault();
     if (!validateScheduleTime()) return;
     if (!assertScheduleNotInPast()) return;
-    if (!form.studentId) {
+    if (lessonKind === "group") {
+      if (!groupId) {
+        toast.error(
+          t("zoom.selectGroupRequired", {
+            defaultValue: "Wähle eine Gruppe für die Gruppenstunde.",
+          })
+        );
+        return;
+      }
+    } else if (!form.studentId) {
       toast.error(
         t("zoom.selectStudentRequired", {
-          defaultValue: "Pick a student so the lesson appears in their portal.",
+          defaultValue: "Wähle eine SchülerIn, damit die Stunde im Portal erscheint.",
         })
       );
       return;
@@ -221,10 +266,11 @@ export function CreateLiveClassForm({
     }
 
     const studentName = students.find((s) => s.id === form.studentId)?.name;
+    const groupName = groups.find((g) => g.id === groupId)?.name;
     const subjectName = subjects.find((s) => s.id === form.subjectId)?.name;
     const title =
       form.title.trim() ||
-      [subjectName, studentName].filter(Boolean).join(" · ") ||
+      [subjectName, lessonKind === "group" ? groupName : studentName].filter(Boolean).join(" · ") ||
       t("zoom.lessonFallbackTitle", { defaultValue: "Tutoring lesson" });
 
     setLoading(true);
@@ -235,8 +281,6 @@ export function CreateLiveClassForm({
         body: JSON.stringify({
           ...buildPayload(),
           title,
-          meetingType: "private_session",
-          studentId: form.studentId,
           meetingLink: form.meetingLink.trim() || undefined,
           passcode: form.passcode || undefined,
         }),
@@ -326,69 +370,126 @@ export function CreateLiveClassForm({
       </div>
 
       <form onSubmit={(e) => void handlePasteLinkSubmit(e)} className="space-y-6 p-5 sm:p-6">
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div className="relative">
-            <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-gray-500">
-              {t("zoom.student", { defaultValue: "Student" })}
-            </label>
+        <div>
+          <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-500">
+            {t("zoom.lessonKind", { defaultValue: "Art der Stunde" })}
+          </p>
+          <div className="flex flex-wrap gap-2">
             <button
               type="button"
-              disabled={studentsLoading || students.length === 0}
-              onClick={() => setStudentMenuOpen((open) => !open)}
+              onClick={() => setLessonKind("one_on_one")}
               className={cn(
-                inputCls,
-                "flex items-center justify-between text-left",
-                !form.studentId && "text-gray-400"
+                "rounded-xl px-4 py-2 text-sm font-semibold transition",
+                lessonKind === "one_on_one" ? "bg-[#0D1B2A] text-white" : "bg-gray-100 text-gray-600"
               )}
             >
-              <span className="truncate">
-                {studentsLoading
-                  ? t("zoom.loadingStudents", { defaultValue: "Loading students…" })
-                  : (() => {
-                      const selected = students.find((s) => s.id === form.studentId);
-                      if (!selected) return t("zoom.selectStudent", { defaultValue: "Select student" });
-                      const hasPackage = (selected.totalUnits ?? 0) > 0 || (selected.remainingUnits ?? 0) > 0;
-                      return hasPackage
-                        ? `${selected.name} · ${selected.remainingUnits ?? 0}/${selected.totalUnits ?? 0}`
-                        : selected.name;
-                    })()}
-              </span>
-              <ChevronDown className={cn("h-4 w-4 shrink-0 text-gray-400", studentMenuOpen && "rotate-180")} />
+              {t("zoom.lessonOneOnOne", { defaultValue: "1:1" })}
             </button>
-            {studentMenuOpen && students.length > 0 && (
-              <ul className="absolute z-30 mt-1 max-h-56 w-full overflow-auto rounded-xl border border-gray-200 bg-white py-1 shadow-lg">
-                {students.map((s) => (
-                  <li key={s.id}>
-                    <button
-                      type="button"
-                      className={cn(
-                        "w-full px-4 py-2.5 text-left text-sm text-gray-800 hover:bg-[#D4AF37]/15",
-                        form.studentId === s.id && "bg-[#D4AF37]/20 font-semibold"
-                      )}
-                      onClick={() => {
-                        setForm({ ...form, studentId: s.id });
-                        setStudentMenuOpen(false);
-                      }}
-                    >
-                      {s.name}
-                      {(s.totalUnits ?? 0) > 0 || (s.remainingUnits ?? 0) > 0
-                        ? ` · ${s.remainingUnits ?? 0}/${s.totalUnits ?? 0} Stunden`
-                        : ""}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            )}
-            {studentsError && <p className="mt-1.5 text-xs text-red-600">{studentsError}</p>}
-            {!studentsLoading && students.length === 0 && !studentsError && (
-              <p className="mt-1.5 text-xs text-amber-700">
-                {t("zoom.noAssignedStudents", {
-                  defaultValue:
-                    "Noch keine SchülerInnen zugewiesen. Die Verwaltung weist dir SchülerInnen zu.",
-                })}
-              </p>
-            )}
+            <button
+              type="button"
+              onClick={() => setLessonKind("group")}
+              className={cn(
+                "rounded-xl px-4 py-2 text-sm font-semibold transition",
+                lessonKind === "group" ? "bg-[#0D1B2A] text-white" : "bg-gray-100 text-gray-600"
+              )}
+            >
+              {t("zoom.lessonGroup", { defaultValue: "Gruppe" })}
+            </button>
           </div>
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-2">
+          {lessonKind === "group" ? (
+            <div>
+              <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-gray-500">
+                {t("zoom.group", { defaultValue: "Gruppe" })}
+              </label>
+              <select
+                required
+                value={groupId}
+                onChange={(e) => setGroupId(e.target.value)}
+                disabled={groupsLoading}
+                className={selectCls(groupId)}
+              >
+                <option value="">{t("zoom.selectGroup", { defaultValue: "Gruppe wählen" })}</option>
+                {groups.map((g) => (
+                  <option key={g.id} value={g.id}>
+                    {g.name}
+                    {g.memberCount > 0 ? ` (${g.memberCount})` : ""}
+                  </option>
+                ))}
+              </select>
+              {!groupsLoading && groups.length === 0 && (
+                <p className="mt-1.5 text-xs text-amber-700">
+                  {t("zoom.noGroups", { defaultValue: "Keine Gruppen zugewiesen." })}
+                </p>
+              )}
+            </div>
+          ) : (
+            <div className="relative">
+              <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-gray-500">
+                {t("zoom.student", { defaultValue: "SchülerIn" })}
+              </label>
+              <button
+                type="button"
+                disabled={studentsLoading || students.length === 0}
+                onClick={() => setStudentMenuOpen((open) => !open)}
+                className={cn(
+                  inputCls,
+                  "flex items-center justify-between text-left",
+                  !form.studentId && "text-gray-400"
+                )}
+              >
+                <span className="truncate">
+                  {studentsLoading
+                    ? t("zoom.loadingStudents", { defaultValue: "SchülerInnen werden geladen…" })
+                    : (() => {
+                        const selected = students.find((s) => s.id === form.studentId);
+                        if (!selected) return t("zoom.selectStudent", { defaultValue: "SchülerIn wählen" });
+                        const hasPackage =
+                          (selected.totalUnits ?? 0) > 0 || (selected.remainingUnits ?? 0) > 0;
+                        return hasPackage
+                          ? `${selected.name} · ${selected.remainingUnits ?? 0}/${selected.totalUnits ?? 0}`
+                          : selected.name;
+                      })()}
+                </span>
+                <ChevronDown className={cn("h-4 w-4 shrink-0 text-gray-400", studentMenuOpen && "rotate-180")} />
+              </button>
+              {studentMenuOpen && students.length > 0 && (
+                <ul className="absolute z-30 mt-1 max-h-56 w-full overflow-auto rounded-xl border border-gray-200 bg-white py-1 shadow-lg">
+                  {students.map((s) => (
+                    <li key={s.id}>
+                      <button
+                        type="button"
+                        className={cn(
+                          "w-full px-4 py-2.5 text-left text-sm text-gray-800 hover:bg-[#D4AF37]/15",
+                          form.studentId === s.id && "bg-[#D4AF37]/20 font-semibold"
+                        )}
+                        onClick={() => {
+                          setForm({ ...form, studentId: s.id });
+                          setStudentMenuOpen(false);
+                        }}
+                      >
+                        {s.name}
+                        {(s.totalUnits ?? 0) > 0 || (s.remainingUnits ?? 0) > 0
+                          ? ` · ${s.remainingUnits ?? 0}/${s.totalUnits ?? 0} Stunden`
+                          : ""}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {studentsError && <p className="mt-1.5 text-xs text-red-600">{studentsError}</p>}
+              {!studentsLoading && students.length === 0 && !studentsError && (
+                <p className="mt-1.5 text-xs text-amber-700">
+                  {t("zoom.noAssignedStudents", {
+                    defaultValue:
+                      "Noch keine SchülerInnen zugewiesen. Die Verwaltung weist dir SchülerInnen zu.",
+                  })}
+                </p>
+              )}
+            </div>
+          )}
           <div>
             <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-gray-500">
               {t("zoom.subject", { defaultValue: "Subject" })}
@@ -433,6 +534,7 @@ export function CreateLiveClassForm({
               <input
                 required
                 type="time"
+                min={timeInputMin}
                 value={form.startTime}
                 onChange={(e) => {
                   setForm({ ...form, startTime: e.target.value });
@@ -463,6 +565,62 @@ export function CreateLiveClassForm({
               ))}
             </div>
           </div>
+          <div className="mt-4">
+            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-500">
+              {t("zoom.scheduleKind", { defaultValue: "Terminserie" })}
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={() => setScheduleKind("once")}
+                className={cn(
+                  "rounded-xl px-4 py-2 text-sm font-semibold transition",
+                  scheduleKind === "once" ? "bg-[#0D1B2A] text-white" : "bg-gray-100 text-gray-600"
+                )}
+              >
+                {t("zoom.once", { defaultValue: "Einmalig" })}
+              </button>
+              <button
+                type="button"
+                onClick={() => setScheduleKind("recurring")}
+                className={cn(
+                  "rounded-xl px-4 py-2 text-sm font-semibold transition",
+                  scheduleKind === "recurring" ? "bg-[#0D1B2A] text-white" : "bg-gray-100 text-gray-600"
+                )}
+              >
+                {t("zoom.recurring", { defaultValue: "Wöchentlich wiederholen" })}
+              </button>
+            </div>
+            {scheduleKind === "recurring" && (
+              <div className="mt-3">
+                <label className="mb-1.5 block text-xs text-gray-500">
+                  {t("zoom.recurrenceWeeks", { defaultValue: "Anzahl Wochen (max. 12)" })}
+                </label>
+                <input
+                  type="number"
+                  min={1}
+                  max={12}
+                  value={recurrenceWeeks}
+                  onChange={(e) => setRecurrenceWeeks(e.target.value)}
+                  className={cn(inputCls, "max-w-[8rem]")}
+                />
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div>
+          <label htmlFor="lesson-notes" className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-gray-500">
+            {t("zoom.notesOptional", { defaultValue: "Notizen (optional)" })}
+          </label>
+          <textarea
+            id="lesson-notes"
+            rows={2}
+            value={form.description}
+            onChange={(e) => setForm({ ...form, description: e.target.value })}
+            placeholder={t("zoom.descriptionPlaceholder", { defaultValue: "Optionale Notizen für SchülerInnen…" })}
+            className={cn(inputCls, "resize-none")}
+          />
         </div>
 
         <div>
@@ -482,7 +640,7 @@ export function CreateLiveClassForm({
 
         <div>
           <label htmlFor="meeting-link" className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-gray-500">
-            {t("zoom.meetingLinkRequiredLabel", { defaultValue: "Video-Link (vor der Stunde)" })}
+            {t("zoom.meetingLinkRequiredLabel", { defaultValue: "Video-Link (Pflicht)" })}
           </label>
           <div className="flex gap-3">
             {linkPreview?.ok ? (
@@ -547,18 +705,6 @@ export function CreateLiveClassForm({
               </div>
               <div>
                 <label className="mb-1.5 block text-xs font-medium text-gray-500">
-                  {t("zoom.description", { defaultValue: "Description" })}
-                </label>
-                <textarea
-                  rows={3}
-                  value={form.description}
-                  onChange={(e) => setForm({ ...form, description: e.target.value })}
-                  placeholder={t("zoom.descriptionPlaceholder", { defaultValue: "Optional notes for students…" })}
-                  className={cn(inputCls, "resize-none")}
-                />
-              </div>
-              <div>
-                <label className="mb-1.5 block text-xs font-medium text-gray-500">
                   {t("zoom.timezone", { defaultValue: "Time zone" })}
                 </label>
                 <select
@@ -612,11 +758,8 @@ export function CreateLiveClassForm({
 
         {!zoomReady && (
           <p className="text-xs text-gray-500">
-            {t("zoom.pastePreferred", {
-              defaultValue: "Ohne Video-Link können SchülerInnen der Stunde nicht beitreten.",
-            })}{" "}
             <a href={connectHref} className="font-medium text-[#2D8CFF] hover:underline">
-              {t("zoom.connectOptional", { defaultValue: "Connect Zoom (optional)" })}
+              {t("zoom.connectOptional", { defaultValue: "Zoom verbinden (optional)" })}
             </a>
           </p>
         )}

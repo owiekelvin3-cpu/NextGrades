@@ -2,13 +2,15 @@
 
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import Link from "next/link";
-import { Search, ChevronLeft, Calendar, BookOpen, Target } from "lucide-react";
+import { Search, ChevronLeft, Calendar, BookOpen, Target, ClipboardList } from "lucide-react";
+import { Badge } from "@/components/ui/Badge";
 import { useTranslation } from "react-i18next";
 import { getDateLocale } from "@/lib/i18n/locales";
 import { Button } from "@/components/ui/Button";
 import { LoadingBlock } from "@/components/dashboard/LoadingBlock";
 import { OverviewEmptyState } from "@/components/dashboard/overview/OverviewPrimitives";
 import { TeacherDashboardLayout } from "./TeacherDashboardLayout";
+import { TeacherTeachingTabs } from "./TeacherTeachingTabs";
 import {
   TEACHER_AVATAR_COLORS,
   studentInitials,
@@ -35,6 +37,15 @@ type TeacherStudentRow = {
   openAssignments: number;
   progressPercent: number;
   notesPreview: string | null;
+};
+
+type QuizResultRow = {
+  id: string;
+  quizTitle: string;
+  scorePercent: number | null;
+  status: "in_progress" | "submitted" | "graded";
+  completedAt: string | null;
+  teacherFeedback: string | null;
 };
 
 async function fetchAssignedStudents(): Promise<TeacherStudentRow[]> {
@@ -99,14 +110,18 @@ function StudentDetailPanel({
   const { t } = useTranslation();
   const [notesBody, setNotesBody] = useState(student.notesPreview ?? "");
   const [notesLoading, setNotesLoading] = useState(true);
+  const [quizResults, setQuizResults] = useState<QuizResultRow[]>([]);
+  const [quizLoading, setQuizLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saveMessage, setSaveMessage] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
     setNotesLoading(true);
+    setQuizLoading(true);
     setSaveMessage(null);
     setNotesBody(student.notesPreview ?? "");
+    setQuizResults([]);
 
     fetch(`/api/teacher/students/${student.studentId}/notes`, { credentials: "include" })
       .then(async (res) => {
@@ -121,10 +136,33 @@ function StudentDetailPanel({
         if (!cancelled) setNotesLoading(false);
       });
 
+    fetch(`/api/teacher/students/${student.studentId}/quiz-results`, { credentials: "include" })
+      .then(async (res) => {
+        if (!res.ok) return null;
+        return (await res.json()) as { results?: QuizResultRow[] };
+      })
+      .then((data) => {
+        if (cancelled) return;
+        setQuizResults(data?.results ?? []);
+      })
+      .finally(() => {
+        if (!cancelled) setQuizLoading(false);
+      });
+
     return () => {
       cancelled = true;
     };
   }, [student.studentId, student.notesPreview]);
+
+  const quizStatusLabel = (status: QuizResultRow["status"]) => {
+    if (status === "graded") {
+      return t("teacherDashboard.quizStatusGraded", { defaultValue: "Bewertet" });
+    }
+    if (status === "submitted") {
+      return t("teacherDashboard.quizStatusSubmitted", { defaultValue: "Abgegeben" });
+    }
+    return t("teacherDashboard.quizStatusInProgress", { defaultValue: "In Bearbeitung" });
+  };
 
   const handleSaveNotes = useCallback(async () => {
     setSaving(true);
@@ -222,6 +260,54 @@ function StudentDetailPanel({
             label={t("teacherDashboard.nextLesson", { defaultValue: "Nächste Stunde" })}
             value={formatNextLesson(student.nextLesson, locale, t)}
           />
+        </div>
+
+        <div className={teacherPanel("p-5")}>
+          <div className="mb-3 flex items-center gap-2">
+            <ClipboardList className="h-4 w-4 text-[#D4AF37]" />
+            <h3 className="text-sm font-semibold text-foreground">
+              {t("teacherDashboard.quizResults", { defaultValue: "Quiz & Aufgaben" })}
+            </h3>
+          </div>
+          {quizLoading ? (
+            <p className="text-sm text-text-muted">{t("common.loading", { defaultValue: "Laden…" })}</p>
+          ) : quizResults.length === 0 ? (
+            <p className="text-sm text-text-muted">
+              {t("teacherDashboard.noQuizResults", { defaultValue: "Noch keine Quiz-Ergebnisse." })}
+            </p>
+          ) : (
+            <ul className="divide-y divide-border-default">
+              {quizResults.map((row) => (
+                <li key={row.id} className="space-y-2 py-3 first:pt-0 last:pb-0">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <p className="text-sm font-medium text-foreground">{row.quizTitle}</p>
+                    <Badge variant={row.status === "graded" ? "success" : row.status === "submitted" ? "info" : "warning"}>
+                      {row.scorePercent != null && row.status !== "in_progress"
+                        ? t("teacherDashboard.attemptGraded", {
+                            score: row.scorePercent,
+                            defaultValue: "Bewertet · {{score}}%",
+                          })
+                        : quizStatusLabel(row.status)}
+                    </Badge>
+                  </div>
+                  {row.completedAt && (
+                    <p className="text-xs text-text-muted">
+                      {new Date(row.completedAt).toLocaleDateString(locale, {
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric",
+                      })}
+                    </p>
+                  )}
+                  {row.teacherFeedback ? (
+                    <p className="rounded-lg bg-surface-subtle px-3 py-2 text-sm text-text-muted">
+                      {row.teacherFeedback}
+                    </p>
+                  ) : null}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
 
         {student.learningGoal && (
@@ -407,6 +493,9 @@ export function TeacherStudentsExperience() {
       title={t("teacherDashboard.nav.students")}
       description={t("teacherDashboard.studentsSubtitle")}
     >
+      <div className="mx-auto max-w-[1400px] space-y-0">
+        <TeacherTeachingTabs />
+        <div className="pt-6">
       <div className={cn(teacherPanel(), "flex min-h-0 flex-col overflow-hidden lg:min-h-[640px] lg:flex-row")}>
         <div
           className={cn(
@@ -542,6 +631,8 @@ export function TeacherStudentsExperience() {
             {t("teacherDashboard.selectStudent", { defaultValue: "SchülerIn auswählen, um Details zu sehen" })}
           </div>
         )}
+      </div>
+        </div>
       </div>
     </TeacherDashboardLayout>
   );

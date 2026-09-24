@@ -163,9 +163,7 @@ export function StudentCoursesExperience() {
   }, []);
 
   const title = t("studentDashboard.nav.courses");
-  const description = t("studentDashboard.coursesDesc", {
-    defaultValue: "Find all your courses, learning progress, and important information here.",
-  });
+  const description = t("studentDashboard.coursesDesc");
 
   const filtered = useMemo(() => {
     if (!data) return [];
@@ -193,7 +191,7 @@ export function StudentCoursesExperience() {
   const headerAction = (
     <Button variant="outline" size="sm" href="/dashboard/student/appointments" className="w-full gap-2 sm:w-auto">
       <Calendar className="h-4 w-4" />
-      {t("studentDashboard.goToAppointments", { defaultValue: "Go to my appointments" })}
+      {t("studentDashboard.goToAppointments")}
     </Button>
   );
 

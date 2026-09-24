@@ -8,7 +8,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
     const supabase = await createClient();
     const { profile, error } = await getAuthProfile(supabase);
     if (!profile) return NextResponse.json({ error }, { status: 401 });
-    if (!requireRole(profile, ["admin"])) {
+    if (!requireRole(profile, ["admin", "teacher"])) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 

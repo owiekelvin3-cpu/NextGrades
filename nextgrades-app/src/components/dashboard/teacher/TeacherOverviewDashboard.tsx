@@ -11,6 +11,7 @@ import {
   Plus,
   Sparkles,
   Bell,
+  ClipboardList,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { getDateLocale } from "@/lib/i18n/locales";
@@ -61,6 +62,17 @@ export function TeacherOverviewDashboard() {
   const locale = getDateLocale(i18n.language);
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<TeacherOverviewData | null>(null);
+  const [assignmentsSummary, setAssignmentsSummary] = useState<{
+    openAssignments: number;
+    pendingSubmissions: number;
+    recentSubmissions: Array<{
+      attemptId: string;
+      quizTitle: string;
+      studentName: string;
+      scorePercent: number | null;
+      completedAt: string | null;
+    }>;
+  } | null>(null);
 
   const todayLabel = new Date().toLocaleDateString(locale, {
     weekday: "long",
@@ -72,6 +84,10 @@ export function TeacherOverviewDashboard() {
     fetchTeacherOverviewData()
       .then(setData)
       .finally(() => setLoading(false));
+    void fetch("/api/teacher/assignments-summary")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((json) => setAssignmentsSummary(json))
+      .catch(() => setAssignmentsSummary(null));
   }, []);
 
   const createAppointmentBtn = (
@@ -119,9 +135,7 @@ export function TeacherOverviewDashboard() {
         <OverviewHero
           eyebrow={todayLabel}
           title={t("teacherDashboard.welcomeBack", { name: firstName || t("teacherDashboard.sidebarGuest") })}
-          subtitle={t("teacherDashboard.overviewSubtitle", {
-            defaultValue: "Your teaching hub - schedule lessons, track earnings, and connect with students.",
-          })}
+          subtitle={t("teacherDashboard.overviewSubtitle")}
           actions={[
             { href: "/dashboard/chat", label: t("teacherDashboard.openAi"), icon: Sparkles },
             { href: "/dashboard/teacher/payments", label: t("teacherDashboard.viewPayments"), icon: Euro },
@@ -354,6 +368,46 @@ export function TeacherOverviewDashboard() {
             )}
           </OverviewPanel>
         </div>
+
+        {assignmentsSummary && (assignmentsSummary.openAssignments > 0 || assignmentsSummary.pendingSubmissions > 0) && (
+          <OverviewPanel
+            title={t("teacherDashboard.openAssignmentsPanel", { defaultValue: "Offene Aufgaben & Abgaben" })}
+            icon={ClipboardList}
+            href="/dashboard/teacher/assignments"
+            linkLabel={t("teacherDashboard.allAssignments", { defaultValue: "Alle Aufgaben" })}
+            noPadding
+          >
+            <div className="grid gap-4 p-4 sm:grid-cols-2">
+              <div className="rounded-xl bg-surface-subtle p-4">
+                <p className="text-2xl font-bold text-foreground">{assignmentsSummary.openAssignments}</p>
+                <p className="text-sm text-text-muted">
+                  {t("teacherDashboard.openAssignmentsCount", { defaultValue: "Offene Zuweisungen" })}
+                </p>
+              </div>
+              <div className="rounded-xl bg-orange-50 p-4">
+                <p className="text-2xl font-bold text-orange-800">{assignmentsSummary.pendingSubmissions}</p>
+                <p className="text-sm text-orange-700">
+                  {t("teacherDashboard.pendingFeedback", { defaultValue: "Abgaben ohne Feedback" })}
+                </p>
+              </div>
+            </div>
+            {assignmentsSummary.recentSubmissions.length > 0 && (
+              <ul className="divide-y divide-border-default border-t border-border-default">
+                {assignmentsSummary.recentSubmissions.slice(0, 4).map((s) => (
+                  <li key={s.attemptId} className="flex items-center justify-between px-5 py-3 text-sm">
+                    <div className="min-w-0">
+                      <p className="truncate font-medium">{s.quizTitle}</p>
+                      <p className="text-xs text-text-muted">{s.studentName}</p>
+                    </div>
+                    {s.scorePercent != null && (
+                      <Badge variant="success">{s.scorePercent}%</Badge>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </OverviewPanel>
+        )}
 
         <OverviewPanel
           title={t("teacherDashboard.notifications")}

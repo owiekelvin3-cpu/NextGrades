@@ -165,6 +165,15 @@ export function AIGeneratorContent() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Generation failed");
 
+      if (data.warning) {
+        toast.error(
+          t("aiGeneratorPage.aiFallbackWarning", {
+            defaultValue:
+              "KI war nicht erreichbar – es wurde eine einfache Vorlagen-Version erstellt. Prüfe GROQ_API_KEY in Vercel.",
+          })
+        );
+      }
+
       if (data.quiz) {
         setGeneratedQuiz(data.quiz);
         toast.success(
@@ -173,7 +182,7 @@ export function AIGeneratorContent() {
                 defaultValue: "Übungen erstellt und für SchülerInnen veröffentlicht.",
               })
             : t("aiGeneratorPage.generatedPublished", {
-                defaultValue: "Quiz generated and published for students.",
+                defaultValue: "Quiz erstellt und für SchülerInnen veröffentlicht.",
               })
         );
         void loadQuizzes();
@@ -184,7 +193,7 @@ export function AIGeneratorContent() {
         const jobData = await jobRes.json();
         if (jobData.quiz) {
           setGeneratedQuiz(jobData.quiz);
-          toast.success(t("aiGeneratorPage.generatedTitle", { defaultValue: "Quiz generated successfully!" }));
+          toast.success(t("aiGeneratorPage.generatedTitle", { defaultValue: "Quiz erfolgreich erstellt!" }));
           void loadQuizzes();
         }
       }

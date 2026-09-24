@@ -54,10 +54,22 @@ export async function PATCH(request: Request, { params }: RouteParams) {
     const admin = isSupabaseServiceRoleConfigured() ? createAdminClient() : gate.auth!.supabase;
 
     const addUnits = Number(add_units);
-    if (Number.isFinite(addUnits) && addUnits > 0 && addUnits <= 200) {
+    const subtractUnits = Number(body.subtract_units);
+    const adjustUnits = Number(body.adjust_units);
+    const setRemainingRaw = body.remaining_units;
+    const hasSetRemaining = setRemainingRaw !== undefined && setRemainingRaw !== null;
+    const setRemaining = hasSetRemaining ? Number(setRemainingRaw) : NaN;
+
+    const hasUnitAdjustment =
+      (Number.isFinite(addUnits) && addUnits > 0 && addUnits <= 200) ||
+      (Number.isFinite(subtractUnits) && subtractUnits > 0 && subtractUnits <= 200) ||
+      (Number.isFinite(adjustUnits) && adjustUnits !== 0 && Math.abs(adjustUnits) <= 200) ||
+      (hasSetRemaining && Number.isFinite(setRemaining) && setRemaining >= 0 && setRemaining <= 500);
+
+    if (hasUnitAdjustment) {
       const { data: target } = await admin.from("profiles").select("id, role").eq("id", id).maybeSingle();
       if (!target || target.role !== "student") {
-        return NextResponse.json({ error: "Lesson packages can only be added to students" }, { status: 400 });
+        return NextResponse.json({ error: "Lesson packages can only be adjusted for students" }, { status: 400 });
       }
 
       const { data: units } = await admin
@@ -66,8 +78,35 @@ export async function PATCH(request: Request, { params }: RouteParams) {
         .eq("student_id", id)
         .maybeSingle();
 
-      const remaining = (units?.remaining_units ?? 0) + addUnits;
-      const total = (units?.total_units ?? 0) + addUnits;
+      let remaining = Number(units?.remaining_units ?? 0);
+      let total = Number(units?.total_units ?? 0);
+
+      if (Number.isFinite(addUnits) && addUnits > 0) {
+        remaining += addUnits;
+        total += addUnits;
+      }
+
+      if (Number.isFinite(subtractUnits) && subtractUnits > 0) {
+        remaining = Math.max(0, remaining - subtractUnits);
+      }
+
+      if (Number.isFinite(adjustUnits) && adjustUnits !== 0) {
+        if (adjustUnits > 0) {
+          remaining += adjustUnits;
+          total += adjustUnits;
+        } else {
+          remaining = Math.max(0, remaining + adjustUnits);
+        }
+      }
+
+      if (hasSetRemaining && Number.isFinite(setRemaining)) {
+        remaining = Math.max(0, Math.floor(setRemaining));
+        if (remaining > total) total = remaining;
+      }
+
+      remaining = Math.max(0, remaining);
+      const used = Math.max(0, total - remaining);
+      if (total < used) total = used + remaining;
 
       if (units) {
         await admin
@@ -84,8 +123,16 @@ export async function PATCH(request: Request, { params }: RouteParams) {
 
       await admin.from("user_activity_log").insert({
         user_id: gate.auth!.user.id,
-        action: "add_lesson_units",
-        metadata: { target_user_id: id, add_units: addUnits, remaining, total },
+        action: "adjust_lesson_units",
+        metadata: {
+          target_user_id: id,
+          add_units: Number.isFinite(addUnits) && addUnits > 0 ? addUnits : undefined,
+          subtract_units: Number.isFinite(subtractUnits) && subtractUnits > 0 ? subtractUnits : undefined,
+          adjust_units: Number.isFinite(adjustUnits) && adjustUnits !== 0 ? adjustUnits : undefined,
+          remaining_units: hasSetRemaining ? remaining : undefined,
+          remaining,
+          total,
+        },
       });
 
       const { data: profile } = await admin.from("profiles").select("*").eq("id", id).maybeSingle();
