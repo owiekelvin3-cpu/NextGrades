@@ -857,6 +857,7 @@
     "publishedForStudents": "Published for students",
     "studentsFindQuizzes": "Students find these under Tasks.",
     "generatedPublished": "Quiz created and published for students.",
+    "aiFallbackWarning": "AI was unreachable — a simple template version was created. Check GROQ_API_KEY on Vercel.",
     "uploadTitle": "Upload PDFs, notes or summaries",
     "uploadHint": "Drag & drop or click to select",
     "selectFile": "Select file",
