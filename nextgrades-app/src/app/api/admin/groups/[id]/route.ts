@@ -62,6 +62,25 @@ export async function PATCH(request: Request, { params }: RouteParams) {
 
     if (body.studentIds) {
       const studentIds = [...new Set(body.studentIds.map((sid) => sid.trim()).filter(Boolean))];
+
+      const { data: groupRow } = await admin
+        .from("tutoring_groups")
+        .select("max_students")
+        .eq("id", id)
+        .maybeSingle();
+      const maxStudents =
+        body.maxStudents !== undefined
+          ? parseOptionalInt(body.maxStudents)
+          : ((groupRow?.max_students as number | null) ?? null);
+      if (maxStudents != null && studentIds.length > maxStudents) {
+        return NextResponse.json(
+          {
+            error: `Maximal ${maxStudents} SchülerInnen in dieser Gruppe erlaubt.`,
+          },
+          { status: 400 }
+        );
+      }
+
       await admin.from("tutoring_group_members").delete().eq("group_id", id);
       if (studentIds.length) {
         const { error: memberError } = await admin.from("tutoring_group_members").insert(

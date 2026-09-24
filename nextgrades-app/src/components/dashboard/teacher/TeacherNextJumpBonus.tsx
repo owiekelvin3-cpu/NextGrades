@@ -114,7 +114,9 @@ export function TeacherNextJumpBonus() {
                   {t("teacherDashboard.rateLowerLevel", { defaultValue: "Unterstufen Tarif" })}
                 </p>
                 <p className="mt-1 text-2xl font-bold">
-                  {formatTeacherEuro(data.rates.lowerLevel + data.loyalty.bonusPerHour)}
+                  {formatTeacherEuro(
+                    Math.min(MAX_HOURLY_LOWER, data.rates.lowerLevel + data.loyalty.bonusPerHour)
+                  )}
                   <span className="text-sm font-normal text-text-muted">
                     {" "}
                     / {t("teacherDashboard.perHour", { defaultValue: "Std." })}
@@ -129,7 +131,9 @@ export function TeacherNextJumpBonus() {
                   {t("teacherDashboard.rateUpperLevel", { defaultValue: "Oberstufen Tarif" })}
                 </p>
                 <p className="mt-1 text-2xl font-bold">
-                  {formatTeacherEuro(data.rates.upperLevel + data.loyalty.bonusPerHour)}
+                  {formatTeacherEuro(
+                    Math.min(MAX_HOURLY_UPPER, data.rates.upperLevel + data.loyalty.bonusPerHour)
+                  )}
                   <span className="text-sm font-normal text-text-muted">
                     {" "}
                     / {t("teacherDashboard.perHour", { defaultValue: "Std." })}

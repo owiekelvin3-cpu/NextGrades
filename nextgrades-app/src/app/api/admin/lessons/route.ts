@@ -17,7 +17,7 @@ function normalizeRelation<T>(value: T | T[] | null | undefined): T | null {
 }
 
 const LESSON_SELECT = `
-  id, teacher_id, student_id, subject_id, group_id, start_time, duration, status, notes,
+  id, teacher_id, student_id, subject_id, group_id, start_time, duration, status, notes, attendance,
   meeting_url, zoom_link, meeting_title, timezone, meeting_type, created_at, updated_at,
   teacher:profiles!lessons_teacher_id_fkey(id, full_name, email),
   student:profiles!lessons_student_id_fkey(id, full_name, email),
@@ -50,6 +50,7 @@ function mapLesson(row: Record<string, unknown>, now: Date) {
     displayStatus,
     title: (row.meeting_title as string | null) ?? null,
     notes: (row.notes as string | null) ?? null,
+    attendance: (row.attendance as string | null) ?? null,
     timezone: (row.timezone as string | null) ?? null,
     meetingLink: meetingLinkFromLesson(row as { meeting_url?: string | null; zoom_link?: string | null }),
     teacherName: profileName(teacher),

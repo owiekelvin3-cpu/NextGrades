@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
-import { Calendar, Loader2, Pencil, Plus, RefreshCw, X, XCircle } from "lucide-react";
+import { Calendar, CheckCircle, Loader2, Pencil, Plus, RefreshCw, X, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { useToast } from "@/context/ToastContext";
 import {
@@ -14,6 +14,7 @@ import {
 import { themeInputClass, themeSelectClass } from "@/lib/theme/form-fields";
 import { cn } from "@/lib/utils";
 import type { LessonDisplayStatus } from "@/lib/lessons/display-status";
+import { formatLocalYmd } from "@/lib/zoom/datetime";
 
 type ProfileOption = { id: string; full_name: string | null; email: string | null };
 type CatalogSubject = { id: string; name: string };
@@ -33,6 +34,7 @@ type LessonRow = {
   notes: string | null;
   timezone: string | null;
   meetingLink: string | null;
+  attendance: string | null;
   teacherName: string;
   studentName: string;
   subjectName: string | null;
@@ -248,6 +250,15 @@ export function AdminLessonsManager() {
       toast.error(
         t("adminLessons.requiredFields", {
           defaultValue: "Lehrkraft, Datum, Uhrzeit und Meeting-Link sind erforderlich.",
+        })
+      );
+      return;
+    }
+    const start = new Date(`${createForm.date}T${createForm.startTime}`);
+    if (Number.isNaN(start.getTime()) || start.getTime() <= Date.now()) {
+      toast.error(
+        t("adminLessons.scheduleMustBeFuture", {
+          defaultValue: "Der Termin darf nicht in der Vergangenheit liegen.",
         })
       );
       return;
@@ -617,6 +628,7 @@ export function AdminLessonsManager() {
             </label>
             <input
               type="date"
+              min={formatLocalYmd()}
               value={createForm.date}
               onChange={(e) => setCreateForm((f) => ({ ...f, date: e.target.value }))}
               className={themeInputClass}
@@ -745,10 +757,23 @@ export function AdminLessonsManager() {
             id: "status",
             header: t("adminLessons.colStatus", { defaultValue: "Status" }),
             cell: (row) => (
-              <AdminTableStatusBadge
-                variant={DISPLAY_VARIANT[row.displayStatus]}
-                label={displayStatusLabel(row.displayStatus)}
-              />
+              <div className="space-y-1">
+                <AdminTableStatusBadge
+                  variant={DISPLAY_VARIANT[row.displayStatus]}
+                  label={displayStatusLabel(row.displayStatus)}
+                />
+                {row.attendance ? (
+                  <p className="text-[11px] text-text-muted">
+                    {row.attendance === "attended"
+                      ? t("adminLessons.attendanceAttended", { defaultValue: "Anwesend" })
+                      : row.attendance === "excused"
+                        ? t("adminLessons.attendanceExcused", { defaultValue: "Entschuldigt" })
+                        : row.attendance === "no_show"
+                          ? t("adminLessons.attendanceNoShow", { defaultValue: "Nicht erschienen" })
+                          : row.attendance}
+                  </p>
+                ) : null}
+              </div>
             ),
           },
           {
@@ -766,11 +791,27 @@ export function AdminLessonsManager() {
                       onClick: () => openEdit(row),
                       icon: Pencil,
                     },
+                    ...(row.status !== "completed"
+                      ? [
+                          {
+                            id: "complete",
+                            label: t("adminLessons.markCompleted", { defaultValue: "Als abgeschlossen" }),
+                            onClick: () => void patchLesson(row.id, { status: "completed" }),
+                            icon: CheckCircle,
+                          },
+                          {
+                            id: "missed",
+                            label: t("adminLessons.markMissed", { defaultValue: "Als verpasst / No-show" }),
+                            onClick: () => void patchLesson(row.id, { status: "no_show" }),
+                            icon: XCircle,
+                          },
+                        ]
+                      : []),
                     {
                       id: "cancel",
                       label: t("adminLessons.cancel", { defaultValue: "Absagen" }),
                       onClick: () => void cancelLesson(row.id),
-                      variant: "danger",
+                      variant: "danger" as const,
                       icon: XCircle,
                     },
                   ]}

@@ -169,6 +169,13 @@ export async function POST(request: Request) {
     if (error || !created) throw new Error(error?.message || "Failed to create group");
 
     if (studentIds.length) {
+      const maxStudents = parseOptionalInt(body.maxStudents);
+      if (maxStudents != null && studentIds.length > maxStudents) {
+        return NextResponse.json(
+          { error: `Maximal ${maxStudents} SchülerInnen in dieser Gruppe erlaubt.` },
+          { status: 400 }
+        );
+      }
       const { error: memberError } = await admin.from("tutoring_group_members").insert(
         studentIds.map((studentId) => ({
           group_id: created.id,

@@ -58,6 +58,7 @@ export function TeacherAssignmentsExperience() {
   const [selectedStudents, setSelectedStudents] = useState<string[]>([]);
   const [dueDate, setDueDate] = useState("");
   const [feedbackDraft, setFeedbackDraft] = useState<Record<string, string>>({});
+  const [scoreDraft, setScoreDraft] = useState<Record<string, string>>({});
   const [creating, setCreating] = useState(false);
   const [newTitle, setNewTitle] = useState("");
 
@@ -178,14 +179,37 @@ export function TeacherAssignmentsExperience() {
   };
 
   const saveFeedback = async (attemptId: string) => {
-    const feedback = feedbackDraft[attemptId]?.trim();
-    if (!feedback) return;
+    const feedback = feedbackDraft[attemptId]?.trim() ?? "";
+    const scoreRaw = scoreDraft[attemptId]?.trim();
+    const scoreNum =
+      scoreRaw !== undefined && scoreRaw !== ""
+        ? Number.parseInt(scoreRaw, 10)
+        : null;
+    if (!feedback && scoreNum == null) return;
+    if (scoreNum != null && (!Number.isFinite(scoreNum) || scoreNum < 0 || scoreNum > 100)) {
+      return;
+    }
     const res = await fetch(`/api/quiz/attempts/${attemptId}/grade`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ teacherFeedback: feedback }),
+      body: JSON.stringify({
+        teacherFeedback: feedback || undefined,
+        teacherScorePercent: scoreNum,
+      }),
     });
-    if (res.ok) await load();
+    if (res.ok) {
+      setFeedbackDraft((d) => {
+        const next = { ...d };
+        delete next[attemptId];
+        return next;
+      });
+      setScoreDraft((d) => {
+        const next = { ...d };
+        delete next[attemptId];
+        return next;
+      });
+      await load();
+    }
   };
 
   return (
@@ -333,9 +357,25 @@ export function TeacherAssignmentsExperience() {
                                 {attempt.teacher_feedback ? (
                                   <p className="rounded-lg bg-surface-subtle px-3 py-2 text-sm text-text-muted">
                                     {attempt.teacher_feedback}
+                                    {attempt.score_percent != null
+                                      ? ` · ${attempt.score_percent}%`
+                                      : ""}
                                   </p>
                                 ) : attempt.completed_at ? (
                                   <div className="flex flex-wrap gap-2">
+                                    <input
+                                      type="number"
+                                      min={0}
+                                      max={100}
+                                      value={scoreDraft[attempt.id] ?? (attempt.score_percent != null ? String(attempt.score_percent) : "")}
+                                      onChange={(e) =>
+                                        setScoreDraft((d) => ({ ...d, [attempt.id]: e.target.value }))
+                                      }
+                                      placeholder={t("teacherDashboard.scorePlaceholder", {
+                                        defaultValue: "Punkte %",
+                                      })}
+                                      className="w-24 rounded-xl border border-border-default px-3 py-2 text-sm"
+                                    />
                                     <input
                                       value={feedbackDraft[attempt.id] ?? ""}
                                       onChange={(e) =>
@@ -352,7 +392,7 @@ export function TeacherAssignmentsExperience() {
                                       onClick={() => void saveFeedback(attempt.id)}
                                     >
                                       <Send className="mr-1 h-3 w-3" />
-                                      {t("teacherDashboard.sendFeedback", { defaultValue: "Senden" })}
+                                      {t("teacherDashboard.sendFeedback", { defaultValue: "Bewerten" })}
                                     </Button>
                                   </div>
                                 ) : null}

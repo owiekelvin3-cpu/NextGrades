@@ -27,6 +27,11 @@ type GroupDetail = {
     name: string;
     scheduleNotes: string | null;
     meetingUrl: string | null;
+    maxStudents: number | null;
+    dayOfWeek: number | null;
+    startTime: string | null;
+    durationMinutes: number | null;
+    startDate: string | null;
     subject: { id: string; name: string } | null;
     class: { id: string; name: string; level: number | null } | null;
     members: Array<{ id: string; studentId: string; name: string; email: string | null }>;
@@ -209,10 +214,56 @@ export function TeacherGroupDetailExperience() {
             )}
           </div>
 
-          {group.scheduleNotes && (
-            <div className="mt-4 flex items-start gap-2 rounded-xl bg-surface-subtle px-4 py-3 text-sm text-text-muted">
-              <CalendarDays className="mt-0.5 h-4 w-4 shrink-0" />
-              <span>{group.scheduleNotes}</span>
+          {(group.scheduleNotes ||
+            group.dayOfWeek != null ||
+            group.startTime ||
+            group.durationMinutes ||
+            group.startDate ||
+            group.maxStudents != null) && (
+            <div className="mt-4 space-y-2 rounded-xl bg-surface-subtle px-4 py-3 text-sm text-text-muted">
+              <div className="flex items-start gap-2">
+                <CalendarDays className="mt-0.5 h-4 w-4 shrink-0" />
+                <div className="space-y-1">
+                  {(group.dayOfWeek != null || group.startTime || group.durationMinutes) && (
+                    <p>
+                      {[
+                        group.dayOfWeek != null
+                          ? [
+                              t("teacherDashboard.weekdayMon", { defaultValue: "Mo" }),
+                              t("teacherDashboard.weekdayTue", { defaultValue: "Di" }),
+                              t("teacherDashboard.weekdayWed", { defaultValue: "Mi" }),
+                              t("teacherDashboard.weekdayThu", { defaultValue: "Do" }),
+                              t("teacherDashboard.weekdayFri", { defaultValue: "Fr" }),
+                              t("teacherDashboard.weekdaySat", { defaultValue: "Sa" }),
+                              t("teacherDashboard.weekdaySun", { defaultValue: "So" }),
+                            ][group.dayOfWeek]
+                          : null,
+                        group.startTime
+                          ? String(group.startTime).slice(0, 5)
+                          : null,
+                        group.durationMinutes
+                          ? `${group.durationMinutes} ${t("teacherDashboard.minShort", { defaultValue: "Min." })}`
+                          : null,
+                      ]
+                        .filter(Boolean)
+                        .join(" · ")}
+                    </p>
+                  )}
+                  {group.startDate && (
+                    <p>
+                      {t("teacherDashboard.groupStartDate", { defaultValue: "Start" })}:{" "}
+                      {new Date(group.startDate).toLocaleDateString(locale)}
+                    </p>
+                  )}
+                  {group.maxStudents != null && (
+                    <p>
+                      {t("teacherDashboard.groupMaxStudents", { defaultValue: "Max. SchülerInnen" })}:{" "}
+                      {group.maxStudents}
+                    </p>
+                  )}
+                  {group.scheduleNotes && <p>{group.scheduleNotes}</p>}
+                </div>
+              </div>
             </div>
           )}
         </div>

@@ -25,6 +25,7 @@ export async function GET(
       .select(
         `
         id, name, subject_id, class_id, teacher_id, schedule_notes, meeting_url, is_active,
+        max_students, day_of_week, start_time, duration_minutes, start_date,
         subject:subjects(id, name),
         class:classes(id, name, level),
         members:tutoring_group_members(
@@ -175,6 +176,11 @@ export async function GET(
         name: group.name,
         scheduleNotes: group.schedule_notes,
         meetingUrl: group.meeting_url,
+        maxStudents: (group.max_students as number | null) ?? null,
+        dayOfWeek: (group.day_of_week as number | null) ?? null,
+        startTime: (group.start_time as string | null) ?? null,
+        durationMinutes: (group.duration_minutes as number | null) ?? null,
+        startDate: (group.start_date as string | null) ?? null,
         subject: normalizeRelation(
           group.subject as { id: string; name: string } | { id: string; name: string }[] | null
         ),
