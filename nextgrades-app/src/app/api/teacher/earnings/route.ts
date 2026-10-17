@@ -59,9 +59,9 @@ export async function GET(request: Request) {
     const allEntries = (ledgerAllRes.data ?? []) as LedgerRow[];
     const ledger = ledgerRecentRes.data ?? [];
 
-    const hourlyFallback = Number(stats?.hourly_rate ?? 35);
-    const rateLower = Number(stats?.rate_lower_level ?? hourlyFallback);
-    const rateUpper = Number(stats?.rate_upper_level ?? hourlyFallback);
+    const rateLower = Number(stats?.rate_lower_level ?? 14) || 14;
+    const rateUpper = Number(stats?.rate_upper_level ?? 15) || 15;
+    const hourlyFallback = rateLower;
 
     const lastMonth = aggregateLedgerPeriod(allEntries, lastRange.start, lastRange.end);
     const thisMonthStats = aggregateLedgerPeriod(allEntries, thisRange.start, thisRange.end);

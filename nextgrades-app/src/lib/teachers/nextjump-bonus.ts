@@ -196,11 +196,10 @@ export async function resolveLessonPayRate(
   ]);
 
   const stats = statsRes.data;
-  const fallback = Number(stats?.hourly_rate ?? 35);
   const isUpper = isUpperSchoolLevel(classLevel);
-  const baseRate = isUpper
-    ? Number(stats?.rate_upper_level ?? fallback)
-    : Number(stats?.rate_lower_level ?? fallback);
+  const lower = Number(stats?.rate_lower_level ?? 14);
+  const upper = Number(stats?.rate_upper_level ?? 15);
+  const baseRate = isUpper ? (Number.isFinite(upper) && upper > 0 ? upper : 15) : Number.isFinite(lower) && lower > 0 ? lower : 14;
   const loyaltyBonusPerHour = Number(loyalty.bonus_per_hour ?? 0);
   const hourlyRate = effectiveHourlyRate(baseRate, loyaltyBonusPerHour, isUpper);
 

@@ -759,7 +759,9 @@ export function CreateLiveClassForm({
         {!zoomReady && (
           <p className="text-xs text-gray-500">
             <a href={connectHref} className="font-medium text-[#2D8CFF] hover:underline">
-              {t("zoom.connectOptional", { defaultValue: "Zoom verbinden (optional)" })}
+              {t("zoom.connectAccount", {
+                defaultValue: "Zoom-Konto verbinden, um Links automatisch zu erzeugen",
+              })}
             </a>
           </p>
         )}

@@ -132,8 +132,6 @@ export function StudentResourcesExperience() {
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const pageItems = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
   const favoriteMaterials = materials.filter((m) => isBookmarked(m.id)).slice(0, 4);
-  const totalBytes = materials.reduce((s, m) => s + (m.file_size ?? 0), 0);
-  const storagePercent = totalBytes > 0 ? Math.min(100, Math.round((totalBytes / (5 * 1024 * 1024 * 1024)) * 100)) : 0;
 
   useEffect(() => setPage(1), [tab, search, courseFilter, gradeFilter, semesterFilter, typeFilter]);
 
@@ -466,36 +464,6 @@ export function StudentResourcesExperience() {
         </div>
 
         <aside className={st.asideWidgets}>
-          <div className={studentPanel("p-5 text-center")}>
-            <h3 className="text-sm font-semibold text-foreground">
-              {t("studentDashboard.storageSpace", { defaultValue: "Storage space" })}
-            </h3>
-            <div className="relative mx-auto my-4 flex h-24 w-24 items-center justify-center">
-              <svg className="-rotate-90" width="96" height="96">
-                <circle cx="48" cy="48" r="40" fill="none" className="text-surface-subtle" stroke="currentColor" strokeWidth="8" />
-                <circle
-                  cx="48"
-                  cy="48"
-                  r="40"
-                  fill="none"
-                  stroke="currentColor"
-                  className="text-[var(--brand-gold)]"
-                  strokeWidth="8"
-                  strokeDasharray={2 * Math.PI * 40}
-                  strokeDashoffset={2 * Math.PI * 40 * (1 - storagePercent / 100)}
-                  strokeLinecap="round"
-                />
-              </svg>
-              <span className="absolute text-sm font-bold text-foreground">{storagePercent}%</span>
-            </div>
-            <p className="text-xs text-text-muted">
-              {totalBytes > 0 ? `${formatBytes(totalBytes)} ${t("studentDashboard.storageUsed", { defaultValue: "used" })}` : t("studentDashboard.noMaterials")}
-            </p>
-            <Link href="/dashboard/student/settings" className="mt-4 inline-flex w-full items-center justify-center rounded-xl border border-border-default py-2 text-sm font-medium text-foreground transition hover:bg-[var(--table-row-hover)]">
-              {t("studentDashboard.manageStorage", { defaultValue: "Manage storage" })}
-            </Link>
-          </div>
-
           <div className={studentPanel("p-5")}>
             <div className="mb-3 flex items-center justify-between">
               <h3 className="text-sm font-semibold text-foreground">{t("studentDashboard.myFavorites", { defaultValue: "My favorites" })}</h3>

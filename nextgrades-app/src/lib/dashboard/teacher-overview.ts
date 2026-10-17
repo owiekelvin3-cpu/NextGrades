@@ -1,4 +1,5 @@
 import { supabase } from "@/lib/supabase/client";
+import { FREQUENCY_MILESTONES } from "@/lib/teachers/nextjump-bonus";
 import { LESSON_QUERY_LIMIT, lessonHistorySinceIso } from "@/lib/dashboard/limits";
 import {
   fetchCurrentProfile,
@@ -56,8 +57,6 @@ export type TeacherOverviewData = {
   unreadNotifications: number;
   recentPayments: TeacherPaymentRow[];
 };
-
-const BONUS_GOALS = [100, 250, 400, 600];
 
 type LessonRow = {
   id: string;
@@ -257,17 +256,27 @@ export async function fetchTeacherOverviewData(): Promise<TeacherOverviewData | 
     (l) => l.status === "scheduled" && new Date(l.start_time) >= now
   ).length;
 
-  const level = baseStats.nextjump_level;
-  const thresholds = [0, 20, 50, 100];
-  const nextThreshold = thresholds[level] ?? 100;
-  const prevThreshold = thresholds[level - 1] ?? 0;
-  const bonusProgress =
-    nextThreshold > prevThreshold
-      ? Math.min(100, Math.round(((baseStats.total_hours - prevThreshold) / (nextThreshold - prevThreshold)) * 100))
-      : 100;
+  const { data: bonusRows } = await supabase
+    .from("teacher_student_bonus")
+    .select("lessons_in_cycle, total_frequency_bonus")
+    .eq("teacher_id", userId);
 
-  const bonusCurrent = BONUS_GOALS[Math.min(level - 1, BONUS_GOALS.length - 1)] * (bonusProgress / 100);
-  const bonusNextGoal = BONUS_GOALS[Math.min(level, BONUS_GOALS.length - 1)];
+  const bonusCurrent = (bonusRows ?? []).reduce(
+    (sum, row) => sum + Number((row as { total_frequency_bonus?: number }).total_frequency_bonus ?? 0),
+    0
+  );
+  const cycleLessons = (bonusRows ?? []).reduce(
+    (max, row) => Math.max(max, Number((row as { lessons_in_cycle?: number }).lessons_in_cycle ?? 0)),
+    0
+  );
+  const nextMilestone =
+    FREQUENCY_MILESTONES.find((milestone) => cycleLessons < milestone.lessons) ??
+    FREQUENCY_MILESTONES[0];
+  const prevLessons =
+    [...FREQUENCY_MILESTONES].reverse().find((milestone) => cycleLessons >= milestone.lessons)?.lessons ?? 0;
+  const span = Math.max(1, nextMilestone.lessons - prevLessons);
+  const bonusProgress = Math.min(100, Math.round(((cycleLessons - prevLessons) / span) * 100));
+  const bonusNextGoal = nextMilestone.bonus;
 
   const weekHours = Math.round((weekLessons.reduce((s, l) => s + l.duration, 0) / 60) * 10) / 10;
 
@@ -293,7 +302,7 @@ export async function fetchTeacherOverviewData(): Promise<TeacherOverviewData | 
       earningsGross,
       earningsPending,
       totalStudents: baseStats.total_students,
-      nextjumpLevel: level,
+      nextjumpLevel: baseStats.nextjump_level,
       hoursToNext: baseStats.hours_to_next,
       totalHours: baseStats.total_hours,
       bonusProgress,

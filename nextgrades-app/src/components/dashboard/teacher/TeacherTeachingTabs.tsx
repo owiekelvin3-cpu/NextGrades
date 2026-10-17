@@ -6,10 +6,10 @@ import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 
 const TABS = [
-  { href: "/dashboard/teacher/schedule", labelKey: "teacherDashboard.tabs.tutoringHours" },
-  { href: "/dashboard/teacher/students", labelKey: "teacherDashboard.tabs.myStudents" },
-  { href: "/dashboard/teacher/payments", labelKey: "teacherDashboard.tabs.earnings" },
-  { href: "/dashboard/teacher/earnings", labelKey: "teacherDashboard.tabs.bonusOverview" },
+  { href: "/dashboard/teacher/schedule", labelKey: "teacherDashboard.tabs.tutoringHours", fallback: "Nachhilfestunden" },
+  { href: "/dashboard/teacher/students", labelKey: "teacherDashboard.tabs.myStudents", fallback: "Meine SchülerInnen" },
+  { href: "/dashboard/teacher/payments", labelKey: "teacherDashboard.tabs.earnings", fallback: "Einnahmen" },
+  { href: "/dashboard/teacher/earnings", labelKey: "teacherDashboard.tabs.bonusOverview", fallback: "Bonus Übersicht" },
 ] as const;
 
 export function TeacherTeachingTabs() {
@@ -32,7 +32,7 @@ export function TeacherTeachingTabs() {
                   : "border-transparent text-emerald-100/90 hover:bg-emerald-900/25 hover:text-white"
               )}
             >
-              {t(tab.labelKey)}
+              {t(tab.labelKey, { defaultValue: tab.fallback })}
             </Link>
           );
         })}

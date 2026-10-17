@@ -549,16 +549,16 @@ function ScheduleContent() {
                         {isScheduled && (
                           <CompleteLessonControls lessonId={m.id} onCompleted={() => void load()} />
                         )}
-                        {lessonHasMeetingLink(m) ? (
+                        {isScheduled && lessonHasMeetingLink(m) ? (
                           <ZoomMeetingButton
                             lessonId={m.id}
                             mode="start"
                             provider={m.meeting_provider}
                             size="md"
                           />
-                        ) : (
+                        ) : isScheduled ? (
                           <AddLessonMeetingLink lessonId={m.id} onSaved={() => void load()} />
-                        )}
+                        ) : null}
                         {isScheduled && (
                           <button
                             type="button"

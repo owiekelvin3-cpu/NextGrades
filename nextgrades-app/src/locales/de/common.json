@@ -1307,7 +1307,7 @@
       "Flexibel"
     ],
     "goals": "Deine Ziele",
-    "goalsPlaceholder": "z. B. Mathenote vor Prüfungen verbessern, Abitur vorbereiten, Lernroutine aufbauen…",
+    "goalsPlaceholder": "z. B. Mathenote vor Prüfungen verbessern, Matura vorbereiten, Lernroutine aufbauen…",
     "privacyNote": "Mit dem Absenden erlaubst du uns, dich wegen deiner Beratungsanfrage zu kontaktieren. Wir geben deine Daten nicht an Dritte weiter.",
     "submit": "Beratung anfragen",
     "submitting": "Wird gesendet…",
@@ -1684,7 +1684,7 @@
       {
         "id": "math",
         "title": "Mathe-NachhilfelehrerIn",
-        "description": "Wir suchen erfahrene Mathe-TutorInnen für SchülerInnen von der Mittelstufe bis zur Abiturvorbereitung. Du erklärst verständlich, stärkst Selbstvertrauen und passt dich dem Niveau an.",
+        "description": "Wir suchen erfahrene Mathe-TutorInnen für SchülerInnen von der Mittelstufe bis zur Maturavorbereitung. Du erklärst verständlich, stärkst Selbstvertrauen und passt dich dem Niveau an.",
         "type": "Teilzeit / Freiberuflich",
         "location": "Remote",
         "highlights": [

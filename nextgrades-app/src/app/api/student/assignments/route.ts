@@ -65,12 +65,27 @@ export async function GET() {
 
     const { data: quizzes, error: quizError } = await db
       .from("generated_quizzes")
-      .select("id, title, topic, difficulty, time_limit_minutes, subject_id, subjects(name)")
+      .select("id, title, topic, difficulty, time_limit_minutes, subject_id")
       .eq("is_published", true)
       .in("id", quizIds)
       .order("created_at", { ascending: false });
 
     if (quizError) throw quizError;
+
+    const subjectIds = [
+      ...new Set(
+        (quizzes ?? [])
+          .map((q) => (q as { subject_id?: string | null }).subject_id)
+          .filter((id): id is string => Boolean(id))
+      ),
+    ];
+    const subjectNameById = new Map<string, string>();
+    if (subjectIds.length) {
+      const { data: subjects } = await db.from("subjects").select("id, name").in("id", subjectIds);
+      for (const subject of subjects ?? []) {
+        subjectNameById.set(subject.id as string, subject.name as string);
+      }
+    }
 
     const { data: attempts, error: attemptsError } = await db
       .from("quiz_attempts")
@@ -99,12 +114,9 @@ export async function GET() {
         difficulty: string;
         time_limit_minutes: number | null;
         subject_id: string | null;
-        subjects: { name: string } | { name: string }[] | null;
       };
-      const subjectEmbed = row.subjects;
-      const subjectName = Array.isArray(subjectEmbed)
-        ? subjectEmbed[0]?.name
-        : subjectEmbed?.name ?? row.topic ?? null;
+      const subjectName =
+        (row.subject_id ? subjectNameById.get(row.subject_id) : null) ?? row.topic ?? null;
       const attempt = latestAttemptByQuiz.get(row.id) ?? null;
       const status = resolveAssignmentStatus(attempt);
       const score =

@@ -20,7 +20,10 @@ export async function GET() {
         .select("id, status, mode, created_at, completed_at, error_message, profiles(full_name)")
         .order("created_at", { ascending: false })
         .limit(20),
-      supabase.from("student_scores").select("*", { count: "exact", head: true }),
+      supabase
+        .from("quiz_attempts")
+        .select("id", { count: "exact", head: true })
+        .not("score_percent", "is", null),
     ]);
 
     const { data: recentMaterials } = await supabase

@@ -195,28 +195,11 @@ async function fetchStudentQuizTasks(studentId: string): Promise<StudentTaskRow[
   }
 }
 
-async function computeOverallProgress(studentId: string, lessons: DashboardLesson[]): Promise<{
+async function computeOverallProgress(_studentId: string, lessons: DashboardLesson[]): Promise<{
   percent: number;
   sparkline: number[];
 }> {
   if (!isSupabaseConfigured()) return { percent: 0, sparkline: [] };
-
-  const { data: attempts } = await supabase
-    .from("quiz_attempts")
-    .select("score_percent, completed_at")
-    .eq("student_id", studentId)
-    .not("completed_at", "is", null)
-    .order("completed_at", { ascending: true })
-    .limit(12);
-
-  const scores = (attempts || [])
-    .map((a: { score_percent: number | null }) => Number(a.score_percent ?? 0))
-    .filter((s: number) => !Number.isNaN(s));
-
-  if (scores.length > 0) {
-    const avg = Math.round(scores.reduce((a: number, b: number) => a + b, 0) / scores.length);
-    return { percent: avg, sparkline: scores };
-  }
 
   const total = lessons.length;
   const completed = lessons.filter((l) => l.status === "completed").length;
@@ -274,7 +257,7 @@ export async function fetchStudentOverviewData(): Promise<StudentOverviewData | 
     fetchStudentUnits(userId),
     fetchStudentLessons(userId),
     fetchAllStudentLessons(userId),
-    fetchAssignedStudentMaterials(8),
+    fetchAssignedStudentMaterials(),
     fetchStudentEnrollments(userId),
     fetchStudentQuizTasks(userId),
     fetchNotifications(userId, 5),

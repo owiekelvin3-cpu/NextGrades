@@ -378,6 +378,18 @@ export async function notifyAnnouncement(params: {
     actionUrl: params.actionUrl ?? `${APP}/dashboard/notifications`,
   };
 
+  if (params.audience !== "all" && params.audience !== "students" && params.audience !== "teachers" && params.audience !== "admins") {
+    return 0;
+  }
+
+  const personalized =
+    /\{\{name\}\}/.test(params.title) ||
+    /\{\{name\}\}/.test(params.message) ||
+    /Willkommen bei NextGrades,\s+\S+/.test(params.title);
+  if (personalized && !params.title.includes("{{name}}") && !params.message.includes("{{name}}")) {
+    console.warn("[notifications] refused broadcast that names a specific person");
+    return 0;
+  }
   if (params.audience === "all") return createNotificationsForAllUsers(input);
   if (params.audience === "students") return createNotificationsForRole("student", input);
   if (params.audience === "teachers") return createNotificationsForRole("teacher", input);
