@@ -26,15 +26,18 @@ export function QuizPlayer({
   quiz,
   questions,
   onExit,
+  resumeAttemptId = null,
 }: {
   quiz: QuizMeta;
   questions: QuizQuestion[];
   onExit: () => void;
+  /** When continuing an in-progress attempt, reuse this id. */
+  resumeAttemptId?: string | null;
 }) {
   const { t } = useTranslation();
   const { theme } = useTheme();
   const toast = useToast();
-  const [attemptId, setAttemptId] = useState<string | null>(null);
+  const [attemptId, setAttemptId] = useState<string | null>(resumeAttemptId);
   const [index, setIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
@@ -90,6 +93,11 @@ export function QuizPlayer({
   }, [attemptId, submitting, questions, answers, toast]);
 
   useEffect(() => {
+    if (resumeAttemptId) {
+      setAttemptId(resumeAttemptId);
+      return;
+    }
+    let cancelled = false;
     (async () => {
       try {
         const res = await fetch("/api/quiz/attempts", {
@@ -99,13 +107,18 @@ export function QuizPlayer({
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error);
-        setAttemptId(data.attempt.id);
+        if (!cancelled) setAttemptId(data.attempt.id);
       } catch (e) {
-        toast.error(e instanceof Error ? e.message : "Could not start quiz");
-        onExit();
+        if (!cancelled) {
+          toast.error(e instanceof Error ? e.message : "Could not start quiz");
+          onExit();
+        }
       }
     })();
-  }, [quiz.id, onExit, toast]);
+    return () => {
+      cancelled = true;
+    };
+  }, [quiz.id, onExit, toast, resumeAttemptId]);
 
   useEffect(() => {
     if (secondsLeft === null || finished) return;

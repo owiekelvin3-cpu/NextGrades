@@ -25,6 +25,7 @@ type AssignmentRow = {
   allowRetry: boolean;
   difficulty: string;
   timeLimitMinutes: number | null;
+  attemptId?: string | null;
 };
 
 function statusLabel(
@@ -71,6 +72,7 @@ export function StudentQuizHub() {
   const [activeQuiz, setActiveQuiz] = useState<{
     meta: { id: string; title: string; time_limit_minutes: number | null };
     questions: QuizQuestion[];
+    resumeAttemptId?: string | null;
   } | null>(null);
 
   const dateLocale = i18n.language?.startsWith("de") ? "de-AT" : undefined;
@@ -98,7 +100,7 @@ export function StudentQuizHub() {
     void load();
   }, [load]);
 
-  const startQuiz = async (quizId: string) => {
+  const startQuiz = async (quizId: string, resumeAttemptId?: string | null) => {
     const res = await fetch(`/api/quiz/quizzes/${quizId}`);
     const data = await res.json();
     if (!res.ok) {
@@ -119,6 +121,7 @@ export function StudentQuizHub() {
         time_limit_minutes: data.time_limit_minutes,
       },
       questions,
+      resumeAttemptId: resumeAttemptId ?? null,
     });
   };
 
@@ -134,6 +137,7 @@ export function StudentQuizHub() {
       <QuizPlayer
         quiz={activeQuiz.meta}
         questions={activeQuiz.questions}
+        resumeAttemptId={activeQuiz.resumeAttemptId}
         onExit={() => {
           setActiveQuiz(null);
           void load();
@@ -207,7 +211,16 @@ export function StudentQuizHub() {
 
         <div className="flex shrink-0 flex-wrap gap-2">
           {(a.status === "open" || a.status === "in_progress") && (
-            <Button variant="gold" size="sm" onClick={() => void startQuiz(a.quizId)}>
+            <Button
+              variant="gold"
+              size="sm"
+              onClick={() =>
+                void startQuiz(
+                  a.quizId,
+                  a.status === "in_progress" ? a.attemptId : null
+                )
+              }
+            >
               <Play className="mr-2 h-4 w-4" />
               {a.status === "open"
                 ? t("studentDashboard.quizStart")
@@ -215,7 +228,7 @@ export function StudentQuizHub() {
             </Button>
           )}
           {showRetry && a.allowRetry && (
-            <Button variant="outline" size="sm" onClick={() => void startQuiz(a.quizId)}>
+            <Button variant="outline" size="sm" onClick={() => void startQuiz(a.quizId, null)}>
               <RotateCcw className="mr-2 h-4 w-4" />
               {t("studentDashboard.quizRetry")}
             </Button>

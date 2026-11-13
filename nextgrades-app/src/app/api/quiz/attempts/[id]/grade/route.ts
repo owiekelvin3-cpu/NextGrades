@@ -26,7 +26,7 @@ export async function PATCH(
 
     const { data: attempt, error: fetchError } = await db
       .from("quiz_attempts")
-      .select("id, student_id, quiz_id, completed_at, generated_quizzes(created_by)")
+      .select("id, student_id, quiz_id, completed_at")
       .eq("id", attemptId)
       .single();
 
@@ -34,14 +34,12 @@ export async function PATCH(
       return NextResponse.json({ error: "Attempt not found" }, { status: 404 });
     }
 
-    const quiz = attempt.generated_quizzes as { created_by?: string } | null;
-    const ownsQuiz = quiz?.created_by === profile.id;
-
     if (profile.role === "teacher") {
-      if (!ownsQuiz) {
-        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-      }
-      const assigned = await isStudentAssignedToTeacher(db, profile.id, attempt.student_id as string);
+      const assigned = await isStudentAssignedToTeacher(
+        db,
+        profile.id,
+        attempt.student_id as string
+      );
       if (!assigned) {
         return NextResponse.json({ error: "Forbidden" }, { status: 403 });
       }

@@ -26,30 +26,17 @@ export async function GET() {
       const studentIds = await listAssignedStudentIds(db, profile.id);
       if (!studentIds.length) return NextResponse.json([]);
 
-      const { data: ownQuizzes } = await db
-        .from("generated_quizzes")
-        .select("id")
-        .eq("created_by", profile.id);
-      const quizIds = (ownQuizzes ?? []).map((q) => q.id as string);
-
-      let query = db
+      // Show all attempts from assigned students (own quizzes + admin-unlocked work).
+      const { data, error: dbError } = await db
         .from("quiz_attempts")
-        .select("*, generated_quizzes(id, title, difficulty), student:profiles!quiz_attempts_student_id_fkey(id, full_name, email)")
+        .select(
+          "*, generated_quizzes(id, title, difficulty), student:profiles!quiz_attempts_student_id_fkey(id, full_name, email)"
+        )
         .in("student_id", studentIds)
         .order("created_at", { ascending: false });
 
-      if (quizIds.length) {
-        query = query.in("quiz_id", quizIds);
-      }
-
-      const { data, error: dbError } = await query;
       if (dbError) throw dbError;
-
-      const filtered = quizIds.length
-        ? data ?? []
-        : (data ?? []).filter(() => false);
-
-      return NextResponse.json(filtered);
+      return NextResponse.json(data ?? []);
     }
 
     const { data, error: dbError } = await db
@@ -94,6 +81,25 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Quiz not available" }, { status: 404 });
     }
 
+    // Resume an unfinished attempt instead of creating duplicates on Continue / remount.
+    const { data: existing } = await db
+      .from("quiz_attempts")
+      .select("*")
+      .eq("quiz_id", quizId)
+      .eq("student_id", user.id)
+      .is("completed_at", null)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (existing) {
+      return NextResponse.json({
+        attempt: existing,
+        timeLimitMinutes: quiz.time_limit_minutes,
+        resumed: true,
+      });
+    }
+
     const { data: attempt, error: attemptError } = await db
       .from("quiz_attempts")
       .insert({
@@ -106,7 +112,7 @@ export async function POST(request: Request) {
 
     if (attemptError) throw attemptError;
 
-    return NextResponse.json({ attempt, timeLimitMinutes: quiz.time_limit_minutes });
+    return NextResponse.json({ attempt, timeLimitMinutes: quiz.time_limit_minutes, resumed: false });
   } catch (e) {
     const message = e instanceof Error ? e.message : "Failed to start attempt";
     return NextResponse.json({ error: message }, { status: 500 });
