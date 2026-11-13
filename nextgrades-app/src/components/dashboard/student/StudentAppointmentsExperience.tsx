@@ -377,7 +377,7 @@ export function StudentAppointmentsExperience() {
                 <p className="mt-2 text-3xl font-bold text-[#D4AF37]">{unitsRemaining}</p>
                 <p className={cn("mt-1 text-sm", st.textMuted)}>
                   {t("studentDashboard.unitsBreakdown", {
-                    defaultValue: "Gekauft {{purchased}} · Absolviert {{completed}} · Übrig {{remaining}}",
+                    defaultValue: "Gekauft {{purchased}} · Verbraucht {{completed}} · Übrig {{remaining}}",
                     purchased: unitsPurchased,
                     completed: unitsCompleted,
                     remaining: unitsRemaining,

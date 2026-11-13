@@ -309,6 +309,7 @@ export async function fetchTeacherStats(teacherId: string) {
       total_students: 0,
       lessons_week: 0,
       earnings_month: 0,
+      pending_earnings: 0,
       nextjump_level: 1,
       hours_to_next: 0,
       total_hours: 0,
@@ -323,7 +324,7 @@ export async function fetchTeacherStats(teacherId: string) {
   const weekAgo = new Date();
   weekAgo.setDate(weekAgo.getDate() - 7);
 
-  const [statsRes, todayRes, weekRes, studentsRes] = await Promise.all([
+  const [statsRes, todayRes, weekRes, studentsRes, pendingRes] = await Promise.all([
     supabase.from("teacher_stats").select("*").eq("teacher_id", teacherId).maybeSingle(),
     supabase
       .from("lessons")
@@ -339,10 +340,19 @@ export async function fetchTeacherStats(teacherId: string) {
       .gte("start_time", weekAgo.toISOString())
       .neq("status", "cancelled"),
     supabase.from("lessons").select("student_id").eq("teacher_id", teacherId),
+    supabase
+      .from("teacher_earnings_ledger")
+      .select("amount")
+      .eq("teacher_id", teacherId)
+      .eq("status", "pending"),
   ]);
 
   const stats = statsRes.data;
   const uniqueStudents = new Set((studentsRes.data || []).map((l: { student_id: string }) => l.student_id));
+  const pending_earnings = (pendingRes.data ?? []).reduce(
+    (sum: number, row: { amount?: number | string | null }) => sum + Number(row.amount ?? 0),
+    0
+  );
 
   const level = stats?.current_bonus_level ?? 1;
   const totalHours = Number(stats?.total_hours ?? 0);
@@ -355,6 +365,7 @@ export async function fetchTeacherStats(teacherId: string) {
     total_students: uniqueStudents.size,
     lessons_week: weekRes.count ?? 0,
     earnings_month: Number(stats?.earnings_mtd ?? 0),
+    pending_earnings: Math.round(pending_earnings * 100) / 100,
     nextjump_level: level,
     hours_to_next: Math.round(hoursToNext),
     total_hours: totalHours,

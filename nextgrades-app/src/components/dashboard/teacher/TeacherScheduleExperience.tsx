@@ -344,7 +344,9 @@ function ScheduleContent() {
             </p>
             <p className="mt-1 text-xs text-text-muted">
               {zoomReady
-                ? t("zoom.readyToSchedule", { defaultValue: "Optional — auto-create Zoom links" })
+                ? t("zoom.readyToSchedule", {
+                    defaultValue: "Video-Link erforderlich — Zoom kann Links automatisch erzeugen",
+                  })
                 : t("zoom.pasteLinkReady", { defaultValue: "Video-Link vor der Stunde einfügen" })}
             </p>
           </div>

@@ -89,7 +89,7 @@ export function ResourcesSubjectExperience({ subjectSlug, subjectName, classLeve
             <div>
               <h1 className={cn("mb-4 text-3xl font-bold md:text-5xl")}>{title}</h1>
               <p className="mb-4 max-w-xl text-on-navy-muted">{heroDesc}</p>
-              <p className="text-sm font-medium text-[#D4AF37]">500+ Lernmaterialien</p>
+              <p className="text-sm font-medium text-[#D4AF37]">Lernmaterialien für dieses Fach</p>
             </div>
             <div data-animate="hero-image">
               <MarketingHeroMobileImage src={ui.heroImage} alt={title} priority />

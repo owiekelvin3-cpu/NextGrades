@@ -171,7 +171,7 @@ export function StudentOverviewDashboard() {
                   <div className="space-y-1.5">
                     <p className={cn("text-xs", st.textMuted)}>
                       {t("studentDashboard.unitsBreakdown", {
-                        defaultValue: "Gekauft {{purchased}} · Absolviert {{completed}} · Übrig {{remaining}}",
+                        defaultValue: "Gekauft {{purchased}} · Verbraucht {{completed}} · Übrig {{remaining}}",
                         purchased: data.units.purchased ?? unitsTotal,
                         completed: data.units.completed ?? unitsUsed,
                         remaining: unitsRemaining,

@@ -106,7 +106,7 @@ export function StudentLiveClassesExperience() {
   const packageSummary = useMemo(() => {
     if (!units) return null;
     return t("studentDashboard.unitsBreakdown", {
-      defaultValue: "Gekauft {{purchased}} · Absolviert {{completed}} · Übrig {{remaining}}",
+      defaultValue: "Gekauft {{purchased}} · Verbraucht {{completed}} · Übrig {{remaining}}",
       purchased: units.purchased,
       completed: units.completed,
       remaining: units.remaining,

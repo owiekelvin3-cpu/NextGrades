@@ -102,13 +102,19 @@ export default function AdminQuizMonitorPage() {
             <AdminKpiCard label="Materialien" value={stats.counts.materials} icon={FileText} iconTone="info" />
             <AdminKpiCard label="Quizzes" value={stats.counts.quizzes} icon={Brain} iconTone="gold" />
             <AdminKpiCard label="Versuche" value={stats.counts.attempts} icon={Users} iconTone="success" />
-            <AdminKpiCard label="Schüler-Scores" value={stats.counts.studentScores} icon={Zap} iconTone="warning" />
+            <AdminKpiCard label="Bewertete Versuche" value={stats.counts.studentScores} icon={Zap} iconTone="warning" />
           </AdminKpiStrip>
 
           <Card hoverable={false} className="overflow-hidden p-0">
             <div className="border-b border-[var(--table-border)] px-5 py-4">
               <h3 className="font-bold text-foreground">Alle Quizzes</h3>
-              <p className="mt-1 text-sm text-text-muted">Veröffentlichen, damit sie unter Aufgaben sichtbar sind.</p>
+              <p className="mt-1 text-sm text-text-muted">
+                Veröffentlichen ist nur der erste Schritt. Danach unter{" "}
+                <a href="/portal/admin/quiz-access" className="font-semibold text-[var(--brand-gold)] underline-offset-2 hover:underline">
+                  Quizze freischalten
+                </a>{" "}
+                einzelnen SchülerInnen freigeben.
+              </p>
             </div>
             {quizzes.length === 0 ? (
               <p className="px-5 py-8 text-sm text-text-muted">Noch keine Quizzes.</p>

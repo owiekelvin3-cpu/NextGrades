@@ -281,8 +281,9 @@ export async function fetchTeacherOverviewData(): Promise<TeacherOverviewData | 
   const weekHours = Math.round((weekLessons.reduce((s, l) => s + l.duration, 0) / 60) * 10) / 10;
 
   const earningsMonth = baseStats.earnings_month;
-  const earningsGross = Math.round(earningsMonth * 1.19 * 100) / 100;
-  const earningsPending = Math.max(0, Math.round((earningsGross - earningsMonth) * 100) / 100);
+  // Do not invent VAT/gross — show ledger month total and pending from teacher_stats.
+  const earningsGross = earningsMonth;
+  const earningsPending = Number(baseStats.pending_earnings ?? 0) || 0;
 
   return {
     profile: {

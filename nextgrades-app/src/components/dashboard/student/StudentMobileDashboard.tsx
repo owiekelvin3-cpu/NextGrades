@@ -190,23 +190,15 @@ export function StudentMobileDashboard({ data, firstName, dateLocale }: Props) {
           </section>
         )}
 
-        {/* Top courses - horizontal cards */}
+        {displayCourses.length > 0 ? (
         <section>
           <SectionHeader
             title={t("studentDashboard.mobileTopCourses", {
-              defaultValue: "Top rated courses",
+              defaultValue: "Aktive Kurse",
             })}
-            href="/dashboard/student/courses"
-            linkLabel={t("studentDashboard.showAll", { defaultValue: "See All" })}
+            href="/dashboard/student/progress"
+            linkLabel={t("studentDashboard.showAll", { defaultValue: "Alle anzeigen" })}
           />
-          {displayCourses.length === 0 ? (
-            <div className="mx-5 rounded-3xl border border-border-default bg-surface-elevated p-8 text-center text-sm text-text-muted">
-              {t("studentDashboard.noCourses")}
-              <Link href="/programs" className="mt-3 block font-semibold text-[var(--brand-gold)]">
-                {t("home.explorePrograms", { defaultValue: "Explore programs" })}
-              </Link>
-            </div>
-          ) : (
             <div className="flex gap-4 overflow-x-auto px-5 pb-1 no-scrollbar snap-x snap-mandatory">
               {displayCourses.map((course) => {
                 const color = subjectColor(course.subjectName);
@@ -235,7 +227,7 @@ export function StudentMobileDashboard({ data, firstName, dateLocale }: Props) {
                           <BookOpen className="h-3.5 w-3.5" />
                           {t("studentDashboard.mobileLessonCount", {
                             count: course.lessonCount || 0,
-                            defaultValue: "{{count}} lessons",
+                            defaultValue: "{{count}} Stunden",
                           })}
                         </span>
                         <span className="inline-flex items-center gap-1 font-semibold text-[var(--brand-gold)]">
@@ -244,18 +236,18 @@ export function StudentMobileDashboard({ data, firstName, dateLocale }: Props) {
                         </span>
                       </div>
                       <Link
-                        href="/dashboard/student/courses"
+                        href="/dashboard/student/progress"
                         className="flex min-h-11 w-full items-center justify-center rounded-full bg-[var(--brand-navy)] text-sm font-semibold text-white transition active:scale-[0.98] dark:bg-[var(--brand-gold)] dark:text-[var(--brand-navy)]"
                       >
-                        {t("studentDashboard.mobileEnrolled", { defaultValue: "Enrolled Now" })}
+                        {t("studentDashboard.nav.progress", { defaultValue: "Fortschritt" })}
                       </Link>
                     </div>
                   </article>
                 );
               })}
             </div>
-          )}
         </section>
+        ) : null}
 
         {/* Popular instructors */}
         {instructors.length > 0 && (
