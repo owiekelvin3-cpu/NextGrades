@@ -124,11 +124,12 @@ export function StudentProgressExperience() {
 
   const progress = data.overallProgress;
   const materialCount = data.materials.length;
+  const quizAverages = subjectProgress
+    .map((s) => s.quizAverage)
+    .filter((n): n is number => n != null && Number.isFinite(n));
   const quizScoreAvg =
-    data.progressSparkline.length > 0
-      ? Math.round(
-          data.progressSparkline.reduce((sum, score) => sum + score, 0) / data.progressSparkline.length
-        )
+    quizAverages.length > 0
+      ? Math.round(quizAverages.reduce((sum, score) => sum + score, 0) / quizAverages.length)
       : null;
 
   return (
@@ -150,9 +151,9 @@ export function StudentProgressExperience() {
                 {t("studentDashboard.progressHeroDesc")}
               </p>
               <div className="mt-6 flex flex-wrap gap-2.5">
-                <Button variant="gold" size="md" href="/dashboard/student/courses" className="justify-center">
-                  <BookOpen className="mr-1.5 h-4 w-4" />
-                  {t("studentDashboard.continueLearning", { subject: "" })}
+                <Button variant="gold" size="md" href="/dashboard/student/appointments" className="justify-center">
+                  <CalendarDays className="mr-1.5 h-4 w-4" />
+                  {t("studentDashboard.nav.appointments", { defaultValue: "Termine" })}
                 </Button>
                 <Button
                   variant="secondary"
@@ -188,8 +189,10 @@ export function StudentProgressExperience() {
                     <p className="text-xs text-white/65">{t("studentDashboard.progressLessonsDone")}</p>
                   </div>
                   <div>
-                    <p className="text-2xl font-bold text-white">{data.courses.length}</p>
-                    <p className="text-xs text-white/65">{t("studentDashboard.myCourses")}</p>
+                    <p className="text-2xl font-bold text-white">
+                      {quizScoreAvg != null ? `${quizScoreAvg}%` : "—"}
+                    </p>
+                    <p className="text-xs text-white/65">{t("studentDashboard.progressQuizScores")}</p>
                   </div>
                 </div>
               </div>
@@ -203,7 +206,7 @@ export function StudentProgressExperience() {
               label={t("studentDashboard.totalProgress")}
               value={`${progress}%`}
               icon={TrendingUp}
-              href="/dashboard/student/courses"
+              href="/dashboard/student/progress"
               footer={
                 <div className={st.progressTrack}>
                   <div className={st.progressBar} style={{ width: `${progress}%` }} />
@@ -218,11 +221,11 @@ export function StudentProgressExperience() {
               href="/dashboard/student/appointments"
             />
             <StudentKpiCard
-              label={t("studentDashboard.myCourses")}
-              value={data.courses.length}
-              icon={BookOpen}
+              label={t("studentDashboard.progressQuizScores")}
+              value={quizScoreAvg != null ? `${quizScoreAvg}%` : "—"}
+              icon={Target}
               accent="navy"
-              href="/dashboard/student/courses"
+              href="/dashboard/student/quizzes"
             />
             <StudentKpiCard
               label={t("studentDashboard.newMaterials")}
@@ -239,15 +242,19 @@ export function StudentProgressExperience() {
             className="lg:col-span-3"
             title={t("studentDashboard.progressBySubject")}
             icon={BookOpen}
-            href="/dashboard/student/courses"
-            linkLabel={t("studentDashboard.toMyCourses")}
+            href="/dashboard/student/quizzes"
+            linkLabel={t("studentDashboard.allTasks", { defaultValue: "Alle Aufgaben" })}
             noPadding
           >
             {subjectProgress.length === 0 ? (
               <div className="px-5 py-14 text-center">
-                <p className={st.empty}>{t("studentDashboard.noCoursesUnlocked")}</p>
-                <Button variant="gold" size="sm" href="/programs" className="mt-4">
-                  {t("studentDashboard.explorePrograms")}
+                <p className={st.empty}>
+                  {t("studentDashboard.noSubjectProgressYet", {
+                    defaultValue: "Noch kein Fortschritt nach Fach. Abgeschlossene Stunden und Quizze erscheinen hier.",
+                  })}
+                </p>
+                <Button variant="gold" size="sm" href="/dashboard/student/quizzes" className="mt-4">
+                  {t("studentDashboard.allTasks", { defaultValue: "Alle Aufgaben" })}
                 </Button>
               </div>
             ) : (
@@ -335,23 +342,16 @@ export function StudentProgressExperience() {
           </StudentPanel>
         </motion.div>
 
+        {data.courses.length > 0 ? (
         <motion.div variants={studentStaggerItem}>
           <StudentPanel
             className="lg:col-span-3"
             title={t("studentDashboard.myCourses")}
             icon={BookOpen}
-            href="/dashboard/student/courses"
-            linkLabel={t("studentDashboard.toMyCourses")}
+            href="/dashboard/student/progress"
+            linkLabel={t("studentDashboard.progressLabel")}
             noPadding
           >
-            {data.courses.length === 0 ? (
-              <div className="px-5 py-14 text-center">
-                <p className={st.empty}>{t("studentDashboard.noCoursesUnlocked")}</p>
-                <Button variant="gold" size="sm" href="/programs" className="mt-4">
-                  {t("studentDashboard.explorePrograms")}
-                </Button>
-              </div>
-            ) : (
               <ul className="divide-y divide-border-default">
                 {data.courses.map((course) => {
                   const color = subjectColor(course.subjectName);
@@ -391,9 +391,9 @@ export function StudentProgressExperience() {
                   );
                 })}
               </ul>
-            )}
           </StudentPanel>
         </motion.div>
+        ) : null}
 
         <motion.div variants={studentStaggerItem}>
           <StudentPanel

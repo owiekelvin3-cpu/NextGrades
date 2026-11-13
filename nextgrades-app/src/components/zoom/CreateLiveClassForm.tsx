@@ -117,7 +117,7 @@ export function CreateLiveClassForm({
         if (cancelled) return;
         if (!studentsRes.ok) {
           setStudentsError(
-            t("zoom.studentsLoadError", { defaultValue: "Could not load students. Refresh and try again." })
+            t("zoom.studentsLoadError", { defaultValue: "SchülerInnen konnten nicht geladen werden. Bitte aktualisieren." })
           );
         }
         const list = studentsData.students ?? [];
@@ -143,7 +143,7 @@ export function CreateLiveClassForm({
       } catch {
         if (!cancelled) {
           setStudentsError(
-            t("zoom.studentsLoadError", { defaultValue: "Could not load students. Refresh and try again." })
+            t("zoom.studentsLoadError", { defaultValue: "SchülerInnen konnten nicht geladen werden. Bitte aktualisieren." })
           );
           setGroups([]);
         }
@@ -246,7 +246,7 @@ export function CreateLiveClassForm({
     if (!form.subjectId) {
       toast.error(
         t("zoom.selectSubjectRequired", {
-          defaultValue: "Pick a subject for this lesson.",
+          defaultValue: "Wähle ein Fach für diese Stunde.",
         })
       );
       return;
@@ -271,7 +271,7 @@ export function CreateLiveClassForm({
     const title =
       form.title.trim() ||
       [subjectName, lessonKind === "group" ? groupName : studentName].filter(Boolean).join(" · ") ||
-      t("zoom.lessonFallbackTitle", { defaultValue: "Tutoring lesson" });
+      t("zoom.lessonFallbackTitle", { defaultValue: "Nachhilfestunde" });
 
     setLoading(true);
     try {
@@ -291,7 +291,7 @@ export function CreateLiveClassForm({
 
       toast.success(
         t("zoom.lessonCreated", {
-          defaultValue: "Lesson saved. The student can see it under My appointments.",
+          defaultValue: "Stunde gespeichert. Die SchülerIn sieht sie unter Meine Termine.",
         })
       );
       const nextDefaults = defaultScheduleValues();
@@ -307,7 +307,7 @@ export function CreateLiveClassForm({
       onCreated?.();
     } catch (err) {
       toast.error(
-        err instanceof Error ? err.message : t("misc.errorGeneric", { defaultValue: "Something went wrong" })
+        err instanceof Error ? err.message : t("misc.errorGeneric", { defaultValue: "Etwas ist schiefgelaufen" })
       );
     } finally {
       setLoading(false);
@@ -321,7 +321,7 @@ export function CreateLiveClassForm({
     if (!form.studentId && !form.subjectId) {
       toast.error(
         t("zoom.selectStudentOrSubject", {
-          defaultValue: "Select a student or a subject so the class appears in their portal.",
+          defaultValue: "Wähle eine SchülerIn oder ein Fach, damit die Stunde im Portal erscheint.",
         })
       );
       return;
@@ -334,12 +334,14 @@ export function CreateLiveClassForm({
         body: JSON.stringify(buildPayload()),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Failed to create class");
-      toast.success(t("zoom.classCreated", { defaultValue: "Live class created and students notified!" }));
+      if (!res.ok) throw new Error(data.error || "Stunde konnte nicht erstellt werden");
+      toast.success(
+        t("zoom.classCreated", { defaultValue: "Live-Stunde erstellt und SchülerInnen benachrichtigt!" })
+      );
       onCreated?.();
     } catch (err) {
       toast.error(
-        err instanceof Error ? err.message : t("misc.errorGeneric", { defaultValue: "Something went wrong" })
+        err instanceof Error ? err.message : t("misc.errorGeneric", { defaultValue: "Etwas ist schiefgelaufen" })
       );
     } finally {
       setLoading(false);
@@ -358,7 +360,7 @@ export function CreateLiveClassForm({
           </div>
           <div>
             <h2 className="text-base font-bold">
-              {t("zoom.newLesson", { defaultValue: "New lesson" })}
+              {t("zoom.newLesson", { defaultValue: "Neue Stunde" })}
             </h2>
             <p className="mt-1 text-sm text-gray-300">
               {t("zoom.newLessonDesc", {
@@ -492,7 +494,7 @@ export function CreateLiveClassForm({
           )}
           <div>
             <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-gray-500">
-              {t("zoom.subject", { defaultValue: "Subject" })}
+              {t("zoom.subject", { defaultValue: "Fach" })}
             </label>
             <select
               required
@@ -500,7 +502,7 @@ export function CreateLiveClassForm({
               onChange={(e) => setForm({ ...form, subjectId: e.target.value })}
               className={selectCls(form.subjectId)}
             >
-              <option value="">{t("zoom.selectSubject", { defaultValue: "Select subject" })}</option>
+              <option value="">{t("zoom.selectSubject", { defaultValue: "Fach wählen" })}</option>
               {subjects.map((s) => (
                 <option key={s.id} value={s.id}>
                   {s.name}
@@ -512,7 +514,7 @@ export function CreateLiveClassForm({
 
         <div>
           <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-gray-500">
-            {t("zoom.when", { defaultValue: "When" })}
+            {t("zoom.when", { defaultValue: "Wann" })}
           </p>
           <div className="grid gap-3 sm:grid-cols-2">
             <div className="relative">
@@ -546,7 +548,7 @@ export function CreateLiveClassForm({
           </div>
           {schedulePastError && <p className="mt-2 text-xs text-red-600">{schedulePastError}</p>}
           <div className="mt-3">
-            <p className="mb-2 text-xs text-gray-500">{t("zoom.duration", { defaultValue: "Duration (minutes)" })}</p>
+            <p className="mb-2 text-xs text-gray-500">{t("zoom.duration", { defaultValue: "Dauer (Minuten)" })}</p>
             <div className="flex flex-wrap gap-2">
               {DURATION_PRESETS.map((mins) => (
                 <button
@@ -625,14 +627,14 @@ export function CreateLiveClassForm({
 
         <div>
           <label htmlFor="meeting-title" className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-gray-500">
-            {t("zoom.meetingTitle", { defaultValue: "Lesson title" })}
+            {t("zoom.meetingTitle", { defaultValue: "Titel der Stunde" })}
           </label>
           <input
             id="meeting-title"
             value={form.title}
             onChange={(e) => setForm({ ...form, title: e.target.value })}
             placeholder={t("zoom.titleOptionalPlaceholder", {
-              defaultValue: "Optional — e.g. Algebra, quadratic equations",
+              defaultValue: "Optional — z. B. Algebra, quadratische Gleichungen",
             })}
             className={inputCls}
           />
@@ -687,25 +689,25 @@ export function CreateLiveClassForm({
             onClick={() => setShowMore(!showMore)}
             className="flex w-full items-center justify-between rounded-xl border border-gray-100 bg-[#FAFBFC] px-4 py-3 text-sm font-medium text-gray-700 transition hover:border-gray-200"
           >
-            {t("zoom.moreOptions", { defaultValue: "More options" })}
+            {t("zoom.moreOptions", { defaultValue: "Weitere Optionen" })}
             <ChevronDown className={cn("h-4 w-4 transition", showMore && "rotate-180")} />
           </button>
           {showMore && (
             <div className="mt-3 space-y-4 rounded-xl border border-gray-100 bg-[#FAFBFC] p-4">
               <div>
                 <label className="mb-1.5 block text-xs font-medium text-gray-500">
-                  {t("zoom.passcodeOptional", { defaultValue: "Meeting passcode (optional)" })}
+                  {t("zoom.passcodeOptional", { defaultValue: "Meeting-Passcode (optional)" })}
                 </label>
                 <input
                   value={form.passcode}
                   onChange={(e) => setForm({ ...form, passcode: e.target.value })}
-                  placeholder={t("zoom.passcodePlaceholder", { defaultValue: "If your meeting has a password" })}
+                  placeholder={t("zoom.passcodePlaceholder", { defaultValue: "Falls das Meeting ein Passwort hat" })}
                   className={inputCls}
                 />
               </div>
               <div>
                 <label className="mb-1.5 block text-xs font-medium text-gray-500">
-                  {t("zoom.timezone", { defaultValue: "Time zone" })}
+                  {t("zoom.timezone", { defaultValue: "Zeitzone" })}
                 </label>
                 <select
                   value={form.timezone}
@@ -725,7 +727,7 @@ export function CreateLiveClassForm({
 
         <Button type="submit" variant="gold" disabled={loading} className="w-full gap-2 sm:w-auto">
           {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Calendar className="h-4 w-4" />}
-          {t("zoom.saveLesson", { defaultValue: "Save lesson" })}
+          {t("zoom.saveLesson", { defaultValue: "Stunde speichern" })}
         </Button>
 
         {zoomReady && (
@@ -736,8 +738,8 @@ export function CreateLiveClassForm({
               className="text-xs font-medium text-gray-500 hover:text-gray-700"
             >
               {showAutoZoom
-                ? t("zoom.hideAutoZoom", { defaultValue: "Hide auto-create option" })
-                : t("zoom.showAutoZoom", { defaultValue: "Or auto-create via connected Zoom account" })}
+                ? t("zoom.hideAutoZoom", { defaultValue: "Auto-Erstellung ausblenden" })
+                : t("zoom.showAutoZoom", { defaultValue: "Oder automatisch über verbundenes Zoom-Konto" })}
             </button>
             {showAutoZoom && (
               <div className="mt-3">
@@ -749,7 +751,7 @@ export function CreateLiveClassForm({
                   onClick={() => void handleAutoZoomSubmit()}
                 >
                   <Video className="h-4 w-4" />
-                  {t("zoom.createViaZoom", { defaultValue: "Auto-create in Zoom" })}
+                  {t("zoom.createViaZoom", { defaultValue: "In Zoom automatisch erstellen" })}
                 </Button>
               </div>
             )}

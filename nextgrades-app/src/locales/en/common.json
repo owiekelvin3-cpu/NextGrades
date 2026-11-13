@@ -104,8 +104,8 @@
     "heroSubtitle": "Premium online tutoring, modern learning systems, and structured learning support for ambitious students.",
     "freeConsultation": "Free Consultation",
     "explorePrograms": "Explore programs",
-    "rating": "4.9/5",
-    "reviewsFrom": "from 100+ reviews",
+    "rating": "€39",
+    "reviewsFrom": "per hour (1:1) · from €29 group",
     "floatingCardTitle": "Individual support.",
     "floatingCardDesc": "Real results.",
     "learnMore": "Learn more",
@@ -172,7 +172,7 @@
           "title": "Learning Library",
           "price": "€49 / semester",
           "features": [
-            "500+ learning materials",
+            "Structured learning materials",
             "Curriculum-aligned content",
             "Worksheets, videos & summaries",
             "Available instantly"
@@ -181,10 +181,10 @@
       ]
     },
     "stats": [
-      { "number": "100+", "label": "students" },
-      { "number": "25+", "label": "teachers" },
-      { "number": "500+", "label": "learning materials" },
-      { "number": "4.9/5", "label": "rating" }
+      { "number": "€39", "label": "per hour (1:1)" },
+      { "number": "€29", "label": "per hour (group)" },
+      { "number": "€49", "label": "per subject & semester" },
+      { "number": "€149", "label": "Matura package one-time" }
     ],
     "platform": {
       "eyebrow": "Learning platform",
@@ -218,21 +218,7 @@
     },
     "testimonials": {
       "title": "What students and parents say",
-      "items": [
-        {
-          "quote": "Before NextGrades, learning was a struggle every evening at our house. Today my daughter goes to school much more confidently and finally enjoys learning again. It has not only improved her grades, but also reduced her stress.",
-          "name": "Sabine K.",
-          "role": "Mother"
-        },
-        {
-          "quote": "Within a few months I improved in mathematics from a 4 to a 2. What helped most were the clear explanations, personal support, and structured preparation for school exams.",
-          "name": "Lukas, 7. Klasse HTL"
-        },
-        {
-          "quote": "The learning platform is incredibly helpful. The videos, summaries, and worksheets save me time every week. When I do not understand something, I almost always find the right explanation right away.",
-          "name": "Julia, 4. Klasse Gymnasium"
-        }
-      ]
+      "items": []
     },
     "whySection": {
       "eyebrow": "WHY NEXTGRADES",
@@ -549,9 +535,9 @@
     "discoverSubjectsDesc": "Choose a school subject and find matching learning materials, exercises, and videos.",
     "openSubject": "Open subject",
     "libraryGate": {
-      "materialsCount": "500+",
-      "materialsLabel": "learning materials",
-      "title": "500+ learning materials - unlocked with membership",
+      "materialsCount": "€49",
+      "materialsLabel": "per subject & semester",
+      "title": "Learning library – unlocked with membership",
       "subtitle": "The full learning library is available to registered members. Sign in or choose a plan to access all content.",
       "loginCta": "Sign in",
       "upgradeCta": "Unlock membership",
@@ -834,7 +820,7 @@
       },
       {
         "title": "Exam & university guidance",
-        "description": "Abitur, university prep, and STEM pathways explained in plain language."
+        "description": "Matura, university prep, and STEM pathways explained in plain language."
       },
       {
         "title": "Flexible scheduling options",
@@ -896,7 +882,7 @@
       "Flexible"
     ],
     "goals": "Your goals (optional)",
-    "goalsPlaceholder": "e.g. Improve mathematics grade before exams, prepare for Abitur, build study habits…",
+    "goalsPlaceholder": "e.g. Improve mathematics grade before exams, prepare for Matura, build study habits…",
     "privacyNote": "By submitting, you agree that we may contact you about your consultation request. We never share your data with third parties.",
     "submit": "Send consultation request",
     "submitting": "Sending…",
@@ -1228,20 +1214,20 @@
     ],
     "stats": [
       {
-        "value": "100+",
-        "label": "students supported"
+        "value": "€39",
+        "label": "per hour (1:1)"
       },
       {
-        "value": "25+",
-        "label": "teachers on the team"
+        "value": "€29",
+        "label": "per hour (group)"
       },
       {
-        "value": "100%",
-        "label": "online & flexible"
+        "value": "€49",
+        "label": "per subject & semester"
       },
       {
-        "value": "4.9/5",
-        "label": "parent satisfaction"
+        "value": "€149",
+        "label": "Matura package one-time"
       }
     ],
     "positionsEyebrow": "Open roles",
@@ -1271,7 +1257,7 @@
       {
         "id": "math",
         "title": "Mathematics Tutor",
-        "description": "We are looking for experienced mathematics tutors to support students from middle school through Abitur preparation. You explain concepts clearly, build confidence, and adapt to each student's level.",
+        "description": "We are looking for experienced mathematics tutors to support students from middle school through Matura preparation. You explain concepts clearly, build confidence, and adapt to each student's level.",
         "type": "Part-time / Freelance",
         "location": "Remote",
         "highlights": [

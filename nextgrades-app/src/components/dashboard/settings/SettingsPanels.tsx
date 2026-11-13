@@ -352,7 +352,7 @@ export function StudentSettingsPanel({ role = "student" }: StudentSettingsPanelP
                   </SettingsField>
                 ) : (
                   <SettingsField label={t("studentDashboard.yourGoal", { defaultValue: "Learning goal" })} hint={t("settings.goalHint", { defaultValue: "Displayed on your dashboard" })}>
-                    <SettingsTextarea rows={3} value={learningGoal} onChange={(e) => setLearningGoal(e.target.value)} placeholder={t("settings.goalPlaceholder", { defaultValue: "e.g. Pass my Abitur in Mathematics with grade 1…" })} />
+                    <SettingsTextarea rows={3} value={learningGoal} onChange={(e) => setLearningGoal(e.target.value)} placeholder={t("settings.goalPlaceholder", { defaultValue: "z. B. Matura in Mathematik mit Note 1 bestehen…" })} />
                   </SettingsField>
                 )}
               </div>

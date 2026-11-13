@@ -371,49 +371,11 @@ export function StudentOverviewDashboard() {
           </StudentPanel>
         </motion.div>
 
-        <motion.section variants={studentStaggerItem} className="grid gap-5 lg:grid-cols-3">
-          <StudentPanel
-            title={t("studentDashboard.myCourses")}
-            href="/dashboard/student/courses"
-            linkLabel={t("studentDashboard.toMyCourses")}
-            icon={GraduationCap}
-            noPadding
-          >
-            {data.courses.length === 0 ? (
-              <OverviewEmptyState
-                icon={GraduationCap}
-                title={t("studentDashboard.noCoursesUnlocked", {
-                  defaultValue: "Noch keine Kurse freigeschaltet.",
-                })}
-                actionHref="/programs"
-                actionLabel={t("studentDashboard.explorePrograms", {
-                  defaultValue: "Programme entdecken",
-                })}
-              />
-            ) : (
-              <ul className="divide-y divide-border-default">
-                {data.courses.slice(0, 3).map((course) => (
-                  <li key={course.enrollmentId} className="px-5 py-4">
-                    <div className="mb-2 flex items-center justify-between gap-2">
-                      <span className={cn("truncate text-sm font-semibold", st.textPrimary)}>{course.subjectName}</span>
-                      <span className="text-sm font-semibold tabular-nums text-[var(--brand-gold)]">
-                        {course.progressPercent}%
-                      </span>
-                    </div>
-                    {course.teacherName && <p className={cn("mb-2 text-xs", st.textSubtle)}>{course.teacherName}</p>}
-                    <div className={st.progressTrackMd}>
-                      <div className={st.progressBar} style={{ width: `${course.progressPercent}%` }} />
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </StudentPanel>
-
+        <motion.section variants={studentStaggerItem} className="grid gap-5 lg:grid-cols-2">
           <StudentPanel
             title={t("studentDashboard.myMaterials")}
             href="/dashboard/student/resources"
-            linkLabel={t("studentDashboard.toMaterialLibraryBtn", { defaultValue: "Library" })}
+            linkLabel={t("studentDashboard.toMaterialLibraryBtn", { defaultValue: "Zur Bibliothek" })}
             icon={FileText}
             noPadding
           >

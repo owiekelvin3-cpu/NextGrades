@@ -115,20 +115,20 @@
     "statsTitle": "A new generation of learning",
     "stats": [
       {
-        "value": "100+",
-        "label": "happy students"
+        "value": "€39",
+        "label": "per hour (1:1)"
       },
       {
-        "value": "25+",
-        "label": "experienced teachers"
+        "value": "€29",
+        "label": "per hour (group)"
       },
       {
-        "value": "100%",
-        "label": "improved grades"
+        "value": "€49",
+        "label": "per subject & semester"
       },
       {
-        "value": "100%",
-        "label": "passion & commitment"
+        "value": "€149",
+        "label": "Matura package one-time"
       }
     ],
     "teamEyebrow": "OUR TEAM",
@@ -169,8 +169,8 @@
       },
       {
         "year": "2022",
-        "title": "First 100 students",
-        "desc": "Reached our first milestone with overwhelmingly positive feedback."
+        "title": "First students",
+        "desc": "Reached our first milestone with positive feedback from families."
       },
       {
         "year": "2023",
@@ -179,8 +179,8 @@
       },
       {
         "year": "2024",
-        "title": "100+ students",
-        "desc": "Growing community and expanded subject offerings."
+        "title": "Growing community",
+        "desc": "Expanded subject offerings and clearer pricing for every program."
       },
       {
         "year": "2025",
@@ -217,20 +217,20 @@
     "freeConsultation": "Book now",
     "stats": [
       {
-        "number": "100+",
-        "label": "students"
+        "number": "€39",
+        "label": "per hour (1:1)"
       },
       {
-        "number": "25+",
-        "label": "teachers"
+        "number": "€29",
+        "label": "per hour (group)"
       },
       {
-        "number": "500+",
-        "label": "learning materials"
+        "number": "€49",
+        "label": "per subject & semester"
       },
       {
-        "number": "4.9/5",
-        "label": "rating"
+        "number": "€149",
+        "label": "Matura package one-time"
       }
     ],
     "sectionEyebrow": "OUR PROGRAMS",
@@ -283,10 +283,10 @@
         "title": "Learning Library",
         "description": "Structured learning materials, videos, and exam preparation in one place.",
         "features": [
-          "500+ learning materials",
+          "Structured learning materials",
           "Curriculum-aligned",
           "Instant access",
-          "For school & graduation exams"
+          "For school & Matura"
         ],
         "price": "€49 per subject & semester"
       }
@@ -384,20 +384,20 @@
     ],
     "stats": [
       {
-        "value": "100+",
-        "label": "happy students"
+        "value": "€39",
+        "label": "per hour (1:1)"
       },
       {
-        "value": "25+",
-        "label": "experienced teachers"
+        "value": "€29",
+        "label": "per hour (group)"
       },
       {
-        "value": "4.9/5",
-        "label": "rating from parents & students"
+        "value": "€49",
+        "label": "per subject & semester"
       },
       {
-        "value": "100%",
-        "label": "online & flexible"
+        "value": "€149",
+        "label": "Matura package one-time"
       }
     ],
     "ctaTitle": "Ready to improve your grades?",
@@ -592,24 +592,24 @@
     "valueProposition": "Individual solutions for every budget and learning situation.",
     "stats": [
       {
-        "value": "100+",
-        "label": "students"
+        "value": "€39",
+        "label": "per hour (1:1)"
       },
       {
-        "value": "25+",
-        "label": "teachers"
+        "value": "€29",
+        "label": "per hour (group)"
       },
       {
-        "value": "500+",
-        "label": "learning materials"
+        "value": "€49",
+        "label": "per subject & semester"
       },
       {
-        "value": "4.9/5",
-        "label": "rating"
+        "value": "€149",
+        "label": "Matura package one-time"
       }
     ],
-    "trustedTitle": "Trusted by 100+ students",
-    "trustedDesc": "4.9/5 average rating from real students and parents",
+    "trustedTitle": "Clear prices — no subscription traps",
+    "trustedDesc": "1:1, groups, learning library and Matura package — exactly as listed on the pricing page",
     "loading": "Loading...",
     "finalCtaTitle": "Together we achieve great things",
     "finalCtaDesc": "Not sure which plan fits? Book a free consultation - no obligation.",
@@ -629,7 +629,7 @@
         "priceLabel": "€49 per subject & semester",
         "highlighted": false,
         "features": [
-          "500+ learning materials",
+          "Structured learning materials",
           "Curriculum-aligned",
           "Worksheets & videos",
           "Available instantly"
@@ -1887,7 +1887,7 @@
     "bioHint": "Shown to students - experience, subjects, teaching style",
     "bioPlaceholder": "Tell students about your teaching experience…",
     "goalHint": "Displayed on your dashboard",
-    "goalPlaceholder": "e.g. Pass my Abitur in Mathematics with grade 1…",
+    "goalPlaceholder": "e.g. Pass my Matura in Mathematics with grade 1…",
     "accountInfo": "Account",
     "emailHint": "Contact support to change your email address",
     "memberSince": "Member since",

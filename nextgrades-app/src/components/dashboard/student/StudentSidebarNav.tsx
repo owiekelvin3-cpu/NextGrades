@@ -6,7 +6,6 @@ import { useTranslation } from "react-i18next";
 import {
   LayoutDashboard,
   CalendarDays,
-  BookOpen,
   FileText,
   ListChecks,
   TrendingUp,
@@ -38,12 +37,6 @@ export const studentNavItems: StudentNavItem[] = [
     href: "/dashboard/student/live-classes",
     icon: Video,
     labelKey: "studentDashboard.nav.liveClasses",
-    matchPrefix: true,
-  },
-  {
-    href: "/dashboard/student/courses",
-    icon: BookOpen,
-    labelKey: "studentDashboard.nav.courses",
     matchPrefix: true,
   },
   {

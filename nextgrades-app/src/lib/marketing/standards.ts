@@ -1,9 +1,9 @@
-/** Canonical marketing statistics - use across all public pages */
+/** Verified marketing stats only — do not invent ratings or counts. */
 export const GLOBAL_STATS = [
-  { number: "100+", label: "SchülerInnen" },
-  { number: "25+", label: "LehrerInnen" },
-  { number: "500+", label: "Lernmaterialien" },
-  { number: "4,9/5", label: "Bewertung" },
+  { number: "1:1", label: "Premium-Nachhilfe" },
+  { number: "3–5", label: "SchülerInnen pro Gruppe" },
+  { number: "39 €", label: "pro Stunde (1:1)" },
+  { number: "29 €", label: "pro Stunde (Gruppe)" },
 ] as const;
 
 export const PROGRAM_PRICES = {

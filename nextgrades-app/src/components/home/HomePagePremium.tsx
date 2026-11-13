@@ -203,7 +203,9 @@ export function HomePagePremium() {
         ctaHref="/resources"
       />
 
-      <TestimonialPremium items={testimonials} title={t("home.testimonials.title")} />
+      {testimonials.length > 0 ? (
+        <TestimonialPremium items={testimonials} title={t("home.testimonials.title")} />
+      ) : null}
 
       <CTABand
         title={t("home.cta.title")}

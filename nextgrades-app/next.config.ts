@@ -44,6 +44,21 @@ const nextConfig: NextConfig = {
         destination: "/portal/admin/cms/:path*",
         permanent: true,
       },
+      {
+        source: "/dashboard/admin",
+        destination: "/portal/admin",
+        permanent: false,
+      },
+      {
+        source: "/dashboard/admin/:path*",
+        destination: "/portal/admin/:path*",
+        permanent: false,
+      },
+      {
+        source: "/dashboard/student/courses",
+        destination: "/dashboard/student/progress",
+        permanent: false,
+      },
     ];
   },
   headers: securityHeaders(),

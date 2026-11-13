@@ -114,14 +114,14 @@
       "subtitle": "Für jedes Lernziel die passende Unterstützung"
     },
     "statsBar": {
-      "stat1": "100+",
-      "stat2": "SchülerInnen",
-      "stat3": "25+",
-      "stat4": "LehrerInnen",
-      "stat5": "500+",
-      "stat6": "Lernmaterialien",
-      "stat7": "4,9/5",
-      "stat8": "Bewertung"
+      "stat1": "39 €",
+      "stat2": "pro Stunde (1:1)",
+      "stat3": "29 €",
+      "stat4": "pro Stunde (Gruppe)",
+      "stat5": "49 €",
+      "stat6": "pro Fach & Semester",
+      "stat7": "149 €",
+      "stat8": "Matura-Paket einmalig"
     },
     "platformPreview": {
       "title": "ALLES AN EINEM ORT",
@@ -129,21 +129,7 @@
     },
     "testimonials": {
       "title": "Das sagen SchülerInnen und Eltern",
-      "items": [
-        {
-          "quote": "Vor NextGrades war Lernen bei uns jeden Abend ein Kampf. Heute geht meine Tochter viel selbstbewusster in die Schule und hat endlich wieder Freude am Lernen. Das hat nicht nur ihre Noten verbessert, sondern auch ihren Stress reduziert.",
-          "name": "Sabine K.",
-          "role": "Mutter"
-        },
-        {
-          "quote": "Innerhalb weniger Monate habe ich mich in Mathe von einer 4 auf eine 2 verbessert. Besonders geholfen haben mir die klaren Erklärungen, die persönliche Betreuung und die strukturierte Vorbereitung auf Schularbeiten.",
-          "name": "Lukas, 7. Klasse HTL"
-        },
-        {
-          "quote": "Die Lernplattform ist unglaublich hilfreich. Die Videos, Zusammenfassungen und Übungsblätter sparen mir jede Woche Zeit. Wenn ich etwas nicht verstehe, finde ich fast immer sofort die passende Erklärung.",
-          "name": "Julia, 4. Klasse Gymnasium"
-        }
-      ]
+      "items": []
     },
     "whySection": {
       "eyebrow": "WARUM NEXTGRADES",
@@ -224,8 +210,8 @@
     "heroTitleHighlight": "Bessere Ergebnisse.",
     "freeConsultation": "Kostenloses Erstgespräch buchen",
     "explorePrograms": "Programme entdecken",
-    "rating": "4,9/5",
-    "reviewsFrom": "aus 100+ Bewertungen",
+    "rating": "39 €",
+    "reviewsFrom": "pro Stunde (1:1) · ab 29 € Gruppe",
     "floatingCardTitle": "Individuelle Betreuung.",
     "floatingCardDesc": "Echte Ergebnisse.",
     "mostPopular": "Beliebtestes Programm",
@@ -292,7 +278,7 @@
           "title": "Lernbibliothek",
           "price": "49 € / Semester",
           "features": [
-            "500+ Lernmaterialien",
+            "Strukturierte Lernmaterialien",
             "Lehrplankonform & strukturiert",
             "Übungsblätter, Videos & Zusammenfassungen",
             "Sofort verfügbar"
@@ -302,20 +288,20 @@
     },
     "stats": [
       {
-        "number": "100+",
-        "label": "SchülerInnen"
+        "number": "39 €",
+        "label": "pro Stunde (1:1)"
       },
       {
-        "number": "25+",
-        "label": "LehrerInnen"
+        "number": "29 €",
+        "label": "pro Stunde (Gruppe)"
       },
       {
-        "number": "500+",
-        "label": "Lernmaterialien"
+        "number": "49 €",
+        "label": "pro Fach & Semester"
       },
       {
-        "number": "4,9/5",
-        "label": "Bewertung"
+        "number": "149 €",
+        "label": "Matura-Paket einmalig"
       }
     ],
     "platform": {
@@ -644,9 +630,9 @@
     "discoverSubjectsDesc": "Wähle ein Schulfach und finde passende Lernmaterialien, Übungen und Videos.",
     "openSubject": "Fach öffnen",
     "libraryGate": {
-      "materialsCount": "500+",
-      "materialsLabel": "Lernmaterialien",
-      "title": "500+ Lernmaterialien - mit Mitgliedschaft freigeschaltet",
+      "materialsCount": "49 €",
+      "materialsLabel": "pro Fach & Semester",
+      "title": "Lernbibliothek – mit Mitgliedschaft freigeschaltet",
       "subtitle": "Die vollständige Lernbibliothek steht registrierten Mitgliedern zur Verfügung. Melde dich an oder wähle ein Paket, um alle Inhalte zu nutzen.",
       "loginCta": "Anmelden",
       "upgradeCta": "Mitgliedschaft freischalten",
@@ -1641,20 +1627,20 @@
     ],
     "stats": [
       {
-        "value": "100+",
-        "label": "SchülerInnen"
+        "value": "39 €",
+        "label": "pro Stunde (1:1)"
       },
       {
-        "value": "25+",
-        "label": "LehrerInnen"
+        "value": "29 €",
+        "label": "pro Stunde (Gruppe)"
       },
       {
-        "value": "500+",
-        "label": "Lernmaterialien"
+        "value": "49 €",
+        "label": "pro Fach & Semester"
       },
       {
-        "value": "4,9/5",
-        "label": "Bewertung"
+        "value": "149 €",
+        "label": "Matura-Paket einmalig"
       }
     ],
     "positionsEyebrow": "Offene Stellen",

@@ -115,20 +115,20 @@
     "statsTitle": "Eine neue Generation des Lernens",
     "stats": [
       {
-        "value": "100+",
-        "label": "SchülerInnen"
+        "value": "39 €",
+        "label": "pro Stunde (1:1)"
       },
       {
-        "value": "25+",
-        "label": "LehrerInnen"
+        "value": "29 €",
+        "label": "pro Stunde (Gruppe)"
       },
       {
-        "value": "500+",
-        "label": "Lernmaterialien"
+        "value": "49 €",
+        "label": "pro Fach & Semester"
       },
       {
-        "value": "100%",
-        "label": "Leidenschaft & Engagement"
+        "value": "149 €",
+        "label": "Matura-Paket einmalig"
       }
     ],
     "teamEyebrow": "UNSER TEAM",
@@ -179,20 +179,20 @@
     "freeConsultation": "Jetzt buchen",
     "stats": [
       {
-        "number": "100+",
-        "label": "SchülerInnen"
+        "number": "39 €",
+        "label": "pro Stunde (1:1)"
       },
       {
-        "number": "25+",
-        "label": "LehrerInnen"
+        "number": "29 €",
+        "label": "pro Stunde (Gruppe)"
       },
       {
-        "number": "500+",
-        "label": "Lernmaterialien"
+        "number": "49 €",
+        "label": "pro Fach & Semester"
       },
       {
-        "number": "4,9/5",
-        "label": "Bewertung"
+        "number": "149 €",
+        "label": "Matura-Paket einmalig"
       }
     ],
     "sectionEyebrow": "UNSERE PROGRAMME",
@@ -243,7 +243,7 @@
         "title": "Lernbibliothek",
         "description": "Strukturierte Lernmaterialien, Videos und Prüfungsvorbereitung an einem Ort.",
         "features": [
-          "500+ Lernmaterialien",
+          "Strukturierte Lernmaterialien",
           "Lehrplankonform",
           "Sofort verfügbar",
           "Für Schule & Matura"
@@ -344,20 +344,20 @@
     ],
     "stats": [
       {
-        "value": "100+",
-        "label": "SchülerInnen"
+        "value": "39 €",
+        "label": "pro Stunde (1:1)"
       },
       {
-        "value": "25+",
-        "label": "LehrerInnen"
+        "value": "29 €",
+        "label": "pro Stunde (Gruppe)"
       },
       {
-        "value": "500+",
-        "label": "Lernmaterialien"
+        "value": "49 €",
+        "label": "pro Fach & Semester"
       },
       {
-        "value": "4,9/5",
-        "label": "Bewertung"
+        "value": "149 €",
+        "label": "Matura-Paket einmalig"
       }
     ],
     "ctaTitle": "Bereit, deine Noten zu verbessern?",
@@ -552,24 +552,24 @@
     "valueProposition": "Individuelle Lösungen für jedes Budget und jede Lernsituation.",
     "stats": [
       {
-        "value": "100+",
-        "label": "SchülerInnen"
+        "value": "39 €",
+        "label": "pro Stunde (1:1)"
       },
       {
-        "value": "25+",
-        "label": "LehrerInnen"
+        "value": "29 €",
+        "label": "pro Stunde (Gruppe)"
       },
       {
-        "value": "500+",
-        "label": "Lernmaterialien"
+        "value": "49 €",
+        "label": "pro Fach & Semester"
       },
       {
-        "value": "4,9/5",
-        "label": "Bewertung"
+        "value": "149 €",
+        "label": "Matura-Paket einmalig"
       }
     ],
-    "trustedTitle": "Vertraut von 100+ SchülerInnen",
-    "trustedDesc": "Durchschnittlich 4,9/5 von echten SchülerInnen und Eltern",
+    "trustedTitle": "Klare Preise – ohne Abo-Fallen",
+    "trustedDesc": "1:1, Gruppen, Lernbibliothek und Matura-Paket – genau so, wie auf der Preisseite angegeben",
     "loading": "Laden...",
     "finalCtaTitle": "Unsicher, welches Paket das Richtige ist?",
     "finalCtaDesc": "Buche ein kostenloses Erstgespräch – wir finden gemeinsam die perfekte Lösung!",
@@ -589,7 +589,7 @@
         "priceLabel": "49 € pro Fach & Semester",
         "highlighted": false,
         "features": [
-          "500+ Lernmaterialien",
+          "Strukturierte Lernmaterialien",
           "Lehrplankonform",
           "Übungsblätter & Videos",
           "Sofort verfügbar"
@@ -643,8 +643,8 @@
     ],
     "faqs": [
       {
-        "question": "Kann ich jederzeit den Tarif wechseln?",
-        "answer": "Ja! Du kannst deinen Tarif jederzeit upgraden oder downgraden."
+        "question": "Zahle ich monatlich oder einmalig?",
+        "answer": "1:1 und Gruppen werden pro Stunde gebucht. Die Lernbibliothek gilt pro Fach und Semester. Das Matura-Paket ist einmalig."
       },
       {
         "question": "Gibt es eine kostenlose Testphase?",
@@ -1707,7 +1707,7 @@
     "titleOptionalPlaceholder": "Optional — z. B. Algebra, quadratische Gleichungen",
     "lessonFallbackTitle": "Nachhilfestunde",
     "pastePreferred": "Ein Video-Link ist optional. Die Stunde erscheint trotzdem unter Meine Termine.",
-    "connectOptional": "Zoom verbinden (optional)",
+    "connectOptional": "Zoom-Konto verbinden, um Links automatisch zu erzeugen",
     "showAutoZoom": "Oder automatisch über das verbundene Zoom-Konto erstellen",
     "hideAutoZoom": "Automatische Zoom-Option ausblenden",
     "createViaZoom": "In Zoom automatisch erstellen",

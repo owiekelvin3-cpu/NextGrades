@@ -6,7 +6,6 @@ import { usePathname, useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { useLocalizedContent } from "@/hooks/useLocalizedContent";
 import {
-  BookOpen,
   Calendar,
   TrendingUp,
   Settings,
@@ -53,7 +52,6 @@ interface SidebarContentProps {
 
 const studentConfig = [
   { href: "/dashboard/student", icon: LayoutDashboard },
-  { href: "/dashboard/student/courses", icon: BookOpen },
   { href: "/dashboard/student/appointments", icon: Calendar },
   { href: "/dashboard/student/resources", icon: FileText },
   { href: "/dashboard/student/quizzes", icon: ListChecks },
