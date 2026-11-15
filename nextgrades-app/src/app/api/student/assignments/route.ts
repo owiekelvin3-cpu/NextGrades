@@ -90,7 +90,7 @@ export async function GET() {
     const { data: attempts, error: attemptsError } = await db
       .from("quiz_attempts")
       .select(
-        "id, quiz_id, score_percent, teacher_score_percent, completed_at, created_at, feedback, teacher_feedback"
+        "id, quiz_id, score_percent, teacher_score_percent, completed_at, created_at, teacher_feedback"
       )
       .eq("student_id", studentId)
       .in("quiz_id", quizIds)
@@ -121,7 +121,7 @@ export async function GET() {
       const status = resolveAssignmentStatus(attempt);
       const score =
         attempt?.teacher_score_percent ?? attempt?.score_percent ?? null;
-      const feedback = attempt?.teacher_feedback ?? attempt?.feedback ?? null;
+      const feedback = attempt?.teacher_feedback ?? null;
       const grant = grantByQuiz.get(row.id);
 
       return {
