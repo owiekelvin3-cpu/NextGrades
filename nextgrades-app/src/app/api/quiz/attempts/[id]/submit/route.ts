@@ -97,11 +97,7 @@ export async function POST(
       quizTitle,
       attemptId,
     });
-    void notifyGradeReleased({
-      studentId: attempt.student_id,
-      title: quizTitle,
-      score: `${scorePercent}%`,
-    });
+    // Auto-score is shown in the player; teacher grade notifications stay on /grade.
 
     const { data: fullQuestions } = await db
       .from("quiz_questions")

@@ -65,6 +65,26 @@ export async function PATCH(
       .single();
 
     if (updateError) throw updateError;
+
+    const quizTitle =
+      (updated as { generated_quizzes?: { title?: string } | { title?: string }[] | null })
+        ?.generated_quizzes;
+    const title = Array.isArray(quizTitle)
+      ? quizTitle[0]?.title
+      : quizTitle?.title;
+    const scoreLabel =
+      body.teacherScorePercent != null
+        ? `${Math.min(100, Math.max(0, Math.round(body.teacherScorePercent)))}%`
+        : undefined;
+    if (body.teacherFeedback?.trim() || scoreLabel) {
+      const { notifyGradeReleased } = await import("@/lib/notifications/triggers");
+      void notifyGradeReleased({
+        studentId: attempt.student_id as string,
+        title: title ?? "Quiz",
+        score: scoreLabel ?? "—",
+      });
+    }
+
     return NextResponse.json({ attempt: updated });
   } catch (e) {
     const message = e instanceof Error ? e.message : "Failed to grade attempt";

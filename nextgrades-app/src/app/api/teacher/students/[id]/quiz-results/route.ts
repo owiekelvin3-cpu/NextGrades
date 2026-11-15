@@ -25,24 +25,14 @@ export async function GET(_request: Request, { params }: RouteParams) {
       }
     }
 
-    const { data: ownQuizzes } = await db
-      .from("generated_quizzes")
-      .select("id")
-      .eq("created_by", teacherId);
-    const quizIds = (ownQuizzes ?? []).map((q) => q.id as string);
-
-    if (!quizIds.length) {
-      return NextResponse.json({ results: [] });
-    }
-
+    // All attempts for this assigned student (teacher-created and admin-unlocked).
     const { data: attempts, error } = await db
       .from("quiz_attempts")
       .select(
-        `id, quiz_id, score_percent, completed_at, created_at, teacher_feedback,
+        `id, quiz_id, score_percent, teacher_score_percent, completed_at, created_at, teacher_feedback,
          generated_quizzes(id, title, difficulty)`
       )
       .eq("student_id", studentId)
-      .in("quiz_id", quizIds)
       .order("created_at", { ascending: false });
 
     if (error) throw error;
@@ -54,16 +44,19 @@ export async function GET(_request: Request, { params }: RouteParams) {
         | null;
       const quiz = Array.isArray(quizRaw) ? quizRaw[0] : quizRaw;
       const completed = Boolean(row.completed_at);
+      const teacherScore =
+        row.teacher_score_percent != null ? Number(row.teacher_score_percent) : null;
+      const autoScore = row.score_percent != null ? Number(row.score_percent) : null;
       let status: "in_progress" | "submitted" | "graded" = "in_progress";
       if (completed) {
-        status = row.teacher_feedback ? "graded" : "submitted";
+        status = row.teacher_feedback || teacherScore != null ? "graded" : "submitted";
       }
       return {
         id: row.id as string,
         quizId: row.quiz_id as string,
         quizTitle: quiz?.title ?? "Quiz",
         difficulty: quiz?.difficulty ?? null,
-        scorePercent: row.score_percent != null ? Number(row.score_percent) : null,
+        scorePercent: teacherScore ?? autoScore,
         status,
         completedAt: (row.completed_at as string | null) ?? null,
         createdAt: row.created_at as string,

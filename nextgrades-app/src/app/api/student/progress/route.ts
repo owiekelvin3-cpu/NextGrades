@@ -37,12 +37,14 @@ export async function GET() {
         .neq("status", "cancelled"),
       supabase
         .from("material_grants")
-        .select("material:uploaded_materials(subject_id, subjects(name))")
+        .select("material:materials(subject_id, subjects(name))")
         .eq("student_id", studentId)
         .eq("status", "active"),
       supabase
         .from("quiz_attempts")
-        .select("score_percent, teacher_score_percent, completed_at, generated_quizzes(subject_id, subjects(name))")
+        .select(
+          "score_percent, teacher_score_percent, completed_at, generated_quizzes(subject_id, topic)"
+        )
         .eq("student_id", studentId)
         .not("completed_at", "is", null),
     ]);
@@ -116,27 +118,51 @@ export async function GET() {
       ensure(mat.subject_id, name).materialsCount += 1;
     }
 
+    const attemptSubjectIds = [
+      ...new Set(
+        (attemptsRes.data ?? [])
+          .map((a) => {
+            const quizRaw = (a as { generated_quizzes?: { subject_id?: string | null } | { subject_id?: string | null }[] | null })
+              .generated_quizzes;
+            const quiz = Array.isArray(quizRaw) ? quizRaw[0] : quizRaw;
+            return quiz?.subject_id ?? null;
+          })
+          .filter((id): id is string => Boolean(id))
+      ),
+    ];
+    const attemptSubjectNames = new Map<string, string>();
+    if (attemptSubjectIds.length) {
+      const { data: subjects } = await supabase
+        .from("subjects")
+        .select("id, name")
+        .in("id", attemptSubjectIds);
+      for (const s of subjects ?? []) {
+        attemptSubjectNames.set(s.id as string, s.name as string);
+      }
+    }
+
     for (const a of attemptsRes.data ?? []) {
       const row = a as unknown as {
         score_percent: number | null;
         teacher_score_percent: number | null;
-        generated_quizzes: {
-          subject_id: string | null;
-          subjects: { name: string } | { name: string }[] | null;
-        } | {
-          subject_id: string | null;
-          subjects: { name: string } | { name: string }[] | null;
-        }[] | null;
+        generated_quizzes:
+          | { subject_id: string | null; topic: string | null }
+          | { subject_id: string | null; topic: string | null }[]
+          | null;
       };
       const quizRaw = row.generated_quizzes;
       const quiz = Array.isArray(quizRaw) ? quizRaw[0] : quizRaw;
-      if (!quiz?.subject_id) continue;
-      const embed = quiz.subjects;
-      const name = Array.isArray(embed) ? embed[0]?.name : embed?.name;
-      if (!name) continue;
       const score = row.teacher_score_percent ?? row.score_percent;
       if (score == null) continue;
-      ensure(quiz.subject_id, name).quizScores.push(Number(score));
+
+      const subjectId = quiz?.subject_id;
+      const name =
+        (subjectId ? attemptSubjectNames.get(subjectId) : null) ??
+        quiz?.topic?.trim() ??
+        null;
+      if (!name) continue;
+      const bucketKey = subjectId || `topic:${name}`;
+      ensure(bucketKey, name).quizScores.push(Number(score));
     }
 
     const subjects: SubjectProgressPayload[] = [...subjectNames.entries()].map(

@@ -136,7 +136,11 @@ export function QuizPlayer({
   );
 
   if (!current && !finished) {
-    return <p className="text-gray-500">Loading quiz…</p>;
+    return (
+      <p className="text-gray-500">
+        {t("studentDashboard.quizLoading", { defaultValue: "Quiz wird geladen…" })}
+      </p>
+    );
   }
 
   if (finished && result) {

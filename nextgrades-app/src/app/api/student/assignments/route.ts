@@ -142,7 +142,13 @@ export async function GET() {
 
     return NextResponse.json({ assignments });
   } catch (e) {
-    const message = e instanceof Error ? e.message : "Failed to load assignments";
+    const message =
+      e instanceof Error
+        ? e.message
+        : e && typeof e === "object" && "message" in e
+          ? String((e as { message: unknown }).message)
+          : "Failed to load assignments";
+    console.error("[student/assignments]", message, e);
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }
