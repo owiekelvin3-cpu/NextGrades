@@ -1,6 +1,13 @@
 /** Canonical public site URL - set NEXT_PUBLIC_APP_URL to your live domain before deploy. */
 export function getAppUrl(): string {
   const raw = process.env.NEXT_PUBLIC_APP_URL?.trim();
+  if (raw && !raw.includes("localhost") && !raw.includes("127.0.0.1")) {
+    return raw.replace(/\/$/, "");
+  }
+  // Never emit localhost invite/reset links from a production deployment.
+  if (process.env.VERCEL_ENV === "production" || process.env.NODE_ENV === "production") {
+    return "https://www.nextgrades.at";
+  }
   return (raw || "http://localhost:3000").replace(/\/$/, "");
 }
 

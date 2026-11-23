@@ -13,6 +13,7 @@ import {
   ChevronDown,
   RefreshCw,
   Plus,
+  Mail,
 } from "lucide-react";
 import { useToast } from "@/context/ToastContext";
 import { useTranslation } from "react-i18next";
@@ -183,6 +184,35 @@ function AdminUsersPageContent() {
       void fetchUsers();
     } catch (error) {
       toastError(error instanceof Error ? error.message : t("adminUsers.deleteFailed"));
+    }
+  };
+
+  const handleResendInvite = async (userId: string, userName: string | null) => {
+    if (
+      !confirm(
+        t("adminUsers.resendInviteConfirm", {
+          defaultValue: "Einladungs-E-Mail erneut an {{name}} senden?",
+          name: userName || t("adminTable.noData"),
+        })
+      )
+    ) {
+      return;
+    }
+    try {
+      const response = await fetch(`/api/admin/users/${userId}/resend-invite`, { method: "POST" });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || t("adminUsers.resendInviteFailed", { defaultValue: "Einladung konnte nicht gesendet werden." }));
+      success(
+        t("adminUsers.resendInviteSuccess", {
+          defaultValue: "Einladung wurde erneut gesendet.",
+        })
+      );
+    } catch (error) {
+      toastError(
+        error instanceof Error
+          ? error.message
+          : t("adminUsers.resendInviteFailed", { defaultValue: "Einladung konnte nicht gesendet werden." })
+      );
     }
   };
 
@@ -518,6 +548,14 @@ function AdminUsersPageContent() {
                 </select>
                 <AdminTableActionsMenu
                   actions={[
+                    {
+                      id: "resend-invite",
+                      label: t("adminUsers.resendInvite", {
+                        defaultValue: "Einladung erneut senden",
+                      }),
+                      icon: Mail,
+                      onClick: () => void handleResendInvite(user.id, user.full_name),
+                    },
                     ...(user.role === "student"
                       ? [
                           {

@@ -125,21 +125,31 @@ export async function generateRecoveryLinkForEmail(email: string) {
   return { actionLink: null, userId: null, error: lastError ?? "Failed to generate reset link" };
 }
 
-/** Invite / first-time password setup link for admin-created accounts. */
+/**
+ * Password-setup link for admin-created accounts.
+ * Prefer recovery links: users are created with email_confirm=true, and
+ * Supabase "invite" links often fail for already-confirmed accounts.
+ */
 export async function generateInviteLinkForEmail(email: string) {
   const maxAttempts = 3;
   let lastError: string | null = null;
 
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
-    const result = await generateAuthLink({
+    const recovery = await generateAuthLink({
+      type: "recovery",
+      email,
+      redirectTo: getPasswordResetRedirectUrl(),
+    });
+    if (recovery.actionLink && !recovery.error) return recovery;
+
+    const invite = await generateAuthLink({
       type: "invite",
       email,
       redirectTo: getPasswordResetRedirectUrl(),
     });
+    if (invite.actionLink && !invite.error) return invite;
 
-    if (result.actionLink && !result.error) return result;
-
-    lastError = result.error;
+    lastError = invite.error || recovery.error;
     const retryable = lastError?.toLowerCase().includes("not found");
     if (!retryable || attempt === maxAttempts - 1) break;
 

@@ -121,13 +121,16 @@ export async function notifyLiveClassScheduled(params: {
   });
   const className = params.title || params.subjectName || "Live-Stunde";
   const teacher = params.teacherName ?? "deine Lehrkraft";
+  const joinHint = params.joinUrl
+    ? ` · Video-Link: ${params.joinUrl}`
+    : "";
 
   await createNotification({
     userId: params.studentId,
     type: "info",
     category: "live_class",
     title: "Neue Stunde eingetragen",
-    message: `${className} mit ${teacher} – ${when}${params.joinUrl ? " · Zum Termin gibt es einen Video-Link." : ""}`,
+    message: `${className} mit ${teacher} – ${when}${joinHint}`,
     actionUrl: `/dashboard/student/appointments`,
     entityType: "lesson",
     entityId: params.lessonId,
@@ -143,6 +146,42 @@ export async function notifyLiveClassScheduled(params: {
     entityType: "lesson",
     entityId: params.lessonId,
   });
+
+  // Email the student so they receive the meeting link outside the portal.
+  try {
+    const { createAdminClient } = await import("@/lib/supabase/admin");
+    const { isSupabaseServiceRoleConfigured } = await import("@/lib/supabase/env");
+    const { sendLessonInvitationEmail, isResendConfigured } = await import("@/lib/email");
+    const { getAppUrl } = await import("@/lib/app-url");
+
+    if (!isSupabaseServiceRoleConfigured() || !isResendConfigured()) return;
+
+    const admin = createAdminClient();
+    const { data: student } = await admin
+      .from("profiles")
+      .select("email, full_name")
+      .eq("id", params.studentId)
+      .maybeSingle();
+
+    const email = (student?.email as string | null)?.trim();
+    if (!email) return;
+
+    const emailResult = await sendLessonInvitationEmail({
+      email,
+      userName: (student?.full_name as string | null) ?? undefined,
+      teacherName: params.teacherName,
+      className,
+      whenLabel: when,
+      joinUrl: params.joinUrl,
+      appointmentsUrl: `${getAppUrl()}/dashboard/student/appointments`,
+    });
+
+    if (!emailResult.success) {
+      console.error("[notifications] lesson invitation email failed:", emailResult.error);
+    }
+  } catch (error) {
+    console.error("[notifications] lesson invitation email error:", error);
+  }
 }
 
 export async function notifyLessonCompleted(params: {

@@ -38,6 +38,10 @@ import {
   accountInvitationEmail,
   accountInvitationEmailPlain,
 } from "./templates/account-invitation";
+import {
+  lessonInvitationEmail,
+  lessonInvitationEmailPlain,
+} from "./templates/lesson-invitation";
 import type { PaymentLineItem, SecurityAlertDetails, SubscriptionDetails } from "./types";
 
 export { isResendConfigured };
@@ -354,6 +358,24 @@ export async function sendAccountInvitationEmail(params: {
     html: accountInvitationEmail(params),
     text: accountInvitationEmailPlain(params),
     tags: [{ name: "category", value: "admin-invitation" }],
+  });
+}
+
+export async function sendLessonInvitationEmail(params: {
+  email: string;
+  userName?: string;
+  teacherName?: string;
+  className: string;
+  whenLabel: string;
+  joinUrl?: string;
+  appointmentsUrl: string;
+}) {
+  return sendEmail({
+    to: params.email,
+    subject: `Einladung: ${params.className} – ${params.whenLabel}`,
+    html: lessonInvitationEmail(params),
+    text: lessonInvitationEmailPlain(params),
+    tags: [{ name: "category", value: "lesson-invitation" }],
   });
 }
 
